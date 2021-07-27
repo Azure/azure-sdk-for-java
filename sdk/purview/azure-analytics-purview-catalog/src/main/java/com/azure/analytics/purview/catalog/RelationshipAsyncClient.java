@@ -61,6 +61,10 @@ public final class RelationshipAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
@@ -105,6 +109,10 @@ public final class RelationshipAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> create(BinaryData relationship, RequestOptions requestOptions) {
@@ -149,6 +157,10 @@ public final class RelationshipAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
@@ -193,6 +205,10 @@ public final class RelationshipAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> update(BinaryData relationship, RequestOptions requestOptions) {
@@ -298,6 +314,8 @@ public final class RelationshipAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String guid, RequestOptions requestOptions) {
@@ -403,6 +421,8 @@ public final class RelationshipAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> get(String guid, RequestOptions requestOptions) {
@@ -413,6 +433,8 @@ public final class RelationshipAsyncClient {
      * Delete a relationship between entities by its GUID.
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse(String guid, RequestOptions requestOptions) {
@@ -423,6 +445,8 @@ public final class RelationshipAsyncClient {
      * Delete a relationship between entities by its GUID.
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete(String guid, RequestOptions requestOptions) {

@@ -91,6 +91,8 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -136,6 +138,9 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -179,6 +184,8 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getAsync(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -223,6 +230,9 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getAsync(
@@ -268,6 +278,8 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData get(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -304,6 +316,9 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(
@@ -341,6 +356,8 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -386,6 +403,9 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -429,6 +449,8 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createOrUpdateAsync(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -473,6 +495,9 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createOrUpdateAsync(
@@ -518,6 +543,8 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createOrUpdate(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -554,6 +581,9 @@ public final class FiltersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(

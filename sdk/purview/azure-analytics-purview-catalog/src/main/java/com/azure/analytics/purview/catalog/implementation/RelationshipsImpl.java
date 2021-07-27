@@ -112,6 +112,10 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
@@ -157,6 +161,11 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(
@@ -202,6 +211,10 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createAsync(BinaryData relationship, RequestOptions requestOptions) {
@@ -254,6 +267,11 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createAsync(BinaryData relationship, RequestOptions requestOptions, Context context) {
@@ -306,6 +324,10 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData create(BinaryData relationship, RequestOptions requestOptions) {
@@ -350,6 +372,11 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(
@@ -395,6 +422,10 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
@@ -440,6 +471,11 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponseAsync(
@@ -485,6 +521,10 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateAsync(BinaryData relationship, RequestOptions requestOptions) {
@@ -537,6 +577,11 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateAsync(BinaryData relationship, RequestOptions requestOptions, Context context) {
@@ -589,6 +634,10 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData update(BinaryData relationship, RequestOptions requestOptions) {
@@ -633,6 +682,11 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return atlas relationship instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateWithResponse(
@@ -739,6 +793,8 @@ public final class RelationshipsImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String guid, RequestOptions requestOptions) {
@@ -844,6 +900,9 @@ public final class RelationshipsImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -950,6 +1009,8 @@ public final class RelationshipsImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getAsync(String guid, RequestOptions requestOptions) {
@@ -1063,6 +1124,9 @@ public final class RelationshipsImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getAsync(String guid, RequestOptions requestOptions, Context context) {
@@ -1176,6 +1240,8 @@ public final class RelationshipsImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData get(String guid, RequestOptions requestOptions) {
@@ -1281,6 +1347,9 @@ public final class RelationshipsImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String guid, RequestOptions requestOptions, Context context) {
@@ -1291,6 +1360,8 @@ public final class RelationshipsImpl {
      * Delete a relationship between entities by its GUID.
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String guid, RequestOptions requestOptions) {
@@ -1302,6 +1373,9 @@ public final class RelationshipsImpl {
      * Delete a relationship between entities by its GUID.
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String guid, RequestOptions requestOptions, Context context) {
@@ -1312,6 +1386,8 @@ public final class RelationshipsImpl {
      * Delete a relationship between entities by its GUID.
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String guid, RequestOptions requestOptions) {
@@ -1322,6 +1398,9 @@ public final class RelationshipsImpl {
      * Delete a relationship between entities by its GUID.
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String guid, RequestOptions requestOptions, Context context) {
@@ -1332,6 +1411,7 @@ public final class RelationshipsImpl {
      * Delete a relationship between entities by its GUID.
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String guid, RequestOptions requestOptions) {
@@ -1342,6 +1422,9 @@ public final class RelationshipsImpl {
      * Delete a relationship between entities by its GUID.
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String guid, RequestOptions requestOptions, Context context) {

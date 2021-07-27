@@ -53,6 +53,8 @@ public final class FiltersAsyncClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(
@@ -90,6 +92,8 @@ public final class FiltersAsyncClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> get(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -126,6 +130,8 @@ public final class FiltersAsyncClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponse(
@@ -163,6 +169,8 @@ public final class FiltersAsyncClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createOrUpdate(String dataSourceName, String scanName, RequestOptions requestOptions) {

@@ -52,6 +52,9 @@ public final class SystemScanRulesetsAsyncClient {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAll(RequestOptions requestOptions) {
@@ -82,6 +85,8 @@ public final class SystemScanRulesetsAsyncClient {
      * }</pre>
      *
      * @param dataSourceType The dataSourceType parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a system scan ruleset for a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String dataSourceType, RequestOptions requestOptions) {
@@ -112,6 +117,8 @@ public final class SystemScanRulesetsAsyncClient {
      * }</pre>
      *
      * @param dataSourceType The dataSourceType parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a system scan ruleset for a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> get(String dataSourceType, RequestOptions requestOptions) {
@@ -143,6 +150,8 @@ public final class SystemScanRulesetsAsyncClient {
      * }</pre>
      *
      * @param version The version parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByVersionWithResponse(int version, RequestOptions requestOptions) {
@@ -174,6 +183,8 @@ public final class SystemScanRulesetsAsyncClient {
      * }</pre>
      *
      * @param version The version parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getByVersion(int version, RequestOptions requestOptions) {
@@ -203,6 +214,9 @@ public final class SystemScanRulesetsAsyncClient {
      *     version: Integer
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the latest version of a system scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLatestWithResponse(RequestOptions requestOptions) {
@@ -232,6 +246,9 @@ public final class SystemScanRulesetsAsyncClient {
      *     version: Integer
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the latest version of a system scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getLatest(RequestOptions requestOptions) {
@@ -267,6 +284,9 @@ public final class SystemScanRulesetsAsyncClient {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listVersionsByDataSource(RequestOptions requestOptions) {

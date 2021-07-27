@@ -45,6 +45,8 @@ public final class ClassificationRulesAsyncClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a classification rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String classificationRuleName, RequestOptions requestOptions) {
@@ -72,6 +74,8 @@ public final class ClassificationRulesAsyncClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a classification rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> get(String classificationRuleName, RequestOptions requestOptions) {
@@ -99,6 +103,8 @@ public final class ClassificationRulesAsyncClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponse(
@@ -127,6 +133,8 @@ public final class ClassificationRulesAsyncClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createOrUpdate(String classificationRuleName, RequestOptions requestOptions) {
@@ -154,6 +162,8 @@ public final class ClassificationRulesAsyncClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(String classificationRuleName, RequestOptions requestOptions) {
@@ -181,6 +191,8 @@ public final class ClassificationRulesAsyncClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> delete(String classificationRuleName, RequestOptions requestOptions) {
@@ -212,6 +224,9 @@ public final class ClassificationRulesAsyncClient {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAll(RequestOptions requestOptions) {
@@ -245,6 +260,8 @@ public final class ClassificationRulesAsyncClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listVersionsByClassificationRuleName(
@@ -292,6 +309,8 @@ public final class ClassificationRulesAsyncClient {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param classificationRuleVersion The classificationRuleVersion parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> tagClassificationVersionWithResponse(
@@ -340,6 +359,8 @@ public final class ClassificationRulesAsyncClient {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param classificationRuleVersion The classificationRuleVersion parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> tagClassificationVersion(

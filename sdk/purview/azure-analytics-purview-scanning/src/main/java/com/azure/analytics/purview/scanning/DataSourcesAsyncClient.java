@@ -97,6 +97,8 @@ public final class DataSourcesAsyncClient {
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponse(String dataSourceName, RequestOptions requestOptions) {
@@ -176,6 +178,8 @@ public final class DataSourcesAsyncClient {
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createOrUpdate(String dataSourceName, RequestOptions requestOptions) {
@@ -255,6 +259,8 @@ public final class DataSourcesAsyncClient {
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String dataSourceName, RequestOptions requestOptions) {
@@ -334,6 +340,8 @@ public final class DataSourcesAsyncClient {
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> get(String dataSourceName, RequestOptions requestOptions) {
@@ -413,6 +421,8 @@ public final class DataSourcesAsyncClient {
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(String dataSourceName, RequestOptions requestOptions) {
@@ -492,6 +502,8 @@ public final class DataSourcesAsyncClient {
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> delete(String dataSourceName, RequestOptions requestOptions) {
@@ -575,6 +587,9 @@ public final class DataSourcesAsyncClient {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAll(RequestOptions requestOptions) {

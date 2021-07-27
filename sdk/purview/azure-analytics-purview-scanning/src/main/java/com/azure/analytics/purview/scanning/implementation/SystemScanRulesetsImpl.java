@@ -130,6 +130,9 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions) {
@@ -179,6 +182,10 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
@@ -222,6 +229,9 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAllAsync(RequestOptions requestOptions) {
@@ -257,6 +267,10 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAllAsync(RequestOptions requestOptions, Context context) {
@@ -293,6 +307,9 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
@@ -327,6 +344,10 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
@@ -357,6 +378,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param dataSourceType The dataSourceType parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a system scan ruleset for a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String dataSourceType, RequestOptions requestOptions) {
@@ -394,6 +417,9 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param dataSourceType The dataSourceType parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a system scan ruleset for a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -426,6 +452,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param dataSourceType The dataSourceType parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a system scan ruleset for a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getAsync(String dataSourceType, RequestOptions requestOptions) {
@@ -464,6 +492,9 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param dataSourceType The dataSourceType parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a system scan ruleset for a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getAsync(String dataSourceType, RequestOptions requestOptions, Context context) {
@@ -502,6 +533,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param dataSourceType The dataSourceType parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a system scan ruleset for a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData get(String dataSourceType, RequestOptions requestOptions) {
@@ -532,6 +565,9 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param dataSourceType The dataSourceType parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a system scan ruleset for a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String dataSourceType, RequestOptions requestOptions, Context context) {
@@ -563,6 +599,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param version The version parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByVersionWithResponseAsync(int version, RequestOptions requestOptions) {
@@ -601,6 +639,9 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param version The version parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByVersionWithResponseAsync(
@@ -634,6 +675,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param version The version parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getByVersionAsync(int version, RequestOptions requestOptions) {
@@ -673,6 +716,9 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param version The version parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getByVersionAsync(int version, RequestOptions requestOptions, Context context) {
@@ -712,6 +758,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param version The version parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getByVersion(int version, RequestOptions requestOptions) {
@@ -743,6 +791,9 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param version The version parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getByVersionWithResponse(int version, RequestOptions requestOptions, Context context) {
@@ -772,6 +823,9 @@ public final class SystemScanRulesetsImpl {
      *     version: Integer
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the latest version of a system scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLatestWithResponseAsync(RequestOptions requestOptions) {
@@ -804,6 +858,10 @@ public final class SystemScanRulesetsImpl {
      *     version: Integer
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the latest version of a system scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLatestWithResponseAsync(RequestOptions requestOptions, Context context) {
@@ -833,6 +891,9 @@ public final class SystemScanRulesetsImpl {
      *     version: Integer
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the latest version of a system scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getLatestAsync(RequestOptions requestOptions) {
@@ -870,6 +931,10 @@ public final class SystemScanRulesetsImpl {
      *     version: Integer
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the latest version of a system scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getLatestAsync(RequestOptions requestOptions, Context context) {
@@ -907,6 +972,9 @@ public final class SystemScanRulesetsImpl {
      *     version: Integer
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the latest version of a system scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getLatest(RequestOptions requestOptions) {
@@ -936,6 +1004,10 @@ public final class SystemScanRulesetsImpl {
      *     version: Integer
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the latest version of a system scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLatestWithResponse(RequestOptions requestOptions, Context context) {
@@ -971,6 +1043,9 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceSinglePageAsync(RequestOptions requestOptions) {
@@ -1021,6 +1096,10 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceSinglePageAsync(
@@ -1067,6 +1146,9 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listVersionsByDataSourceAsync(RequestOptions requestOptions) {
@@ -1104,6 +1186,10 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listVersionsByDataSourceAsync(RequestOptions requestOptions, Context context) {
@@ -1141,6 +1227,9 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listVersionsByDataSource(RequestOptions requestOptions) {
@@ -1176,6 +1265,10 @@ public final class SystemScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listVersionsByDataSource(RequestOptions requestOptions, Context context) {
@@ -1204,6 +1297,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
@@ -1242,6 +1337,9 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(
@@ -1280,6 +1378,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceNextSinglePageAsync(
@@ -1321,6 +1421,9 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceNextSinglePageAsync(

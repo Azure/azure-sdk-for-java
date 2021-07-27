@@ -53,6 +53,8 @@ public final class FiltersClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData get(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -89,6 +91,9 @@ public final class FiltersClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(
@@ -126,6 +131,8 @@ public final class FiltersClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createOrUpdate(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -162,6 +169,9 @@ public final class FiltersClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(

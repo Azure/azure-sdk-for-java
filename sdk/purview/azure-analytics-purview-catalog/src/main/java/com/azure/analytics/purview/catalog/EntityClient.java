@@ -145,6 +145,10 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param entity Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createOrUpdate(BinaryData entity, RequestOptions requestOptions) {
@@ -273,6 +277,11 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param entity Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
@@ -374,6 +383,9 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an instance of an entity along with extended info - like hive_table, hive_database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listByGuids(RequestOptions requestOptions) {
@@ -474,6 +486,10 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return an instance of an entity along with extended info - like hive_table, hive_database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions, Context context) {
@@ -604,6 +620,10 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param entities An array of entities to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createOrUpdateEntities(BinaryData entities, RequestOptions requestOptions) {
@@ -734,6 +754,11 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param entities An array of entities to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateEntitiesWithResponse(
@@ -821,6 +846,9 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData deleteByGuids(RequestOptions requestOptions) {
@@ -907,6 +935,10 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions, Context context) {
@@ -946,6 +978,9 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param request The request to associate a classification to multiple entities.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addClassification(BinaryData request, RequestOptions requestOptions) {
@@ -985,6 +1020,11 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param request The request to associate a classification to multiple entities.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationWithResponse(
@@ -1084,6 +1124,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return complete definition of an entity given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getByGuid(String guid, RequestOptions requestOptions) {
@@ -1182,6 +1224,9 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return complete definition of an entity given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getByGuidWithResponse(String guid, RequestOptions requestOptions, Context context) {
@@ -1278,6 +1323,9 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param body The value of the attribute.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData partialUpdateEntityAttributeByGuid(String guid, BinaryData body, RequestOptions requestOptions) {
@@ -1374,6 +1422,10 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param body The value of the attribute.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityAttributeByGuidWithResponse(
@@ -1455,6 +1507,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData deleteByGuid(String guid, RequestOptions requestOptions) {
@@ -1535,6 +1589,9 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteByGuidWithResponse(String guid, RequestOptions requestOptions, Context context) {
@@ -1572,6 +1629,9 @@ public final class EntityClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an instance of a classification; it doesn't have an identity, this object exists only when associated
+     *     with an entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getClassification(String guid, String classificationName, RequestOptions requestOptions) {
@@ -1609,6 +1669,10 @@ public final class EntityClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return an instance of a classification; it doesn't have an identity, this object exists only when associated
+     *     with an entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationWithResponse(
@@ -1621,6 +1685,7 @@ public final class EntityClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteClassification(String guid, String classificationName, RequestOptions requestOptions) {
@@ -1632,6 +1697,9 @@ public final class EntityClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationWithResponse(
@@ -1658,6 +1726,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return rEST serialization friendly list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getClassifications(String guid, RequestOptions requestOptions) {
@@ -1683,6 +1753,9 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return rEST serialization friendly list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationsWithResponse(
@@ -1722,6 +1795,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param classifications An array of classifications to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addClassifications(String guid, BinaryData classifications, RequestOptions requestOptions) {
@@ -1760,6 +1835,10 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param classifications An array of classifications to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsWithResponse(
@@ -1799,6 +1878,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param classifications An array of classifications to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateClassifications(String guid, BinaryData classifications, RequestOptions requestOptions) {
@@ -1837,6 +1918,10 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param classifications An array of classifications to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsWithResponse(
@@ -1941,6 +2026,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return complete definition of an entity given its type and unique attribute.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getByUniqueAttributes(String typeName, RequestOptions requestOptions) {
@@ -2044,6 +2131,9 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return complete definition of an entity given its type and unique attribute.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getByUniqueAttributesWithResponse(
@@ -2186,6 +2276,9 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasEntityWithExtInfo Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData partialUpdateEntityByUniqueAttributes(
@@ -2329,6 +2422,10 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasEntityWithExtInfo Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityByUniqueAttributesWithResponse(
@@ -2422,6 +2519,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData deleteByUniqueAttribute(String typeName, RequestOptions requestOptions) {
@@ -2513,6 +2612,9 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteByUniqueAttributeWithResponse(
@@ -2533,6 +2635,7 @@ public final class EntityClient {
      *
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteClassificationByUniqueAttribute(
@@ -2553,6 +2656,9 @@ public final class EntityClient {
      *
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationByUniqueAttributeWithResponse(
@@ -2601,6 +2707,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasClassificationArray An array of classification to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addClassificationsByUniqueAttribute(
@@ -2648,6 +2756,10 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasClassificationArray An array of classification to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsByUniqueAttributeWithResponse(
@@ -2696,6 +2808,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasClassificationArray An array of classification to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateClassificationsByUniqueAttribute(
@@ -2743,6 +2857,10 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasClassificationArray An array of classification to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsByUniqueAttributeWithResponse(
@@ -2823,6 +2941,10 @@ public final class EntityClient {
      *     String
      * ]
      * }</pre>
+     *
+     * @param entityHeaders Atlas entity headers.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return response that indicates each classification mutation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData setClassifications(BinaryData entityHeaders, RequestOptions requestOptions) {
@@ -2901,6 +3023,11 @@ public final class EntityClient {
      *     String
      * ]
      * }</pre>
+     *
+     * @param entityHeaders Atlas entity headers.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return response that indicates each classification mutation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> setClassificationsWithResponse(
@@ -3015,6 +3142,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an instance of an entity along with extended info - like hive_table, hive_database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getEntitiesByUniqueAttributes(String typeName, RequestOptions requestOptions) {
@@ -3128,6 +3257,9 @@ public final class EntityClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return an instance of an entity along with extended info - like hive_table, hive_database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesByUniqueAttributesWithResponse(
@@ -3197,6 +3329,8 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return entity header given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getHeader(String guid, RequestOptions requestOptions) {
@@ -3265,6 +3399,9 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return entity header given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getHeaderWithResponse(String guid, RequestOptions requestOptions, Context context) {

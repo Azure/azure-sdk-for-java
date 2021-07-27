@@ -123,6 +123,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the classification definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getClassificationDefByGuid(String guid, RequestOptions requestOptions) {
@@ -229,6 +231,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the classification definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByGuidWithResponse(
@@ -336,6 +341,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the classification definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getClassificationDefByName(String name, RequestOptions requestOptions) {
@@ -442,6 +449,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the classification definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByNameWithResponse(
@@ -569,6 +579,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the Entity definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getEntityDefinitionByGuid(String guid, RequestOptions requestOptions) {
@@ -695,6 +707,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the Entity definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByGuidWithResponse(
@@ -822,6 +837,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the entity definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getEntityDefinitionByName(String name, RequestOptions requestOptions) {
@@ -948,6 +965,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the entity definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByNameWithResponse(
@@ -1028,6 +1048,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the enum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the enum definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getEnumDefByGuid(String guid, RequestOptions requestOptions) {
@@ -1107,6 +1129,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the enum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the enum definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByGuidWithResponse(
@@ -1187,6 +1212,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the enum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the enum definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getEnumDefByName(String name, RequestOptions requestOptions) {
@@ -1266,6 +1293,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the enum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the enum definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByNameWithResponse(
@@ -1375,6 +1405,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the relationship definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getRelationshipDefByGuid(String guid, RequestOptions requestOptions) {
@@ -1483,6 +1515,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the relationship definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByGuidWithResponse(
@@ -1592,6 +1627,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the relationship definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getRelationshipDefByName(String name, RequestOptions requestOptions) {
@@ -1700,6 +1737,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the relationship definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByNameWithResponse(
@@ -1798,6 +1838,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the struct.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the struct definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getStructDefByGuid(String guid, RequestOptions requestOptions) {
@@ -1895,6 +1937,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the struct.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the struct definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByGuidWithResponse(
@@ -1993,6 +2038,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the struct.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the struct definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getStructDefByName(String name, RequestOptions requestOptions) {
@@ -2090,6 +2137,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the struct.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the struct definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByNameWithResponse(
@@ -2239,6 +2289,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the type definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getTypeDefinitionByGuid(String guid, RequestOptions requestOptions) {
@@ -2387,6 +2439,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the type definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByGuidWithResponse(
@@ -2536,6 +2591,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the type definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getTypeDefinitionByName(String name, RequestOptions requestOptions) {
@@ -2684,6 +2741,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the type definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByNameWithResponse(
@@ -2695,6 +2755,7 @@ public final class TypesClient {
      * Delete API for type identified by its name.
      *
      * @param name The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTypeByName(String name, RequestOptions requestOptions) {
@@ -2705,6 +2766,9 @@ public final class TypesClient {
      * Delete API for type identified by its name.
      *
      * @param name The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions, Context context) {
@@ -2983,6 +3047,9 @@ public final class TypesClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all type definitions in Atlas in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getAllTypeDefinitions(RequestOptions requestOptions) {
@@ -3261,6 +3328,10 @@ public final class TypesClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return all type definitions in Atlas in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions, Context context) {
@@ -3536,6 +3607,10 @@ public final class TypesClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the definitions of types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createTypeDefinitions(BinaryData typesDef, RequestOptions requestOptions) {
@@ -3811,6 +3886,11 @@ public final class TypesClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the definitions of types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTypeDefinitionsWithResponse(
@@ -4086,6 +4166,10 @@ public final class TypesClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param typesDef A composite object that captures all type definition changes.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the definitions of types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData updateAtlasTypeDefinitions(BinaryData typesDef, RequestOptions requestOptions) {
@@ -4360,6 +4444,11 @@ public final class TypesClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param typesDef A composite object that captures all type definition changes.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the definitions of types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAtlasTypeDefinitionsWithResponse(
@@ -4629,6 +4718,9 @@ public final class TypesClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param typesDef A composite object that captures all types to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTypeDefinitions(BinaryData typesDef, RequestOptions requestOptions) {
@@ -4897,6 +4989,11 @@ public final class TypesClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param typesDef A composite object that captures all types to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeDefinitionsWithResponse(
@@ -4928,6 +5025,9 @@ public final class TypesClient {
      *     }
      * ]
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listTypeDefinitionHeaders(RequestOptions requestOptions) {
@@ -4958,6 +5058,10 @@ public final class TypesClient {
      *     }
      * ]
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions, Context context) {
@@ -5063,6 +5167,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the term template.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the term template definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getTermTemplateDefByGuid(String guid, RequestOptions requestOptions) {
@@ -5168,6 +5274,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the term template.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the term template definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByGuidWithResponse(
@@ -5274,6 +5383,8 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the term template.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the term template definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getTermTemplateDefByName(String name, RequestOptions requestOptions) {
@@ -5379,6 +5490,9 @@ public final class TypesClient {
      * }</pre>
      *
      * @param name The name of the term template.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the term template definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByNameWithResponse(

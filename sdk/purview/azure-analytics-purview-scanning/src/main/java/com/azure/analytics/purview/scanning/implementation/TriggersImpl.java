@@ -136,6 +136,8 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return trigger information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
@@ -214,6 +216,9 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return trigger information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
@@ -290,6 +295,8 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return trigger information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTriggerAsync(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -367,6 +374,9 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return trigger information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTriggerAsync(
@@ -445,6 +455,8 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return trigger information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getTrigger(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -514,6 +526,9 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return trigger information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTriggerWithResponse(
@@ -590,6 +605,9 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param body The body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
@@ -675,6 +693,10 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param body The body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
@@ -758,6 +780,9 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param body The body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createTriggerAsync(
@@ -842,6 +867,10 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param body The body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createTriggerAsync(
@@ -926,6 +955,9 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param body The body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createTrigger(
@@ -1002,6 +1034,10 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param body The body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTriggerWithResponse(
@@ -1072,6 +1108,8 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
@@ -1150,6 +1188,9 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
@@ -1226,6 +1267,8 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> deleteTriggerAsync(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -1303,6 +1346,9 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> deleteTriggerAsync(
@@ -1381,6 +1427,8 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData deleteTrigger(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -1450,6 +1498,9 @@ public final class TriggersImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteTriggerWithResponse(

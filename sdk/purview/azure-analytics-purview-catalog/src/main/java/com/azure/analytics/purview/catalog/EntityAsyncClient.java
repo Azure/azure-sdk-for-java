@@ -145,6 +145,10 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param entity Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponse(BinaryData entity, RequestOptions requestOptions) {
@@ -273,6 +277,10 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param entity Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createOrUpdate(BinaryData entity, RequestOptions requestOptions) {
@@ -373,6 +381,9 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an instance of an entity along with extended info - like hive_table, hive_database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listByGuidsWithResponse(RequestOptions requestOptions) {
@@ -473,6 +484,9 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an instance of an entity along with extended info - like hive_table, hive_database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listByGuids(RequestOptions requestOptions) {
@@ -603,6 +617,10 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param entities An array of entities to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponse(
@@ -734,6 +752,10 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param entities An array of entities to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createOrUpdateEntities(BinaryData entities, RequestOptions requestOptions) {
@@ -820,6 +842,9 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidsWithResponse(RequestOptions requestOptions) {
@@ -906,6 +931,9 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> deleteByGuids(RequestOptions requestOptions) {
@@ -945,6 +973,10 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param request The request to associate a classification to multiple entities.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationWithResponse(BinaryData request, RequestOptions requestOptions) {
@@ -984,6 +1016,10 @@ public final class EntityAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param request The request to associate a classification to multiple entities.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addClassification(BinaryData request, RequestOptions requestOptions) {
@@ -1082,6 +1118,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return complete definition of an entity given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByGuidWithResponse(String guid, RequestOptions requestOptions) {
@@ -1180,6 +1218,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return complete definition of an entity given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getByGuid(String guid, RequestOptions requestOptions) {
@@ -1276,6 +1316,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param body The value of the attribute.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuidWithResponse(
@@ -1373,6 +1416,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param body The value of the attribute.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> partialUpdateEntityAttributeByGuid(
@@ -1454,6 +1500,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidWithResponse(String guid, RequestOptions requestOptions) {
@@ -1534,6 +1582,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> deleteByGuid(String guid, RequestOptions requestOptions) {
@@ -1571,6 +1621,9 @@ public final class EntityAsyncClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an instance of a classification; it doesn't have an identity, this object exists only when associated
+     *     with an entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationWithResponse(
@@ -1609,6 +1662,9 @@ public final class EntityAsyncClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an instance of a classification; it doesn't have an identity, this object exists only when associated
+     *     with an entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getClassification(String guid, String classificationName, RequestOptions requestOptions) {
@@ -1620,6 +1676,8 @@ public final class EntityAsyncClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationWithResponse(
@@ -1632,6 +1690,8 @@ public final class EntityAsyncClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteClassification(String guid, String classificationName, RequestOptions requestOptions) {
@@ -1657,6 +1717,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return rEST serialization friendly list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationsWithResponse(String guid, RequestOptions requestOptions) {
@@ -1682,6 +1744,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return rEST serialization friendly list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getClassifications(String guid, RequestOptions requestOptions) {
@@ -1720,6 +1784,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param classifications An array of classifications to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsWithResponse(
@@ -1759,6 +1826,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param classifications An array of classifications to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addClassifications(String guid, BinaryData classifications, RequestOptions requestOptions) {
@@ -1797,6 +1867,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param classifications An array of classifications to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsWithResponse(
@@ -1836,6 +1909,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param classifications An array of classifications to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateClassifications(String guid, BinaryData classifications, RequestOptions requestOptions) {
@@ -1939,6 +2015,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return complete definition of an entity given its type and unique attribute.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByUniqueAttributesWithResponse(
@@ -2043,6 +2121,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return complete definition of an entity given its type and unique attribute.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getByUniqueAttributes(String typeName, RequestOptions requestOptions) {
@@ -2184,6 +2264,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasEntityWithExtInfo Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributesWithResponse(
@@ -2327,6 +2410,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasEntityWithExtInfo Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> partialUpdateEntityByUniqueAttributes(
@@ -2420,6 +2506,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByUniqueAttributeWithResponse(
@@ -2512,6 +2600,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the mutation response of entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> deleteByUniqueAttribute(String typeName, RequestOptions requestOptions) {
@@ -2531,6 +2621,8 @@ public final class EntityAsyncClient {
      *
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationByUniqueAttributeWithResponse(
@@ -2552,6 +2644,8 @@ public final class EntityAsyncClient {
      *
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteClassificationByUniqueAttribute(
@@ -2600,6 +2694,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasClassificationArray An array of classification to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsByUniqueAttributeWithResponse(
@@ -2648,6 +2745,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasClassificationArray An array of classification to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addClassificationsByUniqueAttribute(
@@ -2696,6 +2796,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasClassificationArray An array of classification to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsByUniqueAttributeWithResponse(
@@ -2744,6 +2847,9 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param atlasClassificationArray An array of classification to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateClassificationsByUniqueAttribute(
@@ -2824,6 +2930,10 @@ public final class EntityAsyncClient {
      *     String
      * ]
      * }</pre>
+     *
+     * @param entityHeaders Atlas entity headers.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return response that indicates each classification mutation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setClassificationsWithResponse(
@@ -2903,6 +3013,10 @@ public final class EntityAsyncClient {
      *     String
      * ]
      * }</pre>
+     *
+     * @param entityHeaders Atlas entity headers.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return response that indicates each classification mutation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> setClassifications(BinaryData entityHeaders, RequestOptions requestOptions) {
@@ -3016,6 +3130,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an instance of an entity along with extended info - like hive_table, hive_database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesByUniqueAttributesWithResponse(
@@ -3130,6 +3246,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an instance of an entity along with extended info - like hive_table, hive_database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getEntitiesByUniqueAttributes(String typeName, RequestOptions requestOptions) {
@@ -3198,6 +3316,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return entity header given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getHeaderWithResponse(String guid, RequestOptions requestOptions) {
@@ -3266,6 +3386,8 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return entity header given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getHeader(String guid, RequestOptions requestOptions) {

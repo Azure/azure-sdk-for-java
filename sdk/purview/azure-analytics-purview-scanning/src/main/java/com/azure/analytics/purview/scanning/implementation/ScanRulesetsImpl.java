@@ -114,6 +114,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String scanRulesetName, RequestOptions requestOptions) {
@@ -151,6 +153,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -183,6 +188,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getAsync(String scanRulesetName, RequestOptions requestOptions) {
@@ -221,6 +228,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getAsync(String scanRulesetName, RequestOptions requestOptions, Context context) {
@@ -259,6 +269,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData get(String scanRulesetName, RequestOptions requestOptions) {
@@ -289,6 +301,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(
@@ -320,6 +335,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -358,6 +375,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -390,6 +410,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createOrUpdateAsync(String scanRulesetName, RequestOptions requestOptions) {
@@ -428,6 +450,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createOrUpdateAsync(
@@ -467,6 +492,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createOrUpdate(String scanRulesetName, RequestOptions requestOptions) {
@@ -497,6 +524,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
@@ -528,6 +558,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponseAsync(String scanRulesetName, RequestOptions requestOptions) {
@@ -565,6 +597,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponseAsync(
@@ -597,6 +632,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> deleteAsync(String scanRulesetName, RequestOptions requestOptions) {
@@ -635,6 +672,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> deleteAsync(String scanRulesetName, RequestOptions requestOptions, Context context) {
@@ -673,6 +713,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData delete(String scanRulesetName, RequestOptions requestOptions) {
@@ -703,6 +745,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param scanRulesetName The scanRulesetName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteWithResponse(
@@ -738,6 +783,9 @@ public final class ScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions) {
@@ -787,6 +835,10 @@ public final class ScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
@@ -830,6 +882,9 @@ public final class ScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAllAsync(RequestOptions requestOptions) {
@@ -865,6 +920,10 @@ public final class ScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAllAsync(RequestOptions requestOptions, Context context) {
@@ -901,6 +960,9 @@ public final class ScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
@@ -935,6 +997,10 @@ public final class ScanRulesetsImpl {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
@@ -963,6 +1029,8 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
@@ -1001,6 +1069,9 @@ public final class ScanRulesetsImpl {
      * }</pre>
      *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(

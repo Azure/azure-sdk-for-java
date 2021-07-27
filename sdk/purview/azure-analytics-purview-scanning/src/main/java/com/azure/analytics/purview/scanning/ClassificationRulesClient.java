@@ -45,6 +45,8 @@ public final class ClassificationRulesClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a classification rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData get(String classificationRuleName, RequestOptions requestOptions) {
@@ -72,6 +74,9 @@ public final class ClassificationRulesClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a classification rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(
@@ -100,6 +105,8 @@ public final class ClassificationRulesClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createOrUpdate(String classificationRuleName, RequestOptions requestOptions) {
@@ -127,6 +134,9 @@ public final class ClassificationRulesClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
@@ -155,6 +165,8 @@ public final class ClassificationRulesClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData delete(String classificationRuleName, RequestOptions requestOptions) {
@@ -182,6 +194,9 @@ public final class ClassificationRulesClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteWithResponse(
@@ -214,6 +229,9 @@ public final class ClassificationRulesClient {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
@@ -245,6 +263,10 @@ public final class ClassificationRulesClient {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
@@ -278,6 +300,8 @@ public final class ClassificationRulesClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listVersionsByClassificationRuleName(
@@ -312,6 +336,9 @@ public final class ClassificationRulesClient {
      * }</pre>
      *
      * @param classificationRuleName The classificationRuleName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listVersionsByClassificationRuleName(
@@ -359,6 +386,8 @@ public final class ClassificationRulesClient {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param classificationRuleVersion The classificationRuleVersion parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData tagClassificationVersion(
@@ -407,6 +436,9 @@ public final class ClassificationRulesClient {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param classificationRuleVersion The classificationRuleVersion parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> tagClassificationVersionWithResponse(

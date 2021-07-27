@@ -49,6 +49,8 @@ public final class KeyVaultConnectionsAsyncClient {
      * }</pre>
      *
      * @param keyVaultName The keyVaultName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return key vault information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String keyVaultName, RequestOptions requestOptions) {
@@ -80,6 +82,8 @@ public final class KeyVaultConnectionsAsyncClient {
      * }</pre>
      *
      * @param keyVaultName The keyVaultName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return key vault information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> get(String keyVaultName, RequestOptions requestOptions) {
@@ -117,6 +121,9 @@ public final class KeyVaultConnectionsAsyncClient {
      * }</pre>
      *
      * @param keyVaultName The keyVaultName parameter.
+     * @param body The body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponse(
@@ -155,6 +162,9 @@ public final class KeyVaultConnectionsAsyncClient {
      * }</pre>
      *
      * @param keyVaultName The keyVaultName parameter.
+     * @param body The body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> create(String keyVaultName, BinaryData body, RequestOptions requestOptions) {
@@ -186,6 +196,8 @@ public final class KeyVaultConnectionsAsyncClient {
      * }</pre>
      *
      * @param keyVaultName The keyVaultName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(String keyVaultName, RequestOptions requestOptions) {
@@ -217,6 +229,8 @@ public final class KeyVaultConnectionsAsyncClient {
      * }</pre>
      *
      * @param keyVaultName The keyVaultName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> delete(String keyVaultName, RequestOptions requestOptions) {
@@ -252,6 +266,9 @@ public final class KeyVaultConnectionsAsyncClient {
      *     count: Long
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAll(RequestOptions requestOptions) {

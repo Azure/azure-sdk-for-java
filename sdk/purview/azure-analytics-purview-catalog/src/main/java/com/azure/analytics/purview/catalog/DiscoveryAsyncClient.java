@@ -143,6 +143,10 @@ public final class DiscoveryAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param searchRequest An object specifying the search criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return data using search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
@@ -269,6 +273,10 @@ public final class DiscoveryAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param searchRequest An object specifying the search criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return data using search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> query(BinaryData searchRequest, RequestOptions requestOptions) {
@@ -337,6 +345,10 @@ public final class DiscoveryAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param suggestRequest An object specifying the suggest criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return search suggestions by query criteria.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
@@ -405,6 +417,10 @@ public final class DiscoveryAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param suggestRequest An object specifying the suggest criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return search suggestions by query criteria.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> suggest(BinaryData suggestRequest, RequestOptions requestOptions) {
@@ -458,6 +474,10 @@ public final class DiscoveryAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param browseRequest An object specifying the browse criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the result item of the browse request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> browseWithResponse(BinaryData browseRequest, RequestOptions requestOptions) {
@@ -511,6 +531,10 @@ public final class DiscoveryAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param browseRequest An object specifying the browse criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the result item of the browse request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> browse(BinaryData browseRequest, RequestOptions requestOptions) {
@@ -550,6 +574,10 @@ public final class DiscoveryAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return auto complete options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> autoCompleteWithResponse(
@@ -590,6 +618,10 @@ public final class DiscoveryAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return auto complete options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> autoComplete(BinaryData autoCompleteRequest, RequestOptions requestOptions) {

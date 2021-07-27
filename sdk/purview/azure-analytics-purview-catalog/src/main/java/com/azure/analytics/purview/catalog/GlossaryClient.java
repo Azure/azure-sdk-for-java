@@ -98,6 +98,9 @@ public final class GlossaryClient {
      *     }
      * ]
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all glossaries registered with Atlas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listGlossaries(RequestOptions requestOptions) {
@@ -177,6 +180,10 @@ public final class GlossaryClient {
      *     }
      * ]
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return all glossaries registered with Atlas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossariesWithResponse(RequestOptions requestOptions, Context context) {
@@ -250,6 +257,11 @@ public final class GlossaryClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
+     *     anchor attribute when creating the Term/Category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createGlossary(BinaryData atlasGlossary, RequestOptions requestOptions) {
@@ -323,6 +335,12 @@ public final class GlossaryClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
+     *     anchor attribute when creating the Term/Category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryWithResponse(
@@ -405,6 +423,10 @@ public final class GlossaryClient {
      *     (recursive schema, see above)
      * ]
      * }</pre>
+     *
+     * @param glossaryCategory An array of glossary category definitions to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an array of glossary category created successfully in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createGlossaryCategories(BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -486,6 +508,11 @@ public final class GlossaryClient {
      *     (recursive schema, see above)
      * ]
      * }</pre>
+     *
+     * @param glossaryCategory An array of glossary category definitions to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return an array of glossary category created successfully in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoriesWithResponse(
@@ -564,6 +591,11 @@ public final class GlossaryClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
+     *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createGlossaryCategory(BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -641,6 +673,12 @@ public final class GlossaryClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
+     *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoryWithResponse(
@@ -715,6 +753,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return specific glossary category by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getGlossaryCategory(String categoryGuid, RequestOptions requestOptions) {
@@ -788,6 +828,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return specific glossary category by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryCategoryWithResponse(
@@ -868,6 +911,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param glossaryCategory The glossary category to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData updateGlossaryCategory(
@@ -948,6 +994,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param glossaryCategory The glossary category to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryCategoryWithResponse(
@@ -960,6 +1010,7 @@ public final class GlossaryClient {
      * Delete a glossary category.
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteGlossaryCategory(String categoryGuid, RequestOptions requestOptions) {
@@ -970,6 +1021,9 @@ public final class GlossaryClient {
      * Delete a glossary category.
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryCategoryWithResponse(
@@ -1052,6 +1106,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
+     *     partial update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData partialUpdateGlossaryCategory(
@@ -1134,6 +1192,11 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
+     *     partial update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryCategoryWithResponse(
@@ -1173,6 +1236,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all related categories (parent and children).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listRelatedCategories(String categoryGuid, RequestOptions requestOptions) {
@@ -1210,6 +1275,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return all related categories (parent and children).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedCategoriesWithResponse(
@@ -1248,6 +1316,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all terms associated with the specific category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listCategoryTerms(String categoryGuid, RequestOptions requestOptions) {
@@ -1285,6 +1355,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return all terms associated with the specific category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listCategoryTermsWithResponse(
@@ -1459,6 +1532,11 @@ public final class GlossaryClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
+     *     Optionally it can be categorized as well.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createGlossaryTerm(BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -1632,6 +1710,12 @@ public final class GlossaryClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
+     *     Optionally it can be categorized as well.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermWithResponse(
@@ -1802,6 +1886,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a specific glossary term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getGlossaryTerm(String termGuid, RequestOptions requestOptions) {
@@ -1971,6 +2057,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a specific glossary term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryTermWithResponse(
@@ -2139,6 +2228,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param glossaryTerm The glossary term to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData updateGlossaryTerm(String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -2306,6 +2398,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param glossaryTerm The glossary term to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryTermWithResponse(
@@ -2317,6 +2413,7 @@ public final class GlossaryClient {
      * Delete a glossary term.
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteGlossaryTerm(String termGuid, RequestOptions requestOptions) {
@@ -2327,6 +2424,9 @@ public final class GlossaryClient {
      * Delete a glossary term.
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryTermWithResponse(
@@ -2505,6 +2605,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
+     *     updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData partialUpdateGlossaryTerm(
@@ -2683,6 +2787,11 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
+     *     updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryTermWithResponse(
@@ -2862,6 +2971,10 @@ public final class GlossaryClient {
      *     (recursive schema, see above)
      * ]
      * }</pre>
+     *
+     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return if bulk glossary terms creation was successful.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData createGlossaryTerms(BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -3039,6 +3152,11 @@ public final class GlossaryClient {
      *     (recursive schema, see above)
      * ]
      * }</pre>
+     *
+     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return if bulk glossary terms creation was successful.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermsWithResponse(
@@ -3086,6 +3204,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all related objects assigned with the specified term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getEntitiesAssignedWithTerm(String termGuid, RequestOptions requestOptions) {
@@ -3132,6 +3252,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return all related objects assigned with the specified term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(
@@ -3169,6 +3292,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void assignTermToEntities(String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
@@ -3205,6 +3330,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> assignTermToEntitiesWithResponse(
@@ -3242,6 +3371,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeTermAssignmentFromEntities(
@@ -3279,6 +3410,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeTermAssignmentFromEntitiesWithResponse(
@@ -3317,6 +3452,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTermAssignmentFromEntities(
@@ -3354,6 +3491,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(
@@ -3396,6 +3537,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all related terms for a specific term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listRelatedTerms(String termGuid, RequestOptions requestOptions) {
@@ -3436,6 +3579,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return all related terms for a specific term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedTermsWithResponse(
@@ -3506,6 +3652,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a specific Glossary by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getGlossary(String glossaryGuid, RequestOptions requestOptions) {
@@ -3575,6 +3723,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a specific Glossary by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryWithResponse(
@@ -3651,6 +3802,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param updatedGlossary The glossary definition to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData updateGlossary(String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
@@ -3726,6 +3880,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param updatedGlossary The glossary definition to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryWithResponse(
@@ -3737,6 +3895,7 @@ public final class GlossaryClient {
      * Delete a glossary.
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteGlossary(String glossaryGuid, RequestOptions requestOptions) {
@@ -3747,6 +3906,9 @@ public final class GlossaryClient {
      * Delete a glossary.
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryWithResponse(
@@ -3833,6 +3995,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the categories belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listGlossaryCategories(String glossaryGuid, RequestOptions requestOptions) {
@@ -3918,6 +4082,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the categories belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesWithResponse(
@@ -3953,6 +4120,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the category headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listGlossaryCategoriesHeaders(String glossaryGuid, RequestOptions requestOptions) {
@@ -3987,6 +4156,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the category headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesHeadersWithResponse(
@@ -4205,6 +4377,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a specific glossary with detailed information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getDetailedGlossary(String glossaryGuid, RequestOptions requestOptions) {
@@ -4422,6 +4596,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return a specific glossary with detailed information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDetailedGlossaryWithResponse(
@@ -4508,6 +4685,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData partialUpdateGlossary(
@@ -4594,6 +4774,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryWithResponse(
@@ -4770,6 +4954,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return terms belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listGlossaryTerms(String glossaryGuid, RequestOptions requestOptions) {
@@ -4944,6 +5130,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return terms belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermsWithResponse(
@@ -4982,6 +5171,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return term headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listGlossaryTermHeaders(String glossaryGuid, RequestOptions requestOptions) {
@@ -5019,6 +5210,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return term headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermHeadersWithResponse(
@@ -5072,6 +5266,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData importGlossaryTermsViaCsv(String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
@@ -5124,6 +5321,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> importGlossaryTermsViaCsvWithResponse(
@@ -5177,6 +5378,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData importGlossaryTermsViaCsvByGlossaryName(
@@ -5230,6 +5434,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> importGlossaryTermsViaCsvByGlossaryNameWithResponse(
@@ -5269,6 +5477,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param operationGuid The globally unique identifier for async operation/job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getImportCsvOperationStatus(String operationGuid, RequestOptions requestOptions) {
@@ -5306,6 +5516,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param operationGuid The globally unique identifier for async operation/job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImportCsvOperationStatusWithResponse(
@@ -5340,6 +5553,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param termGuids An array of term guids.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Flux<ByteBuffer> exportGlossaryTermsAsCsv(
@@ -5374,6 +5590,10 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param termGuids An array of term guids.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Flux<ByteBuffer>> exportGlossaryTermsAsCsvWithResponse(
@@ -5550,6 +5770,8 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return terms by glossary name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData listTermsByGlossaryName(String glossaryName, RequestOptions requestOptions) {
@@ -5724,6 +5946,9 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return terms by glossary name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTermsByGlossaryNameWithResponse(

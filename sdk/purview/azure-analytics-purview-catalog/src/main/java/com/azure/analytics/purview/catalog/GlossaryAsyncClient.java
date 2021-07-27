@@ -98,6 +98,9 @@ public final class GlossaryAsyncClient {
      *     }
      * ]
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all glossaries registered with Atlas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossariesWithResponse(RequestOptions requestOptions) {
@@ -177,6 +180,9 @@ public final class GlossaryAsyncClient {
      *     }
      * ]
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all glossaries registered with Atlas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listGlossaries(RequestOptions requestOptions) {
@@ -250,6 +256,11 @@ public final class GlossaryAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
+     *     anchor attribute when creating the Term/Category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryWithResponse(
@@ -324,6 +335,11 @@ public final class GlossaryAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
+     *     anchor attribute when creating the Term/Category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createGlossary(BinaryData atlasGlossary, RequestOptions requestOptions) {
@@ -405,6 +421,10 @@ public final class GlossaryAsyncClient {
      *     (recursive schema, see above)
      * ]
      * }</pre>
+     *
+     * @param glossaryCategory An array of glossary category definitions to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an array of glossary category created successfully in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponse(
@@ -487,6 +507,10 @@ public final class GlossaryAsyncClient {
      *     (recursive schema, see above)
      * ]
      * }</pre>
+     *
+     * @param glossaryCategory An array of glossary category definitions to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an array of glossary category created successfully in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createGlossaryCategories(BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -564,6 +588,11 @@ public final class GlossaryAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
+     *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoryWithResponse(
@@ -642,6 +671,11 @@ public final class GlossaryAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
+     *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createGlossaryCategory(BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -715,6 +749,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return specific glossary category by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryCategoryWithResponse(
@@ -789,6 +825,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return specific glossary category by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getGlossaryCategory(String categoryGuid, RequestOptions requestOptions) {
@@ -868,6 +906,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param glossaryCategory The glossary category to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponse(
@@ -949,6 +990,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param glossaryCategory The glossary category to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateGlossaryCategory(
@@ -960,6 +1004,8 @@ public final class GlossaryAsyncClient {
      * Delete a glossary category.
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
@@ -970,6 +1016,8 @@ public final class GlossaryAsyncClient {
      * Delete a glossary category.
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteGlossaryCategory(String categoryGuid, RequestOptions requestOptions) {
@@ -1051,6 +1099,10 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
+     *     partial update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponse(
@@ -1134,6 +1186,10 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
+     *     partial update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> partialUpdateGlossaryCategory(
@@ -1172,6 +1228,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all related categories (parent and children).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedCategoriesWithResponse(
@@ -1210,6 +1268,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all related categories (parent and children).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listRelatedCategories(String categoryGuid, RequestOptions requestOptions) {
@@ -1247,6 +1307,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all terms associated with the specific category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCategoryTermsWithResponse(
@@ -1285,6 +1347,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all terms associated with the specific category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listCategoryTerms(String categoryGuid, RequestOptions requestOptions) {
@@ -1458,6 +1522,11 @@ public final class GlossaryAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
+     *     Optionally it can be categorized as well.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermWithResponse(
@@ -1632,6 +1701,11 @@ public final class GlossaryAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
+     *     Optionally it can be categorized as well.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createGlossaryTerm(BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -1801,6 +1875,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a specific glossary term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
@@ -1970,6 +2046,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a specific glossary term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getGlossaryTerm(String termGuid, RequestOptions requestOptions) {
@@ -2137,6 +2215,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param glossaryTerm The glossary term to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryTermWithResponse(
@@ -2305,6 +2386,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param glossaryTerm The glossary term to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateGlossaryTerm(
@@ -2316,6 +2400,8 @@ public final class GlossaryAsyncClient {
      * Delete a glossary term.
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
@@ -2326,6 +2412,8 @@ public final class GlossaryAsyncClient {
      * Delete a glossary term.
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteGlossaryTerm(String termGuid, RequestOptions requestOptions) {
@@ -2503,6 +2591,10 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
+     *     updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponse(
@@ -2681,6 +2773,10 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
+     *     updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> partialUpdateGlossaryTerm(
@@ -2859,6 +2955,10 @@ public final class GlossaryAsyncClient {
      *     (recursive schema, see above)
      * ]
      * }</pre>
+     *
+     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return if bulk glossary terms creation was successful.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermsWithResponse(
@@ -3037,6 +3137,10 @@ public final class GlossaryAsyncClient {
      *     (recursive schema, see above)
      * ]
      * }</pre>
+     *
+     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return if bulk glossary terms creation was successful.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createGlossaryTerms(BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -3083,6 +3187,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all related objects assigned with the specified term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponse(
@@ -3130,6 +3236,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all related objects assigned with the specified term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getEntitiesAssignedWithTerm(String termGuid, RequestOptions requestOptions) {
@@ -3166,6 +3274,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> assignTermToEntitiesWithResponse(
@@ -3203,6 +3314,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> assignTermToEntities(
@@ -3240,6 +3354,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponse(
@@ -3278,6 +3395,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeTermAssignmentFromEntities(
@@ -3315,6 +3435,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponse(
@@ -3353,6 +3476,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTermAssignmentFromEntities(
@@ -3394,6 +3520,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all related terms for a specific term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
@@ -3434,6 +3562,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all related terms for a specific term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listRelatedTerms(String termGuid, RequestOptions requestOptions) {
@@ -3503,6 +3633,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a specific Glossary by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
@@ -3572,6 +3704,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a specific Glossary by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getGlossary(String glossaryGuid, RequestOptions requestOptions) {
@@ -3647,6 +3781,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param updatedGlossary The glossary definition to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryWithResponse(
@@ -3723,6 +3860,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param updatedGlossary The glossary definition to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateGlossary(
@@ -3734,6 +3874,8 @@ public final class GlossaryAsyncClient {
      * Delete a glossary.
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
@@ -3744,6 +3886,8 @@ public final class GlossaryAsyncClient {
      * Delete a glossary.
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteGlossary(String glossaryGuid, RequestOptions requestOptions) {
@@ -3829,6 +3973,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the categories belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponse(
@@ -3915,6 +4061,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the categories belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listGlossaryCategories(String glossaryGuid, RequestOptions requestOptions) {
@@ -3949,6 +4097,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the category headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponse(
@@ -3984,6 +4134,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the category headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listGlossaryCategoriesHeaders(String glossaryGuid, RequestOptions requestOptions) {
@@ -4201,6 +4353,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a specific glossary with detailed information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDetailedGlossaryWithResponse(
@@ -4419,6 +4573,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a specific glossary with detailed information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getDetailedGlossary(String glossaryGuid, RequestOptions requestOptions) {
@@ -4504,6 +4660,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponse(
@@ -4590,6 +4749,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the glossary object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> partialUpdateGlossary(
@@ -4765,6 +4927,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return terms belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermsWithResponse(
@@ -4940,6 +5104,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return terms belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listGlossaryTerms(String glossaryGuid, RequestOptions requestOptions) {
@@ -4977,6 +5143,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return term headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponse(
@@ -5015,6 +5183,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return term headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listGlossaryTermHeaders(String glossaryGuid, RequestOptions requestOptions) {
@@ -5067,6 +5237,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponse(
@@ -5120,6 +5293,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> importGlossaryTermsViaCsv(
@@ -5173,6 +5349,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponse(
@@ -5227,6 +5406,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> importGlossaryTermsViaCsvByGlossaryName(
@@ -5265,6 +5447,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param operationGuid The globally unique identifier for async operation/job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponse(
@@ -5303,6 +5487,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param operationGuid The globally unique identifier for async operation/job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getImportCsvOperationStatus(String operationGuid, RequestOptions requestOptions) {
@@ -5336,6 +5522,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param termGuids An array of term guids.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponse(
@@ -5370,6 +5559,9 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
+     * @param termGuids An array of term guids.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Flux<ByteBuffer>> exportGlossaryTermsAsCsv(
@@ -5545,6 +5737,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return terms by glossary name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponse(
@@ -5720,6 +5914,8 @@ public final class GlossaryAsyncClient {
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return terms by glossary name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listTermsByGlossaryName(String glossaryName, RequestOptions requestOptions) {

@@ -123,6 +123,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the classification definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByGuidWithResponse(
@@ -230,6 +232,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the classification definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getClassificationDefByGuid(String guid, RequestOptions requestOptions) {
@@ -336,6 +340,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the classification definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByNameWithResponse(
@@ -443,6 +449,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the classification.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the classification definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getClassificationDefByName(String name, RequestOptions requestOptions) {
@@ -569,6 +577,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the Entity definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByGuidWithResponse(
@@ -696,6 +706,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the Entity definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getEntityDefinitionByGuid(String guid, RequestOptions requestOptions) {
@@ -822,6 +834,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the entity definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByNameWithResponse(
@@ -949,6 +963,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the entity definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getEntityDefinitionByName(String name, RequestOptions requestOptions) {
@@ -1028,6 +1044,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the enum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the enum definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
@@ -1107,6 +1125,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the enum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the enum definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getEnumDefByGuid(String guid, RequestOptions requestOptions) {
@@ -1186,6 +1206,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the enum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the enum definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
@@ -1265,6 +1287,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the enum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the enum definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getEnumDefByName(String name, RequestOptions requestOptions) {
@@ -1373,6 +1397,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the relationship definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
@@ -1481,6 +1507,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the relationship definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getRelationshipDefByGuid(String guid, RequestOptions requestOptions) {
@@ -1589,6 +1617,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the relationship definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
@@ -1697,6 +1727,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the relationship.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the relationship definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getRelationshipDefByName(String name, RequestOptions requestOptions) {
@@ -1794,6 +1826,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the struct.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the struct definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
@@ -1891,6 +1925,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the struct.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the struct definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getStructDefByGuid(String guid, RequestOptions requestOptions) {
@@ -1988,6 +2024,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the struct.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the struct definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
@@ -2085,6 +2123,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the struct.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the struct definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getStructDefByName(String name, RequestOptions requestOptions) {
@@ -2233,6 +2273,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the type definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
@@ -2381,6 +2423,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the type definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTypeDefinitionByGuid(String guid, RequestOptions requestOptions) {
@@ -2529,6 +2573,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the type definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
@@ -2677,6 +2723,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the type definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTypeDefinitionByName(String name, RequestOptions requestOptions) {
@@ -2687,6 +2735,8 @@ public final class TypesAsyncClient {
      * Delete API for type identified by its name.
      *
      * @param name The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions) {
@@ -2697,6 +2747,8 @@ public final class TypesAsyncClient {
      * Delete API for type identified by its name.
      *
      * @param name The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTypeByName(String name, RequestOptions requestOptions) {
@@ -2975,6 +3027,9 @@ public final class TypesAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all type definitions in Atlas in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions) {
@@ -3253,6 +3308,9 @@ public final class TypesAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return all type definitions in Atlas in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getAllTypeDefinitions(RequestOptions requestOptions) {
@@ -3528,6 +3586,10 @@ public final class TypesAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the definitions of types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTypeDefinitionsWithResponse(
@@ -3804,6 +3866,10 @@ public final class TypesAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the definitions of types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> createTypeDefinitions(BinaryData typesDef, RequestOptions requestOptions) {
@@ -4078,6 +4144,10 @@ public final class TypesAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param typesDef A composite object that captures all type definition changes.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the definitions of types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAtlasTypeDefinitionsWithResponse(
@@ -4353,6 +4423,10 @@ public final class TypesAsyncClient {
      * <pre>{@code
      * (recursive schema, see above)
      * }</pre>
+     *
+     * @param typesDef A composite object that captures all type definition changes.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the definitions of types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateAtlasTypeDefinitions(BinaryData typesDef, RequestOptions requestOptions) {
@@ -4621,6 +4695,10 @@ public final class TypesAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param typesDef A composite object that captures all types to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
@@ -4889,6 +4967,10 @@ public final class TypesAsyncClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param typesDef A composite object that captures all types to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTypeDefinitions(BinaryData typesDef, RequestOptions requestOptions) {
@@ -4919,6 +5001,9 @@ public final class TypesAsyncClient {
      *     }
      * ]
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
@@ -4949,6 +5034,9 @@ public final class TypesAsyncClient {
      *     }
      * ]
      * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> listTypeDefinitionHeaders(RequestOptions requestOptions) {
@@ -5054,6 +5142,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the term template.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the term template definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
@@ -5159,6 +5249,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the term template.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the term template definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTermTemplateDefByGuid(String guid, RequestOptions requestOptions) {
@@ -5264,6 +5356,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the term template.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the term template definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
@@ -5369,6 +5463,8 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param name The name of the term template.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the term template definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTermTemplateDefByName(String name, RequestOptions requestOptions) {

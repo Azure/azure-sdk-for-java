@@ -143,6 +143,10 @@ public final class DiscoveryClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param searchRequest An object specifying the search criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return data using search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData query(BinaryData searchRequest, RequestOptions requestOptions) {
@@ -269,6 +273,11 @@ public final class DiscoveryClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param searchRequest An object specifying the search criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return data using search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> queryWithResponse(
@@ -338,6 +347,10 @@ public final class DiscoveryClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param suggestRequest An object specifying the suggest criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return search suggestions by query criteria.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData suggest(BinaryData suggestRequest, RequestOptions requestOptions) {
@@ -406,6 +419,11 @@ public final class DiscoveryClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param suggestRequest An object specifying the suggest criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return search suggestions by query criteria.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> suggestWithResponse(
@@ -460,6 +478,10 @@ public final class DiscoveryClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param browseRequest An object specifying the browse criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the result item of the browse request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData browse(BinaryData browseRequest, RequestOptions requestOptions) {
@@ -513,6 +535,11 @@ public final class DiscoveryClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param browseRequest An object specifying the browse criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the result item of the browse request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> browseWithResponse(
@@ -553,6 +580,10 @@ public final class DiscoveryClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return auto complete options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData autoComplete(BinaryData autoCompleteRequest, RequestOptions requestOptions) {
@@ -592,6 +623,11 @@ public final class DiscoveryClient {
      *     ]
      * }
      * }</pre>
+     *
+     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return auto complete options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> autoCompleteWithResponse(

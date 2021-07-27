@@ -126,6 +126,8 @@ public final class LineageAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return lineage info of the entity specified by GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLineageGraphWithResponse(String guid, RequestOptions requestOptions) {
@@ -235,6 +237,8 @@ public final class LineageAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return lineage info of the entity specified by GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getLineageGraph(String guid, RequestOptions requestOptions) {
@@ -344,6 +348,8 @@ public final class LineageAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the lineage information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> nextPageLineageWithResponse(String guid, RequestOptions requestOptions) {
@@ -453,6 +459,8 @@ public final class LineageAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the lineage information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> nextPageLineage(String guid, RequestOptions requestOptions) {

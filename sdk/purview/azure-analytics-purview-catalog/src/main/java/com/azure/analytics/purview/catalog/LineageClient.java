@@ -126,6 +126,8 @@ public final class LineageClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return lineage info of the entity specified by GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getLineageGraph(String guid, RequestOptions requestOptions) {
@@ -235,6 +237,9 @@ public final class LineageClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return lineage info of the entity specified by GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLineageGraphWithResponse(
@@ -345,6 +350,8 @@ public final class LineageClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the lineage information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData nextPageLineage(String guid, RequestOptions requestOptions) {
@@ -454,6 +461,9 @@ public final class LineageClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return the lineage information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> nextPageLineageWithResponse(
