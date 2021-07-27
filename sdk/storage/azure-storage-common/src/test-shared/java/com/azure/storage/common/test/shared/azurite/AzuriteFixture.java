@@ -19,7 +19,6 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,11 +47,11 @@ public class AzuriteFixture implements Closeable {
         try {
             Configuration configuration = Configuration.getGlobalConfiguration();
             String azuriteLocation = configuration.get(AZURITE_LOCATION_KEY);
-            Path defaultPath = Path.of(Objects.requireNonNullElse(configuration.get("APPDATA"), ""), "npm");
+            File defaultPath = new File(Objects.requireNonNullElse(configuration.get("APPDATA"), ""), "npm");
 
             if (azuriteLocation == null || azuriteLocation.trim().isEmpty()) {
-                if (Files.isDirectory(defaultPath)) {
-                    azuriteLocation = defaultPath.toString();
+                if (defaultPath.isDirectory()) {
+                    azuriteLocation = defaultPath.getAbsolutePath();
                 } else {
                     throw new IllegalArgumentException(errorMessage(
                         String.format(
@@ -60,7 +59,7 @@ public class AzuriteFixture implements Closeable {
                             AZURITE_LOCATION_KEY, defaultPath)));
                 }
             }
-            Path azuriteScriptLocation = Path.of(azuriteLocation, "node_modules/azurite/dist/src/azurite.js");
+            File azuriteScriptLocation = new File(azuriteLocation, "node_modules/azurite/dist/src/azurite.js");
 
             tempDirectory = Files.createTempDirectory("azurite-fixture");
 
@@ -119,9 +118,9 @@ public class AzuriteFixture implements Closeable {
 
     public String getConnectionString() {
         return String.format(
-            "DefaultEndpointsProtocol=http;AccountName=%1$s;AccountKey=%2$s;" +
-                "BlobEndpoint=http://127.0.0.1:%3$d/%1$s;" +
-                "QueueEndpoint=http://127.0.0.1:%4$d/%1$s;",
+            "DefaultEndpointsProtocol=http;AccountName=%1$s;AccountKey=%2$s;"
+                + "BlobEndpoint=http://127.0.0.1:%3$d/%1$s;"
+                + "QueueEndpoint=http://127.0.0.1:%4$d/%1$s;",
             accountName, accountKey, blobsPort, queuesPort);
     }
 
@@ -137,20 +136,18 @@ public class AzuriteFixture implements Closeable {
             .forEach(File::delete);
     }
 
-    private int parseAzuritePort(String outputLine)
-    {
+    private int parseAzuritePort(String outputLine) {
         int indexFrom = outputLine.lastIndexOf(':') + 1;
         return Integer.parseInt(outputLine.substring(indexFrom));
     }
 
-    private String errorMessage(String specificReason)
-    {
-        return String.format("\nCould not run Azurite based test due to: %s.\n" +
-                "Make sure that:\n" +
-                "- NodeJS is installed and available in $PATH (i.e. 'node' command can be run in terminal)\n" +
-                "- Azurite V3 is installed via NPM (see https://github.com/Azure/Azurite for instructions)\n" +
-                "- %s envorinment is set and pointing to location of directory that has 'azurite' command" +
-                " (i.e. run 'where azurite' in Windows CMD)\n",
+    private String errorMessage(String specificReason) {
+        return String.format("\nCould not run Azurite based test due to: %s.\n"
+                + "Make sure that:\n"
+                + "- NodeJS is installed and available in $PATH (i.e. 'node' command can be run in terminal)\n"
+                + "- Azurite V3 is installed via NPM (see https://github.com/Azure/Azurite for instructions)\n"
+                + "- %s envorinment is set and pointing to location of directory that has 'azurite' command"
+                + " (i.e. run 'where azurite' in Windows CMD)\n",
             specificReason, AZURITE_LOCATION_KEY);
     }
 }

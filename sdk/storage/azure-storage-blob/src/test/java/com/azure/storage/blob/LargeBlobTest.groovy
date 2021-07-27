@@ -20,6 +20,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 
 @ResourceLock("LargeBlobTest")
+@LiveOnly
 class LargeBlobTest extends Specification {
 
     @Shared
@@ -57,7 +58,6 @@ class LargeBlobTest extends Specification {
         blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName)
     }
 
-    @LiveOnly
     def "Stage Real Large Blob"() {
         given:
         def stream = createLargeInputStream(largeBlockSize)
@@ -73,7 +73,6 @@ class LargeBlobTest extends Specification {
         blockList.committedBlocks.get(0).getSizeLong() == largeBlockSize
     }
 
-    @LiveOnly
     def "Upload Real Large Blob in Single Upload"() {
         given:
         long size = largeBlockSize
@@ -92,7 +91,6 @@ class LargeBlobTest extends Specification {
         properties.committedBlockCount == null
     }
 
-    @LiveOnly
     def "Upload Real Large Blob in Single Upload Async"() {
         given:
         long size = largeBlockSize
@@ -109,7 +107,6 @@ class LargeBlobTest extends Specification {
         properties.committedBlockCount == null
     }
 
-    @LiveOnly
     def "Upload Large Input"() {
         given:
         def tailSize = 1L * Constants.MB
@@ -128,7 +125,6 @@ class LargeBlobTest extends Specification {
         blockList.committedBlocks[1].sizeLong == tailSize
     }
 
-    @LiveOnly
     def "Upload Large Input Sync"() {
         given:
         def tailSize = 1L * Constants.MB
@@ -148,7 +144,6 @@ class LargeBlobTest extends Specification {
         blockList.committedBlocks[1].sizeLong == tailSize
     }
 
-    @LiveOnly
     def "Upload Large Input Sync No Length Given"() {
         given:
         def tailSize = 1L * Constants.MB
@@ -168,7 +163,6 @@ class LargeBlobTest extends Specification {
         blockList.committedBlocks[1].sizeLong == tailSize
     }
 
-    @LiveOnly
     def "Upload Large File"() {
         given:
         def tailSize = 1L * Constants.MB
