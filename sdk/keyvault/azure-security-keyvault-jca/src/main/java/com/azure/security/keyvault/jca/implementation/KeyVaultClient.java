@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation;
 
-import static com.azure.security.keyvault.jca.implementation.utils.UriUtil.getAADLoginURIByKeyVaultBaseUri;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -45,16 +44,39 @@ import java.util.logging.Logger;
  */
 public class KeyVaultClient {
 
-    /**
-     * Stores the logger.
-     */
+    public static final String KEY_VAULT_BASE_URI_GLOBAL = "https://vault.azure.net";
+    public static final String KEY_VAULT_BASE_URI_CN = "https://vault.azure.cn";
+    public static final String KEY_VAULT_BASE_URI_US = "https://vault.usgovcloudapi.net";
+    public static final String KEY_VAULT_BASE_URI_DE = "https://vault.microsoftazure.de";
+    public static final String AAD_LOGIN_URI_GLOBAL = "https://login.microsoftonline.com/";
+    public static final String AAD_LOGIN_URI_CN = "https://login.partner.microsoftonline.cn/";
+    public static final String AAD_LOGIN_URI_US = "https://login.microsoftonline.us/";
+    public static final String AAD_LOGIN_URI_DE = "https://login.microsoftonline.de/";
+
     private static final Logger LOGGER = Logger.getLogger(KeyVaultClient.class.getName());
     private static final String HTTPS_PREFIX = "https://";
-
-    /**
-     * Stores the API version postfix.
-     */
     private static final String API_VERSION_POSTFIX = "?api-version=7.1";
+
+    public static String getAADLoginURIByKeyVaultBaseUri(String keyVaultBaseUri) {
+        String aadAuthenticationUrl;
+        switch (keyVaultBaseUri) {
+            case KEY_VAULT_BASE_URI_GLOBAL :
+                aadAuthenticationUrl = AAD_LOGIN_URI_GLOBAL;
+                break;
+            case KEY_VAULT_BASE_URI_CN :
+                aadAuthenticationUrl = AAD_LOGIN_URI_CN;
+                break;
+            case KEY_VAULT_BASE_URI_US :
+                aadAuthenticationUrl = AAD_LOGIN_URI_US;
+                break;
+            case KEY_VAULT_BASE_URI_DE:
+                aadAuthenticationUrl = AAD_LOGIN_URI_DE;
+                break;
+            default:
+                throw new IllegalArgumentException("Property of azure.keyvault.uri is illegal.");
+        }
+        return aadAuthenticationUrl;
+    }
 
     /**
      * Stores the Key Vault cloud URI.

@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 import java.security.cert.Certificate;
 import java.util.List;
 
-import static com.azure.security.keyvault.jca.implementation.utils.UriUtil.AAD_LOGIN_URI_CN;
-import static com.azure.security.keyvault.jca.implementation.utils.UriUtil.AAD_LOGIN_URI_DE;
-import static com.azure.security.keyvault.jca.implementation.utils.UriUtil.AAD_LOGIN_URI_GLOBAL;
-import static com.azure.security.keyvault.jca.implementation.utils.UriUtil.AAD_LOGIN_URI_US;
-import static com.azure.security.keyvault.jca.implementation.utils.UriUtil.KEY_VAULT_BASE_URI_CN;
-import static com.azure.security.keyvault.jca.implementation.utils.UriUtil.KEY_VAULT_BASE_URI_DE;
-import static com.azure.security.keyvault.jca.implementation.utils.UriUtil.KEY_VAULT_BASE_URI_GLOBAL;
-import static com.azure.security.keyvault.jca.implementation.utils.UriUtil.KEY_VAULT_BASE_URI_US;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.AAD_LOGIN_URI_CN;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.AAD_LOGIN_URI_DE;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.AAD_LOGIN_URI_GLOBAL;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.AAD_LOGIN_URI_US;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.KEY_VAULT_BASE_URI_CN;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.KEY_VAULT_BASE_URI_DE;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.KEY_VAULT_BASE_URI_GLOBAL;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.KEY_VAULT_BASE_URI_US;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
