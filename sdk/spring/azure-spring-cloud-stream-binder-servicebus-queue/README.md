@@ -159,6 +159,9 @@ public ResponseEntity<String> sendMessage(@RequestParam String message) {
 }
 ```
 
+> **NOTE:** When using `application.yml` to configure the partition key, its priority will be the lowest.
+> It will take effect only when the `ServiceBusMessageHeaders.SESSION_ID`, `ServiceBusMessageHeaders.PARTITION_KEY`, `AzureHeaders.PARTITION_KEY` are not configured.
+
 **Way 2:**
 Manually add the partition Key in the message header by code.
 

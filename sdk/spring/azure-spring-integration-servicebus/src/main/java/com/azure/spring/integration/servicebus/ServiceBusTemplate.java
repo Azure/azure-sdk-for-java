@@ -54,27 +54,13 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
                                                  Message<U> message,
                                                  PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
-        String partitionKey = calculatePartitionKey(message, partitionSupplier);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
-        if (!StringUtils.hasText(serviceBusMessage.getPartitionKey()) && StringUtils.hasText(partitionKey)) {
+        if (!StringUtils.hasText(serviceBusMessage.getPartitionKey())) {
+            String partitionKey = getPartitionKey(partitionSupplier);
             serviceBusMessage.setPartitionKey(partitionKey);
         }
         return this.clientFactory.getOrCreateSender(destination).sendMessage(serviceBusMessage).toFuture();
-    }
-
-    private <U> String calculatePartitionKey(Message<U> message, PartitionSupplier partitionSupplier) {
-        String partitionKey;
-        if (StringUtils.hasText(message.getHeaders().get(ServiceBusMessageHeaders.SESSION_ID, String.class))) {
-            partitionKey = message.getHeaders().get(ServiceBusMessageHeaders.SESSION_ID).toString();
-        } else {
-            if (StringUtils.hasText(message.getHeaders().get(ServiceBusMessageHeaders.PARTITION_KEY, String.class))) {
-                partitionKey = message.getHeaders().get(ServiceBusMessageHeaders.PARTITION_KEY, String.class);
-            } else {
-                partitionKey = getPartitionKey(partitionSupplier);
-            }
-        }
-        return partitionKey;
     }
 
     public CheckpointConfig getCheckpointConfig() {
@@ -86,7 +72,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
             return;
         }
         Assert.state(isValidCheckpointMode(checkpointConfig.getCheckpointMode()),
-                     "Only MANUAL or RECORD checkpoint " + "mode is supported " + "in " + "ServiceBusTemplate");
+            "Only MANUAL or RECORD checkpoint " + "mode is supported " + "in " + "ServiceBusTemplate");
         this.checkpointConfig = checkpointConfig;
         LOGGER.info("ServiceBusTemplate checkpoint config becomes: {}", this.checkpointConfig);
     }

@@ -118,6 +118,11 @@ public class ServiceBusMessageConverter
 
         if (StringUtils.hasText(message.getSessionId())) {
             message.setPartitionKey(message.getSessionId());
+            if (copySpringMessageHeaders.containsKey(PARTITION_KEY)) {
+                LOGGER.warn("The session id and partition key are both set in the current message headers, "
+                    + "and the partition key header will be overwritten with the session id header.");
+                copySpringMessageHeaders.remove(PARTITION_KEY);
+            }
         } else {
             getAndRemove(copySpringMessageHeaders, PARTITION_KEY).ifPresent(message::setPartitionKey);
         }
