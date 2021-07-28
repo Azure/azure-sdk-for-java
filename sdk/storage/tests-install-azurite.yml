@@ -24,6 +24,9 @@ steps:
       inputs:
           targetType: 'inline'
           script: Write-Host "##vso[task.setvariable variable=Azure.Azurite.Location;]${{ parameters.AzuriteLocation }}"
-    - bash: |
-          node ${{ parameters.AzuriteLocation }}/node_modules/azurite/dist/src/azurite.js --skipApiVersionCheck &
+    - pwsh: |
+          $AzuriteTempDirPath = Join-Path -Path "${{ Agent.TempDirectory }}" -ChildPath "azurite-temp-dir"
+          New-Item -ItemType Directory -Path $AzuriteTempDirPath
+          $AzuriteScriptPath = Join-Path -Path "${{ parameters.AzuriteLocation }}" -ChildPath "node_modules/azurite/dist/src/azurite.js"
+          Start-Process -FilePath "node" -ArgumentList $AzuriteScriptPath, "-l", $AzuriteTempDirPath, "--skipApiVersionCheck"
       displayName: Run azurite
