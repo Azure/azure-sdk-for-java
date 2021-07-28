@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.http;
+package com.azure.core.util;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,7 +15,7 @@ import java.util.Objects;
  * If multiple values are added to a query string with the same name (case-insensitive), then the values will be
  * appended at the end of the same {@link QueryParameter} with commas separating them.
  */
-public final class QueryParameter {
+class QueryParameter {
     private final String name;
 
     // this is the internal representation of a single value
@@ -36,7 +36,7 @@ public final class QueryParameter {
      * @param value the value of the parameter.
      * @throws NullPointerException if {@code name} is null.
      */
-    public QueryParameter(String name, String value) {
+    QueryParameter(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         this.value = value;
@@ -49,7 +49,7 @@ public final class QueryParameter {
      * @param values the values of the parameter.
      * @throws NullPointerException if {@code name} or {@code values} are null.
      */
-    public QueryParameter(String name, List<String> values) {
+    QueryParameter(String name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(values, "'values' cannot be null");
         this.name = name;
