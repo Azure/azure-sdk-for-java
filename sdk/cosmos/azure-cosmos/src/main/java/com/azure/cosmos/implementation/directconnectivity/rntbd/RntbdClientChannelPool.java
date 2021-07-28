@@ -975,28 +975,26 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final long idleEndpointTimeoutInNanos,
         final long requestTimerResolutionInNanos) {
 
-        if (idleEndpointTimeoutInNanos == 0) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Idle endpoint check is disabled");
-            }
-
-            return;
-        }
-
         this.acquisitionAndIdleEndpointDetectionTimeout.set(acquisitionAndIdleEndpointDetectionTimer.newTimeout(
             (Timeout timeout) -> {
-                final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
-
-                if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
+                if (idleEndpointTimeoutInNanos == 0) {
                     if (logger.isDebugEnabled()) {
-                        logger.debug(
-                            "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
-                            endpoint,
-                            Duration.ofNanos(elapsedTimeInNanos),
-                            Duration.ofNanos(idleEndpointTimeoutInNanos));
+                        logger.debug("Idle endpoint check is disabled");
                     }
-                    endpoint.close();
-                    return;
+                } else {
+                    final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
+
+                    if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug(
+                                "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
+                                endpoint,
+                                Duration.ofNanos(elapsedTimeInNanos),
+                                Duration.ofNanos(idleEndpointTimeoutInNanos));
+                        }
+                        endpoint.close();
+                        return;
+                    }
                 }
 
                 if (this.requestQueueLength() <= 0) {
