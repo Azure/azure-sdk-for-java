@@ -495,6 +495,26 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Checks the sample sources for use of deprecated API's in the test-compile phase. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>test-compile</phase>
+            <configuration>
+              <showDeprecation>true</showDeprecation>
+              <testIncludes><include>${project.basedir}\src\samples\java</include></testIncludes>
+            </configuration>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
 
     <pluginManagement>
@@ -514,7 +534,7 @@
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>
               <arg>-Xlint:classfile</arg>
-              <arg>-Xlint:deprecation</arg>
+              <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
               <arg>-Xlint:dep-ann</arg>
               <arg>-Xlint:divzero</arg>
               <arg>-Xlint:empty</arg>
