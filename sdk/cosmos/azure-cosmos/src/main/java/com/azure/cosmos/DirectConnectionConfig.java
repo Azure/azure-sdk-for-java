@@ -3,10 +3,11 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.util.Beta;
 import io.netty.channel.ChannelOption;
 
 import java.time.Duration;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 /**
  * Represents the connection config with {@link ConnectionMode#DIRECT} associated with Cosmos Client in the Azure Cosmos DB database service.
@@ -147,7 +148,7 @@ public final class DirectConnectionConfig {
     /**
      * Gets the idle endpoint timeout
      *
-     * Default value is 1 hour.
+     * Default value is 1 hour. {@link Duration#ZERO} means to disable idle endpoint check.
      *
      * If there are no requests to a specific endpoint for idle endpoint timeout duration,
      * direct client closes all connections to that endpoint to save resources and I/O cost.
@@ -161,7 +162,7 @@ public final class DirectConnectionConfig {
     /**
      * Sets the idle endpoint timeout
      *
-     * Default value is 1 hour.
+     * Default value is 1 hour. {@link Duration#ZERO} means to disable idle endpoint check.
      *
      * If there are no requests to a specific endpoint for idle endpoint timeout duration,
      * direct client closes all connections to that endpoint to save resources and I/O cost.
@@ -170,6 +171,8 @@ public final class DirectConnectionConfig {
      * @return the {@link DirectConnectionConfig}
      */
     public DirectConnectionConfig setIdleEndpointTimeout(Duration idleEndpointTimeout) {
+        checkArgument(!idleEndpointTimeout.isNegative(), "IdleEndpointTimeout can not less than 0");
+
         this.idleEndpointTimeout = idleEndpointTimeout;
         return this;
     }

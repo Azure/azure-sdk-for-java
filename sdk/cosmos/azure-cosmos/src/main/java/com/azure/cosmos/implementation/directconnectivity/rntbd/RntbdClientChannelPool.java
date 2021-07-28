@@ -975,6 +975,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final long idleEndpointTimeoutInNanos,
         final long requestTimerResolutionInNanos) {
 
+        if (idleEndpointTimeoutInNanos == 0) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Idle endpoint check is disabled");
+            }
+
+            return;
+        }
+
         this.acquisitionAndIdleEndpointDetectionTimeout.set(acquisitionAndIdleEndpointDetectionTimer.newTimeout(
             (Timeout timeout) -> {
                 final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
