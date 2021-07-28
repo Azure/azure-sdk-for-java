@@ -15,13 +15,13 @@ import java.util.concurrent.ConcurrentMap;
  * It allows passing this state for one `BulkProcessingOptions` to another in case bulk operations are
  * expected to have similar characteristics and the context for determining the micro batch size should be preserved.
  */
-public class BulkExecutionThresholds {
+public final class BulkExecutionThresholds {
     private final ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholds;
 
     /**
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkExecutionThresholds() {
         this.partitionScopeThresholds = new ConcurrentHashMap<>();
     }

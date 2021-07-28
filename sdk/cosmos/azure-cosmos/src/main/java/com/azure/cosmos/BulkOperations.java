@@ -351,7 +351,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static <T, TContext> CosmosItemOperation getReplaceItemOperation(
         String id,
         T item,
