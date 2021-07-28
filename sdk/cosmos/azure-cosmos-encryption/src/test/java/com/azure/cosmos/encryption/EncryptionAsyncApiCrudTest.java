@@ -10,6 +10,7 @@ import com.azure.cosmos.encryption.implementation.ReflectionUtils;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -50,7 +51,8 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     private CosmosEncryptionAsyncContainer encryptionContainerWithIncompatiblePolicyVersion;
     private EncryptionKeyWrapMetadata metadata1;
     private EncryptionKeyWrapMetadata metadata2;
-
+    private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
+    private String containerId;
     @Factory(dataProvider = "clientBuilders")
     public EncryptionAsyncApiCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
@@ -60,7 +62,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
-        EncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
+        encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
             encryptionKeyStoreProvider);
@@ -75,7 +77,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block();
 
         ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
-        String containerId = UUID.randomUUID().toString();
+        containerId = UUID.randomUUID().toString();
         CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
         properties.setClientEncryptionPolicy(clientEncryptionPolicy);
         cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties).block();
@@ -121,6 +123,27 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void createItemEncryptWithContentResponseOnWriteEnabledFalse() {
+        CosmosAsyncClient asyncClient = null ;
+        try {
+            asyncClient =
+                new CosmosClientBuilder().endpoint(TestConfigurations.HOST).key(TestConfigurations.MASTER_KEY).buildAsyncClient();
+            CosmosEncryptionAsyncClient encryptionAsyncClient =
+                CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient,
+                    this.encryptionKeyStoreProvider);
+            CosmosEncryptionAsyncContainer encryptionAsyncContainer =
+                encryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase.getId()).getCosmosEncryptionAsyncContainer(containerId);
+            EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+            CosmosItemResponse<EncryptionPojo> itemResponse = encryptionAsyncContainer.createItem(properties,
+                new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
+            assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+            assertThat(itemResponse.getItem()).isNull();
+        } finally {
+            safeClose(asyncClient);
+        }
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)

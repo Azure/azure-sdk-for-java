@@ -339,6 +339,10 @@ public class EncryptionProcessor {
     }
 
     public Mono<byte[]> decrypt(byte[] input) {
+        if (input == null || input.length < 1) {
+            return Mono.empty();
+        }
+
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Encrypting byte[] of size [{}] on thread [{}]",
                 input == null ? null : input.length,
