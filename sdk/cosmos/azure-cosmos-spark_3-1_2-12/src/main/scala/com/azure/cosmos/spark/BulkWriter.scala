@@ -4,6 +4,8 @@ package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
 import com.azure.cosmos._
+
+import scala.concurrent.duration.Duration
 // scalastyle:on underscore.import
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.guava25.base.Preconditions
@@ -101,6 +103,10 @@ class BulkWriter(container: CosmosAsyncContainer,
             bulkOptions)
           .asScala
 
+    //scalastyle:off magic.number
+    val maxDelayOn408RequestTimeoutInMs = 1000
+    //scalastyle:on magic.number
+
     bulkOperationResponseFlux.subscribe(
       resp => {
         var isGettingRetried = false
@@ -127,13 +133,26 @@ class BulkWriter(container: CosmosAsyncContainer,
 
                   // this is to ensure the submission will happen on a different thread in background
                   // and doesn't block the active thread
-                  SMono.defer(() => {
-                    scheduleWriteInternal(itemOperation.getPartitionKeyValue,
-                      itemOperation.getItem.asInstanceOf[ObjectNode],
-                      OperationContext(context.itemId, context.partitionKeyValue, context.eTag, context.attemptNumber + 1))
-                    SMono.empty
-                  }).subscribeOn(Schedulers.boundedElastic())
-                    .subscribe()
+                  val deferredRetryMono = SMono.defer(() => {
+                      scheduleWriteInternal(itemOperation.getPartitionKeyValue,
+                        itemOperation.getItem.asInstanceOf[ObjectNode],
+                        OperationContext(context.itemId, context.partitionKeyValue, context.eTag, context.attemptNumber + 1))
+                      SMono.empty
+                    })
+
+                  if (Exceptions.isTimeout(cosmosException)) {
+                    deferredRetryMono
+                      .delaySubscription(
+                        Duration(scala.util.Random.nextInt(maxDelayOn408RequestTimeoutInMs), TimeUnit.MILLISECONDS),
+                        Schedulers.boundedElastic())
+                      .subscribeOn(Schedulers.boundedElastic())
+                      .subscribe()
+
+                  } else {
+                    deferredRetryMono
+                      .subscribeOn(Schedulers.boundedElastic())
+                      .subscribe()
+                  }
 
                   isGettingRetried = true
                 } else {
@@ -189,7 +208,17 @@ class BulkWriter(container: CosmosAsyncContainer,
       throw errorCaptureFirstException.get()
     }
 
-    semaphore.acquire()
+    var acquisitionAttempt = 0
+    while (!semaphore.tryAcquire(1, TimeUnit.MINUTES)) {
+      acquisitionAttempt += 1
+      if (subscriptionDisposable.isDisposed) {
+        throw new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already");
+      }
+
+      log.logWarning(
+        s"Semaphore acquisition attempt#${acquisitionAttempt} timed out after 1 minute. Retrying...")
+    }
+
     val cnt = totalScheduledMetrics.getAndIncrement()
     log.logDebug(s"total scheduled $cnt, Context: ${operationContext.toString}")
 
@@ -230,6 +259,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
   // scalastyle:off method.length
+  // scalastyle:off cyclomatic.complexity
   override def flushAndClose(): Unit = {
     this.synchronized {
       try {
@@ -246,34 +276,42 @@ class BulkWriter(container: CosmosAsyncContainer,
             var numberOfIntervalsWithIdenticalActiveOperationSnapshots = 0
             var activeTasksSnapshot = activeTasks.get()
             while (activeTasksSnapshot > 0 && errorCaptureFirstException.get == null) {
-              log.logDebug(
+              log.logInfo(
                 s"Waiting for pending activeTasks $activeTasksSnapshot, Context: ${operationContext.toString}")
               val activeOperationsSnapshot = activeOperations.clone()
-              if (!pendingTasksCompleted.await(1, TimeUnit.MINUTES)) {
+              val awaitCompleted = pendingTasksCompleted.await(1, TimeUnit.MINUTES)
+              if (!awaitCompleted) {
+                val sb = new StringBuilder()
+                //scalastyle:off magic.number
+                val maxItemOperationsToShowInErrorMessage = 1000
+                //scalastyle:on magic.number
+                activeOperationsSnapshot
+                  .take(maxItemOperationsToShowInErrorMessage)
+                  .foreach(itemOperation => {
+                    if (sb.nonEmpty) {
+                      sb.append(", ")
+                    }
+
+                    sb.append(itemOperation.getOperationType)
+                    sb.append("->")
+                    val ctx = itemOperation.getContext[OperationContext]
+                    sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
+                  })
+
                 if (activeOperationsSnapshot.equals(activeOperations)) {
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots += 1
+                  log.logWarning(
+                    s"FlushAndClose has been waiting ${numberOfIntervalsWithIdenticalActiveOperationSnapshots} " +
+                      s"times for identical set of operations: ${sb} Context: ${operationContext.toString}"
+                  )
                 } else {
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots = 0
+                  log.logInfo(
+                    s"FlushAndClose is waiting for active operations: ${sb} Context: ${operationContext.toString}"
+                  )
                 }
 
                 if (numberOfIntervalsWithIdenticalActiveOperationSnapshots >= 15) {
-                  val sb = new StringBuilder()
-                  //scalastyle:off magic.number
-                  val maxItemOperationsToShowInErrorMessage = 1000
-                  //scalastyle:on magic.number
-                  activeOperationsSnapshot
-                    .take(maxItemOperationsToShowInErrorMessage)
-                    .foreach(itemOperation => {
-                      if (sb.nonEmpty) {
-                        sb.append(", ")
-                      }
-
-                      sb.append(itemOperation.getOperationType)
-                      sb.append("->")
-                      val ctx = itemOperation.getContext[OperationContext]
-                      sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
-                    })
-
                   errorCaptureFirstException.set(new IllegalStateException(
                     s"Stale bulk ingestion identified - the following active operations have not been completed " +
                       s"(first 1000 shown) or progressed after 15 minutes: $sb"
@@ -281,9 +319,26 @@ class BulkWriter(container: CosmosAsyncContainer,
                 }
               }
               activeTasksSnapshot = activeTasks.get()
-              log.logDebug(s"Waiting completed for pending activeTasks $activeTasksSnapshot, " +
-                s"Context: ${operationContext.toString}")
+              val semaphoreAvailablePermitsSnapshot = semaphore.availablePermits()
+              val toBeReleased = maxPendingOperations - activeTasksSnapshot - semaphoreAvailablePermitsSnapshot
+              if (toBeReleased > 0) {
+                log.logWarning(s"Semaphore available Permits is ${semaphoreAvailablePermitsSnapshot} " +
+                s"instead of expected ${maxPendingOperations - activeTasksSnapshot}. Releasing additional " +
+                s"${toBeReleased} permits. Context: ${operationContext.toString}");
+                semaphore.release(toBeReleased)
+              }
+
+              if (awaitCompleted) {
+                log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, " +
+                  s"Context: ${operationContext.toString}")
+              } else {
+                log.logInfo(s"Waiting interrupted for pending activeTasks $activeTasksSnapshot, " +
+                  s"Context: ${operationContext.toString}")
+              }
             }
+
+            log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, " +
+              s"Context: ${operationContext.toString}")
           } finally {
             lock.unlock()
           }
@@ -308,11 +363,13 @@ class BulkWriter(container: CosmosAsyncContainer,
           assume(totalScheduledMetrics.get() == totalSuccessfulIngestionMetrics.get)
         }
       } finally {
+        subscriptionDisposable.dispose();
         closed.set(true)
       }
     }
   }
   // scalastyle:on method.length
+  // scalastyle:on cyclomatic.complexity
 
   private def markTaskCompletion(): Unit = {
     lock.lock()

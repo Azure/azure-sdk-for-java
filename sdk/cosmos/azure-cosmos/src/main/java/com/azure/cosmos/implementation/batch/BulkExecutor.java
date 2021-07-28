@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import io.netty.util.ResourceLeakDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -67,7 +68,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *    For our use case, Sinks.many().unicast() will work.
  */
 public final class BulkExecutor<TContext> {
-
     private final static Logger logger = LoggerFactory.getLogger(BulkExecutor.class);
     private final static AtomicLong instanceCount = new AtomicLong(0);
 
@@ -262,6 +262,10 @@ public final class BulkExecutor<TContext> {
                             "Flushing PKRange {} due to FlushItemOperation, Context: {}",
                             thresholds.getPartitionKeyRangeId(),
                             this.operationContextText);
+
+                        firstRecordTimeStamp.set(-1);
+                        currentMicroBatchSize.set(0);
+
                         return true;
                     }
 
@@ -503,6 +507,10 @@ public final class BulkExecutor<TContext> {
     }
 
     private void onFlush() {
-        this.groupSinks.forEach(sink -> sink.next(FlushBuffersItemOperation.singleton()));
+        try {
+            this.groupSinks.forEach(sink -> sink.next(FlushBuffersItemOperation.singleton()));
+        } catch(Throwable t) {
+            logger.error("Callback invocation 'onFlush' failed.", t);
+        }
     }
 }
