@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
@@ -117,10 +118,13 @@ public class ServiceBusMessageConverter
         getAndRemove(copySpringMessageHeaders, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
 
         if (StringUtils.hasText(message.getSessionId())) {
+            if (!ObjectUtils.isEmpty(headers.get(PARTITION_KEY)) && !ObjectUtils.nullSafeEquals(message.getSessionId(),
+                headers.get(PARTITION_KEY))) {
+                LOGGER.warn("Different session id and partition key are set in the message header, and the partition "
+                    + "key header will be overwritten by the session id header.");
+            }
             message.setPartitionKey(message.getSessionId());
             if (copySpringMessageHeaders.containsKey(PARTITION_KEY)) {
-                LOGGER.warn("The session id and partition key are both set in the current message headers, "
-                    + "and the partition key header will be overwritten with the session id header.");
                 copySpringMessageHeaders.remove(PARTITION_KEY);
             }
         } else {

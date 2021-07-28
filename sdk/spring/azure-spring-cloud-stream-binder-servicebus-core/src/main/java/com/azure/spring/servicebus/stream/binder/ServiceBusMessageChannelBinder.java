@@ -18,8 +18,10 @@ import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
+import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.integration.support.DefaultErrorMessageStrategy;
 import org.springframework.integration.support.ErrorMessageStrategy;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
@@ -29,9 +31,9 @@ import org.springframework.messaging.MessageHandler;
  */
 public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtendedBindingProperties> extends
     AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
-            ExtendedProducerProperties<ServiceBusProducerProperties>,
+        ExtendedProducerProperties<ServiceBusProducerProperties>,
         ServiceBusChannelProvisioner>
-        implements
+    implements
     ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 
     protected T bindingProperties;
@@ -58,6 +60,8 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
         if (producerProperties.isPartitioned()) {
             handler.setPartitionKeyExpressionString(
                 "'partitionKey-' + headers['" + BinderHeaders.PARTITION_HEADER + "']");
+        } else {
+            handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }
 
         return handler;
@@ -93,7 +97,7 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     }
 
     protected CheckpointConfig buildCheckpointConfig(
-            ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
         return CheckpointConfig.builder()
                                .checkpointMode(properties.getExtension().getCheckpointMode())
@@ -101,7 +105,7 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     }
 
     protected ServiceBusClientConfig buildClientConfig(
-            ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
         ServiceBusConsumerProperties consumerProperties = properties.getExtension();
         return ServiceBusClientConfig.builder()
