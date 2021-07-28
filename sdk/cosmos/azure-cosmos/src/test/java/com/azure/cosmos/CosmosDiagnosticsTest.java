@@ -34,6 +34,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -260,7 +261,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void queryPlanDiagnostics() {
+    public void queryPlanDiagnostics() throws JsonProcessingException {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         List<String> itemIdList = new ArrayList<>();
         for(int i = 0; i< 100; i++) {
@@ -298,10 +299,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     assertThat(queryDiagnostics).contains("QueryPlan Start Time (UTC)=");
                     assertThat(queryDiagnostics).contains("QueryPlan End Time (UTC)=");
                     assertThat(queryDiagnostics).contains("QueryPlan Duration (ms)=");
+                    String requestTimeLine = OBJECT_MAPPER.writeValueAsString(feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext().getRequestTimeline());
+                    assertThat(requestTimeLine).contains("connectionConfigured");
+                    assertThat(requestTimeLine).contains("requestSent");
+                    assertThat(requestTimeLine).contains("transitTime");
+                    assertThat(requestTimeLine).contains("received");
                 } else {
                     assertThat(queryDiagnostics).doesNotContain("QueryPlan Start Time (UTC)=");
                     assertThat(queryDiagnostics).doesNotContain("QueryPlan End Time (UTC)=");
                     assertThat(queryDiagnostics).doesNotContain("QueryPlan Duration (ms)=");
+                    assertThat(queryDiagnostics).doesNotContain("QueryPlan RequestTimeline =");
                 }
                 feedResponseCounter++;
             }

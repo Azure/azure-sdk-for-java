@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -34,7 +33,6 @@ public class AADB2CClientRegistrationRepository implements ClientRegistrationRep
         return this.clientRegistrations.findByRegistrationId(registrationId);
     }
 
-    @NotNull
     @Override
     public Iterator<ClientRegistration> iterator() {
         return this.signUpOrSignInRegistrations.iterator();

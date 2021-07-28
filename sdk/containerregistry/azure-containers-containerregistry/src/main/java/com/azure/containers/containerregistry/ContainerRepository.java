@@ -3,8 +3,8 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,8 +17,8 @@ import com.azure.core.util.Context;
 
 /**
  * This class provides a helper type that contains all the operations for repositories in Azure Container Registry.
- * Operations allowed by this type are listing, retrieving, deleting, setting writeable properties.
- * These operations are supported on the repository and the respective tags and manifests in it.
+ * Operations allowed by this type are listing, retrieving, deleting, setting writeable properties. These operations are
+ * supported on the repository and the respective tags and manifests in it.
  *
  * <p><strong>Instantiating Container Repository helper type.</strong></p>
  *
@@ -33,8 +33,9 @@ public final class ContainerRepository {
 
 
     /**
-     * Creates a {@link ContainerRepositoryAsync} that sends requests to the given repository in the container registry service at {@code endpoint}.
-     * Each service call goes through the {@code pipeline}.
+     * Creates a {@link ContainerRepositoryAsync} that sends requests to the given repository in the container registry
+     * service at {@code endpoint}. Each service call goes through the {@code pipeline}.
+     *
      * @param asyncClient The async client for the given repository.
      */
     ContainerRepository(ContainerRepositoryAsync asyncClient) {
@@ -43,6 +44,7 @@ public final class ContainerRepository {
 
     /**
      * Gets the Azure Container Registry service endpoint for the current instance.
+     *
      * @return The service endpoint for the current instance.
      */
     public String getName() {
@@ -51,6 +53,7 @@ public final class ContainerRepository {
 
     /**
      * Gets the Azure Container Registry name for the current instance.
+     *
      * @return Return the registry name.
      */
     public String getRegistryEndpoint() {
@@ -66,8 +69,8 @@ public final class ContainerRepository {
      *
      * {@codesnippet com.azure.containers.containerregistry.ContainerRepository.deleteRepositoryWithResponse}
      *
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * artifacts that are deleted as part of the repository delete.
+     * @param context Additional context that is passed through the Http pipeline during the service call. artifacts
+     * that are deleted as part of the repository delete.
      * @return A void response for completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
@@ -95,7 +98,8 @@ public final class ContainerRepository {
     }
 
     /**
-     * Gets the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
+     * Gets the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName()
+     * repository}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -104,7 +108,8 @@ public final class ContainerRepository {
      * {@codesnippet com.azure.containers.containerregistry.ContainerRepository.getPropertiesWithResponse}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response with the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
+     * @return A REST response with the {@link ContainerRepositoryProperties properties} associated with the given
+     * {@link #getName() repository}.
      * @throws ClientAuthenticationException thrown if the client does not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
@@ -115,7 +120,8 @@ public final class ContainerRepository {
     }
 
     /**
-     * Gets the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
+     * Gets the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName()
+     * repository}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -123,7 +129,8 @@ public final class ContainerRepository {
      *
      * {@codesnippet com.azure.containers.containerregistry.ContainerRepository.getProperties}
      *
-     * @return The{@link RepositoryProperties properties} associated with the given {@link #getName() repository}.
+     * @return The {@link ContainerRepositoryProperties properties} associated with the given {@link #getName()
+     * repository}.
      * @throws ClientAuthenticationException thrown if the client does not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
@@ -149,8 +156,9 @@ public final class ContainerRepository {
      * Fetches all the artifacts associated with the given {@link #getName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listManifestProperties(ArtifactManifestOrderBy, Context)}   listManifestProperties}
-     * No assumptions on the order can be made if no options are provided to the service.
+     * use the overload that takes in the options parameter {@link #listManifestProperties(ArtifactManifestOrderBy,
+     * Context)}   listManifestProperties} No assumptions on the order can be made if no options are provided to the
+     * service.
      * </p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -160,7 +168,8 @@ public final class ContainerRepository {
      * {@codesnippet com.azure.containers.containerregistry.ContainerRepository.listManifestProperties}.
      *
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the
+     * namespace.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -172,8 +181,8 @@ public final class ContainerRepository {
      * Fetches all the artifacts associated with the given {@link #getName() repository }.
      *
      * <p> The method supports options to select the order in which the artifacts are returned by the service.
-     * Currently the service supports an ascending or descending order for the last updated time for the artifacts.
-     * No assumptions on the order can be made if no options are provided by the service.
+     * Currently the service supports an ascending or descending order for the last updated time for the artifacts. No
+     * assumptions on the order can be made if no options are provided by the service.
      * </p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -184,7 +193,8 @@ public final class ContainerRepository {
      *
      * @param orderBy the order in which the artifacts are returned by the service.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the
+     * namespace.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -196,8 +206,8 @@ public final class ContainerRepository {
      * Fetches all the artifacts associated with the given {@link #getName() repository }.
      *
      * <p> The method supports options to select the order in which the artifacts are returned by the service.
-     * Currently the service supports an ascending or descending order for the last updated time for the artifacts.
-     * No assumptions on the order can be made if no options are provided by the service.
+     * Currently the service supports an ascending or descending order for the last updated time for the artifacts. No
+     * assumptions on the order can be made if no options are provided by the service.
      * </p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -209,7 +219,8 @@ public final class ContainerRepository {
      * @param orderBy the order in which the artifacts are returned by the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the
+     * namespace.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -227,7 +238,8 @@ public final class ContainerRepository {
      *
      * {@codesnippet com.azure.containers.containerregistry.ContainerRepository.updatePropertiesWithResponse}.
      *
-     * @param repositoryProperties {@link ContainerRepositoryProperties repository properties} that need to be updated for the repository.
+     * @param repositoryProperties {@link ContainerRepositoryProperties repository properties} that need to be updated
+     * for the repository.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response with the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -241,8 +253,8 @@ public final class ContainerRepository {
     }
 
     /**
-     * Update the repository properties {@link ContainerRepositoryProperties} of the given {@link #getName() repository}.
-     * These properties set the update, delete and retrieve options of the repository.
+     * Update the repository properties {@link ContainerRepositoryProperties} of the given {@link #getName()
+     * repository}. These properties set the update, delete and retrieve options of the repository.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -250,7 +262,8 @@ public final class ContainerRepository {
      *
      * {@codesnippet com.azure.containers.containerregistry.ContainerRepository.updateProperties}.
      *
-     * @param repositoryProperties {@link ContainerRepositoryProperties repository properties} that need to be updated for the repository.
+     * @param repositoryProperties {@link ContainerRepositoryProperties repository properties} that need to be updated
+     * for the repository.
      * @return The updated {@link ContainerRepositoryProperties properties }
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.

@@ -6,9 +6,9 @@ package com.azure.resourcemanager.mediaservices.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mediaservices.fluent.models.OperationInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.OperationCollectionInner;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
@@ -19,8 +19,8 @@ public interface OperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Operation items.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OperationInner> list();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationCollectionInner list();
 
     /**
      * Lists all the Media Services operations.
@@ -31,6 +31,6 @@ public interface OperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of Operation items.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OperationInner> list(Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OperationCollectionInner> listWithResponse(Context context);
 }

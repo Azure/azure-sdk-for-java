@@ -4,14 +4,14 @@
     "Uri" : "https://REDACTED.wus.attest.azure.net/policies/SgxEnclave?api-version=2020-10-01",
     "Headers" : { },
     "Response" : {
+      "content-length" : "954",
       "Server" : "Kestrel",
-      "x-ms-maa-service-version" : "1.10.01476.0001",
+      "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
-      "Content-Length" : "804",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-36225aa5bc924978f9553152c4527e4b-0000000000000000-00",
-      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjExNjg2NTY4LCAiaWF0IjogMTYxMTY4Mjk2OCwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25hYWQud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMTY4Mjk2OCwgIngtbXMtcG9saWN5IjogImV5SmhiR2NpT2lKdWIyNWxJbjAuZXlKQmRIUmxjM1JoZEdsdmJsQnZiR2xqZVNJNkltUnRWbmxqTW14Mlltb3dlRXhxUVRkSlIwWXhaRWRvZG1OdGJEWlpXRkp3WWpJMWVXUlhlR3hqZVVJM1NVUXdMVWxJUW14amJURndaRU5uY0U5NVFqbFBlVUp3WXpOT01WbFhOV3BhV0VveFlrZFdla2xJZERsUGR5SjkuIn0.EcpWgR-8X3fcmCkEge4AGLRlquy8f5oYjN9rwuqyp9S14fmhFrF-zr2011cIGpuRNb0EwfK1z2e_gYdNIYEjwqIzQw9MlMA5dUM_cot1aqfYN542mb2t2qldKKS4954Ohq6v24rF-eJynS4WuZWRkIfqgN6ERm3BHfhxUatzkjs\"}",
-      "Date" : "Tue, 26 Jan 2021 17:42:48 GMT",
+      "x-ms-request-id" : "00-95dfbe84379c6ef87517aa67ef78d35b-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsImtpZCI6InJQdEJHUldUbFBtenM1dTM1TDBRUkQ5V2R5bWVLUFJ4dGVUZVRsd04wRWM9IiwidHlwIjoiSldUIn0.eyJleHAiOjE2MjYzOTA5ODUsImlhdCI6MTYyNjM4NzM4NSwiaXNzIjoiaHR0cHM6Ly9qYWxhcnJ5b2F0dGVzdGF0aW9uYWFkLnd1cy5hdHRlc3QuYXp1cmUubmV0IiwibmJmIjoxNjI2Mzg3Mzg1LCJ4LW1zLXBvbGljeSI6ImV5SmhiR2NpT2lKdWIyNWxJbjAuZXlKQmRIUmxjM1JoZEdsdmJsQnZiR2xqZVNJNkltUnRWbmxqTW14Mlltb3dlRXhxUVRkSlIwWXhaRWRvZG1OdGJEWlpXRkp3WWpJMWVXUlhlR3hqZVVJM1NVUXdMVWxJUW14amJURndaRU5uY0U5NVFqbFBlVUp3WXpOT01WbFhOV3BhV0VveFlrZFdla2xJZERsUGR5SjkuIn0.fp3FMGzmf2MYDa0NnvvFHLXETgw8PvtXbkyR-9R2lViPUG89SKr7yPxlQGrkdrm4GKtkljpZ4qgsL9XEF-XBlNxkdnt-W7JhwQZtiU58rTNqDxQitRw0CvS0g3FYWKTOfIPJb6k0hoAL8ag_hoBvoP3RoCVNR501QeGvyJwpMCW0JQakfinCjF0uCAN9PEGxj3QERwqv2bi38ayWxXB88Dj5-juqxeiTi1UP2Wc3Vm1aqDD-nkZGzJLaVSwhh2dwsMCygMnWEK2W56lBiiLvMUPkZ27iEixs4xBBxA8KLA1leq5bnFXUTKFqCG7pbSSX6QlAEJ5J_gcXGcbRM0_gug\"}",
+      "Date" : "Thu, 15 Jul 2021 22:16:25 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

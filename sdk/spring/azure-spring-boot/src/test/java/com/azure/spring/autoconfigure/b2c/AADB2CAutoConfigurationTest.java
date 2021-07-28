@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -37,7 +36,6 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
             .withPropertyValues(getWebappCommonPropertyValues());
     }
 
-    @NotNull
     private String[] getWebappCommonPropertyValues() {
         return new String[] { String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
             String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),

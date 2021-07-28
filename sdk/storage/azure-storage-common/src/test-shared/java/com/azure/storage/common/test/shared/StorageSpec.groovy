@@ -6,10 +6,14 @@ package com.azure.storage.common.test.shared
 import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpClient
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.util.ServiceVersion
+import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import spock.lang.Specification
 
@@ -19,7 +23,9 @@ import java.util.function.Supplier
 
 class StorageSpec extends Specification {
     private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
-    private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
+    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder().build()
+    private static final ClientLogger LOGGER = new ClientLogger(StorageSpec.class)
 
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
@@ -28,6 +34,7 @@ class StorageSpec extends Specification {
         def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
         interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
         namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
+        LOGGER.info("Test {} will use {} resource prefix.", testName, namer.resourcePrefix)
     }
 
     def cleanup() {
@@ -62,6 +69,10 @@ class StorageSpec extends Specification {
             builder."addPolicy"(new ServiceVersionValidationPolicy(parsedServiceVersion.version))
         }
 
+        HttpLogOptions httpLogOptions = builder."getDefaultHttpLogOptions"()
+        httpLogOptions.setLogLevel(HttpLogDetailLevel.HEADERS)
+        builder."httpLogOptions"(httpLogOptions)
+
         return builder
     }
 
@@ -75,7 +86,14 @@ class StorageSpec extends Specification {
 
     protected HttpClient getHttpClient() {
         if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            HTTP_CLIENT
+            switch (ENVIRONMENT.httpClientType) {
+                case TestHttpClientType.NETTY:
+                    return NETTY_HTTP_CLIENT
+                case TestHttpClientType.OK_HTTP:
+                    return OK_HTTP_CLIENT
+                default:
+                    throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.httpClientType)
+            }
         } else {
             return interceptorManager.getPlaybackClient()
         }

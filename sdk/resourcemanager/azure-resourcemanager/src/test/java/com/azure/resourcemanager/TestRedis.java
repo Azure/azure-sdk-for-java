@@ -6,7 +6,6 @@ package com.azure.resourcemanager;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.core.management.Region;
-import com.google.common.util.concurrent.SettableFuture;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +14,6 @@ public class TestRedis extends TestTemplate<RedisCache, RedisCaches> {
     public RedisCache createResource(RedisCaches resources) throws Exception {
         final String redisName = resources.manager().resourceManager().internalContext().randomResourceName("redis", 10);
         final RedisCache[] redisCaches = new RedisCache[1];
-        final SettableFuture<RedisCache> future = SettableFuture.create();
 
         Mono<RedisCache> resourceStream =
             resources
@@ -26,9 +24,8 @@ public class TestRedis extends TestTemplate<RedisCache, RedisCaches> {
                 .withTag("mytag", "testtag")
                 .createAsync();
 
-        resourceStream.subscribe(future::set);
 
-        redisCaches[0] = future.get();
+        redisCaches[0] = resourceStream.block();
 
         Assertions.assertEquals(redisCaches[0].name(), redisName);
 

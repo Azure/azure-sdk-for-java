@@ -42,6 +42,14 @@ import java.util.stream.Collectors
 
 class ContainerAPITest extends APISpec {
 
+    String tagKey
+    String tagValue
+
+    def setup() {
+        tagKey = namer.getRandomName(20)
+        tagValue = namer.getRandomName(20)
+    }
+
     def "Create all null"() {
         setup:
         // Overwrite the existing cc, which has already been created
@@ -726,7 +734,7 @@ class ContainerAPITest extends APISpec {
 
         def tagsBlob = cc.getBlobClient(tagsName).getPageBlobClient()
         def tags = new HashMap<String, String>()
-        tags.put("tag", "value")
+        tags.put(tagKey, tagValue)
         tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null, null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
@@ -813,7 +821,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
@@ -918,8 +926,10 @@ class ContainerAPITest extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "list blobs flat options deleted with versions"() {
         setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
+        versionedCC.create()
         def blobName = generateBlobName()
-        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        def blob = versionedCC.getBlobClient(blobName).getAppendBlobClient()
         blob.create()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
@@ -929,13 +939,16 @@ class ContainerAPITest extends APISpec {
             .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
 
         when:
-        def blobs = cc.listBlobs(options, null).iterator()
+        def blobs = versionedCC.listBlobs(options, null).iterator()
 
         then:
         def b = blobs.next()
         !blobs.hasNext()
         b.getName() == blobName
         b.hasVersionsOnly()
+
+        cleanup:
+        versionedCC.delete()
     }
 
     def "List blobs prefix with comma"() {
@@ -1241,7 +1254,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
@@ -1323,8 +1336,10 @@ class ContainerAPITest extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "list blobs hier options deleted with versions"() {
         setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
+        versionedCC.create()
         def blobName = generateBlobName()
-        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        def blob = versionedCC.getBlobClient(blobName).getAppendBlobClient()
         blob.create()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
@@ -1334,13 +1349,16 @@ class ContainerAPITest extends APISpec {
             .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
 
         when:
-        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
+        def blobs = versionedCC.listBlobsByHierarchy("", options, null).iterator()
 
         then:
         def b = blobs.next()
         !blobs.hasNext()
         b.getName() == blobName
         b.hasVersionsOnly()
+
+        cleanup:
+        versionedCC.delete()
     }
 
     @Unroll

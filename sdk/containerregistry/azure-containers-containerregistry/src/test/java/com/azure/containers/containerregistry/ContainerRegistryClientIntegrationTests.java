@@ -7,8 +7,9 @@ package com.azure.containers.containerregistry;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.implementation.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.identity.AzureAuthorityHosts;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,6 +33,7 @@ import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
+import static com.azure.containers.containerregistry.TestUtils.getAuthority;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -51,9 +53,9 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
 
     @BeforeEach
     void beforeEach() {
-        TestUtils.importImage(ImplUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
+        TestUtils.importImage(getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
         TestUtils.importImage(
-            ImplUtils.getTestMode(),
+            getTestMode(),
             ALPINE_REPOSITORY_NAME,
             Arrays.asList(
                 LATEST_TAG_NAME,
@@ -72,7 +74,7 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         StepVerifier.create(registryAsyncClient.listRepositoryNames())
             .recordWith(ArrayList::new)
             .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(repositories -> validateRepositories(repositories))
+            .expectRecordedMatches(this::validateRepositories)
             .verifyComplete();
 
         List<String> repositories = registryClient.listRepositoryNames().stream().collect(Collectors.toList());
@@ -88,11 +90,12 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         StepVerifier.create(registryAsyncClient.listRepositoryNames().byPage(PAGESIZE_1))
             .recordWith(ArrayList::new)
             .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> validateRepositoriesByPage(pagedResList))
+            .expectRecordedMatches(this::validateRepositoriesByPage)
             .verifyComplete();
 
         ArrayList<String> repositories = new ArrayList<>();
-        registryClient.listRepositoryNames().iterableByPage(PAGESIZE_1).forEach(res -> res.getValue().forEach(repo -> repositories.add(repo)));
+        registryClient.listRepositoryNames().iterableByPage(PAGESIZE_1)
+            .forEach(res -> repositories.addAll(res.getValue()));
         validateRepositories(repositories);
     }
 
@@ -103,7 +106,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         registryClient = getContainerRegistryClient(httpClient);
 
         ArrayList<String> repositories = new ArrayList<>();
-        assertThrows(IllegalArgumentException.class, () -> registryClient.listRepositoryNames().iterableByPage(-1).forEach(res -> res.getValue().forEach(repo -> repositories.add(repo))));
+        assertThrows(IllegalArgumentException.class, () -> registryClient.listRepositoryNames().iterableByPage(-1)
+            .forEach(res -> repositories.addAll(res.getValue())));
 
         StepVerifier.create(registryAsyncClient.listRepositoryNames().byPage(-1))
             .verifyError(IllegalArgumentException.class);
@@ -132,7 +136,7 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         ContainerRepositoryAsync repositoryAsync = registryAsyncClient.getRepository(HELLO_WORLD_REPOSITORY_NAME);
         assertNotNull(repositoryAsync);
         StepVerifier.create(repositoryAsync.getProperties())
-            .assertNext(res -> validateProperties(res))
+            .assertNext(this::validateProperties)
             .verifyComplete();
 
         ContainerRepository repository = registryClient.getRepository(HELLO_WORLD_REPOSITORY_NAME);
@@ -175,6 +179,9 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void authenticationScopeTest(HttpClient httpClient) {
+        Assumptions.assumeFalse(getTestMode().equals(TestMode.PLAYBACK));
+        Assumptions.assumeFalse(REGISTRY_ENDPOINT == null);
+        Assumptions.assumeTrue(getAuthority(REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
         ContainerRegistryClient registryClient = getContainerRegistryBuilder(httpClient)
             .authenticationScope(AZURE_GLOBAL_AUTHENTICATION_SCOPE)
             .buildClient();
@@ -182,13 +189,10 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         List<String> repositories = registryClient.listRepositoryNames().stream().collect(Collectors.toList());
         validateRepositories(repositories);
 
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // Now doing the same should fail with the separate registryClient;
-            ContainerRegistryClient throwableRegistryClient = getContainerRegistryBuilder(httpClient)
-                .authenticationScope(AZURE_GOV_AUTHENTICATION_SCOPE)
-                .buildClient();
-            assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream().collect(Collectors.toList()));
-        }
+        ContainerRegistryClient throwableRegistryClient = getContainerRegistryBuilder(httpClient)
+            .authenticationScope(AZURE_GOV_AUTHENTICATION_SCOPE)
+            .buildClient();
+        assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream().collect(Collectors.toList()));
     }
 }
 

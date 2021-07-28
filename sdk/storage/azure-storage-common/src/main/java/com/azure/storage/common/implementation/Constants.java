@@ -71,6 +71,16 @@ public final class Constants {
      */
     public static final int BUFFER_COPY_LENGTH = 8 * KB;
 
+    /**
+     * This constant is used to cap Stream->Flux converter's block size considering that:
+     * - Integer.MAX (or near) leads to java.lang.OutOfMemoryError: Requested array size exceeds VM limit
+     * - Allocating arrays that are very large can be less successful on busy heap and put extra pressure on GC to
+     *   de-fragment.
+     * - Going to small on the other hand might be harmful to large upload scenarios. Max block size is 4000MB
+     *   so chunking that into blocks that are smaller produces a lot of garbage to just wrap this into ByteBuffers.
+     */
+    public static final int MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH = 64 * MB;
+
     public static final String STORAGE_SCOPE = "https://storage.azure.com/.default";
 
     public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
@@ -78,7 +88,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
-        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-08-04");
+        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-10-02");
 
     private Constants() {
     }

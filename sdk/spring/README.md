@@ -44,7 +44,7 @@ azure-servicebus-spring-boot-starter **(Deprecated)** | N/A | [![Maven Central][
 azure-spring-boot-metrics-starter **(Deprecated)** | [![Maven Central][metrics-starter-mvn-2.3.x-img]][metrics-starter-mvn-2.3.x] | [![Maven Central][metrics-starter-mvn-2.2.x-img]][metrics-starter-mvn-2.2.x] | [![][metrics-starter-mvn-2.1.x-img]][metrics-starter-mvn-2.1.x] | [![][metrics-starter-mvn-2.0.x-img]][metrics-starter-mvn-2.0.x]
 azure-storage-spring-boot-starter | N/A | [![Maven Central][storage-starter-mvn-2.2.x-img]][storage-starter-mvn-2.2.x] | [![][storage-starter-mvn-2.1.x-img]][storage-starter-mvn-2.1.x] | [![][storage-starter-mvn-2.0.x-img]][storage-starter-mvn-2.0.x]
 
-### Azure Spring Cloud
+### Spring Cloud for Azure
 
 [Spring Cloud][spring-cloud] provides boilerplate patterns for developers to quickly build and orchestrate their microservice based applications. Based on that, **Spring Cloud Azure** is designed to provide seamless Spring integration with Azure services. Developers can adopt a Spring-idiomatic way to take advantage of services on Azure, with only few lines of configuration and minimal code changes. 
 
@@ -53,7 +53,7 @@ azure-storage-spring-boot-starter | N/A | [![Maven Central][storage-starter-mvn-
 Below packages are available with latest release version. **We recommend users to leverage latest version for bug fix and new features.**
 
 ##### [Spring Cloud Stream][spring-cloud-stream]
-> ❗ From Azure Spring Cloud 2.0.0 onwards, we changed the groupId from `com.microsoft.azure` to `com.azure.spring`, and changed artifactIds, too.
+> ❗ From Spring Cloud for Azure 2.0.0 onwards, we changed the groupId from `com.microsoft.azure` to `com.azure.spring`, and changed artifactIds, too.
 
 Artifact Id | Version for Spring Boot 2.3.x and 2.2.x | Version for Spring Boot 2.4.x
 ------ |--------- |--- 
@@ -69,7 +69,7 @@ Artifact Id | Version for Spring Boot 2.3.x and 2.2.x | Version for Spring Boot 
 [azure-spring-cloud-starter-storage-queue][azure-spring-cloud-starter-storage-queue-readme] | [![Maven Central][azure-spring-cloud-starter-storage-queue-mvn-2.2.x-img]][azure-spring-cloud-starter-storage-queue-mvn-2.2.x] | [![Maven Central][azure-spring-cloud-starter-storage-queue-mvn-2.3.x-img]][azure-spring-cloud-starter-storage-queue-mvn-2.3.x]
 [azure-spring-integration-storage-queue][azure-spring-integration-storage-queue-readme] | [![Maven Central][azure-spring-integration-servicebus-mvn-2.2.x-img]][azure-spring-integration-servicebus-mvn-2.2.x] | [![Maven Central][azure-spring-integration-servicebus-mvn-2.3.x-img]][azure-spring-integration-servicebus-mvn-2.3.x]
 
-Below packages are Azure Spring Cloud packages with original artifactIds and groupId of `com.microsoft.azure`.
+Below packages are Spring Cloud for Azure packages with original artifactIds and groupId of `com.microsoft.azure`.
 
 Artifact Id | Version
 ------ |---
@@ -320,7 +320,6 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [mediaservices-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-mediaservices-spring-boot-starter.svg
 [mediaservices-starter-mvn-2.2.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-mediaservices-spring-boot-starter%22
 
-[metrics-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-metrics
 [metrics-starter-mvn-2.0.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter/2.0.svg
 [metrics-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-spring-boot-metrics-starter%20AND%20v:2.0.*
 [metrics-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-spring-boot-metrics-starter/2.1.svg

@@ -42,5 +42,14 @@ public final class AttestationResponse {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() { }
+
+    /**
+     * From Generated.
+     * @param generated generated type.
+     * @return implementation type.
+     */
+    public static AttestationResponse fromGenerated(com.azure.security.attestation.implementation.models.AttestationResponse generated) {
+        return new AttestationResponse().setToken(generated.getToken());
+    }
 }

@@ -233,6 +233,14 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this;
     }
 
+    public void restart() {
+        serviceManager.servers().restart(resourceGroupName, serverName);
+    }
+
+    public void restart(Context context) {
+        serviceManager.servers().restart(resourceGroupName, serverName, context);
+    }
+
     public ServerImpl withRegion(Region location) {
         this.createParameters.withLocation(location.toString());
         return this;
