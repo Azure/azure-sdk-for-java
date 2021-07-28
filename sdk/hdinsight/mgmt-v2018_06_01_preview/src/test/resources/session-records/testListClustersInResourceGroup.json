@@ -199,7 +199,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "07613b23-af3b-44de-b95e-925012552da0",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"guYR1EU9aWwSX6ThHn2jMeLlTcOXVn9YCYGaLEeUnmzoMk6ihRubM6/o9Le3m35KIUc9d4bui+HSMQ/pJDSBFg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"58qFt8BbJYRc/LXPQJfkw+gm88U/lxdjZ0dga/cYDIE8db6T6hNGks9Qzm+cn8eCpuZZO5sCbaMqEaq/eDeXZA==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"RmFrZVRlc3RLZXk=\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"RmFrZVRlc3RLZXk=\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PUT",

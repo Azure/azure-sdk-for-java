@@ -27,6 +27,28 @@ This project provides Spring Integration adaption with Azure Service Bus and the
 ### Configure ServiceBusMessageConverter to customize ObjectMapper
 `ServiceBusMessageConverter` is made as a configurable bean to allow users to customized `ObjectMapper`.
 
+### Support for Service Bus Message Headers and Properties
+The following table illustrates how Spring message headers are mapped to Service Bus message headers and properties.
+When creat a message, developers can specify the header or property of a Service Bus message by below constants.
+
+For some Service Bus headers that can be mapped to multiple Spring header constants, the priority of different Spring headers is listed.
+
+Service Bus Message Headers and Properties | Spring Message Header Constants | Type | Priority Number (Descending priority)
+---|---|---|---
+**MessageId** | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID | String | 1
+**MessageId** | com.azure.spring.integration.core.AzureHeaders.RAW_ID | String | 2
+**MessageId** | org.springframework.messaging.MessageHeaders.ID | UUID | 3
+ContentType | org.springframework.messaging.MessageHeaders.CONTENT_TYPE | String | N/A
+ReplyTo | org.springframework.messaging.MessageHeaders.REPLY_CHANNEL | String | N/A
+**ScheduledEnqueueTimeUtc** | com.azure.spring.integration.core.AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE | Integer | 1
+**ScheduledEnqueueTimeUtc** | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME | Instant | 2
+TimeToLive | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE | Duration | N/A
+SessionID | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID | String | N/A
+CorrelationId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID | String | N/A
+To | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO | String | N/A
+ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID | String | N/A
+PartitionKey | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.PARTITION_KEY | String | N/A
+
 ## Examples
 
 
@@ -59,11 +81,11 @@ Please follow [instructions here][contributing_md] to build from source or contr
 
 <!-- Links -->
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-starter-azure-servicebus
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-starter-servicebus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
-[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-integration-sample-servicebus
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-integration-sample-servicebus
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [spring_integration]: https://spring.io/projects/spring-integration
-[spring_cloud_starter_sample_with_service_bus]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-integration-sample-servicebus
+[spring_cloud_starter_sample_with_service_bus]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-integration-sample-servicebus
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies

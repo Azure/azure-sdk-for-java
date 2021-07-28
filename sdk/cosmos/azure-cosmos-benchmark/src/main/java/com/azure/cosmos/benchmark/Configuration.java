@@ -27,7 +27,9 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Configuration {
 
@@ -90,6 +92,9 @@ public class Configuration {
 
     @Parameter(names = "-manageDatabase", description = "Control switch for creating/deleting underlying database resource")
     private boolean manageDatabase = false;
+
+    @Parameter(names = "-preferredRegionsList", description = "Comma separated preferred regions list")
+    private String preferredRegionsList;
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
@@ -445,6 +450,17 @@ public class Configuration {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
+    public List<String> getPreferredRegionsList() {
+        List<String> preferredRegions = null;
+        if (StringUtils.isNotEmpty(preferredRegionsList)) {
+            String[] preferredArray = preferredRegionsList.split(",");
+            if (preferredArray != null && preferredArray.length > 0) {
+                preferredRegions = new ArrayList<>(Arrays.asList(preferredArray));
+            }
+        }
+        return preferredRegions;
+    }
+
     public void tryGetValuesFromSystem() {
         serviceEndpoint = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("SERVICE_END_POINT")),
                                                     serviceEndpoint);
@@ -483,6 +499,8 @@ public class Configuration {
         String throughputValue = StringUtils.defaultString(
                 Strings.emptyToNull(System.getenv().get("THROUGHPUT")), Integer.toString(throughput));
         throughput = Integer.parseInt(throughputValue);
+
+        preferredRegionsList = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("PREFERRED_REGIONS_LIST")), preferredRegionsList);
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {

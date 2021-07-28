@@ -4,7 +4,7 @@
 package com.azure.test.aad.selenium.ondemand;
 
 import com.azure.spring.utils.AzureCloudUrls;
-import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import java.util.Map;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_ON_DEMAND;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_ON_DEMAND;
 import static com.azure.spring.test.EnvironmentVariable.AZURE_CLOUD_TYPE;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static com.azure.test.aad.selenium.AADITHelper.createDefaultProperties;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADOnDemandIT {

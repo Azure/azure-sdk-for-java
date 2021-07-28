@@ -10,6 +10,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
+import com.azure.resourcemanager.compute.fluent.CapacityReservationGroupsClient;
+import com.azure.resourcemanager.compute.fluent.CapacityReservationsClient;
 import com.azure.resourcemanager.compute.fluent.CloudServiceOperatingSystemsClient;
 import com.azure.resourcemanager.compute.fluent.CloudServiceRoleInstancesClient;
 import com.azure.resourcemanager.compute.fluent.CloudServiceRolesClient;
@@ -328,6 +330,30 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public RestorePointsClient getRestorePoints() {
         return this.restorePoints;
+    }
+
+    /** The CapacityReservationGroupsClient object to access its operations. */
+    private final CapacityReservationGroupsClient capacityReservationGroups;
+
+    /**
+     * Gets the CapacityReservationGroupsClient object to access its operations.
+     *
+     * @return the CapacityReservationGroupsClient object.
+     */
+    public CapacityReservationGroupsClient getCapacityReservationGroups() {
+        return this.capacityReservationGroups;
+    }
+
+    /** The CapacityReservationsClient object to access its operations. */
+    private final CapacityReservationsClient capacityReservations;
+
+    /**
+     * Gets the CapacityReservationsClient object to access its operations.
+     *
+     * @return the CapacityReservationsClient object.
+     */
+    public CapacityReservationsClient getCapacityReservations() {
+        return this.capacityReservations;
     }
 
     /** The VirtualMachineScaleSetExtensionsClient object to access its operations. */
@@ -695,6 +721,8 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.images = new ImagesClientImpl(this);
         this.restorePointCollections = new RestorePointCollectionsClientImpl(this);
         this.restorePoints = new RestorePointsClientImpl(this);
+        this.capacityReservationGroups = new CapacityReservationGroupsClientImpl(this);
+        this.capacityReservations = new CapacityReservationsClientImpl(this);
         this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsClientImpl(this);
         this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesClientImpl(this);
         this.virtualMachineScaleSetVMExtensions = new VirtualMachineScaleSetVMExtensionsClientImpl(this);

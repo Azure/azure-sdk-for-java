@@ -360,7 +360,7 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service. Prints out the details of the
-     * {@link Response HTTP response}.</p></p>
+     * {@link Response HTTP response}.</p>
      * {@codesnippet com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context}
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.

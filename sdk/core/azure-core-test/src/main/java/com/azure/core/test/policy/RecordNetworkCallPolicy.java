@@ -11,7 +11,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.implementation.ImplUtils;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.models.NetworkCallError;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
@@ -51,7 +51,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final String BODY = "Body";
     private static final String SIG = "sig";
 
-    private static final TestMode TEST_MODE = ImplUtils.getTestMode();
+    private static final TestMode TEST_MODE = TestingHelpers.getTestMode();
 
     private final ClientLogger logger = new ClientLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;

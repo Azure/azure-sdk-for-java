@@ -23,7 +23,7 @@ This package supports client side encryption for blob storage.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.12.0</version>
+  <version>12.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -122,7 +122,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create an `EncryptedBlobClient` using a `BlobClient`. `BlobClient` construction is explained in the `azure-storage-blob` README.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L42-L46 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L44-L48 -->
 ```java
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(key, keyWrapAlgorithm)
@@ -229,3 +229,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-cryptography/src/main/java
+[docs]: https://azure.github.io/azure-sdk-for-java/
+[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-cryptography/src/samples

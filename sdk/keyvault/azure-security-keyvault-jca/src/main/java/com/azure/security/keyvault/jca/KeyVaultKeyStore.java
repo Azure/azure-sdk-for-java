@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.certificates.AzureCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.ClasspathCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
