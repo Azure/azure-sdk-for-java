@@ -56,7 +56,7 @@ final class FeatureImpl extends
         }
 
         String[] segments = this.name().split(Pattern.quote("/"));
-        return segments.length > 0 ? segments[1] : null;
+        return segments.length > 1 ? segments[1] : null;
     }
 
     @Override
