@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca;
+package com.azure.security.keyvault.jca.implementation.signature;
 
+import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -24,11 +25,13 @@ public class KeyVaultKeyLessRsaSignatureTest {
 
     KeyVaultKeyLessRsaSignature keyVaultKeyLessRsaSignature;
 
+    static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
+
     private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
 
     @BeforeEach
     public void before() {
-        System.setProperty("azure.keyvault.uri", KeyVaultClientTest.KEY_VAULT_TEST_URI_GLOBAL);
+        System.setProperty("azure.keyvault.uri", KEY_VAULT_TEST_URI_GLOBAL);
         keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
     }
 

@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca;
+package com.azure.security.keyvault.jca.implementation.signature;
 
+import com.azure.security.keyvault.jca.KeyVaultEncode;
+import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -24,9 +27,11 @@ public class KeyVaultKeyLessECSignatureTest {
     private final byte[] signedWithES256 = "fake256Value".getBytes();
     private final byte[] signedWithES384 = "fake384Value".getBytes();
 
+    static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
+
     @BeforeEach
     public void before() {
-        System.setProperty("azure.keyvault.uri", KeyVaultClientTest.KEY_VAULT_TEST_URI_GLOBAL);
+        System.setProperty("azure.keyvault.uri", KEY_VAULT_TEST_URI_GLOBAL);
         keyVaultKeyLessECSignature = new KeyVaultKeyLessECSignature.KeyVaultSHA256();
     }
 
@@ -94,7 +99,7 @@ public class KeyVaultKeyLessECSignatureTest {
         keyVaultKeyLessECSignature = new KeyVaultKeyLessECSignature.KeyVaultSHA256();
         when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES256"), anyString(), ArgumentMatchers.eq(null))).thenReturn(signedWithES256);
         keyVaultKeyLessECSignature.setKeyVaultClient(keyVaultClient);
-        assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES256), keyVaultKeyLessECSignature.engineSign());
+        Assertions.assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES256), keyVaultKeyLessECSignature.engineSign());
 
         keyVaultKeyLessECSignature = new KeyVaultKeyLessECSignature.KeyVaultSHA384();
         keyVaultKeyLessECSignature.setKeyVaultClient(keyVaultClient);

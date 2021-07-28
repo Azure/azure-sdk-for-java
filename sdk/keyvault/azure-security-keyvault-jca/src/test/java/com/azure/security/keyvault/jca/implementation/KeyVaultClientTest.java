@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class KeyVaultClientTest {
 
-    static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
+    private static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
     private static final String KEY_VAULT_TEST_URI_CN = "https://fake.vault.azure.cn/";
     private static final String KEY_VAULT_TEST_URI_US = "https://fake.vault.usgovcloudapi.net/";
     private static final String KEY_VAULT_TEST_URI_DE = "https://fake.vault.microsoftazure.de/";

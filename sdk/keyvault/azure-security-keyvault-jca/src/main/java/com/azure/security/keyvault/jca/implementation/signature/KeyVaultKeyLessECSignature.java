@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca;
+package com.azure.security.keyvault.jca.implementation.signature;
 
+import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 
 import java.nio.ByteBuffer;

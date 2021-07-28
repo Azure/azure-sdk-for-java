@@ -3,6 +3,9 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessECSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsaSignature;
+
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.Provider;
