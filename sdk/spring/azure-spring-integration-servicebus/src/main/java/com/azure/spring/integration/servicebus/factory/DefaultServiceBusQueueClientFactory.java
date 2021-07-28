@@ -13,10 +13,13 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * Default implementation of {@link ServiceBusQueueClientFactory}. Client will be cached to improve performance
@@ -26,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSenderFactory
     implements ServiceBusQueueClientFactory, DisposableBean {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusQueueClientFactory.class);
     private final Map<String, ServiceBusProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> senderClientMap = new ConcurrentHashMap<>();
 
@@ -42,19 +46,20 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         this.serviceBusClientBuilder.transportType(amqpTransportType);
     }
 
+    private <K, V> void close(Map<K, V> map, Consumer<V> close) {
+        map.values().forEach(it -> {
+            try {
+                close.accept(it);
+            } catch (Exception ex) {
+                LOGGER.warn("Failed to clean service bus queue client factory", ex);
+            }
+        });
+    }
+
     @Override
     public void destroy() {
-        if (!processorClientMap.isEmpty()) {
-            processorClientMap.values()
-                              .stream()
-                              .filter(ServiceBusProcessorClient::isRunning)
-                              .forEach(ServiceBusProcessorClient::close);
-        }
-        if (!senderClientMap.isEmpty()) {
-            senderClientMap.values()
-                           .stream()
-                           .forEach(ServiceBusSenderAsyncClient::close);
-        }
+        close(senderClientMap, ServiceBusSenderAsyncClient::close);
+        close(processorClientMap, ServiceBusProcessorClient::close);
     }
 
     @Override
