@@ -38,7 +38,7 @@ public abstract class AbstractLegacyPropertyEnvironmentPostProcessor implements 
         setConvertedPropertyToEnvironment(environment, properties);
     }
 
-    protected Properties buildLegacyToCurrentPropertyMap(){
+    protected Properties buildLegacyToCurrentPropertyMap() {
         Properties legacyToCurrentMap = new Properties();
         legacyToCurrentMap.putAll(springPropertyMap);
         return legacyToCurrentMap;

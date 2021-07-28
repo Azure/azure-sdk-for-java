@@ -42,6 +42,13 @@ public class PropertyLoader {
         return getProperty(PROJECT_PROPERTY_FILE, "project.version");
     }
 
+    /**
+     * To load a {@link Properties} Object from the properties file under classpath
+     *
+     * @param file The source file to load properties from.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @return The {@link Properties} Object.
+     */
     public static Properties loadProperties(String file) {
         try {
             return PropertiesLoaderUtils.loadProperties(new ClassPathResource(file));

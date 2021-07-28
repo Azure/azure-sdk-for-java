@@ -62,7 +62,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
                                                     Properties legacyToCurrentMap) {
         for (String keyVault : keyVaultNames.split(",")) {
             keyVault = keyVault.trim();
-            for(Map.Entry<Object, Object> mapping : keyvaultPropertySuffixMap.entrySet()) {
+            for (Map.Entry<Object, Object> mapping : keyvaultPropertySuffixMap.entrySet()) {
                 String legacy = createLegacyPropertyName(keyVault, (String) mapping.getKey());
                 String current = createCurrentPropertyName(keyVault, (String) mapping.getValue());
                 legacyToCurrentMap.put(legacy, current);
@@ -126,7 +126,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
             Object legacyPropertyValue = getPropertyValue(legacyPropertyName, environment);
             if (legacyPropertyValue != null) {
                 String currentPropertyName = (String) entry.getValue();
-                Object currentPropertyValue = getPropertyValue(currentPropertyName, environment);;
+                Object currentPropertyValue = getPropertyValue(currentPropertyName, environment);
                 if (currentPropertyValue == null) {
                     properties.put(currentPropertyName, legacyPropertyValue);
                     LOGGER.warn("Deprecated property {} detected! Use {} instead!", legacyPropertyName,
