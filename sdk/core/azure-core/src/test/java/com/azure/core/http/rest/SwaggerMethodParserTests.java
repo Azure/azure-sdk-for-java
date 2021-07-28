@@ -28,6 +28,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
@@ -480,6 +481,12 @@ public class SwaggerMethodParserTests {
         assertEquals(expectedContext, swaggerMethodParser.setContext(arguments));
     }
 
+    @ParameterizedTest
+    @MethodSource("setRequestOptionsSupplier")
+    public void setRequestOptions(SwaggerMethodParser swaggerMethodParser, Object[] arguments, RequestOptions expectedRequestOptions) {
+        assertEquals(expectedRequestOptions, swaggerMethodParser.setRequestOptions(arguments));
+    }
+
     private static Stream<Arguments> setContextSupplier() throws NoSuchMethodException {
         Method method = OperationMethods.class.getDeclaredMethod("getMethod");
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
@@ -491,6 +498,34 @@ public class SwaggerMethodParserTests {
             Arguments.of(swaggerMethodParser, toObjectArray(), Context.NONE),
             Arguments.of(swaggerMethodParser, toObjectArray("string"), Context.NONE),
             Arguments.of(swaggerMethodParser, toObjectArray(context), context)
+        );
+    }
+
+    private static Stream<Arguments> setRequestOptionsSupplier() throws NoSuchMethodException {
+        Method method = OperationMethods.class.getDeclaredMethod("getMethod");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+
+        RequestOptions bodyOptions = new RequestOptions()
+            .setBody(BinaryData.fromString("{\"id\":\"123\"}"));
+
+        RequestOptions headerQueryOptions = new RequestOptions()
+            .addHeader("x-ms-foo", "bar")
+            .addQueryParam("foo", "bar");
+
+        RequestOptions urlOptions = new RequestOptions()
+            .addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
+
+        RequestOptions statusOptionOptions = new RequestOptions()
+            .setThrowOnError(false);
+
+        return Stream.of(
+            Arguments.of(swaggerMethodParser, null, null),
+            Arguments.of(swaggerMethodParser, toObjectArray(), null),
+            Arguments.of(swaggerMethodParser, toObjectArray("string"), null),
+            Arguments.of(swaggerMethodParser, toObjectArray(bodyOptions), bodyOptions),
+            Arguments.of(swaggerMethodParser, toObjectArray("string", headerQueryOptions), headerQueryOptions),
+            Arguments.of(swaggerMethodParser, toObjectArray("string1", "string2", urlOptions), urlOptions),
+            Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)
         );
     }
 

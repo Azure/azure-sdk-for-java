@@ -67,10 +67,6 @@ jobs:
 
       - ${{ parameters.PreTestSteps }}
 
-      - script: |
-          pip install lxml
-        displayName: 'pip install lxml'
-
       - task: PythonScript@0
         # The root pom.xml contains both track 1, data, and track 2, client libraries.
         # This task calls a Python script that will go through all of the pom files

@@ -22,10 +22,7 @@ from datetime import timedelta
 import os
 import time
 import json
-import re
-import lxml.etree as ET
-
-version_update_pattern = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
+import xml.etree.ElementTree as ET
 
 # Only azure-client-sdk-parent and spring-boot-starter-parent are valid parent POMs for Track 2 libraries.
 valid_parents = ['azure-client-sdk-parent', 'spring-boot-starter-parent', 'azure-spring-boot-test-parent']
@@ -65,8 +62,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str):
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_source_version = load_client_artifact_identifiers()
 
-    project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping, beta_dependencies \
-        = create_dependency_and_path_mappings(project_list_identifiers, artifact_identifier_to_source_version)
+    project_dependencies_mapping, dependency_to_project_mapping, project_to_pom_path_mapping = create_dependency_and_path_mappings(project_list_identifiers, artifact_identifier_to_source_version)
 
     dependent_modules = []
 
@@ -105,8 +101,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str):
         fromSourcePom.write(pom_file_start)
 
         for module in modules:
-            if module not in beta_dependencies:
-                fromSourcePom.write('    <module>{}</module>\n'.format(module))
+            fromSourcePom.write('    <module>{}</module>\n'.format(module))
 
         fromSourcePom.write(pom_file_end)
 
@@ -137,7 +132,6 @@ def create_dependency_and_path_mappings(project_list_identifiers: list, artifact
     project_dependencies_mapping = {}
     dependency_mapping = {}
     module_path_mapping = {}
-    beta_dependencies = []
 
     for root, _, files in os.walk(root_path):
         for file_name in files:
@@ -148,16 +142,15 @@ def create_dependency_and_path_mappings(project_list_identifiers: list, artifact
                 add_project_to_dependency_and_module_mappings(file_path, project_dependencies_mapping,
                                                               project_list_identifiers,
                                                               artifact_identifier_to_source_version, dependency_mapping,
-                                                              module_path_mapping, beta_dependencies)
+                                                              module_path_mapping)
 
-    return project_dependencies_mapping, dependency_mapping, module_path_mapping, beta_dependencies
+    return project_dependencies_mapping, dependency_mapping, module_path_mapping
 
 # Function that constructs the project dependencies map and adds to dependency to project map and project to module relative path map for a track 2 project.
 def add_project_to_dependency_and_module_mappings(file_path: str, project_dependencies_mapping: dict,
                                                   project_list_identifiers: list,
                                                   artifact_identifier_to_source_version: dict,
-                                                  dependency_mapping: dict, module_path_mapping: dict,
-                                                  beta_dependencies: list):
+                                                  dependency_mapping: dict, module_path_mapping: dict):
     if 'eng' in file_path.split(os.sep):
         return
 
@@ -186,12 +179,9 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
         if not dependency_identifier in artifact_identifier_to_source_version:
             continue
 
-        dependency_version, is_beta_dependency = get_dependency_version(dependency)
-        if is_beta_dependency:
-            print(module_path_mapping)
-            beta_dependencies.append(module_path_mapping[dependency_identifier])
+        dependency_version = get_dependency_version(dependency)
 
-        if dependency_version != artifact_identifier_to_source_version[dependency_identifier] or is_beta_dependency:
+        if dependency_version != artifact_identifier_to_source_version[dependency_identifier]:
             continue
 
         if not dependency_identifier in dependency_mapping:
@@ -246,21 +236,7 @@ def get_dependency_version(element: ET.Element):
     if dependency_version is None:
         return None
 
-    comment = get_version_tag(element)
-
-    is_beta_dependency = False
-    match = version_update_pattern.search(comment)
-    if match and match.group(1).startswith('beta_'):
-        is_beta_dependency = True
-
-    return dependency_version.text, is_beta_dependency
-
-# Get the version tag that is included as comment along with the version
-def get_version_tag(element: ET.Element):
-    for i in range(0, len(element)):
-        if callable(element[i].tag) and element[i].tag.func_name == 'Comment':
-            return element[i].text
-    return 'None'
+    return dependency_version.text
 
 # Helper function for finding an XML element which handles adding the namespace.
 def element_find(element: ET.Element, path: str):

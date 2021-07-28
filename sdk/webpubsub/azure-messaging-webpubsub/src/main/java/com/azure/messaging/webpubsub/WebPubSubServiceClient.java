@@ -138,7 +138,7 @@ public final class WebPubSubServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeClientConnectionWithResponse(
+    public Response<Void> closeConnectionWithResponse(
             String connectionId, RequestOptions requestOptions, Context context) {
         return this.serviceClient.closeClientConnectionWithResponse(hub, connectionId, requestOptions, context);
     }

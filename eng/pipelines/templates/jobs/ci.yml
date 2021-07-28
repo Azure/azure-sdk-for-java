@@ -66,10 +66,6 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
-      - script: |
-          pip install lxml
-        displayName: 'pip install lxml'
-
       # This step needs to run before we update to using dev versions otherwise dependency
       # check in the script will not fully work because the versions will mismatch
       - task: PythonScript@0

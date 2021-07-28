@@ -134,7 +134,7 @@ public final class WebPubSubServiceAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeClientConnectionWithResponse(
+    public Mono<Response<Void>> closeConnectionWithResponse(
             String connectionId, RequestOptions requestOptions) {
         return this.serviceClient.closeClientConnectionWithResponseAsync(hub, connectionId, requestOptions);
     }
