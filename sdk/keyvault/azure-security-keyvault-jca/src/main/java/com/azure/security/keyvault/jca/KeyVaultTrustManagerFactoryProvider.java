@@ -10,7 +10,7 @@ import java.security.Provider;
 /**
  * The Azure Key Vault TrustManagerFactory provider.
  */
-public class KeyVaultTrustManagerFactoryProvider extends Provider {
+public final class KeyVaultTrustManagerFactoryProvider extends Provider {
 
     /**
      * Stores the serial version UID.

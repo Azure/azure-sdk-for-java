@@ -8,7 +8,7 @@ import java.security.KeyStore;
 /**
  * The Azure Key Vault LoadStoreParameter of the KeyStoreSpi.
  */
-public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
+public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
 
     /**
      * Stores the URI.

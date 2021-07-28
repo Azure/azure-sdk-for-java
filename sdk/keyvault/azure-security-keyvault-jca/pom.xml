@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
@@ -39,6 +39,16 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <configuration>
+                    <excludes>
+                        <exclude>module-info.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
                 <executions>
@@ -49,14 +59,6 @@
                         <configuration>
                             <createSourcesJar>true</createSourcesJar>
                             <shadeSourcesContent>true</shadeSourcesContent>
-			                      <filters>
-                                <filter>
-                                    <artifact>com.azure:azure-security-keyvault-jca</artifact>
-                                    <excludes>
-                                        <exclude>module-info.java</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
@@ -99,7 +101,7 @@
               <version>1.0.0.RC1</version>  <!-- {x-version-update;org.moditect:moditect-maven-plugin;external_dependency} -->
               <executions>
                 <execution>
-                  <id>add-module-infos</id>
+                  <id>add-module-info</id>
                   <phase>package</phase>
                   <goals>
                     <goal>add-module-info</goal>
@@ -108,7 +110,7 @@
                     <overwriteExistingFiles>true</overwriteExistingFiles>
                     <module>
                       <moduleInfoFile>
-                        src/main/module-info.java
+                        src/main/resources/module-info.java
                       </moduleInfoFile>
                     </module>
                   </configuration>

@@ -55,7 +55,6 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivity;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -69,11 +68,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class SqlServerOperationsTests extends SqlServerTest {
@@ -1653,9 +1648,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void testRandomSku() {
-        List<DatabaseSku> databaseSkus = Lists.newArrayList(DatabaseSku.getAll().toArray(new DatabaseSku[0]));
+        List<DatabaseSku> databaseSkus = new LinkedList<>(Arrays.asList(DatabaseSku.getAll().toArray(new DatabaseSku[0])));
         Collections.shuffle(databaseSkus);
-        List<ElasticPoolSku> elasticPoolSkus = Lists.newArrayList(ElasticPoolSku.getAll().toArray(new ElasticPoolSku[0]));
+        List<ElasticPoolSku> elasticPoolSkus = new LinkedList<>(Arrays.asList(ElasticPoolSku.getAll().toArray(new ElasticPoolSku[0])));
         Collections.shuffle(elasticPoolSkus);
 
         sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()

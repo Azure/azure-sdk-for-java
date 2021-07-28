@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.AccountKind;
 import com.azure.storage.blob.models.SkuName;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
-import org.apache.http.HttpException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Health;
@@ -104,7 +103,7 @@ public class BlobStorageHealthIndicatorTest {
             BlobServiceAsyncClient mockAsyncClient = mock(BlobServiceAsyncClient.class);
             when(mockAsyncClient.getAccountUrl()).thenReturn(MOCK_URL);
             when(mockAsyncClient.getAccountInfo())
-                .thenReturn(Mono.error(new HttpException("The gremlins have cut the cable.")));
+                .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
             when(mockClientBuilder.buildAsyncClient()).thenReturn(mockAsyncClient);
 
             return mockClientBuilder;

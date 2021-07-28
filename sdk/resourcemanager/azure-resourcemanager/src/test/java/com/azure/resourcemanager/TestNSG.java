@@ -10,7 +10,6 @@ import com.azure.resourcemanager.network.models.NetworkSecurityRule;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.core.management.Region;
-import com.google.common.util.concurrent.SettableFuture;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
@@ -26,7 +25,6 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         final String nicName = "nic" + postFix;
         final String asgName = nsgs.manager().resourceManager().internalContext().randomResourceName("asg", 8);
         final Region region = Region.US_WEST;
-        final SettableFuture<NetworkSecurityGroup> nsgFuture = SettableFuture.create();
 
         ApplicationSecurityGroup asg =
             nsgs
@@ -63,11 +61,9 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .createAsync();
 
         resourceStream
-            .doOnSuccess((_ignore) -> System.out.print("completed"))
-            .doOnError(throwable -> nsgFuture.setException(throwable))
-            .subscribe(nsg -> nsgFuture.set(nsg));
+            .doOnSuccess((_ignore) -> System.out.print("completed"));
 
-        NetworkSecurityGroup nsg = nsgFuture.get();
+        NetworkSecurityGroup nsg = resourceStream.block();
 
         NetworkInterface nic =
             nsgs

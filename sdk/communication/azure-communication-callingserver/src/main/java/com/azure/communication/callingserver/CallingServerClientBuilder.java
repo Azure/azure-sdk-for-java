@@ -5,7 +5,7 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImplBuilder;
-import com.azure.communication.common.implementation.RedirectPolicy;
+import com.azure.communication.callingserver.implementation.RedirectPolicy;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
