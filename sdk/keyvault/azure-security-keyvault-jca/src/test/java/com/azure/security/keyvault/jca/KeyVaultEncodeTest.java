@@ -14,43 +14,45 @@ import java.util.Random;
 
 public class KeyVaultEncodeTest {
 
+    private static final byte TEST_TAG = '&';
+
     @Test
     public void buildLengthBytesTest() {
         Random random = new Random();
         int a = random.nextInt(1 << 7);
-        byte[] result = KeyVaultEncode.buildLengthBytes((byte) a, a);
+        byte[] result = KeyVaultEncode.buildLengthBytes(TEST_TAG, a);
         Assertions.assertEquals(result.length, 2);
-        Assertions.assertEquals(result[0], (byte) a);
+        Assertions.assertEquals(result[0], TEST_TAG);
         Assertions.assertEquals(result[1], (byte) a);
 
         a = random.nextInt((1 << 8) - (1 << 7)) + (1 << 7);
-        result = KeyVaultEncode.buildLengthBytes((byte) a, a);
+        result = KeyVaultEncode.buildLengthBytes(TEST_TAG, a);
         Assertions.assertEquals(result.length, 3);
-        Assertions.assertEquals(result[0], (byte) a);
+        Assertions.assertEquals(result[0], TEST_TAG);
         Assertions.assertEquals(result[1], (byte) 0x081);
         Assertions.assertEquals(result[2], (byte) a);
 
         a = random.nextInt((1 << 16) - (1 << 8)) + (1 << 8);
-        result = KeyVaultEncode.buildLengthBytes((byte) a, a);
+        result = KeyVaultEncode.buildLengthBytes(TEST_TAG, a);
         Assertions.assertEquals(result.length, 4);
-        Assertions.assertEquals(result[0], (byte) a);
+        Assertions.assertEquals(result[0], TEST_TAG);
         Assertions.assertEquals(result[1], (byte) 0x082);
         Assertions.assertEquals(result[2], (byte) (a >> 8));
         Assertions.assertEquals(result[3], (byte) a);
 
         a = random.nextInt((1 << 24) - (1 << 16)) + (1 << 16);
-        result = KeyVaultEncode.buildLengthBytes((byte) a, a);
+        result = KeyVaultEncode.buildLengthBytes(TEST_TAG, a);
         Assertions.assertEquals(result.length, 5);
-        Assertions.assertEquals(result[0], (byte) a);
+        Assertions.assertEquals(result[0], TEST_TAG);
         Assertions.assertEquals(result[1], (byte) 0x083);
         Assertions.assertEquals(result[2], (byte) (a >> 16));
         Assertions.assertEquals(result[3], (byte) (a >> 8));
         Assertions.assertEquals(result[4], (byte) a);
 
         a = random.nextInt((1 << 30) - (1 << 24)) + (1 << 24);
-        result = KeyVaultEncode.buildLengthBytes((byte) a, a);
+        result = KeyVaultEncode.buildLengthBytes(TEST_TAG, a);
         Assertions.assertEquals(result.length, 6);
-        Assertions.assertEquals(result[0], (byte) a);
+        Assertions.assertEquals(result[0], TEST_TAG);
         Assertions.assertEquals(result[1], (byte) 0x084);
         Assertions.assertEquals(result[2], (byte) (a >> 24));
         Assertions.assertEquals(result[3], (byte) (a >> 16));

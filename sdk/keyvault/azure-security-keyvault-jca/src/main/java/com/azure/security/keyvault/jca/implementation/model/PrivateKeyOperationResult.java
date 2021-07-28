@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca.model;
+package com.azure.security.keyvault.jca.implementation.model;
 
 import java.io.Serializable;
 
@@ -9,11 +9,6 @@ import java.io.Serializable;
  * Result of sign certificate
  */
 public class PrivateKeyOperationResult implements Serializable {
-
-    /**
-     * Stores the serial version UID.
-     */
-    private static final long serialVersionUID = 30_10_00;
 
     private String kid;
 

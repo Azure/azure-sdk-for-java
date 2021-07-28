@@ -2,14 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.signature;
 
-import java.security.InvalidParameterException;
-import java.security.PublicKey;
-import java.security.SignatureSpi;
+import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
+
+import java.nio.ByteBuffer;
+import java.security.*;
 
 /**
  * KeyVault Signature to key less sign
  */
 public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
+
+    // message digest implementation we use for hashing the data
+    protected MessageDigest messageDigest;
+
+    protected String keyId;
 
     // After throw UnsupportedOperationException, other methods will be called.
     // such as RSAPSSSignature#engineInitVerify.
@@ -41,6 +47,45 @@ public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
     protected void engineSetParameter(String param, Object value)
         throws InvalidParameterException {
         throw new UnsupportedOperationException("setParameter() not supported");
+    }
+
+    // After throw UnsupportedOperationException, other methods will be called.
+    // such as RSAPSSSignature#engineInitSign.
+    @Override
+    protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
+        if (privateKey instanceof KeyVaultPrivateKey) {
+            keyId = ((KeyVaultPrivateKey) privateKey).getKid();
+        } else {
+            throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
+        }
+    }
+
+    @Override
+    protected void engineInitSign(PrivateKey privateKey) {
+        engineInitSign(privateKey, null);
+    }
+
+    /**
+     * Get the message digest value.
+     * @return the message digest value.
+     */
+    protected byte[] getDigestValue() {
+        return messageDigest.digest();
+    }
+
+    @Override
+    protected void engineUpdate(byte b) {
+        this.messageDigest.update(b);
+    }
+
+    @Override
+    protected void engineUpdate(byte[] b, int off, int len) {
+        this.messageDigest.update(b, off, len);
+    }
+
+    @Override
+    protected void engineUpdate(ByteBuffer b) {
+        this.messageDigest.update(b);
     }
 
 }

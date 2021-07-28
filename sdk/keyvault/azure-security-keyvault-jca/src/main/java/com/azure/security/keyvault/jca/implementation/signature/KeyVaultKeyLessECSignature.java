@@ -25,8 +25,6 @@ import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.crea
  * KeyVault EC signature to support key less
  */
 public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLessSignature {
-    // message digest implementation we use
-    private final MessageDigest messageDigest;
 
     // signature parameters
     private ECParameterSpec signatureParameters = null;
@@ -34,8 +32,6 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
     private final String keyVaultDigestName;
 
     private KeyVaultClient keyVaultClient;
-
-    private String keyId;
 
     /**
      * Constructs a new KeyVaultKeyLessECSignature that will use the specified digest
@@ -53,49 +49,6 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
     //add this for test
     void setKeyVaultClient(KeyVaultClient keyVaultClient) {
         this.keyVaultClient = keyVaultClient;
-    }
-
-    @Override
-    protected void engineInitSign(PrivateKey privateKey) {
-        engineInitSign(privateKey, null);
-    }
-
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as RSAPSSSignature#engineInitSign.
-    @Override
-    protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
-        if (privateKey instanceof KeyVaultPrivateKey) {
-            keyId = ((KeyVaultPrivateKey) privateKey).getKid();
-        } else {
-            throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
-        }
-    }
-
-    /**
-     * Get the message digest value.
-     * @return the message digest value.
-     */
-    protected byte[] getDigestValue() {
-        return messageDigest.digest();
-    }
-
-    @Override
-    protected void engineUpdate(byte b) {
-        messageDigest.update(b);
-    }
-
-    @Override
-    protected void engineUpdate(byte[] b, int off, int len) {
-        messageDigest.update(b, off, len);
-    }
-
-    @Override
-    protected void engineUpdate(ByteBuffer byteBuffer) {
-        int len = byteBuffer.remaining();
-        if (len <= 0) {
-            return;
-        }
-        messageDigest.update(byteBuffer);
     }
 
     @Override
@@ -131,41 +84,4 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
             throw new ProviderException("Error retrieving EC parameters", e);
         }
     }
-
-    /**
-     * key vault SHA384
-     */
-    public static final class KeyVaultSHA384 extends KeyVaultKeyLessECSignature {
-        /**
-         * support SHA-384
-         */
-        public KeyVaultSHA384() {
-            super("SHA-384", "ES384");
-        }
-    }
-
-    /**
-     * key vault SHA256
-     */
-    public static final class KeyVaultSHA256 extends KeyVaultKeyLessECSignature {
-        /**
-         * support SHA-256
-         */
-        public KeyVaultSHA256() {
-            super("SHA-256", "ES256");
-        }
-    }
-
-    /**
-     * key vault SHA512
-     */
-    public static final class KeyVaultSHA512 extends KeyVaultKeyLessECSignature {
-        /**
-         * support SHA-512
-         */
-        public KeyVaultSHA512() {
-            super("SHA-512", "ES512");
-        }
-    }
-
 }

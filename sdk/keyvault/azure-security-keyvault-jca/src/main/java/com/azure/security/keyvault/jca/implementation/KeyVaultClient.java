@@ -15,7 +15,7 @@ import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
-import com.azure.security.keyvault.jca.model.PrivateKeyOperationResult;
+import com.azure.security.keyvault.jca.implementation.model.PrivateKeyOperationResult;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

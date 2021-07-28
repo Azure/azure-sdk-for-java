@@ -344,6 +344,7 @@ certificate will be added with the alias of `mycert`.
 You can set the private key as [non-exportable] to ensure the security of the key.
 
 Note if you want to use a key less certificate, you must add `sign` permissions to the principal.
+![Sign To Principal](resources/SignToPrincipal.png)
 
 To grant access use the command line below:
 ```shell

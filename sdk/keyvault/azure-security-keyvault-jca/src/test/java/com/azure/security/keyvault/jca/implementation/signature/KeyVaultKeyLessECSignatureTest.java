@@ -32,7 +32,7 @@ public class KeyVaultKeyLessECSignatureTest {
     @BeforeEach
     public void before() {
         System.setProperty("azure.keyvault.uri", KEY_VAULT_TEST_URI_GLOBAL);
-        keyVaultKeyLessECSignature = new KeyVaultKeyLessECSignature.KeyVaultSHA256();
+        keyVaultKeyLessECSignature = new KeyVaultKeyLessEcSha256Signature();
     }
 
     private final PublicKey publicKey = new PublicKey() {
@@ -96,17 +96,15 @@ public class KeyVaultKeyLessECSignatureTest {
 
     @Test
     public void setDigestNameAndEngineSignTest() {
-        keyVaultKeyLessECSignature = new KeyVaultKeyLessECSignature.KeyVaultSHA256();
+        keyVaultKeyLessECSignature = new KeyVaultKeyLessEcSha256Signature();
         when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES256"), anyString(), ArgumentMatchers.eq(null))).thenReturn(signedWithES256);
         keyVaultKeyLessECSignature.setKeyVaultClient(keyVaultClient);
         Assertions.assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES256), keyVaultKeyLessECSignature.engineSign());
 
-        keyVaultKeyLessECSignature = new KeyVaultKeyLessECSignature.KeyVaultSHA384();
+        keyVaultKeyLessECSignature = new KeyVaultKeyLessEcSha384Signature();
         keyVaultKeyLessECSignature.setKeyVaultClient(keyVaultClient);
         when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES384"), anyString(), ArgumentMatchers.eq(null))).thenReturn(signedWithES384);
         assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES384), keyVaultKeyLessECSignature.engineSign());
     }
-
-
 
 }

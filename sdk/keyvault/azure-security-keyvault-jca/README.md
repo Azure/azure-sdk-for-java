@@ -125,25 +125,26 @@ azure:
 ### Key-Less certificates
 You can set the private key as [non-exportable] to ensure the security of the key.
 
-Note if you want to use a key less certificate, you must add `sign` permissions to the principal.
+Note if you want to use a key less certificate, you must add `sign` permission to the principal.
+![Sign To Principal](resources/SignToPrincipal.png)
 
 ### Supported key type
-Content Type | Key Type | Key Size or Elliptic curve name | Support |
--------------|----------|---------------------------------|-------- |
-PKCS #12     | RSA      | 2048                            | ✔       |     
-PKCS #12     | RSA      | 3072                            | ✔       |
-PKCS #12     | RSA      | 4096                            | ✔       |
-PKCS #12     | EC       | P-256                           | ✔       |
-PKCS #12     | EC       | P-384                           | ✔       |
-PKCS #12     | EC       | P-521                           | ✔       |
-PKCS #12     | EC       | P-256K                          | ✘       |
-PEM          | RSA      | 2048                            | ✔       |
-PEM          | RSA      | 3072                            | ✔       |
-PEM          | RSA      | 4096                            | ✔       |
-PEM          | EC       | P-256                           | ✔       |
-PEM          | EC       | P-384                           | ✔       |
-PEM          | EC       | P-521                           | ✔       | 
-PEM          | EC       | P-256K                          | ✘       |
+Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |
+-------------|----------|---------------------------------|---------------- |-------- |
+PKCS #12     | RSA      | 2048                            | RSASSA-PSS      | ✔       |     
+PKCS #12     | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PKCS #12     | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PKCS #12     | EC       | P-256                           | SHA256withECDSA | ✔       |
+PKCS #12     | EC       | P-384                           | SHA384withECDSA | ✔       |
+PKCS #12     | EC       | P-521                           | SHA512withECDSA | ✔       |
+PKCS #12     | EC       | P-256K                          |                 | ✘       |
+PEM          | RSA      | 2048                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PEM          | EC       | P-256                           | SHA256withECDSA | ✔       |
+PEM          | EC       | P-384                           | SHA384withECDSA | ✔       |
+PEM          | EC       | P-521                           | SHA512withECDSA | ✔       | 
+PEM          | EC       | P-256K                          |                 | ✘       |
 
 ## Troubleshooting
 ### General

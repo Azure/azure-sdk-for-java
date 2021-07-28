@@ -3,14 +3,9 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
-import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
-import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature;
 
-import java.nio.ByteBuffer;
 import java.security.MessageDigest;
-import java.security.PrivateKey;
-import java.security.SecureRandom;
 import java.security.NoSuchAlgorithmException;
 import java.security.AlgorithmParameters;
 import java.security.GeneralSecurityException;
@@ -27,16 +22,11 @@ import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.crea
  */
 public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignature {
 
-    // message digest implementation we use for hashing the data
-    private MessageDigest messageDigest;
-
     // PSS parameters from signatures and keys respectively
     // required for PSS signatures
     private PSSParameterSpec signatureParameters = null;
 
     private final KeyVaultClient keyVaultClient;
-
-    private String keyId;
 
     /**
      * Construct a new KeyVaultKeyLessRsaSignature
@@ -52,44 +42,6 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
     public KeyVaultKeyLessRsaSignature(KeyVaultClient keyVaultClient) {
         this.keyVaultClient = keyVaultClient;
         this.messageDigest = null;
-    }
-
-    @Override
-    protected void engineInitSign(PrivateKey privateKey) {
-        engineInitSign(privateKey, null);
-    }
-
-    // After throw UnsupportedOperationException, other methods will be called.
-    // such as RSAPSSSignature#engineInitSign..
-    @Override
-    protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
-        if (privateKey instanceof KeyVaultPrivateKey) {
-            keyId = ((KeyVaultPrivateKey) privateKey).getKid();
-        } else {
-            throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
-        }
-    }
-
-    /**
-     * Return the message digest value.
-     */
-    private byte[] getDigestValue() {
-        return this.messageDigest.digest();
-    }
-
-    @Override
-    protected void engineUpdate(byte b) {
-        this.messageDigest.update(b);
-    }
-
-    @Override
-    protected void engineUpdate(byte[] b, int off, int len) {
-        this.messageDigest.update(b, off, len);
-    }
-
-    @Override
-    protected void engineUpdate(ByteBuffer b) {
-        this.messageDigest.update(b);
     }
 
     @Override

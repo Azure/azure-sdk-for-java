@@ -634,17 +634,6 @@
         "old": "field com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY",
         "new": "field com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY",
         "justification": "Old field value spelled incorrectly and was used in preview version of tracing package"
-      },
-      {
-        "code": "java.field.serialVersionUIDChanged",
-        "old": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
-        "new": "field com.azure.security.keyvault.jca.model.KeyProperties.serialVersionUID",
-        "justification": "Make which same to this module's version"
-      },
-      {
-        "code": "java.method.addedToInterface",
-        "new": "method java.lang.String com.azure.security.keyvault.jca.RestClient::post(java.lang.String, java.util.Map<java.lang.String, java.lang.String>, java.lang.String, java.lang.String)",
-        "justification": "Method add to RestClient"
       }
     ]
   }
