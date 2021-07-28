@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.batch.FlushBuffersItemOperation
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosItemOperation, ThrottlingRetryOptions}
 import org.apache.spark.broadcast.Broadcast
-import reactor.core.publisher.FluxSink
 
 import java.time.{Duration, Instant}
 import java.util.ConcurrentModificationException

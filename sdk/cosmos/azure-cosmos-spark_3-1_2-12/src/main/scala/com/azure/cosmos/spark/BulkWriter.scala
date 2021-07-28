@@ -283,7 +283,7 @@ class BulkWriter(container: CosmosAsyncContainer,
               if (!awaitCompleted) {
                 val sb = new StringBuilder()
                 //scalastyle:off magic.number
-                val maxItemOperationsToShowInErrorMessage = 1000
+                val maxItemOperationsToShowInErrorMessage = 10
                 //scalastyle:on magic.number
                 activeOperationsSnapshot
                   .take(maxItemOperationsToShowInErrorMessage)
@@ -314,7 +314,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                 if (numberOfIntervalsWithIdenticalActiveOperationSnapshots >= 15) {
                   errorCaptureFirstException.set(new IllegalStateException(
                     s"Stale bulk ingestion identified - the following active operations have not been completed " +
-                      s"(first 1000 shown) or progressed after 15 minutes: $sb"
+                      s"(first ${maxItemOperationsToShowInErrorMessage} shown) or progressed after 15 minutes: $sb"
                   ))
                 }
               }
