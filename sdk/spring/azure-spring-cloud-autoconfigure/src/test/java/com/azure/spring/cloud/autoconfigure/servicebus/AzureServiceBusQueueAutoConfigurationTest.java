@@ -140,6 +140,7 @@ public class AzureServiceBusQueueAutoConfigurationTest {
                                               SERVICE_BUS_PROPERTY_PREFIX + "retry-options.maxDelay=200S",
                                               SERVICE_BUS_PROPERTY_PREFIX + "retry-options.tryTimeout=300S",
                                               SERVICE_BUS_PROPERTY_PREFIX + "retry-options.Mode=FIXED")
+                          .withUserConfiguration(AzureServiceBusAutoConfiguration.class)
                           .run(context -> {
                               assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMaxRetries()).isEqualTo(5);
                               assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getDelay().getSeconds()).isEqualTo(100L);
