@@ -1,48 +1,61 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "baseName": {
-            "type": "string"
-        },
-        "endpointSuffix": {
-            "type": "string",
-            "defaultValue": "core.windows.net"
-        },
-        "tenantId": {
-            "type": "string",
-            "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-            "metadata": {
-                "description": "The tenant ID to which the application and resources belong."
-            }
-        },
-        "testApplicationOid": {
-            "type": "string",
-            "metadata": {
-                "description": "The principal to assign the role to. This is application object id."
-            }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "string"
     },
-    "variables": {
-        "storageApiVersion": "2019-06-01",
-        "keyVaultApiVersion": "2016-10-01",
-        "authorizationApiVersion": "2018-09-01-preview",
-        "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
-        "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-        "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
-        "primaryAccountName": "[concat('prim', parameters('baseName'))]",
-        "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
-        "softDeleteAccountName": "[concat('sftdl', parameters('baseName'))]",
-        "premiumAccountName": "[concat('prem', parameters('baseName'))]",
-        "versionedAccountName": "[concat('ver', parameters('baseName'))]",
-        "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
-        "dataLakeSoftDeleteAccountName": "[concat('dtlksd', parameters('baseName'))]",
-        "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
-        "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
-        "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
-        "location": "[resourceGroup().location]",
-        "resourceGroupName": "[resourceGroup().name]",
-        "subscriptionId": "[subscription().subscriptionId]"
+    "endpointSuffix": {
+      "type": "string",
+      "defaultValue": "core.windows.net"
+    },
+    "tenantId": {
+      "type": "string",
+      "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+      "metadata": {
+        "description": "The tenant ID to which the application and resources belong."
+      }
+    },
+    "testApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal to assign the role to. This is application object id."
+      }
+    },
+    "enableStorageVersioning": {
+      "type": "bool",
+      "metadata": {
+        "description": "Enable Versioning enabled setting, default value is true"
+      },
+      "defaultValue": true
+    }
+  },
+  "variables": {
+    "storageApiVersion": "2019-06-01",
+    "keyVaultApiVersion": "2016-10-01",
+    "authorizationApiVersion": "2018-09-01-preview",
+    "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+    "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
+    "primaryAccountName": "[concat('prim', parameters('baseName'))]",
+    "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
+    "softDeleteAccountName": "[concat('sftdl', parameters('baseName'))]",
+    "premiumAccountName": "[concat('prem', parameters('baseName'))]",
+    "versionedAccountName": "[concat('ver', parameters('baseName'))]",
+    "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
+    "dataLakeSoftDeleteAccountName": "[concat('dtlksd', parameters('baseName'))]",
+    "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
+    "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
+    "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
+    "location": "[resourceGroup().location]",
+    "resourceGroupName": "[resourceGroup().name]",
+    "subscriptionId": "[subscription().subscriptionId]",
+    "nullProperties": {},
+    "containerDeleteRetentionPolicyProperties": {
+      "containerDeleteRetentionPolicy": {
+        "enabled": true,
+        "days": 1
+      }
     },
     "resources": [
         {
@@ -628,14 +641,6 @@
         "KEYVAULT_URL":{
             "type": "string",
             "value": "[variables('azureKeyVaultUrl')]"
-        },
-        "STORAGE_RESOURCE_GROUP_NAME": {
-            "type": "string",
-            "value": "[variables('resourceGroupName')]"
-        },
-        "STORAGE_SUBSCRIPTION_ID": {
-            "type": "string",
-            "value": "[variables('subscriptionId')]"
         }
     }
 }
