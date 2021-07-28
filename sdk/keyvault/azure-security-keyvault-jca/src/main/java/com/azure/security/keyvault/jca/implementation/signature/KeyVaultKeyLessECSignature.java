@@ -3,15 +3,11 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
-import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 
-import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.ProviderException;
-import java.security.PrivateKey;
-import java.security.SecureRandom;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.AlgorithmParameters;
 import java.security.spec.AlgorithmParameterSpec;
