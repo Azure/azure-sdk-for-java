@@ -9,10 +9,13 @@ import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.File;
 import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.util.List;
 import java.util.Objects;
 import java.util.HashMap;
@@ -118,8 +121,8 @@ public final class SpecificPathCertificates implements AzureCertificates {
             certificate = (X509Certificate) cf.generateCertificate(bytes);
             if (certificate != null) {
                 setCertificateEntry(alias, certificate);
-                LOGGER.log(INFO, "Load file system certificate: {0} from: {1}",
-                    new Object[]{alias, file.getName()});
+                LOGGER.log(INFO, "Load file system certificate: {0} with thumbprint {1} from: {2}",
+                    new Object[]{alias, getThumbprint(certificate) ,file.getName()});
             }
         } catch (CertificateException e) {
             LOGGER.log(WARNING, "Unable to load specific path certificate from: " + file.getName(), e);
@@ -138,6 +141,35 @@ public final class SpecificPathCertificates implements AzureCertificates {
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to determine certificates to specific path", ioe);
         }
+    }
+
+    /**
+     * Get thumbprint for a certificate
+     *
+     * @param cert certificate value
+     * @return certificate thumbprint
+     */
+    public String getThumbprint(Certificate cert) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] der = cert.getEncoded();
+            md.update(der);
+            byte[] digest = md.digest();
+            return printHexBinary(digest);
+        } catch (NoSuchAlgorithmException | CertificateEncodingException e) {
+            LOGGER.log(WARNING, "Unable to get thumbprint for certificate", e);
+        }
+        return "";
+    }
+
+    public String printHexBinary(byte[] data) {
+        char[] hexCode = "0123456789ABCDEF".toCharArray();
+        StringBuilder builder = new StringBuilder(data.length * 2);
+        for (byte b : data) {
+            builder.append(hexCode[b >> 4 & 15]);
+            builder.append(hexCode[b & 15]);
+        }
+        return builder.toString();
     }
 
     /**
