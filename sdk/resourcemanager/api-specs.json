@@ -166,7 +166,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-features-2015-12"
+    "args": "--tag=package-features-2021-07"
   },
   "graphrbac": {
     "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager",
