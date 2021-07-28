@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.test.shared.azurite.AzuriteFixture
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
 import spock.lang.ResourceLock
@@ -19,12 +18,14 @@ import spock.lang.Specification
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 
+/**
+ * This test requires Azurite running in background.
+ * See https://github.com/Azure/Azurite
+ */
 @ResourceLock("LargeBlobTest")
 @LiveOnly
 class LargeBlobTest extends Specification {
 
-    @Shared
-    AzuriteFixture azuriteFixture
     @Shared
     BlobServiceClient blobServiceClient
     @Shared
@@ -37,15 +38,10 @@ class LargeBlobTest extends Specification {
     String blobName
 
     def setupSpec() {
-        //azuriteFixture = new AzuriteFixture()
         def blobServiceClientBuilder = new BlobServiceClientBuilder()
             .connectionString("UseDevelopmentStorage=true")
         blobServiceClient = blobServiceClientBuilder.buildClient()
         blobServiceAsyncClient = blobServiceClientBuilder.buildAsyncClient()
-    }
-
-    def cleanupSpec() {
-        //azuriteFixture.close()
     }
 
     def setup() {
