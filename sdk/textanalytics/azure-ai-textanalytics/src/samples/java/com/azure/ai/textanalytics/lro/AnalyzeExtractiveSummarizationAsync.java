@@ -14,9 +14,7 @@ import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.PagedResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,31 +35,29 @@ public class AnalyzeExtractiveSummarizationAsync {
                                               .endpoint("{endpoint}")
                                               .buildAsyncClient();
 
-        List<TextDocumentInput> documents = new ArrayList<>();
-        for (int i = 0; i < 21; i++) {
-            documents.add(new TextDocumentInput(Integer.toString(i),
-                "The government of British Prime Minster Theresa May has been plunged into turmoil with "
-                    + "the resignation of two senior Cabinet ministers in a deep split over her Brexit strategy."
-                    + "The Foreign Secretary Boris Johnson, quit on Monday, hours after the resignation late on"
-                    + "Sunday night of the minister in charge of Brexit negotiations, David Davis.  Their"
-                    + "decision to leave the government came three days after May appeared to have agreed a"
-                    + "deal with her fractured Cabinet on the UK's post-Brexit relationship with the EU."
-                    + "That plan is now in tatters and her political future appears uncertain."
-                    + "May appeared in Parliament on Monday afternoon to defend her plan, minutes after"
-                    + "Downing Street confirmed the departure of Johnson. May acknowledged the splits in"
-                    + "her statement to MPs, saying of the ministers who quit: \"We do not agree about the"
-                    + "best way of delivering our shared commitment to honoring the result of the referendum.\""
-                    + "The Prime Minister's latest plitical drama began late on Sunday night when Davis quit,"
-                    + "declaring he could not support May's Brexit plan.  He said it involved too close a "
-                    + "relationship with the EU and gave only an illusion of control being returned to the UK"
-                    + "after it left the EU. \"It seems to me we're giving too much away, too easily, and"
-                    + "that's a dangerous strategy at this time,\" Davis said in a BBC radio interview Monday"
-                    + "morning. Johnson's resignation came Monday afternoon local time, just before the Prime"
-                    + " Minister was due to make a scheduled statement in Parliament. \"This afternoon, the Prime"
-                    + "Minister accepted the resignation of Boris Johnson as Foreign Secretary,\" a"
-                    + "statement from Downing Street said."
-            ));
-        }
+        List<String> documents = new ArrayList<>();
+
+        documents.add(
+            "The government of British Prime Minster Theresa May has been plunged into turmoil with "
+                + "the resignation of two senior Cabinet ministers in a deep split over her Brexit strategy."
+                + "The Foreign Secretary Boris Johnson, quit on Monday, hours after the resignation late on"
+                + "Sunday night of the minister in charge of Brexit negotiations, David Davis.  Their "
+                + "decision to leave the government came three days after May appeared to have agreed a"
+                + "deal with her fractured Cabinet on the UK's post-Brexit relationship with the EU."
+                + "That plan is now in tatters and her political future appears uncertain."
+                + "May appeared in Parliament on Monday afternoon to defend her plan, minutes after"
+                + "Downing Street confirmed the departure of Johnson. May acknowledged the splits in"
+                + "her statement to MPs, saying of the ministers who quit: \"We do not agree about the"
+                + "best way of delivering our shared commitment to honoring the result of the referendum.\""
+                + "The Prime Minister's latest plitical drama began late on Sunday night when Davis quit,"
+                + "declaring he could not support May's Brexit plan.  He said it involved too close a "
+                + "relationship with the EU and gave only an illusion of control being returned to the UK"
+                + "after it left the EU. \"It seems to me we're giving too much away, too easily, and"
+                + "that's a dangerous strategy at this time,\" Davis said in a BBC radio interview Monday"
+                + "morning. Johnson's resignation came Monday afternoon local time, just before the Prime"
+                + " Minister was due to make a scheduled statement in Parliament. \"This afternoon, the Prime"
+                + "Minister accepted the resignation of Boris Johnson as Foreign Secretary,\" a"
+                + "statement from Downing Street said.");
 
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions()
@@ -70,6 +66,7 @@ public class AnalyzeExtractiveSummarizationAsync {
                     new ExtractSummaryAction()
                         .setMaxSentenceCount(2)
                         .setSentencesOrderBy(SummarySentencesOrder.RANK)),
+            "en",
             new AnalyzeActionsOptions())
             .flatMap(result -> {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();
@@ -80,9 +77,9 @@ public class AnalyzeExtractiveSummarizationAsync {
                     operationDetail.getTotalCount());
                 return result.getFinalResult();
             })
-            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
+            .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
-                perPage -> processAnalyzeActionsResult(perPage),
+                actionsResult -> processAnalyzeActionsResult(actionsResult),
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
                 () -> System.out.println("Successfully listed all pages"));
 
@@ -96,32 +93,27 @@ public class AnalyzeExtractiveSummarizationAsync {
         }
     }
 
-    private static void processAnalyzeActionsResult(PagedResponse<AnalyzeActionsResult> perPage) {
-        System.out.printf("Response code: %d, Continuation Token: %s.%n",
-            perPage.getStatusCode(), perPage.getContinuationToken());
-
-        for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
-            System.out.println("Extractive Summarization action results:");
-            for (ExtractSummaryActionResult actionResult : actionsResult.getExtractSummaryResults()) {
-                if (!actionResult.isError()) {
-                    for (ExtractSummaryResult documentResult : actionResult.getDocumentsResults()) {
-                        if (!documentResult.isError()) {
-                            System.out.println("\tExtracted summary sentences:");
-                            for (SummarySentence summarySentence : documentResult.getSentences()) {
-                                System.out.printf(
-                                    "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                                    summarySentence.getText(), summarySentence.getLength(),
-                                    summarySentence.getOffset(), summarySentence.getRankScore());
-                            }
-                        } else {
-                            System.out.printf("\tCannot extract summary sentences. Error: %s%n",
-                                documentResult.getError().getMessage());
+    private static void processAnalyzeActionsResult(AnalyzeActionsResult actionsResult) {
+        System.out.println("Extractive Summarization action results:");
+        for (ExtractSummaryActionResult actionResult : actionsResult.getExtractSummaryResults()) {
+            if (!actionResult.isError()) {
+                for (ExtractSummaryResult documentResult : actionResult.getDocumentsResults()) {
+                    if (!documentResult.isError()) {
+                        System.out.println("\tExtracted summary sentences:");
+                        for (SummarySentence summarySentence : documentResult.getSentences()) {
+                            System.out.printf(
+                                "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
+                                summarySentence.getText(), summarySentence.getLength(),
+                                summarySentence.getOffset(), summarySentence.getRankScore());
                         }
+                    } else {
+                        System.out.printf("\tCannot extract summary sentences. Error: %s%n",
+                            documentResult.getError().getMessage());
                     }
-                } else {
-                    System.out.printf("\tCannot execute Extractive Summarization action. Error: %s%n",
-                        actionResult.getError().getMessage());
                 }
+            } else {
+                System.out.printf("\tCannot execute Extractive Summarization action. Error: %s%n",
+                    actionResult.getError().getMessage());
             }
         }
     }
