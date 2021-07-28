@@ -123,6 +123,7 @@
 /sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz
 
 # Quantum
+# PRLabel: %Azure Quantum
 /sdk/quantum/                                       @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
 
 ###########
