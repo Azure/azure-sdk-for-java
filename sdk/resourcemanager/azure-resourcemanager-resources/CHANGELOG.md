@@ -6,6 +6,10 @@
 
 - Updated `api-version` of features to `2021-07-01`.
 
+### Features Added
+
+- Added support for `resourceProviderName` and `featureName` in `Feature`.
+
 ## 2.6.0 (2021-06-18)
 
 - Added support for Challenge Based Authentication in `AuthenticationPolicy`.
