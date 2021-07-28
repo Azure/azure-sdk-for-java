@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.azure.core.implementation.http.QueryParameter;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
