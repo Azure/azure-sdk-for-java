@@ -46,7 +46,7 @@ stages:
       Clouds: 'Preview'
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
-        mavenOptions: '$(DefaultTestMavenOptions)'
+        mavenOptions: '-Xmx8g $(LoggingOptions)'
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
         - Pool=(.*)-general/$1-storage
