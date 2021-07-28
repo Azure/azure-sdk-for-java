@@ -24,7 +24,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The Azure Key Vault variant of the X509ExtendedKeyManager.
  */
-public class KeyVaultKeyManager extends X509ExtendedKeyManager {
+public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     /**
      * Stores the logger.

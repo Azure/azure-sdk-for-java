@@ -144,7 +144,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.JreCertificates$JREKeyStore"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates$JREKeyStore"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -1969,7 +1969,7 @@
 
   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.clientTelemetry.ReportPayload"/>
+    <Class name="com.azure.cosmos.implementation.clienttelemetry.ReportPayload"/>
     <Method name="equals"/>
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
@@ -2440,7 +2440,7 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
   <Match>
-    <Class name="com.azure.security.keyvault.jca.LegacyRestClient"/>
+    <Class name="com.azure.security.keyvault.jca.implementation.utils.HttpUtil"/>
     <Method name="~(get|post)"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>

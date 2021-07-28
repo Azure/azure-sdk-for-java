@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,8 +17,8 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.util.Base64;
 
-import static com.azure.security.keyvault.jca.KeyVaultClient.createKeyVaultClientBySystemProperty;
 import static com.azure.security.keyvault.jca.KeyVaultEncode.encodeByte;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.createKeyVaultClientBySystemProperty;
 
 /**
  * KeyVault EC signature to support key less

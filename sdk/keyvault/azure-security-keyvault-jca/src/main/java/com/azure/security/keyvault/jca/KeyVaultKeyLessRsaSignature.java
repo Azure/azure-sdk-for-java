@@ -3,11 +3,12 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.SecureRandom;
-import java.security.SignatureException;
 import java.security.NoSuchAlgorithmException;
 import java.security.AlgorithmParameters;
 import java.security.GeneralSecurityException;
@@ -17,7 +18,7 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.PSSParameterSpec;
 import java.util.Base64;
 
-import static com.azure.security.keyvault.jca.KeyVaultClient.createKeyVaultClientBySystemProperty;
+import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.createKeyVaultClientBySystemProperty;
 
 /**
  * key vault Rsa signature to support key less
