@@ -25,6 +25,6 @@ steps:
           targetType: 'inline'
           script: Write-Host "##vso[task.setvariable variable=Azure.Azurite.Location;]${{ parameters.AzuriteLocation }}"
     - bash: |
-          mkdir $(Agent.TempDirectory)/azurite-temp-dir
-          node ${{ parameters.AzuriteLocation }}/node_modules/azurite/dist/src/azurite.js -l $(Agent.TempDirectory)/azurite-temp-dir --skipApiVersionCheck > $(Agent.TempDirectory)/azurite.log 2>&1 &
+          mkdir '$(Agent.TempDirectory)/azurite-temp-dir'
+          node '${{ parameters.AzuriteLocation }}/node_modules/azurite/dist/src/azurite.js' -l '$(Agent.TempDirectory)/azurite-temp-dir' --skipApiVersionCheck > '$(Agent.TempDirectory)/azurite.log' 2>&1 &
       displayName: Run azurite
