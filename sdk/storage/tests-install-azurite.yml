@@ -24,3 +24,6 @@ steps:
       inputs:
           targetType: 'inline'
           script: Write-Host "##vso[task.setvariable variable=Azure.Azurite.Location;]${{ parameters.AzuriteLocation }}"
+    - bash: |
+          ${{ parameters.AzuriteLocation }}/azurite &
+      displayName: Run azurite

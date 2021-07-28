@@ -37,15 +37,15 @@ class LargeBlobTest extends Specification {
     String blobName
 
     def setupSpec() {
-        azuriteFixture = new AzuriteFixture()
+        //azuriteFixture = new AzuriteFixture()
         def blobServiceClientBuilder = new BlobServiceClientBuilder()
-            .connectionString(azuriteFixture.connectionString)
+            .connectionString("UseDevelopmentStorage=true")
         blobServiceClient = blobServiceClientBuilder.buildClient()
         blobServiceAsyncClient = blobServiceClientBuilder.buildAsyncClient()
     }
 
     def cleanupSpec() {
-        azuriteFixture.close()
+        //azuriteFixture.close()
     }
 
     def setup() {
