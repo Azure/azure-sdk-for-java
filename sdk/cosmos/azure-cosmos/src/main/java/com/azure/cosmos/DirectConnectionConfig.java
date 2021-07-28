@@ -173,7 +173,7 @@ public final class DirectConnectionConfig {
      * @return the {@link DirectConnectionConfig}
      */
     public DirectConnectionConfig setIdleEndpointTimeout(Duration idleEndpointTimeout) {
-        checkArgument(!idleEndpointTimeout.isNegative(), "IdleEndpointTimeout can not less than 0");
+        checkArgument(!idleEndpointTimeout.isNegative(), "IdleEndpointTimeout cannot be less than 0");
 
         this.idleEndpointTimeout = idleEndpointTimeout;
         return this;
