@@ -10,11 +10,13 @@ import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +30,7 @@ import static org.mockito.Mockito.when;
  */
 public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
 
-    private final Multimap<String, ServiceBusReceivedMessageContext> topicsByName = ArrayListMultimap.create();
+    private final Map<String, List<ServiceBusReceivedMessageContext>> topicsByName = new HashMap<>();
     private final Map<String, Map<String, DefaultServiceBusMessageProcessor>> processorsByTopicAndSub =
         new ConcurrentHashMap<>();
 
@@ -43,7 +45,11 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
 
         final ServiceBusReceivedMessageContext receivedMessageContext = mockReceivedMessageContext(azureMessage);
 
-        topicsByName.put(name, receivedMessageContext);
+        if (topicsByName.containsKey(name)) {
+            topicsByName.get(name).add(receivedMessageContext);
+        } else {
+            topicsByName.put(name, new ArrayList<>(Arrays.asList(receivedMessageContext)));
+        }
         processorsByTopicAndSub.get(name).values().forEach(c -> c.processMessage().accept(receivedMessageContext));
 
         return CompletableFuture.completedFuture(null);
