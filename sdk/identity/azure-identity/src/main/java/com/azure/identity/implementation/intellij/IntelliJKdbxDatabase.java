@@ -18,12 +18,14 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 
 public class IntelliJKdbxDatabase {
@@ -36,11 +38,9 @@ public class IntelliJKdbxDatabase {
     private static final String STANDARD_PROPERTY_NAME_TITLE = "Title";
     private static final String STANDARD_PROPERTY_NAME_NOTES = "Notes";
 
-    private Document document;
     private Element rootElement;
 
     IntelliJKdbxDatabase(Document document, Element rootElement) {
-        this.document = document;
         this.rootElement = rootElement;
     }
 
@@ -65,7 +65,7 @@ public class IntelliJKdbxDatabase {
 
     private static byte[] getDatabaseKey(String databasePassword) {
         MessageDigest md = IntelliJCryptoUtil.getMessageDigestSHA256();
-        byte[] digest = md.digest(databasePassword.getBytes());
+        byte[] digest = md.digest(databasePassword.getBytes(StandardCharsets.UTF_8));
         return md.digest(digest);
     }
 
@@ -182,7 +182,7 @@ public class IntelliJKdbxDatabase {
                 Element element = (Element) protectedContent.item(i);
                 Element res = getElement(".", element, false);
                 String base64 = res == null ? null : res.getTextContent();
-                byte[] encrypted = Base64.getDecoder().decode(base64.getBytes());
+                byte[] encrypted = Base64.getDecoder().decode(base64.getBytes(StandardCharsets.UTF_8));
                 String decrypted = new String(IntelliJCryptoUtil.decrypt(encrypted, salsa20Engine), "UTF-8");
                 setElementContent(".", element, decrypted);
                 element.removeAttribute("Protected");
@@ -250,7 +250,8 @@ public class IntelliJKdbxDatabase {
     }
 
     public static boolean matchString(String property, String toMatch) {
-        return property != null && property.toLowerCase().contains(toMatch.toLowerCase());
+        return property != null && property.toLowerCase(Locale.getDefault())
+            .contains(toMatch.toLowerCase(Locale.getDefault()));
     }
 
     private String getDatabaseEntryValue(Element dbRootGroup, String toMatch) {
