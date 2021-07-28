@@ -25,5 +25,5 @@ steps:
           targetType: 'inline'
           script: Write-Host "##vso[task.setvariable variable=Azure.Azurite.Location;]${{ parameters.AzuriteLocation }}"
     - bash: |
-          ${{ parameters.AzuriteLocation }}/azurite &
+          node ${{ parameters.AzuriteLocation }}/node_modules/azurite/dist/src/azurite.js --skipApiVersionCheck &
       displayName: Run azurite
