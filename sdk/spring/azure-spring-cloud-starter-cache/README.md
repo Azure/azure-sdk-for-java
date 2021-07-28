@@ -1,4 +1,4 @@
-# Azure Spring Cloud Starter Cache client library for Java
+# Spring Cloud for Azure Starter Cache client library for Java
 This starter provides auto-configuration of Azure Cache for Redis. Azure Cache for Redis provides an in-memory data store based on the open-source software Redis. 
 
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Samples][sample]

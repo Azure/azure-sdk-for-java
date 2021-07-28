@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.jca.test;
 
-import com.azure.security.keyvault.jca.JreCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;

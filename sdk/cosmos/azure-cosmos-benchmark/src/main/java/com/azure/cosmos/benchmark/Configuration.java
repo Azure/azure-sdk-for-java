@@ -93,9 +93,8 @@ public class Configuration {
     @Parameter(names = "-manageDatabase", description = "Control switch for creating/deleting underlying database resource")
     private boolean manageDatabase = false;
 
-    @Parameter(names = "-preferredRegionsList", listConverter = PreferredRegionsConverter.class, description = "Comma" +
-        " separated preferred regions list")
-    private List<String> preferredRegionsList;
+    @Parameter(names = "-preferredRegionsList", description = "Comma separated preferred regions list")
+    private String preferredRegionsList;
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
@@ -452,7 +451,14 @@ public class Configuration {
     }
 
     public List<String> getPreferredRegionsList() {
-        return preferredRegionsList;
+        List<String> preferredRegions = null;
+        if (StringUtils.isNotEmpty(preferredRegionsList)) {
+            String[] preferredArray = preferredRegionsList.split(",");
+            if (preferredArray != null && preferredArray.length > 0) {
+                preferredRegions = new ArrayList<>(Arrays.asList(preferredArray));
+            }
+        }
+        return preferredRegions;
     }
 
     public void tryGetValuesFromSystem() {
@@ -494,10 +500,7 @@ public class Configuration {
                 Strings.emptyToNull(System.getenv().get("THROUGHPUT")), Integer.toString(throughput));
         throughput = Integer.parseInt(throughputValue);
 
-        if (StringUtils.isNotEmpty(System.getenv().get("PREFERRED_REGIONS_LIST"))) {
-            PreferredRegionsConverter preferredRegionsConverter = new PreferredRegionsConverter();
-            preferredRegionsList = preferredRegionsConverter.convert(System.getenv().get("PREFERRED_REGIONS_LIST"));
-        }
+        preferredRegionsList = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("PREFERRED_REGIONS_LIST")), preferredRegionsList);
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {
@@ -606,19 +609,5 @@ public class Configuration {
         }
 
         return this.graphiteMeterRegistry;
-    }
-
-    private class PreferredRegionsConverter implements IStringConverter<List<String>> {
-        @Override
-        public List<String> convert(String preferredRegionsList) {
-            List<String> preferredRegions = null;
-            if (StringUtils.isNotEmpty(preferredRegionsList)) {
-                String[] preferredArray = preferredRegionsList.split(",");
-                if (preferredArray != null && preferredArray.length > 0) {
-                    preferredRegions = new ArrayList<>(Arrays.asList(preferredArray));
-                }
-            }
-            return preferredRegions;
-        }
     }
 }

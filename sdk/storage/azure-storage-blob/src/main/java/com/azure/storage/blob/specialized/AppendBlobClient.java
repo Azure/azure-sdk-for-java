@@ -83,7 +83,7 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     @Override
     public AppendBlobClient getEncryptionScopeClient(String encryptionScope) {
-        return new AppendBlobClient(appendBlobAsyncClient.getEncryptionScopeClient(encryptionScope));
+        return new AppendBlobClient(appendBlobAsyncClient.getEncryptionScopeAsyncClient(encryptionScope));
     }
 
     /**
@@ -95,7 +95,7 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     @Override
     public AppendBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new AppendBlobClient(appendBlobAsyncClient.getCustomerProvidedKeyClient(customerProvidedKey));
+        return new AppendBlobClient(appendBlobAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**
