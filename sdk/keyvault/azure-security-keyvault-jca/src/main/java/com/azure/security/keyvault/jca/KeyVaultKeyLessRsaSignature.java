@@ -68,17 +68,6 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
     }
 
     /**
-     * Ensure the object is initialized with key and parameters and
-     * reset digest
-     */
-    private void ensureInit() throws SignatureException {
-        if (this.signatureParameters == null) {
-            // Parameters are required for signature verification
-            throw new SignatureException("Parameters required for KeyVault signatures");
-        }
-    }
-
-    /**
      * Return the message digest value.
      */
     private byte[] getDigestValue() {
@@ -86,32 +75,22 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
     }
 
     @Override
-    protected void engineUpdate(byte b) throws SignatureException {
-        ensureInit();
+    protected void engineUpdate(byte b) {
         this.messageDigest.update(b);
     }
 
     @Override
-    protected void engineUpdate(byte[] b, int off, int len)
-        throws SignatureException {
-        ensureInit();
+    protected void engineUpdate(byte[] b, int off, int len) {
         this.messageDigest.update(b, off, len);
     }
 
     @Override
     protected void engineUpdate(ByteBuffer b) {
-        try {
-            ensureInit();
-        } catch (SignatureException se) {
-            // hack for working around API bug
-            throw new RuntimeException(se.getMessage());
-        }
         this.messageDigest.update(b);
     }
 
     @Override
-    protected byte[] engineSign() throws SignatureException {
-        ensureInit();
+    protected byte[] engineSign() {
         byte[] mHash = getDigestValue();
         String encode = Base64.getEncoder().encodeToString(mHash);
         //For all RSA type certificate in keyVault, we can use PS256 to encrypt.

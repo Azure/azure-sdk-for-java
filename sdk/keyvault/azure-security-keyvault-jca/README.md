@@ -123,27 +123,27 @@ azure:
 ```
 
 ### Key-Less certificates
-You can set the private key as [non-exportable][non-exportable] to ensure the security of the key.
+You can set the private key as [non-exportable] to ensure the security of the key.
 
 Note if you want to use a key less certificate, you must add `sign` permissions to the principal.
 
 ### Supported key type
-Content Type | Key Type | Key Size or Elliptic curve name | Support 
----|---|---|---
-PKCS #12 | RSA | 2048 | ✔
-PKCS #12 | RSA | 3072 | ✔
-PKCS #12 | RSA | 4096 | ✔
-PKCS #12 | EC | P-256 | ✔
-PKCS #12 | EC | P-384 | ✔
-PKCS #12 | EC | P-521 | ✔
-PKCS #12 | EC | P-256K | ✘
-PEM | RSA | 2048 | ✔
-PEM | RSA | 3072 | ✔
-PEM | RSA | 4096 | ✔
-PEM | EC | P-256 | ✔
-PEM | EC | P-384 | ✔
-PEM | EC | P-521 | ✔
-PEM | EC | P-256K | ✘
+Content Type | Key Type | Key Size or Elliptic curve name | Support |
+-------------|----------|---------------------------------|-------- |
+PKCS #12     | RSA      | 2048                            | ✔       |     
+PKCS #12     | RSA      | 3072                            | ✔       |
+PKCS #12     | RSA      | 4096                            | ✔       |
+PKCS #12     | EC       | P-256                           | ✔       |
+PKCS #12     | EC       | P-384                           | ✔       |
+PKCS #12     | EC       | P-521                           | ✔       |
+PKCS #12     | EC       | P-256K                          | ✘       |
+PEM          | RSA      | 2048                            | ✔       |
+PEM          | RSA      | 3072                            | ✔       |
+PEM          | RSA      | 4096                            | ✔       |
+PEM          | EC       | P-256                           | ✔       |
+PEM          | EC       | P-384                           | ✔       |
+PEM          | EC       | P-521                           | ✔       | 
+PEM          | EC       | P-256K                          | ✘       |
 
 ## Troubleshooting
 ### General

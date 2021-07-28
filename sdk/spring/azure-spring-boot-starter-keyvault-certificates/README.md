@@ -341,7 +341,7 @@ certificate will be added with the alias of `mycert`.
     5. Certificates from classpath.
 
 ### Key-Less certificates
-You can set the private key as [non-exportable][non-exportable] to ensure the security of the key.
+You can set the private key as [non-exportable] to ensure the security of the key.
 
 Note if you want to use a key less certificate, you must add `sign` permissions to the principal.
 
