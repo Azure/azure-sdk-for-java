@@ -1,5 +1,11 @@
 # Release History
 
+
+## 1.3.4 (2021-07-28)
+
+### Dependency Updates
+- Dropped `KeePassJava2` dependency
+
 ## 1.3.3 (2021-07-07)
 
 ### Dependency Updates
