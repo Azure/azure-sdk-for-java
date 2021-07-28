@@ -93,9 +93,9 @@ public class AzureServiceBusAutoConfigurationTest {
     @Test
     public void testTransportTypeWithAmqpWebSockets() {
         this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "transport-type=AMQP_WEB_SOCKETS")
-            .run(context -> {
-                assertThat(context.getBean(AzureServiceBusProperties.class).getTransportType()).isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
-            });
+                          .run(context -> {
+                              assertThat(context.getBean(AzureServiceBusProperties.class).getTransportType()).isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
+                          });
     }
 
     @Test
@@ -105,15 +105,14 @@ public class AzureServiceBusAutoConfigurationTest {
                                               SERVICE_BUS_PROPERTY_PREFIX + "retry-options.maxDelay=200S",
                                               SERVICE_BUS_PROPERTY_PREFIX + "retry-options.tryTimeout=300S",
                                               SERVICE_BUS_PROPERTY_PREFIX + "retry-options.Mode=FIXED")
-            .run(context -> {
-                assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMaxRetries()).isEqualTo(5);
-                assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getDelay().getSeconds()).isEqualTo(100L);
-                assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMaxDelay().getSeconds()).isEqualTo(200L);
-                assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getTryTimeout().getSeconds()).isEqualTo(300L);
-                assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMode()).isEqualTo(AmqpRetryMode.FIXED);
-            });
+                          .run(context -> {
+                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMaxRetries()).isEqualTo(5);
+                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getDelay().getSeconds()).isEqualTo(100L);
+                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMaxDelay().getSeconds()).isEqualTo(200L);
+                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getTryTimeout().getSeconds()).isEqualTo(300L);
+                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMode()).isEqualTo(AmqpRetryMode.FIXED);
+                          });
     }
-
 
     @Test
     public void testWithAzureResourceManagerProvided() {
