@@ -148,7 +148,8 @@ public final class DirectConnectionConfig {
     /**
      * Gets the idle endpoint timeout
      *
-     * Default value is 1 hour. {@link Duration#ZERO} means to disable idle endpoint check.
+     * Default value is 1 hour.
+     * If set to {@link Duration#ZERO}, idle endpoint check will be disabled.
      *
      * If there are no requests to a specific endpoint for idle endpoint timeout duration,
      * direct client closes all connections to that endpoint to save resources and I/O cost.
@@ -162,7 +163,8 @@ public final class DirectConnectionConfig {
     /**
      * Sets the idle endpoint timeout
      *
-     * Default value is 1 hour. {@link Duration#ZERO} means to disable idle endpoint check.
+     * Default value is 1 hour.
+     * If set to {@link Duration#ZERO}, idle endpoint check will be disabled.
      *
      * If there are no requests to a specific endpoint for idle endpoint timeout duration,
      * direct client closes all connections to that endpoint to save resources and I/O cost.
