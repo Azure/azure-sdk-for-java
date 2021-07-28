@@ -108,9 +108,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -167,9 +167,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -225,9 +225,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -283,9 +283,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -342,9 +342,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -391,9 +391,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -441,9 +441,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -499,9 +499,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -556,9 +556,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -613,9 +613,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -671,9 +671,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -719,9 +719,9 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -788,10 +788,10 @@ public final class ScanResultsImpl {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)
@@ -882,10 +882,10 @@ public final class ScanResultsImpl {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)
@@ -975,10 +975,10 @@ public final class ScanResultsImpl {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)
@@ -1054,10 +1054,10 @@ public final class ScanResultsImpl {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)
@@ -1134,10 +1134,10 @@ public final class ScanResultsImpl {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)
@@ -1211,10 +1211,10 @@ public final class ScanResultsImpl {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)
@@ -1281,10 +1281,10 @@ public final class ScanResultsImpl {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)
@@ -1361,10 +1361,10 @@ public final class ScanResultsImpl {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)

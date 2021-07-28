@@ -98,8 +98,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -129,11 +129,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -178,8 +178,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -209,11 +209,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -257,8 +257,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -288,11 +288,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -336,8 +336,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -367,11 +367,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -417,8 +417,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -448,11 +448,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -488,8 +488,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -519,11 +519,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -561,8 +561,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -592,11 +592,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -649,8 +649,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -680,11 +680,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -736,8 +736,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -767,11 +767,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -823,8 +823,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -854,11 +854,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -911,8 +911,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -942,11 +942,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -990,8 +990,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -1021,11 +1021,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -1070,8 +1070,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -1101,11 +1101,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -1150,8 +1150,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -1181,11 +1181,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -1229,8 +1229,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -1260,11 +1260,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -1308,8 +1308,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -1339,11 +1339,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -1389,8 +1389,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -1420,11 +1420,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -1460,8 +1460,8 @@ public final class TriggersImpl {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -1491,11 +1491,11 @@ public final class TriggersImpl {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>

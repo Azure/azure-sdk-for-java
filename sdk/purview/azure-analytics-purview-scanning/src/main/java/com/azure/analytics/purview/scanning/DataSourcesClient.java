@@ -68,10 +68,10 @@ public final class DataSourcesClient {
      *                             String: int
      *                         }
      *                     }
-     *                     startTime: OffsetDateTime
-     *                     queuedTime: OffsetDateTime
-     *                     pipelineStartTime: OffsetDateTime
-     *                     endTime: OffsetDateTime
+     *                     startTime: String
+     *                     queuedTime: String
+     *                     pipelineStartTime: String
+     *                     endTime: String
      *                     scanRulesetVersion: Integer
      *                     scanRulesetType: String(Custom/System)
      *                     scanLevelType: String(Full/Incremental)
@@ -149,10 +149,10 @@ public final class DataSourcesClient {
      *                             String: int
      *                         }
      *                     }
-     *                     startTime: OffsetDateTime
-     *                     queuedTime: OffsetDateTime
-     *                     pipelineStartTime: OffsetDateTime
-     *                     endTime: OffsetDateTime
+     *                     startTime: String
+     *                     queuedTime: String
+     *                     pipelineStartTime: String
+     *                     endTime: String
      *                     scanRulesetVersion: Integer
      *                     scanRulesetType: String(Custom/System)
      *                     scanLevelType: String(Full/Incremental)
@@ -232,10 +232,10 @@ public final class DataSourcesClient {
      *                             String: int
      *                         }
      *                     }
-     *                     startTime: OffsetDateTime
-     *                     queuedTime: OffsetDateTime
-     *                     pipelineStartTime: OffsetDateTime
-     *                     endTime: OffsetDateTime
+     *                     startTime: String
+     *                     queuedTime: String
+     *                     pipelineStartTime: String
+     *                     endTime: String
      *                     scanRulesetVersion: Integer
      *                     scanRulesetType: String(Custom/System)
      *                     scanLevelType: String(Full/Incremental)
@@ -313,10 +313,10 @@ public final class DataSourcesClient {
      *                             String: int
      *                         }
      *                     }
-     *                     startTime: OffsetDateTime
-     *                     queuedTime: OffsetDateTime
-     *                     pipelineStartTime: OffsetDateTime
-     *                     endTime: OffsetDateTime
+     *                     startTime: String
+     *                     queuedTime: String
+     *                     pipelineStartTime: String
+     *                     endTime: String
      *                     scanRulesetVersion: Integer
      *                     scanRulesetType: String(Custom/System)
      *                     scanLevelType: String(Full/Incremental)
@@ -395,10 +395,10 @@ public final class DataSourcesClient {
      *                             String: int
      *                         }
      *                     }
-     *                     startTime: OffsetDateTime
-     *                     queuedTime: OffsetDateTime
-     *                     pipelineStartTime: OffsetDateTime
-     *                     endTime: OffsetDateTime
+     *                     startTime: String
+     *                     queuedTime: String
+     *                     pipelineStartTime: String
+     *                     endTime: String
      *                     scanRulesetVersion: Integer
      *                     scanRulesetType: String(Custom/System)
      *                     scanLevelType: String(Full/Incremental)
@@ -476,10 +476,10 @@ public final class DataSourcesClient {
      *                             String: int
      *                         }
      *                     }
-     *                     startTime: OffsetDateTime
-     *                     queuedTime: OffsetDateTime
-     *                     pipelineStartTime: OffsetDateTime
-     *                     endTime: OffsetDateTime
+     *                     startTime: String
+     *                     queuedTime: String
+     *                     pipelineStartTime: String
+     *                     endTime: String
      *                     scanRulesetVersion: Integer
      *                     scanRulesetType: String(Custom/System)
      *                     scanLevelType: String(Full/Incremental)
@@ -561,10 +561,10 @@ public final class DataSourcesClient {
      *                                     String: int
      *                                 }
      *                             }
-     *                             startTime: OffsetDateTime
-     *                             queuedTime: OffsetDateTime
-     *                             pipelineStartTime: OffsetDateTime
-     *                             endTime: OffsetDateTime
+     *                             startTime: String
+     *                             queuedTime: String
+     *                             pipelineStartTime: String
+     *                             endTime: String
      *                             scanRulesetVersion: Integer
      *                             scanRulesetType: String(Custom/System)
      *                             scanLevelType: String(Full/Incremental)
@@ -647,10 +647,10 @@ public final class DataSourcesClient {
      *                                     String: int
      *                                 }
      *                             }
-     *                             startTime: OffsetDateTime
-     *                             queuedTime: OffsetDateTime
-     *                             pipelineStartTime: OffsetDateTime
-     *                             endTime: OffsetDateTime
+     *                             startTime: String
+     *                             queuedTime: String
+     *                             pipelineStartTime: String
+     *                             endTime: String
      *                             scanRulesetVersion: Integer
      *                             scanRulesetType: String(Custom/System)
      *                             scanLevelType: String(Full/Incremental)

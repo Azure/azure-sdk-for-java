@@ -289,9 +289,9 @@ public final class ClassificationRulesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -339,9 +339,9 @@ public final class ClassificationRulesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
