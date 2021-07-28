@@ -3,12 +3,10 @@
 
 package com.azure.security.keyvault.jca.implementation.model;
 
-import java.io.Serializable;
-
 /**
  * Result of sign certificate
  */
-public class PrivateKeyOperationResult implements Serializable {
+public class PrivateKeyOperationResult {
 
     private String kid;
 
