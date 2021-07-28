@@ -135,9 +135,8 @@
               }
         },
         "dependsOn": [
-          "[variables('primaryAccountName')]",
-          "[concat('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
-          ]
+          "[variables('primaryAccountName')]"
+        ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices",
@@ -147,11 +146,10 @@
             "shareDeleteRetentionPolicy": {
                 "enabled": true,
                 "days": 1
-              }
+            }
             },
             "dependsOn": [
-              "[variables('primaryAccountName')]",
-              "[concat('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
+                "[variables('primaryAccountName')]"
             ]
         },
         {
@@ -161,8 +159,7 @@
           "properties": {
           },
           "dependsOn": [
-            "[variables('primaryAccountName')]",
-            "[concat('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
+            "[variables('primaryAccountName')]"
           ]
         },
         {
@@ -172,8 +169,7 @@
           "properties": {
           },
           "dependsOn": [
-            "[variables('primaryAccountName')]",
-            "[concat('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
+            "[variables('primaryAccountName')]"
           ]
         },
         {
@@ -255,8 +251,7 @@
             }
           },
           "dependsOn": [
-            "[variables('softDeleteAccountName')]",
-            "[concat('Microsoft.Storage/storageAccounts/',variables('softDeleteAccountName'))]"
+            "[variables('softDeleteAccountName')]"
           ]
         },
         {
@@ -270,8 +265,7 @@
             }
           },
           "dependsOn": [
-            "[variables('softDeleteAccountName')]",
-            "[concat('Microsoft.Storage/storageAccounts/',variables('softDeleteAccountName'))]"
+            "[variables('softDeleteAccountName')]"
           ]
         },
         {
@@ -346,8 +340,7 @@
             "isVersioningEnabled": true
           },
           "dependsOn": [
-            "[variables('versionedAccountName')]",
-            "[concat('Microsoft.Storage/storageAccounts/',variables('versionedAccountName'))]"
+            "[variables('versionedAccountName')]"
           ]
         },
         {
@@ -394,8 +387,7 @@
             }
             },
             "dependsOn": [
-              "[variables('dataLakeAccountName')]",
-              "[concat('Microsoft.Storage/storageAccounts/',variables('dataLakeAccountName'))]"
+                "[variables('dataLakeAccountName')]"
             ]
         },
         {
@@ -442,8 +434,7 @@
             }
           },
           "dependsOn": [
-            "[variables('dataLakeSoftDeleteAccountName')]",
-            "[concat('Microsoft.Storage/storageAccounts/',variables('dataLakeSoftDeleteAccountName'))]"
+            "[variables('dataLakeSoftDeleteAccountName')]"
           ]
         },
         {
