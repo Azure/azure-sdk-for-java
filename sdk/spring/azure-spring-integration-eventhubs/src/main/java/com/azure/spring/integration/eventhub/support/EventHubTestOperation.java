@@ -5,8 +5,6 @@ package com.azure.spring.integration.eventhub.support;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventContext;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
@@ -16,6 +14,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -26,7 +27,7 @@ import java.util.function.Supplier;
  */
 public class EventHubTestOperation extends EventHubTemplate {
 
-    private final Multimap<String, EventData> eventHubsByName = ArrayListMultimap.create();
+    private final Map<String, List<EventData>> eventHubsByName = new HashMap<>();
 
     private final Map<String, Map<String, EventHubProcessor>> processorsByNameAndGroup =
         new ConcurrentHashMap<>();
@@ -45,7 +46,13 @@ public class EventHubTestOperation extends EventHubTemplate {
                                     PartitionSupplier partitionSupplier) {
         EventData azureMessage = getMessageConverter().fromMessage(message, EventData.class);
 
-        eventHubsByName.put(eventHubName, azureMessage);
+        if (eventHubsByName.containsKey(eventHubName)) {
+            eventHubsByName.get(eventHubName).add(azureMessage);
+        } else {
+            List<EventData> eventDataList = new ArrayList<>(1);
+            eventDataList.add(azureMessage);
+            eventHubsByName.put(eventHubName, eventDataList);
+        }
         processorsByNameAndGroup.putIfAbsent(eventHubName, new ConcurrentHashMap<>());
         processorsByNameAndGroup.get(eventHubName).values().forEach(c -> {
             EventHubProcessorSupport cs = (EventHubProcessorSupport) c;
@@ -69,7 +76,9 @@ public class EventHubTestOperation extends EventHubTemplate {
         if (getStartPosition() == StartPosition.EARLIEST) {
             processorsByNameAndGroup.get(name).values().forEach(c -> {
                 EventHubProcessorSupport cs = (EventHubProcessorSupport) c;
-                eventHubsByName.get(name).forEach(m -> cs.onEvent(eventContextSupplier.get(), m));
+                if (eventHubsByName.containsKey(name)) {
+                    eventHubsByName.get(name).forEach(m -> cs.onEvent(eventContextSupplier.get(), m));
+                }
             });
         }
     }

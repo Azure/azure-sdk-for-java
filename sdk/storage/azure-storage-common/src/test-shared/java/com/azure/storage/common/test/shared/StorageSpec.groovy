@@ -6,6 +6,7 @@ package com.azure.storage.common.test.shared
 import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpClient
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
@@ -22,7 +23,8 @@ import java.util.function.Supplier
 
 class StorageSpec extends Specification {
     private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
-    private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
+    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder().build()
     private static final ClientLogger LOGGER = new ClientLogger(StorageSpec.class)
 
     private InterceptorManager interceptorManager
@@ -84,7 +86,14 @@ class StorageSpec extends Specification {
 
     protected HttpClient getHttpClient() {
         if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            HTTP_CLIENT
+            switch (ENVIRONMENT.httpClientType) {
+                case TestHttpClientType.NETTY:
+                    return NETTY_HTTP_CLIENT
+                case TestHttpClientType.OK_HTTP:
+                    return OK_HTTP_CLIENT
+                default:
+                    throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.httpClientType)
+            }
         } else {
             return interceptorManager.getPlaybackClient()
         }

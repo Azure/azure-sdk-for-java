@@ -7,15 +7,13 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.implementation.intellij.IntelliJKdbxDatabase;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Crypt32Util;
-import org.linguafranca.pwdb.Database;
-import org.linguafranca.pwdb.Entry;
-import org.linguafranca.pwdb.kdbx.KdbxCreds;
-import org.linguafranca.pwdb.kdbx.simple.SimpleDatabase;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -163,18 +161,17 @@ public class IntelliJCacheAccessor {
         }
 
         try {
-            KdbxCreds creds = new KdbxCreds(password.getBytes(Charset.forName("UTF-8")));
             InputStream inputStream = new FileInputStream(new File(keePassDatabasePath));
-            Database database = SimpleDatabase.load(creds, inputStream);
+            IntelliJKdbxDatabase kdbxDatabase = IntelliJKdbxDatabase.parse(inputStream, password);
 
-            List<Entry> entries = database.findEntries("ADAuthManager");
-            if (entries.size() == 0) {
+            String jsonToken = kdbxDatabase.getDatabaseEntryValue("ADAuthManager");
+            if (CoreUtils.isNullOrEmpty(jsonToken)) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException("No credentials found in the cache."
                         + " Please login with IntelliJ Azure Tools plugin in the IDE."));
             }
 
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(entries.get(0).getPassword());
+            return mapper.readTree(jsonToken);
         } catch (Exception e) {
             throw logger.logExceptionAsError(new RuntimeException("Failed to read KeePass database.", e));
         }
@@ -231,6 +228,20 @@ public class IntelliJCacheAccessor {
         }
     }
 
+
+    /**
+     * Parse the auth details of the specified file.
+     * @param file the file input;
+     * @return the parsed {@link IntelliJAuthMethodDetails} from the file input.
+     * @throws IOException when invalid file path is specified.
+     */
+    public IntelliJAuthMethodDetails parseAuthMethodDetails(File file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper
+            .readValue(file, IntelliJAuthMethodDetails.class);
+    }
+
     /**
      * Get the current authentication method details of Azure Tools plugin in IntelliJ IDE.
      *
@@ -251,9 +262,8 @@ public class IntelliJCacheAccessor {
             throw logger.logExceptionAsError(
                     new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        IntelliJAuthMethodDetails authMethodDetails = objectMapper
-                                                  .readValue(authFile, IntelliJAuthMethodDetails.class);
+
+        IntelliJAuthMethodDetails authMethodDetails = parseAuthMethodDetails(authFile);
 
         String authType = authMethodDetails.getAuthMethod();
         if (CoreUtils.isNullOrEmpty(authType)) {

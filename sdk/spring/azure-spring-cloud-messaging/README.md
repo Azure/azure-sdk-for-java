@@ -1,4 +1,4 @@
-# Azure Spring Cloud Messaging client library for Java
+# Spring Cloud for Azure Messaging client library for Java
 This package is an internal package providing supporting config and annotation classes for Azure Messaging services.
 
 ## Getting started

@@ -4,10 +4,10 @@ package com.azure.spring.identity;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -38,7 +38,7 @@ public class PrefixedSpringCredentialBuilderTest extends SpringCredentialTestBas
                                                        .build();
         assertTrue(tokenCredential instanceof ManagedIdentityCredential);
         assertEquals(1, builder.prefixes.size());
-        assertEquals(Lists.newArrayList("test-prefix"), builder.prefixes);
+        assertEquals(Arrays.asList("test-prefix"), builder.prefixes);
     }
 
     static class PrefixedSpringCredentialBuilderExt extends PrefixedSpringCredentialBuilder {
