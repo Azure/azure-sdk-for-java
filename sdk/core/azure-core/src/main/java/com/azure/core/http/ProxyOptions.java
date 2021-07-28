@@ -204,21 +204,30 @@ public class ProxyOptions {
             proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved,
                 Configuration.PROPERTY_HTTPS_PROXY);
             if (proxyOptions != null) {
+                LOGGER.verbose("Using proxy created from HTTPS_PROXY environment variable.");
                 return proxyOptions;
             }
 
             proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTP_PROXY);
             if (proxyOptions != null) {
+                LOGGER.verbose("Using proxy created from HTTP_PROXY environment variable.");
                 return proxyOptions;
             }
         }
 
         proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved, HTTPS);
         if (proxyOptions != null) {
+            LOGGER.verbose("Using proxy created from JVM HTTPS system properties.");
             return proxyOptions;
         }
 
-        return attemptToLoadJavaProxy(configuration, createUnresolved, HTTP);
+        proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved, HTTP);
+        if (proxyOptions != null) {
+            LOGGER.verbose("Using proxy created from JVM HTTP system properties.");
+            return proxyOptions;
+        }
+
+        return null;
     }
 
     private static ProxyOptions attemptToLoadSystemProxy(Configuration configuration, boolean createUnresolved,
