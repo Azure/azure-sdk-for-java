@@ -16,17 +16,30 @@
                 "description": "The tenant ID to which the application and resources belong."
             }
         },
+        "testApplicationId": {
+          "type": "string",
+          "metadata": {
+            "description": "The client id of the service principal used to run tests."
+          }
+        },
         "testApplicationOid": {
             "type": "string",
             "metadata": {
                 "description": "The principal to assign the role to. This is application object id."
             }
+        },
+        "testApplicationSecret": {
+          "type": "string",
+          "metadata": {
+            "description": "The application client secret used to run tests."
+          }
         }
     },
     "variables": {
         "storageApiVersion": "2019-06-01",
         "keyVaultApiVersion": "2016-10-01",
         "authorizationApiVersion": "2018-09-01-preview",
+        "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
         "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
@@ -40,9 +53,7 @@
         "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
         "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
         "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
-        "location": "[resourceGroup().location]",
-        "resourceGroupName": "[resourceGroup().name]",
-        "subscriptionId": "[subscription().subscriptionId]"
+        "location": "[resourceGroup().location]"
     },
     "resources": [
         {
@@ -124,8 +135,9 @@
               }
         },
         "dependsOn": [
-          "[variables('primaryAccountName')]"
-        ]
+          "[variables('primaryAccountName')]",
+          "[concat('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
+          ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices",
@@ -135,10 +147,11 @@
             "shareDeleteRetentionPolicy": {
                 "enabled": true,
                 "days": 1
-            }
+              }
             },
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+              "[variables('primaryAccountName')]",
+              "[concat('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
             ]
         },
         {
@@ -148,7 +161,8 @@
           "properties": {
           },
           "dependsOn": [
-            "[variables('primaryAccountName')]"
+            "[variables('primaryAccountName')]",
+            "[concat('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
           ]
         },
         {
@@ -158,7 +172,8 @@
           "properties": {
           },
           "dependsOn": [
-            "[variables('primaryAccountName')]"
+            "[variables('primaryAccountName')]",
+            "[concat('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
           ]
         },
         {
@@ -240,7 +255,8 @@
             }
           },
           "dependsOn": [
-            "[variables('softDeleteAccountName')]"
+            "[variables('softDeleteAccountName')]",
+            "[concat('Microsoft.Storage/storageAccounts/',variables('softDeleteAccountName'))]"
           ]
         },
         {
@@ -254,7 +270,8 @@
             }
           },
           "dependsOn": [
-            "[variables('softDeleteAccountName')]"
+            "[variables('softDeleteAccountName')]",
+            "[concat('Microsoft.Storage/storageAccounts/',variables('softDeleteAccountName'))]"
           ]
         },
         {
@@ -329,7 +346,8 @@
             "isVersioningEnabled": true
           },
           "dependsOn": [
-            "[variables('versionedAccountName')]"
+            "[variables('versionedAccountName')]",
+            "[concat('Microsoft.Storage/storageAccounts/',variables('versionedAccountName'))]"
           ]
         },
         {
@@ -376,7 +394,8 @@
             }
             },
             "dependsOn": [
-                "[variables('dataLakeAccountName')]"
+              "[variables('dataLakeAccountName')]",
+              "[concat('Microsoft.Storage/storageAccounts/',variables('dataLakeAccountName'))]"
             ]
         },
         {
@@ -423,7 +442,8 @@
             }
           },
           "dependsOn": [
-            "[variables('dataLakeSoftDeleteAccountName')]"
+            "[variables('dataLakeSoftDeleteAccountName')]",
+            "[concat('Microsoft.Storage/storageAccounts/',variables('dataLakeSoftDeleteAccountName'))]"
           ]
         },
         {
@@ -618,14 +638,6 @@
         "KEYVAULT_URL":{
             "type": "string",
             "value": "[variables('azureKeyVaultUrl')]"
-        },
-        "STORAGE_RESOURCE_GROUP_NAME": {
-            "type": "string",
-            "value": "[variables('resourceGroupName')]"
-        },
-        "STORAGE_SUBSCRIPTION_ID": {
-            "type": "string",
-            "value": "[variables('subscriptionId')]"
         }
     }
 }
