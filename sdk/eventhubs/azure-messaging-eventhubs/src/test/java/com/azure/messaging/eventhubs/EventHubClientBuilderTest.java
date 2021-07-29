@@ -25,6 +25,7 @@ import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -125,7 +126,7 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
     public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
-        boolean clientCreated = false;
+        AtomicBoolean clientCreated = new AtomicBoolean(false);
         try {
             EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
                 .connectionString(CORRECT_CONNECTION_STRING)
@@ -133,11 +134,11 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
                 .buildAsyncConsumerClient();
-            clientCreated = true;
+            clientCreated.set(true);
         } catch (Exception ex) {
         }
 
-        Assertions.assertEquals(expectedClientCreation, clientCreated);
+        Assertions.assertEquals(expectedClientCreation, clientCreated.get());
     }
 
     @Test
