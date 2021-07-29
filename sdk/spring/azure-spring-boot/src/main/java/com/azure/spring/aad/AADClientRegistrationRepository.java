@@ -199,21 +199,31 @@ public class AADClientRegistrationRepository
                                      .orElseGet(Stream::empty)
                                      .collect(Collectors.toSet());
         result.addAll(azureClientOpenidScopes());
-        if (properties.allowedGroupIdsConfigured() || properties.allowedGroupNamesConfigured()) {
-            // The 2 scopes are need to get group name from graph.
-            result.add(properties.getGraphBaseUri() + "User.Read");
+        // About "Directory.Read.All" and "User.Read", please refer to:
+        // 1. https://docs.microsoft.com/en-us/graph/permissions-reference
+        // 2. https://github.com/Azure/azure-sdk-for-java/issues/21284#issuecomment-888725241
+        if (properties.allowedGroupNamesConfigured()) {
+            // "Directory.Read.All" allows to get group id and group name.
             result.add(properties.getGraphBaseUri() + "Directory.Read.All");
+        } else if (properties.allowedGroupIdsConfigured()) {
+            // "User.Read" allows to get group id, but not allow to get group name.
+            result.add(properties.getGraphBaseUri() + "User.Read");
         }
         return result;
     }
 
+    /**
+     * @return the scopes needed for OpenID Connect.
+     * @see <a href="https://docs.microsoft.com/en-us/graph/permissions-reference#remarks-17">permissions-reference</a>
+     * @see <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes">openid-connect-scopes</a>
+     */
     private Set<String> azureClientOpenidScopes() {
         Set<String> result = new HashSet<>();
-        result.add("openid");
-        result.add("profile");
+        result.add("openid"); // "openid" allows to request an ID token.
+        result.add("profile"); // "profile" allows to return additional claims in the ID token.
 
         if (!properties.getAuthorizationClients().isEmpty()) {
-            result.add("offline_access");
+            result.add("offline_access"); // "offline_access" allows to request a refresh token.
         }
         return result;
     }
