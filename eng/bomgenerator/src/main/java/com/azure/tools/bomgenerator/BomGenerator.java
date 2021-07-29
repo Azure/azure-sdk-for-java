@@ -79,12 +79,18 @@ public class BomGenerator {
     }
 
     public void run() {
-        switch(mode) {
-            case ANALYZE_MODE: validate();
-            break;
+        switch (mode) {
+            case ANALYZE_MODE:
+                validate();
+                break;
 
-            case GENERATE_MODE: generate();
-            break;
+            case GENERATE_MODE:
+                generate();
+                break;
+
+            default:
+                logger.error("Unknown value for mode: {}", mode);
+                break;
         }
     }
 

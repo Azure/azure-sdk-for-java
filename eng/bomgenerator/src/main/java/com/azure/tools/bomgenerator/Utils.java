@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -139,7 +140,7 @@ public class Utils {
         return new ArrayList<>();
     }
 
-    static List<BomDependency> parsePomFileContent(InputStreamReader responseStream) {
+    static List<BomDependency> parsePomFileContent(Reader responseStream) {
         MavenXpp3Reader reader = new MavenXpp3Reader();
         try {
             Model model = reader.read(responseStream);

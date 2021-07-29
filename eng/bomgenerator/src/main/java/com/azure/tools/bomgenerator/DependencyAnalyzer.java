@@ -137,6 +137,7 @@ public class DependencyAnalyzer {
             try {
 
                 BomDependency parentDependency = new BomDependency(gaLibrary.getGroupId(), gaLibrary.getArtifactId(), gaLibrary.getVersion());
+
                 addDependencyToDependencyTree(parentDependency, null, nameToVersionToChildrenDependencyTree);
 
                 List<BomDependency> dependencies = getDependencies(gaLibrary);
@@ -185,6 +186,10 @@ public class DependencyAnalyzer {
     }
 
     private static void addDependencyToDependencyTree(BomDependency dependency, BomDependency parentDependency, Map<BomDependencyNoVersion, HashMap<String, Collection<BomDependency>>> dependencyTree) {
+        if (IGNORE_CONFLICT_LIST.contains(dependency.getArtifactId())) {
+            return;
+        }
+
         dependencyTree.computeIfAbsent(new BomDependencyNoVersion(dependency.getGroupId(), dependency.getArtifactId()), key -> new HashMap<>());
 
         var value = dependencyTree.get(dependency).computeIfAbsent(dependency.getVersion(), key -> new ArrayList<>());
@@ -242,11 +247,6 @@ public class DependencyAnalyzer {
             BomDependency dependency = new BomDependency(dependencyNoVersion.getGroupId(), dependencyNoVersion.getArtifactId(), eligibleVersion);
             if (!externalDependencies.contains(dependency)) {
                 bomEligibleDependencies.add(dependency);
-            }
-
-            if(IGNORE_CONFLICT_LIST.contains(dependency.getArtifactId())) {
-                // Conflicts in this dependency are ok, as they are likely to not cause issues across different versions.
-                return;
             }
 
             // All the other versions of this library are made ineligible.
