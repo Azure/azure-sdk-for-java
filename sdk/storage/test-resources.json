@@ -375,7 +375,7 @@
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('dataLakeAccountName'), '/default')]",
-            "properties": "[if(parameters(enableStorageVersioning), variables('containerDeleteRetentionPolicyProperties'), variables('nullProperties'))]",,,
+            "properties": "[if(parameters(enableStorageVersioning), variables('containerDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
             "dependsOn": [
               "[resourceId('Microsoft.Storage/storageAccounts/',variables('dataLakeAccountName'))]"
             ]
