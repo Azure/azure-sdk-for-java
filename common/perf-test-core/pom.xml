@@ -81,15 +81,9 @@
       <version>1.78</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
     </dependency>
     <dependency>
-<<<<<<< HEAD
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-=======
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-core</artifactId>
-      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
->>>>>>> main
     </dependency>
   </dependencies>
 </project>
