@@ -16,16 +16,16 @@ public class KeyProperties {
     private String kty;
 
     /**
-     * get kty
-     * @return kty
+     * get key type
+     * @return key type
      */
     public String getKty() {
         return kty;
     }
 
     /**
-     * set kty
-     * @param kty key
+     * set key type
+     * @param kty key type
      */
     public void setKty(String kty) {
         this.kty = kty;

@@ -15,7 +15,7 @@ import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
-import com.azure.security.keyvault.jca.implementation.model.PrivateKeyOperationResult;
+import com.azure.security.keyvault.jca.implementation.model.SignResult;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -304,7 +304,7 @@ public class KeyVaultClient {
                                  .map(CertificatePolicy::getKeyProperties)
                                  .map(KeyProperties::getKty)
                                  .orElse(null);
-        if (!isExportable) {
+        if (true) {
             // return KeyVaultPrivateKey if certificate is not exportable because
             // if the service needs to obtain the private key for authentication,
             // and we can't access private key(which is not exportable), we will use
@@ -312,9 +312,6 @@ public class KeyVaultClient {
             LOGGER.exiting("KeyVaultClient", "getKey", null);
             return new KeyVaultPrivateKey(keyType, certificateBundle.getKid());
         }
-        // The certificate is exportable the private key is available.
-        // So We'll store the private key for authentication instead of
-        // obtaining a digital signature through the API(without keyless).
         String certificateSecretUri = certificateBundle.getSid();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
@@ -329,6 +326,9 @@ public class KeyVaultClient {
             // does not own the private key (maybe due to lack of authority or other reasons).
             return null;
         }
+        // The certificate is exportable the private key is available.
+        // So We'll store the private key for authentication instead of
+        // obtaining a digital signature through the API(without keyless).
         Key key = null;
         SecretBundle secretBundle = (SecretBundle) JsonConverterUtil.fromJson(body, SecretBundle.class);
         String contentType = secretBundle.getContentType();
@@ -367,14 +367,14 @@ public class KeyVaultClient {
      * @return signature
      */
     public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String keyId) {
-        PrivateKeyOperationResult result = null;
+        SignResult result = null;
         String bodyString = String.format("{\"alg\": \"" + digestName + "\", \"value\": \"%s\"}", digestValue);
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
         String url = String.format("%s/sign%s", keyId, API_VERSION_POSTFIX);
         String response = HttpUtil.post(url, headers, bodyString, "application/json");
         if (response != null) {
-            result = (PrivateKeyOperationResult) JsonConverterUtil.fromJson(response, PrivateKeyOperationResult.class);
+            result = (SignResult) JsonConverterUtil.fromJson(response, SignResult.class);
         }
         if (result != null) {
             return Base64.getUrlDecoder().decode(result.getValue());

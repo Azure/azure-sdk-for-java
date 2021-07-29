@@ -40,26 +40,6 @@ public final class KeyVaultJcaProvider extends Provider {
     private static final Double VERSION = 1.0;
 
     /**
-     * The default algorithm for certificate sign which Key Type is RSA in key Vault will be used
-     */
-    private static final String RSA_ALGORITHM = "RSASSA-PSS";
-
-    /**
-     * The default algorithm for certificate sign which Key Type is EC and Elliptic curve name is P-256 in key Vault will be used
-     */
-    private static final String EC_P_256_ALGORITHM = "SHA256withECDSA";
-
-    /**
-     * The default algorithm for certificate sign which Key Type is EC and Elliptic curve name is P-384 in key Vault will be used
-     */
-    private static final String EC_P_384_ALGORITHM = "SHA384withECDSA";
-
-    /**
-     * The default algorithm for certificate sign which Key Type is EC and Elliptic curve name is P-521 in key Vault will be used
-     */
-    private static final String EC_P_521_ALGORITHM = "SHA512withECDSA";
-
-    /**
      * Constructor.
      */
     public KeyVaultJcaProvider() {
@@ -115,7 +95,7 @@ public final class KeyVaultJcaProvider extends Provider {
                 new Service(
                     this,
                     "Signature",
-                    RSA_ALGORITHM,
+                    KeyVaultKeyLessRsaSignature.RSA_ALGORITHM,
                     KeyVaultKeyLessRsaSignature.class.getName(),
                     null,
                     null
@@ -125,7 +105,7 @@ public final class KeyVaultJcaProvider extends Provider {
                 new Service(
                     this,
                     "Signature",
-                    EC_P_256_ALGORITHM,
+                    KeyVaultKeyLessEcSha256Signature.EC_P_256_ALGORITHM,
                     KeyVaultKeyLessEcSha256Signature.class.getName(),
                     null,
                     null
@@ -135,7 +115,7 @@ public final class KeyVaultJcaProvider extends Provider {
                 new Service(
                     this,
                     "Signature",
-                    EC_P_384_ALGORITHM,
+                    KeyVaultKeyLessEcSha384Signature.EC_P_384_ALGORITHM,
                     KeyVaultKeyLessEcSha384Signature.class.getName(),
                     null,
                     null
@@ -145,7 +125,7 @@ public final class KeyVaultJcaProvider extends Provider {
                 new Service(
                     this,
                     "Signature",
-                    EC_P_521_ALGORITHM,
+                    KeyVaultKeyLessEcSha512Signature.EC_P_521_ALGORITHM,
                     KeyVaultKeyLessEcSha512Signature.class.getName(),
                     null,
                     null

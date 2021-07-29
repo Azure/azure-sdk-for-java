@@ -3,44 +3,28 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
-import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.AlgorithmParameters;
-import java.security.GeneralSecurityException;
-import java.security.ProviderException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.PSSParameterSpec;
 import java.util.Base64;
-
-import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.createKeyVaultClientBySystemProperty;
 
 /**
  * key vault Rsa signature to support key less
  */
 public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignature {
 
-    // PSS parameters from signatures and keys respectively
-    // required for PSS signatures
-    private PSSParameterSpec signatureParameters = null;
-
-    private final KeyVaultClient keyVaultClient;
+    /**
+     * The default algorithm for certificate sign which Key Type is RSA in key Vault will be used
+     */
+    public static final String RSA_ALGORITHM = "RSASSA-PSS";
 
     /**
      * Construct a new KeyVaultKeyLessRsaSignature
      */
     public KeyVaultKeyLessRsaSignature() {
-        this(createKeyVaultClientBySystemProperty());
-    }
-
-    /**
-     * Construct a new KeyVaultKeyLessRsaSignature with key vault client
-     * @param keyVaultClient keyVaultClient
-     */
-    public KeyVaultKeyLessRsaSignature(KeyVaultClient keyVaultClient) {
-        this.keyVaultClient = keyVaultClient;
+        super();
         this.messageDigest = null;
     }
 
@@ -55,31 +39,24 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
     @Override
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws InvalidAlgorithmParameterException {
-        this.signatureParameters = (PSSParameterSpec) params;
-        String newHashAlg = this.signatureParameters.getDigestAlgorithm();
+        if (params != null && !(params instanceof PSSParameterSpec)) {
+            throw new InvalidAlgorithmParameterException("No parameter accepted");
+        }
+        String newHashAlg = ((PSSParameterSpec) params).getDigestAlgorithm();
         // re-allocate md if not yet assigned or algorithm changed
         if ((this.messageDigest == null) || !(this.messageDigest.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
             try {
                 this.messageDigest = MessageDigest.getInstance(newHashAlg);
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (NoSuchAlgorithmException exception) {
                 // should not happen as we pick default digest algorithm
-                throw new InvalidAlgorithmParameterException("Unsupported digest algorithm " + newHashAlg, nsae);
+                throw new InvalidAlgorithmParameterException("Unsupported digest algorithm " + newHashAlg, exception);
             }
         }
     }
 
     @Override
-    protected AlgorithmParameters engineGetParameters() {
-        AlgorithmParameters parameters = null;
-        if (this.signatureParameters != null) {
-            try {
-                parameters = AlgorithmParameters.getInstance("RSASSA-PSS");
-                parameters.init(this.signatureParameters);
-            } catch (GeneralSecurityException gse) {
-                throw new ProviderException(gse.getMessage());
-            }
-        }
-        return parameters;
+    public String getAlgorithmName() {
+        //The default algorithm for certificate sign which Key Type is RSA in key Vault will be used
+        return RSA_ALGORITHM;
     }
-
 }

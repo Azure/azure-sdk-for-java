@@ -6,7 +6,7 @@ package com.azure.security.keyvault.jca.implementation.model;
 /**
  * Result of sign certificate
  */
-public class PrivateKeyOperationResult {
+public class SignResult {
 
     private String kid;
 

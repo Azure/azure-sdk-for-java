@@ -343,10 +343,11 @@ certificate will be added with the alias of `mycert`.
 ### Key-Less certificates
 You can set the private key as [non-exportable] to ensure the security of the key.
 
-Note if you want to use a key less certificate, you must add `sign` permissions to the principal.
-![Sign To Principal](resources/SignToPrincipal.png)
+Note if you want to use key less certificate, you must add `sign` permission.
 
-To grant access use the command line below:
+You can add permission in portal: ![Sign To Principal](resources/SignToPrincipal.png)
+
+Or add permission by cli command:
 ```shell
   az keyvault set-policy --name ${KEY_VAULT} \
         --object-id ${MANAGED_IDENTITY} \

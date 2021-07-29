@@ -50,17 +50,7 @@ public final class HttpUtil {
     }
 
     public static String post(String url, String body, String contentType) {
-        String result = null;
-        try (CloseableHttpClient client = HttpClients.createDefault()) {
-            HttpPost httpPost = new HttpPost(url);
-            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
-            httpPost.setEntity(
-                new StringEntity(body, ContentType.create(contentType)));
-            result = client.execute(httpPost, createResponseHandler());
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-        return result;
+        return post(url, null, body, contentType);
     }
 
     public static String getUserAgentPrefix() {
@@ -79,11 +69,11 @@ public final class HttpUtil {
         String result = null;
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
-            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
             if (headers != null) {
+                httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
                 headers.forEach(httpPost::addHeader);
+                httpPost.addHeader("Content-Type", "application/json");
             }
-            httpPost.addHeader("Content-Type", "application/json");
             httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
             result = client.execute(httpPost, createResponseHandler());
         } catch (IOException ioe) {

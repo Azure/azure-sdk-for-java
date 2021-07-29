@@ -11,7 +11,6 @@ import org.mockito.ArgumentMatchers;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.SignatureException;
 import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PSSParameterSpec;
 
@@ -95,8 +94,9 @@ public class KeyVaultKeyLessRsaSignatureTest {
     }
 
     @Test
-    public void setDigestNameAndEngineSignTest() throws SignatureException, InvalidAlgorithmParameterException {
-        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature(keyVaultClient);
+    public void setDigestNameAndEngineSignTest() throws InvalidAlgorithmParameterException {
+        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
+        keyVaultKeyLessRsaSignature.setKeyVaultClient(keyVaultClient);
         keyVaultKeyLessRsaSignature.engineSetParameter(new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, 20, 1));
         when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("PS256"), anyString(), ArgumentMatchers.eq(null))).thenReturn("fakeValue".getBytes());
         assertArrayEquals("fakeValue".getBytes(), keyVaultKeyLessRsaSignature.engineSign());
