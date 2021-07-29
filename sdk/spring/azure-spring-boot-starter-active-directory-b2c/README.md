@@ -239,6 +239,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
    azure:
      activedirectory:
        b2c:
+         base-uri: ${your-base-uri}             # Such as: https://xxxxb2c.b2clogin.com
          tenant-id: ${your-tenant-id}
          authorization-clients:
            ${your-resource-server-a-name}:
@@ -320,9 +321,10 @@ This scenario not support login. Just protect the server by validating the acces
    azure:
      activedirectory:
        b2c:
+         base-uri: ${your-base-uri}             # Such as: https://xxxxb2c.b2clogin.com
          tenant-id: ${your-tenant-id}
-         app-id-uri: ${your-web-api-a-app-id-url}
-         client-id: ${your-web-api-a-client-id}
+         app-id-uri: ${your-app-id-uri}         # If you are using v1.0 token, please configure app-id-uri for `aud` verification
+         client-id: ${your-client-id}           # If you are using v2.0 token, please configure client-id for `aud` verification
    ```
 
 1. Write your Java code.

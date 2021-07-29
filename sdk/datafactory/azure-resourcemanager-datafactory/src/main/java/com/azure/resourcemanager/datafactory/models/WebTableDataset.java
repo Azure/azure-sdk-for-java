@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.WebTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,67 +17,23 @@ import java.util.Map;
 /** The dataset points to a HTML table in the web page. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("WebTable")
-@JsonFlatten
 @Fluent
-public class WebTableDataset extends Dataset {
+public final class WebTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebTableDataset.class);
 
     /*
-     * The zero-based index of the table in the web page. Type: integer (or
-     * Expression with resultType integer), minimum: 0.
+     * Web table dataset properties.
      */
-    @JsonProperty(value = "typeProperties.index", required = true)
-    private Object index;
-
-    /*
-     * The relative URL to the web page from the linked service URL. Type:
-     * string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.path")
-    private Object path;
+    @JsonProperty(value = "typeProperties", required = true)
+    private WebTableDatasetTypeProperties innerTypeProperties = new WebTableDatasetTypeProperties();
 
     /**
-     * Get the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
-     * resultType integer), minimum: 0.
+     * Get the innerTypeProperties property: Web table dataset properties.
      *
-     * @return the index value.
+     * @return the innerTypeProperties value.
      */
-    public Object index() {
-        return this.index;
-    }
-
-    /**
-     * Set the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
-     * resultType integer), minimum: 0.
-     *
-     * @param index the index value to set.
-     * @return the WebTableDataset object itself.
-     */
-    public WebTableDataset withIndex(Object index) {
-        this.index = index;
-        return this;
-    }
-
-    /**
-     * Get the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
-     * with resultType string).
-     *
-     * @return the path value.
-     */
-    public Object path() {
-        return this.path;
-    }
-
-    /**
-     * Set the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
-     * with resultType string).
-     *
-     * @param path the path value to set.
-     * @return the WebTableDataset object itself.
-     */
-    public WebTableDataset withPath(Object path) {
-        this.path = path;
-        return this;
+    private WebTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -130,6 +86,56 @@ public class WebTableDataset extends Dataset {
     }
 
     /**
+     * Get the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
+     * resultType integer), minimum: 0.
+     *
+     * @return the index value.
+     */
+    public Object index() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().index();
+    }
+
+    /**
+     * Set the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
+     * resultType integer), minimum: 0.
+     *
+     * @param index the index value to set.
+     * @return the WebTableDataset object itself.
+     */
+    public WebTableDataset withIndex(Object index) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withIndex(index);
+        return this;
+    }
+
+    /**
+     * Get the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the path value.
+     */
+    public Object path() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().path();
+    }
+
+    /**
+     * Set the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param path the path value to set.
+     * @return the WebTableDataset object itself.
+     */
+    public WebTableDataset withPath(Object path) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withPath(path);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -137,10 +143,13 @@ public class WebTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (index() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property index in model WebTableDataset"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model WebTableDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

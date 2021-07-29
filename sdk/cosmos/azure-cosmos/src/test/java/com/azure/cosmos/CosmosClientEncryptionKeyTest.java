@@ -8,7 +8,6 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
-import org.spongycastle.util.encoders.Hex;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -48,7 +47,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createClientEncryptionKey() {
         EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key1", "tempmetadata1", "custom");
-        byte[] key = Hex.decode(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
+        byte[] key = decodeHexString(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
             "ae 1e d9 1c").replace(" ", ""));
 
         CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties =
@@ -67,7 +66,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void replaceClientEncryptionKey() {
         EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata1");
-        byte[] key = Hex.decode(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
+        byte[] key = decodeHexString(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
             "ae 1e d9 1c").replace(" ", ""));
 
         CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties =
@@ -90,7 +89,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void queryClientEncryptionKeys() {
         EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("custom", "key3", "tempmetadata1");
-        byte[] key = Hex.decode(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
+        byte[] key = decodeHexString(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
             "ae 1e d9 1c").replace(" ", ""));
 
         CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties =
