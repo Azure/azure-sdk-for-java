@@ -344,8 +344,12 @@ public class EncryptionProcessor {
                 input == null ? null : input.length,
                 Thread.currentThread().getName());
         }
-        ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
 
+        if (input == null || input.length == 0) {
+            return Mono.empty();
+        }
+
+        ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
         assert (itemJObj != null);
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {

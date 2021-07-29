@@ -60,7 +60,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
-        EncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
+        TestEncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
             encryptionKeyStoreProvider);
@@ -121,6 +121,17 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void createItemEncryptWithContentResponseOnWriteEnabledFalse() {
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(false);
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
+            new PartitionKey(properties.getMypk()), requestOptions).block();
+        assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+        assertThat(itemResponse.getItem()).isNull();
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
