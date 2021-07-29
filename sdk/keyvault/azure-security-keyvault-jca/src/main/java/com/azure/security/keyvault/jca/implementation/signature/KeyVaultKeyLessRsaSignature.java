@@ -42,7 +42,8 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
         if (params != null && !(params instanceof PSSParameterSpec)) {
             throw new InvalidAlgorithmParameterException("No parameter accepted");
         }
-        String newHashAlg = ((PSSParameterSpec) params).getDigestAlgorithm();
+        PSSParameterSpec signatureParameters = (PSSParameterSpec) params;
+        String newHashAlg = signatureParameters != null ? signatureParameters.getDigestAlgorithm() : null;
         // re-allocate md if not yet assigned or algorithm changed
         if ((this.messageDigest == null) || !(this.messageDigest.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
             try {

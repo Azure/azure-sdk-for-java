@@ -304,7 +304,7 @@ public class KeyVaultClient {
                                  .map(CertificatePolicy::getKeyProperties)
                                  .map(KeyProperties::getKty)
                                  .orElse(null);
-        if (true) {
+        if (!isExportable) {
             // return KeyVaultPrivateKey if certificate is not exportable because
             // if the service needs to obtain the private key for authentication,
             // and we can't access private key(which is not exportable), we will use
