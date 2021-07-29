@@ -16,7 +16,7 @@ import java.time.Duration;
 /** The interface for FeatureClient class. */
 public interface FeatureClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The Azure subscription ID.
      *
      * @return the subscriptionId value.
      */
@@ -56,6 +56,13 @@ public interface FeatureClient {
      * @return the FeaturesClient object.
      */
     FeaturesClient getFeatures();
+
+    /**
+     * Gets the SubscriptionFeatureRegistrationsClient object to access its operations.
+     *
+     * @return the SubscriptionFeatureRegistrationsClient object.
+     */
+    SubscriptionFeatureRegistrationsClient getSubscriptionFeatureRegistrations();
 
     /**
      * Lists all of the available Microsoft.Features REST API operations.

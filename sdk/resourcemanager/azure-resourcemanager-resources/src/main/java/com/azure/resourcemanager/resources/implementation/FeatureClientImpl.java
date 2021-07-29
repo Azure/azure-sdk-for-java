@@ -32,6 +32,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
 import com.azure.resourcemanager.resources.fluent.FeaturesClient;
+import com.azure.resourcemanager.resources.fluent.SubscriptionFeatureRegistrationsClient;
 import com.azure.resourcemanager.resources.fluent.models.OperationInner;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.resources.models.OperationListResult;
@@ -46,11 +47,11 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
     /** The proxy service used to perform REST calls. */
     private final FeatureClientService service;
 
-    /** The ID of the target subscription. */
+    /** The Azure subscription ID. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The Azure subscription ID.
      *
      * @return the subscriptionId value.
      */
@@ -130,6 +131,18 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
         return this.features;
     }
 
+    /** The SubscriptionFeatureRegistrationsClient object to access its operations. */
+    private final SubscriptionFeatureRegistrationsClient subscriptionFeatureRegistrations;
+
+    /**
+     * Gets the SubscriptionFeatureRegistrationsClient object to access its operations.
+     *
+     * @return the SubscriptionFeatureRegistrationsClient object.
+     */
+    public SubscriptionFeatureRegistrationsClient getSubscriptionFeatureRegistrations() {
+        return this.subscriptionFeatureRegistrations;
+    }
+
     /**
      * Initializes an instance of FeatureClient client.
      *
@@ -137,7 +150,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The Azure subscription ID.
      * @param endpoint server parameter.
      */
     FeatureClientImpl(
@@ -153,8 +166,9 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2015-12-01";
+        this.apiVersion = "2021-07-01";
         this.features = new FeaturesClientImpl(this);
+        this.subscriptionFeatureRegistrations = new SubscriptionFeatureRegistrationsClientImpl(this);
         this.service = RestProxy.create(FeatureClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
