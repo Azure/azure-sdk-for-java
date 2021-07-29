@@ -160,16 +160,19 @@ public class PerfStressProgram {
                     runTests(tests, options.isSync(), options.getParallel(), options.getDuration(), title);
                 }
             } finally {
-                if (startedPlayback) {
-                    Disposable playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
-                    Flux.just(tests).flatMap(PerfStressTest::stopPlaybackAsync).blockLast();
-                    playbackStatus.dispose();
+                try {
+                    if (startedPlayback) {
+                        Disposable playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
+                        Flux.just(tests).flatMap(PerfStressTest::stopPlaybackAsync).blockLast();
+                        playbackStatus.dispose();
+                    }    
                 }
-
-                if (!options.isNoCleanup()) {
-                    cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
-
-                    Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
+                finally {
+                    if (!options.isNoCleanup()) {
+                        cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
+    
+                        Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
+                    }    
                 }
             }
         } finally {
