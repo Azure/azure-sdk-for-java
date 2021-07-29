@@ -415,7 +415,7 @@ class FileAPITests extends APISpec {
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getContentLength() != null
         headers.getContentType() != null
-        headers.getContentRange() != null
+        headers.getContentRange() == null
         headers.getContentMd5() == null
         headers.getContentEncoding() == null
         headers.getCacheControl() == null
