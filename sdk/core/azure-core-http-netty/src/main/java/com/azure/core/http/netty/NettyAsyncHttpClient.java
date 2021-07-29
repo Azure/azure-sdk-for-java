@@ -11,6 +11,8 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
+import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
+import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
@@ -29,7 +31,9 @@ import reactor.util.retry.Retry;
 
 import javax.net.ssl.SSLException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 
@@ -46,6 +50,7 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
+    private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
     private final boolean disableBufferCopy;
 
     final reactor.netty.http.client.HttpClient nettyClient;
@@ -77,7 +82,21 @@ class NettyAsyncHttpClient implements HttpClient {
 
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
 
-        return nettyClient
+        reactor.netty.http.client.HttpClient client = this.nettyClient;
+        Optional<Object> requestResponseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT);
+        if (requestResponseTimeout.isPresent()) {
+            client = nettyClient.doAfterRequest((req, connection) -> {
+                // remove write timeout handler and client-level response timeout handler before adding request-level
+                // response timeout handler
+                long responseTimeoutMillis = ((Duration) requestResponseTimeout.get()).toMillis();
+                connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
+                    .removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
+                    .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME,
+                            new ResponseTimeoutHandler(responseTimeoutMillis));
+            });
+        }
+
+        return client
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
