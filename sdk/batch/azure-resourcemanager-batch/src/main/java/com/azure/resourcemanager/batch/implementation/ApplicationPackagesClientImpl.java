@@ -388,9 +388,9 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     }
 
     /**
-     * Creates an application package record. The record contains the SAS where the package should be uploaded to. Once
-     * it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can be
-     * used.
+     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
+     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
+     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -458,9 +458,9 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     }
 
     /**
-     * Creates an application package record. The record contains the SAS where the package should be uploaded to. Once
-     * it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can be
-     * used.
+     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
+     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
+     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -527,9 +527,9 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     }
 
     /**
-     * Creates an application package record. The record contains the SAS where the package should be uploaded to. Once
-     * it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can be
-     * used.
+     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
+     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
+     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -560,9 +560,9 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     }
 
     /**
-     * Creates an application package record. The record contains the SAS where the package should be uploaded to. Once
-     * it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can be
-     * used.
+     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
+     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
+     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -589,9 +589,9 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     }
 
     /**
-     * Creates an application package record. The record contains the SAS where the package should be uploaded to. Once
-     * it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can be
-     * used.
+     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
+     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
+     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -610,9 +610,9 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     }
 
     /**
-     * Creates an application package record. The record contains the SAS where the package should be uploaded to. Once
-     * it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can be
-     * used.
+     * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
+     * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
+     * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.

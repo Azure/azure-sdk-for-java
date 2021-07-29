@@ -31,16 +31,8 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
         return this.innerModel().type();
     }
 
-    public String thumbprintAlgorithm() {
-        return this.innerModel().thumbprintAlgorithm();
-    }
-
-    public String thumbprint() {
-        return this.innerModel().thumbprint();
-    }
-
-    public CertificateFormat format() {
-        return this.innerModel().format();
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public CertificateProvisioningState provisioningState() {
@@ -67,8 +59,16 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
         return this.innerModel().deleteCertificateError();
     }
 
-    public String etag() {
-        return this.innerModel().etag();
+    public String thumbprintAlgorithm() {
+        return this.innerModel().thumbprintAlgorithm();
+    }
+
+    public String thumbprint() {
+        return this.innerModel().thumbprint();
+    }
+
+    public CertificateFormat format() {
+        return this.innerModel().format();
     }
 
     public CertificateInner innerModel() {
@@ -210,6 +210,26 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
             .cancelDeletionWithResponse(resourceGroupName, accountName, certificateName, context);
     }
 
+    public CertificateImpl withData(String data) {
+        if (isInCreateMode()) {
+            this.createParameters.withData(data);
+            return this;
+        } else {
+            this.updateParameters.withData(data);
+            return this;
+        }
+    }
+
+    public CertificateImpl withPassword(String password) {
+        if (isInCreateMode()) {
+            this.createParameters.withPassword(password);
+            return this;
+        } else {
+            this.updateParameters.withPassword(password);
+            return this;
+        }
+    }
+
     public CertificateImpl withThumbprintAlgorithm(String thumbprintAlgorithm) {
         if (isInCreateMode()) {
             this.createParameters.withThumbprintAlgorithm(thumbprintAlgorithm);
@@ -240,38 +260,18 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
         }
     }
 
-    public CertificateImpl withData(String data) {
-        if (isInCreateMode()) {
-            this.createParameters.withData(data);
-            return this;
-        } else {
-            this.updateParameters.withData(data);
-            return this;
-        }
-    }
-
-    public CertificateImpl withPassword(String password) {
-        if (isInCreateMode()) {
-            this.createParameters.withPassword(password);
-            return this;
-        } else {
-            this.updateParameters.withPassword(password);
-            return this;
-        }
-    }
-
     public CertificateImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public CertificateImpl withIfNoneMatch(String ifNoneMatch) {
         this.createIfNoneMatch = ifNoneMatch;
-        return this;
-    }
-
-    public CertificateImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
         return this;
     }
 

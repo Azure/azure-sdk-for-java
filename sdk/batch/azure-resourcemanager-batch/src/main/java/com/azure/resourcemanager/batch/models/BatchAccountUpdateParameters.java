@@ -5,43 +5,37 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.batch.fluent.models.BatchAccountUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Parameters for updating an Azure Batch account. */
-@JsonFlatten
 @Fluent
-public class BatchAccountUpdateParameters {
+public final class BatchAccountUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchAccountUpdateParameters.class);
 
     /*
      * The user-specified tags associated with the account.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /*
+     * The properties of the account.
+     */
+    @JsonProperty(value = "properties")
+    private BatchAccountUpdateProperties innerProperties;
 
     /*
      * The identity of the Batch account.
      */
     @JsonProperty(value = "identity")
     private BatchAccountIdentity identity;
-
-    /*
-     * The properties related to the auto-storage account.
-     */
-    @JsonProperty(value = "properties.autoStorage")
-    private AutoStorageBaseProperties autoStorage;
-
-    /*
-     * Configures how customer data is encrypted inside the Batch account. By
-     * default, accounts are encrypted using a Microsoft managed key. For
-     * additional control, a customer-managed key can be used instead.
-     */
-    @JsonProperty(value = "properties.encryption")
-    private EncryptionProperties encryption;
 
     /**
      * Get the tags property: The user-specified tags associated with the account.
@@ -61,6 +55,15 @@ public class BatchAccountUpdateParameters {
     public BatchAccountUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: The properties of the account.
+     *
+     * @return the innerProperties value.
+     */
+    private BatchAccountUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -89,7 +92,7 @@ public class BatchAccountUpdateParameters {
      * @return the autoStorage value.
      */
     public AutoStorageBaseProperties autoStorage() {
-        return this.autoStorage;
+        return this.innerProperties() == null ? null : this.innerProperties().autoStorage();
     }
 
     /**
@@ -99,7 +102,10 @@ public class BatchAccountUpdateParameters {
      * @return the BatchAccountUpdateParameters object itself.
      */
     public BatchAccountUpdateParameters withAutoStorage(AutoStorageBaseProperties autoStorage) {
-        this.autoStorage = autoStorage;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountUpdateProperties();
+        }
+        this.innerProperties().withAutoStorage(autoStorage);
         return this;
     }
 
@@ -111,7 +117,7 @@ public class BatchAccountUpdateParameters {
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
-        return this.encryption;
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -123,7 +129,36 @@ public class BatchAccountUpdateParameters {
      * @return the BatchAccountUpdateParameters object itself.
      */
     public BatchAccountUpdateParameters withEncryption(EncryptionProperties encryption) {
-        this.encryption = encryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountUpdateProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
+     * be used to authenticate with the data plane. This does not affect authentication with the control plane.
+     *
+     * @return the allowedAuthenticationModes value.
+     */
+    public List<AuthenticationMode> allowedAuthenticationModes() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedAuthenticationModes();
+    }
+
+    /**
+     * Set the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
+     * be used to authenticate with the data plane. This does not affect authentication with the control plane.
+     *
+     * @param allowedAuthenticationModes the allowedAuthenticationModes value to set.
+     * @return the BatchAccountUpdateParameters object itself.
+     */
+    public BatchAccountUpdateParameters withAllowedAuthenticationModes(
+        List<AuthenticationMode> allowedAuthenticationModes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountUpdateProperties();
+        }
+        this.innerProperties().withAllowedAuthenticationModes(allowedAuthenticationModes);
         return this;
     }
 
@@ -133,14 +168,11 @@ public class BatchAccountUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (autoStorage() != null) {
-            autoStorage().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
         }
     }
 }

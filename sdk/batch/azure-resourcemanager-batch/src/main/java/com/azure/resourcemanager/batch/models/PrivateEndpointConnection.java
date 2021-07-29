@@ -30,6 +30,13 @@ public interface PrivateEndpointConnection {
     String type();
 
     /**
+     * Gets the etag property: The ETag of the resource, used for concurrency statements.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the private endpoint connection.
      *
      * @return the provisioningState value.
@@ -50,13 +57,6 @@ public interface PrivateEndpointConnection {
      * @return the privateLinkServiceConnectionState value.
      */
     PrivateLinkServiceConnectionState privateLinkServiceConnectionState();
-
-    /**
-     * Gets the etag property: The ETag of the resource, used for concurrency statements.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner object.

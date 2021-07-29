@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountInner;
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.batch.models.AuthenticationMode;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.AutoStorageProperties;
 import com.azure.resourcemanager.batch.models.BatchAccount;
@@ -132,6 +133,15 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
 
     public Integer activeJobAndJobScheduleQuota() {
         return this.innerModel().activeJobAndJobScheduleQuota();
+    }
+
+    public List<AuthenticationMode> allowedAuthenticationModes() {
+        List<AuthenticationMode> inner = this.innerModel().allowedAuthenticationModes();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -330,6 +340,16 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
             return this;
         } else {
             this.updateParameters.withEncryption(encryption);
+            return this;
+        }
+    }
+
+    public BatchAccountImpl withAllowedAuthenticationModes(List<AuthenticationMode> allowedAuthenticationModes) {
+        if (isInCreateMode()) {
+            this.createParameters.withAllowedAuthenticationModes(allowedAuthenticationModes);
+            return this;
+        } else {
+            this.updateParameters.withAllowedAuthenticationModes(allowedAuthenticationModes);
             return this;
         }
     }
