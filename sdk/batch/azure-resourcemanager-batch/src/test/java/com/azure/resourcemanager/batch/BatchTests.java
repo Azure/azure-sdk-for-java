@@ -10,6 +10,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.BatchAccount;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,7 @@ class BatchTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testCreateBatchAccount() {
+
         BatchManager batchManager = BatchManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
@@ -39,35 +41,40 @@ class BatchTests extends TestBase {
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
-        storageManager.resourceManager().resourceGroups().define(RESOURCE_GROUP)
-            .withRegion(REGION)
-            .create();
+        try {
+            // resource group
+            storageManager.resourceManager().resourceGroups().define(RESOURCE_GROUP)
+                .withRegion(REGION)
+                .create();
 
-        // storage account
-        StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
-            .withRegion(REGION)
-            .withExistingResourceGroup(RESOURCE_GROUP)
-            .create();
+            // storage account
+            StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
+                .withRegion(REGION)
+                .withExistingResourceGroup(RESOURCE_GROUP)
+                .create();
 
-        // batch account
-        BatchAccount account = batchManager
-            .batchAccounts()
-            .define(BATCH_ACCOUNT)
-            .withRegion(REGION)
-            .withExistingResourceGroup(RESOURCE_GROUP)
-            .withAutoStorage(
-                new AutoStorageBaseProperties()
-                    .withStorageAccountId(storageAccount.id()))
-            .create();
+            // batch account
+            BatchAccount account = batchManager
+                .batchAccounts()
+                .define(BATCH_ACCOUNT)
+                .withRegion(REGION)
+                .withExistingResourceGroup(RESOURCE_GROUP)
+                .withAutoStorage(
+                    new AutoStorageBaseProperties()
+                        .withStorageAccountId(storageAccount.id()))
+                .create();
 
 
-        assertNotNull(account);
+            assertNotNull(account);
 
-        BatchAccount batchAccount = batchManager.batchAccounts().getByResourceGroup(RESOURCE_GROUP, BATCH_ACCOUNT);
-        assertEquals(BATCH_ACCOUNT, batchAccount.name());
-        assertEquals(REGION.toString(), batchAccount.location());
+            BatchAccount batchAccount = batchManager.batchAccounts().getByResourceGroup(RESOURCE_GROUP, BATCH_ACCOUNT);
+            assertEquals(BATCH_ACCOUNT, batchAccount.name());
+            assertEquals(REGION.toString(), batchAccount.location());
 
-        batchManager.batchAccounts().deleteById(batchAccount.id());
+        } finally {
+            storageManager.resourceManager().resourceGroups().beginDeleteByName(RESOURCE_GROUP);
+        }
+
     }
 
     private static String randomPadding() {
