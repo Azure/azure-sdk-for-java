@@ -1,0 +1,30 @@
+parameters:
+    - name: AzuriteLocation
+      type: string
+      default: $(Pipeline.Workspace)/.storage/azurite
+    - name: AzuriteVersion
+      type: string
+      default: 3.11.0
+
+steps:
+    - task: Cache@2
+      inputs:
+          key: storageazurite | "$(Agent.OS)" | "${{ parameters.AzuriteVersion }}"
+          path: ${{ parameters.AzuriteLocation }}
+          cacheHitVar: STORAGE_AZURITE_CACHE_RESTORED
+      displayName: Cache Azurite installation
+    - task: Npm@1
+      inputs:
+          command: custom
+          customCommand: install --prefix ${{ parameters.AzuriteLocation }} azurite@${{ parameters.AzuriteVersion }}
+      condition: ne(variables.STORAGE_AZURITE_CACHE_RESTORED, 'true')
+      displayName: Install Azurite
+    - task: PowerShell@2
+      displayName: Add Azurite location as environment variable
+      inputs:
+          targetType: 'inline'
+          script: Write-Host "##vso[task.setvariable variable=Azure.Azurite.Location;]${{ parameters.AzuriteLocation }}"
+    - bash: |
+          mkdir '$(Agent.TempDirectory)/azurite-temp-dir'
+          node '${{ parameters.AzuriteLocation }}/node_modules/azurite/dist/src/azurite.js' -l '$(Agent.TempDirectory)/azurite-temp-dir' --skipApiVersionCheck > '$(Agent.TempDirectory)/azurite.log' 2>&1 &
+      displayName: Run azurite

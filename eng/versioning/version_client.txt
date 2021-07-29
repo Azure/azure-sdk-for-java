@@ -110,7 +110,7 @@ com.azure:azure-security-attestation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-security-confidentialledger;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-security-keyvault-administration;4.0.1;4.1.0-beta.1
 com.azure:azure-security-keyvault-certificates;4.2.1;4.3.0-beta.1
-com.azure:azure-security-keyvault-jca;1.0.1;1.1.0-beta.1
+com.azure:azure-security-keyvault-jca;1.0.1;2.0.0-beta.1
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
 com.azure:azure-security-keyvault-keys;4.3.1;4.4.0-beta.2
 com.azure:azure-security-keyvault-secrets;4.3.1;4.4.0-beta.1
@@ -251,7 +251,7 @@ com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.1;1.0.0-beta.2
@@ -303,7 +303,7 @@ com.azure.resourcemanager:azure-resourcemanager-maps;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-elastic;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-security;1.0.0-beta.1;1.0.0-beta.2
