@@ -9,10 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BatchAccountIdentityUserAssignedIdentities model. */
+/** The list of associated user identities. */
 @Immutable
-public final class BatchAccountIdentityUserAssignedIdentities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchAccountIdentityUserAssignedIdentities.class);
+public final class UserAssignedIdentities {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentities.class);
 
     /*
      * The principal id of user assigned identity.

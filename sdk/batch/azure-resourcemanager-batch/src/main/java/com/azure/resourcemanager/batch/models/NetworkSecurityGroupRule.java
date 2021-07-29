@@ -16,13 +16,13 @@ public final class NetworkSecurityGroupRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupRule.class);
 
     /*
-     * Priorities within a pool must be unique and are evaluated in order of
-     * priority. The lower the number the higher the priority. For example,
-     * rules could be specified with order numbers of 150, 250, and 350. The
-     * rule with the order number of 150 takes precedence over the rule that
-     * has an order of 250. Allowed priorities are 150 to 4096. If any reserved
-     * or duplicate values are provided the request fails with HTTP status code
-     * 400.
+     * The priority for this rule. Priorities within a pool must be unique and
+     * are evaluated in order of priority. The lower the number the higher the
+     * priority. For example, rules could be specified with order numbers of
+     * 150, 250, and 350. The rule with the order number of 150 takes
+     * precedence over the rule that has an order of 250. Allowed priorities
+     * are 150 to 4096. If any reserved or duplicate values are provided the
+     * request fails with HTTP status code 400.
      */
     @JsonProperty(value = "priority", required = true)
     private int priority;
@@ -35,29 +35,30 @@ public final class NetworkSecurityGroupRule {
     private NetworkSecurityGroupRuleAccess access;
 
     /*
-     * Valid values are a single IP address (i.e. 10.10.10.10), IP subnet (i.e.
-     * 192.168.1.0/24), default tag, or * (for all addresses).  If any other
-     * values are provided the request fails with HTTP status code 400.
+     * The source address prefix or tag to match for the rule. Valid values are
+     * a single IP address (i.e. 10.10.10.10), IP subnet (i.e. 192.168.1.0/24),
+     * default tag, or * (for all addresses).  If any other values are provided
+     * the request fails with HTTP status code 400.
      */
     @JsonProperty(value = "sourceAddressPrefix", required = true)
     private String sourceAddressPrefix;
 
     /*
-     * Valid values are '*' (for all ports 0 - 65535) or arrays of ports or
-     * port ranges (i.e. 100-200). The ports should in the range of 0 to 65535
-     * and the port ranges or ports can't overlap. If any other values are
-     * provided the request fails with HTTP status code 400. Default value will
-     * be *.
+     * The source port ranges to match for the rule. Valid values are '*' (for
+     * all ports 0 - 65535) or arrays of ports or port ranges (i.e. 100-200).
+     * The ports should in the range of 0 to 65535 and the port ranges or ports
+     * can't overlap. If any other values are provided the request fails with
+     * HTTP status code 400. Default value will be *.
      */
     @JsonProperty(value = "sourcePortRanges")
     private List<String> sourcePortRanges;
 
     /**
-     * Get the priority property: Priorities within a pool must be unique and are evaluated in order of priority. The
-     * lower the number the higher the priority. For example, rules could be specified with order numbers of 150, 250,
-     * and 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed
-     * priorities are 150 to 4096. If any reserved or duplicate values are provided the request fails with HTTP status
-     * code 400.
+     * Get the priority property: The priority for this rule. Priorities within a pool must be unique and are evaluated
+     * in order of priority. The lower the number the higher the priority. For example, rules could be specified with
+     * order numbers of 150, 250, and 350. The rule with the order number of 150 takes precedence over the rule that has
+     * an order of 250. Allowed priorities are 150 to 4096. If any reserved or duplicate values are provided the request
+     * fails with HTTP status code 400.
      *
      * @return the priority value.
      */
@@ -66,11 +67,11 @@ public final class NetworkSecurityGroupRule {
     }
 
     /**
-     * Set the priority property: Priorities within a pool must be unique and are evaluated in order of priority. The
-     * lower the number the higher the priority. For example, rules could be specified with order numbers of 150, 250,
-     * and 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed
-     * priorities are 150 to 4096. If any reserved or duplicate values are provided the request fails with HTTP status
-     * code 400.
+     * Set the priority property: The priority for this rule. Priorities within a pool must be unique and are evaluated
+     * in order of priority. The lower the number the higher the priority. For example, rules could be specified with
+     * order numbers of 150, 250, and 350. The rule with the order number of 150 takes precedence over the rule that has
+     * an order of 250. Allowed priorities are 150 to 4096. If any reserved or duplicate values are provided the request
+     * fails with HTTP status code 400.
      *
      * @param priority the priority value to set.
      * @return the NetworkSecurityGroupRule object itself.
@@ -101,9 +102,9 @@ public final class NetworkSecurityGroupRule {
     }
 
     /**
-     * Get the sourceAddressPrefix property: Valid values are a single IP address (i.e. 10.10.10.10), IP subnet (i.e.
-     * 192.168.1.0/24), default tag, or * (for all addresses). If any other values are provided the request fails with
-     * HTTP status code 400.
+     * Get the sourceAddressPrefix property: The source address prefix or tag to match for the rule. Valid values are a
+     * single IP address (i.e. 10.10.10.10), IP subnet (i.e. 192.168.1.0/24), default tag, or * (for all addresses). If
+     * any other values are provided the request fails with HTTP status code 400.
      *
      * @return the sourceAddressPrefix value.
      */
@@ -112,9 +113,9 @@ public final class NetworkSecurityGroupRule {
     }
 
     /**
-     * Set the sourceAddressPrefix property: Valid values are a single IP address (i.e. 10.10.10.10), IP subnet (i.e.
-     * 192.168.1.0/24), default tag, or * (for all addresses). If any other values are provided the request fails with
-     * HTTP status code 400.
+     * Set the sourceAddressPrefix property: The source address prefix or tag to match for the rule. Valid values are a
+     * single IP address (i.e. 10.10.10.10), IP subnet (i.e. 192.168.1.0/24), default tag, or * (for all addresses). If
+     * any other values are provided the request fails with HTTP status code 400.
      *
      * @param sourceAddressPrefix the sourceAddressPrefix value to set.
      * @return the NetworkSecurityGroupRule object itself.
@@ -125,9 +126,10 @@ public final class NetworkSecurityGroupRule {
     }
 
     /**
-     * Get the sourcePortRanges property: Valid values are '*' (for all ports 0 - 65535) or arrays of ports or port
-     * ranges (i.e. 100-200). The ports should in the range of 0 to 65535 and the port ranges or ports can't overlap. If
-     * any other values are provided the request fails with HTTP status code 400. Default value will be *.
+     * Get the sourcePortRanges property: The source port ranges to match for the rule. Valid values are '*' (for all
+     * ports 0 - 65535) or arrays of ports or port ranges (i.e. 100-200). The ports should in the range of 0 to 65535
+     * and the port ranges or ports can't overlap. If any other values are provided the request fails with HTTP status
+     * code 400. Default value will be *.
      *
      * @return the sourcePortRanges value.
      */
@@ -136,9 +138,10 @@ public final class NetworkSecurityGroupRule {
     }
 
     /**
-     * Set the sourcePortRanges property: Valid values are '*' (for all ports 0 - 65535) or arrays of ports or port
-     * ranges (i.e. 100-200). The ports should in the range of 0 to 65535 and the port ranges or ports can't overlap. If
-     * any other values are provided the request fails with HTTP status code 400. Default value will be *.
+     * Set the sourcePortRanges property: The source port ranges to match for the rule. Valid values are '*' (for all
+     * ports 0 - 65535) or arrays of ports or port ranges (i.e. 100-200). The ports should in the range of 0 to 65535
+     * and the port ranges or ports can't overlap. If any other values are provided the request fails with HTTP status
+     * code 400. Default value will be *.
      *
      * @param sourcePortRanges the sourcePortRanges value to set.
      * @return the NetworkSecurityGroupRule object itself.
