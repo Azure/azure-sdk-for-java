@@ -10,15 +10,15 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.BatchAccount;
-import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Test;
 
-
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 class BatchTests extends TestBase {
 
