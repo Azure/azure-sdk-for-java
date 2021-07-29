@@ -28,14 +28,17 @@
                 "sdk/identity/azure-identity/src/test/resources/key.pem",
                 "sdk/identity/azure-identity/src/test/resources/keyStore.pfx",
                 "sdk/keyvault/azure-security-keyvault-certificates/src/test/resources/pemCert.pem",
+                "sdk/keyvault/microsoft-azure-keyvault/src/test/resources/pkcs12_base64_testdata.txt",
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p256key.pem",
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p256keynew.pem",
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p384keynew.pem",
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p521keynew.pem",
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/SECP256key.pem",
-                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/secp256keynew.pem"
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/secp256keynew.pem",
+                "sdk/spring/azure-spring-boot/src/test/resources/testkeyvault.pfx",
+                "sdk/spring/azure-spring-boot/src/test/resources/nopwdcert.pfx"
             ],
             "_justification": "File contains private key used by test code."
-        }    
+        }
     ]
 }
