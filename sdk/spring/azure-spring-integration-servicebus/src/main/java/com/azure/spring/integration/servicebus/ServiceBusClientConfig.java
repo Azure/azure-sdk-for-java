@@ -15,7 +15,6 @@ public final class ServiceBusClientConfig {
 
     private final int prefetchCount;
 
-    @Deprecated
     private final int concurrency;
 
     private final boolean sessionsEnabled;
@@ -48,7 +47,6 @@ public final class ServiceBusClientConfig {
         return prefetchCount;
     }
 
-    @Deprecated
     public int getConcurrency() {
         return concurrency;
     }
@@ -86,7 +84,6 @@ public final class ServiceBusClientConfig {
      */
     public static class ServiceBusClientConfigBuilder {
         private int prefetchCount = 1;
-        @Deprecated
         private int concurrency = 1;
         private boolean sessionsEnabled = false;
         private boolean requeueRejected = false;
@@ -104,7 +101,6 @@ public final class ServiceBusClientConfig {
             return this;
         }
 
-        @Deprecated
         public ServiceBusClientConfigBuilder setConcurrency(int concurrency) {
             this.concurrency = concurrency;
             return this;
