@@ -27,7 +27,7 @@ requests, can also use Azure Web PubSub service.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 
