@@ -86,7 +86,7 @@ com.azure:azure-data-tables;12.1.0;12.2.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-digitaltwins-core;1.1.1;1.2.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-identity;1.3.3;1.4.0-beta.1
+com.azure:azure-identity;1.3.4;1.4.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
@@ -98,7 +98,7 @@ com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus;7.3.0;7.4.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-webpubsub;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-messaging-webpubsub;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-mixedreality-authentication;1.0.0;1.1.0
 com.azure:azure-mixedreality-remoterendering;1.0.0;1.1.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.4;1.0.0-beta.5
@@ -223,7 +223,7 @@ com.azure.resourcemanager:azure-resourcemanager-postgresql;1.0.1;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.2;1.0.0-beta.3
@@ -251,7 +251,7 @@ com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.1;1.0.0-beta.2
@@ -324,3 +324,4 @@ com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.1;1.0.0-
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+beta_com.azure:azure-core;1.19.0-beta.1
