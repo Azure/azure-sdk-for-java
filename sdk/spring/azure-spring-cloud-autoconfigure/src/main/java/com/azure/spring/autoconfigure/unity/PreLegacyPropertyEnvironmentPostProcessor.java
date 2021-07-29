@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.config.ConfigFileApplicationListener;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.CollectionUtils;
 
@@ -43,7 +42,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
     @Override
     protected Properties buildLegacyToCurrentPropertyMap() {
         Properties legacyToCurrentMap = super.buildLegacyToCurrentPropertyMap();
-        String keyVaultNames = getMultipleKeyVaultNames(environment);
+        String keyVaultNames = getMultipleKeyVaultNames();
         if (keyVaultNames != null) {
             return addMultipleKVPropertyToMap(keyVaultNames, legacyToCurrentMap);
         }
@@ -63,8 +62,8 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
         for (String keyVault : keyVaultNames.split(",")) {
             keyVault = keyVault.trim();
             for (Map.Entry<Object, Object> mapping : keyvaultPropertySuffixMap.entrySet()) {
-                String legacy = createLegacyPropertyName(keyVault, (String) mapping.getKey());
-                String current = createCurrentPropertyName(keyVault, (String) mapping.getValue());
+                String legacy = buildLegacyPropertyName(keyVault, (String) mapping.getKey());
+                String current = buildCurrentPropertyName(keyVault, (String) mapping.getValue());
                 legacyToCurrentMap.put(legacy, current);
             }
         }
@@ -75,14 +74,13 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
      * Load all possible Key Vault names from property "spring.cloud.azure.keyvault.order" if existed. Otherwise load
      * from legacy property "azure.keyvault.order".
      *
-     * @param environment The application environment to load multiple Key Vault names from.
      * @return A string with all Key Vaults names concatenated by commas, or null if no Key Vault names specified.
      */
-    private String getMultipleKeyVaultNames(ConfigurableEnvironment environment) {
-        if (getPropertyValue(KeyVaultProperties.PREFIX + ".order", environment) != null) {
-            return (String) getPropertyValue(KeyVaultProperties.PREFIX + ".order", environment);
+    private String getMultipleKeyVaultNames() {
+        if (getPropertyValue(KeyVaultProperties.PREFIX + ".order") != null) {
+            return (String) getPropertyValue(KeyVaultProperties.PREFIX + ".order");
         } else {
-            return (String) getPropertyValue(KEYVAULT_LEGACY_PREFIX + ".order", environment);
+            return (String) getPropertyValue(KEYVAULT_LEGACY_PREFIX + ".order");
         }
     }
 
@@ -94,7 +92,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
      *                             legacy-keyvault-property-suffix-mapping.properties
      * @return A legacy Key Vault property name with a Key Vault name as infix.
      */
-    private String createLegacyPropertyName(String keyVaultName, String legacyPropertySuffix) {
+    private String buildLegacyPropertyName(String keyVaultName, String legacyPropertySuffix) {
         return String.join(DELIMITER, KEYVAULT_LEGACY_PREFIX, keyVaultName, legacyPropertySuffix);
     }
 
@@ -106,7 +104,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
      *                             legacy-keyvault-property-suffix-mapping.properties
      * @return A current Key Vault property name with a Key Vault name as infix.
      */
-    private String createCurrentPropertyName(String keyVaultName, String currentPropertySuffix) {
+    private String buildCurrentPropertyName(String keyVaultName, String currentPropertySuffix) {
         return String.join(DELIMITER, KeyVaultProperties.PREFIX, keyVaultName, currentPropertySuffix);
     }
 
@@ -114,24 +112,24 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
      * When only legacy properties are detected from all property sources, convert legacy properties to the current,
      * and create a new {@link Properties} to store all of the converted current properties.
      * @param legacyToCurrentMap A {@link Properties} contains a map of all legacy properties and associated current properties.
-     * @param environment The application environment to get and set properties.
      * @return A {@link Properties} to store mapped current properties
      */
     @Override
-    protected Properties mapLegacyPropertyToCurrent(Properties legacyToCurrentMap,
-                                                    ConfigurableEnvironment environment) {
+    protected Properties convertLegacyPropertyToCurrent(Properties legacyToCurrentMap) {
         Properties properties = new Properties();
         for (Map.Entry<Object, Object> entry : legacyToCurrentMap.entrySet()) {
             String legacyPropertyName = (String) entry.getKey();
-            Object legacyPropertyValue = getPropertyValue(legacyPropertyName, environment);
-            if (legacyPropertyValue != null) {
-                String currentPropertyName = (String) entry.getValue();
-                Object currentPropertyValue = getPropertyValue(currentPropertyName, environment);
-                if (currentPropertyValue == null) {
-                    properties.put(currentPropertyName, legacyPropertyValue);
-                    LOGGER.warn("Deprecated property {} detected! Use {} instead!", legacyPropertyName,
-                        currentPropertyName);
-                }
+            Object legacyPropertyValue = getPropertyValue(legacyPropertyName);
+            if (legacyPropertyValue == null) {
+                continue;
+            }
+            String currentPropertyName = (String) entry.getValue();
+            Object currentPropertyValue = getPropertyValue(currentPropertyName);
+            if (currentPropertyValue == null) {
+                properties.put(currentPropertyName, legacyPropertyValue);
+                LOGGER.warn("Deprecated property {} detected! Use {} instead!", legacyPropertyName,
+                    currentPropertyName);
+
             }
         }
         return properties;
@@ -140,10 +138,9 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
     /**
      * Get property value from all property sources in the environment.
      * @param propertyName Name of the property to get value.
-     * @param environment Environment to get value from.
      * @return Property value.
      */
-    protected Object getPropertyValue(String propertyName, ConfigurableEnvironment environment) {
+    protected Object getPropertyValue(String propertyName) {
         return Binder.get(environment)
                      .bind(propertyName, Bindable.of(Object.class))
                      .orElse(null);
@@ -152,11 +149,10 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
     /**
      * Add the mapped current properties to application environment, of which the precedence does not count.
      *
-     * @param environment The application environment to set properties.
      * @param properties The converted current properties to be configured.
      */
     @Override
-    protected void setConvertedPropertyToEnvironment(ConfigurableEnvironment environment, Properties properties) {
+    protected void setConvertedPropertyToEnvironment(Properties properties) {
         // This post-processor is called multiple times but sets the properties only once.
         if (!CollectionUtils.isEmpty(properties)) {
             PropertiesPropertySource convertedPropertySource =

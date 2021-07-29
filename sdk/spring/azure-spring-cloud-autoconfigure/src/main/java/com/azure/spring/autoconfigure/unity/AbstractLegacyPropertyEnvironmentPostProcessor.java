@@ -34,8 +34,8 @@ public abstract class AbstractLegacyPropertyEnvironmentPostProcessor implements 
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         this.environment = environment;
         Properties legacyToCurrentMap = buildLegacyToCurrentPropertyMap();
-        Properties properties = mapLegacyPropertyToCurrent(legacyToCurrentMap, environment);
-        setConvertedPropertyToEnvironment(environment, properties);
+        Properties properties = convertLegacyPropertyToCurrent(legacyToCurrentMap);
+        setConvertedPropertyToEnvironment(properties);
     }
 
     protected Properties buildLegacyToCurrentPropertyMap() {
@@ -49,18 +49,15 @@ public abstract class AbstractLegacyPropertyEnvironmentPostProcessor implements 
      * if only legacy properties are configured.
      *
      * @param legacyToCurrentMap A {@link Properties} contains a map of all legacy properties and associated current ones.
-     * @param environment The application environment to get and set properties.
      * @return A {@link Properties} to store mapped current properties
      */
-    protected abstract Properties mapLegacyPropertyToCurrent(Properties legacyToCurrentMap,
-                                                             ConfigurableEnvironment environment);
+    protected abstract Properties convertLegacyPropertyToCurrent(Properties legacyToCurrentMap);
 
     /**
      * Add the mapped current properties to application environment,
      * of which the precedence varies in different processors.
      *
-     * @param environment The application environment to set properties.
      * @param properties The converted current properties to be configured.
      */
-    protected abstract void setConvertedPropertyToEnvironment(ConfigurableEnvironment environment, Properties properties);
+    protected abstract void setConvertedPropertyToEnvironment(Properties properties);
 }
