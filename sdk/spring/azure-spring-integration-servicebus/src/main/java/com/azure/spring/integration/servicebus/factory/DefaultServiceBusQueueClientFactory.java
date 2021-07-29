@@ -70,8 +70,8 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         ServiceBusClientConfig clientConfig,
         ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
         if (clientConfig.getConcurrency() != 1) {
-            logger.warn("It is detected that concurrency is set, this attribute has been deprecated," +
-                " you can use " + (clientConfig.isSessionsEnabled() ? "maxConcurrentCalls" : "maxConcurrentCalls") + " instead");
+            logger.warn("It is detected that concurrency is set, this attribute has been deprecated,"
+                + " you can use " + (clientConfig.isSessionsEnabled() ? "maxConcurrentSessions" : "maxConcurrentCalls") + " instead");
         }
         if (clientConfig.isSessionsEnabled()) {
             ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder =

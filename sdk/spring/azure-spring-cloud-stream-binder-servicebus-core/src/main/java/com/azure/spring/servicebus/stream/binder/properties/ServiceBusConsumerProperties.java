@@ -96,6 +96,7 @@ public class ServiceBusConsumerProperties {
      * @return int, default : 1
      * @deprecated Use maxConcurrentSessions and maxConcurrentCalls.
      */
+    @Deprecated
     @DeprecatedConfigurationProperty(reason = "Deprecate the concurrency and use maxConcurrentSessions and maxConcurrentCalls instead")
     public int getConcurrency() {
         return concurrency;
