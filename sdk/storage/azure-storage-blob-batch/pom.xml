@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+  <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
 
   <name>Microsoft Azure client library for Blob Storage batching</name>
   <description>This module contains client library for Microsoft Azure Blob Storage batching.</description>

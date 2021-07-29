@@ -119,7 +119,7 @@ com.azure:azure-sdk-template;1.2.1-beta.2;1.2.1-beta.16
 com.azure:azure-spring-data-cosmos;3.9.0;3.10.0-beta.1
 com.azure:azure-spring-data-cosmos-test;3.0.0-beta.1;3.0.0-beta.1
 com.azure:azure-storage-blob;12.13.0;12.14.0-beta.1
-com.azure:azure-storage-blob-batch;12.10.0;12.11.0-beta.1
+com.azure:azure-storage-blob-batch;12.10.0;12.11.0-beta.2
 com.azure:azure-storage-blob-changefeed;12.0.0-beta.7;12.0.0-beta.8
 com.azure:azure-storage-blob-cryptography;12.13.0;12.14.0-beta.1
 com.azure:azure-storage-blob-nio;12.0.0-beta.7;12.0.0-beta.8
