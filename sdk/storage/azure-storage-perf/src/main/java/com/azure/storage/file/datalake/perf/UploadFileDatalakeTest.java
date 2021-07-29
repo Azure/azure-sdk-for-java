@@ -3,9 +3,11 @@
 
 package com.azure.storage.file.datalake.perf;
 
-import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
+import com.azure.storage.StoragePerfStressOptions;
+import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.perf.core.FileTestBase;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,25 +16,45 @@ import java.nio.ByteBuffer;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
-public class UploadFileDatalakeTest extends FileTestBase<PerfStressOptions> {
+public class UploadFileDatalakeTest extends FileTestBase<StoragePerfStressOptions> {
     protected final RepeatingInputStream inputStream;
     protected final Flux<ByteBuffer> byteBufferFlux;
 
-    public UploadFileDatalakeTest(PerfStressOptions options) {
+    public UploadFileDatalakeTest(StoragePerfStressOptions options) {
         super(options);
-        inputStream = (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
-        byteBufferFlux = createRandomByteBufferFlux(options.getSize());
+        if (options.isSync()) {
+            inputStream = (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
+            byteBufferFlux = null;
+        } else {
+            byteBufferFlux = createRandomByteBufferFlux(options.getSize());
+            inputStream = null;
+        }
     }
 
     @Override
     public void run() {
         inputStream.reset();
-        dataLakeFileClient.upload(inputStream, options.getSize(), true);
+        FileParallelUploadOptions uploadOptions = new FileParallelUploadOptions(inputStream, options.getSize())
+            .setParallelTransferOptions(
+                new ParallelTransferOptions()
+                    .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+                    .setBlockSizeLong(options.getTransferBlockSize())
+                    .setMaxConcurrency(options.getTransferConcurrency())
+            );
+        dataLakeFileClient.uploadWithResponse(uploadOptions, null, null);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true)
+        FileParallelUploadOptions uploadOptions = new FileParallelUploadOptions(
+            createRandomByteBufferFlux(options.getSize()))
+            .setParallelTransferOptions(
+                new ParallelTransferOptions()
+                    .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+                    .setBlockSizeLong(options.getTransferBlockSize())
+                    .setMaxConcurrency(options.getTransferConcurrency())
+            );
+        return dataLakeFileAsyncClient.uploadWithResponse(uploadOptions)
             .then();
     }
 }

@@ -4,14 +4,16 @@
 package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
-import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,8 +37,10 @@ public class AzureADGraphClientTest {
 
     @Test
     public void testConvertGroupToGrantedAuthorities() {
-        final Set<String> groups = ImmutableSet.of("Test_Group");
-        final Set<SimpleGrantedAuthority> authorities = client.toGrantedAuthoritySet(groups);
+        final Set<String> groups = new HashSet<>(1);
+        groups.add("Test_Group");
+        final Set<SimpleGrantedAuthority> authorities = client.toGrantedAuthoritySet(
+            Collections.unmodifiableSet(groups));
         assertThat(authorities)
             .hasSize(1)
             .extracting(GrantedAuthority::getAuthority)
@@ -45,8 +49,11 @@ public class AzureADGraphClientTest {
 
     @Test
     public void testConvertGroupToGrantedAuthoritiesUsingAllowedGroups() {
-        final Set<String> groups = ImmutableSet.of("Test_Group", "Another_Group");
-        final Set<SimpleGrantedAuthority> authorities = client.toGrantedAuthoritySet(groups);
+        final Set<String> groups = new HashSet<>(2);
+        groups.add("Test_Group");
+        groups.add("Another_Group");
+        final Set<SimpleGrantedAuthority> authorities = client.toGrantedAuthoritySet(
+            Collections.unmodifiableSet(groups));
         assertThat(authorities)
             .hasSize(1)
             .extracting(GrantedAuthority::getAuthority)

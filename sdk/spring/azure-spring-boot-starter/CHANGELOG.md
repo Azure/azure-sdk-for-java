@@ -1,6 +1,15 @@
 # Release History
 
-## 3.7.0-beta.1 (Unreleased)
+## 3.8.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+
+
+## 3.7.0 (2021-07-20)
+### Dependency Upgrades
+- Upgrade to [Azure Spring Boot AutoConfigure 3.7.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot/CHANGELOG.md).
+
 
 ## 3.6.1 (2021-07-02)
 ### New Features

@@ -12,7 +12,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -154,7 +153,6 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
         container.delete().block();
     }
 
-    @NotNull
     private List<PartitionKeyRange> getPartitionKeyRanges(
         String containerId, CosmosAsyncClient asyncClient) {
         List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();

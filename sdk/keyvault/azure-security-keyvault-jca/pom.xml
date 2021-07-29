@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
@@ -35,6 +35,16 @@
                 <version>2.4.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-resources-plugin;external_dependency} -->
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <configuration>
+                    <excludes>
+                        <exclude>module-info.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -91,7 +101,7 @@
               <version>1.0.0.RC1</version>  <!-- {x-version-update;org.moditect:moditect-maven-plugin;external_dependency} -->
               <executions>
                 <execution>
-                  <id>add-module-infos</id>
+                  <id>add-module-info</id>
                   <phase>package</phase>
                   <goals>
                     <goal>add-module-info</goal>
@@ -100,7 +110,7 @@
                     <overwriteExistingFiles>true</overwriteExistingFiles>
                     <module>
                       <moduleInfoFile>
-                        src/main/module-info.java
+                        src/main/resources/module-info.java
                       </moduleInfoFile>
                     </module>
                   </configuration>
@@ -140,10 +150,10 @@
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.2.1]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                                 <include>org.apache.httpcomponents:httpclient:[4.5.13]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-                                <include>org.slf4j:slf4j-nop:[1.7.31]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
+                                <include>org.slf4j:slf4j-nop:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>
@@ -169,7 +179,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+            <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <!-- JUnit -->
@@ -195,7 +205,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>1.7.31</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
+            <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
         </dependency>
         <dependency>
           <groupId>org.mockito</groupId>

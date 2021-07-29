@@ -10,12 +10,15 @@ import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
@@ -32,8 +35,8 @@ import static org.mockito.Mockito.when;
  */
 public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
 
-    private final Multimap<String, ServiceBusReceivedMessageContext> queuesByName = ArrayListMultimap.create();
-    private final Multimap<String, DefaultServiceBusMessageProcessor> processorsByQueue = ArrayListMultimap.create();
+    private final Map<String, List<ServiceBusReceivedMessageContext>> queuesByName = new HashMap<>();
+    private final Map<String, List<DefaultServiceBusMessageProcessor>> processorsByQueue = new HashMap<>();
 
     public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory) {
         super(clientFactory);
@@ -44,7 +47,12 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
         ServiceBusMessage azureMessage = getMessageConverter().fromMessage(message, ServiceBusMessage.class);
 
         final ServiceBusReceivedMessageContext receivedMessageContext = mockReceivedMessageContext(azureMessage);
-        queuesByName.put(name, receivedMessageContext);
+
+        if (queuesByName.containsKey(name)) {
+            queuesByName.get(name).add(receivedMessageContext);
+        } else {
+            queuesByName.put(name, new ArrayList<>(Arrays.asList(receivedMessageContext)));
+        }
 
         getRandom(processorsByQueue.get(name)).ifPresent(c -> c.processMessage().accept(receivedMessageContext));
 
@@ -57,12 +65,16 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
         DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
             this.checkpointConfig, payloadType, consumer, this.messageConverter);
 
-        processorsByQueue.put(name, messageProcessor);
+        if (processorsByQueue.containsKey(name)) {
+            processorsByQueue.get(name).add(messageProcessor);
+        } else {
+            processorsByQueue.put(name, new ArrayList<>(Arrays.asList(messageProcessor)));
+        }
     }
 
     @Override
     public boolean unsubscribe(String name) {
-        processorsByQueue.removeAll(name);
+        processorsByQueue.remove(name);
         return true;
     }
 
