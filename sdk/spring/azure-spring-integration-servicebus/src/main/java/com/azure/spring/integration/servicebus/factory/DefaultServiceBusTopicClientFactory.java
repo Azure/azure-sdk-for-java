@@ -30,7 +30,7 @@ import static com.azure.spring.cloud.context.core.util.Constants.SPRING_SERVICE_
 public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSenderFactory
     implements ServiceBusTopicClientFactory {
 
-    private final Log logger = LogFactory.getLog(DefaultServiceBusQueueClientFactory.class);
+    private final Log logger = LogFactory.getLog(DefaultServiceBusTopicClientFactory.class);
     private final ServiceBusClientBuilder serviceBusClientBuilder;
     private final Map<Tuple<String, String>, ServiceBusProcessorClient> topicProcessorMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> topicSenderMap = new ConcurrentHashMap<>();
