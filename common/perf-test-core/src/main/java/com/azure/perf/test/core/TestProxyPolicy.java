@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.CoreUtils;
+
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -43,7 +45,7 @@ public class TestProxyPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if (recordingId != null && !recordingId.isEmpty() && mode != null && !mode.isEmpty()) {
+        if (!CoreUtils.isNullOrEmpty(recordingId) && !CoreUtils.isNullOrEmpty(mode)) {
             RedirectToTestProxy(context.getHttpRequest());
         }
 
