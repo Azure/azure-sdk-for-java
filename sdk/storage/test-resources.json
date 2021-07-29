@@ -49,7 +49,6 @@
         "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
         "location": "[resourceGroup().location]",
         "resourceGroupName": "[resourceGroup().name]",
-        "subscriptionId": "[subscription().subscriptionId]",
         "nullProperties": {},
         "containerDeleteRetentionPolicyProperties": {
           "containerDeleteRetentionPolicy": {
