@@ -32,6 +32,21 @@ public interface Export {
     String type();
 
     /**
+     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
+     * determine whether the user is updating the latest version or not.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the schedule property: Has schedule information for the export.
+     *
+     * @return the schedule value.
+     */
+    ExportSchedule schedule();
+
+    /**
      * Gets the format property: The format of the export being delivered.
      *
      * @return the format value.
@@ -51,21 +66,6 @@ public interface Export {
      * @return the definition value.
      */
     ExportDefinition definition();
-
-    /**
-     * Gets the schedule property: Has schedule information for the export.
-     *
-     * @return the schedule value.
-     */
-    ExportSchedule schedule();
-
-    /**
-     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.ExportInner object.
@@ -111,11 +111,11 @@ public interface Export {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithFormat,
-                DefinitionStages.WithDeliveryInfo,
-                DefinitionStages.WithDefinition,
+            extends DefinitionStages.WithEtag,
                 DefinitionStages.WithSchedule,
-                DefinitionStages.WithEtag {
+                DefinitionStages.WithFormat,
+                DefinitionStages.WithDeliveryInfo,
+                DefinitionStages.WithDefinition {
             /**
              * Executes the create request.
              *
@@ -130,6 +130,28 @@ public interface Export {
              * @return the created resource.
              */
             Export create(Context context);
+        }
+        /** The stage of the Export definition allowing to specify etag. */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
+             * be used to determine whether the user is updating the latest version or not..
+             *
+             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
+             *     determine whether the user is updating the latest version or not.
+             * @return the next definition stage.
+             */
+            WithCreate withEtag(String etag);
+        }
+        /** The stage of the Export definition allowing to specify schedule. */
+        interface WithSchedule {
+            /**
+             * Specifies the schedule property: Has schedule information for the export..
+             *
+             * @param schedule Has schedule information for the export.
+             * @return the next definition stage.
+             */
+            WithCreate withSchedule(ExportSchedule schedule);
         }
         /** The stage of the Export definition allowing to specify format. */
         interface WithFormat {
@@ -161,28 +183,6 @@ public interface Export {
              */
             WithCreate withDefinition(ExportDefinition definition);
         }
-        /** The stage of the Export definition allowing to specify schedule. */
-        interface WithSchedule {
-            /**
-             * Specifies the schedule property: Has schedule information for the export..
-             *
-             * @param schedule Has schedule information for the export.
-             * @return the next definition stage.
-             */
-            WithCreate withSchedule(ExportSchedule schedule);
-        }
-        /** The stage of the Export definition allowing to specify etag. */
-        interface WithEtag {
-            /**
-             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
-             * be used to determine whether the user is updating the latest version or not..
-             *
-             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
-             *     determine whether the user is updating the latest version or not.
-             * @return the next definition stage.
-             */
-            WithCreate withEtag(String etag);
-        }
     }
     /**
      * Begins update for the Export resource.
@@ -193,11 +193,11 @@ public interface Export {
 
     /** The template for Export update. */
     interface Update
-        extends UpdateStages.WithFormat,
-            UpdateStages.WithDeliveryInfo,
-            UpdateStages.WithDefinition,
+        extends UpdateStages.WithEtag,
             UpdateStages.WithSchedule,
-            UpdateStages.WithEtag {
+            UpdateStages.WithFormat,
+            UpdateStages.WithDeliveryInfo,
+            UpdateStages.WithDefinition {
         /**
          * Executes the update request.
          *
@@ -215,6 +215,28 @@ public interface Export {
     }
     /** The Export update stages. */
     interface UpdateStages {
+        /** The stage of the Export update allowing to specify etag. */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
+             * be used to determine whether the user is updating the latest version or not..
+             *
+             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
+             *     determine whether the user is updating the latest version or not.
+             * @return the next definition stage.
+             */
+            Update withEtag(String etag);
+        }
+        /** The stage of the Export update allowing to specify schedule. */
+        interface WithSchedule {
+            /**
+             * Specifies the schedule property: Has schedule information for the export..
+             *
+             * @param schedule Has schedule information for the export.
+             * @return the next definition stage.
+             */
+            Update withSchedule(ExportSchedule schedule);
+        }
         /** The stage of the Export update allowing to specify format. */
         interface WithFormat {
             /**
@@ -244,28 +266,6 @@ public interface Export {
              * @return the next definition stage.
              */
             Update withDefinition(ExportDefinition definition);
-        }
-        /** The stage of the Export update allowing to specify schedule. */
-        interface WithSchedule {
-            /**
-             * Specifies the schedule property: Has schedule information for the export..
-             *
-             * @param schedule Has schedule information for the export.
-             * @return the next definition stage.
-             */
-            Update withSchedule(ExportSchedule schedule);
-        }
-        /** The stage of the Export update allowing to specify etag. */
-        interface WithEtag {
-            /**
-             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
-             * be used to determine whether the user is updating the latest version or not..
-             *
-             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
-             *     determine whether the user is updating the latest version or not.
-             * @return the next definition stage.
-             */
-            Update withEtag(String etag);
         }
     }
     /**

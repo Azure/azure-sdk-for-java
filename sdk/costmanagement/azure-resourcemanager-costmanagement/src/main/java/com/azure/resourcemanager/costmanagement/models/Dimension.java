@@ -33,6 +33,13 @@ public interface Dimension {
     String type();
 
     /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the description property: Dimension description.
      *
      * @return the description value.
@@ -94,13 +101,6 @@ public interface Dimension {
      * @return the nextLink value.
      */
     String nextLink();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.DimensionInner object.

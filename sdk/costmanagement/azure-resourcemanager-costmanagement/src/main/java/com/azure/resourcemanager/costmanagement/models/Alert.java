@@ -31,6 +31,13 @@ public interface Alert {
     String type();
 
     /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the definition property: defines the type of alert.
      *
      * @return the definition value.
@@ -106,13 +113,6 @@ public interface Alert {
      * @return the statusModificationTime value.
      */
     String statusModificationTime();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.AlertInner object.

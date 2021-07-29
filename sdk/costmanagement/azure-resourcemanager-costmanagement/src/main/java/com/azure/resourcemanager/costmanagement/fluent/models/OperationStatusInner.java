@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The status of the long running operation. */
-@JsonFlatten
 @Fluent
-public class OperationStatusInner {
+public final class OperationStatusInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusInner.class);
 
     /*
@@ -25,16 +23,10 @@ public class OperationStatusInner {
     private Status status;
 
     /*
-     * The URL to download the generated report.
+     * The properties of the resource generated.
      */
-    @JsonProperty(value = "properties.reportUrl")
-    private String reportUrl;
-
-    /*
-     * The time at which report URL becomes invalid.
-     */
-    @JsonProperty(value = "properties.validUntil")
-    private OffsetDateTime validUntil;
+    @JsonProperty(value = "properties")
+    private ReportUrl innerProperties;
 
     /**
      * Get the status property: The status of the long running operation.
@@ -57,12 +49,21 @@ public class OperationStatusInner {
     }
 
     /**
+     * Get the innerProperties property: The properties of the resource generated.
+     *
+     * @return the innerProperties value.
+     */
+    private ReportUrl innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the reportUrl property: The URL to download the generated report.
      *
      * @return the reportUrl value.
      */
     public String reportUrl() {
-        return this.reportUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().reportUrl();
     }
 
     /**
@@ -72,7 +73,10 @@ public class OperationStatusInner {
      * @return the OperationStatusInner object itself.
      */
     public OperationStatusInner withReportUrl(String reportUrl) {
-        this.reportUrl = reportUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReportUrl();
+        }
+        this.innerProperties().withReportUrl(reportUrl);
         return this;
     }
 
@@ -82,7 +86,7 @@ public class OperationStatusInner {
      * @return the validUntil value.
      */
     public OffsetDateTime validUntil() {
-        return this.validUntil;
+        return this.innerProperties() == null ? null : this.innerProperties().validUntil();
     }
 
     /**
@@ -92,7 +96,10 @@ public class OperationStatusInner {
      * @return the OperationStatusInner object itself.
      */
     public OperationStatusInner withValidUntil(OffsetDateTime validUntil) {
-        this.validUntil = validUntil;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReportUrl();
+        }
+        this.innerProperties().withValidUntil(validUntil);
         return this;
     }
 
@@ -104,6 +111,9 @@ public class OperationStatusInner {
     public void validate() {
         if (status() != null) {
             status().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

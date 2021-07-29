@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDefinition;
@@ -13,305 +12,35 @@ import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDetails;
 import com.azure.resourcemanager.costmanagement.models.AlertSource;
 import com.azure.resourcemanager.costmanagement.models.AlertStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An individual alert. */
-@JsonFlatten
 @Fluent
-public class AlertInner extends ProxyResource {
+public final class AlertInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertInner.class);
 
     /*
-     * defines the type of alert
+     * The properties property.
      */
-    @JsonProperty(value = "properties.definition")
-    private AlertPropertiesDefinition definition;
-
-    /*
-     * Alert description
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Source of alert
-     */
-    @JsonProperty(value = "properties.source")
-    private AlertSource source;
-
-    /*
-     * Alert details
-     */
-    @JsonProperty(value = "properties.details")
-    private AlertPropertiesDetails details;
-
-    /*
-     * related budget
-     */
-    @JsonProperty(value = "properties.costEntityId")
-    private String costEntityId;
-
-    /*
-     * alert status
-     */
-    @JsonProperty(value = "properties.status")
-    private AlertStatus status;
-
-    /*
-     * dateTime in which alert was created
-     */
-    @JsonProperty(value = "properties.creationTime")
-    private String creationTime;
-
-    /*
-     * dateTime in which alert was closed
-     */
-    @JsonProperty(value = "properties.closeTime")
-    private String closeTime;
-
-    /*
-     * dateTime in which alert was last modified
-     */
-    @JsonProperty(value = "properties.modificationTime")
-    private String modificationTime;
-
-    /*
-     * The statusModificationUserName property.
-     */
-    @JsonProperty(value = "properties.statusModificationUserName")
-    private String statusModificationUsername;
-
-    /*
-     * dateTime in which the alert status was last modified
-     */
-    @JsonProperty(value = "properties.statusModificationTime")
-    private String statusModificationTime;
+    @JsonProperty(value = "properties")
+    private AlertProperties innerProperties;
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
-     * Get the definition property: defines the type of alert.
+     * Get the innerProperties property: The properties property.
      *
-     * @return the definition value.
+     * @return the innerProperties value.
      */
-    public AlertPropertiesDefinition definition() {
-        return this.definition;
-    }
-
-    /**
-     * Set the definition property: defines the type of alert.
-     *
-     * @param definition the definition value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withDefinition(AlertPropertiesDefinition definition) {
-        this.definition = definition;
-        return this;
-    }
-
-    /**
-     * Get the description property: Alert description.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Alert description.
-     *
-     * @param description the description value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the source property: Source of alert.
-     *
-     * @return the source value.
-     */
-    public AlertSource source() {
-        return this.source;
-    }
-
-    /**
-     * Set the source property: Source of alert.
-     *
-     * @param source the source value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withSource(AlertSource source) {
-        this.source = source;
-        return this;
-    }
-
-    /**
-     * Get the details property: Alert details.
-     *
-     * @return the details value.
-     */
-    public AlertPropertiesDetails details() {
-        return this.details;
-    }
-
-    /**
-     * Set the details property: Alert details.
-     *
-     * @param details the details value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withDetails(AlertPropertiesDetails details) {
-        this.details = details;
-        return this;
-    }
-
-    /**
-     * Get the costEntityId property: related budget.
-     *
-     * @return the costEntityId value.
-     */
-    public String costEntityId() {
-        return this.costEntityId;
-    }
-
-    /**
-     * Set the costEntityId property: related budget.
-     *
-     * @param costEntityId the costEntityId value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withCostEntityId(String costEntityId) {
-        this.costEntityId = costEntityId;
-        return this;
-    }
-
-    /**
-     * Get the status property: alert status.
-     *
-     * @return the status value.
-     */
-    public AlertStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: alert status.
-     *
-     * @param status the status value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withStatus(AlertStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the creationTime property: dateTime in which alert was created.
-     *
-     * @return the creationTime value.
-     */
-    public String creationTime() {
-        return this.creationTime;
-    }
-
-    /**
-     * Set the creationTime property: dateTime in which alert was created.
-     *
-     * @param creationTime the creationTime value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withCreationTime(String creationTime) {
-        this.creationTime = creationTime;
-        return this;
-    }
-
-    /**
-     * Get the closeTime property: dateTime in which alert was closed.
-     *
-     * @return the closeTime value.
-     */
-    public String closeTime() {
-        return this.closeTime;
-    }
-
-    /**
-     * Set the closeTime property: dateTime in which alert was closed.
-     *
-     * @param closeTime the closeTime value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withCloseTime(String closeTime) {
-        this.closeTime = closeTime;
-        return this;
-    }
-
-    /**
-     * Get the modificationTime property: dateTime in which alert was last modified.
-     *
-     * @return the modificationTime value.
-     */
-    public String modificationTime() {
-        return this.modificationTime;
-    }
-
-    /**
-     * Set the modificationTime property: dateTime in which alert was last modified.
-     *
-     * @param modificationTime the modificationTime value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withModificationTime(String modificationTime) {
-        this.modificationTime = modificationTime;
-        return this;
-    }
-
-    /**
-     * Get the statusModificationUsername property: The statusModificationUserName property.
-     *
-     * @return the statusModificationUsername value.
-     */
-    public String statusModificationUsername() {
-        return this.statusModificationUsername;
-    }
-
-    /**
-     * Set the statusModificationUsername property: The statusModificationUserName property.
-     *
-     * @param statusModificationUsername the statusModificationUsername value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withStatusModificationUsername(String statusModificationUsername) {
-        this.statusModificationUsername = statusModificationUsername;
-        return this;
-    }
-
-    /**
-     * Get the statusModificationTime property: dateTime in which the alert status was last modified.
-     *
-     * @return the statusModificationTime value.
-     */
-    public String statusModificationTime() {
-        return this.statusModificationTime;
-    }
-
-    /**
-     * Set the statusModificationTime property: dateTime in which the alert status was last modified.
-     *
-     * @param statusModificationTime the statusModificationTime value to set.
-     * @return the AlertInner object itself.
-     */
-    public AlertInner withStatusModificationTime(String statusModificationTime) {
-        this.statusModificationTime = statusModificationTime;
-        return this;
+    private AlertProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -324,16 +53,266 @@ public class AlertInner extends ProxyResource {
     }
 
     /**
+     * Get the definition property: defines the type of alert.
+     *
+     * @return the definition value.
+     */
+    public AlertPropertiesDefinition definition() {
+        return this.innerProperties() == null ? null : this.innerProperties().definition();
+    }
+
+    /**
+     * Set the definition property: defines the type of alert.
+     *
+     * @param definition the definition value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withDefinition(AlertPropertiesDefinition definition) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withDefinition(definition);
+        return this;
+    }
+
+    /**
+     * Get the description property: Alert description.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Alert description.
+     *
+     * @param description the description value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the source property: Source of alert.
+     *
+     * @return the source value.
+     */
+    public AlertSource source() {
+        return this.innerProperties() == null ? null : this.innerProperties().source();
+    }
+
+    /**
+     * Set the source property: Source of alert.
+     *
+     * @param source the source value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withSource(AlertSource source) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withSource(source);
+        return this;
+    }
+
+    /**
+     * Get the details property: Alert details.
+     *
+     * @return the details value.
+     */
+    public AlertPropertiesDetails details() {
+        return this.innerProperties() == null ? null : this.innerProperties().details();
+    }
+
+    /**
+     * Set the details property: Alert details.
+     *
+     * @param details the details value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withDetails(AlertPropertiesDetails details) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withDetails(details);
+        return this;
+    }
+
+    /**
+     * Get the costEntityId property: related budget.
+     *
+     * @return the costEntityId value.
+     */
+    public String costEntityId() {
+        return this.innerProperties() == null ? null : this.innerProperties().costEntityId();
+    }
+
+    /**
+     * Set the costEntityId property: related budget.
+     *
+     * @param costEntityId the costEntityId value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withCostEntityId(String costEntityId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withCostEntityId(costEntityId);
+        return this;
+    }
+
+    /**
+     * Get the status property: alert status.
+     *
+     * @return the status value.
+     */
+    public AlertStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: alert status.
+     *
+     * @param status the status value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withStatus(AlertStatus status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: dateTime in which alert was created.
+     *
+     * @return the creationTime value.
+     */
+    public String creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
+    }
+
+    /**
+     * Set the creationTime property: dateTime in which alert was created.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withCreationTime(String creationTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
+        return this;
+    }
+
+    /**
+     * Get the closeTime property: dateTime in which alert was closed.
+     *
+     * @return the closeTime value.
+     */
+    public String closeTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().closeTime();
+    }
+
+    /**
+     * Set the closeTime property: dateTime in which alert was closed.
+     *
+     * @param closeTime the closeTime value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withCloseTime(String closeTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withCloseTime(closeTime);
+        return this;
+    }
+
+    /**
+     * Get the modificationTime property: dateTime in which alert was last modified.
+     *
+     * @return the modificationTime value.
+     */
+    public String modificationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().modificationTime();
+    }
+
+    /**
+     * Set the modificationTime property: dateTime in which alert was last modified.
+     *
+     * @param modificationTime the modificationTime value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withModificationTime(String modificationTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withModificationTime(modificationTime);
+        return this;
+    }
+
+    /**
+     * Get the statusModificationUsername property: The statusModificationUserName property.
+     *
+     * @return the statusModificationUsername value.
+     */
+    public String statusModificationUsername() {
+        return this.innerProperties() == null ? null : this.innerProperties().statusModificationUsername();
+    }
+
+    /**
+     * Set the statusModificationUsername property: The statusModificationUserName property.
+     *
+     * @param statusModificationUsername the statusModificationUsername value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withStatusModificationUsername(String statusModificationUsername) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withStatusModificationUsername(statusModificationUsername);
+        return this;
+    }
+
+    /**
+     * Get the statusModificationTime property: dateTime in which the alert status was last modified.
+     *
+     * @return the statusModificationTime value.
+     */
+    public String statusModificationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().statusModificationTime();
+    }
+
+    /**
+     * Set the statusModificationTime property: dateTime in which the alert status was last modified.
+     *
+     * @param statusModificationTime the statusModificationTime value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withStatusModificationTime(String statusModificationTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withStatusModificationTime(statusModificationTime);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (definition() != null) {
-            definition().validate();
-        }
-        if (details() != null) {
-            details().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
