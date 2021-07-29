@@ -29,6 +29,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.BiFunction;
@@ -410,7 +412,7 @@ public final class FluxUtil {
      * @return a Mono which performs the write operation when subscribed
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile, long position) {
-        return Mono.create(emitter -> content.subscribe(new CoreSubscriber<ByteBuffer>() {
+        return Mono.create(emitter -> content.subscribe(new Subscriber<ByteBuffer>() {
             // volatile ensures that writes to these fields by one thread will be immediately visible to other threads.
             // An I/O pool thread will write to isWriting and read isCompleted,
             // while another thread may read isWriting and write to isCompleted.
@@ -418,6 +420,8 @@ public final class FluxUtil {
             volatile boolean isCompleted = false;
             volatile Subscription subscription;
             volatile long pos = position;
+
+            final Queue<ByteBuffer> writeQueue = new ConcurrentLinkedQueue<>();
 
             @Override
             public void onSubscribe(Subscription s) {
@@ -427,32 +431,49 @@ public final class FluxUtil {
 
             @Override
             public void onNext(ByteBuffer bytes) {
-                isWriting = true;
-                outFile.write(bytes, pos, null, onWriteCompleted);
+                if (isWriting) {
+                    if (!writeQueue.offer(bytes)) {
+                        onError(new IllegalStateException("Dropped onNext when writing to file."));
+                    }
+                } else {
+                    isWriting = true;
+
+                    try {
+                        outFile.write(bytes, pos, null, onWriteCompleted);
+                    } catch (Throwable throwable) {
+                        onError(throwable);
+                    }
+                }
             }
 
 
             final CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
                 @Override
                 public void completed(Integer bytesWritten, Object attachment) {
-                    isWriting = false;
-                    if (isCompleted) {
-                        emitter.success();
-                    }
                     //noinspection NonAtomicOperationOnVolatileField
                     pos += bytesWritten;
-                    subscription.request(1);
+
+                    if (!writeQueue.isEmpty()) {
+                        outFile.write(writeQueue.poll(), pos, null, onWriteCompleted);
+                    } else {
+                        isWriting = false;
+                        if (isCompleted) {
+                            emitter.success();
+                        }
+
+                        subscription.request(1);
+                    }
                 }
 
                 @Override
                 public void failed(Throwable exc, Object attachment) {
-                    subscription.cancel();
-                    emitter.error(exc);
+                    onError(exc);
                 }
             };
 
             @Override
             public void onError(Throwable throwable) {
+                isWriting = false;
                 subscription.cancel();
                 emitter.error(throwable);
             }
