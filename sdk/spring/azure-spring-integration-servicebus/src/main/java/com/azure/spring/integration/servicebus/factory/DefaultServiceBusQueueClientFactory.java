@@ -14,6 +14,8 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +29,8 @@ import static com.azure.spring.cloud.context.core.util.Constants.SPRING_SERVICE_
  */
 public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSenderFactory
     implements ServiceBusQueueClientFactory {
+
+    private final Log logger = LogFactory.getLog(DefaultServiceBusQueueClientFactory.class);
 
     private final Map<String, ServiceBusProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> senderClientMap = new ConcurrentHashMap<>();
@@ -65,6 +69,10 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         String name,
         ServiceBusClientConfig clientConfig,
         ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+        if (clientConfig.getConcurrency() != 1) {
+            logger.warn("It is detected that concurrency is set, this attribute has been deprecated," +
+                " you can use " + (clientConfig.isSessionsEnabled() ? "maxConcurrentCalls" : "maxConcurrentCalls") + " instead");
+        }
         if (clientConfig.isSessionsEnabled()) {
             ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder =
                    serviceBusClientBuilder.sessionProcessor()

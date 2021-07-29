@@ -14,6 +14,8 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +30,7 @@ import static com.azure.spring.cloud.context.core.util.Constants.SPRING_SERVICE_
 public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSenderFactory
     implements ServiceBusTopicClientFactory {
 
-
+    private final Log logger = LogFactory.getLog(DefaultServiceBusQueueClientFactory.class);
     private final ServiceBusClientBuilder serviceBusClientBuilder;
     private final Map<Tuple<String, String>, ServiceBusProcessorClient> topicProcessorMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> topicSenderMap = new ConcurrentHashMap<>();
@@ -70,7 +72,11 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                                       ServiceBusClientConfig config,
                                                       ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
                                                                                     ServiceBusErrorContext> messageProcessor) {
-        if (config.isSessionsEnabled()) {
+
+        if (config.getConcurrency() != 1) {
+            logger.warn("It is detected that concurrency is set, this attribute has been deprecated," +
+                " you can use " + (config.isSessionsEnabled() ? "maxConcurrentCalls" : "maxConcurrentCalls") + " instead");
+        }if (config.isSessionsEnabled()) {
             ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder =
                    serviceBusClientBuilder.sessionProcessor()
                                           .topicName(topic)
@@ -78,7 +84,8 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                           .receiveMode(config.getServiceBusReceiveMode())
                                           .maxConcurrentCalls(config.getMaxConcurrentCalls())
                                           // TODO, It looks like max auto renew duration is not exposed
-                                          .maxConcurrentSessions(config.getConcurrency())
+                                          .maxConcurrentSessions(config.getMaxConcurrentSessions() == 1
+                                              ? config.getConcurrency() : config.getMaxConcurrentSessions())
                                           .prefetchCount(config.getPrefetchCount())
                                           .processMessage(messageProcessor.processMessage())
                                           .processError(messageProcessor.processError());
@@ -92,7 +99,8 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                           .topicName(topic)
                                           .subscriptionName(subscription)
                                           .receiveMode(config.getServiceBusReceiveMode())
-                                          .maxConcurrentCalls(config.getMaxConcurrentCalls())
+                                          .maxConcurrentCalls(config.getMaxConcurrentCalls() == 1
+                                              ? config.getConcurrency() : config.getMaxConcurrentCalls())
                                           .prefetchCount(config.getPrefetchCount())
                                           .processMessage(messageProcessor.processMessage())
                                           .processError(messageProcessor.processError());

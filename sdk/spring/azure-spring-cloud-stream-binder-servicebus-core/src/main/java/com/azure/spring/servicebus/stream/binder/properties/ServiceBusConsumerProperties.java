@@ -5,12 +5,17 @@ package com.azure.spring.servicebus.stream.binder.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.integration.core.api.CheckpointMode;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 /**
  * @author Warren Zhu
  * @author Eduardo Sciullo
  */
 public class ServiceBusConsumerProperties {
+    private final Log logger = LogFactory.getLog(ServiceBusConsumerProperties.class);
+
     private int prefetchCount = 1;
     @Deprecated
     private int concurrency = 1;
@@ -91,13 +96,14 @@ public class ServiceBusConsumerProperties {
      * @return int, default : 1
      * @deprecated Use maxConcurrentSessions and maxConcurrentCalls.
      */
-    @Deprecated
+    @DeprecatedConfigurationProperty(reason = "Deprecate the concurrency and use maxConcurrentSessions and maxConcurrentCalls instead")
     public int getConcurrency() {
         return concurrency;
     }
 
     @Deprecated
     public void setConcurrency(int concurrency) {
+        logger.warn("Set attribute concurrency, which has been deprecated");
         this.concurrency = concurrency;
     }
 
