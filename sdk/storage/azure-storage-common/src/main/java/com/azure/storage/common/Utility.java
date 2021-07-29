@@ -318,7 +318,7 @@ public final class Utility {
                         }
                     }
 
-                    return ByteBuffer.wrap(cache);
+                    return ByteBuffer.wrap(cache, 0, offset);
                 }));
         });
     }

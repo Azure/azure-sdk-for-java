@@ -28,6 +28,27 @@ public final class PipelineResourceImpl
         return this.innerModel().id();
     }
 
+    public String name() {
+        return this.innerModel().name();
+    }
+
+    public String type() {
+        return this.innerModel().type();
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public Map<String, Object> additionalProperties() {
+        Map<String, Object> inner = this.innerModel().additionalProperties();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String description() {
         return this.innerModel().description();
     }
@@ -87,27 +108,6 @@ public final class PipelineResourceImpl
 
     public PipelinePolicy policy() {
         return this.innerModel().policy();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
-    public Map<String, Object> additionalProperties() {
-        Map<String, Object> inner = this.innerModel().additionalProperties();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public PipelineResourceInner innerModel() {
@@ -246,6 +246,11 @@ public final class PipelineResourceImpl
                 context);
     }
 
+    public PipelineResourceImpl withAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.innerModel().withAdditionalProperties(additionalProperties);
+        return this;
+    }
+
     public PipelineResourceImpl withDescription(String description) {
         this.innerModel().withDescription(description);
         return this;
@@ -288,11 +293,6 @@ public final class PipelineResourceImpl
 
     public PipelineResourceImpl withPolicy(PipelinePolicy policy) {
         this.innerModel().withPolicy(policy);
-        return this;
-    }
-
-    public PipelineResourceImpl withAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.innerModel().withAdditionalProperties(additionalProperties);
         return this;
     }
 

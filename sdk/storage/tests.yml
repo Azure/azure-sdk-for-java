@@ -45,7 +45,7 @@ stages:
       Location: canadacentral
       Clouds: 'Preview'
       TestStepMavenInputs:
-        options: '$(DefaultTestOptions) -T 1C'
+        options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
         mavenOptions: '$(DefaultTestMavenOptions)'
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
@@ -61,6 +61,8 @@ stages:
             Path: sdk/storage/platform-matrix.json
             Selection: sparse
             GenerateVMJobs: true
+      PreSteps:
+          - template: /sdk/storage/tests-install-azurite.yml
       PostSteps:
           - task: PowerShell@2
             displayName: 'Run Stress Scenarios'
@@ -72,6 +74,7 @@ stages:
                 JAVA_HOME: $(JAVA_HOME_11_X64)
               ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
                 JAVA_HOME: $(JAVA_HOME_8_X64)
+            condition: and(succeeded(), eq(variables['StorageRunStressScenarios'], 'true'))
           - pwsh: |
               New-Item $(Build.ArtifactStagingDirectory)/test-logs -ItemType directory
               Copy-Item sdk/storage/azure-storage-blob/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-test.log -ErrorAction SilentlyContinue

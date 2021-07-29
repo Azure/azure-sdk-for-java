@@ -21,6 +21,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -249,12 +251,13 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
 
     @Override
     public PublicIpAddress getPublicIpAddress() {
-        final String pipId = this.publicIpAddressId();
-        if (pipId == null) {
-            return null;
-        } else {
-            return this.parent().manager().publicIpAddresses().getById(pipId);
-        }
+        return this.getPublicIpAddressAsync().block();
+    }
+
+    @Override
+    public Mono<PublicIpAddress> getPublicIpAddressAsync() {
+        String pipId = this.publicIpAddressId();
+        return pipId == null ? Mono.empty() : this.parent().manager().publicIpAddresses().getByIdAsync(pipId);
     }
 
     @Override

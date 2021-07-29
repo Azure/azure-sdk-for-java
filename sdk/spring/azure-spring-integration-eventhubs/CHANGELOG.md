@@ -1,8 +1,17 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.8.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+
+
+## 2.7.0 (2021-07-20)
 ### Key Bug Fixes
 - Fixed `EventHubMessageConverter` to load all system properties of `EventData` and put in the header of org.springframework.messaging.Message.([#22683](https://github.com/Azure/azure-sdk-for-java/pull/22683/))
+### Dependency Upgrades
+- Upgrade to [Spring Integration 5.5.1](https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-core/5.5.1).
+- Upgrade to [Azure Event Hubs 5.9.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/CHANGELOG.md#590-2021-07-09).
 
 ### Breaking Changes
 - Encode message payload with UTF-8 charset instead of default charset of JVM when the payload is String. ([#23056](https://github.com/Azure/azure-sdk-for-java/pull/23056))
@@ -45,4 +54,4 @@
 
 ## 1.2.8 (2020-09-14)
 ### Breaking Changes
-- Unify Azure Spring Cloud packages version
+- Unify Spring Cloud for Azure packages version

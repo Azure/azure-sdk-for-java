@@ -80,7 +80,7 @@ public final class SentimentSkill extends SearchIndexerSkill {
      *
      * @return The version of the {@link SentimentSkill}.
      */
-    public SentimentSkillVersion getVersion() {
+    public SentimentSkillVersion getSkillVersion() {
         return this.version;
     }
 

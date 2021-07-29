@@ -8,8 +8,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.implementation.ImplUtils;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
@@ -26,7 +26,6 @@ import static com.azure.containers.containerregistry.TestUtils.HTTP_STATUS_CODE_
 import static com.azure.containers.containerregistry.TestUtils.SLEEP_TIME_IN_MILLISECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBase {
@@ -47,7 +46,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @BeforeEach
     void beforeEach() {
-        TestUtils.importImage(ImplUtils.getTestMode(), repositoryName, Arrays.asList("latest"));
+        TestUtils.importImage(getTestMode(), repositoryName, Collections.singletonList("latest"));
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         } else {
@@ -68,12 +67,12 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
             .then(registryAsyncClient.getRepository(repositoryName).getProperties())
             .flatMap(res -> Mono.just(false))
             .onErrorResume(res -> registryAsyncClient.getRepository(repositoryName)
-                    .delete()
-                    .then(Mono.just(true))
+                .delete()
+                .then(Mono.just(true))
                 .onErrorResume(err -> Mono.just(false)));
 
         StepVerifier.create(deleteRepositoryTest)
-            .assertNext(res -> assertTrue(res))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 
@@ -89,7 +88,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
                 .onErrorResume(err -> Mono.just(false)));
 
         StepVerifier.create(deleteRepositoryTest)
-            .assertNext(res -> assertTrue(res))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 
@@ -105,7 +104,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
                 .onErrorResume(err -> Mono.just(false)));
 
         StepVerifier.create(deleteRepositoryTest)
-            .assertNext(res -> assertTrue(res))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 
@@ -121,7 +120,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
                 .onErrorResume(err -> Mono.just(false)));
 
         StepVerifier.create(deleteRepositoryTest)
-            .assertNext(res -> assertTrue(res))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 

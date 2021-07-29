@@ -217,10 +217,10 @@ Regardless of what schema your topic or domain is configured to use,
 `EventGridPublisherClient` will be used to publish events to it. However, you must use the correct type to instantiate
 it:
 
-| Event Schema       | Publishr Client Generic Instantiation     |
+| Event Schema       | Publisher Client Generic Instantiation    |
 | ------------ | --------------------- |
-| Event Grid Events  | `EventGridPublisherClient<CloudEvent>`       |
-| Cloud Events | `EventGridPublisherClient<EventGridEvent>`  |
+| Event Grid Events  | `EventGridPublisherClient<EventGridEvent>`       |
+| Cloud Events | `EventGridPublisherClient<CloudEvent>`  |
 | Custom Events       | `EventGridPublisherClient<BinaryData>` |
 
 Using the wrong type will result in a BadRequest error from the service and your events will not be published.
