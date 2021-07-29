@@ -3,31 +3,30 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
-import java.io.InputStream;
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
+
 import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.FileInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Key;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.cert.CertificateEncodingException;
-import java.util.List;
-import java.util.Objects;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-
-import static java.util.logging.Level.INFO;
-import static java.util.logging.Level.WARNING;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Store certificates loaded from file system.
@@ -93,7 +92,7 @@ public final class SpecificPathCertificates implements AzureCertificates {
     /**
      * Add alias and certificate
      *
-     * @param alias certificate alias
+     * @param alias       certificate alias
      * @param certificate certificate value
      */
     public void setCertificateEntry(String alias, Certificate certificate) {
@@ -115,17 +114,17 @@ public final class SpecificPathCertificates implements AzureCertificates {
     private void setCertificateByFile(File file) throws IOException {
         X509Certificate certificate;
         try (InputStream inputStream = new FileInputStream(file);
-             BufferedInputStream bytes = new BufferedInputStream(inputStream)) {
+            BufferedInputStream bytes = new BufferedInputStream(inputStream)) {
             String alias = toCertificateAlias(file);
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             certificate = (X509Certificate) cf.generateCertificate(bytes);
             if (certificate != null) {
                 setCertificateEntry(alias, certificate);
-                LOGGER.log(INFO, "Load file system certificate: {0} with thumbprint {1} from: {2}",
-                    new Object[]{alias, getThumbprint(certificate) ,file.getName()});
+                LOGGER.log(INFO, "Load certificate from specific path. alias = {0}, thumbprint = {1}, file = {2}",
+                    new Object[]{alias, getThumbprint(certificate), file.getName()});
             }
         } catch (CertificateException e) {
-            LOGGER.log(WARNING, "Unable to load specific path certificate from: " + file.getName(), e);
+            LOGGER.log(WARNING, "Unable to load certificate from: " + file.getName(), e);
         }
     }
 
@@ -146,30 +145,16 @@ public final class SpecificPathCertificates implements AzureCertificates {
     /**
      * Get thumbprint for a certificate
      *
-     * @param cert certificate value
+     * @param certificate certificate value
      * @return certificate thumbprint
      */
-    public String getThumbprint(Certificate cert) {
+    String getThumbprint(Certificate certificate) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            byte[] der = cert.getEncoded();
-            md.update(der);
-            byte[] digest = md.digest();
-            return printHexBinary(digest);
-        } catch (NoSuchAlgorithmException | CertificateEncodingException e) {
+            return DigestUtils.sha1Hex(certificate.getEncoded());
+        } catch (CertificateEncodingException e) {
             LOGGER.log(WARNING, "Unable to get thumbprint for certificate", e);
         }
         return "";
-    }
-
-    public String printHexBinary(byte[] data) {
-        char[] hexCode = "0123456789ABCDEF".toCharArray();
-        StringBuilder builder = new StringBuilder(data.length * 2);
-        for (byte b : data) {
-            builder.append(hexCode[b >> 4 & 15]);
-            builder.append(hexCode[b & 15]);
-        }
-        return builder.toString();
     }
 
     /**
