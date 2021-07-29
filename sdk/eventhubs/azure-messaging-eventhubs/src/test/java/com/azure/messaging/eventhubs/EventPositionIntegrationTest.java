@@ -157,8 +157,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
             StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
                 .filter(event -> isMatchingEvent(event, testData.getMessageId()))
                 .take(Duration.ofSeconds(3)))
-                .expectComplete()
-                .verify();
+                .verifyComplete();
         } finally {
             dispose(consumer);
         }
