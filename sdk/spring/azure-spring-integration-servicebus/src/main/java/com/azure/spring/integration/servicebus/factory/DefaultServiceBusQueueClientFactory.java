@@ -66,32 +66,36 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         ServiceBusClientConfig clientConfig,
         ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
         if (clientConfig.isSessionsEnabled()) {
-            return serviceBusClientBuilder.sessionProcessor()
+            ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder =
+                   serviceBusClientBuilder.sessionProcessor()
                                           .queueName(name)
                                           .receiveMode(clientConfig.getServiceBusReceiveMode())
                                           .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls())
                                           // TODO, It looks like max auto renew duration is not exposed
-                                          .maxConcurrentSessions(clientConfig.getMaxConcurrentSessions() == 1 ?
-                                              clientConfig.getConcurrency() : clientConfig.getMaxConcurrentSessions())
+                                          .maxConcurrentSessions(clientConfig.getMaxConcurrentSessions() == 1
+                                              ? clientConfig.getConcurrency() : clientConfig.getMaxConcurrentSessions())
                                           .prefetchCount(clientConfig.getPrefetchCount())
-                                          .disableAutoComplete()
                                           .processMessage(messageProcessor.processMessage())
-                                          .processError(messageProcessor.processError())
-                                          .buildProcessorClient();
-
+                                          .processError(messageProcessor.processError());
+            if (!clientConfig.isEnableAutoComplete()) {
+                return builder.disableAutoComplete().buildProcessorClient();
+            }
+            return builder.buildProcessorClient();
         } else {
-            return serviceBusClientBuilder.processor()
+            ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder =
+                   serviceBusClientBuilder.processor()
                                           .queueName(name)
                                           .receiveMode(clientConfig.getServiceBusReceiveMode())
-                                          .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls() == 1 ?
-                                              clientConfig.getConcurrency() : clientConfig.getMaxConcurrentCalls())
+                                          .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls() == 1
+                                              ? clientConfig.getConcurrency() : clientConfig.getMaxConcurrentCalls())
                                           .prefetchCount(clientConfig.getPrefetchCount())
-                                          .disableAutoComplete()
                                           .processMessage(messageProcessor.processMessage())
-                                          .processError(messageProcessor.processError())
-                                          .buildProcessorClient();
+                                          .processError(messageProcessor.processError());
+            if (!clientConfig.isEnableAutoComplete()) {
+                return builder.disableAutoComplete().buildProcessorClient();
+            }
+            return builder.buildProcessorClient();
         }
-
     }
 
     private ServiceBusSenderAsyncClient createQueueSender(String name) {

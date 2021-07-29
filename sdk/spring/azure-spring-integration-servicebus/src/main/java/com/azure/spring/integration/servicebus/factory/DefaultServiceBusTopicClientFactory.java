@@ -71,7 +71,8 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                                       ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
                                                                                     ServiceBusErrorContext> messageProcessor) {
         if (config.isSessionsEnabled()) {
-            return serviceBusClientBuilder.sessionProcessor()
+            ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder =
+                   serviceBusClientBuilder.sessionProcessor()
                                           .topicName(topic)
                                           .subscriptionName(subscription)
                                           .receiveMode(config.getServiceBusReceiveMode())
@@ -79,21 +80,26 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                           // TODO, It looks like max auto renew duration is not exposed
                                           .maxConcurrentSessions(config.getConcurrency())
                                           .prefetchCount(config.getPrefetchCount())
-                                          .disableAutoComplete()
                                           .processMessage(messageProcessor.processMessage())
-                                          .processError(messageProcessor.processError())
-                                          .buildProcessorClient();
+                                          .processError(messageProcessor.processError());
+            if (!config.isEnableAutoComplete()) {
+                return builder.disableAutoComplete().buildProcessorClient();
+            }
+            return builder.buildProcessorClient();
         } else {
-            return serviceBusClientBuilder.processor()
+            ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder =
+                   serviceBusClientBuilder.processor()
                                           .topicName(topic)
                                           .subscriptionName(subscription)
                                           .receiveMode(config.getServiceBusReceiveMode())
                                           .maxConcurrentCalls(config.getMaxConcurrentCalls())
                                           .prefetchCount(config.getPrefetchCount())
-                                          .disableAutoComplete()
                                           .processMessage(messageProcessor.processMessage())
-                                          .processError(messageProcessor.processError())
-                                          .buildProcessorClient();
+                                          .processError(messageProcessor.processError());
+            if (!config.isEnableAutoComplete()) {
+                return builder.disableAutoComplete().buildProcessorClient();
+            }
+            return builder.buildProcessorClient();
         }
     }
 

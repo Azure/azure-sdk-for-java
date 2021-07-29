@@ -115,6 +115,7 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
                                      .setMaxConcurrentCalls(consumerProperties.getMaxConcurrentCalls())
                                      .setMaxConcurrentSessions(consumerProperties.getMaxConcurrentSessions())
                                      .setServiceBusReceiveMode(consumerProperties.getServiceBusReceiveMode())
+                                     .setEnableAutoComplete(consumerProperties.isEnableAutoComplete())
                                      .build();
     }
 

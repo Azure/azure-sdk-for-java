@@ -26,11 +26,13 @@ public final class ServiceBusClientConfig {
 
     private final int maxConcurrentSessions;
 
-    private ServiceBusReceiveMode serviceBusReceiveMode;
+    private final boolean enableAutoComplete;
+
+    private final ServiceBusReceiveMode serviceBusReceiveMode;
 
     private ServiceBusClientConfig(int prefetchCount, int concurrency, boolean sessionsEnabled,
                                    boolean requeueRejected, int maxConcurrentCalls, int maxConcurrentSessions,
-                                   ServiceBusReceiveMode serviceBusReceiveMode) {
+                                   ServiceBusReceiveMode serviceBusReceiveMode, boolean enableAutoComplete) {
 
         this.prefetchCount = prefetchCount;
         this.concurrency = concurrency;
@@ -39,6 +41,7 @@ public final class ServiceBusClientConfig {
         this.maxConcurrentCalls = maxConcurrentCalls;
         this.serviceBusReceiveMode = serviceBusReceiveMode;
         this.maxConcurrentSessions = maxConcurrentSessions;
+        this.enableAutoComplete = enableAutoComplete;
     }
 
     public int getPrefetchCount() {
@@ -60,6 +63,10 @@ public final class ServiceBusClientConfig {
 
     public int getMaxConcurrentCalls() {
         return maxConcurrentCalls;
+    }
+
+    public boolean isEnableAutoComplete() {
+        return enableAutoComplete;
     }
 
     public int getMaxConcurrentSessions() {
@@ -85,6 +92,7 @@ public final class ServiceBusClientConfig {
         private boolean requeueRejected = false;
         private int maxConcurrentCalls = 1;
         private int maxConcurrentSessions = 1;
+        private boolean enableAutoComplete = false;
         private ServiceBusReceiveMode serviceBusReceiveMode = ServiceBusReceiveMode.PEEK_LOCK;
 
         public void setRequeueRejected(boolean requeueRejected) {
@@ -122,8 +130,13 @@ public final class ServiceBusClientConfig {
             return this;
         }
 
+        public ServiceBusClientConfigBuilder setEnableAutoComplete(boolean enableAutoComplete) {
+            this.enableAutoComplete = enableAutoComplete;
+            return this;
+        }
+
         public ServiceBusClientConfig build() {
-            return new ServiceBusClientConfig(prefetchCount, concurrency, sessionsEnabled, requeueRejected, maxConcurrentCalls, maxConcurrentSessions, serviceBusReceiveMode);
+            return new ServiceBusClientConfig(prefetchCount, concurrency, sessionsEnabled, requeueRejected, maxConcurrentCalls, maxConcurrentSessions, serviceBusReceiveMode, enableAutoComplete);
         }
     }
 }

@@ -123,6 +123,13 @@ The modes for receiving messages.
 `RECEIVE_AND_DELETE`, received message is removed from the queue or subscription and immediately deleted.
 
 Default: `PEEK_LOCK`
+
+**_enableAutoComplete_**
+
+Enable auto-complete and auto-abandon of received messages.
+'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.
+
+Default: `false`
 ##### Support for Service Bus Message Headers and Properties
 The following table illustrates how Spring message headers are mapped to Service Bus message headers and properties.
 When creat a message, developers can specify the header or property of a Service Bus message by below constants.

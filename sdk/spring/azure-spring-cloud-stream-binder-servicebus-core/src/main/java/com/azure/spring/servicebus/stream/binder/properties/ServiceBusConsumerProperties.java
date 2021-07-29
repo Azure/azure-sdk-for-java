@@ -18,6 +18,7 @@ public class ServiceBusConsumerProperties {
     private boolean requeueRejected = false;
     private int maxConcurrentCalls = 1;
     private int maxConcurrentSessions = 1;
+    private boolean enableAutoComplete = false;
     private ServiceBusReceiveMode serviceBusReceiveMode = ServiceBusReceiveMode.PEEK_LOCK;
 
     private CheckpointMode checkpointMode = CheckpointMode.RECORD;
@@ -28,6 +29,14 @@ public class ServiceBusConsumerProperties {
 
     public void setCheckpointMode(CheckpointMode checkpointMode) {
         this.checkpointMode = checkpointMode;
+    }
+
+    public boolean isEnableAutoComplete() {
+        return enableAutoComplete;
+    }
+
+    public void setEnableAutoComplete(boolean enableAutoComplete) {
+        this.enableAutoComplete = enableAutoComplete;
     }
 
     /**
@@ -80,6 +89,7 @@ public class ServiceBusConsumerProperties {
      *
      * <p>
      * @return int, default : 1
+     * @deprecated Use maxConcurrentSessions and maxConcurrentCalls.
      */
     @Deprecated
     public int getConcurrency() {
