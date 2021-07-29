@@ -489,7 +489,7 @@ public class AADWebApplicationConfigurationTest {
                 );
             });
     }
-`
+
     @Test
     public void testGroupNameAndGroupIdConfigured() {
         WebApplicationContextRunnerUtils
