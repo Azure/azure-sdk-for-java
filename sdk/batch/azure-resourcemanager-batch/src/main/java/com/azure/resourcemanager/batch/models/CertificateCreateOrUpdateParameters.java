@@ -5,49 +5,22 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.batch.fluent.models.CertificateCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about a certificate. */
-@JsonFlatten
 @Fluent
-public class CertificateCreateOrUpdateParameters extends ProxyResource {
+public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateCreateOrUpdateParameters.class);
 
     /*
-     * This must match the first portion of the certificate name. Currently
-     * required to be 'SHA1'.
+     * The properties associated with the certificate.
      */
-    @JsonProperty(value = "properties.thumbprintAlgorithm")
-    private String thumbprintAlgorithm;
-
-    /*
-     * This must match the thumbprint from the name.
-     */
-    @JsonProperty(value = "properties.thumbprint")
-    private String thumbprint;
-
-    /*
-     * The format of the certificate - either Pfx or Cer. If omitted, the
-     * default is Pfx.
-     */
-    @JsonProperty(value = "properties.format")
-    private CertificateFormat format;
-
-    /*
-     * The maximum size is 10KB.
-     */
-    @JsonProperty(value = "properties.data")
-    private String data;
-
-    /*
-     * This must not be specified if the certificate format is Cer.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
+    @JsonProperty(value = "properties")
+    private CertificateCreateOrUpdateProperties innerProperties;
 
     /*
      * The ETag of the resource, used for concurrency statements.
@@ -56,105 +29,12 @@ public class CertificateCreateOrUpdateParameters extends ProxyResource {
     private String etag;
 
     /**
-     * Get the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
-     * required to be 'SHA1'.
+     * Get the innerProperties property: The properties associated with the certificate.
      *
-     * @return the thumbprintAlgorithm value.
+     * @return the innerProperties value.
      */
-    public String thumbprintAlgorithm() {
-        return this.thumbprintAlgorithm;
-    }
-
-    /**
-     * Set the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
-     * required to be 'SHA1'.
-     *
-     * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
-     * @return the CertificateCreateOrUpdateParameters object itself.
-     */
-    public CertificateCreateOrUpdateParameters withThumbprintAlgorithm(String thumbprintAlgorithm) {
-        this.thumbprintAlgorithm = thumbprintAlgorithm;
-        return this;
-    }
-
-    /**
-     * Get the thumbprint property: This must match the thumbprint from the name.
-     *
-     * @return the thumbprint value.
-     */
-    public String thumbprint() {
-        return this.thumbprint;
-    }
-
-    /**
-     * Set the thumbprint property: This must match the thumbprint from the name.
-     *
-     * @param thumbprint the thumbprint value to set.
-     * @return the CertificateCreateOrUpdateParameters object itself.
-     */
-    public CertificateCreateOrUpdateParameters withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
-        return this;
-    }
-
-    /**
-     * Get the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
-     *
-     * @return the format value.
-     */
-    public CertificateFormat format() {
-        return this.format;
-    }
-
-    /**
-     * Set the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
-     *
-     * @param format the format value to set.
-     * @return the CertificateCreateOrUpdateParameters object itself.
-     */
-    public CertificateCreateOrUpdateParameters withFormat(CertificateFormat format) {
-        this.format = format;
-        return this;
-    }
-
-    /**
-     * Get the data property: The maximum size is 10KB.
-     *
-     * @return the data value.
-     */
-    public String data() {
-        return this.data;
-    }
-
-    /**
-     * Set the data property: The maximum size is 10KB.
-     *
-     * @param data the data value to set.
-     * @return the CertificateCreateOrUpdateParameters object itself.
-     */
-    public CertificateCreateOrUpdateParameters withData(String data) {
-        this.data = data;
-        return this;
-    }
-
-    /**
-     * Get the password property: This must not be specified if the certificate format is Cer.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: This must not be specified if the certificate format is Cer.
-     *
-     * @param password the password value to set.
-     * @return the CertificateCreateOrUpdateParameters object itself.
-     */
-    public CertificateCreateOrUpdateParameters withPassword(String password) {
-        this.password = password;
-        return this;
+    private CertificateCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -167,10 +47,132 @@ public class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
+     * Get the data property: The base64-encoded contents of the certificate. The maximum size is 10KB.
+     *
+     * @return the data value.
+     */
+    public String data() {
+        return this.innerProperties() == null ? null : this.innerProperties().data();
+    }
+
+    /**
+     * Set the data property: The base64-encoded contents of the certificate. The maximum size is 10KB.
+     *
+     * @param data the data value to set.
+     * @return the CertificateCreateOrUpdateParameters object itself.
+     */
+    public CertificateCreateOrUpdateParameters withData(String data) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withData(data);
+        return this;
+    }
+
+    /**
+     * Get the password property: The password to access the certificate's private key. This must not be specified if
+     * the certificate format is Cer.
+     *
+     * @return the password value.
+     */
+    public String password() {
+        return this.innerProperties() == null ? null : this.innerProperties().password();
+    }
+
+    /**
+     * Set the password property: The password to access the certificate's private key. This must not be specified if
+     * the certificate format is Cer.
+     *
+     * @param password the password value to set.
+     * @return the CertificateCreateOrUpdateParameters object itself.
+     */
+    public CertificateCreateOrUpdateParameters withPassword(String password) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match the first
+     * portion of the certificate name. Currently required to be 'SHA1'.
+     *
+     * @return the thumbprintAlgorithm value.
+     */
+    public String thumbprintAlgorithm() {
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprintAlgorithm();
+    }
+
+    /**
+     * Set the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match the first
+     * portion of the certificate name. Currently required to be 'SHA1'.
+     *
+     * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
+     * @return the CertificateCreateOrUpdateParameters object itself.
+     */
+    public CertificateCreateOrUpdateParameters withThumbprintAlgorithm(String thumbprintAlgorithm) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withThumbprintAlgorithm(thumbprintAlgorithm);
+        return this;
+    }
+
+    /**
+     * Get the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from the name.
+     *
+     * @return the thumbprint value.
+     */
+    public String thumbprint() {
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
+    }
+
+    /**
+     * Set the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from the name.
+     *
+     * @param thumbprint the thumbprint value to set.
+     * @return the CertificateCreateOrUpdateParameters object itself.
+     */
+    public CertificateCreateOrUpdateParameters withThumbprint(String thumbprint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withThumbprint(thumbprint);
+        return this;
+    }
+
+    /**
+     * Get the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
+     *
+     * @return the format value.
+     */
+    public CertificateFormat format() {
+        return this.innerProperties() == null ? null : this.innerProperties().format();
+    }
+
+    /**
+     * Set the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
+     *
+     * @param format the format value to set.
+     * @return the CertificateCreateOrUpdateParameters object itself.
+     */
+    public CertificateCreateOrUpdateParameters withFormat(CertificateFormat format) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withFormat(format);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

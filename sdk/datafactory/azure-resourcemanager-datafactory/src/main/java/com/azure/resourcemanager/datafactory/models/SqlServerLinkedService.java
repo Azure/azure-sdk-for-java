@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SqlServerLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,149 +17,23 @@ import java.util.Map;
 /** SQL Server linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SqlServer")
-@JsonFlatten
 @Fluent
-public class SqlServerLinkedService extends LinkedService {
+public final class SqlServerLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerLinkedService.class);
 
     /*
-     * The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * SQL Server linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionString", required = true)
-    private Object connectionString;
-
-    /*
-     * The on-premises Windows authentication user name. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.userName")
-    private Object username;
-
-    /*
-     * The on-premises Windows authentication password.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
-
-    /*
-     * Sql always encrypted properties.
-     */
-    @JsonProperty(value = "typeProperties.alwaysEncryptedSettings")
-    private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SqlServerLinkedServiceTypeProperties innerTypeProperties = new SqlServerLinkedServiceTypeProperties();
 
     /**
-     * Get the connectionString property: The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * Get the innerTypeProperties property: SQL Server linked service properties.
      *
-     * @return the connectionString value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the SqlServerLinkedService object itself.
-     */
-    public SqlServerLinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the username property: The on-premises Windows authentication user name. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: The on-premises Windows authentication user name. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param username the username value to set.
-     * @return the SqlServerLinkedService object itself.
-     */
-    public SqlServerLinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: The on-premises Windows authentication password.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: The on-premises Windows authentication password.
-     *
-     * @param password the password value to set.
-     * @return the SqlServerLinkedService object itself.
-     */
-    public SqlServerLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the SqlServerLinkedService object itself.
-     */
-    public SqlServerLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
-    }
-
-    /**
-     * Get the alwaysEncryptedSettings property: Sql always encrypted properties.
-     *
-     * @return the alwaysEncryptedSettings value.
-     */
-    public SqlAlwaysEncryptedProperties alwaysEncryptedSettings() {
-        return this.alwaysEncryptedSettings;
-    }
-
-    /**
-     * Set the alwaysEncryptedSettings property: Sql always encrypted properties.
-     *
-     * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
-     * @return the SqlServerLinkedService object itself.
-     */
-    public SqlServerLinkedService withAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
-        this.alwaysEncryptedSettings = alwaysEncryptedSettings;
-        return this;
+    private SqlServerLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -191,6 +65,127 @@ public class SqlServerLinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the SqlServerLinkedService object itself.
+     */
+    public SqlServerLinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SqlServerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the username property: The on-premises Windows authentication user name. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: The on-premises Windows authentication user name. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param username the username value to set.
+     * @return the SqlServerLinkedService object itself.
+     */
+    public SqlServerLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SqlServerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: The on-premises Windows authentication password.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: The on-premises Windows authentication password.
+     *
+     * @param password the password value to set.
+     * @return the SqlServerLinkedService object itself.
+     */
+    public SqlServerLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SqlServerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the SqlServerLinkedService object itself.
+     */
+    public SqlServerLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SqlServerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
+     * Get the alwaysEncryptedSettings property: Sql always encrypted properties.
+     *
+     * @return the alwaysEncryptedSettings value.
+     */
+    public SqlAlwaysEncryptedProperties alwaysEncryptedSettings() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().alwaysEncryptedSettings();
+    }
+
+    /**
+     * Set the alwaysEncryptedSettings property: Sql always encrypted properties.
+     *
+     * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
+     * @return the SqlServerLinkedService object itself.
+     */
+    public SqlServerLinkedService withAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SqlServerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAlwaysEncryptedSettings(alwaysEncryptedSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -198,17 +193,13 @@ public class SqlServerLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (connectionString() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property connectionString in model SqlServerLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
-        }
-        if (alwaysEncryptedSettings() != null) {
-            alwaysEncryptedSettings().validate();
+                        "Missing required property innerTypeProperties in model SqlServerLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

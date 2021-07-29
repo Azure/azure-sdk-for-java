@@ -15,22 +15,24 @@ public class UserIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserIdentity.class);
 
     /*
-     * The userName and autoUser properties are mutually exclusive; you must
-     * specify one but not both.
+     * The name of the user identity under which the task is run. The userName
+     * and autoUser properties are mutually exclusive; you must specify one but
+     * not both.
      */
     @JsonProperty(value = "userName")
     private String username;
 
     /*
-     * The userName and autoUser properties are mutually exclusive; you must
-     * specify one but not both.
+     * Specifies the parameters for the auto user that runs a task on the Batch
+     * service. The userName and autoUser properties are mutually exclusive;
+     * you must specify one but not both.
      */
     @JsonProperty(value = "autoUser")
     private AutoUserSpecification autoUser;
 
     /**
-     * Get the username property: The userName and autoUser properties are mutually exclusive; you must specify one but
-     * not both.
+     * Get the username property: The name of the user identity under which the task is run. The userName and autoUser
+     * properties are mutually exclusive; you must specify one but not both.
      *
      * @return the username value.
      */
@@ -39,8 +41,8 @@ public class UserIdentity {
     }
 
     /**
-     * Set the username property: The userName and autoUser properties are mutually exclusive; you must specify one but
-     * not both.
+     * Set the username property: The name of the user identity under which the task is run. The userName and autoUser
+     * properties are mutually exclusive; you must specify one but not both.
      *
      * @param username the username value to set.
      * @return the UserIdentity object itself.
@@ -51,8 +53,8 @@ public class UserIdentity {
     }
 
     /**
-     * Get the autoUser property: The userName and autoUser properties are mutually exclusive; you must specify one but
-     * not both.
+     * Get the autoUser property: Specifies the parameters for the auto user that runs a task on the Batch service. The
+     * userName and autoUser properties are mutually exclusive; you must specify one but not both.
      *
      * @return the autoUser value.
      */
@@ -61,8 +63,8 @@ public class UserIdentity {
     }
 
     /**
-     * Set the autoUser property: The userName and autoUser properties are mutually exclusive; you must specify one but
-     * not both.
+     * Set the autoUser property: Specifies the parameters for the auto user that runs a task on the Batch service. The
+     * userName and autoUser properties are mutually exclusive; you must specify one but not both.
      *
      * @param autoUser the autoUser value to set.
      * @return the UserIdentity object itself.

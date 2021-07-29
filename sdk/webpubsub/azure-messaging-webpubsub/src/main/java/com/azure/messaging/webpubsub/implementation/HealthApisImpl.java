@@ -4,21 +4,23 @@
 
 package com.azure.messaging.webpubsub.implementation;
 
-import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Head;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /** An instance of this class provides access to all the operations defined in HealthApis. */
 public final class HealthApisImpl {
@@ -47,95 +49,77 @@ public final class HealthApisImpl {
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface HealthApisService {
         @Head("/api/health")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getHealthStatus(
-                @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Void>> getServiceStatus(
+                @HostParam("$host") String host, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Get service health status.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getHealthStatusWithResponseAsync() {
+    public Mono<Response<Void>> getServiceStatusWithResponseAsync(RequestOptions requestOptions) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         return FluxUtil.withContext(
-                context -> service.getHealthStatus(this.client.getHost(), this.client.getApiVersion(), context));
+                context -> service.getServiceStatus(this.client.getHost(), requestOptions, context));
     }
 
     /**
      * Get service health status.
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getHealthStatusWithResponseAsync(Context context) {
+    public Mono<Response<Void>> getServiceStatusWithResponseAsync(RequestOptions requestOptions, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
-        return service.getHealthStatus(this.client.getHost(), this.client.getApiVersion(), context);
+        return service.getServiceStatus(this.client.getHost(), requestOptions, context);
     }
 
     /**
      * Get service health status.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getHealthStatusAsync() {
-        return getHealthStatusWithResponseAsync().flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> getServiceStatusAsync(RequestOptions requestOptions) {
+        return getServiceStatusWithResponseAsync(requestOptions).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Get service health status.
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getHealthStatusAsync(Context context) {
-        return getHealthStatusWithResponseAsync(context).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> getServiceStatusAsync(RequestOptions requestOptions, Context context) {
+        return getServiceStatusWithResponseAsync(requestOptions, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Get service health status.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getHealthStatus() {
-        getHealthStatusAsync().block();
+    public void getServiceStatus(RequestOptions requestOptions) {
+        getServiceStatusAsync(requestOptions).block();
     }
 
     /**
      * Get service health status.
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getHealthStatusWithResponse(Context context) {
-        return getHealthStatusWithResponseAsync(context).block();
+    public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions, Context context) {
+        return getServiceStatusWithResponseAsync(requestOptions, context).block();
     }
+
 }
