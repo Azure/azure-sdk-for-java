@@ -77,7 +77,7 @@ public class PerfStressOptions {
 
     /**
      * Get the configured test proxy for performance test.
-     * @return The host.
+     * @return The configured test proxy.
      */
     public URI getTestProxy() {
         return testProxy;
