@@ -238,7 +238,16 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
     }
 
-
+    /**
+     * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent
+     * being the designated {@link Span}.
+     *
+     * @param spanBuilder SpanBuilder for the span. Must be created before calling this method
+     * @param setAttributes Callback to populate attributes for the span.
+     * @param makeCurrent Flag indicating if span should be current after start.
+     *
+     * @return A {@link Context} with created {@link Span}.
+     */
     private Context startSpanInternal(SpanBuilder spanBuilder,
                                       java.util.function.BiConsumer<Span, Context> setAttributes,
                                       boolean makeCurrent,
@@ -272,6 +281,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * being the designated {@code Span}.
      *
      * @param spanName The name of the returned Span.
+     * @param remoteParentContext Remote parent context if any, or {@code null} otherwise.
+     * @param spanKind Kind of the span to create.
+     * @param beforeSaplingAttributes Optional attributes available when span starts and important for sampling.
      * @param context The context containing the span and the span name.
      * @return A {@code Span.SpanBuilder} to create and start a new {@code Span}.
      */
@@ -313,6 +325,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
 
+    /**
+     * Ends current scope o nthe context.
+     * @param context Context instance with the scope to end.
+     */
     private void endScope(Context context) {
         Scope scope = getOrDefault(context, SCOPE_KEY, null, Scope.class);
         if (scope != null) {
