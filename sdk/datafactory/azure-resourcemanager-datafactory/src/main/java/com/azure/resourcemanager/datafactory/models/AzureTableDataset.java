@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,38 +17,23 @@ import java.util.Map;
 /** The Azure Table storage dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureTable")
-@JsonFlatten
 @Fluent
-public class AzureTableDataset extends Dataset {
+public final class AzureTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTableDataset.class);
 
     /*
-     * The table name of the Azure Table storage. Type: string (or Expression
-     * with resultType string).
+     * Azure Table dataset properties.
      */
-    @JsonProperty(value = "typeProperties.tableName", required = true)
-    private Object tableName;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureTableDatasetTypeProperties innerTypeProperties = new AzureTableDatasetTypeProperties();
 
     /**
-     * Get the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
-     * resultType string).
+     * Get the innerTypeProperties property: Azure Table dataset properties.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param tableName the tableName value to set.
-     * @return the AzureTableDataset object itself.
-     */
-    public AzureTableDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
+    private AzureTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,6 +86,31 @@ public class AzureTableDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param tableName the tableName value to set.
+     * @return the AzureTableDataset object itself.
+     */
+    public AzureTableDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,10 +118,13 @@ public class AzureTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (tableName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tableName in model AzureTableDataset"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AzureTableDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

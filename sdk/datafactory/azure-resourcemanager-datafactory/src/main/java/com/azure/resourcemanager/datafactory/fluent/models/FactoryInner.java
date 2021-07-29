@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.EncryptionConfiguration;
@@ -22,9 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** Factory resource type. */
-@JsonFlatten
 @Fluent
-public class FactoryInner extends Resource {
+public final class FactoryInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FactoryInner.class);
 
     /*
@@ -34,46 +32,10 @@ public class FactoryInner extends Resource {
     private FactoryIdentity identity;
 
     /*
-     * Factory provisioning state, example Succeeded.
+     * Properties of the factory.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Time the factory was created in ISO8601 format.
-     */
-    @JsonProperty(value = "properties.createTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createTime;
-
-    /*
-     * Version of the factory.
-     */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
-
-    /*
-     * Git repo information of the factory.
-     */
-    @JsonProperty(value = "properties.repoConfiguration")
-    private FactoryRepoConfiguration repoConfiguration;
-
-    /*
-     * List of parameters for factory.
-     */
-    @JsonProperty(value = "properties.globalParameters")
-    private Map<String, GlobalParameterSpecification> globalParameters;
-
-    /*
-     * Properties to enable Customer Managed Key for the factory.
-     */
-    @JsonProperty(value = "properties.encryption")
-    private EncryptionConfiguration encryption;
-
-    /*
-     * Whether or not public network access is allowed for the data factory.
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
+    @JsonProperty(value = "properties")
+    private FactoryProperties innerProperties;
 
     /*
      * Etag identifies change in the resource.
@@ -107,110 +69,12 @@ public class FactoryInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Factory provisioning state, example Succeeded.
+     * Get the innerProperties property: Properties of the factory.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the createTime property: Time the factory was created in ISO8601 format.
-     *
-     * @return the createTime value.
-     */
-    public OffsetDateTime createTime() {
-        return this.createTime;
-    }
-
-    /**
-     * Get the version property: Version of the factory.
-     *
-     * @return the version value.
-     */
-    public String version() {
-        return this.version;
-    }
-
-    /**
-     * Get the repoConfiguration property: Git repo information of the factory.
-     *
-     * @return the repoConfiguration value.
-     */
-    public FactoryRepoConfiguration repoConfiguration() {
-        return this.repoConfiguration;
-    }
-
-    /**
-     * Set the repoConfiguration property: Git repo information of the factory.
-     *
-     * @param repoConfiguration the repoConfiguration value to set.
-     * @return the FactoryInner object itself.
-     */
-    public FactoryInner withRepoConfiguration(FactoryRepoConfiguration repoConfiguration) {
-        this.repoConfiguration = repoConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the globalParameters property: List of parameters for factory.
-     *
-     * @return the globalParameters value.
-     */
-    public Map<String, GlobalParameterSpecification> globalParameters() {
-        return this.globalParameters;
-    }
-
-    /**
-     * Set the globalParameters property: List of parameters for factory.
-     *
-     * @param globalParameters the globalParameters value to set.
-     * @return the FactoryInner object itself.
-     */
-    public FactoryInner withGlobalParameters(Map<String, GlobalParameterSpecification> globalParameters) {
-        this.globalParameters = globalParameters;
-        return this;
-    }
-
-    /**
-     * Get the encryption property: Properties to enable Customer Managed Key for the factory.
-     *
-     * @return the encryption value.
-     */
-    public EncryptionConfiguration encryption() {
-        return this.encryption;
-    }
-
-    /**
-     * Set the encryption property: Properties to enable Customer Managed Key for the factory.
-     *
-     * @param encryption the encryption value to set.
-     * @return the FactoryInner object itself.
-     */
-    public FactoryInner withEncryption(EncryptionConfiguration encryption) {
-        this.encryption = encryption;
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the FactoryInner object itself.
-     */
-    public FactoryInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
+    private FactoryProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -248,7 +112,7 @@ public class FactoryInner extends Resource {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }
-        additionalProperties.put(key.replace("\\.", "."), value);
+        additionalProperties.put(key, value);
     }
 
     /** {@inheritDoc} */
@@ -266,6 +130,125 @@ public class FactoryInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Factory provisioning state, example Succeeded.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the createTime property: Time the factory was created in ISO8601 format.
+     *
+     * @return the createTime value.
+     */
+    public OffsetDateTime createTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createTime();
+    }
+
+    /**
+     * Get the version property: Version of the factory.
+     *
+     * @return the version value.
+     */
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Get the repoConfiguration property: Git repo information of the factory.
+     *
+     * @return the repoConfiguration value.
+     */
+    public FactoryRepoConfiguration repoConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().repoConfiguration();
+    }
+
+    /**
+     * Set the repoConfiguration property: Git repo information of the factory.
+     *
+     * @param repoConfiguration the repoConfiguration value to set.
+     * @return the FactoryInner object itself.
+     */
+    public FactoryInner withRepoConfiguration(FactoryRepoConfiguration repoConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FactoryProperties();
+        }
+        this.innerProperties().withRepoConfiguration(repoConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the globalParameters property: List of parameters for factory.
+     *
+     * @return the globalParameters value.
+     */
+    public Map<String, GlobalParameterSpecification> globalParameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().globalParameters();
+    }
+
+    /**
+     * Set the globalParameters property: List of parameters for factory.
+     *
+     * @param globalParameters the globalParameters value to set.
+     * @return the FactoryInner object itself.
+     */
+    public FactoryInner withGlobalParameters(Map<String, GlobalParameterSpecification> globalParameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FactoryProperties();
+        }
+        this.innerProperties().withGlobalParameters(globalParameters);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Properties to enable Customer Managed Key for the factory.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionConfiguration encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Properties to enable Customer Managed Key for the factory.
+     *
+     * @param encryption the encryption value to set.
+     * @return the FactoryInner object itself.
+     */
+    public FactoryInner withEncryption(EncryptionConfiguration encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FactoryProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the FactoryInner object itself.
+     */
+    public FactoryInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FactoryProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -274,21 +257,8 @@ public class FactoryInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (repoConfiguration() != null) {
-            repoConfiguration().validate();
-        }
-        if (globalParameters() != null) {
-            globalParameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (encryption() != null) {
-            encryption().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

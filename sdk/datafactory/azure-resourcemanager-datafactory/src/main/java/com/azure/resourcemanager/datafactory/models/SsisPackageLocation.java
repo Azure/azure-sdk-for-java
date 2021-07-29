@@ -5,16 +5,15 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SsisPackageLocationTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SSIS package location. */
-@JsonFlatten
 @Fluent
-public class SsisPackageLocation {
+public final class SsisPackageLocation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisPackageLocation.class);
 
     /*
@@ -31,54 +30,10 @@ public class SsisPackageLocation {
     private SsisPackageLocationType type;
 
     /*
-     * Password of the package.
+     * SSIS package location properties.
      */
-    @JsonProperty(value = "typeProperties.packagePassword")
-    private SecretBase packagePassword;
-
-    /*
-     * The package access credential.
-     */
-    @JsonProperty(value = "typeProperties.accessCredential")
-    private SsisAccessCredential accessCredential;
-
-    /*
-     * The configuration file of the package execution. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.configurationPath")
-    private Object configurationPath;
-
-    /*
-     * The configuration file access credential.
-     */
-    @JsonProperty(value = "typeProperties.configurationAccessCredential")
-    private SsisAccessCredential configurationAccessCredential;
-
-    /*
-     * The package name.
-     */
-    @JsonProperty(value = "typeProperties.packageName")
-    private String packageName;
-
-    /*
-     * The embedded package content. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.packageContent")
-    private Object packageContent;
-
-    /*
-     * The embedded package last modified date.
-     */
-    @JsonProperty(value = "typeProperties.packageLastModifiedDate")
-    private String packageLastModifiedDate;
-
-    /*
-     * The embedded child package list.
-     */
-    @JsonProperty(value = "typeProperties.childPackages")
-    private List<SsisChildPackage> childPackages;
+    @JsonProperty(value = "typeProperties")
+    private SsisPackageLocationTypeProperties innerTypeProperties;
 
     /**
      * Get the packagePath property: The SSIS package path. Type: string (or Expression with resultType string).
@@ -121,12 +76,21 @@ public class SsisPackageLocation {
     }
 
     /**
+     * Get the innerTypeProperties property: SSIS package location properties.
+     *
+     * @return the innerTypeProperties value.
+     */
+    private SsisPackageLocationTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
+    }
+
+    /**
      * Get the packagePassword property: Password of the package.
      *
      * @return the packagePassword value.
      */
     public SecretBase packagePassword() {
-        return this.packagePassword;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().packagePassword();
     }
 
     /**
@@ -136,7 +100,10 @@ public class SsisPackageLocation {
      * @return the SsisPackageLocation object itself.
      */
     public SsisPackageLocation withPackagePassword(SecretBase packagePassword) {
-        this.packagePassword = packagePassword;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SsisPackageLocationTypeProperties();
+        }
+        this.innerTypeProperties().withPackagePassword(packagePassword);
         return this;
     }
 
@@ -146,7 +113,7 @@ public class SsisPackageLocation {
      * @return the accessCredential value.
      */
     public SsisAccessCredential accessCredential() {
-        return this.accessCredential;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().accessCredential();
     }
 
     /**
@@ -156,7 +123,10 @@ public class SsisPackageLocation {
      * @return the SsisPackageLocation object itself.
      */
     public SsisPackageLocation withAccessCredential(SsisAccessCredential accessCredential) {
-        this.accessCredential = accessCredential;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SsisPackageLocationTypeProperties();
+        }
+        this.innerTypeProperties().withAccessCredential(accessCredential);
         return this;
     }
 
@@ -167,7 +137,7 @@ public class SsisPackageLocation {
      * @return the configurationPath value.
      */
     public Object configurationPath() {
-        return this.configurationPath;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().configurationPath();
     }
 
     /**
@@ -178,7 +148,10 @@ public class SsisPackageLocation {
      * @return the SsisPackageLocation object itself.
      */
     public SsisPackageLocation withConfigurationPath(Object configurationPath) {
-        this.configurationPath = configurationPath;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SsisPackageLocationTypeProperties();
+        }
+        this.innerTypeProperties().withConfigurationPath(configurationPath);
         return this;
     }
 
@@ -188,7 +161,7 @@ public class SsisPackageLocation {
      * @return the configurationAccessCredential value.
      */
     public SsisAccessCredential configurationAccessCredential() {
-        return this.configurationAccessCredential;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().configurationAccessCredential();
     }
 
     /**
@@ -198,7 +171,10 @@ public class SsisPackageLocation {
      * @return the SsisPackageLocation object itself.
      */
     public SsisPackageLocation withConfigurationAccessCredential(SsisAccessCredential configurationAccessCredential) {
-        this.configurationAccessCredential = configurationAccessCredential;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SsisPackageLocationTypeProperties();
+        }
+        this.innerTypeProperties().withConfigurationAccessCredential(configurationAccessCredential);
         return this;
     }
 
@@ -208,7 +184,7 @@ public class SsisPackageLocation {
      * @return the packageName value.
      */
     public String packageName() {
-        return this.packageName;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().packageName();
     }
 
     /**
@@ -218,7 +194,10 @@ public class SsisPackageLocation {
      * @return the SsisPackageLocation object itself.
      */
     public SsisPackageLocation withPackageName(String packageName) {
-        this.packageName = packageName;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SsisPackageLocationTypeProperties();
+        }
+        this.innerTypeProperties().withPackageName(packageName);
         return this;
     }
 
@@ -229,7 +208,7 @@ public class SsisPackageLocation {
      * @return the packageContent value.
      */
     public Object packageContent() {
-        return this.packageContent;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().packageContent();
     }
 
     /**
@@ -240,7 +219,10 @@ public class SsisPackageLocation {
      * @return the SsisPackageLocation object itself.
      */
     public SsisPackageLocation withPackageContent(Object packageContent) {
-        this.packageContent = packageContent;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SsisPackageLocationTypeProperties();
+        }
+        this.innerTypeProperties().withPackageContent(packageContent);
         return this;
     }
 
@@ -250,7 +232,7 @@ public class SsisPackageLocation {
      * @return the packageLastModifiedDate value.
      */
     public String packageLastModifiedDate() {
-        return this.packageLastModifiedDate;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().packageLastModifiedDate();
     }
 
     /**
@@ -260,7 +242,10 @@ public class SsisPackageLocation {
      * @return the SsisPackageLocation object itself.
      */
     public SsisPackageLocation withPackageLastModifiedDate(String packageLastModifiedDate) {
-        this.packageLastModifiedDate = packageLastModifiedDate;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SsisPackageLocationTypeProperties();
+        }
+        this.innerTypeProperties().withPackageLastModifiedDate(packageLastModifiedDate);
         return this;
     }
 
@@ -270,7 +255,7 @@ public class SsisPackageLocation {
      * @return the childPackages value.
      */
     public List<SsisChildPackage> childPackages() {
-        return this.childPackages;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().childPackages();
     }
 
     /**
@@ -280,7 +265,10 @@ public class SsisPackageLocation {
      * @return the SsisPackageLocation object itself.
      */
     public SsisPackageLocation withChildPackages(List<SsisChildPackage> childPackages) {
-        this.childPackages = childPackages;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SsisPackageLocationTypeProperties();
+        }
+        this.innerTypeProperties().withChildPackages(childPackages);
         return this;
     }
 
@@ -290,17 +278,8 @@ public class SsisPackageLocation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (packagePassword() != null) {
-            packagePassword().validate();
-        }
-        if (accessCredential() != null) {
-            accessCredential().validate();
-        }
-        if (configurationAccessCredential() != null) {
-            configurationAccessCredential().validate();
-        }
-        if (childPackages() != null) {
-            childPackages().forEach(e -> e.validate());
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

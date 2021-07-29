@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.HttpLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,277 +17,23 @@ import java.util.Map;
 /** Linked service for an HTTP source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HttpServer")
-@JsonFlatten
 @Fluent
-public class HttpLinkedService extends LinkedService {
+public final class HttpLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpLinkedService.class);
 
     /*
-     * The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type:
-     * string (or Expression with resultType string).
+     * Properties specific to this linked service type.
      */
-    @JsonProperty(value = "typeProperties.url", required = true)
-    private Object url;
-
-    /*
-     * The authentication type to be used to connect to the HTTP server.
-     */
-    @JsonProperty(value = "typeProperties.authenticationType")
-    private HttpAuthenticationType authenticationType;
-
-    /*
-     * User name for Basic, Digest, or Windows authentication. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.userName")
-    private Object username;
-
-    /*
-     * Password for Basic, Digest, Windows, or ClientCertificate with
-     * EmbeddedCertData authentication.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The additional HTTP headers in the request to RESTful API used for
-     * authorization. Type: object (or Expression with resultType object).
-     */
-    @JsonProperty(value = "typeProperties.authHeaders")
-    private Object authHeaders;
-
-    /*
-     * Base64 encoded certificate data for ClientCertificate authentication.
-     * For on-premises copy with ClientCertificate authentication, either
-     * CertThumbprint or EmbeddedCertData/Password should be specified. Type:
-     * string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.embeddedCertData")
-    private Object embeddedCertData;
-
-    /*
-     * Thumbprint of certificate for ClientCertificate authentication. Only
-     * valid for on-premises copy. For on-premises copy with ClientCertificate
-     * authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.certThumbprint")
-    private Object certThumbprint;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
-
-    /*
-     * If true, validate the HTTPS server SSL certificate. Default value is
-     * true. Type: boolean (or Expression with resultType boolean).
-     */
-    @JsonProperty(value = "typeProperties.enableServerCertificateValidation")
-    private Object enableServerCertificateValidation;
+    @JsonProperty(value = "typeProperties", required = true)
+    private HttpLinkedServiceTypeProperties innerTypeProperties = new HttpLinkedServiceTypeProperties();
 
     /**
-     * Get the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
-     * Expression with resultType string).
+     * Get the innerTypeProperties property: Properties specific to this linked service type.
      *
-     * @return the url value.
+     * @return the innerTypeProperties value.
      */
-    public Object url() {
-        return this.url;
-    }
-
-    /**
-     * Set the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param url the url value to set.
-     * @return the HttpLinkedService object itself.
-     */
-    public HttpLinkedService withUrl(Object url) {
-        this.url = url;
-        return this;
-    }
-
-    /**
-     * Get the authenticationType property: The authentication type to be used to connect to the HTTP server.
-     *
-     * @return the authenticationType value.
-     */
-    public HttpAuthenticationType authenticationType() {
-        return this.authenticationType;
-    }
-
-    /**
-     * Set the authenticationType property: The authentication type to be used to connect to the HTTP server.
-     *
-     * @param authenticationType the authenticationType value to set.
-     * @return the HttpLinkedService object itself.
-     */
-    public HttpLinkedService withAuthenticationType(HttpAuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
-     * Get the username property: User name for Basic, Digest, or Windows authentication. Type: string (or Expression
-     * with resultType string).
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: User name for Basic, Digest, or Windows authentication. Type: string (or Expression
-     * with resultType string).
-     *
-     * @param username the username value to set.
-     * @return the HttpLinkedService object itself.
-     */
-    public HttpLinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData
-     * authentication.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData
-     * authentication.
-     *
-     * @param password the password value to set.
-     * @return the HttpLinkedService object itself.
-     */
-    public HttpLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
-     *
-     * @return the authHeaders value.
-     */
-    public Object authHeaders() {
-        return this.authHeaders;
-    }
-
-    /**
-     * Set the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
-     *
-     * @param authHeaders the authHeaders value to set.
-     * @return the HttpLinkedService object itself.
-     */
-    public HttpLinkedService withAuthHeaders(Object authHeaders) {
-        this.authHeaders = authHeaders;
-        return this;
-    }
-
-    /**
-     * Get the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
-     * be specified. Type: string (or Expression with resultType string).
-     *
-     * @return the embeddedCertData value.
-     */
-    public Object embeddedCertData() {
-        return this.embeddedCertData;
-    }
-
-    /**
-     * Set the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
-     * be specified. Type: string (or Expression with resultType string).
-     *
-     * @param embeddedCertData the embeddedCertData value to set.
-     * @return the HttpLinkedService object itself.
-     */
-    public HttpLinkedService withEmbeddedCertData(Object embeddedCertData) {
-        this.embeddedCertData = embeddedCertData;
-        return this;
-    }
-
-    /**
-     * Get the certThumbprint property: Thumbprint of certificate for ClientCertificate authentication. Only valid for
-     * on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or
-     * EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
-     *
-     * @return the certThumbprint value.
-     */
-    public Object certThumbprint() {
-        return this.certThumbprint;
-    }
-
-    /**
-     * Set the certThumbprint property: Thumbprint of certificate for ClientCertificate authentication. Only valid for
-     * on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or
-     * EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
-     *
-     * @param certThumbprint the certThumbprint value to set.
-     * @return the HttpLinkedService object itself.
-     */
-    public HttpLinkedService withCertThumbprint(Object certThumbprint) {
-        this.certThumbprint = certThumbprint;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the HttpLinkedService object itself.
-     */
-    public HttpLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
-    }
-
-    /**
-     * Get the enableServerCertificateValidation property: If true, validate the HTTPS server SSL certificate. Default
-     * value is true. Type: boolean (or Expression with resultType boolean).
-     *
-     * @return the enableServerCertificateValidation value.
-     */
-    public Object enableServerCertificateValidation() {
-        return this.enableServerCertificateValidation;
-    }
-
-    /**
-     * Set the enableServerCertificateValidation property: If true, validate the HTTPS server SSL certificate. Default
-     * value is true. Type: boolean (or Expression with resultType boolean).
-     *
-     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
-     * @return the HttpLinkedService object itself.
-     */
-    public HttpLinkedService withEnableServerCertificateValidation(Object enableServerCertificateValidation) {
-        this.enableServerCertificateValidation = enableServerCertificateValidation;
-        return this;
+    private HttpLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -319,6 +65,235 @@ public class HttpLinkedService extends LinkedService {
     }
 
     /**
+     * Get the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the url value.
+     */
+    public Object url() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().url();
+    }
+
+    /**
+     * Set the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param url the url value to set.
+     * @return the HttpLinkedService object itself.
+     */
+    public HttpLinkedService withUrl(Object url) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUrl(url);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The authentication type to be used to connect to the HTTP server.
+     *
+     * @return the authenticationType value.
+     */
+    public HttpAuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to be used to connect to the HTTP server.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the HttpLinkedService object itself.
+     */
+    public HttpLinkedService withAuthenticationType(HttpAuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the username property: User name for Basic, Digest, or Windows authentication. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: User name for Basic, Digest, or Windows authentication. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param username the username value to set.
+     * @return the HttpLinkedService object itself.
+     */
+    public HttpLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData
+     * authentication.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData
+     * authentication.
+     *
+     * @param password the password value to set.
+     * @return the HttpLinkedService object itself.
+     */
+    public HttpLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
+     * Type: object (or Expression with resultType object).
+     *
+     * @return the authHeaders value.
+     */
+    public Object authHeaders() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authHeaders();
+    }
+
+    /**
+     * Set the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
+     * Type: object (or Expression with resultType object).
+     *
+     * @param authHeaders the authHeaders value to set.
+     * @return the HttpLinkedService object itself.
+     */
+    public HttpLinkedService withAuthHeaders(Object authHeaders) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthHeaders(authHeaders);
+        return this;
+    }
+
+    /**
+     * Get the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
+     *
+     * @return the embeddedCertData value.
+     */
+    public Object embeddedCertData() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().embeddedCertData();
+    }
+
+    /**
+     * Set the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
+     *
+     * @param embeddedCertData the embeddedCertData value to set.
+     * @return the HttpLinkedService object itself.
+     */
+    public HttpLinkedService withEmbeddedCertData(Object embeddedCertData) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEmbeddedCertData(embeddedCertData);
+        return this;
+    }
+
+    /**
+     * Get the certThumbprint property: Thumbprint of certificate for ClientCertificate authentication. Only valid for
+     * on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or
+     * EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
+     *
+     * @return the certThumbprint value.
+     */
+    public Object certThumbprint() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().certThumbprint();
+    }
+
+    /**
+     * Set the certThumbprint property: Thumbprint of certificate for ClientCertificate authentication. Only valid for
+     * on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or
+     * EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
+     *
+     * @param certThumbprint the certThumbprint value to set.
+     * @return the HttpLinkedService object itself.
+     */
+    public HttpLinkedService withCertThumbprint(Object certThumbprint) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCertThumbprint(certThumbprint);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the HttpLinkedService object itself.
+     */
+    public HttpLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
+     * Get the enableServerCertificateValidation property: If true, validate the HTTPS server SSL certificate. Default
+     * value is true. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the enableServerCertificateValidation value.
+     */
+    public Object enableServerCertificateValidation() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().enableServerCertificateValidation();
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: If true, validate the HTTPS server SSL certificate. Default
+     * value is true. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the HttpLinkedService object itself.
+     */
+    public HttpLinkedService withEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEnableServerCertificateValidation(enableServerCertificateValidation);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -326,13 +301,13 @@ public class HttpLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (url() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model HttpLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model HttpLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

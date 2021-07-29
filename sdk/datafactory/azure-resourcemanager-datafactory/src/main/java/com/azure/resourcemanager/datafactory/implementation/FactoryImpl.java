@@ -57,6 +57,19 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
         return this.innerModel().identity();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public Map<String, Object> additionalProperties() {
+        Map<String, Object> inner = this.innerModel().additionalProperties();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -88,19 +101,6 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
 
     public PublicNetworkAccess publicNetworkAccess() {
         return this.innerModel().publicNetworkAccess();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
-    public Map<String, Object> additionalProperties() {
-        Map<String, Object> inner = this.innerModel().additionalProperties();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public Region region() {
@@ -267,6 +267,11 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
         }
     }
 
+    public FactoryImpl withAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.innerModel().withAdditionalProperties(additionalProperties);
+        return this;
+    }
+
     public FactoryImpl withRepoConfiguration(FactoryRepoConfiguration repoConfiguration) {
         this.innerModel().withRepoConfiguration(repoConfiguration);
         return this;
@@ -284,11 +289,6 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
 
     public FactoryImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
-        return this;
-    }
-
-    public FactoryImpl withAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.innerModel().withAdditionalProperties(additionalProperties);
         return this;
     }
 

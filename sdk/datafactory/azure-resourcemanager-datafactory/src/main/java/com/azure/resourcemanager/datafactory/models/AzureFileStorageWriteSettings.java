@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datafactory.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Azure File Storage write settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFileStorageWriteSettings")
-@Immutable
+@Fluent
 public final class AzureFileStorageWriteSettings extends StoreWriteSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileStorageWriteSettings.class);
 

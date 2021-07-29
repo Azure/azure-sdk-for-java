@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AmazonRedshiftLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,182 +17,24 @@ import java.util.Map;
 /** Linked service for Amazon Redshift. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonRedshift")
-@JsonFlatten
 @Fluent
-public class AmazonRedshiftLinkedService extends LinkedService {
+public final class AmazonRedshiftLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonRedshiftLinkedService.class);
 
     /*
-     * The name of the Amazon Redshift server. Type: string (or Expression with
-     * resultType string).
+     * Amazon Redshift linked service properties.
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
-    private Object server;
-
-    /*
-     * The username of the Amazon Redshift source. Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.username")
-    private Object username;
-
-    /*
-     * The password of the Amazon Redshift source.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The database name of the Amazon Redshift source. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.database", required = true)
-    private Object database;
-
-    /*
-     * The TCP port number that the Amazon Redshift server uses to listen for
-     * client connections. The default value is 5439. Type: integer (or
-     * Expression with resultType integer).
-     */
-    @JsonProperty(value = "typeProperties.port")
-    private Object port;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AmazonRedshiftLinkedServiceTypeProperties innerTypeProperties =
+        new AmazonRedshiftLinkedServiceTypeProperties();
 
     /**
-     * Get the server property: The name of the Amazon Redshift server. Type: string (or Expression with resultType
-     * string).
+     * Get the innerTypeProperties property: Amazon Redshift linked service properties.
      *
-     * @return the server value.
+     * @return the innerTypeProperties value.
      */
-    public Object server() {
-        return this.server;
-    }
-
-    /**
-     * Set the server property: The name of the Amazon Redshift server. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param server the server value to set.
-     * @return the AmazonRedshiftLinkedService object itself.
-     */
-    public AmazonRedshiftLinkedService withServer(Object server) {
-        this.server = server;
-        return this;
-    }
-
-    /**
-     * Get the username property: The username of the Amazon Redshift source. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: The username of the Amazon Redshift source. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param username the username value to set.
-     * @return the AmazonRedshiftLinkedService object itself.
-     */
-    public AmazonRedshiftLinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: The password of the Amazon Redshift source.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: The password of the Amazon Redshift source.
-     *
-     * @param password the password value to set.
-     * @return the AmazonRedshiftLinkedService object itself.
-     */
-    public AmazonRedshiftLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the database property: The database name of the Amazon Redshift source. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the database value.
-     */
-    public Object database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: The database name of the Amazon Redshift source. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param database the database value to set.
-     * @return the AmazonRedshiftLinkedService object itself.
-     */
-    public AmazonRedshiftLinkedService withDatabase(Object database) {
-        this.database = database;
-        return this;
-    }
-
-    /**
-     * Get the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
-     * The default value is 5439. Type: integer (or Expression with resultType integer).
-     *
-     * @return the port value.
-     */
-    public Object port() {
-        return this.port;
-    }
-
-    /**
-     * Set the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
-     * The default value is 5439. Type: integer (or Expression with resultType integer).
-     *
-     * @param port the port value to set.
-     * @return the AmazonRedshiftLinkedService object itself.
-     */
-    public AmazonRedshiftLinkedService withPort(Object port) {
-        this.port = port;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AmazonRedshiftLinkedService object itself.
-     */
-    public AmazonRedshiftLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AmazonRedshiftLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -224,6 +66,154 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     }
 
     /**
+     * Get the server property: The name of the Amazon Redshift server. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the server value.
+     */
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
+    }
+
+    /**
+     * Set the server property: The name of the Amazon Redshift server. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param server the server value to set.
+     * @return the AmazonRedshiftLinkedService object itself.
+     */
+    public AmazonRedshiftLinkedService withServer(Object server) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRedshiftLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the username property: The username of the Amazon Redshift source. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: The username of the Amazon Redshift source. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param username the username value to set.
+     * @return the AmazonRedshiftLinkedService object itself.
+     */
+    public AmazonRedshiftLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRedshiftLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: The password of the Amazon Redshift source.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: The password of the Amazon Redshift source.
+     *
+     * @param password the password value to set.
+     * @return the AmazonRedshiftLinkedService object itself.
+     */
+    public AmazonRedshiftLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRedshiftLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the database property: The database name of the Amazon Redshift source. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: The database name of the Amazon Redshift source. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param database the database value to set.
+     * @return the AmazonRedshiftLinkedService object itself.
+     */
+    public AmazonRedshiftLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRedshiftLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
+     * The default value is 5439. Type: integer (or Expression with resultType integer).
+     *
+     * @return the port value.
+     */
+    public Object port() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().port();
+    }
+
+    /**
+     * Set the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
+     * The default value is 5439. Type: integer (or Expression with resultType integer).
+     *
+     * @param port the port value to set.
+     * @return the AmazonRedshiftLinkedService object itself.
+     */
+    public AmazonRedshiftLinkedService withPort(Object port) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRedshiftLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPort(port);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AmazonRedshiftLinkedService object itself.
+     */
+    public AmazonRedshiftLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRedshiftLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -231,20 +221,13 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (server() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property server in model AmazonRedshiftLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
-        }
-        if (database() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property database in model AmazonRedshiftLinkedService"));
+                        "Missing required property innerTypeProperties in model AmazonRedshiftLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

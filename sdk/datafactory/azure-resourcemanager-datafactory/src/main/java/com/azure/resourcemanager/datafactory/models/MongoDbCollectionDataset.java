@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.MongoDbCollectionDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,38 +17,23 @@ import java.util.Map;
 /** The MongoDB database dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbCollection")
-@JsonFlatten
 @Fluent
-public class MongoDbCollectionDataset extends Dataset {
+public final class MongoDbCollectionDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbCollectionDataset.class);
 
     /*
-     * The table name of the MongoDB database. Type: string (or Expression with
-     * resultType string).
+     * MongoDB database dataset properties.
      */
-    @JsonProperty(value = "typeProperties.collectionName", required = true)
-    private Object collectionName;
+    @JsonProperty(value = "typeProperties", required = true)
+    private MongoDbCollectionDatasetTypeProperties innerTypeProperties = new MongoDbCollectionDatasetTypeProperties();
 
     /**
-     * Get the collectionName property: The table name of the MongoDB database. Type: string (or Expression with
-     * resultType string).
+     * Get the innerTypeProperties property: MongoDB database dataset properties.
      *
-     * @return the collectionName value.
+     * @return the innerTypeProperties value.
      */
-    public Object collectionName() {
-        return this.collectionName;
-    }
-
-    /**
-     * Set the collectionName property: The table name of the MongoDB database. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param collectionName the collectionName value to set.
-     * @return the MongoDbCollectionDataset object itself.
-     */
-    public MongoDbCollectionDataset withCollectionName(Object collectionName) {
-        this.collectionName = collectionName;
-        return this;
+    private MongoDbCollectionDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,6 +86,31 @@ public class MongoDbCollectionDataset extends Dataset {
     }
 
     /**
+     * Get the collectionName property: The table name of the MongoDB database. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the collectionName value.
+     */
+    public Object collectionName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().collectionName();
+    }
+
+    /**
+     * Set the collectionName property: The table name of the MongoDB database. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param collectionName the collectionName value to set.
+     * @return the MongoDbCollectionDataset object itself.
+     */
+    public MongoDbCollectionDataset withCollectionName(Object collectionName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbCollectionDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCollectionName(collectionName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,11 +118,13 @@ public class MongoDbCollectionDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (collectionName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property collectionName in model MongoDbCollectionDataset"));
+                        "Missing required property innerTypeProperties in model MongoDbCollectionDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

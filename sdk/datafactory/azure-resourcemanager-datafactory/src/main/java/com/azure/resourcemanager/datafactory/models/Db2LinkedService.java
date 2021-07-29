@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.Db2LinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,280 +17,23 @@ import java.util.Map;
 /** Linked service for DB2 data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Db2")
-@JsonFlatten
 @Fluent
-public class Db2LinkedService extends LinkedService {
+public final class Db2LinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Db2LinkedService.class);
 
     /*
-     * The connection string. It is mutually exclusive with server, database,
-     * authenticationType, userName, packageCollection and
-     * certificateCommonName property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * DB2 linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionString")
-    private Object connectionString;
-
-    /*
-     * Server name for connection. It is mutually exclusive with
-     * connectionString property. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.server")
-    private Object server;
-
-    /*
-     * Database name for connection. It is mutually exclusive with
-     * connectionString property. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.database")
-    private Object database;
-
-    /*
-     * AuthenticationType to be used for connection. It is mutually exclusive
-     * with connectionString property.
-     */
-    @JsonProperty(value = "typeProperties.authenticationType")
-    private Db2AuthenticationType authenticationType;
-
-    /*
-     * Username for authentication. It is mutually exclusive with
-     * connectionString property. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.username")
-    private Object username;
-
-    /*
-     * Password for authentication.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * Under where packages are created when querying database. It is mutually
-     * exclusive with connectionString property. Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.packageCollection")
-    private Object packageCollection;
-
-    /*
-     * Certificate Common Name when TLS is enabled. It is mutually exclusive
-     * with connectionString property. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.certificateCommonName")
-    private Object certificateCommonName;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. It is
-     * mutually exclusive with connectionString property. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private Db2LinkedServiceTypeProperties innerTypeProperties = new Db2LinkedServiceTypeProperties();
 
     /**
-     * Get the connectionString property: The connection string. It is mutually exclusive with server, database,
-     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * Get the innerTypeProperties property: DB2 linked service properties.
      *
-     * @return the connectionString value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: The connection string. It is mutually exclusive with server, database,
-     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the Db2LinkedService object itself.
-     */
-    public Db2LinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the server property: Server name for connection. It is mutually exclusive with connectionString property.
-     * Type: string (or Expression with resultType string).
-     *
-     * @return the server value.
-     */
-    public Object server() {
-        return this.server;
-    }
-
-    /**
-     * Set the server property: Server name for connection. It is mutually exclusive with connectionString property.
-     * Type: string (or Expression with resultType string).
-     *
-     * @param server the server value to set.
-     * @return the Db2LinkedService object itself.
-     */
-    public Db2LinkedService withServer(Object server) {
-        this.server = server;
-        return this;
-    }
-
-    /**
-     * Get the database property: Database name for connection. It is mutually exclusive with connectionString property.
-     * Type: string (or Expression with resultType string).
-     *
-     * @return the database value.
-     */
-    public Object database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: Database name for connection. It is mutually exclusive with connectionString property.
-     * Type: string (or Expression with resultType string).
-     *
-     * @param database the database value to set.
-     * @return the Db2LinkedService object itself.
-     */
-    public Db2LinkedService withDatabase(Object database) {
-        this.database = database;
-        return this;
-    }
-
-    /**
-     * Get the authenticationType property: AuthenticationType to be used for connection. It is mutually exclusive with
-     * connectionString property.
-     *
-     * @return the authenticationType value.
-     */
-    public Db2AuthenticationType authenticationType() {
-        return this.authenticationType;
-    }
-
-    /**
-     * Set the authenticationType property: AuthenticationType to be used for connection. It is mutually exclusive with
-     * connectionString property.
-     *
-     * @param authenticationType the authenticationType value to set.
-     * @return the Db2LinkedService object itself.
-     */
-    public Db2LinkedService withAuthenticationType(Db2AuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
-     * Get the username property: Username for authentication. It is mutually exclusive with connectionString property.
-     * Type: string (or Expression with resultType string).
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: Username for authentication. It is mutually exclusive with connectionString property.
-     * Type: string (or Expression with resultType string).
-     *
-     * @param username the username value to set.
-     * @return the Db2LinkedService object itself.
-     */
-    public Db2LinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: Password for authentication.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Password for authentication.
-     *
-     * @param password the password value to set.
-     * @return the Db2LinkedService object itself.
-     */
-    public Db2LinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the packageCollection property: Under where packages are created when querying database. It is mutually
-     * exclusive with connectionString property. Type: string (or Expression with resultType string).
-     *
-     * @return the packageCollection value.
-     */
-    public Object packageCollection() {
-        return this.packageCollection;
-    }
-
-    /**
-     * Set the packageCollection property: Under where packages are created when querying database. It is mutually
-     * exclusive with connectionString property. Type: string (or Expression with resultType string).
-     *
-     * @param packageCollection the packageCollection value to set.
-     * @return the Db2LinkedService object itself.
-     */
-    public Db2LinkedService withPackageCollection(Object packageCollection) {
-        this.packageCollection = packageCollection;
-        return this;
-    }
-
-    /**
-     * Get the certificateCommonName property: Certificate Common Name when TLS is enabled. It is mutually exclusive
-     * with connectionString property. Type: string (or Expression with resultType string).
-     *
-     * @return the certificateCommonName value.
-     */
-    public Object certificateCommonName() {
-        return this.certificateCommonName;
-    }
-
-    /**
-     * Set the certificateCommonName property: Certificate Common Name when TLS is enabled. It is mutually exclusive
-     * with connectionString property. Type: string (or Expression with resultType string).
-     *
-     * @param certificateCommonName the certificateCommonName value to set.
-     * @return the Db2LinkedService object itself.
-     */
-    public Db2LinkedService withCertificateCommonName(Object certificateCommonName) {
-        this.certificateCommonName = certificateCommonName;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
-     * string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
-     * string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the Db2LinkedService object itself.
-     */
-    public Db2LinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private Db2LinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -322,6 +65,233 @@ public class Db2LinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionString property: The connection string. It is mutually exclusive with server, database,
+     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: The connection string. It is mutually exclusive with server, database,
+     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the server property: Server name for connection. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the server value.
+     */
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
+    }
+
+    /**
+     * Set the server property: Server name for connection. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param server the server value to set.
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withServer(Object server) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: Database name for connection. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param database the database value to set.
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: AuthenticationType to be used for connection. It is mutually exclusive with
+     * connectionString property.
+     *
+     * @return the authenticationType value.
+     */
+    public Db2AuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: AuthenticationType to be used for connection. It is mutually exclusive with
+     * connectionString property.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withAuthenticationType(Db2AuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: Username for authentication. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param username the username value to set.
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: Password for authentication.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: Password for authentication.
+     *
+     * @param password the password value to set.
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the packageCollection property: Under where packages are created when querying database. It is mutually
+     * exclusive with connectionString property. Type: string (or Expression with resultType string).
+     *
+     * @return the packageCollection value.
+     */
+    public Object packageCollection() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().packageCollection();
+    }
+
+    /**
+     * Set the packageCollection property: Under where packages are created when querying database. It is mutually
+     * exclusive with connectionString property. Type: string (or Expression with resultType string).
+     *
+     * @param packageCollection the packageCollection value to set.
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withPackageCollection(Object packageCollection) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPackageCollection(packageCollection);
+        return this;
+    }
+
+    /**
+     * Get the certificateCommonName property: Certificate Common Name when TLS is enabled. It is mutually exclusive
+     * with connectionString property. Type: string (or Expression with resultType string).
+     *
+     * @return the certificateCommonName value.
+     */
+    public Object certificateCommonName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().certificateCommonName();
+    }
+
+    /**
+     * Set the certificateCommonName property: Certificate Common Name when TLS is enabled. It is mutually exclusive
+     * with connectionString property. Type: string (or Expression with resultType string).
+     *
+     * @param certificateCommonName the certificateCommonName value to set.
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withCertificateCommonName(Object certificateCommonName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCertificateCommonName(certificateCommonName);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -329,8 +299,13 @@ public class Db2LinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (password() != null) {
-            password().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model Db2LinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

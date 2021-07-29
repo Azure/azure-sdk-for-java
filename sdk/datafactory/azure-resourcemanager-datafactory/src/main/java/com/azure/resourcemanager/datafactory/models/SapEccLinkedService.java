@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SapEccLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,127 +17,23 @@ import java.util.Map;
 /** Linked service for SAP ERP Central Component(SAP ECC). */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapEcc")
-@JsonFlatten
 @Fluent
-public class SapEccLinkedService extends LinkedService {
+public final class SapEccLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SapEccLinkedService.class);
 
     /*
-     * The URL of SAP ECC OData API. For example,
-     * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string
-     * (or Expression with resultType string).
+     * SAP ECC linked service properties.
      */
-    @JsonProperty(value = "typeProperties.url", required = true)
-    private String url;
-
-    /*
-     * The username for Basic authentication. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.username")
-    private String username;
-
-    /*
-     * The password for Basic authentication.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either
-     * encryptedCredential or username/password must be provided. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private String encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SapEccLinkedServiceTypeProperties innerTypeProperties = new SapEccLinkedServiceTypeProperties();
 
     /**
-     * Get the url property: The URL of SAP ECC OData API. For example,
-     * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: SAP ECC linked service properties.
      *
-     * @return the url value.
+     * @return the innerTypeProperties value.
      */
-    public String url() {
-        return this.url;
-    }
-
-    /**
-     * Set the url property: The URL of SAP ECC OData API. For example,
-     * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string (or Expression with resultType string).
-     *
-     * @param url the url value to set.
-     * @return the SapEccLinkedService object itself.
-     */
-    public SapEccLinkedService withUrl(String url) {
-        this.url = url;
-        return this;
-    }
-
-    /**
-     * Get the username property: The username for Basic authentication. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the username value.
-     */
-    public String username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: The username for Basic authentication. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param username the username value to set.
-     * @return the SapEccLinkedService object itself.
-     */
-    public SapEccLinkedService withUsername(String username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: The password for Basic authentication.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: The password for Basic authentication.
-     *
-     * @param password the password value to set.
-     * @return the SapEccLinkedService object itself.
-     */
-    public SapEccLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public String encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the SapEccLinkedService object itself.
-     */
-    public SapEccLinkedService withEncryptedCredential(String encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private SapEccLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -169,6 +65,106 @@ public class SapEccLinkedService extends LinkedService {
     }
 
     /**
+     * Get the url property: The URL of SAP ECC OData API. For example,
+     * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string (or Expression with resultType string).
+     *
+     * @return the url value.
+     */
+    public String url() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().url();
+    }
+
+    /**
+     * Set the url property: The URL of SAP ECC OData API. For example,
+     * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string (or Expression with resultType string).
+     *
+     * @param url the url value to set.
+     * @return the SapEccLinkedService object itself.
+     */
+    public SapEccLinkedService withUrl(String url) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapEccLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUrl(url);
+        return this;
+    }
+
+    /**
+     * Get the username property: The username for Basic authentication. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the username value.
+     */
+    public String username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: The username for Basic authentication. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param username the username value to set.
+     * @return the SapEccLinkedService object itself.
+     */
+    public SapEccLinkedService withUsername(String username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapEccLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: The password for Basic authentication.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: The password for Basic authentication.
+     *
+     * @param password the password value to set.
+     * @return the SapEccLinkedService object itself.
+     */
+    public SapEccLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapEccLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public String encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the SapEccLinkedService object itself.
+     */
+    public SapEccLinkedService withEncryptedCredential(String encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapEccLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -176,13 +172,13 @@ public class SapEccLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (url() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model SapEccLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model SapEccLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

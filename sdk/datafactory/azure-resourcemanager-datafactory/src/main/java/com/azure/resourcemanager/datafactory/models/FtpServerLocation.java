@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datafactory.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** The location of ftp server dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FtpServerLocation")
-@Immutable
+@Fluent
 public final class FtpServerLocation extends DatasetLocation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FtpServerLocation.class);
 

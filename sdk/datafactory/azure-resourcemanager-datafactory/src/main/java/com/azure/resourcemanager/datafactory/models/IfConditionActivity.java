@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.IfConditionActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,99 +19,23 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("IfCondition")
-@JsonFlatten
 @Fluent
-public class IfConditionActivity extends ControlActivity {
+public final class IfConditionActivity extends ControlActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IfConditionActivity.class);
 
     /*
-     * An expression that would evaluate to Boolean. This is used to determine
-     * the block of activities (ifTrueActivities or ifFalseActivities) that
-     * will be executed.
+     * IfCondition activity properties.
      */
-    @JsonProperty(value = "typeProperties.expression", required = true)
-    private Expression expression;
-
-    /*
-     * List of activities to execute if expression is evaluated to true. This
-     * is an optional property and if not provided, the activity will exit
-     * without any action.
-     */
-    @JsonProperty(value = "typeProperties.ifTrueActivities")
-    private List<Activity> ifTrueActivities;
-
-    /*
-     * List of activities to execute if expression is evaluated to false. This
-     * is an optional property and if not provided, the activity will exit
-     * without any action.
-     */
-    @JsonProperty(value = "typeProperties.ifFalseActivities")
-    private List<Activity> ifFalseActivities;
+    @JsonProperty(value = "typeProperties", required = true)
+    private IfConditionActivityTypeProperties innerTypeProperties = new IfConditionActivityTypeProperties();
 
     /**
-     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
-     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * Get the innerTypeProperties property: IfCondition activity properties.
      *
-     * @return the expression value.
+     * @return the innerTypeProperties value.
      */
-    public Expression expression() {
-        return this.expression;
-    }
-
-    /**
-     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
-     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
-     *
-     * @param expression the expression value to set.
-     * @return the IfConditionActivity object itself.
-     */
-    public IfConditionActivity withExpression(Expression expression) {
-        this.expression = expression;
-        return this;
-    }
-
-    /**
-     * Get the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
-     * @return the ifTrueActivities value.
-     */
-    public List<Activity> ifTrueActivities() {
-        return this.ifTrueActivities;
-    }
-
-    /**
-     * Set the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
-     * @param ifTrueActivities the ifTrueActivities value to set.
-     * @return the IfConditionActivity object itself.
-     */
-    public IfConditionActivity withIfTrueActivities(List<Activity> ifTrueActivities) {
-        this.ifTrueActivities = ifTrueActivities;
-        return this;
-    }
-
-    /**
-     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
-     * @return the ifFalseActivities value.
-     */
-    public List<Activity> ifFalseActivities() {
-        return this.ifFalseActivities;
-    }
-
-    /**
-     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
-     * @param ifFalseActivities the ifFalseActivities value to set.
-     * @return the IfConditionActivity object itself.
-     */
-    public IfConditionActivity withIfFalseActivities(List<Activity> ifFalseActivities) {
-        this.ifFalseActivities = ifFalseActivities;
-        return this;
+    private IfConditionActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -143,6 +67,81 @@ public class IfConditionActivity extends ControlActivity {
     }
 
     /**
+     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
+     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     *
+     * @return the expression value.
+     */
+    public Expression expression() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().expression();
+    }
+
+    /**
+     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
+     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     *
+     * @param expression the expression value to set.
+     * @return the IfConditionActivity object itself.
+     */
+    public IfConditionActivity withExpression(Expression expression) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new IfConditionActivityTypeProperties();
+        }
+        this.innerTypeProperties().withExpression(expression);
+        return this;
+    }
+
+    /**
+     * Get the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
+     * optional property and if not provided, the activity will exit without any action.
+     *
+     * @return the ifTrueActivities value.
+     */
+    public List<Activity> ifTrueActivities() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().ifTrueActivities();
+    }
+
+    /**
+     * Set the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
+     * optional property and if not provided, the activity will exit without any action.
+     *
+     * @param ifTrueActivities the ifTrueActivities value to set.
+     * @return the IfConditionActivity object itself.
+     */
+    public IfConditionActivity withIfTrueActivities(List<Activity> ifTrueActivities) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new IfConditionActivityTypeProperties();
+        }
+        this.innerTypeProperties().withIfTrueActivities(ifTrueActivities);
+        return this;
+    }
+
+    /**
+     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
+     * optional property and if not provided, the activity will exit without any action.
+     *
+     * @return the ifFalseActivities value.
+     */
+    public List<Activity> ifFalseActivities() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().ifFalseActivities();
+    }
+
+    /**
+     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
+     * optional property and if not provided, the activity will exit without any action.
+     *
+     * @param ifFalseActivities the ifFalseActivities value to set.
+     * @return the IfConditionActivity object itself.
+     */
+    public IfConditionActivity withIfFalseActivities(List<Activity> ifFalseActivities) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new IfConditionActivityTypeProperties();
+        }
+        this.innerTypeProperties().withIfFalseActivities(ifFalseActivities);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -150,18 +149,13 @@ public class IfConditionActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
-        if (expression() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expression in model IfConditionActivity"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model IfConditionActivity"));
         } else {
-            expression().validate();
-        }
-        if (ifTrueActivities() != null) {
-            ifTrueActivities().forEach(e -> e.validate());
-        }
-        if (ifFalseActivities() != null) {
-            ifFalseActivities().forEach(e -> e.validate());
+            innerTypeProperties().validate();
         }
     }
 }

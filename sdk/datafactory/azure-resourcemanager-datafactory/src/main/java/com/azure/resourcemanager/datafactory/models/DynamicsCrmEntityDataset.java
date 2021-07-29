@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.DynamicsCrmEntityDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,36 +17,23 @@ import java.util.Map;
 /** The Dynamics CRM entity dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsCrmEntity")
-@JsonFlatten
 @Fluent
-public class DynamicsCrmEntityDataset extends Dataset {
+public final class DynamicsCrmEntityDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicsCrmEntityDataset.class);
 
     /*
-     * The logical name of the entity. Type: string (or Expression with
-     * resultType string).
+     * Dynamics CRM entity dataset properties.
      */
-    @JsonProperty(value = "typeProperties.entityName")
-    private Object entityName;
+    @JsonProperty(value = "typeProperties")
+    private DynamicsCrmEntityDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Dynamics CRM entity dataset properties.
      *
-     * @return the entityName value.
+     * @return the innerTypeProperties value.
      */
-    public Object entityName() {
-        return this.entityName;
-    }
-
-    /**
-     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
-     *
-     * @param entityName the entityName value to set.
-     * @return the DynamicsCrmEntityDataset object itself.
-     */
-    public DynamicsCrmEntityDataset withEntityName(Object entityName) {
-        this.entityName = entityName;
-        return this;
+    private DynamicsCrmEntityDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -99,6 +86,29 @@ public class DynamicsCrmEntityDataset extends Dataset {
     }
 
     /**
+     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
+     *
+     * @return the entityName value.
+     */
+    public Object entityName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().entityName();
+    }
+
+    /**
+     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
+     *
+     * @param entityName the entityName value to set.
+     * @return the DynamicsCrmEntityDataset object itself.
+     */
+    public DynamicsCrmEntityDataset withEntityName(Object entityName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DynamicsCrmEntityDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withEntityName(entityName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,5 +116,8 @@ public class DynamicsCrmEntityDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

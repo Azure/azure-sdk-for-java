@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureDataExplorerDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,38 +17,23 @@ import java.util.Map;
 /** The Azure Data Explorer (Kusto) dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataExplorerTable")
-@JsonFlatten
 @Fluent
-public class AzureDataExplorerTableDataset extends Dataset {
+public final class AzureDataExplorerTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataExplorerTableDataset.class);
 
     /*
-     * The table name of the Azure Data Explorer database. Type: string (or
-     * Expression with resultType string).
+     * Azure Data Explorer (Kusto) dataset properties.
      */
-    @JsonProperty(value = "typeProperties.table")
-    private Object table;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureDataExplorerDatasetTypeProperties innerTypeProperties = new AzureDataExplorerDatasetTypeProperties();
 
     /**
-     * Get the table property: The table name of the Azure Data Explorer database. Type: string (or Expression with
-     * resultType string).
+     * Get the innerTypeProperties property: Azure Data Explorer (Kusto) dataset properties.
      *
-     * @return the table value.
+     * @return the innerTypeProperties value.
      */
-    public Object table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The table name of the Azure Data Explorer database. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param table the table value to set.
-     * @return the AzureDataExplorerTableDataset object itself.
-     */
-    public AzureDataExplorerTableDataset withTable(Object table) {
-        this.table = table;
-        return this;
+    private AzureDataExplorerDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,6 +86,31 @@ public class AzureDataExplorerTableDataset extends Dataset {
     }
 
     /**
+     * Get the table property: The table name of the Azure Data Explorer database. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the table value.
+     */
+    public Object table() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().table();
+    }
+
+    /**
+     * Set the table property: The table name of the Azure Data Explorer database. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param table the table value to set.
+     * @return the AzureDataExplorerTableDataset object itself.
+     */
+    public AzureDataExplorerTableDataset withTable(Object table) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataExplorerDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTable(table);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,5 +118,13 @@ public class AzureDataExplorerTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AzureDataExplorerTableDataset"));
+        } else {
+            innerTypeProperties().validate();
+        }
     }
 }

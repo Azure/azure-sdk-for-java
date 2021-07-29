@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.CmdkeySetupTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,28 +15,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** The custom setup of running cmdkey commands. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CmdkeySetup")
-@JsonFlatten
 @Fluent
-public class CmdkeySetup extends CustomSetupBase {
+public final class CmdkeySetup extends CustomSetupBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CmdkeySetup.class);
 
     /*
-     * The server name of data source access.
+     * Cmdkey command custom setup type properties.
      */
-    @JsonProperty(value = "typeProperties.targetName", required = true)
-    private Object targetName;
+    @JsonProperty(value = "typeProperties", required = true)
+    private CmdkeySetupTypeProperties innerTypeProperties = new CmdkeySetupTypeProperties();
 
-    /*
-     * The user name of data source access.
+    /**
+     * Get the innerTypeProperties property: Cmdkey command custom setup type properties.
+     *
+     * @return the innerTypeProperties value.
      */
-    @JsonProperty(value = "typeProperties.userName", required = true)
-    private Object username;
-
-    /*
-     * The password of data source access.
-     */
-    @JsonProperty(value = "typeProperties.password", required = true)
-    private SecretBase password;
+    private CmdkeySetupTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
+    }
 
     /**
      * Get the targetName property: The server name of data source access.
@@ -44,7 +40,7 @@ public class CmdkeySetup extends CustomSetupBase {
      * @return the targetName value.
      */
     public Object targetName() {
-        return this.targetName;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().targetName();
     }
 
     /**
@@ -54,7 +50,10 @@ public class CmdkeySetup extends CustomSetupBase {
      * @return the CmdkeySetup object itself.
      */
     public CmdkeySetup withTargetName(Object targetName) {
-        this.targetName = targetName;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new CmdkeySetupTypeProperties();
+        }
+        this.innerTypeProperties().withTargetName(targetName);
         return this;
     }
 
@@ -64,7 +63,7 @@ public class CmdkeySetup extends CustomSetupBase {
      * @return the username value.
      */
     public Object username() {
-        return this.username;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
     }
 
     /**
@@ -74,7 +73,10 @@ public class CmdkeySetup extends CustomSetupBase {
      * @return the CmdkeySetup object itself.
      */
     public CmdkeySetup withUsername(Object username) {
-        this.username = username;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new CmdkeySetupTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
         return this;
     }
 
@@ -84,7 +86,7 @@ public class CmdkeySetup extends CustomSetupBase {
      * @return the password value.
      */
     public SecretBase password() {
-        return this.password;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
     }
 
     /**
@@ -94,7 +96,10 @@ public class CmdkeySetup extends CustomSetupBase {
      * @return the CmdkeySetup object itself.
      */
     public CmdkeySetup withPassword(SecretBase password) {
-        this.password = password;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new CmdkeySetupTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
         return this;
     }
 
@@ -106,22 +111,12 @@ public class CmdkeySetup extends CustomSetupBase {
     @Override
     public void validate() {
         super.validate();
-        if (targetName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property targetName in model CmdkeySetup"));
-        }
-        if (username() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property username in model CmdkeySetup"));
-        }
-        if (password() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property password in model CmdkeySetup"));
+                    new IllegalArgumentException("Missing required property innerTypeProperties in model CmdkeySetup"));
         } else {
-            password().validate();
+            innerTypeProperties().validate();
         }
     }
 }

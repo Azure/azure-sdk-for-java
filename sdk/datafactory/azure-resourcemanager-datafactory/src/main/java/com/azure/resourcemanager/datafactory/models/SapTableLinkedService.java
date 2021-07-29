@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SapTableLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,474 +17,23 @@ import java.util.Map;
 /** SAP Table Linked Service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapTable")
-@JsonFlatten
 @Fluent
-public class SapTableLinkedService extends LinkedService {
+public final class SapTableLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SapTableLinkedService.class);
 
     /*
-     * Host name of the SAP instance where the table is located. Type: string
-     * (or Expression with resultType string).
+     * Properties specific to this linked service type.
      */
-    @JsonProperty(value = "typeProperties.server")
-    private Object server;
-
-    /*
-     * System number of the SAP system where the table is located. (Usually a
-     * two-digit decimal number represented as a string.) Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.systemNumber")
-    private Object systemNumber;
-
-    /*
-     * Client ID of the client on the SAP system where the table is located.
-     * (Usually a three-digit decimal number represented as a string) Type:
-     * string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.clientId")
-    private Object clientId;
-
-    /*
-     * Language of the SAP system where the table is located. The default value
-     * is EN. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.language")
-    private Object language;
-
-    /*
-     * SystemID of the SAP system where the table is located. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.systemId")
-    private Object systemId;
-
-    /*
-     * Username to access the SAP server where the table is located. Type:
-     * string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.userName")
-    private Object username;
-
-    /*
-     * Password to access the SAP server where the table is located.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The hostname of the SAP Message Server. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.messageServer")
-    private Object messageServer;
-
-    /*
-     * The service name or port number of the Message Server. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.messageServerService")
-    private Object messageServerService;
-
-    /*
-     * SNC activation indicator to access the SAP server where the table is
-     * located. Must be either 0 (off) or 1 (on). Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.sncMode")
-    private Object sncMode;
-
-    /*
-     * Initiator's SNC name to access the SAP server where the table is
-     * located. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.sncMyName")
-    private Object sncMyName;
-
-    /*
-     * Communication partner's SNC name to access the SAP server where the
-     * table is located. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.sncPartnerName")
-    private Object sncPartnerName;
-
-    /*
-     * External security product's library to access the SAP server where the
-     * table is located. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.sncLibraryPath")
-    private Object sncLibraryPath;
-
-    /*
-     * SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type:
-     * string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.sncQop")
-    private Object sncQop;
-
-    /*
-     * The Logon Group for the SAP System. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.logonGroup")
-    private Object logonGroup;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SapTableLinkedServiceTypeProperties innerTypeProperties = new SapTableLinkedServiceTypeProperties();
 
     /**
-     * Get the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
-     * with resultType string).
+     * Get the innerTypeProperties property: Properties specific to this linked service type.
      *
-     * @return the server value.
+     * @return the innerTypeProperties value.
      */
-    public Object server() {
-        return this.server;
-    }
-
-    /**
-     * Set the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
-     * with resultType string).
-     *
-     * @param server the server value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withServer(Object server) {
-        this.server = server;
-        return this;
-    }
-
-    /**
-     * Get the systemNumber property: System number of the SAP system where the table is located. (Usually a two-digit
-     * decimal number represented as a string.) Type: string (or Expression with resultType string).
-     *
-     * @return the systemNumber value.
-     */
-    public Object systemNumber() {
-        return this.systemNumber;
-    }
-
-    /**
-     * Set the systemNumber property: System number of the SAP system where the table is located. (Usually a two-digit
-     * decimal number represented as a string.) Type: string (or Expression with resultType string).
-     *
-     * @param systemNumber the systemNumber value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withSystemNumber(Object systemNumber) {
-        this.systemNumber = systemNumber;
-        return this;
-    }
-
-    /**
-     * Get the clientId property: Client ID of the client on the SAP system where the table is located. (Usually a
-     * three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
-     *
-     * @return the clientId value.
-     */
-    public Object clientId() {
-        return this.clientId;
-    }
-
-    /**
-     * Set the clientId property: Client ID of the client on the SAP system where the table is located. (Usually a
-     * three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
-     *
-     * @param clientId the clientId value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withClientId(Object clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
-     * Get the language property: Language of the SAP system where the table is located. The default value is EN. Type:
-     * string (or Expression with resultType string).
-     *
-     * @return the language value.
-     */
-    public Object language() {
-        return this.language;
-    }
-
-    /**
-     * Set the language property: Language of the SAP system where the table is located. The default value is EN. Type:
-     * string (or Expression with resultType string).
-     *
-     * @param language the language value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withLanguage(Object language) {
-        this.language = language;
-        return this;
-    }
-
-    /**
-     * Get the systemId property: SystemID of the SAP system where the table is located. Type: string (or Expression
-     * with resultType string).
-     *
-     * @return the systemId value.
-     */
-    public Object systemId() {
-        return this.systemId;
-    }
-
-    /**
-     * Set the systemId property: SystemID of the SAP system where the table is located. Type: string (or Expression
-     * with resultType string).
-     *
-     * @param systemId the systemId value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withSystemId(Object systemId) {
-        this.systemId = systemId;
-        return this;
-    }
-
-    /**
-     * Get the username property: Username to access the SAP server where the table is located. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: Username to access the SAP server where the table is located. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param username the username value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: Password to access the SAP server where the table is located.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Password to access the SAP server where the table is located.
-     *
-     * @param password the password value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the messageServer property: The hostname of the SAP Message Server. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the messageServer value.
-     */
-    public Object messageServer() {
-        return this.messageServer;
-    }
-
-    /**
-     * Set the messageServer property: The hostname of the SAP Message Server. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param messageServer the messageServer value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withMessageServer(Object messageServer) {
-        this.messageServer = messageServer;
-        return this;
-    }
-
-    /**
-     * Get the messageServerService property: The service name or port number of the Message Server. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the messageServerService value.
-     */
-    public Object messageServerService() {
-        return this.messageServerService;
-    }
-
-    /**
-     * Set the messageServerService property: The service name or port number of the Message Server. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param messageServerService the messageServerService value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withMessageServerService(Object messageServerService) {
-        this.messageServerService = messageServerService;
-        return this;
-    }
-
-    /**
-     * Get the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
-     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
-     *
-     * @return the sncMode value.
-     */
-    public Object sncMode() {
-        return this.sncMode;
-    }
-
-    /**
-     * Set the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
-     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
-     *
-     * @param sncMode the sncMode value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withSncMode(Object sncMode) {
-        this.sncMode = sncMode;
-        return this;
-    }
-
-    /**
-     * Get the sncMyName property: Initiator's SNC name to access the SAP server where the table is located. Type:
-     * string (or Expression with resultType string).
-     *
-     * @return the sncMyName value.
-     */
-    public Object sncMyName() {
-        return this.sncMyName;
-    }
-
-    /**
-     * Set the sncMyName property: Initiator's SNC name to access the SAP server where the table is located. Type:
-     * string (or Expression with resultType string).
-     *
-     * @param sncMyName the sncMyName value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withSncMyName(Object sncMyName) {
-        this.sncMyName = sncMyName;
-        return this;
-    }
-
-    /**
-     * Get the sncPartnerName property: Communication partner's SNC name to access the SAP server where the table is
-     * located. Type: string (or Expression with resultType string).
-     *
-     * @return the sncPartnerName value.
-     */
-    public Object sncPartnerName() {
-        return this.sncPartnerName;
-    }
-
-    /**
-     * Set the sncPartnerName property: Communication partner's SNC name to access the SAP server where the table is
-     * located. Type: string (or Expression with resultType string).
-     *
-     * @param sncPartnerName the sncPartnerName value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withSncPartnerName(Object sncPartnerName) {
-        this.sncPartnerName = sncPartnerName;
-        return this;
-    }
-
-    /**
-     * Get the sncLibraryPath property: External security product's library to access the SAP server where the table is
-     * located. Type: string (or Expression with resultType string).
-     *
-     * @return the sncLibraryPath value.
-     */
-    public Object sncLibraryPath() {
-        return this.sncLibraryPath;
-    }
-
-    /**
-     * Set the sncLibraryPath property: External security product's library to access the SAP server where the table is
-     * located. Type: string (or Expression with resultType string).
-     *
-     * @param sncLibraryPath the sncLibraryPath value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withSncLibraryPath(Object sncLibraryPath) {
-        this.sncLibraryPath = sncLibraryPath;
-        return this;
-    }
-
-    /**
-     * Get the sncQop property: SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the sncQop value.
-     */
-    public Object sncQop() {
-        return this.sncQop;
-    }
-
-    /**
-     * Set the sncQop property: SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param sncQop the sncQop value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withSncQop(Object sncQop) {
-        this.sncQop = sncQop;
-        return this;
-    }
-
-    /**
-     * Get the logonGroup property: The Logon Group for the SAP System. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the logonGroup value.
-     */
-    public Object logonGroup() {
-        return this.logonGroup;
-    }
-
-    /**
-     * Set the logonGroup property: The Logon Group for the SAP System. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param logonGroup the logonGroup value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withLogonGroup(Object logonGroup) {
-        this.logonGroup = logonGroup;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the SapTableLinkedService object itself.
-     */
-    public SapTableLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private SapTableLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -516,6 +65,404 @@ public class SapTableLinkedService extends LinkedService {
     }
 
     /**
+     * Get the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the server value.
+     */
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
+    }
+
+    /**
+     * Set the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param server the server value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withServer(Object server) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the systemNumber property: System number of the SAP system where the table is located. (Usually a two-digit
+     * decimal number represented as a string.) Type: string (or Expression with resultType string).
+     *
+     * @return the systemNumber value.
+     */
+    public Object systemNumber() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().systemNumber();
+    }
+
+    /**
+     * Set the systemNumber property: System number of the SAP system where the table is located. (Usually a two-digit
+     * decimal number represented as a string.) Type: string (or Expression with resultType string).
+     *
+     * @param systemNumber the systemNumber value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withSystemNumber(Object systemNumber) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSystemNumber(systemNumber);
+        return this;
+    }
+
+    /**
+     * Get the clientId property: Client ID of the client on the SAP system where the table is located. (Usually a
+     * three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
+     *
+     * @return the clientId value.
+     */
+    public Object clientId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientId();
+    }
+
+    /**
+     * Set the clientId property: Client ID of the client on the SAP system where the table is located. (Usually a
+     * three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
+     *
+     * @param clientId the clientId value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withClientId(Object clientId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientId(clientId);
+        return this;
+    }
+
+    /**
+     * Get the language property: Language of the SAP system where the table is located. The default value is EN. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the language value.
+     */
+    public Object language() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().language();
+    }
+
+    /**
+     * Set the language property: Language of the SAP system where the table is located. The default value is EN. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param language the language value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withLanguage(Object language) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withLanguage(language);
+        return this;
+    }
+
+    /**
+     * Get the systemId property: SystemID of the SAP system where the table is located. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the systemId value.
+     */
+    public Object systemId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().systemId();
+    }
+
+    /**
+     * Set the systemId property: SystemID of the SAP system where the table is located. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param systemId the systemId value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withSystemId(Object systemId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSystemId(systemId);
+        return this;
+    }
+
+    /**
+     * Get the username property: Username to access the SAP server where the table is located. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: Username to access the SAP server where the table is located. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param username the username value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: Password to access the SAP server where the table is located.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: Password to access the SAP server where the table is located.
+     *
+     * @param password the password value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the messageServer property: The hostname of the SAP Message Server. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the messageServer value.
+     */
+    public Object messageServer() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().messageServer();
+    }
+
+    /**
+     * Set the messageServer property: The hostname of the SAP Message Server. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param messageServer the messageServer value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withMessageServer(Object messageServer) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withMessageServer(messageServer);
+        return this;
+    }
+
+    /**
+     * Get the messageServerService property: The service name or port number of the Message Server. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the messageServerService value.
+     */
+    public Object messageServerService() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().messageServerService();
+    }
+
+    /**
+     * Set the messageServerService property: The service name or port number of the Message Server. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param messageServerService the messageServerService value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withMessageServerService(Object messageServerService) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withMessageServerService(messageServerService);
+        return this;
+    }
+
+    /**
+     * Get the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
+     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
+     *
+     * @return the sncMode value.
+     */
+    public Object sncMode() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sncMode();
+    }
+
+    /**
+     * Set the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
+     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
+     *
+     * @param sncMode the sncMode value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withSncMode(Object sncMode) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSncMode(sncMode);
+        return this;
+    }
+
+    /**
+     * Get the sncMyName property: Initiator's SNC name to access the SAP server where the table is located. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the sncMyName value.
+     */
+    public Object sncMyName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sncMyName();
+    }
+
+    /**
+     * Set the sncMyName property: Initiator's SNC name to access the SAP server where the table is located. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param sncMyName the sncMyName value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withSncMyName(Object sncMyName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSncMyName(sncMyName);
+        return this;
+    }
+
+    /**
+     * Get the sncPartnerName property: Communication partner's SNC name to access the SAP server where the table is
+     * located. Type: string (or Expression with resultType string).
+     *
+     * @return the sncPartnerName value.
+     */
+    public Object sncPartnerName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sncPartnerName();
+    }
+
+    /**
+     * Set the sncPartnerName property: Communication partner's SNC name to access the SAP server where the table is
+     * located. Type: string (or Expression with resultType string).
+     *
+     * @param sncPartnerName the sncPartnerName value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withSncPartnerName(Object sncPartnerName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSncPartnerName(sncPartnerName);
+        return this;
+    }
+
+    /**
+     * Get the sncLibraryPath property: External security product's library to access the SAP server where the table is
+     * located. Type: string (or Expression with resultType string).
+     *
+     * @return the sncLibraryPath value.
+     */
+    public Object sncLibraryPath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sncLibraryPath();
+    }
+
+    /**
+     * Set the sncLibraryPath property: External security product's library to access the SAP server where the table is
+     * located. Type: string (or Expression with resultType string).
+     *
+     * @param sncLibraryPath the sncLibraryPath value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withSncLibraryPath(Object sncLibraryPath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSncLibraryPath(sncLibraryPath);
+        return this;
+    }
+
+    /**
+     * Get the sncQop property: SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the sncQop value.
+     */
+    public Object sncQop() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sncQop();
+    }
+
+    /**
+     * Set the sncQop property: SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param sncQop the sncQop value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withSncQop(Object sncQop) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSncQop(sncQop);
+        return this;
+    }
+
+    /**
+     * Get the logonGroup property: The Logon Group for the SAP System. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the logonGroup value.
+     */
+    public Object logonGroup() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().logonGroup();
+    }
+
+    /**
+     * Set the logonGroup property: The Logon Group for the SAP System. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param logonGroup the logonGroup value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withLogonGroup(Object logonGroup) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withLogonGroup(logonGroup);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the SapTableLinkedService object itself.
+     */
+    public SapTableLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -523,8 +470,13 @@ public class SapTableLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (password() != null) {
-            password().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model SapTableLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

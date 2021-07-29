@@ -10,6 +10,7 @@ import com.azure.resourcemanager.datafactory.models.PipelineRunInvokedBy;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -49,12 +50,14 @@ public final class PipelineRunInner {
      * pipeline run.
      */
     @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * Run dimensions emitted by Pipeline run.
      */
     @JsonProperty(value = "runDimensions", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> runDimensions;
 
     /*
