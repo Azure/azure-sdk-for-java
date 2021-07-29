@@ -249,7 +249,7 @@
           "type": "Microsoft.Storage/storageAccounts/blobServices",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('softDeleteAccountName'), '/default')]",
-          "properties": "[if(parameters(enableStorageVersioning), variables('deleteRetentionPolicyProperties'), variables('nullProperties'))]",,
+          "properties": "[if(parameters(enableStorageVersioning), variables('deleteRetentionPolicyProperties'), variables('nullProperties'))]",
           "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts/',variables('softDeleteAccountName'))]"
           ]
