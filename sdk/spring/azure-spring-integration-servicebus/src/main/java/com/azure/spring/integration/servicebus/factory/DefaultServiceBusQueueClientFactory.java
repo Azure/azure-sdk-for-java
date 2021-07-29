@@ -71,7 +71,8 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
                                           .receiveMode(clientConfig.getServiceBusReceiveMode())
                                           .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls())
                                           // TODO, It looks like max auto renew duration is not exposed
-                                          .maxConcurrentSessions(clientConfig.getConcurrency())
+                                          .maxConcurrentSessions(clientConfig.getMaxConcurrentSessions() == 1 ?
+                                              clientConfig.getConcurrency() : clientConfig.getMaxConcurrentSessions())
                                           .prefetchCount(clientConfig.getPrefetchCount())
                                           .disableAutoComplete()
                                           .processMessage(messageProcessor.processMessage())
@@ -82,7 +83,8 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
             return serviceBusClientBuilder.processor()
                                           .queueName(name)
                                           .receiveMode(clientConfig.getServiceBusReceiveMode())
-                                          .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls())
+                                          .maxConcurrentCalls(clientConfig.getMaxConcurrentCalls() == 1 ?
+                                              clientConfig.getConcurrency() : clientConfig.getMaxConcurrentCalls())
                                           .prefetchCount(clientConfig.getPrefetchCount())
                                           .disableAutoComplete()
                                           .processMessage(messageProcessor.processMessage())

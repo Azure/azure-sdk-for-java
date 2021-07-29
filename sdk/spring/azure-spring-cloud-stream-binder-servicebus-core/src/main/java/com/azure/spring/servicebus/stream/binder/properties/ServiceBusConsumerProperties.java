@@ -12,10 +12,12 @@ import com.azure.spring.integration.core.api.CheckpointMode;
  */
 public class ServiceBusConsumerProperties {
     private int prefetchCount = 1;
+    @Deprecated
     private int concurrency = 1;
     private boolean sessionsEnabled = false;
     private boolean requeueRejected = false;
     private int maxConcurrentCalls = 1;
+    private int maxConcurrentSessions = 1;
     private ServiceBusReceiveMode serviceBusReceiveMode = ServiceBusReceiveMode.PEEK_LOCK;
 
     private CheckpointMode checkpointMode = CheckpointMode.RECORD;
@@ -28,12 +30,33 @@ public class ServiceBusConsumerProperties {
         this.checkpointMode = checkpointMode;
     }
 
+    /**
+     * Controls the max concurrent calls of service bus message handler and
+     * the size of fixed thread pool that handles user's business logic
+     *
+     * <p>
+     * @return int, default : 1
+     */
     public int getMaxConcurrentCalls() {
         return maxConcurrentCalls;
     }
 
     public void setMaxConcurrentCalls(int maxConcurrentCalls) {
         this.maxConcurrentCalls = maxConcurrentCalls;
+    }
+
+    /**
+     * Maximum number of concurrent sessions to process at any given time
+     *
+     * <p>
+     * @return int, default : 1
+     */
+    public int getMaxConcurrentSessions() {
+        return maxConcurrentSessions;
+    }
+
+    public void setMaxConcurrentSessions(int maxConcurrentSessions) {
+        this.maxConcurrentSessions = maxConcurrentSessions;
     }
 
     /**
@@ -58,10 +81,12 @@ public class ServiceBusConsumerProperties {
      * <p>
      * @return int, default : 1
      */
+    @Deprecated
     public int getConcurrency() {
         return concurrency;
     }
 
+    @Deprecated
     public void setConcurrency(int concurrency) {
         this.concurrency = concurrency;
     }

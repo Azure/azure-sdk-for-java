@@ -15,6 +15,7 @@ public final class ServiceBusClientConfig {
 
     private final int prefetchCount;
 
+    @Deprecated
     private final int concurrency;
 
     private final boolean sessionsEnabled;
@@ -23,10 +24,13 @@ public final class ServiceBusClientConfig {
 
     private final int maxConcurrentCalls;
 
+    private final int maxConcurrentSessions;
+
     private ServiceBusReceiveMode serviceBusReceiveMode;
 
     private ServiceBusClientConfig(int prefetchCount, int concurrency, boolean sessionsEnabled,
-                                   boolean requeueRejected, int maxConcurrentCalls, ServiceBusReceiveMode serviceBusReceiveMode) {
+                                   boolean requeueRejected, int maxConcurrentCalls, int maxConcurrentSessions,
+                                   ServiceBusReceiveMode serviceBusReceiveMode) {
 
         this.prefetchCount = prefetchCount;
         this.concurrency = concurrency;
@@ -34,12 +38,14 @@ public final class ServiceBusClientConfig {
         this.requeueRejected = requeueRejected;
         this.maxConcurrentCalls = maxConcurrentCalls;
         this.serviceBusReceiveMode = serviceBusReceiveMode;
+        this.maxConcurrentSessions = maxConcurrentSessions;
     }
 
     public int getPrefetchCount() {
         return prefetchCount;
     }
 
+    @Deprecated
     public int getConcurrency() {
         return concurrency;
     }
@@ -56,6 +62,10 @@ public final class ServiceBusClientConfig {
         return maxConcurrentCalls;
     }
 
+    public int getMaxConcurrentSessions() {
+        return maxConcurrentSessions;
+    }
+
     public ServiceBusReceiveMode getServiceBusReceiveMode() {
         return serviceBusReceiveMode;
     }
@@ -69,10 +79,12 @@ public final class ServiceBusClientConfig {
      */
     public static class ServiceBusClientConfigBuilder {
         private int prefetchCount = 1;
+        @Deprecated
         private int concurrency = 1;
         private boolean sessionsEnabled = false;
         private boolean requeueRejected = false;
         private int maxConcurrentCalls = 1;
+        private int maxConcurrentSessions = 1;
         private ServiceBusReceiveMode serviceBusReceiveMode = ServiceBusReceiveMode.PEEK_LOCK;
 
         public void setRequeueRejected(boolean requeueRejected) {
@@ -84,6 +96,7 @@ public final class ServiceBusClientConfig {
             return this;
         }
 
+        @Deprecated
         public ServiceBusClientConfigBuilder setConcurrency(int concurrency) {
             this.concurrency = concurrency;
             return this;
@@ -99,13 +112,18 @@ public final class ServiceBusClientConfig {
             return this;
         }
 
+        public ServiceBusClientConfigBuilder setMaxConcurrentSessions(int maxConcurrentSessions) {
+            this.maxConcurrentSessions = maxConcurrentSessions;
+            return this;
+        }
+
         public ServiceBusClientConfigBuilder setServiceBusReceiveMode(ServiceBusReceiveMode serviceBusReceiveMode) {
             this.serviceBusReceiveMode = serviceBusReceiveMode;
             return this;
         }
 
         public ServiceBusClientConfig build() {
-            return new ServiceBusClientConfig(prefetchCount, concurrency, sessionsEnabled, requeueRejected, maxConcurrentCalls, serviceBusReceiveMode);
+            return new ServiceBusClientConfig(prefetchCount, concurrency, sessionsEnabled, requeueRejected, maxConcurrentCalls, maxConcurrentSessions, serviceBusReceiveMode);
         }
     }
 }
