@@ -48,7 +48,7 @@ public interface Tracer {
     /**
      * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
      */
-    String DIAGNOSTIC_ID_KEY = "diagnostic-id";
+    String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
 
     /**
      * Key for {@link Context} the scope of code where the given Span is in the current Context.

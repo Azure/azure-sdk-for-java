@@ -24,12 +24,12 @@ import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlTests;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
@@ -307,5 +307,13 @@ public class ReflectionUtils {
     public static ConcurrentHashMap<OperationType, ThroughputControlTrackingUnit> getThroughputControlTrackingDictionary(
         ThroughputRequestThrottler requestThrottler) {
         return get(ConcurrentHashMap.class, requestThrottler, "trackingDictionary");
+    }
+
+    public static HttpClient getHttpClient(ClientTelemetry telemetry) {
+        return get(HttpClient.class, telemetry, "httpClient");
+    }
+
+    public static void setHttpClient(ClientTelemetry telemetry, HttpClient httpClient) {
+        set(telemetry, httpClient, "httpClient");
     }
 }

@@ -841,7 +841,9 @@ public final class SearchAsyncClient {
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop());
+            .setTop(options.getTop())
+            .setCaptions(options.getCaptions())
+            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()));
     }
 
     private static String createSearchRequestAnswers(SearchOptions searchOptions) {

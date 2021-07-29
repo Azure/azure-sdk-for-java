@@ -934,7 +934,7 @@ public class ShareFileAsyncClient {
 
     private Mono<StreamResponse> downloadRange(ShareFileRange range, Boolean rangeGetContentMD5,
         ShareRequestConditions requestConditions, Context context) {
-        String rangeString = range == null ? null : range.toString();
+        String rangeString = range == null ? null : range.toHeaderValue();
         return azureFileStorageClient.getFiles().downloadWithResponseAsync(shareName, filePath, null,
             rangeString, rangeGetContentMD5, requestConditions.getLeaseId(),  context);
     }
@@ -1513,12 +1513,14 @@ public class ShareFileAsyncClient {
             // no specified length: use azure.core's converter
             if (data == null && options.getLength() == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    validatedParallelTransferOptions.getBlockSizeLong());
                 data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
             // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
             } else if (data == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                int chunkSize = (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong());
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    validatedParallelTransferOptions.getBlockSizeLong());
                 data = Utility.convertStreamToByteBuffer(
                     options.getDataStream(), options.getLength(), chunkSize, false);
             }
@@ -1546,7 +1548,7 @@ public class ShareFileAsyncClient {
          parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
          only concurrency + 1 chunks at a time.
          */
-        return chunkedSource.flatMapSequential(stagingArea::write, 1)
+        return chunkedSource.flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
             /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
@@ -1575,7 +1577,7 @@ public class ShareFileAsyncClient {
                 return uploadRangeWithResponse(new ShareFileUploadRangeOptions(progressData, currentBufferLength)
                     .setOffset(currentOffset).setRequestConditions(requestConditions), context)
                     .flux();
-            }, parallelTransferOptions.getMaxConcurrency())
+            }, parallelTransferOptions.getMaxConcurrency(), 1)
             .last();
     }
 

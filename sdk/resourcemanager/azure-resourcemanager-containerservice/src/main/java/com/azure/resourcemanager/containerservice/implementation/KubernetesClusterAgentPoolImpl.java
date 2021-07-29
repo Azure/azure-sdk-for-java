@@ -45,6 +45,11 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    @Override
     public int count() {
         return this.innerModel().count();
     }

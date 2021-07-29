@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.JsonDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,98 +17,23 @@ import java.util.Map;
 /** Json dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Json")
-@JsonFlatten
 @Fluent
-public class JsonDataset extends Dataset {
+public final class JsonDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonDataset.class);
 
     /*
-     * The location of the json data storage.
+     * Json dataset properties.
      */
-    @JsonProperty(value = "typeProperties.location")
-    private DatasetLocation location;
-
-    /*
-     * The code page name of the preferred encoding. If not specified, the
-     * default value is UTF-8, unless BOM denotes another Unicode encoding.
-     * Refer to the name column of the table in the following link to set
-     * supported values:
-     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type:
-     * string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encodingName")
-    private Object encodingName;
-
-    /*
-     * The data compression method used for the json dataset.
-     */
-    @JsonProperty(value = "typeProperties.compression")
-    private DatasetCompression compression;
+    @JsonProperty(value = "typeProperties")
+    private JsonDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the location property: The location of the json data storage.
+     * Get the innerTypeProperties property: Json dataset properties.
      *
-     * @return the location value.
+     * @return the innerTypeProperties value.
      */
-    public DatasetLocation location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location of the json data storage.
-     *
-     * @param location the location value to set.
-     * @return the JsonDataset object itself.
-     */
-    public JsonDataset withLocation(DatasetLocation location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the encodingName property: The code page name of the preferred encoding. If not specified, the default value
-     * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
-     * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the encodingName value.
-     */
-    public Object encodingName() {
-        return this.encodingName;
-    }
-
-    /**
-     * Set the encodingName property: The code page name of the preferred encoding. If not specified, the default value
-     * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
-     * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param encodingName the encodingName value to set.
-     * @return the JsonDataset object itself.
-     */
-    public JsonDataset withEncodingName(Object encodingName) {
-        this.encodingName = encodingName;
-        return this;
-    }
-
-    /**
-     * Get the compression property: The data compression method used for the json dataset.
-     *
-     * @return the compression value.
-     */
-    public DatasetCompression compression() {
-        return this.compression;
-    }
-
-    /**
-     * Set the compression property: The data compression method used for the json dataset.
-     *
-     * @param compression the compression value to set.
-     * @return the JsonDataset object itself.
-     */
-    public JsonDataset withCompression(DatasetCompression compression) {
-        this.compression = compression;
-        return this;
+    private JsonDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -161,6 +86,81 @@ public class JsonDataset extends Dataset {
     }
 
     /**
+     * Get the location property: The location of the json data storage.
+     *
+     * @return the location value.
+     */
+    public DatasetLocation location() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().location();
+    }
+
+    /**
+     * Set the location property: The location of the json data storage.
+     *
+     * @param location the location value to set.
+     * @return the JsonDataset object itself.
+     */
+    public JsonDataset withLocation(DatasetLocation location) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new JsonDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withLocation(location);
+        return this;
+    }
+
+    /**
+     * Get the encodingName property: The code page name of the preferred encoding. If not specified, the default value
+     * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
+     * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the encodingName value.
+     */
+    public Object encodingName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encodingName();
+    }
+
+    /**
+     * Set the encodingName property: The code page name of the preferred encoding. If not specified, the default value
+     * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
+     * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param encodingName the encodingName value to set.
+     * @return the JsonDataset object itself.
+     */
+    public JsonDataset withEncodingName(Object encodingName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new JsonDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withEncodingName(encodingName);
+        return this;
+    }
+
+    /**
+     * Get the compression property: The data compression method used for the json dataset.
+     *
+     * @return the compression value.
+     */
+    public DatasetCompression compression() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().compression();
+    }
+
+    /**
+     * Set the compression property: The data compression method used for the json dataset.
+     *
+     * @param compression the compression value to set.
+     * @return the JsonDataset object itself.
+     */
+    public JsonDataset withCompression(DatasetCompression compression) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new JsonDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCompression(compression);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -168,11 +168,8 @@ public class JsonDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (location() != null) {
-            location().validate();
-        }
-        if (compression() != null) {
-            compression().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

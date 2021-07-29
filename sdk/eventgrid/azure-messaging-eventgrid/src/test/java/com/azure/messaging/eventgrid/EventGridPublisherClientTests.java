@@ -15,6 +15,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -154,6 +156,32 @@ public class EventGridPublisherClientTests extends TestBase {
             }),
             "1.0")
             .setEventTime(OffsetDateTime.now()));
+
+        StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
+            .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
+            .verifyComplete();
+    }
+
+    @Test
+    @Disabled
+    public void publishWithTokenCredential() {
+        DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+        EventGridPublisherAsyncClient<CloudEvent> egClient = builder
+            .credential(defaultCredential)
+            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .buildCloudEventPublisherAsyncClient();
+
+        List<CloudEvent> events = new ArrayList<>();
+        events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }), CloudEventDataFormat.JSON, "application/json")
+            .setSubject("Test")
+            .setTime(OffsetDateTime.now()));
 
         StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)

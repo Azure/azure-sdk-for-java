@@ -168,10 +168,12 @@ public class EventData {
 
     /**
      * Properties that are populated by Event Hubs service. As these are populated by the Event Hubs service, they are
-     * only present on a <b>received</b> {@link EventData}.
+     * only present on a <b>received</b> {@link EventData}. Provides an abstraction on top of properties exposed by
+     * {@link #getRawAmqpMessage()}. These properties are read-only and can be modified via
+     * {@link #getRawAmqpMessage()}.
      *
-     * @return An encapsulation of all system properties appended by EventHubs service into {@link EventData}. {@code
-     *     null} if the {@link EventData} is not received from the Event Hubs service.
+     * @return An encapsulation of all system properties appended by EventHubs service into {@link EventData}. If the
+     *     {@link EventData} is not received from the Event Hubs service, the values returned are {@code null}.
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;

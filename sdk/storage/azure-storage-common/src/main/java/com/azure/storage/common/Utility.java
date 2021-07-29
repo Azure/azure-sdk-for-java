@@ -252,6 +252,18 @@ public final class Utility {
         if (markAndReset) {
             data.mark(Integer.MAX_VALUE);
         }
+        if (length == 0) {
+            try {
+                if (data.read() != -1) {
+                    long totalLength = 1 + data.available();
+                    throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                            totalLength, length), totalLength, length));
+                }
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
+            }
+        }
         return Flux.defer(() -> {
             /*
             If the request needs to be retried, the flux will be resubscribed to. The stream and counter must be
@@ -287,25 +299,27 @@ public final class Utility {
                             String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                                 currentTotalLength[0], length), currentTotalLength[0], length));
                     }
-                    return ByteBuffer.wrap(cache);
-                }))
-                .doOnComplete(() -> {
-                    try {
-                        if (data.read() != -1) {
-                            long totalLength = currentTotalLength[0] + data.available();
-                            throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                                String.format("Request body emitted %d bytes, more than the expected %d bytes.",
-                                    totalLength, length), totalLength, length));
-                        } else if (currentTotalLength[0] > length) {
-                            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                                String.format("Read more data than was requested. Size of data read: %d. Size of data"
-                                    + " requested: %d", currentTotalLength[0], length)));
+
+                    // Validate that stream isn't longer.
+                    if (currentTotalLength[0] >= length) {
+                        try {
+                            if (data.read() != -1) {
+                                long totalLength = 1 + currentTotalLength[0] + data.available();
+                                throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                                    String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                                        totalLength, length), totalLength, length));
+                            } else if (currentTotalLength[0] > length) {
+                                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                                    String.format("Read more data than was requested. Size of data read: %d. Size of data"
+                                        + " requested: %d", currentTotalLength[0], length)));
+                            }
+                        } catch (IOException e) {
+                            throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
                         }
-                    } catch (IOException e) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
-                            + e.getMessage()));
                     }
-                });
+
+                    return ByteBuffer.wrap(cache, 0, offset);
+                }));
         });
     }
 

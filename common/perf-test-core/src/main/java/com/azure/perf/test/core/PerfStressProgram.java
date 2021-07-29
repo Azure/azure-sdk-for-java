@@ -242,9 +242,11 @@ public class PerfStressProgram {
             }
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
+            e.printStackTrace(System.err);
             throw new RuntimeException(e);
         } catch (Exception e) {
             System.err.println("Error occurred running tests: " + System.lineSeparator() + e);
+            e.printStackTrace(System.err);
         } finally {
             progressStatus.dispose();
         }
