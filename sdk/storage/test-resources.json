@@ -147,7 +147,7 @@
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('primaryAccountName'), '/default')]",
-            "properties": "[if(parameters(enableStorageVersioning), variables('containerDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
+            "properties": "[if(parameters('enableStorageVersioning'), variables('containerDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
             "dependsOn": [
               "[resourceId('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
         ]
@@ -156,7 +156,7 @@
             "type": "Microsoft.Storage/storageAccounts/fileServices",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('primaryAccountName'), '/default')]",
-            "properties": "[if(parameters(enableStorageVersioning), variables('shareDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
+            "properties": "[if(parameters('enableStorageVersioning'), variables('shareDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
             "dependsOn": [
               "[resourceId('Microsoft.Storage/storageAccounts/',variables('primaryAccountName'))]"
             ]
@@ -249,7 +249,7 @@
           "type": "Microsoft.Storage/storageAccounts/blobServices",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('softDeleteAccountName'), '/default')]",
-          "properties": "[if(parameters(enableStorageVersioning), variables('deleteRetentionPolicyProperties'), variables('nullProperties'))]",
+          "properties": "[if(parameters('enableStorageVersioning'), variables('deleteRetentionPolicyProperties'), variables('nullProperties'))]",
           "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts/',variables('softDeleteAccountName'))]"
           ]
@@ -258,7 +258,7 @@
           "type": "Microsoft.Storage/storageAccounts/fileServices",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('softDeleteAccountName'), '/default')]",
-          "properties": "[if(parameters(enableStorageVersioning), variables('shareDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
+          "properties": "[if(parameters('enableStorageVersioning'), variables('shareDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
           "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts/',variables('softDeleteAccountName'))]"
           ]
@@ -375,7 +375,7 @@
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('dataLakeAccountName'), '/default')]",
-            "properties": "[if(parameters(enableStorageVersioning), variables('containerDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
+            "properties": "[if(parameters('enableStorageVersioning'), variables('containerDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
             "dependsOn": [
               "[resourceId('Microsoft.Storage/storageAccounts/',variables('dataLakeAccountName'))]"
             ]
@@ -417,7 +417,7 @@
           "type": "Microsoft.Storage/storageAccounts/blobServices",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('dataLakeSoftDeleteAccountName'), '/default')]",
-          "properties": "[if(parameters(enableStorageVersioning), variables('containerDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
+          "properties": "[if(parameters('enableStorageVersioning'), variables('containerDeleteRetentionPolicyProperties'), variables('nullProperties'))]",
           "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts/',variables('dataLakeSoftDeleteAccountName'))]"
           ]
