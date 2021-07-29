@@ -88,9 +88,15 @@ Prefetch count of underlying service bus client.
 
 Default: `1`
 
-**_concurrency_**
+**_maxConcurrentCalls_**
 
 Controls the max concurrent calls of service bus message handler and the size of fixed thread pool that handles user's business logic
+
+Default: `1`
+
+**_maxConcurrentSessions_**
+
+Controls the maximum number of concurrent sessions to process at any given time.
 
 Default: `1`
 
