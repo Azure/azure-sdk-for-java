@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.MySqlTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,36 +17,23 @@ import java.util.Map;
 /** The MySQL table dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MySqlTable")
-@JsonFlatten
 @Fluent
-public class MySqlTableDataset extends Dataset {
+public final class MySqlTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MySqlTableDataset.class);
 
     /*
-     * The MySQL table name. Type: string (or Expression with resultType
-     * string).
+     * MySQL table dataset properties.
      */
-    @JsonProperty(value = "typeProperties.tableName")
-    private Object tableName;
+    @JsonProperty(value = "typeProperties")
+    private MySqlTableDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the tableName property: The MySQL table name. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: MySQL table dataset properties.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: The MySQL table name. Type: string (or Expression with resultType string).
-     *
-     * @param tableName the tableName value to set.
-     * @return the MySqlTableDataset object itself.
-     */
-    public MySqlTableDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
+    private MySqlTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -99,6 +86,29 @@ public class MySqlTableDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: The MySQL table name. Type: string (or Expression with resultType string).
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: The MySQL table name. Type: string (or Expression with resultType string).
+     *
+     * @param tableName the tableName value to set.
+     * @return the MySqlTableDataset object itself.
+     */
+    public MySqlTableDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,5 +116,8 @@ public class MySqlTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

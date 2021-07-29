@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.BinaryDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,61 +17,23 @@ import java.util.Map;
 /** Binary dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Binary")
-@JsonFlatten
 @Fluent
-public class BinaryDataset extends Dataset {
+public final class BinaryDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BinaryDataset.class);
 
     /*
-     * The location of the Binary storage.
+     * Binary dataset properties.
      */
-    @JsonProperty(value = "typeProperties.location")
-    private DatasetLocation location;
-
-    /*
-     * The data compression method used for the binary dataset.
-     */
-    @JsonProperty(value = "typeProperties.compression")
-    private DatasetCompression compression;
+    @JsonProperty(value = "typeProperties")
+    private BinaryDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the location property: The location of the Binary storage.
+     * Get the innerTypeProperties property: Binary dataset properties.
      *
-     * @return the location value.
+     * @return the innerTypeProperties value.
      */
-    public DatasetLocation location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location of the Binary storage.
-     *
-     * @param location the location value to set.
-     * @return the BinaryDataset object itself.
-     */
-    public BinaryDataset withLocation(DatasetLocation location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the compression property: The data compression method used for the binary dataset.
-     *
-     * @return the compression value.
-     */
-    public DatasetCompression compression() {
-        return this.compression;
-    }
-
-    /**
-     * Set the compression property: The data compression method used for the binary dataset.
-     *
-     * @param compression the compression value to set.
-     * @return the BinaryDataset object itself.
-     */
-    public BinaryDataset withCompression(DatasetCompression compression) {
-        this.compression = compression;
-        return this;
+    private BinaryDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -124,6 +86,52 @@ public class BinaryDataset extends Dataset {
     }
 
     /**
+     * Get the location property: The location of the Binary storage.
+     *
+     * @return the location value.
+     */
+    public DatasetLocation location() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().location();
+    }
+
+    /**
+     * Set the location property: The location of the Binary storage.
+     *
+     * @param location the location value to set.
+     * @return the BinaryDataset object itself.
+     */
+    public BinaryDataset withLocation(DatasetLocation location) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new BinaryDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withLocation(location);
+        return this;
+    }
+
+    /**
+     * Get the compression property: The data compression method used for the binary dataset.
+     *
+     * @return the compression value.
+     */
+    public DatasetCompression compression() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().compression();
+    }
+
+    /**
+     * Set the compression property: The data compression method used for the binary dataset.
+     *
+     * @param compression the compression value to set.
+     * @return the BinaryDataset object itself.
+     */
+    public BinaryDataset withCompression(DatasetCompression compression) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new BinaryDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCompression(compression);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -131,11 +139,8 @@ public class BinaryDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (location() != null) {
-            location().validate();
-        }
-        if (compression() != null) {
-            compression().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

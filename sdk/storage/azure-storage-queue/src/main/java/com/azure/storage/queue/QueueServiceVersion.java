@@ -38,6 +38,6 @@ public enum QueueServiceVersion implements ServiceVersion {
      * @return the latest {@link QueueServiceVersion}
      */
     public static QueueServiceVersion getLatest() {
-        return V2020_08_04;
+        return V2020_10_02;
     }
 }
