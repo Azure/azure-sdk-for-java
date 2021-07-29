@@ -48,4 +48,4 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.
 
 ## 1.2.8 (2020-09-14)
 ### Breaking Changes
-- Unify Azure Spring Cloud packages version
+- Unify Spring Cloud for Azure packages version

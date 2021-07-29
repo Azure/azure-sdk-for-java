@@ -615,6 +615,12 @@ the main ServiceBusClientBuilder. -->
   <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
 
+  <!-- Third party source code files, retained as is. -->
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.Aes"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.HashedBlockInputStream"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.LittleEndianDataInputStream"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.Salsa20"/>
+
   <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>

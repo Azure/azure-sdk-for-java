@@ -183,6 +183,10 @@ public class CosmosEncryptionAsyncContainer {
                                                     PartitionKey partitionKey,
                                                     CosmosItemRequestOptions requestOptions,
                                                     Class<T> classType) {
+        if (requestOptions == null) {
+            requestOptions = new CosmosItemRequestOptions();
+        }
+
         Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.readItemHelper(id, partitionKey, requestOptions, false);
 
         return responseMessageMono.publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
@@ -311,7 +315,7 @@ public class CosmosEncryptionAsyncContainer {
                 this.cosmosItemResponseBuilderAccessor.setByteArrayContent(rsp, bytes);
                 return Mono.just(rsp);
             }
-        );
+        ).defaultIfEmpty(rsp);
     }
 
     private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryDecryptionTransformer(Class<T> classType,

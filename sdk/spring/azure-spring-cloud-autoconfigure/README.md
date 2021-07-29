@@ -1,4 +1,4 @@
-# Azure Spring cloud AutoConfigure client library for Java
+# Spring Cloud for Azure AutoConfigure client library for Java
 This package is for Spring Cloud Starters of Azure services. It helps Spring Cloud developers to adopt Azure services.
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs]
@@ -30,7 +30,7 @@ This project provides auto-configuration for the following Azure services:
 
 ## Examples
 
-The following section provides sample projects illustrating how to use the Azure Spring Cloud starters.
+The following section provides sample projects illustrating how to use the Spring Cloud for Azure starters.
 ### More sample code
 - [Azure App Configuration][app_configuration_sample]
 - [Azure App Configuration Conversation][app_configuration_conversation_sample]
@@ -60,7 +60,7 @@ For more information about setting logging in spring, please refer to the [offic
 
 ## Next steps
 
-The following section provides sample projects illustrating how to use the Azure Spring Cloud starters.
+The following section provides sample projects illustrating how to use the Spring Cloud for Azure starters.
 ### More sample code
 - [Azure App Configuration][app_configuration_sample]
 - [Azure App Configuration Conversation][app_configuration_conversation_sample]

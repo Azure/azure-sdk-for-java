@@ -1,4 +1,4 @@
-# Azure Spring cloud azure Storage client library for Java
+# Spring Cloud for Azure Storage client library for Java
 This package helps developers to finish the auto-configuration of Azure Storage.
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs]
