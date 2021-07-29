@@ -54,6 +54,13 @@ public interface QueryResult {
     String sku();
 
     /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the nextLink property: The link (url) to the next page of results.
      *
      * @return the nextLink value.
@@ -73,13 +80,6 @@ public interface QueryResult {
      * @return the rows value.
      */
     List<List<Object>> rows();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.QueryResultInner object.
