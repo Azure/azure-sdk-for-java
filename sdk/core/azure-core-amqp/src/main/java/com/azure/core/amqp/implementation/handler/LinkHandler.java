@@ -35,17 +35,17 @@ abstract class LinkHandler extends Handler {
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
-        handleRemoteLinkClosed("onLinkLocalClose", event);
+        handleLinkClosed("onLinkLocalClose", event);
     }
 
     @Override
     public void onLinkRemoteClose(Event event) {
-        handleRemoteLinkClosed("onLinkRemoteClose", event);
+        handleLinkClosed("onLinkRemoteClose", event);
     }
 
     @Override
     public void onLinkRemoteDetach(Event event) {
-        handleRemoteLinkClosed("onLinkRemoteDetach", event);
+        handleLinkClosed("onLinkRemoteDetach", event);
     }
 
     @Override
@@ -68,7 +68,7 @@ abstract class LinkHandler extends Handler {
         return new LinkErrorContext(getHostname(), entityPath, referenceId, link.getCredit());
     }
 
-    private void handleRemoteLinkClosed(final String eventName, final Event event) {
+    private void handleLinkClosed(final String eventName, final Event event) {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getRemoteCondition();
 
@@ -91,8 +91,8 @@ abstract class LinkHandler extends Handler {
 
             onError(exception);
         } else {
-            // close();
-            onError(new AmqpException(true, "This link is remotely closed without a condition.", getErrorContext(link)));
+            onError(new AmqpException(true, String.format("This link is closed by %s without a condition.", eventName),
+                getErrorContext(link)));
         }
     }
 }
