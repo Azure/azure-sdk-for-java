@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SapOpenHubTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,100 +17,23 @@ import java.util.Map;
 /** Sap Business Warehouse Open Hub Destination Table properties. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapOpenHubTable")
-@JsonFlatten
 @Fluent
-public class SapOpenHubTableDataset extends Dataset {
+public final class SapOpenHubTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SapOpenHubTableDataset.class);
 
     /*
-     * The name of the Open Hub Destination with destination type as Database
-     * Table. Type: string (or Expression with resultType string).
+     * Sap Business Warehouse Open Hub Destination Table properties.
      */
-    @JsonProperty(value = "typeProperties.openHubDestinationName", required = true)
-    private Object openHubDestinationName;
-
-    /*
-     * Whether to exclude the records of the last request. The default value is
-     * true. Type: boolean (or Expression with resultType boolean).
-     */
-    @JsonProperty(value = "typeProperties.excludeLastRequest")
-    private Object excludeLastRequest;
-
-    /*
-     * The ID of request for delta loading. Once it is set, only data with
-     * requestId larger than the value of this property will be retrieved. The
-     * default value is 0. Type: integer (or Expression with resultType integer
-     * ).
-     */
-    @JsonProperty(value = "typeProperties.baseRequestId")
-    private Object baseRequestId;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SapOpenHubTableDatasetTypeProperties innerTypeProperties = new SapOpenHubTableDatasetTypeProperties();
 
     /**
-     * Get the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
-     * Table. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Sap Business Warehouse Open Hub Destination Table properties.
      *
-     * @return the openHubDestinationName value.
+     * @return the innerTypeProperties value.
      */
-    public Object openHubDestinationName() {
-        return this.openHubDestinationName;
-    }
-
-    /**
-     * Set the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
-     * Table. Type: string (or Expression with resultType string).
-     *
-     * @param openHubDestinationName the openHubDestinationName value to set.
-     * @return the SapOpenHubTableDataset object itself.
-     */
-    public SapOpenHubTableDataset withOpenHubDestinationName(Object openHubDestinationName) {
-        this.openHubDestinationName = openHubDestinationName;
-        return this;
-    }
-
-    /**
-     * Get the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
-     * true. Type: boolean (or Expression with resultType boolean).
-     *
-     * @return the excludeLastRequest value.
-     */
-    public Object excludeLastRequest() {
-        return this.excludeLastRequest;
-    }
-
-    /**
-     * Set the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
-     * true. Type: boolean (or Expression with resultType boolean).
-     *
-     * @param excludeLastRequest the excludeLastRequest value to set.
-     * @return the SapOpenHubTableDataset object itself.
-     */
-    public SapOpenHubTableDataset withExcludeLastRequest(Object excludeLastRequest) {
-        this.excludeLastRequest = excludeLastRequest;
-        return this;
-    }
-
-    /**
-     * Get the baseRequestId property: The ID of request for delta loading. Once it is set, only data with requestId
-     * larger than the value of this property will be retrieved. The default value is 0. Type: integer (or Expression
-     * with resultType integer ).
-     *
-     * @return the baseRequestId value.
-     */
-    public Object baseRequestId() {
-        return this.baseRequestId;
-    }
-
-    /**
-     * Set the baseRequestId property: The ID of request for delta loading. Once it is set, only data with requestId
-     * larger than the value of this property will be retrieved. The default value is 0. Type: integer (or Expression
-     * with resultType integer ).
-     *
-     * @param baseRequestId the baseRequestId value to set.
-     * @return the SapOpenHubTableDataset object itself.
-     */
-    public SapOpenHubTableDataset withBaseRequestId(Object baseRequestId) {
-        this.baseRequestId = baseRequestId;
-        return this;
+    private SapOpenHubTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -163,6 +86,83 @@ public class SapOpenHubTableDataset extends Dataset {
     }
 
     /**
+     * Get the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
+     * Table. Type: string (or Expression with resultType string).
+     *
+     * @return the openHubDestinationName value.
+     */
+    public Object openHubDestinationName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().openHubDestinationName();
+    }
+
+    /**
+     * Set the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
+     * Table. Type: string (or Expression with resultType string).
+     *
+     * @param openHubDestinationName the openHubDestinationName value to set.
+     * @return the SapOpenHubTableDataset object itself.
+     */
+    public SapOpenHubTableDataset withOpenHubDestinationName(Object openHubDestinationName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapOpenHubTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withOpenHubDestinationName(openHubDestinationName);
+        return this;
+    }
+
+    /**
+     * Get the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
+     * true. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the excludeLastRequest value.
+     */
+    public Object excludeLastRequest() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().excludeLastRequest();
+    }
+
+    /**
+     * Set the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
+     * true. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param excludeLastRequest the excludeLastRequest value to set.
+     * @return the SapOpenHubTableDataset object itself.
+     */
+    public SapOpenHubTableDataset withExcludeLastRequest(Object excludeLastRequest) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapOpenHubTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withExcludeLastRequest(excludeLastRequest);
+        return this;
+    }
+
+    /**
+     * Get the baseRequestId property: The ID of request for delta loading. Once it is set, only data with requestId
+     * larger than the value of this property will be retrieved. The default value is 0. Type: integer (or Expression
+     * with resultType integer ).
+     *
+     * @return the baseRequestId value.
+     */
+    public Object baseRequestId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().baseRequestId();
+    }
+
+    /**
+     * Set the baseRequestId property: The ID of request for delta loading. Once it is set, only data with requestId
+     * larger than the value of this property will be retrieved. The default value is 0. Type: integer (or Expression
+     * with resultType integer ).
+     *
+     * @param baseRequestId the baseRequestId value to set.
+     * @return the SapOpenHubTableDataset object itself.
+     */
+    public SapOpenHubTableDataset withBaseRequestId(Object baseRequestId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapOpenHubTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withBaseRequestId(baseRequestId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -170,11 +170,13 @@ public class SapOpenHubTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (openHubDestinationName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property openHubDestinationName in model SapOpenHubTableDataset"));
+                        "Missing required property innerTypeProperties in model SapOpenHubTableDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

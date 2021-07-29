@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureMLUpdateResourceActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,100 +16,24 @@ import java.util.List;
 /** Azure ML Update Resource management activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMLUpdateResource")
-@JsonFlatten
 @Fluent
-public class AzureMLUpdateResourceActivity extends ExecutionActivity {
+public final class AzureMLUpdateResourceActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMLUpdateResourceActivity.class);
 
     /*
-     * Name of the Trained Model module in the Web Service experiment to be
-     * updated. Type: string (or Expression with resultType string).
+     * Azure ML Update Resource management activity properties.
      */
-    @JsonProperty(value = "typeProperties.trainedModelName", required = true)
-    private Object trainedModelName;
-
-    /*
-     * Name of Azure Storage linked service holding the .ilearner file that
-     * will be uploaded by the update operation.
-     */
-    @JsonProperty(value = "typeProperties.trainedModelLinkedServiceName", required = true)
-    private LinkedServiceReference trainedModelLinkedServiceName;
-
-    /*
-     * The relative file path in trainedModelLinkedService to represent the
-     * .ilearner file that will be uploaded by the update operation.  Type:
-     * string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.trainedModelFilePath", required = true)
-    private Object trainedModelFilePath;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureMLUpdateResourceActivityTypeProperties innerTypeProperties =
+        new AzureMLUpdateResourceActivityTypeProperties();
 
     /**
-     * Get the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
-     * Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Azure ML Update Resource management activity properties.
      *
-     * @return the trainedModelName value.
+     * @return the innerTypeProperties value.
      */
-    public Object trainedModelName() {
-        return this.trainedModelName;
-    }
-
-    /**
-     * Set the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
-     * Type: string (or Expression with resultType string).
-     *
-     * @param trainedModelName the trainedModelName value to set.
-     * @return the AzureMLUpdateResourceActivity object itself.
-     */
-    public AzureMLUpdateResourceActivity withTrainedModelName(Object trainedModelName) {
-        this.trainedModelName = trainedModelName;
-        return this;
-    }
-
-    /**
-     * Get the trainedModelLinkedServiceName property: Name of Azure Storage linked service holding the .ilearner file
-     * that will be uploaded by the update operation.
-     *
-     * @return the trainedModelLinkedServiceName value.
-     */
-    public LinkedServiceReference trainedModelLinkedServiceName() {
-        return this.trainedModelLinkedServiceName;
-    }
-
-    /**
-     * Set the trainedModelLinkedServiceName property: Name of Azure Storage linked service holding the .ilearner file
-     * that will be uploaded by the update operation.
-     *
-     * @param trainedModelLinkedServiceName the trainedModelLinkedServiceName value to set.
-     * @return the AzureMLUpdateResourceActivity object itself.
-     */
-    public AzureMLUpdateResourceActivity withTrainedModelLinkedServiceName(
-        LinkedServiceReference trainedModelLinkedServiceName) {
-        this.trainedModelLinkedServiceName = trainedModelLinkedServiceName;
-        return this;
-    }
-
-    /**
-     * Get the trainedModelFilePath property: The relative file path in trainedModelLinkedService to represent the
-     * .ilearner file that will be uploaded by the update operation. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the trainedModelFilePath value.
-     */
-    public Object trainedModelFilePath() {
-        return this.trainedModelFilePath;
-    }
-
-    /**
-     * Set the trainedModelFilePath property: The relative file path in trainedModelLinkedService to represent the
-     * .ilearner file that will be uploaded by the update operation. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param trainedModelFilePath the trainedModelFilePath value to set.
-     * @return the AzureMLUpdateResourceActivity object itself.
-     */
-    public AzureMLUpdateResourceActivity withTrainedModelFilePath(Object trainedModelFilePath) {
-        this.trainedModelFilePath = trainedModelFilePath;
-        return this;
+    private AzureMLUpdateResourceActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -155,6 +79,84 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the trainedModelName value.
+     */
+    public Object trainedModelName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().trainedModelName();
+    }
+
+    /**
+     * Set the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param trainedModelName the trainedModelName value to set.
+     * @return the AzureMLUpdateResourceActivity object itself.
+     */
+    public AzureMLUpdateResourceActivity withTrainedModelName(Object trainedModelName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLUpdateResourceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTrainedModelName(trainedModelName);
+        return this;
+    }
+
+    /**
+     * Get the trainedModelLinkedServiceName property: Name of Azure Storage linked service holding the .ilearner file
+     * that will be uploaded by the update operation.
+     *
+     * @return the trainedModelLinkedServiceName value.
+     */
+    public LinkedServiceReference trainedModelLinkedServiceName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().trainedModelLinkedServiceName();
+    }
+
+    /**
+     * Set the trainedModelLinkedServiceName property: Name of Azure Storage linked service holding the .ilearner file
+     * that will be uploaded by the update operation.
+     *
+     * @param trainedModelLinkedServiceName the trainedModelLinkedServiceName value to set.
+     * @return the AzureMLUpdateResourceActivity object itself.
+     */
+    public AzureMLUpdateResourceActivity withTrainedModelLinkedServiceName(
+        LinkedServiceReference trainedModelLinkedServiceName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLUpdateResourceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTrainedModelLinkedServiceName(trainedModelLinkedServiceName);
+        return this;
+    }
+
+    /**
+     * Get the trainedModelFilePath property: The relative file path in trainedModelLinkedService to represent the
+     * .ilearner file that will be uploaded by the update operation. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the trainedModelFilePath value.
+     */
+    public Object trainedModelFilePath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().trainedModelFilePath();
+    }
+
+    /**
+     * Set the trainedModelFilePath property: The relative file path in trainedModelLinkedService to represent the
+     * .ilearner file that will be uploaded by the update operation. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param trainedModelFilePath the trainedModelFilePath value to set.
+     * @return the AzureMLUpdateResourceActivity object itself.
+     */
+    public AzureMLUpdateResourceActivity withTrainedModelFilePath(Object trainedModelFilePath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLUpdateResourceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTrainedModelFilePath(trainedModelFilePath);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -162,26 +164,13 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (trainedModelName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property trainedModelName in model AzureMLUpdateResourceActivity"));
-        }
-        if (trainedModelLinkedServiceName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trainedModelLinkedServiceName in model"
-                            + " AzureMLUpdateResourceActivity"));
+                        "Missing required property innerTypeProperties in model AzureMLUpdateResourceActivity"));
         } else {
-            trainedModelLinkedServiceName().validate();
-        }
-        if (trainedModelFilePath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trainedModelFilePath in model AzureMLUpdateResourceActivity"));
+            innerTypeProperties().validate();
         }
     }
 }

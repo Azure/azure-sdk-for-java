@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.HDInsightHiveActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,220 +17,23 @@ import java.util.Map;
 /** HDInsight Hive activity type. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HDInsightHive")
-@JsonFlatten
 @Fluent
-public class HDInsightHiveActivity extends ExecutionActivity {
+public final class HDInsightHiveActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightHiveActivity.class);
 
     /*
-     * Storage linked service references.
+     * HDInsight Hive activity properties.
      */
-    @JsonProperty(value = "typeProperties.storageLinkedServices")
-    private List<LinkedServiceReference> storageLinkedServices;
-
-    /*
-     * User specified arguments to HDInsightActivity.
-     */
-    @JsonProperty(value = "typeProperties.arguments")
-    private List<Object> arguments;
-
-    /*
-     * Debug info option.
-     */
-    @JsonProperty(value = "typeProperties.getDebugInfo")
-    private HDInsightActivityDebugInfoOption getDebugInfo;
-
-    /*
-     * Script path. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.scriptPath")
-    private Object scriptPath;
-
-    /*
-     * Script linked service reference.
-     */
-    @JsonProperty(value = "typeProperties.scriptLinkedService")
-    private LinkedServiceReference scriptLinkedService;
-
-    /*
-     * Allows user to specify defines for Hive job request.
-     */
-    @JsonProperty(value = "typeProperties.defines")
-    private Map<String, Object> defines;
-
-    /*
-     * User specified arguments under hivevar namespace.
-     */
-    @JsonProperty(value = "typeProperties.variables")
-    private List<Object> variables;
-
-    /*
-     * Query timeout value (in minutes).  Effective when the HDInsight cluster
-     * is with ESP (Enterprise Security Package)
-     */
-    @JsonProperty(value = "typeProperties.queryTimeout")
-    private Integer queryTimeout;
+    @JsonProperty(value = "typeProperties", required = true)
+    private HDInsightHiveActivityTypeProperties innerTypeProperties = new HDInsightHiveActivityTypeProperties();
 
     /**
-     * Get the storageLinkedServices property: Storage linked service references.
+     * Get the innerTypeProperties property: HDInsight Hive activity properties.
      *
-     * @return the storageLinkedServices value.
+     * @return the innerTypeProperties value.
      */
-    public List<LinkedServiceReference> storageLinkedServices() {
-        return this.storageLinkedServices;
-    }
-
-    /**
-     * Set the storageLinkedServices property: Storage linked service references.
-     *
-     * @param storageLinkedServices the storageLinkedServices value to set.
-     * @return the HDInsightHiveActivity object itself.
-     */
-    public HDInsightHiveActivity withStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
-        this.storageLinkedServices = storageLinkedServices;
-        return this;
-    }
-
-    /**
-     * Get the arguments property: User specified arguments to HDInsightActivity.
-     *
-     * @return the arguments value.
-     */
-    public List<Object> arguments() {
-        return this.arguments;
-    }
-
-    /**
-     * Set the arguments property: User specified arguments to HDInsightActivity.
-     *
-     * @param arguments the arguments value to set.
-     * @return the HDInsightHiveActivity object itself.
-     */
-    public HDInsightHiveActivity withArguments(List<Object> arguments) {
-        this.arguments = arguments;
-        return this;
-    }
-
-    /**
-     * Get the getDebugInfo property: Debug info option.
-     *
-     * @return the getDebugInfo value.
-     */
-    public HDInsightActivityDebugInfoOption getDebugInfo() {
-        return this.getDebugInfo;
-    }
-
-    /**
-     * Set the getDebugInfo property: Debug info option.
-     *
-     * @param getDebugInfo the getDebugInfo value to set.
-     * @return the HDInsightHiveActivity object itself.
-     */
-    public HDInsightHiveActivity withGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
-        this.getDebugInfo = getDebugInfo;
-        return this;
-    }
-
-    /**
-     * Get the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
-     * @return the scriptPath value.
-     */
-    public Object scriptPath() {
-        return this.scriptPath;
-    }
-
-    /**
-     * Set the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
-     * @param scriptPath the scriptPath value to set.
-     * @return the HDInsightHiveActivity object itself.
-     */
-    public HDInsightHiveActivity withScriptPath(Object scriptPath) {
-        this.scriptPath = scriptPath;
-        return this;
-    }
-
-    /**
-     * Get the scriptLinkedService property: Script linked service reference.
-     *
-     * @return the scriptLinkedService value.
-     */
-    public LinkedServiceReference scriptLinkedService() {
-        return this.scriptLinkedService;
-    }
-
-    /**
-     * Set the scriptLinkedService property: Script linked service reference.
-     *
-     * @param scriptLinkedService the scriptLinkedService value to set.
-     * @return the HDInsightHiveActivity object itself.
-     */
-    public HDInsightHiveActivity withScriptLinkedService(LinkedServiceReference scriptLinkedService) {
-        this.scriptLinkedService = scriptLinkedService;
-        return this;
-    }
-
-    /**
-     * Get the defines property: Allows user to specify defines for Hive job request.
-     *
-     * @return the defines value.
-     */
-    public Map<String, Object> defines() {
-        return this.defines;
-    }
-
-    /**
-     * Set the defines property: Allows user to specify defines for Hive job request.
-     *
-     * @param defines the defines value to set.
-     * @return the HDInsightHiveActivity object itself.
-     */
-    public HDInsightHiveActivity withDefines(Map<String, Object> defines) {
-        this.defines = defines;
-        return this;
-    }
-
-    /**
-     * Get the variables property: User specified arguments under hivevar namespace.
-     *
-     * @return the variables value.
-     */
-    public List<Object> variables() {
-        return this.variables;
-    }
-
-    /**
-     * Set the variables property: User specified arguments under hivevar namespace.
-     *
-     * @param variables the variables value to set.
-     * @return the HDInsightHiveActivity object itself.
-     */
-    public HDInsightHiveActivity withVariables(List<Object> variables) {
-        this.variables = variables;
-        return this;
-    }
-
-    /**
-     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
-     * (Enterprise Security Package).
-     *
-     * @return the queryTimeout value.
-     */
-    public Integer queryTimeout() {
-        return this.queryTimeout;
-    }
-
-    /**
-     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
-     * (Enterprise Security Package).
-     *
-     * @param queryTimeout the queryTimeout value to set.
-     * @return the HDInsightHiveActivity object itself.
-     */
-    public HDInsightHiveActivity withQueryTimeout(Integer queryTimeout) {
-        this.queryTimeout = queryTimeout;
-        return this;
+    private HDInsightHiveActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -276,6 +79,192 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the storageLinkedServices property: Storage linked service references.
+     *
+     * @return the storageLinkedServices value.
+     */
+    public List<LinkedServiceReference> storageLinkedServices() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().storageLinkedServices();
+    }
+
+    /**
+     * Set the storageLinkedServices property: Storage linked service references.
+     *
+     * @param storageLinkedServices the storageLinkedServices value to set.
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
+        }
+        this.innerTypeProperties().withStorageLinkedServices(storageLinkedServices);
+        return this;
+    }
+
+    /**
+     * Get the arguments property: User specified arguments to HDInsightActivity.
+     *
+     * @return the arguments value.
+     */
+    public List<Object> arguments() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().arguments();
+    }
+
+    /**
+     * Set the arguments property: User specified arguments to HDInsightActivity.
+     *
+     * @param arguments the arguments value to set.
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withArguments(List<Object> arguments) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
+        }
+        this.innerTypeProperties().withArguments(arguments);
+        return this;
+    }
+
+    /**
+     * Get the getDebugInfo property: Debug info option.
+     *
+     * @return the getDebugInfo value.
+     */
+    public HDInsightActivityDebugInfoOption getDebugInfo() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().getDebugInfo();
+    }
+
+    /**
+     * Set the getDebugInfo property: Debug info option.
+     *
+     * @param getDebugInfo the getDebugInfo value to set.
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
+        }
+        this.innerTypeProperties().withGetDebugInfo(getDebugInfo);
+        return this;
+    }
+
+    /**
+     * Get the scriptPath property: Script path. Type: string (or Expression with resultType string).
+     *
+     * @return the scriptPath value.
+     */
+    public Object scriptPath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scriptPath();
+    }
+
+    /**
+     * Set the scriptPath property: Script path. Type: string (or Expression with resultType string).
+     *
+     * @param scriptPath the scriptPath value to set.
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withScriptPath(Object scriptPath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
+        }
+        this.innerTypeProperties().withScriptPath(scriptPath);
+        return this;
+    }
+
+    /**
+     * Get the scriptLinkedService property: Script linked service reference.
+     *
+     * @return the scriptLinkedService value.
+     */
+    public LinkedServiceReference scriptLinkedService() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scriptLinkedService();
+    }
+
+    /**
+     * Set the scriptLinkedService property: Script linked service reference.
+     *
+     * @param scriptLinkedService the scriptLinkedService value to set.
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withScriptLinkedService(LinkedServiceReference scriptLinkedService) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
+        }
+        this.innerTypeProperties().withScriptLinkedService(scriptLinkedService);
+        return this;
+    }
+
+    /**
+     * Get the defines property: Allows user to specify defines for Hive job request.
+     *
+     * @return the defines value.
+     */
+    public Map<String, Object> defines() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().defines();
+    }
+
+    /**
+     * Set the defines property: Allows user to specify defines for Hive job request.
+     *
+     * @param defines the defines value to set.
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withDefines(Map<String, Object> defines) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
+        }
+        this.innerTypeProperties().withDefines(defines);
+        return this;
+    }
+
+    /**
+     * Get the variables property: User specified arguments under hivevar namespace.
+     *
+     * @return the variables value.
+     */
+    public List<Object> variables() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().variables();
+    }
+
+    /**
+     * Set the variables property: User specified arguments under hivevar namespace.
+     *
+     * @param variables the variables value to set.
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withVariables(List<Object> variables) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
+        }
+        this.innerTypeProperties().withVariables(variables);
+        return this;
+    }
+
+    /**
+     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
+     * (Enterprise Security Package).
+     *
+     * @return the queryTimeout value.
+     */
+    public Integer queryTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().queryTimeout();
+    }
+
+    /**
+     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
+     * (Enterprise Security Package).
+     *
+     * @param queryTimeout the queryTimeout value to set.
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withQueryTimeout(Integer queryTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
+        }
+        this.innerTypeProperties().withQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -283,11 +272,13 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (storageLinkedServices() != null) {
-            storageLinkedServices().forEach(e -> e.validate());
-        }
-        if (scriptLinkedService() != null) {
-            scriptLinkedService().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model HDInsightHiveActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SelfHostedIntegrationRuntimeNodeInner;
+import com.azure.resourcemanager.datafactory.fluent.models.SelfHostedIntegrationRuntimeStatusTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,113 +19,25 @@ import java.util.Map;
 /** Self-hosted integration runtime status. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SelfHosted")
-@JsonFlatten
 @Fluent
-public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
+public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SelfHostedIntegrationRuntimeStatus.class);
 
     /*
-     * The time at which the integration runtime was created, in ISO8601
-     * format.
+     * Self-hosted integration runtime status type properties.
      */
-    @JsonProperty(value = "typeProperties.createTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createTime;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
+        new SelfHostedIntegrationRuntimeStatusTypeProperties();
 
-    /*
-     * The task queue id of the integration runtime.
+    /**
+     * Get the innerTypeProperties property: Self-hosted integration runtime status type properties.
+     *
+     * @return the innerTypeProperties value.
      */
-    @JsonProperty(value = "typeProperties.taskQueueId", access = JsonProperty.Access.WRITE_ONLY)
-    private String taskQueueId;
-
-    /*
-     * It is used to set the encryption mode for node-node communication
-     * channel (when more than 2 self-hosted integration runtime nodes exist).
-     */
-    @JsonProperty(value = "typeProperties.internalChannelEncryption", access = JsonProperty.Access.WRITE_ONLY)
-    private IntegrationRuntimeInternalChannelEncryptionMode internalChannelEncryption;
-
-    /*
-     * Version of the integration runtime.
-     */
-    @JsonProperty(value = "typeProperties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
-
-    /*
-     * The list of nodes for this integration runtime.
-     */
-    @JsonProperty(value = "typeProperties.nodes")
-    private List<SelfHostedIntegrationRuntimeNodeInner> nodes;
-
-    /*
-     * The date at which the integration runtime will be scheduled to update,
-     * in ISO8601 format.
-     */
-    @JsonProperty(value = "typeProperties.scheduledUpdateDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime scheduledUpdateDate;
-
-    /*
-     * The time in the date scheduled by service to update the integration
-     * runtime, e.g., PT03H is 3 hours
-     */
-    @JsonProperty(value = "typeProperties.updateDelayOffset", access = JsonProperty.Access.WRITE_ONLY)
-    private String updateDelayOffset;
-
-    /*
-     * The local time zone offset in hours.
-     */
-    @JsonProperty(value = "typeProperties.localTimeZoneOffset", access = JsonProperty.Access.WRITE_ONLY)
-    private String localTimeZoneOffset;
-
-    /*
-     * Object with additional information about integration runtime
-     * capabilities.
-     */
-    @JsonProperty(value = "typeProperties.capabilities", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, String> capabilities;
-
-    /*
-     * The URLs for the services used in integration runtime backend service.
-     */
-    @JsonProperty(value = "typeProperties.serviceUrls", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> serviceUrls;
-
-    /*
-     * Whether Self-hosted integration runtime auto update has been turned on.
-     */
-    @JsonProperty(value = "typeProperties.autoUpdate", access = JsonProperty.Access.WRITE_ONLY)
-    private IntegrationRuntimeAutoUpdate autoUpdate;
-
-    /*
-     * Status of the integration runtime version.
-     */
-    @JsonProperty(value = "typeProperties.versionStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private String versionStatus;
-
-    /*
-     * The list of linked integration runtimes that are created to share with
-     * this integration runtime.
-     */
-    @JsonProperty(value = "typeProperties.links")
-    private List<LinkedIntegrationRuntime> links;
-
-    /*
-     * The version that the integration runtime is going to update to.
-     */
-    @JsonProperty(value = "typeProperties.pushedVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String pushedVersion;
-
-    /*
-     * The latest version on download center.
-     */
-    @JsonProperty(value = "typeProperties.latestVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String latestVersion;
-
-    /*
-     * The estimated time when the self-hosted integration runtime will be
-     * updated.
-     */
-    @JsonProperty(value = "typeProperties.autoUpdateETA", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime autoUpdateEta;
+    private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
+    }
 
     /**
      * Get the createTime property: The time at which the integration runtime was created, in ISO8601 format.
@@ -133,7 +45,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
-        return this.createTime;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().createTime();
     }
 
     /**
@@ -142,7 +54,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the taskQueueId value.
      */
     public String taskQueueId() {
-        return this.taskQueueId;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().taskQueueId();
     }
 
     /**
@@ -152,7 +64,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the internalChannelEncryption value.
      */
     public IntegrationRuntimeInternalChannelEncryptionMode internalChannelEncryption() {
-        return this.internalChannelEncryption;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().internalChannelEncryption();
     }
 
     /**
@@ -161,7 +73,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().version();
     }
 
     /**
@@ -170,7 +82,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the nodes value.
      */
     public List<SelfHostedIntegrationRuntimeNodeInner> nodes() {
-        return this.nodes;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().nodes();
     }
 
     /**
@@ -180,7 +92,10 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the SelfHostedIntegrationRuntimeStatus object itself.
      */
     public SelfHostedIntegrationRuntimeStatus withNodes(List<SelfHostedIntegrationRuntimeNodeInner> nodes) {
-        this.nodes = nodes;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SelfHostedIntegrationRuntimeStatusTypeProperties();
+        }
+        this.innerTypeProperties().withNodes(nodes);
         return this;
     }
 
@@ -191,7 +106,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the scheduledUpdateDate value.
      */
     public OffsetDateTime scheduledUpdateDate() {
-        return this.scheduledUpdateDate;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scheduledUpdateDate();
     }
 
     /**
@@ -201,7 +116,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the updateDelayOffset value.
      */
     public String updateDelayOffset() {
-        return this.updateDelayOffset;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().updateDelayOffset();
     }
 
     /**
@@ -210,7 +125,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the localTimeZoneOffset value.
      */
     public String localTimeZoneOffset() {
-        return this.localTimeZoneOffset;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().localTimeZoneOffset();
     }
 
     /**
@@ -219,7 +134,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the capabilities value.
      */
     public Map<String, String> capabilities() {
-        return this.capabilities;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().capabilities();
     }
 
     /**
@@ -228,7 +143,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the serviceUrls value.
      */
     public List<String> serviceUrls() {
-        return this.serviceUrls;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().serviceUrls();
     }
 
     /**
@@ -237,7 +152,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the autoUpdate value.
      */
     public IntegrationRuntimeAutoUpdate autoUpdate() {
-        return this.autoUpdate;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().autoUpdate();
     }
 
     /**
@@ -246,7 +161,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the versionStatus value.
      */
     public String versionStatus() {
-        return this.versionStatus;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().versionStatus();
     }
 
     /**
@@ -256,7 +171,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the links value.
      */
     public List<LinkedIntegrationRuntime> links() {
-        return this.links;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().links();
     }
 
     /**
@@ -267,7 +182,10 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the SelfHostedIntegrationRuntimeStatus object itself.
      */
     public SelfHostedIntegrationRuntimeStatus withLinks(List<LinkedIntegrationRuntime> links) {
-        this.links = links;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SelfHostedIntegrationRuntimeStatusTypeProperties();
+        }
+        this.innerTypeProperties().withLinks(links);
         return this;
     }
 
@@ -277,7 +195,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the pushedVersion value.
      */
     public String pushedVersion() {
-        return this.pushedVersion;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().pushedVersion();
     }
 
     /**
@@ -286,7 +204,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the latestVersion value.
      */
     public String latestVersion() {
-        return this.latestVersion;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().latestVersion();
     }
 
     /**
@@ -295,7 +213,7 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      * @return the autoUpdateEta value.
      */
     public OffsetDateTime autoUpdateEta() {
-        return this.autoUpdateEta;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().autoUpdateEta();
     }
 
     /**
@@ -306,11 +224,13 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
     @Override
     public void validate() {
         super.validate();
-        if (nodes() != null) {
-            nodes().forEach(e -> e.validate());
-        }
-        if (links() != null) {
-            links().forEach(e -> e.validate());
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model SelfHostedIntegrationRuntimeStatus"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

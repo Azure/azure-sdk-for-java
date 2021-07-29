@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.CosmosDbMongoDbApiLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,68 +17,24 @@ import java.util.Map;
 /** Linked service for CosmosDB (MongoDB API) data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CosmosDbMongoDbApi")
-@JsonFlatten
 @Fluent
-public class CosmosDbMongoDbApiLinkedService extends LinkedService {
+public final class CosmosDbMongoDbApiLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CosmosDbMongoDbApiLinkedService.class);
 
     /*
-     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString
-     * or AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * CosmosDB (MongoDB API) linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionString", required = true)
-    private Object connectionString;
-
-    /*
-     * The name of the CosmosDB (MongoDB API) database that you want to access.
-     * Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.database", required = true)
-    private Object database;
+    @JsonProperty(value = "typeProperties", required = true)
+    private CosmosDbMongoDbApiLinkedServiceTypeProperties innerTypeProperties =
+        new CosmosDbMongoDbApiLinkedServiceTypeProperties();
 
     /**
-     * Get the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * Get the innerTypeProperties property: CosmosDB (MongoDB API) linked service properties.
      *
-     * @return the connectionString value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the CosmosDbMongoDbApiLinkedService object itself.
-     */
-    public CosmosDbMongoDbApiLinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the database property: The name of the CosmosDB (MongoDB API) database that you want to access. Type: string
-     * (or Expression with resultType string).
-     *
-     * @return the database value.
-     */
-    public Object database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: The name of the CosmosDB (MongoDB API) database that you want to access. Type: string
-     * (or Expression with resultType string).
-     *
-     * @param database the database value to set.
-     * @return the CosmosDbMongoDbApiLinkedService object itself.
-     */
-    public CosmosDbMongoDbApiLinkedService withDatabase(Object database) {
-        this.database = database;
-        return this;
+    private CosmosDbMongoDbApiLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -110,6 +66,56 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the CosmosDbMongoDbApiLinkedService object itself.
+     */
+    public CosmosDbMongoDbApiLinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new CosmosDbMongoDbApiLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the database property: The name of the CosmosDB (MongoDB API) database that you want to access. Type: string
+     * (or Expression with resultType string).
+     *
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: The name of the CosmosDB (MongoDB API) database that you want to access. Type: string
+     * (or Expression with resultType string).
+     *
+     * @param database the database value to set.
+     * @return the CosmosDbMongoDbApiLinkedService object itself.
+     */
+    public CosmosDbMongoDbApiLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new CosmosDbMongoDbApiLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,17 +123,13 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (connectionString() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property connectionString in model CosmosDbMongoDbApiLinkedService"));
-        }
-        if (database() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property database in model CosmosDbMongoDbApiLinkedService"));
+                        "Missing required property innerTypeProperties in model CosmosDbMongoDbApiLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

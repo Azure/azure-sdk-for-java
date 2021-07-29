@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.GoogleBigQueryDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,96 +17,23 @@ import java.util.Map;
 /** Google BigQuery service dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleBigQueryObject")
-@JsonFlatten
 @Fluent
-public class GoogleBigQueryObjectDataset extends Dataset {
+public final class GoogleBigQueryObjectDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GoogleBigQueryObjectDataset.class);
 
     /*
-     * This property will be retired. Please consider using database + table
-     * properties instead.
+     * Properties specific to this dataset type.
      */
-    @JsonProperty(value = "typeProperties.tableName")
-    private Object tableName;
-
-    /*
-     * The table name of the Google BigQuery. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.table")
-    private Object table;
-
-    /*
-     * The database name of the Google BigQuery. Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.dataset")
-    private Object dataset;
+    @JsonProperty(value = "typeProperties")
+    private GoogleBigQueryDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the tableName property: This property will be retired. Please consider using database + table properties
-     * instead.
+     * Get the innerTypeProperties property: Properties specific to this dataset type.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: This property will be retired. Please consider using database + table properties
-     * instead.
-     *
-     * @param tableName the tableName value to set.
-     * @return the GoogleBigQueryObjectDataset object itself.
-     */
-    public GoogleBigQueryObjectDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
-    }
-
-    /**
-     * Get the table property: The table name of the Google BigQuery. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the table value.
-     */
-    public Object table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The table name of the Google BigQuery. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param table the table value to set.
-     * @return the GoogleBigQueryObjectDataset object itself.
-     */
-    public GoogleBigQueryObjectDataset withTable(Object table) {
-        this.table = table;
-        return this;
-    }
-
-    /**
-     * Get the dataset property: The database name of the Google BigQuery. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the dataset value.
-     */
-    public Object dataset() {
-        return this.dataset;
-    }
-
-    /**
-     * Set the dataset property: The database name of the Google BigQuery. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param dataset the dataset value to set.
-     * @return the GoogleBigQueryObjectDataset object itself.
-     */
-    public GoogleBigQueryObjectDataset withDataset(Object dataset) {
-        this.dataset = dataset;
-        return this;
+    private GoogleBigQueryDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -159,6 +86,81 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: This property will be retired. Please consider using database + table properties
+     * instead.
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: This property will be retired. Please consider using database + table properties
+     * instead.
+     *
+     * @param tableName the tableName value to set.
+     * @return the GoogleBigQueryObjectDataset object itself.
+     */
+    public GoogleBigQueryObjectDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleBigQueryDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
+     * Get the table property: The table name of the Google BigQuery. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the table value.
+     */
+    public Object table() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().table();
+    }
+
+    /**
+     * Set the table property: The table name of the Google BigQuery. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param table the table value to set.
+     * @return the GoogleBigQueryObjectDataset object itself.
+     */
+    public GoogleBigQueryObjectDataset withTable(Object table) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleBigQueryDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTable(table);
+        return this;
+    }
+
+    /**
+     * Get the dataset property: The database name of the Google BigQuery. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the dataset value.
+     */
+    public Object dataset() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().dataset();
+    }
+
+    /**
+     * Set the dataset property: The database name of the Google BigQuery. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param dataset the dataset value to set.
+     * @return the GoogleBigQueryObjectDataset object itself.
+     */
+    public GoogleBigQueryObjectDataset withDataset(Object dataset) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleBigQueryDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withDataset(dataset);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -166,5 +168,8 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

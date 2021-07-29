@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.FilterActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,61 +16,23 @@ import java.util.List;
 /** Filter and return results from input array based on the conditions. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Filter")
-@JsonFlatten
 @Fluent
-public class FilterActivity extends ControlActivity {
+public final class FilterActivity extends ControlActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FilterActivity.class);
 
     /*
-     * Input array on which filter should be applied.
+     * Filter activity properties.
      */
-    @JsonProperty(value = "typeProperties.items", required = true)
-    private Expression items;
-
-    /*
-     * Condition to be used for filtering the input.
-     */
-    @JsonProperty(value = "typeProperties.condition", required = true)
-    private Expression condition;
+    @JsonProperty(value = "typeProperties", required = true)
+    private FilterActivityTypeProperties innerTypeProperties = new FilterActivityTypeProperties();
 
     /**
-     * Get the items property: Input array on which filter should be applied.
+     * Get the innerTypeProperties property: Filter activity properties.
      *
-     * @return the items value.
+     * @return the innerTypeProperties value.
      */
-    public Expression items() {
-        return this.items;
-    }
-
-    /**
-     * Set the items property: Input array on which filter should be applied.
-     *
-     * @param items the items value to set.
-     * @return the FilterActivity object itself.
-     */
-    public FilterActivity withItems(Expression items) {
-        this.items = items;
-        return this;
-    }
-
-    /**
-     * Get the condition property: Condition to be used for filtering the input.
-     *
-     * @return the condition value.
-     */
-    public Expression condition() {
-        return this.condition;
-    }
-
-    /**
-     * Set the condition property: Condition to be used for filtering the input.
-     *
-     * @param condition the condition value to set.
-     * @return the FilterActivity object itself.
-     */
-    public FilterActivity withCondition(Expression condition) {
-        this.condition = condition;
-        return this;
+    private FilterActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -102,6 +64,52 @@ public class FilterActivity extends ControlActivity {
     }
 
     /**
+     * Get the items property: Input array on which filter should be applied.
+     *
+     * @return the items value.
+     */
+    public Expression items() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().items();
+    }
+
+    /**
+     * Set the items property: Input array on which filter should be applied.
+     *
+     * @param items the items value to set.
+     * @return the FilterActivity object itself.
+     */
+    public FilterActivity withItems(Expression items) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FilterActivityTypeProperties();
+        }
+        this.innerTypeProperties().withItems(items);
+        return this;
+    }
+
+    /**
+     * Get the condition property: Condition to be used for filtering the input.
+     *
+     * @return the condition value.
+     */
+    public Expression condition() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().condition();
+    }
+
+    /**
+     * Set the condition property: Condition to be used for filtering the input.
+     *
+     * @param condition the condition value to set.
+     * @return the FilterActivity object itself.
+     */
+    public FilterActivity withCondition(Expression condition) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FilterActivityTypeProperties();
+        }
+        this.innerTypeProperties().withCondition(condition);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -109,19 +117,13 @@ public class FilterActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
-        if (items() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property items in model FilterActivity"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model FilterActivity"));
         } else {
-            items().validate();
-        }
-        if (condition() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property condition in model FilterActivity"));
-        } else {
-            condition().validate();
+            innerTypeProperties().validate();
         }
     }
 }

@@ -63,10 +63,10 @@ public final class IntegrationRuntimeSsisProperties {
     private List<PackageStore> packageStores;
 
     /*
-     * The user-assigned managed identity reference.
+     * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "managedCredential")
-    private EntityReference managedCredential;
+    @JsonProperty(value = "credential")
+    private CredentialReference credential;
 
     /*
      * SSIS properties for managed integration runtime.
@@ -221,22 +221,22 @@ public final class IntegrationRuntimeSsisProperties {
     }
 
     /**
-     * Get the managedCredential property: The user-assigned managed identity reference.
+     * Get the credential property: The credential reference containing authentication information.
      *
-     * @return the managedCredential value.
+     * @return the credential value.
      */
-    public EntityReference managedCredential() {
-        return this.managedCredential;
+    public CredentialReference credential() {
+        return this.credential;
     }
 
     /**
-     * Set the managedCredential property: The user-assigned managed identity reference.
+     * Set the credential property: The credential reference containing authentication information.
      *
-     * @param managedCredential the managedCredential value to set.
+     * @param credential the credential value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
-    public IntegrationRuntimeSsisProperties withManagedCredential(EntityReference managedCredential) {
-        this.managedCredential = managedCredential;
+    public IntegrationRuntimeSsisProperties withCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 
@@ -290,8 +290,8 @@ public final class IntegrationRuntimeSsisProperties {
         if (packageStores() != null) {
             packageStores().forEach(e -> e.validate());
         }
-        if (managedCredential() != null) {
-            managedCredential().validate();
+        if (credential() != null) {
+            credential().validate();
         }
     }
 }

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.RelationalTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,36 +17,23 @@ import java.util.Map;
 /** The relational table dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("RelationalTable")
-@JsonFlatten
 @Fluent
-public class RelationalTableDataset extends Dataset {
+public final class RelationalTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationalTableDataset.class);
 
     /*
-     * The relational table name. Type: string (or Expression with resultType
-     * string).
+     * Relational table dataset properties.
      */
-    @JsonProperty(value = "typeProperties.tableName")
-    private Object tableName;
+    @JsonProperty(value = "typeProperties")
+    private RelationalTableDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the tableName property: The relational table name. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Relational table dataset properties.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: The relational table name. Type: string (or Expression with resultType string).
-     *
-     * @param tableName the tableName value to set.
-     * @return the RelationalTableDataset object itself.
-     */
-    public RelationalTableDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
+    private RelationalTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -99,6 +86,29 @@ public class RelationalTableDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: The relational table name. Type: string (or Expression with resultType string).
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: The relational table name. Type: string (or Expression with resultType string).
+     *
+     * @param tableName the tableName value to set.
+     * @return the RelationalTableDataset object itself.
+     */
+    public RelationalTableDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RelationalTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,5 +116,8 @@ public class RelationalTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

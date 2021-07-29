@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.ManagedIntegrationRuntimeTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,9 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Managed integration runtime, including managed elastic and managed dedicated integration runtimes. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Managed")
-@JsonFlatten
 @Fluent
-public class ManagedIntegrationRuntime extends IntegrationRuntime {
+public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntime.class);
 
     /*
@@ -28,22 +27,16 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
     private IntegrationRuntimeState state;
 
     /*
+     * Managed integration runtime properties.
+     */
+    @JsonProperty(value = "typeProperties", required = true)
+    private ManagedIntegrationRuntimeTypeProperties innerTypeProperties = new ManagedIntegrationRuntimeTypeProperties();
+
+    /*
      * Managed Virtual Network reference.
      */
     @JsonProperty(value = "managedVirtualNetwork")
     private ManagedVirtualNetworkReference managedVirtualNetwork;
-
-    /*
-     * The compute resource for managed integration runtime.
-     */
-    @JsonProperty(value = "typeProperties.computeProperties")
-    private IntegrationRuntimeComputeProperties computeProperties;
-
-    /*
-     * SSIS properties for managed integration runtime.
-     */
-    @JsonProperty(value = "typeProperties.ssisProperties")
-    private IntegrationRuntimeSsisProperties ssisProperties;
 
     /**
      * Get the state property: Integration runtime state, only valid for managed dedicated integration runtime.
@@ -52,6 +45,15 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      */
     public IntegrationRuntimeState state() {
         return this.state;
+    }
+
+    /**
+     * Get the innerTypeProperties property: Managed integration runtime properties.
+     *
+     * @return the innerTypeProperties value.
+     */
+    private ManagedIntegrationRuntimeTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /**
@@ -74,13 +76,20 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ManagedIntegrationRuntime withDescription(String description) {
+        super.withDescription(description);
+        return this;
+    }
+
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.
      *
      * @return the computeProperties value.
      */
     public IntegrationRuntimeComputeProperties computeProperties() {
-        return this.computeProperties;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().computeProperties();
     }
 
     /**
@@ -90,7 +99,10 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * @return the ManagedIntegrationRuntime object itself.
      */
     public ManagedIntegrationRuntime withComputeProperties(IntegrationRuntimeComputeProperties computeProperties) {
-        this.computeProperties = computeProperties;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ManagedIntegrationRuntimeTypeProperties();
+        }
+        this.innerTypeProperties().withComputeProperties(computeProperties);
         return this;
     }
 
@@ -100,7 +112,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * @return the ssisProperties value.
      */
     public IntegrationRuntimeSsisProperties ssisProperties() {
-        return this.ssisProperties;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().ssisProperties();
     }
 
     /**
@@ -110,14 +122,10 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * @return the ManagedIntegrationRuntime object itself.
      */
     public ManagedIntegrationRuntime withSsisProperties(IntegrationRuntimeSsisProperties ssisProperties) {
-        this.ssisProperties = ssisProperties;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedIntegrationRuntime withDescription(String description) {
-        super.withDescription(description);
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ManagedIntegrationRuntimeTypeProperties();
+        }
+        this.innerTypeProperties().withSsisProperties(ssisProperties);
         return this;
     }
 
@@ -129,14 +137,16 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model ManagedIntegrationRuntime"));
+        } else {
+            innerTypeProperties().validate();
+        }
         if (managedVirtualNetwork() != null) {
             managedVirtualNetwork().validate();
-        }
-        if (computeProperties() != null) {
-            computeProperties().validate();
-        }
-        if (ssisProperties() != null) {
-            ssisProperties().validate();
         }
     }
 }

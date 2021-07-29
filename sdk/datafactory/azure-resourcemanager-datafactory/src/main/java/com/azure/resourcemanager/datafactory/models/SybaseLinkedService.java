@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SybaseLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,199 +17,23 @@ import java.util.Map;
 /** Linked service for Sybase data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Sybase")
-@JsonFlatten
 @Fluent
-public class SybaseLinkedService extends LinkedService {
+public final class SybaseLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SybaseLinkedService.class);
 
     /*
-     * Server name for connection. Type: string (or Expression with resultType
-     * string).
+     * Sybase linked service properties.
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
-    private Object server;
-
-    /*
-     * Database name for connection. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.database", required = true)
-    private Object database;
-
-    /*
-     * Schema name for connection. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.schema")
-    private Object schema;
-
-    /*
-     * AuthenticationType to be used for connection.
-     */
-    @JsonProperty(value = "typeProperties.authenticationType")
-    private SybaseAuthenticationType authenticationType;
-
-    /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.username")
-    private Object username;
-
-    /*
-     * Password for authentication.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SybaseLinkedServiceTypeProperties innerTypeProperties = new SybaseLinkedServiceTypeProperties();
 
     /**
-     * Get the server property: Server name for connection. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Sybase linked service properties.
      *
-     * @return the server value.
+     * @return the innerTypeProperties value.
      */
-    public Object server() {
-        return this.server;
-    }
-
-    /**
-     * Set the server property: Server name for connection. Type: string (or Expression with resultType string).
-     *
-     * @param server the server value to set.
-     * @return the SybaseLinkedService object itself.
-     */
-    public SybaseLinkedService withServer(Object server) {
-        this.server = server;
-        return this;
-    }
-
-    /**
-     * Get the database property: Database name for connection. Type: string (or Expression with resultType string).
-     *
-     * @return the database value.
-     */
-    public Object database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: Database name for connection. Type: string (or Expression with resultType string).
-     *
-     * @param database the database value to set.
-     * @return the SybaseLinkedService object itself.
-     */
-    public SybaseLinkedService withDatabase(Object database) {
-        this.database = database;
-        return this;
-    }
-
-    /**
-     * Get the schema property: Schema name for connection. Type: string (or Expression with resultType string).
-     *
-     * @return the schema value.
-     */
-    public Object schema() {
-        return this.schema;
-    }
-
-    /**
-     * Set the schema property: Schema name for connection. Type: string (or Expression with resultType string).
-     *
-     * @param schema the schema value to set.
-     * @return the SybaseLinkedService object itself.
-     */
-    public SybaseLinkedService withSchema(Object schema) {
-        this.schema = schema;
-        return this;
-    }
-
-    /**
-     * Get the authenticationType property: AuthenticationType to be used for connection.
-     *
-     * @return the authenticationType value.
-     */
-    public SybaseAuthenticationType authenticationType() {
-        return this.authenticationType;
-    }
-
-    /**
-     * Set the authenticationType property: AuthenticationType to be used for connection.
-     *
-     * @param authenticationType the authenticationType value to set.
-     * @return the SybaseLinkedService object itself.
-     */
-    public SybaseLinkedService withAuthenticationType(SybaseAuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
-     * Get the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
-     * @param username the username value to set.
-     * @return the SybaseLinkedService object itself.
-     */
-    public SybaseLinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: Password for authentication.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Password for authentication.
-     *
-     * @param password the password value to set.
-     * @return the SybaseLinkedService object itself.
-     */
-    public SybaseLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the SybaseLinkedService object itself.
-     */
-    public SybaseLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private SybaseLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -241,6 +65,169 @@ public class SybaseLinkedService extends LinkedService {
     }
 
     /**
+     * Get the server property: Server name for connection. Type: string (or Expression with resultType string).
+     *
+     * @return the server value.
+     */
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
+    }
+
+    /**
+     * Set the server property: Server name for connection. Type: string (or Expression with resultType string).
+     *
+     * @param server the server value to set.
+     * @return the SybaseLinkedService object itself.
+     */
+    public SybaseLinkedService withServer(Object server) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SybaseLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string (or Expression with resultType string).
+     *
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string (or Expression with resultType string).
+     *
+     * @param database the database value to set.
+     * @return the SybaseLinkedService object itself.
+     */
+    public SybaseLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SybaseLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     *
+     * @return the schema value.
+     */
+    public Object schema() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().schema();
+    }
+
+    /**
+     * Set the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     *
+     * @param schema the schema value to set.
+     * @return the SybaseLinkedService object itself.
+     */
+    public SybaseLinkedService withSchema(Object schema) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SybaseLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSchema(schema);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: AuthenticationType to be used for connection.
+     *
+     * @return the authenticationType value.
+     */
+    public SybaseAuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: AuthenticationType to be used for connection.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the SybaseLinkedService object itself.
+     */
+    public SybaseLinkedService withAuthenticationType(SybaseAuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SybaseLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string (or Expression with resultType string).
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string (or Expression with resultType string).
+     *
+     * @param username the username value to set.
+     * @return the SybaseLinkedService object itself.
+     */
+    public SybaseLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SybaseLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: Password for authentication.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: Password for authentication.
+     *
+     * @param password the password value to set.
+     * @return the SybaseLinkedService object itself.
+     */
+    public SybaseLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SybaseLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the SybaseLinkedService object itself.
+     */
+    public SybaseLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SybaseLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -248,18 +235,13 @@ public class SybaseLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (server() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property server in model SybaseLinkedService"));
-        }
-        if (database() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property database in model SybaseLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model SybaseLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

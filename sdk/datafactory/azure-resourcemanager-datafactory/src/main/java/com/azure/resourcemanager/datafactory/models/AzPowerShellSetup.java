@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzPowerShellSetupTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,16 +15,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** The express custom setup of installing Azure PowerShell. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzPowerShellSetup")
-@JsonFlatten
 @Fluent
-public class AzPowerShellSetup extends CustomSetupBase {
+public final class AzPowerShellSetup extends CustomSetupBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzPowerShellSetup.class);
 
     /*
-     * The required version of Azure PowerShell to install.
+     * Install Azure PowerShell type properties.
      */
-    @JsonProperty(value = "typeProperties.version", required = true)
-    private String version;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzPowerShellSetupTypeProperties innerTypeProperties = new AzPowerShellSetupTypeProperties();
+
+    /**
+     * Get the innerTypeProperties property: Install Azure PowerShell type properties.
+     *
+     * @return the innerTypeProperties value.
+     */
+    private AzPowerShellSetupTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
+    }
 
     /**
      * Get the version property: The required version of Azure PowerShell to install.
@@ -32,7 +40,7 @@ public class AzPowerShellSetup extends CustomSetupBase {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().version();
     }
 
     /**
@@ -42,7 +50,10 @@ public class AzPowerShellSetup extends CustomSetupBase {
      * @return the AzPowerShellSetup object itself.
      */
     public AzPowerShellSetup withVersion(String version) {
-        this.version = version;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzPowerShellSetupTypeProperties();
+        }
+        this.innerTypeProperties().withVersion(version);
         return this;
     }
 
@@ -54,10 +65,13 @@ public class AzPowerShellSetup extends CustomSetupBase {
     @Override
     public void validate() {
         super.validate();
-        if (version() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property version in model AzPowerShellSetup"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AzPowerShellSetup"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

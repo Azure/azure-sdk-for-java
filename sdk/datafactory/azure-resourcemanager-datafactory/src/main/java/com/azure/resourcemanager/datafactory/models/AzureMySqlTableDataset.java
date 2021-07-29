@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureMySqlTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,67 +17,23 @@ import java.util.Map;
 /** The Azure MySQL database dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMySqlTable")
-@JsonFlatten
 @Fluent
-public class AzureMySqlTableDataset extends Dataset {
+public final class AzureMySqlTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMySqlTableDataset.class);
 
     /*
-     * The Azure MySQL database table name. Type: string (or Expression with
-     * resultType string).
+     * Azure MySQL database dataset properties.
      */
-    @JsonProperty(value = "typeProperties.tableName")
-    private Object tableName;
-
-    /*
-     * The name of Azure MySQL database table. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.table")
-    private Object table;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureMySqlTableDatasetTypeProperties innerTypeProperties = new AzureMySqlTableDatasetTypeProperties();
 
     /**
-     * Get the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
-     * string).
+     * Get the innerTypeProperties property: Azure MySQL database dataset properties.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param tableName the tableName value to set.
-     * @return the AzureMySqlTableDataset object itself.
-     */
-    public AzureMySqlTableDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
-    }
-
-    /**
-     * Get the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the table value.
-     */
-    public Object table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param table the table value to set.
-     * @return the AzureMySqlTableDataset object itself.
-     */
-    public AzureMySqlTableDataset withTable(Object table) {
-        this.table = table;
-        return this;
+    private AzureMySqlTableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -130,6 +86,56 @@ public class AzureMySqlTableDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param tableName the tableName value to set.
+     * @return the AzureMySqlTableDataset object itself.
+     */
+    public AzureMySqlTableDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMySqlTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
+     * Get the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the table value.
+     */
+    public Object table() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().table();
+    }
+
+    /**
+     * Set the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param table the table value to set.
+     * @return the AzureMySqlTableDataset object itself.
+     */
+    public AzureMySqlTableDataset withTable(Object table) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMySqlTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTable(table);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -137,5 +143,13 @@ public class AzureMySqlTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AzureMySqlTableDataset"));
+        } else {
+            innerTypeProperties().validate();
+        }
     }
 }

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.MongoDbLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,295 +17,23 @@ import java.util.Map;
 /** Linked service for MongoDb data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDb")
-@JsonFlatten
 @Fluent
-public class MongoDbLinkedService extends LinkedService {
+public final class MongoDbLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbLinkedService.class);
 
     /*
-     * The IP address or server name of the MongoDB server. Type: string (or
-     * Expression with resultType string).
+     * MongoDB linked service properties.
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
-    private Object server;
-
-    /*
-     * The authentication type to be used to connect to the MongoDB database.
-     */
-    @JsonProperty(value = "typeProperties.authenticationType")
-    private MongoDbAuthenticationType authenticationType;
-
-    /*
-     * The name of the MongoDB database that you want to access. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.databaseName", required = true)
-    private Object databaseName;
-
-    /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.username")
-    private Object username;
-
-    /*
-     * Password for authentication.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * Database to verify the username and password. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.authSource")
-    private Object authSource;
-
-    /*
-     * The TCP port number that the MongoDB server uses to listen for client
-     * connections. The default value is 27017. Type: integer (or Expression
-     * with resultType integer), minimum: 0.
-     */
-    @JsonProperty(value = "typeProperties.port")
-    private Object port;
-
-    /*
-     * Specifies whether the connections to the server are encrypted using SSL.
-     * The default value is false. Type: boolean (or Expression with resultType
-     * boolean).
-     */
-    @JsonProperty(value = "typeProperties.enableSsl")
-    private Object enableSsl;
-
-    /*
-     * Specifies whether to allow self-signed certificates from the server. The
-     * default value is false. Type: boolean (or Expression with resultType
-     * boolean).
-     */
-    @JsonProperty(value = "typeProperties.allowSelfSignedServerCert")
-    private Object allowSelfSignedServerCert;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private MongoDbLinkedServiceTypeProperties innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
 
     /**
-     * Get the server property: The IP address or server name of the MongoDB server. Type: string (or Expression with
-     * resultType string).
+     * Get the innerTypeProperties property: MongoDB linked service properties.
      *
-     * @return the server value.
+     * @return the innerTypeProperties value.
      */
-    public Object server() {
-        return this.server;
-    }
-
-    /**
-     * Set the server property: The IP address or server name of the MongoDB server. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param server the server value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withServer(Object server) {
-        this.server = server;
-        return this;
-    }
-
-    /**
-     * Get the authenticationType property: The authentication type to be used to connect to the MongoDB database.
-     *
-     * @return the authenticationType value.
-     */
-    public MongoDbAuthenticationType authenticationType() {
-        return this.authenticationType;
-    }
-
-    /**
-     * Set the authenticationType property: The authentication type to be used to connect to the MongoDB database.
-     *
-     * @param authenticationType the authenticationType value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withAuthenticationType(MongoDbAuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
-     * Get the databaseName property: The name of the MongoDB database that you want to access. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the databaseName value.
-     */
-    public Object databaseName() {
-        return this.databaseName;
-    }
-
-    /**
-     * Set the databaseName property: The name of the MongoDB database that you want to access. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param databaseName the databaseName value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withDatabaseName(Object databaseName) {
-        this.databaseName = databaseName;
-        return this;
-    }
-
-    /**
-     * Get the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
-     * @param username the username value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: Password for authentication.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Password for authentication.
-     *
-     * @param password the password value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the authSource property: Database to verify the username and password. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the authSource value.
-     */
-    public Object authSource() {
-        return this.authSource;
-    }
-
-    /**
-     * Set the authSource property: Database to verify the username and password. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param authSource the authSource value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withAuthSource(Object authSource) {
-        this.authSource = authSource;
-        return this;
-    }
-
-    /**
-     * Get the port property: The TCP port number that the MongoDB server uses to listen for client connections. The
-     * default value is 27017. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
-     * @return the port value.
-     */
-    public Object port() {
-        return this.port;
-    }
-
-    /**
-     * Set the port property: The TCP port number that the MongoDB server uses to listen for client connections. The
-     * default value is 27017. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
-     * @param port the port value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withPort(Object port) {
-        this.port = port;
-        return this;
-    }
-
-    /**
-     * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
-     * value is false. Type: boolean (or Expression with resultType boolean).
-     *
-     * @return the enableSsl value.
-     */
-    public Object enableSsl() {
-        return this.enableSsl;
-    }
-
-    /**
-     * Set the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
-     * value is false. Type: boolean (or Expression with resultType boolean).
-     *
-     * @param enableSsl the enableSsl value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withEnableSsl(Object enableSsl) {
-        this.enableSsl = enableSsl;
-        return this;
-    }
-
-    /**
-     * Get the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
-     * The default value is false. Type: boolean (or Expression with resultType boolean).
-     *
-     * @return the allowSelfSignedServerCert value.
-     */
-    public Object allowSelfSignedServerCert() {
-        return this.allowSelfSignedServerCert;
-    }
-
-    /**
-     * Set the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
-     * The default value is false. Type: boolean (or Expression with resultType boolean).
-     *
-     * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withAllowSelfSignedServerCert(Object allowSelfSignedServerCert) {
-        this.allowSelfSignedServerCert = allowSelfSignedServerCert;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the MongoDbLinkedService object itself.
-     */
-    public MongoDbLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private MongoDbLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -337,6 +65,250 @@ public class MongoDbLinkedService extends LinkedService {
     }
 
     /**
+     * Get the server property: The IP address or server name of the MongoDB server. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the server value.
+     */
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
+    }
+
+    /**
+     * Set the server property: The IP address or server name of the MongoDB server. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param server the server value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withServer(Object server) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The authentication type to be used to connect to the MongoDB database.
+     *
+     * @return the authenticationType value.
+     */
+    public MongoDbAuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to be used to connect to the MongoDB database.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withAuthenticationType(MongoDbAuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the databaseName property: The name of the MongoDB database that you want to access. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the databaseName value.
+     */
+    public Object databaseName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().databaseName();
+    }
+
+    /**
+     * Set the databaseName property: The name of the MongoDB database that you want to access. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param databaseName the databaseName value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withDatabaseName(Object databaseName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabaseName(databaseName);
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string (or Expression with resultType string).
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string (or Expression with resultType string).
+     *
+     * @param username the username value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: Password for authentication.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: Password for authentication.
+     *
+     * @param password the password value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the authSource property: Database to verify the username and password. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the authSource value.
+     */
+    public Object authSource() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authSource();
+    }
+
+    /**
+     * Set the authSource property: Database to verify the username and password. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param authSource the authSource value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withAuthSource(Object authSource) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthSource(authSource);
+        return this;
+    }
+
+    /**
+     * Get the port property: The TCP port number that the MongoDB server uses to listen for client connections. The
+     * default value is 27017. Type: integer (or Expression with resultType integer), minimum: 0.
+     *
+     * @return the port value.
+     */
+    public Object port() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().port();
+    }
+
+    /**
+     * Set the port property: The TCP port number that the MongoDB server uses to listen for client connections. The
+     * default value is 27017. Type: integer (or Expression with resultType integer), minimum: 0.
+     *
+     * @param port the port value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withPort(Object port) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPort(port);
+        return this;
+    }
+
+    /**
+     * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
+     * value is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the enableSsl value.
+     */
+    public Object enableSsl() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().enableSsl();
+    }
+
+    /**
+     * Set the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
+     * value is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param enableSsl the enableSsl value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withEnableSsl(Object enableSsl) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEnableSsl(enableSsl);
+        return this;
+    }
+
+    /**
+     * Get the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
+     * The default value is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the allowSelfSignedServerCert value.
+     */
+    public Object allowSelfSignedServerCert() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().allowSelfSignedServerCert();
+    }
+
+    /**
+     * Set the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
+     * The default value is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withAllowSelfSignedServerCert(Object allowSelfSignedServerCert) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAllowSelfSignedServerCert(allowSelfSignedServerCert);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the MongoDbLinkedService object itself.
+     */
+    public MongoDbLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -344,19 +316,13 @@ public class MongoDbLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (server() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property server in model MongoDbLinkedService"));
-        }
-        if (databaseName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property databaseName in model MongoDbLinkedService"));
-        }
-        if (password() != null) {
-            password().validate();
+                        "Missing required property innerTypeProperties in model MongoDbLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }
