@@ -665,15 +665,6 @@
         <configuration>
           <doctitle>Microsoft Azure Management Libraries for Java ${project.version}</doctitle>
           <windowtitle>Microsoft Azure Management Libraries for Java ${project.version}</windowtitle>
-          <header><![CDATA[<script async src="https://www.googletagmanager.com/gtag/js?id=UA-62780441-42"></script>
-            <script>
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-
-              gtag('config', 'UA-62780441-42');
-            </script>
-          ]]></header>
           <doclint>false</doclint>
           <excludePackageNames>*.samples;*.implementation.*;*.utils.*;com.microsoft.azure.utility;*.management.billing;*.management.cognitiveservices;*.management.consumption;*.management.customerinsights;*.management.devices;*.management.devtestlab;*.management.insights;*.management.logic;*.management.machinelearning;*.management.notificationhubs;*.management.powerbi;*.management.recoveryservices;*.management.relay;*.management.scheduler;*.management.servicefabric;*.management.streamanalytics</excludePackageNames>
           <bottom><![CDATA[<code>/**
