@@ -8,7 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/resourcehealth/
+      - sdk/resourcehealth/ci.mgmt.yml
+      - sdk/resourcehealth/mgmt-v2015_01_01/
+      - sdk/resourcehealth/mgmt-v2017_07_01/
+    exclude:
+      - sdk/resourcehealth/pom.xml
+      - sdk/resourcehealth/mgmt-v2015_01_01/pom.xml
+      - sdk/resourcehealth/mgmt-v2017_07_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/resourcehealth/
+      - sdk/resourcehealth/ci.mgmt.yml
+      - sdk/resourcehealth/mgmt-v2015_01_01/
+      - sdk/resourcehealth/mgmt-v2017_07_01/
+    exclude:
+      - sdk/resourcehealth/pom.xml
+      - sdk/resourcehealth/mgmt-v2015_01_01/pom.xml
+      - sdk/resourcehealth/mgmt-v2017_07_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
