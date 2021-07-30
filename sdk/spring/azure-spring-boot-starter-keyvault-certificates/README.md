@@ -356,6 +356,24 @@ Or add permission by cli command:
         --certificate-permissions get list
 ```
 
+### Supported key type
+Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |
+-------------|----------|---------------------------------|---------------- |-------- |
+PKCS #12     | RSA      | 2048                            | RSASSA-PSS      | ✔       |     
+PKCS #12     | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PKCS #12     | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PKCS #12     | EC       | P-256                           | SHA256withECDSA | ✔       |
+PKCS #12     | EC       | P-384                           | SHA384withECDSA | ✔       |
+PKCS #12     | EC       | P-521                           | SHA512withECDSA | ✔       |
+PKCS #12     | EC       | P-256K                          |                 | ✘       |
+PEM          | RSA      | 2048                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PEM          | EC       | P-256                           | SHA256withECDSA | ✔       |
+PEM          | EC       | P-384                           | SHA384withECDSA | ✔       |
+PEM          | EC       | P-521                           | SHA512withECDSA | ✔       | 
+PEM          | EC       | P-256K                          |                 | ✘       |
+
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.

@@ -125,8 +125,9 @@ azure:
 ### Key-Less certificates
 You can set the private key as [non-exportable] to ensure the security of the key.
 
-Note if you want to use key less certificate, you must add `sign` permission to the principal.
-![Sign To Principal](resources/SignToPrincipal.png)
+Note if you want to use key less certificate, you must add `sign` permission.
+
+You can add permission in portal: ![Sign To Principal](resources/SignToPrincipal.png)
 
 ### Supported key type
 Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |

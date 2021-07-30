@@ -28,7 +28,10 @@ public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
 
     protected String keyId;
 
-    //The default algorithm for certificate sign when the certificate is stored in Key Vault.
+    /**
+     * The default algorithm for certificate sign when the certificate is stored in Key Vault.
+     * @return the default algorithm.
+     */
     public abstract String getAlgorithmName();
 
     public AbstractKeyVaultKeyLessSignature() {

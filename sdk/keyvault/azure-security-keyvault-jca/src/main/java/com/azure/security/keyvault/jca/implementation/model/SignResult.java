@@ -29,7 +29,7 @@ public class SignResult {
     }
 
     /**
-     * get signature
+     * get key value
      * @return key value
      */
     public String getValue() {
@@ -37,7 +37,7 @@ public class SignResult {
     }
 
     /**
-     * set signature
+     * set key value
      * @param value key value
      */
     public void setValue(String value) {
