@@ -203,10 +203,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
     Preconditions.checkState(!closed.get())
-    if (errorCaptureFirstException.get() != null) {
-      log.logWarning(s"encountered failure earlier, rejecting new work, Context: ${operationContext.toString}")
-      throw errorCaptureFirstException.get()
-    }
+    throwIfCapturedExceptionExists()
 
     var acquisitionAttempt = 0
     while (!semaphore.tryAcquire(1, TimeUnit.MINUTES)) {
@@ -255,6 +252,15 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
     bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
+  }
+
+  private[this] def throwIfCapturedExceptionExists(): Unit = {
+    val errorSnapshot = errorCaptureFirstException.get()
+    if (errorSnapshot != null) {
+      log.logError(s"throw captured error ${errorSnapshot.getMessage}, " +
+        s"Context: ${operationContext.toString}")
+      throw errorSnapshot
+    }
   }
 
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
@@ -312,11 +318,14 @@ class BulkWriter(container: CosmosAsyncContainer,
                 }
 
                 if (numberOfIntervalsWithIdenticalActiveOperationSnapshots >= 15) {
-                  errorCaptureFirstException.set(new IllegalStateException(
-                    s"Stale bulk ingestion identified - the following active operations have not been completed " +
-                      s"(first ${maxItemOperationsToShowInErrorMessage} shown) or progressed after 15 minutes: $sb"
+                  captureIfFirstFailure(
+                    new IllegalStateException(
+                      s"Stale bulk ingestion identified - the following active operations have not been completed " +
+                        s"(first ${maxItemOperationsToShowInErrorMessage} shown) or progressed after 15 minutes: $sb"
                   ))
                 }
+
+                throwIfCapturedExceptionExists()
               }
               activeTasksSnapshot = activeTasks.get()
               val semaphoreAvailablePermitsSnapshot = semaphore.availablePermits()
@@ -347,12 +356,7 @@ class BulkWriter(container: CosmosAsyncContainer,
           semaphore.release(activeTasks.get())
           bulkInputEmitter.tryEmitComplete()
 
-          // which error to report?
-          if (errorCaptureFirstException.get() != null) {
-            log.logError(s"flushAndClose throw captured error ${errorCaptureFirstException.get().getMessage}, " +
-              s"Context: ${operationContext.toString}")
-            throw errorCaptureFirstException.get()
-          }
+          throwIfCapturedExceptionExists()
 
           assume(activeTasks.get() == 0)
           assume(activeOperations.isEmpty)
