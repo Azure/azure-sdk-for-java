@@ -16,7 +16,7 @@ public class StartSpanOptionsTests {
 
         assertEquals(StartSpanOptions.Kind.INTERNAL, options.getSpanKind());
         assertNull(options.getAttributes());
-        assertFalse(options.getMakeCurrent());
+        assertFalse(options.shouldMakeCurrent());
     }
 
     @Test
@@ -25,14 +25,14 @@ public class StartSpanOptionsTests {
 
         assertEquals(StartSpanOptions.Kind.CLIENT, options.getSpanKind());
         assertNull(options.getAttributes());
-        assertFalse(options.getMakeCurrent());
+        assertFalse(options.shouldMakeCurrent());
     }
 
     @Test
     public void setMakeCurrent() {
         StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT)
             .setMakeCurrent(true);
-        assertTrue(options.getMakeCurrent());
+        assertTrue(options.shouldMakeCurrent());
     }
 
     @Test
