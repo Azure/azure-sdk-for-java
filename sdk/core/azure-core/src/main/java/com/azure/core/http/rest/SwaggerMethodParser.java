@@ -348,6 +348,16 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
+     * Get the {@link RequestOptions} passed into the proxy method.
+     *
+     * @param swaggerMethodArguments the arguments passed to the proxy method
+     * @return the request options
+     */
+    public RequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
+        return CoreUtils.findFirstOfType(swaggerMethodArguments, RequestOptions.class);
+    }
+
+    /**
      * Get whether or not the provided response status code is one of the expected status codes for this Swagger
      * method.
      *

@@ -174,8 +174,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("test", 10);
         final SharedAccessAuthorizationRule rule = interceptorManager.isPlaybackMode()
-            ? new SharedAccessAuthorizationRule(keyName, "Uobo65ke57pwWehaL9JzGXAK30MZgErqVyn5E+rHl1c=",
-            "B4ENtK9Ze1nVMQ1mGdDsy9TuuQuGC4/K8q7OnPl8mn0=", accessRights)
+            ? new SharedAccessAuthorizationRule(keyName, "REDACTED",
+            "REDACTED", accessRights)
             : new SharedAccessAuthorizationRule(keyName, accessRights);
 
         final CreateQueueOptions expected = new CreateQueueOptions()
