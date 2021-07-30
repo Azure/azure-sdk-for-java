@@ -137,7 +137,7 @@ Or add permission by cli command:
         --secret-permissions get list \
         --certificate-permissions get list
 ```
-please replace `${KEY_VAULT}` with your key vault name and replace `${MANAGED_IDENTITY}` with your principal's object-id.
+Please replace `${KEY_VAULT}` with your key vault name and replace `${MANAGED_IDENTITY}` with your principal's object-id.
 
 ### Supported key type
 Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |
