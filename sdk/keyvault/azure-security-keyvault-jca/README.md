@@ -129,6 +129,16 @@ Note if you want to use key less certificate, you must add `sign` permission.
 
 You can add permission in portal: ![Sign To Principal](resources/SignToPrincipal.png)
 
+Or add permission by cli command:
+```shell
+  az keyvault set-policy --name ${KEY_VAULT} \
+        --object-id ${MANAGED_IDENTITY} \
+        --key-permissions get list sign\
+        --secret-permissions get list \
+        --certificate-permissions get list
+```
+please replace `${KEY_VAULT}` with your key vault name and replace `${MANAGED_IDENTITY}` with your principal's object-id.
+
 ### Supported key type
 Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |
 -------------|----------|---------------------------------|---------------- |-------- |
