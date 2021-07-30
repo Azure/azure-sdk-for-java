@@ -447,7 +447,7 @@ the main ServiceBusClientBuilder. -->
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
-            <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.HttpPipelineOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.messaging.servicebus.perf.ServiceBusStressOptions.java"/>
