@@ -87,8 +87,11 @@ public abstract class SendOperationTest<O extends SendOperation> {
 
     @Test
     public void testSendWithSessionId() throws ExecutionException, InterruptedException {
-        Message<?> messageWithSeesionId = new GenericMessage<>("testPayload",
-            Map.of("key1", "value1", "azure_service_bus_session_id", "TestSessionId"));
+        Map<String, Object> valueMap = new HashMap<>();
+        valueMap.put("key1", "value1");
+        valueMap.put("key2", "value2");
+        valueMap.put("azure_service_bus_session_id", "TestSessionId");
+        Message<?> messageWithSeesionId = new GenericMessage<>("testPayload", valueMap);
         CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, messageWithSeesionId);
 
         assertNull(future.get());
@@ -97,9 +100,13 @@ public abstract class SendOperationTest<O extends SendOperation> {
 
     @Test
     public void testSendWithSessionIdAndPartitionKeyDifferent() throws ExecutionException, InterruptedException {
-        Message<?> messageWithSeesionId = new GenericMessage<>("testPayload", Map.of("key1", "value1",
-            "azure_service_bus_session_id", "TestSessionId", "azure_service_bus_partition_key", "TestPartitionKey"));
-        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, messageWithSeesionId);
+        Map<String, Object> valueMap = new HashMap<>();
+        valueMap.put("key1", "value1");
+        valueMap.put("key2", "value2");
+        valueMap.put("azure_service_bus_session_id", "TestSessionId");
+        valueMap.put("azure_service_bus_partition_key", "TestPartitionKey");
+        Message<?> messageWithSeesionIdAndPartitionKey = new GenericMessage<>("testPayload", valueMap);
+        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, messageWithSeesionIdAndPartitionKey);
 
         assertNull(future.get());
         verifySendCalled(1);
