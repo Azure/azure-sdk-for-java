@@ -36,7 +36,7 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
             .vaultUrl(vaultUrl)
             .credential(new DefaultAzureCredentialBuilder().build());
 
-        ConfigureClientBuilder(builder);
+        configureClientBuilder(builder);
 
         secretClient = builder.buildClient();
         secretAsyncClient = builder.buildAsyncClient();

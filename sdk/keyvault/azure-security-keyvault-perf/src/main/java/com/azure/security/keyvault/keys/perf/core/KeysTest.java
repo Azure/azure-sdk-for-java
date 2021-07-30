@@ -36,7 +36,7 @@ public abstract class KeysTest<TOptions extends PerfStressOptions> extends PerfS
             .vaultUrl(vaultUrl)
             .credential(new DefaultAzureCredentialBuilder().build());
 
-        ConfigureClientBuilder(builder);
+        configureClientBuilder(builder);
 
         keyClient = builder.buildClient();
         keyAsyncClient = builder.buildAsyncClient();
