@@ -128,30 +128,6 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaces_name_standard_1'), '/queue2')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_1'))]"
-      ],
-      "properties": {
-        "lockDuration": "PT30S",
-        "maxSizeInMegabytes": 1024,
-        "requiresDuplicateDetection": false,
-        "requiresSession": false,
-        "defaultMessageTimeToLive": "P14D",
-        "deadLetteringOnMessageExpiration": false,
-        "enableBatchedOperations": true,
-        "duplicateDetectionHistoryTimeWindow": "PT10M",
-        "maxDeliveryCount": 10,
-        "status": "Active",
-        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
-        "enablePartitioning": false,
-        "enableExpress": false
-      }
-    },
-    {
-      "type": "Microsoft.ServiceBus/namespaces/queues",
-      "apiVersion": "2017-04-01",
       "name": "[concat(variables('namespaces_name_standard_3'), '/queue1')]",
       "location": "[variables('location')]",
       "dependsOn": [
@@ -197,27 +173,6 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaces_name_standard_1'), '/topic2')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_1'))]"
-      ],
-      "properties": {
-        "defaultMessageTimeToLive": "P14D",
-        "maxSizeInMegabytes": 1024,
-        "requiresDuplicateDetection": false,
-        "duplicateDetectionHistoryTimeWindow": "PT10M",
-        "enableBatchedOperations": true,
-        "status": "Active",
-        "supportOrdering": true,
-        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
-        "enablePartitioning": false,
-        "enableExpress": false
-      }
-    },
-    {
-      "type": "Microsoft.ServiceBus/namespaces/topics",
-      "apiVersion": "2017-04-01",
       "name": "[concat(variables('namespaces_name_standard_2'), '/topic1')]",
       "location": "[variables('location')]",
       "dependsOn": [
@@ -243,27 +198,6 @@
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('namespaces_name_standard_1'), 'topic1')]",
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_1'))]"
-      ],
-      "properties": {
-        "lockDuration": "PT30S",
-        "requiresSession": false,
-        "defaultMessageTimeToLive": "P14D",
-        "deadLetteringOnMessageExpiration": false,
-        "deadLetteringOnFilterEvaluationExceptions": false,
-        "maxDeliveryCount": 1,
-        "status": "Active",
-        "enableBatchedOperations": true,
-        "autoDeleteOnIdle": "P14D"
-      }
-    },
-    {
-      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
-      "apiVersion": "2018-01-01-preview",
-      "name": "[concat(variables('namespaces_name_standard_1'), '/topic2/topicSub')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('namespaces_name_standard_1'), 'topic2')]",
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_1'))]"
       ],
       "properties": {
