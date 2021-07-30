@@ -40,7 +40,7 @@ Last stable versions of packages that have been provided for usage with Azure an
 ### Management: New Releases
 A new set of management libraries that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) are now Generally Available (GA) and ready for production uses. These new libraries provide a higher-level, object-oriented API for _managing_ Azure resources, that is optimized for ease of use, succinctness and consistency. You can find the list of new packages **[on this page](https://azure.github.io/azure-sdk/releases/latest/mgmt/java.html)**.
 
-**For general documentation on how to use the new libraries for Azure Resource Management, please [visit here](https://aka.ms/azsdk/java/mgmt)**. We have also prepared **[plenty of code samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md)** as well as **[migraton guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/MIGRATION_GUIDE.md)** in case you are upgrading from previous versions.
+**For general documentation on how to use the new libraries for Azure Resource Management, please [visit here](https://aka.ms/azsdk/java/mgmt)**. We have also prepared **[plenty of code samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md)** as well as **[migration guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/MIGRATION_GUIDE.md)** in case you are upgrading from previous versions.
 
 New Management libraries can be identified by namespaces that start with `azure-resourcemanager`, e.g. `azure-resourcemanager-compute`
 
