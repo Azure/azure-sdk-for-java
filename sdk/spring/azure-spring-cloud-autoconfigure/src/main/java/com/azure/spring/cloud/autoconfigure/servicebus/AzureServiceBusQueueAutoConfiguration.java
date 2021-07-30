@@ -64,7 +64,6 @@ public class AzureServiceBusQueueAutoConfiguration {
 
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString, properties.getTransportType());
         clientFactory.retryOptions(properties.getRetryOptions());
-
         clientFactory.setNamespace(properties.getNamespace());
         clientFactory.setServiceBusNamespaceManager(namespaceManager);
         clientFactory.setServiceBusQueueManager(queueManager);

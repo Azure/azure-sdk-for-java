@@ -73,7 +73,6 @@ public class AzureServiceBusTopicAutoConfiguration {
 
         DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString, properties.getTransportType());
         clientFactory.retryOptions(properties.getRetryOptions());
-
         clientFactory.setNamespace(properties.getNamespace());
         clientFactory.setServiceBusNamespaceManager(namespaceManager);
         clientFactory.setServiceBusTopicManager(topicManager);
