@@ -2,6 +2,8 @@
 
 ## 2.8.0-beta.1 (Unreleased)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.
+### Key Bug Fixes
+- Fixed service bus cleint factory destroyed, resource not released bug.([#23195](https://github.com/Azure/azure-sdk-for-java/pull/23195))
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
 ### New Features
@@ -62,4 +64,4 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.
 
 ## 1.2.8 (2020-09-14)
 ### Breaking Changes
-- Unify Azure Spring Cloud packages version
+- Unify Spring Cloud for Azure packages version

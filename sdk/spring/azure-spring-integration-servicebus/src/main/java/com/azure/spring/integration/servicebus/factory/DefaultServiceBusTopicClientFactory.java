@@ -14,11 +14,13 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import static com.azure.spring.cloud.context.core.util.Constants.SPRING_SERVICE_BUS_APPLICATION_ID;
 
@@ -28,9 +30,9 @@ import static com.azure.spring.cloud.context.core.util.Constants.SPRING_SERVICE_
  * @author Warren Zhu
  */
 public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSenderFactory
-    implements ServiceBusTopicClientFactory {
+    implements ServiceBusTopicClientFactory, DisposableBean {
 
-    private final Log logger = LogFactory.getLog(DefaultServiceBusTopicClientFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusTopicClientFactory.class);
     private final ServiceBusClientBuilder serviceBusClientBuilder;
     private final Map<Tuple<String, String>, ServiceBusProcessorClient> topicProcessorMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> topicSenderMap = new ConcurrentHashMap<>();
@@ -46,6 +48,22 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                                 .transportType(amqpTransportType)
                                                 .clientOptions(new ClientOptions()
                                                 .setApplicationId(SPRING_SERVICE_BUS_APPLICATION_ID));
+    }
+
+    private <K, V> void close(Map<K, V> map, Consumer<V> close) {
+        map.values().forEach(it -> {
+            try {
+                close.accept(it);
+            } catch (Exception ex) {
+                LOGGER.warn("Failed to clean service bus queue client factory", ex);
+            }
+        });
+    }
+
+    @Override
+    public void destroy() {
+        close(topicSenderMap, ServiceBusSenderAsyncClient::close);
+        close(topicProcessorMap, ServiceBusProcessorClient::close);
     }
 
     @Override

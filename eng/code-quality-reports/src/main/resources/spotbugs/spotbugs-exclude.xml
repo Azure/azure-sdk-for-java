@@ -53,6 +53,29 @@
       UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD,
       NM_FIELD_NAMING_CONVENTION"/>
   </Match>
+  
+  <!-- Internal implementation details, not at risk.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
+      <Bug pattern="EI_EXPOSE_REP,
+      EI_EXPOSE_REP2"/>
+  </Match>
+  
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxDatabase"/>
+      <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+  
+  <!-- Third party source code files, kept as it is.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.LittleEndianDataInputStream"/>
+      <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+  
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.Salsa20"/>
+      <Bug pattern="DM_DEFAULT_ENCODING"/>
+  </Match>
 
   <!-- Exception needs to be caught here.-->
   <Match>
@@ -144,7 +167,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.JreCertificates$JREKeyStore"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates$JREKeyStore"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -2337,8 +2360,10 @@
     <Or>
       <Method name="getIntellijServicePrincipalDetails"/>
       <Method name="getKdbxPassword"/>
+      <Method name="getCredentialFromKdbx"/>
     </Or>
-    <Bug pattern="DM_DEFAULT_ENCODING"/>
+    <Bug pattern="DM_DEFAULT_ENCODING,
+    REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- The field is designed to be unread and for serialization purpose. -->
@@ -2440,7 +2465,7 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
   <Match>
-    <Class name="com.azure.security.keyvault.jca.LegacyRestClient"/>
+    <Class name="com.azure.security.keyvault.jca.implementation.utils.HttpUtil"/>
     <Method name="~(get|post)"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>

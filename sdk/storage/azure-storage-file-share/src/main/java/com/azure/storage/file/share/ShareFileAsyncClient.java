@@ -934,7 +934,7 @@ public class ShareFileAsyncClient {
 
     private Mono<StreamResponse> downloadRange(ShareFileRange range, Boolean rangeGetContentMD5,
         ShareRequestConditions requestConditions, Context context) {
-        String rangeString = range == null ? null : range.toString();
+        String rangeString = range == null ? null : range.toHeaderValue();
         return azureFileStorageClient.getFiles().downloadWithResponseAsync(shareName, filePath, null,
             rangeString, rangeGetContentMD5, requestConditions.getLeaseId(),  context);
     }
