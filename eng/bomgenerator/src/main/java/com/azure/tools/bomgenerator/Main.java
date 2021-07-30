@@ -62,10 +62,8 @@ public class Main {
     private static void validateOptions(BomGenerator generator) {
         switch (generator.getMode()) {
             case ANALYZE_MODE:
-                // In analyze mode, we should only be setting the pom file.
+                // In analyze mode, we should ensure that the pom file is set.
                 validateNotNullOrEmpty(generator.getPomFileName(), "pomFile");
-                validateNull(generator.getInputFileName(), "inputFileName");
-                validateNull(generator.getOutputFileName(), "outputFileName");
                 break;
 
             case GENERATE_MODE:
