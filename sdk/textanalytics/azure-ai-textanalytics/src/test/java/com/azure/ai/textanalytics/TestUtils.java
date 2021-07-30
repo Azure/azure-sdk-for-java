@@ -1307,7 +1307,7 @@ final class TestUtils {
                 false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null))),
-            null
+            IterableStream.of(Collections.emptyList())
         ));
         // Second Page
         startIndex += firstPage;
@@ -1322,7 +1322,7 @@ final class TestUtils {
                 false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null))),
-            null
+            IterableStream.of(Collections.emptyList())
         ));
         return analyzeActionsResults;
     }

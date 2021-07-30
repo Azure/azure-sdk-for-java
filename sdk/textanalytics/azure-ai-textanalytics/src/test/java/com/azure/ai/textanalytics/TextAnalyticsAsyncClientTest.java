@@ -2288,7 +2288,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
-                    null
+                    IterableStream.of(Collections.emptyList())
                 )),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2345,7 +2345,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
-                        null)),
+                        IterableStream.of(Collections.emptyList()))),
                     result.toStream().collect(Collectors.toList()));
             }
         );
@@ -2373,7 +2373,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                             TIME_NOW, getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
-                        null)),
+                        IterableStream.of(Collections.emptyList()))),
                     result.toStream().collect(Collectors.toList()));
             }
         );
@@ -2402,7 +2402,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                             TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
-                        null)),
+                        IterableStream.of(Collections.emptyList()))),
                     result.toStream().collect(Collectors.toList()));
             }
         );
@@ -2430,7 +2430,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    null
+                    IterableStream.of(Collections.emptyList())
                 )),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2456,7 +2456,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList()),
-                    null)),
+                    IterableStream.of(Collections.emptyList()))),
                 result.toStream().collect(Collectors.toList()));
         });
     }
@@ -2480,7 +2480,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
                         TIME_NOW, getExpectedBatchTextSentiment(), null))),
-                    null)),
+                    IterableStream.of(Collections.emptyList()))),
                 result.toStream().collect(Collectors.toList()));
         });
     }
