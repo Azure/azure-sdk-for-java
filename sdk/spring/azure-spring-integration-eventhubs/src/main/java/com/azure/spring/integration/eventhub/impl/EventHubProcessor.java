@@ -4,12 +4,12 @@
 package com.azure.spring.integration.eventhub.impl;
 
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.CloseContext;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.InitializationContext;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
@@ -39,6 +39,7 @@ public class EventHubProcessor {
     protected final EventHubMessageConverter messageConverter;
     protected final CheckpointManager checkpointManager;
     protected EventPosition eventPosition = EventPosition.latest();
+
 
     public EventHubProcessor(Consumer<Message<?>> consumer, Class<?> payloadType, CheckpointConfig checkpointConfig,
                              EventHubMessageConverter messageConverter) {

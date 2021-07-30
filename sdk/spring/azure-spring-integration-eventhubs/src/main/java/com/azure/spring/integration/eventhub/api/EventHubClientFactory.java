@@ -7,6 +7,7 @@ package com.azure.spring.integration.eventhub.api;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.spring.integration.eventhub.EventHubClientConfig;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 
 import java.util.Optional;
@@ -28,5 +29,7 @@ public interface EventHubClientFactory {
     Optional<EventProcessorClient> getEventProcessorClient(String eventHubName, String consumerGroup);
 
     EventProcessorClient removeEventProcessorClient(String eventHubName, String consumerGroup);
+
+    void setEventHubClientConfig(EventHubClientConfig eventHubClientConfig);
 
 }

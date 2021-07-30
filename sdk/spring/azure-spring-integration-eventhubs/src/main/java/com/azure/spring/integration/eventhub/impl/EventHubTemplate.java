@@ -4,6 +4,7 @@
 package com.azure.spring.integration.eventhub.impl;
 
 import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.integration.eventhub.EventHubClientConfig;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import org.slf4j.Logger;
@@ -44,6 +45,11 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
         }
 
         return false;
+    }
+
+    @Override
+    public void setClientConfig(EventHubClientConfig eventHubClientConfig) {
+        super.setClientConfig(eventHubClientConfig);
     }
 
     @Override

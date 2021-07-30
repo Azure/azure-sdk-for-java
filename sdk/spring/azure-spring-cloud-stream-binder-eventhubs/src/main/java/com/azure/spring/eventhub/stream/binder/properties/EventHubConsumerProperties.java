@@ -3,6 +3,10 @@
 
 package com.azure.spring.eventhub.stream.binder.properties;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.messaging.eventhubs.LoadBalancingStrategy;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.StartPosition;
 
@@ -13,8 +17,8 @@ import java.time.Duration;
  */
 public class EventHubConsumerProperties {
     /**
-     * Whether the consumer receives messages from the beginning or end of event hub.
-     * If {@link StartPosition#EARLIEST}, from beginning. If {@link StartPosition#LATEST}, from end.
+     * Whether the consumer receives messages from the beginning or end of event hub. If {@link StartPosition#EARLIEST},
+     * from beginning. If {@link StartPosition#LATEST}, from end.
      * <p>
      * Default: {@link StartPosition#LATEST}
      */
@@ -28,8 +32,8 @@ public class EventHubConsumerProperties {
     private CheckpointMode checkpointMode = CheckpointMode.BATCH;
 
     /**
-     * Effectively only when {@link CheckpointMode#PARTITION_COUNT}.
-     * Decides the amount of message for each partition to do one checkpoint
+     * Effectively only when {@link CheckpointMode#PARTITION_COUNT}. Decides the amount of message for each partition to
+     * do one checkpoint
      *
      * <p>
      * Default : 10
@@ -37,13 +41,32 @@ public class EventHubConsumerProperties {
     private int checkpointCount = 10;
 
     /**
-     * Effectively only when {@link CheckpointMode#TIME}.
-     * Decides the time interval to do one checkpoint
+     * Effectively only when {@link CheckpointMode#TIME}. Decides the time interval to do one checkpoint
      *
      * <p>
      * Default : 5s
      */
     private Duration checkpointInterval = Duration.ofSeconds(5);
+
+    private long sendTimeout = 10000;
+
+    private int prefetchCount = 1;
+
+    private boolean shareConnection = false;
+
+    private String customEndpointAddress;
+
+    private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
+
+    private AmqpTransportType transport = AmqpTransportType.AMQP;
+
+    private LoadBalancingStrategy loadBalancingStrategy = LoadBalancingStrategy.BALANCED;
+
+    private Duration loadBalancingUpdateInterval = Duration.ofSeconds(10);
+
+    private Duration partitionOwnershipExpirationInterval;
+
+    private boolean trackLastEnqueuedEventProperties = false;
 
     public StartPosition getStartPosition() {
         return startPosition;
@@ -75,5 +98,86 @@ public class EventHubConsumerProperties {
 
     public void setCheckpointInterval(Duration checkpointInterval) {
         this.checkpointInterval = checkpointInterval;
+    }
+
+    public long getSendTimeout() {
+        return sendTimeout;
+    }
+
+    public void setSendTimeout(long sendTimeout) {
+        this.sendTimeout = sendTimeout;
+    }
+
+    public int getPrefetchCount() {
+        return prefetchCount;
+    }
+
+    public void setPrefetchCount(int prefetchCount) {
+        this.prefetchCount = prefetchCount;
+    }
+
+    public boolean isShareConnection() {
+        return shareConnection;
+    }
+
+    public void setShareConnection(boolean shareConnection) {
+        this.shareConnection = shareConnection;
+    }
+
+    public String getCustomEndpointAddress() {
+        return customEndpointAddress;
+    }
+
+    public void setCustomEndpointAddress(String customEndpointAddress) {
+        this.customEndpointAddress = customEndpointAddress;
+    }
+
+    public AmqpRetryOptions getRetryOptions() {
+        return retryOptions;
+    }
+
+    public void setRetryOptions(AmqpRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+    }
+
+    public AmqpTransportType getTransport() {
+        return transport;
+    }
+
+    public void setTransport(AmqpTransportType transport) {
+        this.transport = transport;
+    }
+
+    public LoadBalancingStrategy getLoadBalancingStrategy() {
+        return loadBalancingStrategy;
+    }
+
+    public void setLoadBalancingStrategy(LoadBalancingStrategy loadBalancingStrategy) {
+        this.loadBalancingStrategy = loadBalancingStrategy;
+    }
+
+    public Duration getLoadBalancingUpdateInterval() {
+        return loadBalancingUpdateInterval;
+    }
+
+    public void setLoadBalancingUpdateInterval(Duration loadBalancingUpdateInterval) {
+        this.loadBalancingUpdateInterval = loadBalancingUpdateInterval;
+    }
+
+    public Duration getPartitionOwnershipExpirationInterval() {
+        return partitionOwnershipExpirationInterval;
+    }
+
+    public void setPartitionOwnershipExpirationInterval(int partitionOwnershipExpirationInterval) {
+        this.partitionOwnershipExpirationInterval =
+            this.loadBalancingUpdateInterval.multipliedBy(partitionOwnershipExpirationInterval);
+    }
+
+    public boolean isTrackLastEnqueuedEventProperties() {
+        return trackLastEnqueuedEventProperties;
+    }
+
+    public void setTrackLastEnqueuedEventProperties(boolean trackLastEnqueuedEventProperties) {
+        this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
     }
 }

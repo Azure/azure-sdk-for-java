@@ -47,7 +47,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         ServiceBusClientConfig clientConfig,
         ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
         return this.processorClientMap.computeIfAbsent(name,
-                                                       n -> createProcessorClient(n, clientConfig, messageProcessor));
+            n -> createProcessorClient(n, clientConfig, messageProcessor));
     }
 
     @Override
@@ -88,6 +88,8 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     }
 
     private ServiceBusSenderAsyncClient createQueueSender(String name) {
-        return serviceBusClientBuilder.sender().queueName(name).buildAsyncClient();
+        return serviceBusClientBuilder.sender()
+                                      .queueName(name)
+                                      .buildAsyncClient();
     }
 }

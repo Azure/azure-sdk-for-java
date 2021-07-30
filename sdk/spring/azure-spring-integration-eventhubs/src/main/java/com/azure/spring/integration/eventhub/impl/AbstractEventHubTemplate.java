@@ -13,6 +13,7 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.StartPosition;
+import com.azure.spring.integration.eventhub.EventHubClientConfig;
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import org.slf4j.Logger;
@@ -49,10 +50,14 @@ public class AbstractEventHubTemplate {
     private StartPosition startPosition = StartPosition.LATEST;
 
     private CheckpointConfig checkpointConfig = CheckpointConfig.builder()
-        .checkpointMode(CheckpointMode.RECORD).build();
+                                                                .checkpointMode(CheckpointMode.RECORD).build();
 
     AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
         this.clientFactory = clientFactory;
+    }
+
+    public void setClientConfig(EventHubClientConfig eventHubClientConfig) {
+        this.clientFactory.setEventHubClientConfig(eventHubClientConfig);
     }
 
     private static EventPosition buildEventPosition(StartPosition startPosition) {

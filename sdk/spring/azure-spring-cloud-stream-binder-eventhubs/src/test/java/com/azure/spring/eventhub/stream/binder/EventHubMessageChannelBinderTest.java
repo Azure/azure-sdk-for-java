@@ -13,6 +13,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.expression.Expression;
@@ -44,6 +45,7 @@ public class EventHubMessageChannelBinderTest {
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         this.binder = new EventHubTestBinder(new EventHubTestOperation(clientFactory, () -> eventContext));
         this.producerProperties = new ExtendedProducerProperties<>(new EventHubProducerProperties());
     }

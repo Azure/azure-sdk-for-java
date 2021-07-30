@@ -11,6 +11,7 @@ import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
 import com.azure.spring.integration.test.support.pojo.User;
 import com.azure.spring.integration.test.support.reactor.SendSubscribeByGroupOperationTest;
@@ -37,6 +38,9 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
     @Mock
     PartitionContext partitionContext;
 
+    @Mock
+    DefaultEventHubClientFactory defaultEventHubClientFactory;
+
     private AutoCloseable closeable;
 
     @BeforeEach
@@ -47,7 +51,7 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
         when(this.eventContext.getPartitionContext()).thenReturn(this.partitionContext);
         when(this.partitionContext.getPartitionId()).thenReturn(this.partitionId);
 
-        this.sendSubscribeOperation = new EventHubTestOperation(null, () -> eventContext);
+        this.sendSubscribeOperation = new EventHubTestOperation(defaultEventHubClientFactory, () -> eventContext);
     }
 
     @AfterEach

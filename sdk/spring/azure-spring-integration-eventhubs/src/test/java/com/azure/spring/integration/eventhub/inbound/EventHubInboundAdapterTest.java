@@ -5,6 +5,7 @@ package com.azure.spring.integration.eventhub.inbound;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
 import org.junit.jupiter.api.AfterEach;
@@ -20,13 +21,17 @@ public class EventHubInboundAdapterTest extends InboundChannelAdapterTest<EventH
     @Mock
     CheckpointStore checkpointStore;
 
+    @Mock
+    DefaultEventHubClientFactory defaultEventHubClientFactory;
+
+
     private AutoCloseable closeable;
 
     @BeforeEach
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.adapter = new EventHubInboundChannelAdapter(destination, new EventHubTestOperation(null,
+        this.adapter = new EventHubInboundChannelAdapter(destination, new EventHubTestOperation(defaultEventHubClientFactory,
             () -> partitionContext),
             consumerGroup);
     }

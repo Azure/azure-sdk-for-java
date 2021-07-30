@@ -7,6 +7,7 @@ import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
 import com.azure.spring.integration.core.api.reactor.BatchSendOperation;
 import com.azure.spring.integration.core.api.reactor.SendOperation;
+import com.azure.spring.integration.eventhub.EventHubClientConfig;
 
 /**
  * Azure event hub operation to support send data asynchronously and subscribe
@@ -15,5 +16,6 @@ import com.azure.spring.integration.core.api.reactor.SendOperation;
  */
 public interface EventHubOperation extends SendOperation, BatchSendOperation, SubscribeByGroupOperation {
 
+    void setClientConfig(EventHubClientConfig eventHubClientConfig);
     void setStartPosition(StartPosition startPosition);
 }

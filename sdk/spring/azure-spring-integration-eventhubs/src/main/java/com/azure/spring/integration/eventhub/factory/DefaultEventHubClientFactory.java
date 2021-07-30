@@ -13,6 +13,7 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.context.core.util.Memoizer;
 import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.integration.eventhub.EventHubClientConfig;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import java.time.Duration;
 import java.util.Map;
@@ -53,6 +55,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     private final String checkpointStorageConnectionString;
     private final String checkpointStorageContainer;
     private final String eventHubConnectionString;
+    private EventHubClientConfig eventHubClientConfig = EventHubClientConfig.eventHubClientConifgBuilder().build();
     // Memoized functional client creator
     private final BiFunction<String, String, EventHubConsumerAsyncClient> eventHubConsumerClientCreator =
         Memoizer.memoize(consumerClientMap, this::createEventHubClient);
@@ -68,19 +71,35 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         this.checkpointStorageContainer = checkpointStorageContainer;
     }
 
+    public void setEventHubClientConfig(EventHubClientConfig eventHubClientConfig) {
+        if (!ObjectUtils.isEmpty(eventHubClientConfig)) {
+            this.eventHubClientConfig = eventHubClientConfig;
+        }
+    }
+
     private EventHubConsumerAsyncClient createEventHubClient(String eventHubName, String consumerGroup) {
-        return new EventHubClientBuilder()
-            .connectionString(eventHubConnectionString, eventHubName)
-            .consumerGroup(consumerGroup)
-            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
-            .buildAsyncConsumerClient();
+        return builder(eventHubName, consumerGroup).buildAsyncConsumerClient();
     }
 
     private EventHubProducerAsyncClient createProducerClient(String eventHubName) {
-        return new EventHubClientBuilder()
-            .connectionString(eventHubConnectionString, eventHubName)
-            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
-            .buildAsyncProducerClient();
+        return builder(eventHubName, null).buildAsyncProducerClient();
+    }
+
+    private EventHubClientBuilder builder(String eventHubName, String consumerGroup) {
+        EventHubClientBuilder eventHubClientBuilder =
+            new EventHubClientBuilder()
+                .connectionString(eventHubConnectionString, eventHubName)
+                .consumerGroup(ObjectUtils.isEmpty(consumerGroup) ? null : consumerGroup)
+                .transportType(eventHubClientConfig.getTransport())
+                .retry(eventHubClientConfig.getRetryOptions())
+                .prefetchCount(eventHubClientConfig.getPrefetchCount())
+                .customEndpointAddress(eventHubClientConfig.getCustomEndpointAddress())
+                .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID));
+
+        if (eventHubClientConfig.isShareConnection()) {
+            eventHubClientBuilder.shareConnection();
+        }
+        return eventHubClientBuilder;
     }
 
     private EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
@@ -108,6 +127,14 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
             .connectionString(eventHubConnectionString, eventHubName)
             .consumerGroup(consumerGroup)
             .checkpointStore(new BlobCheckpointStore(blobClient))
+            .transportType(eventHubClientConfig.getTransport())
+            .retry(eventHubClientConfig.getRetryOptions())
+            .customEndpointAddress(eventHubClientConfig.getCustomEndpointAddress())
+            .loadBalancingStrategy(eventHubClientConfig.getLoadBalancingStrategy())
+            .loadBalancingUpdateInterval(eventHubClientConfig.getLoadBalancingUpdateInterval())
+            .partitionOwnershipExpirationInterval(eventHubClientConfig.getPartitionOwnershipExpirationInterval())
+            .trackLastEnqueuedEventProperties(eventHubClientConfig.isTrackLastEnqueuedEventProperties())
+            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
             .processPartitionInitialization(eventHubProcessor::onInitialize)
             .processPartitionClose(eventHubProcessor::onClose)
             .processEvent(eventHubProcessor::onEvent)
