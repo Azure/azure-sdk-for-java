@@ -550,7 +550,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
      */
     @Test
     public void importCertificatePkcs12ForCertificateOperationsTest() throws Exception {
-        String certificateContent = readCertificate("pkcs12_base64_testdata.txt");
+        String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
         String certificatePassword = "123";
 
         // Set content type to indicate the certificate is PKCS12 format.
@@ -611,7 +611,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
      */
     @Test
     public void certificateUpdateForCertificateOperationsTest() throws Exception {
-        String certificateContent = readCertificate("pkcs12_base64_testdata.txt");
+        String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
         String certificatePassword = "123";
 
         // Set content type to indicate the certificate is PKCS12 format.
@@ -664,7 +664,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
     @Test
     public void listCertificatesForCertificateOperationsTest() throws Exception {
         String certificateName = "listCertificate";
-        String certificateContent = readCertificate("pkcs12_base64_testdata.txt");
+        String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
         String certificatePassword = "123";
 
         // Set content type to indicate the certificate is PKCS12 format.
@@ -728,7 +728,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
     @Test
     public void listCertificateVersionsForCertificateOperationsTest() throws Exception {
         String certificateName = "listCertificateVersions";
-        String certificateContent = readCertificate("pkcs12_base64_testdata.txt");
+        String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
         String certificatePassword = "123";
 
         // Set content type to indicate the certificate is PKCS12 format.
