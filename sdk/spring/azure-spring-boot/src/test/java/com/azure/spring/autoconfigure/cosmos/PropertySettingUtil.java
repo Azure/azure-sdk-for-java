@@ -10,7 +10,7 @@ import static org.springframework.test.context.support.TestPropertySourceUtils.a
 
 public class PropertySettingUtil {
     public static final String URI = "https://test.documents.azure.com:443/";
-    public static final String KEY = "FakeKeyOneACVKpWxxzjURgMZHEgnt5QB0R9Qj0CbHTQYBZQbrRpDoQGPfmZFelasi6bQnPOMpYQ4JdhlVZtfg==";
+    public static final String KEY = "FakeKey";
     public static final String DATABASE_NAME = "test";
     public static final boolean POPULATE_QUERY_METRICS = true;
     public static final ConsistencyLevel CONSISTENCY_LEVEL = ConsistencyLevel.STRONG;

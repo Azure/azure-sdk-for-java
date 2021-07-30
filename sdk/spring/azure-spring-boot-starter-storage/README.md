@@ -20,11 +20,11 @@ The project provides a Spring Boot Starter `azure-spring-boot-starter-storage` t
 ```
 
 ## Key concepts
-The Azure Storage platform is Microsoft's cloud storage solution for modern data storage scenarios. Core storage services offer a massively scalable object store for data objects, disk storage for Azure virtual machines (VMs), a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.
+The [Azure Storage platform] is Microsoft's cloud storage solution for modern data storage scenarios. Core storage services offer a massively scalable object store for data objects, disk storage for Azure virtual machines (VMs), a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.
 
 ## Examples
 
-Please use this `sample` as a reference for how to use **Azure Spring Boot Storage Starter** in your projects. 
+Please use this [sample] as a reference for how to use **Azure Spring Boot Storage Starter** in your projects. 
 
 #### Auto-configuration for Azure Blob storage
 
@@ -34,27 +34,34 @@ Name | Description | Required
 ---|---|---
  azure.storage.accountName | The name of the Azure Storage account. | Yes |
  azure.storage.accountKey | The access key of the Azure Storage account. | Yes |
- azure.storage.blob-endpoint | The blob endpoint URL of the Azure Storage account. | Optional when storage blob resource is used. |
- azure.storage.file-endpoint | The file endpoint URL of the Azure Storage account. | Optional when storage file resource is used |
+ azure.storage.blob-endpoint | The blob endpoint URL of the Azure Storage account. | [Optional] Required when storage blob service is used. |
+ azure.storage.file-endpoint | The file endpoint URL of the Azure Storage account. | [Optional] Required when storage file service is used |
 
 #### Autowire a resource 
-You can use the annotation of `@Value("blob://{containerName}/{blobName}")` to autowire a `Resource` with that in [Azure Blob storage][azure_storage].
+You can use the annotation of `@Value("azure-blob://[your-container-name]/[your-blob-name]")` to autowire a **blob** `Resource`.
 
 ```java
-@Value("blob://{containerName}/{blobName}")
-private Resource blobFile;
+@Value("azure-blob://[your-container-name]/[your-blob-name]")
+private Resource storageResource;
+```
+
+You can use the annotation of `azure-file://[your-fileshare-name]/[your-file-name]")` to autowire a **file** `Resource`.
+
+```java
+@Value("azure-file://[your-fileshare-name]/[your-file-name]")
+private Resource storageResource;
 ```
 
 #### Read and write to a resource 
  You can read a resource from Azure Blob storage with `getInputStream()` method.
 
 ```java
- this.blobFile.getInputStream();
+ this.storageResource.getInputStream();
 ```
 You can write to a resource in Azure Blob storage by casting the Spring `Resource` to `WritableResource`. 
 
 ```java
-(WritableResource) this.blobFile).getOutputStream();
+ ((WritableResource) this.azureBlobResource).getOutputStream();
 ```
 
 #### Other operations 
@@ -101,7 +108,7 @@ logging.level.org.hibernate=ERROR
 ```
 
 For more information about setting logging in spring, please refer to the [official doc][logging_doc].
- 
+
 ## Next steps
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
@@ -123,7 +130,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
 [azure_blob_storage]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction
-[azure_storage]: https://azure.microsoft.com/services/storage/blobs/
+[Azure Storage platform]: https://azure.microsoft.com/services/storage/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom

@@ -12,7 +12,7 @@ import java.util.Collections;
 /**
  * The Azure Key Vault security provider.
  */
-public class KeyVaultJcaProvider extends Provider {
+public final class KeyVaultJcaProvider extends Provider {
 
     /**
      * Stores the name.

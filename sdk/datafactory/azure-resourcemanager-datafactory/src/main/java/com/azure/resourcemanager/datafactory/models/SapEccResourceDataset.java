@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SapEccResourceDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,36 +17,23 @@ import java.util.Map;
 /** The path of the SAP ECC OData entity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapEccResource")
-@JsonFlatten
 @Fluent
-public class SapEccResourceDataset extends Dataset {
+public final class SapEccResourceDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SapEccResourceDataset.class);
 
     /*
-     * The path of the SAP ECC OData entity. Type: string (or Expression with
-     * resultType string).
+     * SAP ECC OData resource dataset properties.
      */
-    @JsonProperty(value = "typeProperties.path", required = true)
-    private Object path;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SapEccResourceDatasetTypeProperties innerTypeProperties = new SapEccResourceDatasetTypeProperties();
 
     /**
-     * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: SAP ECC OData resource dataset properties.
      *
-     * @return the path value.
+     * @return the innerTypeProperties value.
      */
-    public Object path() {
-        return this.path;
-    }
-
-    /**
-     * Set the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
-     *
-     * @param path the path value to set.
-     * @return the SapEccResourceDataset object itself.
-     */
-    public SapEccResourceDataset withPath(Object path) {
-        this.path = path;
-        return this;
+    private SapEccResourceDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -99,6 +86,29 @@ public class SapEccResourceDataset extends Dataset {
     }
 
     /**
+     * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
+     *
+     * @return the path value.
+     */
+    public Object path() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().path();
+    }
+
+    /**
+     * Set the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
+     *
+     * @param path the path value to set.
+     * @return the SapEccResourceDataset object itself.
+     */
+    public SapEccResourceDataset withPath(Object path) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapEccResourceDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withPath(path);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,10 +116,13 @@ public class SapEccResourceDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (path() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property path in model SapEccResourceDataset"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model SapEccResourceDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

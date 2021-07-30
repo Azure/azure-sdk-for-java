@@ -5,13 +5,13 @@ package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.SendOperation;
-import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -24,13 +24,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public abstract class SendOperationTest<O extends SendOperation> {
 
     protected String destination = "event-hub";
-    protected Message<?> message = new GenericMessage<>("testPayload",
-        ImmutableMap.of("key1", "value1", "key2", "value2"));
+    protected Message<?> message;
     protected Mono<Void> mono = Mono.empty();
     protected String partitionKey = "key";
     protected String payload = "payload";
     protected O sendOperation = null;
     private String partitionId = "1";
+
+    public SendOperationTest() {
+        Map<String, Object> valueMap = new HashMap<>(2);
+        valueMap.put("key1", "value1");
+        valueMap.put("key2", "value2");
+        message = new GenericMessage<>("testPayload", valueMap);
+    }
 
     protected abstract void setupError(String errorMessage);
 
