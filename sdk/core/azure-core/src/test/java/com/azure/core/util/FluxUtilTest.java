@@ -39,6 +39,7 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
@@ -186,10 +187,18 @@ public class FluxUtilTest {
     @ParameterizedTest
     @MethodSource("writeFileDoesNotSwallowErrorSupplier")
     public void writeFileDoesNotSwallowError(Flux<ByteBuffer> data, AsynchronousFileChannel channel,
-        Class<? extends Throwable> expectedException) throws IOException {
-        try (channel) {
-            StepVerifier.create(FluxUtil.writeFile(data, channel)).verifyError(expectedException);
-        }
+        Class<? extends Throwable> expectedException) {
+        Flux<Void> writeFile = Flux.using(() -> channel, c -> FluxUtil.writeFile(data, c), c -> {
+            try {
+                c.close();
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        });
+
+        StepVerifier.create(writeFile)
+            .expectError(expectedException)
+            .verify(Duration.ofSeconds(30));
     }
 
     @SuppressWarnings("unchecked")
@@ -270,6 +279,57 @@ public class FluxUtilTest {
 
         byte[] writtenFileBytes = Files.readAllBytes(file);
         assertArrayEquals(data, writtenFileBytes);
+    }
+
+    @Test
+    public void writingRetriableStreamThatFails() throws IOException {
+        byte[] data = new byte[4 * 1024 * 1024];
+        new SecureRandom().nextBytes(data);
+
+        AtomicInteger errorCount = new AtomicInteger();
+        Flux<ByteBuffer> retriableStream = FluxUtil.createRetriableDownloadFlux(
+            () -> generateStream(data, 0, errorCount),
+            (throwable, position) -> generateStream(data, position, errorCount), 5);
+
+        Path file = Files.createTempFile("writingRetriableStreamThatFails" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+
+        Flux<Void> writeFile = Flux.using(() -> AsynchronousFileChannel.open(file, StandardOpenOption.WRITE),
+            channel -> FluxUtil.writeFile(retriableStream, channel), channel -> {
+                try {
+                    channel.close();
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+            });
+
+        StepVerifier.create(writeFile)
+            .expectComplete()
+            .verify(Duration.ofSeconds(30));
+
+        byte[] writtenData = Files.readAllBytes(file);
+        assertArrayEquals(data, writtenData);
+    }
+
+    private Flux<ByteBuffer> generateStream(byte[] data, long offset, AtomicInteger errorCount) {
+        final long[] pos = new long[]{offset};
+
+        return Flux.push(emitter -> {
+            while (pos[0] != data.length) {
+                double random = Math.random();
+                if (random < 0.05 && errorCount.getAndIncrement() < 5) {
+                    emitter.error(new IOException());
+                    return;
+                }
+
+                int readCount = (int) Math.min(4096, data.length - pos[0]);
+                emitter.next(ByteBuffer.wrap(data, (int) pos[0], readCount));
+
+                pos[0] += readCount;
+            }
+
+            emitter.complete();
+        });
     }
 
     @Test
