@@ -46,15 +46,15 @@ public class LogsQuerySample {
 
         // Sample to iterate by row
         for (LogsTable table : queryResults.getLogsTables()) {
-            for (LogsTableRow row : table.getTableRows()) {
-                row.getTableRow()
+            for (LogsTableRow row : table.getRows()) {
+                row.getRow()
                         .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
             }
         }
 
         // Sample to get value of a column
         for (LogsTable table : queryResults.getLogsTables()) {
-            for (LogsTableRow row : table.getTableRows()) {
+            for (LogsTableRow row : table.getRows()) {
                 Optional<LogsTableCell> resourceGroup = row.getColumnValue("DurationMs");
                 if (resourceGroup.isPresent()) {
                     System.out.println(resourceGroup.get().getValueAsString());
