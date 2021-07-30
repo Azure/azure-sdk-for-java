@@ -48,7 +48,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
 
         // clean all diagnostic settings.
         List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings().listByResource(vm.id()).stream().collect(Collectors.toList());
-        for(DiagnosticSetting dsd : dsList) {
+        for (DiagnosticSetting dsd : dsList) {
             monitorManager.diagnosticSettings().deleteById(dsd.id());
         }
 
