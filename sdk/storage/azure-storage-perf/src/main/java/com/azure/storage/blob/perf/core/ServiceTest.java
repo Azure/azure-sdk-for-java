@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.perf.core;
 
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
