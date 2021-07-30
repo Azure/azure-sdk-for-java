@@ -89,8 +89,8 @@ class LargeFileTest extends APISpec{
         then:
         notThrown(DataLakeStorageException)
         count.get() == 2
-        appendPayloadSizes[0] == largeBlockSize
-        appendPayloadSizes[1] == tail
+        appendPayloadSizes.contains(largeBlockSize)
+        appendPayloadSizes.contains(tail)
     }
 
     def "Upload Large File"() {
@@ -111,8 +111,8 @@ class LargeFileTest extends APISpec{
         then:
         notThrown(DataLakeStorageException)
         count.get() == 2
-        appendPayloadSizes[0] == largeBlockSize
-        appendPayloadSizes[1] == tail
+        appendPayloadSizes.contains(largeBlockSize)
+        appendPayloadSizes.contains(tail)
     }
 
     @Unroll
