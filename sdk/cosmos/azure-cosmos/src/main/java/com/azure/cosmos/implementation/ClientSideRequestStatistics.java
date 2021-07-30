@@ -403,7 +403,7 @@ public class ClientSideRequestStatistics {
             return forceRefresh;
         }
 
-        public boolean forceCollectionRoutingMapRefresh() { return forceCollectionRoutingMapRefresh;}
+        public boolean isForceCollectionRoutingMapRefresh() { return forceCollectionRoutingMapRefresh;}
     }
 
     public static class GatewayStatistics {
