@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/languages?showStats=false&loggingOptOut=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/languages?showStats=false&loggingOptOut=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "27ddb9f4-567e-47ea-acae-3ed2a7a834ee",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a08e9dec-2e1b-4931-a915-732706c3bfa0",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "4",
+      "x-envoy-upstream-service-time" : "5",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "cb432826-d224-4f0f-bdc9-c9f3d3198ea9",
+      "apim-request-id" : "c2dab4fe-8fa9-4ef1-b1c3-d03e22a977fa",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Request contains duplicated Ids. Make sure each document has a unique Id.\"}}}",
-      "Date" : "Mon, 14 Jun 2021 20:42:00 GMT",
+      "Date" : "Fri, 30 Jul 2021 18:03:16 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
