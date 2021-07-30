@@ -51,7 +51,11 @@ public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
     @Override
     public void onNext(ByteBuffer bytes) {
         try {
-            write(bytes);
+            if (isWriting) {
+                onError(new IllegalStateException("Received onNext while processing another write operation."));
+            } else {
+                write(bytes);
+            }
         } catch (Throwable throwable) {
             // If writing has an error, and it isn't caught, there is a possibility for it to deadlock the reactive
             // stream. Catch the exception and propagate it manually so that doesn't happen.
@@ -67,9 +71,9 @@ public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
             public void completed(Integer result, ByteBuffer attachment) {
                 position.addAndGet(result);
 
-                if (attachment.hasRemaining()) {
+                if (bytes.hasRemaining()) {
                     // If the entire ByteBuffer hasn't been written send it to be written again until it completes.
-                    write(attachment);
+                    write(bytes);
                 } else {
                     isWriting = false;
                     if (isCompleted) {
