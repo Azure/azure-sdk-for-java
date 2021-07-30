@@ -123,10 +123,10 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
 
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
-    public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
+    public synchronized void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
-        AtomicBoolean clientCreated = new AtomicBoolean(false);
+        boolean clientCreated = false;
         try {
             EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
                 .connectionString(CORRECT_CONNECTION_STRING)
@@ -134,11 +134,11 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
                 .buildAsyncConsumerClient();
-            clientCreated.set(true);
+            clientCreated = true;
         } catch (Exception ex) {
         }
 
-        Assertions.assertEquals(expectedClientCreation, clientCreated.get());
+        Assertions.assertEquals(expectedClientCreation, clientCreated);
     }
 
     @Test
