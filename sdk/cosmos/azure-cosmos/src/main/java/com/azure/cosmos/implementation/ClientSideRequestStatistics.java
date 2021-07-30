@@ -398,6 +398,12 @@ public class ClientSideRequestStatistics {
         public boolean isInflightRequest() {
             return inflightRequest;
         }
+
+        public boolean isForceRefresh() {
+            return forceRefresh;
+        }
+
+        public boolean forceCollectionRoutingMapRefresh() { return forceCollectionRoutingMapRefresh;}
     }
 
     public static class GatewayStatistics {
