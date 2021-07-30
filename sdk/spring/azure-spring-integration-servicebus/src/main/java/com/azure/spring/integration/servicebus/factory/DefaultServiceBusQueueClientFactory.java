@@ -126,7 +126,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         return serviceBusClientBuilder.sender().queueName(name).buildAsyncClient();
     }
 
-    public void retryOptions(AmqpRetryOptions amqpRetryOptions) {
+    public void setRetryOptions(AmqpRetryOptions amqpRetryOptions) {
         serviceBusClientBuilder.retryOptions(amqpRetryOptions);
     }
 

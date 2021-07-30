@@ -134,7 +134,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
         return serviceBusClientBuilder.sender().topicName(name).buildAsyncClient();
     }
 
-    public void retryOptions(AmqpRetryOptions amqpRetryOptions) {
+    public void setRetryOptions(AmqpRetryOptions amqpRetryOptions) {
         serviceBusClientBuilder.retryOptions(amqpRetryOptions);
     }
 
