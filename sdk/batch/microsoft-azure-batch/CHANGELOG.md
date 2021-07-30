@@ -1,6 +1,6 @@
 # Release History
 
-## 10.0.0 (Unreleased)
+## 10.0.0 (2021-07-30)
 
 ### Features
 
