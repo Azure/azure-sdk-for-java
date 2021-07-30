@@ -3,7 +3,6 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.ClientOptions;
@@ -87,7 +86,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
         ServiceBusClientConfig clientConfig,
         ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
         if (clientConfig.getConcurrency() != 1) {
-            logger.warn("It is detected that concurrency is set, this attribute has been deprecated,"
+            LOGGER.warn("It is detected that concurrency is set, this attribute has been deprecated,"
                 + " you can use " + (clientConfig.isSessionsEnabled() ? "maxConcurrentSessions" : "maxConcurrentCalls") + " instead");
         }
         if (clientConfig.isSessionsEnabled()) {

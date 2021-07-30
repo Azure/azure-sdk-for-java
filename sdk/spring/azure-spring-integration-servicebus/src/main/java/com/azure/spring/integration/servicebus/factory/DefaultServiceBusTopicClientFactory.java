@@ -92,7 +92,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                                                                     ServiceBusErrorContext> messageProcessor) {
 
         if (config.getConcurrency() != 1) {
-            logger.warn("It is detected that concurrency is set, this attribute has been deprecated,"
+            LOGGER.warn("It is detected that concurrency is set, this attribute has been deprecated,"
                 + " you can use " + (config.isSessionsEnabled() ? "maxConcurrentSessions" : "maxConcurrentCalls") + " instead");
         }
         if (config.isSessionsEnabled()) {
