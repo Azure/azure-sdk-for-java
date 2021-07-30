@@ -98,7 +98,7 @@ com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus;7.3.0;7.4.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-webpubsub;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-messaging-webpubsub;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-mixedreality-authentication;1.0.0;1.1.0
 com.azure:azure-mixedreality-remoterendering;1.0.0;1.1.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.4;1.0.0-beta.5
@@ -324,3 +324,4 @@ com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.1;1.0.0-
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+beta_com.azure:azure-core;1.19.0-beta.1
