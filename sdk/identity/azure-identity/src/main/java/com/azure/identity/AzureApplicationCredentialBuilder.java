@@ -9,35 +9,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
 /**
- * Fluent credential builder for instantiating a {@link DefaultAzureCredential}.
+ * Fluent credential builder for instantiating a {@link AzureApplicationCredential}.
  *
- * @see DefaultAzureCredential
+ * @see AzureApplicationCredential
  */
 public class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureApplicationCredentialBuilder> {
-    private String tenantId;
     private String managedIdentityClientId;
-    private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
     /**
-     * Creates an instance of a DefaultAzureCredentialBuilder.
+     * Creates an instance of a  AzureApplicationCredentialBuilder.
      */
     public AzureApplicationCredentialBuilder() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
         managedIdentityClientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-    }
-
-    /**
-     * Sets the tenant id of the user to authenticate through the {@link DefaultAzureCredential}. If unset, the value
-     * in the AZURE_TENANT_ID environment variable will be used. If neither is set, the default is null
-     * and will authenticate users to their default tenant.
-     *
-     * @param tenantId the tenant ID to set.
-     * @return An updated instance of this builder with the tenant id set as specified.
-     */
-    public AzureApplicationCredentialBuilder tenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
     }
 
 
@@ -59,7 +43,7 @@ public class AzureApplicationCredentialBuilder extends CredentialBuilderBase<Azu
      * managed identities and not user assigned managed identities.
      *
      * @param clientId the client ID
-     * @return the DefaultAzureCredentialBuilder itself
+     * @return An updated instance of this builder with the managed identity client id set as specified.
      */
     public AzureApplicationCredentialBuilder managedIdentityClientId(String clientId) {
         this.managedIdentityClientId = clientId;
@@ -97,7 +81,7 @@ public class AzureApplicationCredentialBuilder extends CredentialBuilderBase<Azu
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(6);
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(2);
         output.add(new EnvironmentCredential(identityClientOptions));
         output.add(new ManagedIdentityCredential(managedIdentityClientId, identityClientOptions));
         return output;

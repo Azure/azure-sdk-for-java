@@ -9,16 +9,12 @@ import com.azure.core.credential.TokenCredential;
 import java.util.List;
 
 /**
- * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in
- * the following order:
+ * Creates a credential using environment variables for Azure hosted Environments. It tries to create a valid credential
+ * in the following order:
  *
  * <ol>
  * <li>{@link EnvironmentCredential}</li>
  * <li>{@link ManagedIdentityCredential}</li>
- * <li>{@link SharedTokenCacheCredential}</li>
- * <li>{@link IntelliJCredential}</li>
- * <li>{@link VisualStudioCodeCredential}</li>
- * <li>{@link AzureCliCredential}</li>
  * <li>Fails if none of the credentials above could be created.</li>
  * </ol>
  */
