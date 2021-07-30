@@ -13,16 +13,16 @@ public class SignResult {
     private String value;
 
     /**
-     * get kid
-     * @return kid
+     * get keyId
+     * @return keyId
      */
     public String getKid() {
         return kid;
     }
 
     /**
-     * set kid
-     * @param kid kid
+     * set keyId
+     * @param kid keyId
      */
     public void setKid(String kid) {
         this.kid = kid;

@@ -16,11 +16,6 @@ import java.util.Base64;
 public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignature {
 
     /**
-     * The default algorithm for certificate sign which Key Type is RSA in key Vault will be used
-     */
-    public static final String RSA_ALGORITHM = "RSASSA-PSS";
-
-    /**
      * Construct a new KeyVaultKeyLessRsaSignature
      */
     public KeyVaultKeyLessRsaSignature() {
@@ -57,7 +52,6 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
 
     @Override
     public String getAlgorithmName() {
-        //The default algorithm for certificate sign which Key Type is RSA in key Vault will be used
-        return RSA_ALGORITHM;
+        return "RSASSA-PSS";
     }
 }

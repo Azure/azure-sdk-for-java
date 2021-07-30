@@ -30,16 +30,16 @@ public class KeyVaultPrivateKey implements PrivateKey {
     }
 
     /**
-     * Get the kid
-     * @return the kid
+     * Get the KeyId
+     * @return the KeyId
      */
     public String getKid() {
         return kid;
     }
 
     /**
-     * Store the kid
-     * @param kid the kid
+     * Store the KeyId
+     * @param kid the KeyId
      */
     public void setKid(String kid) {
         this.kid = kid;

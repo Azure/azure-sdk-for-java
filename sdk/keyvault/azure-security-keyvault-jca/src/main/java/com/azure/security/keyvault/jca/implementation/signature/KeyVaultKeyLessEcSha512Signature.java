@@ -8,7 +8,7 @@ package com.azure.security.keyvault.jca.implementation.signature;
 public final class KeyVaultKeyLessEcSha512Signature extends KeyVaultKeyLessECSignature {
 
     /**
-     * The default algorithm for certificate sign which Key Type is EC and Elliptic curve name is P-521 in key Vault will be used
+     * The default algorithm for certificate sign when the certificate is stored in Key Vault and Key Type is EC and Elliptic curve name is P-512.
      */
     public static final String EC_P_521_ALGORITHM = "SHA512withECDSA";
 

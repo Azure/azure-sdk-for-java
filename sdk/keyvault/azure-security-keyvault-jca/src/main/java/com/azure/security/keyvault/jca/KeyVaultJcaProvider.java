@@ -7,12 +7,15 @@ import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessR
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha384Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha512Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha256Signature;
+import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature;
 
+import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.Provider;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 /**
  * The Azure Key Vault security provider.
@@ -91,47 +94,31 @@ public final class KeyVaultJcaProvider extends Provider {
                     null
                 )
             );
-            putService(
-                new Service(
-                    this,
-                    "Signature",
-                    KeyVaultKeyLessRsaSignature.RSA_ALGORITHM,
-                    KeyVaultKeyLessRsaSignature.class.getName(),
-                    null,
-                    null
-                )
-            );
-            putService(
-                new Service(
-                    this,
-                    "Signature",
-                    KeyVaultKeyLessEcSha256Signature.EC_P_256_ALGORITHM,
-                    KeyVaultKeyLessEcSha256Signature.class.getName(),
-                    null,
-                    null
-                )
-            );
-            putService(
-                new Service(
-                    this,
-                    "Signature",
-                    KeyVaultKeyLessEcSha384Signature.EC_P_384_ALGORITHM,
-                    KeyVaultKeyLessEcSha384Signature.class.getName(),
-                    null,
-                    null
-                )
-            );
-            putService(
-                new Service(
-                    this,
-                    "Signature",
-                    KeyVaultKeyLessEcSha512Signature.EC_P_521_ALGORITHM,
-                    KeyVaultKeyLessEcSha512Signature.class.getName(),
-                    null,
-                    null
-                )
-            );
+            Stream.of(
+                KeyVaultKeyLessRsaSignature.class,
+                KeyVaultKeyLessEcSha256Signature.class,
+                KeyVaultKeyLessEcSha384Signature.class,
+                KeyVaultKeyLessEcSha512Signature.class)
+                .forEach(c -> putService(
+                    new Service(
+                        this,
+                        "Signature",
+                        getAlgorithmName(c),
+                        c.getName(),
+                        null,
+                        null
+                    )
+                ));
             return null;
         });
+    }
+
+
+    private String getAlgorithmName(Class<? extends AbstractKeyVaultKeyLessSignature> c) {
+        try {
+            return c.getDeclaredConstructor().newInstance().getAlgorithmName();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            return "";
+        }
     }
 }

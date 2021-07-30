@@ -69,10 +69,10 @@ public final class HttpUtil {
         String result = null;
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
             if (headers != null) {
-                httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
                 headers.forEach(httpPost::addHeader);
-                httpPost.addHeader("Content-Type", "application/json");
+                httpPost.addHeader("Content-Type", contentType);
             }
             httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
             result = client.execute(httpPost, createResponseHandler());
