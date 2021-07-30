@@ -29,7 +29,7 @@ public class StartSpanOptions {
 
     private boolean makeCurrent;
     private final Kind spanKind;
-    private Map<String, Object> attributes;
+    private Map<String, Object> spanAttributes;
 
     /**
      * Describes span with given name and INTERNAL kind
@@ -46,7 +46,7 @@ public class StartSpanOptions {
     public StartSpanOptions(Kind kind) {
         Objects.requireNonNull(kind, "'kind' cannot be null.");
         this.spanKind = kind;
-        this.attributes = null;
+        this.spanAttributes = null;
         this.makeCurrent = false;
     }
 
@@ -71,11 +71,11 @@ public class StartSpanOptions {
      * @return this instance for chaining.
      */
     public StartSpanOptions setAttribute(String key, Object value) {
-        if (this.attributes == null) {
-            this.attributes = new HashMap<>();
+        if (this.spanAttributes == null) {
+            this.spanAttributes = new HashMap<>();
         }
 
-        this.attributes.put(key, value);
+        this.spanAttributes.put(key, value);
         return this;
     }
 
@@ -100,6 +100,6 @@ public class StartSpanOptions {
      * @return attributes to be set on span and used for sampling.
      */
     public Map<String, Object> getAttributes() {
-        return this.attributes;
+        return this.spanAttributes;
     }
 }

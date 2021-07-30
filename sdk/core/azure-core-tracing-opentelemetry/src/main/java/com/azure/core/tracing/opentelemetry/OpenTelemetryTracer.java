@@ -315,7 +315,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         // if some attributes are provided, set them
-        if (beforeSaplingAttributes != null && !beforeSaplingAttributes.isEmpty()) {
+        if (!CoreUtils.isNullOrEmpty(beforeSaplingAttributes)) {
             Attributes otelAttributes = convertToOtelAttributes(beforeSaplingAttributes);
             otelAttributes.forEach(
                 (key, value) -> spanBuilder.setAttribute((AttributeKey<Object>) key, value));
@@ -326,7 +326,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
 
     /**
-     * Ends current scope o nthe context.
+     * Ends current scope on the context.
      * @param context Context instance with the scope to end.
      */
     private void endScope(Context context) {
@@ -368,6 +368,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 attributesBuilder.put(key, (double[]) value);
             } else if (value instanceof boolean[]) {
                 attributesBuilder.put(key, (boolean[]) value);
+            } else {
+                logger.warning("Could not populate attribute with key '{}', type is not supported.");
             }
         });
         return attributesBuilder.build();
