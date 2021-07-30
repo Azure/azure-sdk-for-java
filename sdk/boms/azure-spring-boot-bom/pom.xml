@@ -39,7 +39,7 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.boot.version>${project.version}</azure.spring.boot.version>
     <azure.core.version>1.18.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    <azure.identity.version>1.3.3</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    <azure.identity.version>1.3.4</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     <azure.keyvault.secret.version>4.3.1</azure.keyvault.secret.version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
     <azure.msal.version>1.10.1</azure.msal.version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     <azure.servicebus.jms.version>0.0.7</azure.servicebus.jms.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->

@@ -17,7 +17,9 @@ public class SpecificPathCertificatesTest {
 
     @Test
     public void testSetCertificateEntry() {
+        String alias = "sideload";
         specificPathCertificates = SpecificPathCertificates.getSpecificPathCertificates(getFilePath("custom\\"));
-        Assertions.assertTrue(specificPathCertificates.getAliases().contains("sideload"));
+        Assertions.assertTrue(specificPathCertificates.getAliases().contains(alias));
+        Assertions.assertEquals("b7f261c05a972088bc40e458ad92227edf6b03b7", specificPathCertificates.getThumbprint(specificPathCertificates.getCertificates().get(alias)));
     }
 }
