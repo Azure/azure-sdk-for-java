@@ -103,9 +103,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                           .receiveMode(config.getServiceBusReceiveMode())
                                           .maxConcurrentCalls(config.getMaxConcurrentCalls())
                                           // TODO, It looks like max auto renew duration is not exposed
-                                          .maxConcurrentSessions(config.getMaxConcurrentSessions() == 1
-                                              ? config.getConcurrency() : config.getMaxConcurrentSessions())
-                                          .prefetchCount(config.getPrefetchCount())
+                                          .maxConcurrentSessions(config.getMaxConcurrentSessions())
                                           .processMessage(messageProcessor.processMessage())
                                           .processError(messageProcessor.processError());
             if (!config.isEnableAutoComplete()) {
@@ -118,8 +116,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                           .topicName(topic)
                                           .subscriptionName(subscription)
                                           .receiveMode(config.getServiceBusReceiveMode())
-                                          .maxConcurrentCalls(config.getMaxConcurrentCalls() == 1
-                                              ? config.getConcurrency() : config.getMaxConcurrentCalls())
+                                          .maxConcurrentCalls(config.getMaxConcurrentCalls())
                                           .prefetchCount(config.getPrefetchCount())
                                           .processMessage(messageProcessor.processMessage())
                                           .processError(messageProcessor.processError());

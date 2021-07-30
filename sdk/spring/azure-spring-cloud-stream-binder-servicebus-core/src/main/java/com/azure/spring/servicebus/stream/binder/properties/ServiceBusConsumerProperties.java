@@ -21,8 +21,9 @@ public class ServiceBusConsumerProperties {
     private int concurrency = 1;
     private boolean sessionsEnabled = false;
     private boolean requeueRejected = false;
-    private int maxConcurrentCalls = 1;
-    private int maxConcurrentSessions = 1;
+    //TODO: after concurrency deleted, this can be unboxed
+    private Integer maxConcurrentCalls;
+    private Integer maxConcurrentSessions;
     private boolean enableAutoComplete = false;
     private ServiceBusReceiveMode serviceBusReceiveMode = ServiceBusReceiveMode.PEEK_LOCK;
 
@@ -52,7 +53,7 @@ public class ServiceBusConsumerProperties {
      * @return int, default : 1
      */
     public int getMaxConcurrentCalls() {
-        return maxConcurrentCalls;
+        return maxConcurrentCalls == null ? !sessionsEnabled ? concurrency : 1 : maxConcurrentCalls;
     }
 
     public void setMaxConcurrentCalls(int maxConcurrentCalls) {
@@ -66,7 +67,7 @@ public class ServiceBusConsumerProperties {
      * @return int, default : 1
      */
     public int getMaxConcurrentSessions() {
-        return maxConcurrentSessions;
+        return maxConcurrentSessions == null ? sessionsEnabled ? concurrency : 1 : maxConcurrentSessions;
     }
 
     public void setMaxConcurrentSessions(int maxConcurrentSessions) {
