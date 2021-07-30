@@ -39,11 +39,18 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     private final Tracer tracer = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
 
-    // standard attributes with AMQP request
     static final String AZ_NAMESPACE_KEY = "az.namespace";
+
+    // standard attributes with AMQP request
     static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
     static final String PEER_ENDPOINT = "peer.address";
+
     private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
+    private static final AutoCloseable NOOP_CLOSEABLE = new AutoCloseable() {
+        @Override
+        public void close() {
+        }
+    };
 
     /**
      * {@inheritDoc}
@@ -58,7 +65,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             null,
             context);
 
-        return startSpanInternal(spanBuilder, null, false, context);
+        return startSpanInternal(spanBuilder, null, context);
     }
 
     /**
@@ -74,7 +81,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             options.getAttributes(),
             context);
 
-        return startSpanInternal(spanBuilder, null, options.shouldMakeCurrent(), context);
+        return startSpanInternal(spanBuilder, null, context);
     }
 
     /**
@@ -94,15 +101,19 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 if (spanBuilder == null) {
                     return context;
                 }
-                return startSpanInternal(spanBuilder, this::addMessagingAttributes, false, context);
+                return startSpanInternal(spanBuilder, this::addMessagingAttributes, context);
             case MESSAGE:
                 spanBuilder = createSpanBuilder(spanName, null, SpanKind.PRODUCER, null, context);
-                context = startSpanInternal(spanBuilder, this::addMessagingAttributes, false, context);
+                context = startSpanInternal(spanBuilder, this::addMessagingAttributes, context);
                 return setDiagnosticId(context);
             case PROCESS:
                 SpanContext remoteParentContext = getOrDefault(context, SPAN_CONTEXT_KEY, null, SpanContext.class);
                 spanBuilder = createSpanBuilder(spanName, remoteParentContext, SpanKind.CONSUMER, null, context);
-                return startSpanInternal(spanBuilder, this::addMessagingAttributes, true, context);
+                context = startSpanInternal(spanBuilder, this::addMessagingAttributes, context);
+
+                // TODO (limolkova) we should do this in the EventHub/ServiceBus SDK instead to make sure scope is closed in the
+                // same thread where it was started to prevent leaking the context.
+                return context.addData(SCOPE_KEY, makeSpanCurrent(context));
             default:
                 return context;
         }
@@ -123,7 +134,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             span = HttpTraceUtil.setSpanStatus(span, responseCode, throwable);
         }
         span.end();
-        endScope(context);
     }
 
     /**
@@ -169,6 +179,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         span.end();
+
+        // TODO (limolkova) remove once ServiceBus/EventHub start making span current explicitly.
         endScope(context);
     }
 
@@ -196,10 +208,26 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return AmqpPropagationFormatUtil.extractContext(diagnosticId, context);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Context getSharedSpanBuilder(String spanName, Context context) {
         // this is used to create messaging send spanBuilder, and it's a CLIENT span
         return context.addData(SPAN_BUILDER_KEY, createSpanBuilder(spanName, null, SpanKind.CLIENT, null, context));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseable makeSpanCurrent(Context context) {
+        Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
+        if (span == null) {
+            return NOOP_CLOSEABLE;
+        }
+
+        return span.makeCurrent();
     }
 
     /**
@@ -244,13 +272,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      * @param spanBuilder SpanBuilder for the span. Must be created before calling this method
      * @param setAttributes Callback to populate attributes for the span.
-     * @param makeCurrent Flag indicating if span should be current after start.
      *
      * @return A {@link Context} with created {@link Span}.
      */
     private Context startSpanInternal(SpanBuilder spanBuilder,
                                       java.util.function.BiConsumer<Span, Context> setAttributes,
-                                      boolean makeCurrent,
                                       Context context) {
         Objects.requireNonNull(spanBuilder, "'spanBuilder' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
@@ -269,11 +295,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             }
         }
 
-        context = context.addData(PARENT_SPAN_KEY, span);
-        if (makeCurrent) {
-            return context.addData(SCOPE_KEY, span.makeCurrent());
-        }
-        return context;
+        return context.addData(PARENT_SPAN_KEY, span);
     }
 
     /**
@@ -323,7 +345,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         return spanBuilder;
     }
-
 
     /**
      * Ends current scope on the context.

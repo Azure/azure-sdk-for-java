@@ -58,6 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests Azure-OpenTelemetry tracing package using openTelemetry-sdk
@@ -318,6 +319,7 @@ public class OpenTelemetryTracerTest {
         assertNotNull(updatedContext.getData(SCOPE_KEY).get());
         // Assert new span created with remote parent context
         assertSpanWithRemoteParent(updatedContext, testSpanId);
+        assertTrue(updatedContext.getData(SCOPE_KEY).isPresent());
     }
 
     @Test
@@ -448,17 +450,21 @@ public class OpenTelemetryTracerTest {
         assertTrue(testScope.isClosed());
     }
 
+    @SuppressWarnings("try")
     @Test
     public void startEndCurrentSpan() {
         Span parentSpan = Span.current();
 
-        final StartSpanOptions options = new StartSpanOptions()
-            .setMakeCurrent(true);
+        final Context started = openTelemetryTracer.start(METHOD_NAME, tracingContext);
 
-        final Context started = openTelemetryTracer.start(METHOD_NAME, options, tracingContext);
-        assertSame(Span.current(), started.getData(PARENT_SPAN_KEY).get());
+        try (var scope = openTelemetryTracer.makeSpanCurrent(started)) {
+            assertSame(Span.current(), started.getData(PARENT_SPAN_KEY).get());
+        } catch (Exception e) {
+            fail();
+        } finally {
+            openTelemetryTracer.end("foo", null, started);
+        }
 
-        openTelemetryTracer.end("foo", null, started);
         assertSame(parentSpan, Span.current());
     }
 
@@ -758,14 +764,6 @@ public class OpenTelemetryTracerTest {
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
         assertEquals(SpanKind.CLIENT, span.getKind());
-    }
-
-    @Test
-    public void startSpanWithMakeCurrent() {
-        final StartSpanOptions options = new StartSpanOptions()
-            .setMakeCurrent(true);
-        final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
-        assertTrue(started.getData(SCOPE_KEY).isPresent());
     }
 
     @Test

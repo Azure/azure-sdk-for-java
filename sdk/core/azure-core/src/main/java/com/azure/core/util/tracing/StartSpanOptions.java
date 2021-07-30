@@ -27,7 +27,6 @@ public class StartSpanOptions {
         CLIENT,
     }
 
-    private boolean makeCurrent;
     private final Kind spanKind;
     private Map<String, Object> spanAttributes;
 
@@ -47,18 +46,6 @@ public class StartSpanOptions {
         Objects.requireNonNull(kind, "'kind' cannot be null.");
         this.spanKind = kind;
         this.spanAttributes = null;
-        this.makeCurrent = false;
-    }
-
-    /**
-     * Sets flag that controls if span should be made current after it's started.
-     * @param makeCurrent flag indicating if span should be made current after start.
-     *
-     * @return this instance for chaining.
-     */
-    public StartSpanOptions setMakeCurrent(boolean makeCurrent) {
-        this.makeCurrent = makeCurrent;
-        return this;
     }
 
     /**
@@ -85,14 +72,6 @@ public class StartSpanOptions {
      */
     public Kind getSpanKind() {
         return this.spanKind;
-    }
-
-    /**
-     * Gets flag indicating if span should be made current after start.
-     * @return true if span should be made current after start, false otherwise.
-     */
-    public boolean shouldMakeCurrent() {
-        return this.makeCurrent;
     }
 
     /**

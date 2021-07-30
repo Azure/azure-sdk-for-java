@@ -295,4 +295,26 @@ public interface Tracer {
                           Context context) {
 
     }
+
+    /**
+     * Makes span current. Implementations may put it on ThreadLocal.
+     * Make sure to always use try-with-resource statement with makeSpanCurrent
+     * @param context Context with span.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Starts a tracing span, makes it current and ends it</p>
+     * {@codesnippet com.azure.core.util.tracing.makeSpanCurrent#context}
+     *
+     * @return Closeable that should be closed in the same thread with try-with-resource statement.
+     */
+    default AutoCloseable makeSpanCurrent(Context context) {
+        return NOOP_CLOSEABLE;
+    }
+
+    AutoCloseable NOOP_CLOSEABLE = new AutoCloseable() {
+        @Override
+        public void close() {
+        }
+    };
 }
