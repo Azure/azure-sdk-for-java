@@ -8,10 +8,13 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.TestEnvironment
+import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import spock.lang.IgnoreIf
 import spock.lang.ResourceLock
 import spock.lang.Unroll
 
@@ -20,6 +23,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 @LiveOnly
 @ResourceLock("LargeFileTest")
+@IgnoreIf({ TestEnvironment.getInstance().httpClientType == TestHttpClientType.OK_HTTP }) // https://github.com/Azure/azure-sdk-for-java/issues/23221
 class LargeFileTest extends APISpec{
     static long defaultSingleUploadThreshold = 100L * Constants.MB
     long largeBlockSize =  2500L * Constants.MB
