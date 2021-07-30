@@ -4,6 +4,7 @@ $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
+$CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
@@ -155,7 +156,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       $IndexHtml = Join-Path -Path $UnjarredDocumentationPath -ChildPath "index.html"
       if (!(Test-Path -path $IndexHtml))
       {
-        Write-Host "$($PkgName) does not have an index.html file, skippping."
+        Write-Host "$($PkgName) does not have an index.html file, skipping."
         continue
       }
 
@@ -168,13 +169,19 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       $Version = $PomXml.project.version
       $ArtifactId = $PomXml.project.artifactId
 
+      # inject the ga tag just before we upload the index to storage.
+      $indexContent = Get-Content -Path $IndexHtml -Raw
+      $tagContent = Get-Content -Path $CampaignTag -Raw
+
+      $indexContent = $indexContent.Replace("</head>", $tagContent + "</head>")
+      Set-Content -Path $IndexHtml -Value $indexContent -NoNewline
+
       Write-Host "Start Upload for $($PkgName)/$($Version)"
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
       $releaseTag = RetrieveReleaseTag $PublicArtifactLocation
       Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
-
     }
     Finally
     {
