@@ -378,7 +378,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedUnmanagedVirtualMachine(AzureResourceManager azureResourceManager, Region region, String rgName) {
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
         final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip" + "-", 20);
 
@@ -390,7 +390,7 @@ public final class ManageManagedDisks {
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey)
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk-1")
                     .withNewVhd(100)
@@ -416,7 +416,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedManagedVirtualMachine(AzureResourceManager azureResourceManager, Region region, String rgName) {
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip" + "-", 20);
 
@@ -428,7 +428,7 @@ public final class ManageManagedDisks {
                 .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey)
                 .withNewDataDisk(100)
                 .withNewDataDisk(200)
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))

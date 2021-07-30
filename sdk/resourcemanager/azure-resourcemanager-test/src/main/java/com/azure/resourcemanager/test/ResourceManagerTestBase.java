@@ -111,7 +111,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static String sshPublicKey;
 
     /**
-     * @return a SSH public key
+     * @return an SSH public key
      */
     public static String sshPublicKey() {
         if (sshPublicKey == null) {
