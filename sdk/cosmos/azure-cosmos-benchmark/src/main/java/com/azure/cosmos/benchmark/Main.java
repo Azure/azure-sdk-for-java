@@ -49,12 +49,10 @@ public class Main {
                     asyncCtlWorkload(cfg);
                 } else if (cfg.getOperationType().equals(LinkedInCtlWorkload)) {
                     linkedInCtlWorkload(cfg);
+                } else if (cfg.isEncryptionEnabled()) {
+                    asyncEncryptionBenchmark(cfg);
                 } else {
-                    if (cfg.isEncryptionEnabled()) {
-                        asyncEncryptionBenchmark(cfg);
-                    } else {
-                        asyncBenchmark(cfg);
-                    }
+                    asyncBenchmark(cfg);
                 }
             }
         } catch (ParameterException e) {

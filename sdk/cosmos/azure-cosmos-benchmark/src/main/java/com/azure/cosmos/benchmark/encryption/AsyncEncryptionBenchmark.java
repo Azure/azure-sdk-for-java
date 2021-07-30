@@ -412,7 +412,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
     }
 
     // load config from resource src/resources/encryption_settings.properties
-    private static Properties loadConfig() throws IOException {
+    private Properties loadConfig() throws IOException {
         try (InputStream input = AsyncEncryptionBenchmark.class.getClassLoader().getResourceAsStream("encryption_setting.properties");) {
             Properties prop = new Properties();
             prop.load(input);
