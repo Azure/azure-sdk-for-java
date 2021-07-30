@@ -5,9 +5,7 @@ package com.azure.core.util;
 import com.azure.core.util.tracing.StartSpanOptions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StartSpanOptionsTests {
     @Test
@@ -16,7 +14,6 @@ public class StartSpanOptionsTests {
 
         assertEquals(StartSpanOptions.Kind.INTERNAL, options.getSpanKind());
         assertNull(options.getAttributes());
-        assertFalse(options.shouldMakeCurrent());
     }
 
     @Test
@@ -25,14 +22,6 @@ public class StartSpanOptionsTests {
 
         assertEquals(StartSpanOptions.Kind.CLIENT, options.getSpanKind());
         assertNull(options.getAttributes());
-        assertFalse(options.shouldMakeCurrent());
-    }
-
-    @Test
-    public void setMakeCurrent() {
-        StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT)
-            .setMakeCurrent(true);
-        assertTrue(options.shouldMakeCurrent());
     }
 
     @Test
