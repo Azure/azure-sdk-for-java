@@ -40,6 +40,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
@@ -315,5 +316,20 @@ public class ReflectionUtils {
 
     public static void setHttpClient(ClientTelemetry telemetry, HttpClient httpClient) {
         set(telemetry, httpClient, "httpClient");
+    }
+
+    public static void setDefaultMinDurationBeforeEnforcingCollectionRoutingMapRefreshDuration(
+        Duration newDuration) {
+
+        String fieldName = "minDurationBeforeEnforcingCollectionRoutingMapRefresh";
+
+        try {
+            Field field = GatewayAddressCache.class.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            FieldUtils.removeFinalModifier(field, true);
+            FieldUtils.writeField((Field)field, (Object)null, newDuration, true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
