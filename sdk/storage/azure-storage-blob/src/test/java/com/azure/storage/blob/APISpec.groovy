@@ -104,10 +104,7 @@ class APISpec extends StorageSpec {
         softDeleteServiceClient = getServiceClient(getEnv().getSoftDeleteAccount())
 
         containerName = generateContainerName()
-        cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        if (!cc.exists()) {
-            cc.create()
-        }
+        cc = primaryBlobServiceClient.getBlobContainerClient(containerName).create()
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
     }
 
