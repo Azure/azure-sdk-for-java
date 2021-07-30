@@ -74,7 +74,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             options.getAttributes(),
             context);
 
-        return startSpanInternal(spanBuilder, null, options.getMakeCurrent(), context);
+        return startSpanInternal(spanBuilder, null, options.shouldMakeCurrent(), context);
     }
 
     /**

@@ -52,7 +52,7 @@ public class StartSpanOptions {
 
     /**
      * Sets flag that controls if span should be made current after it's started.
-     * @param makeCurrent flag indicating if span should be made crurent after start..
+     * @param makeCurrent flag indicating if span should be made current after start.
      *
      * @return this instance for chaining.
      */
@@ -91,7 +91,7 @@ public class StartSpanOptions {
      * Gets flag indicating if span should be made current after start.
      * @return true if span should be made current after start, false otherwise.
      */
-    public boolean getMakeCurrent() {
+    public boolean shouldMakeCurrent() {
         return this.makeCurrent;
     }
 
