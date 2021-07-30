@@ -52,8 +52,8 @@ public class ServiceBusConsumerProperties {
      * <p>
      * @return int, default : 1
      */
-    public int getMaxConcurrentCalls() {
-        return maxConcurrentCalls == null ? !sessionsEnabled ? concurrency : 1 : maxConcurrentCalls;
+    public Integer getMaxConcurrentCalls() {
+        return maxConcurrentCalls;
     }
 
     public void setMaxConcurrentCalls(int maxConcurrentCalls) {
@@ -66,8 +66,8 @@ public class ServiceBusConsumerProperties {
      * <p>
      * @return int, default : 1
      */
-    public int getMaxConcurrentSessions() {
-        return maxConcurrentSessions == null ? sessionsEnabled ? concurrency : 1 : maxConcurrentSessions;
+    public Integer getMaxConcurrentSessions() {
+        return maxConcurrentSessions;
     }
 
     public void setMaxConcurrentSessions(int maxConcurrentSessions) {

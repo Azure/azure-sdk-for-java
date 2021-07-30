@@ -25,6 +25,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
+import java.util.Optional;
+
 /**
  * @author Warren Zhu
  * @author Eduardo Sciullo
@@ -112,8 +114,14 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
                                      .setPrefetchCount(consumerProperties.getPrefetchCount())
                                      .setConcurrency(consumerProperties.getConcurrency())
                                      .setSessionsEnabled(consumerProperties.isSessionsEnabled())
-                                     .setMaxConcurrentCalls(consumerProperties.getMaxConcurrentCalls())
-                                     .setMaxConcurrentSessions(consumerProperties.getMaxConcurrentSessions())
+                                     // When session disabled, if user don't set maxConcurrentCalls, we should use concurrency
+                                     .setMaxConcurrentCalls(Optional.ofNullable(consumerProperties.getMaxConcurrentCalls())
+                                                                    .orElse(consumerProperties.isSessionsEnabled() ?
+                                                                        1 : consumerProperties.getConcurrency()))
+                                    // When session enabled, if user don't set maxConcurrentSessions, we should use concurrency
+                                    .setMaxConcurrentSessions(Optional.ofNullable(consumerProperties.getMaxConcurrentSessions())
+                                                                      .orElse(consumerProperties.isSessionsEnabled() ?
+                                                                        consumerProperties.getConcurrency() : 1))
                                      .setServiceBusReceiveMode(consumerProperties.getServiceBusReceiveMode())
                                      .setEnableAutoComplete(consumerProperties.isEnableAutoComplete())
                                      .build();
