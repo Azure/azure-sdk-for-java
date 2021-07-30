@@ -76,7 +76,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withNewDataDisk(100)
                 .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
                 .withNewDataDisk(100, 2, CachingTypes.READ_ONLY)
@@ -206,7 +206,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk-1")
                 .withNewVhd(100)
@@ -266,7 +266,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withoutPrimaryInternalLoadBalancer()
                 .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                 .withRootUsername(userName)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .create();
 
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();

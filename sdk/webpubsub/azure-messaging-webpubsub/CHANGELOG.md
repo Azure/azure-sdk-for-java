@@ -1,7 +1,17 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
+
+## 1.0.0-beta.3 (2021-07-29)
+
+### Dependency Updates
+- Upgraded `azure-core` to `1.19.0-beta.1`.
+- Upgraded `azure-core-http-netty` to `1.10.1`.
+
+### Breaking Changes
+- Changed sync and async clients to use protocol methods that uses `RequestOptions` and `BinaryData` to create HTTP 
+  request.
 
 ## 1.0.0-beta.2 (2021-04-27)
 

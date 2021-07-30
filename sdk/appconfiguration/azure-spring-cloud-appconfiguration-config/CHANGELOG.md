@@ -1,5 +1,8 @@
 # Release History
 
+## 2.0.1-beta.1 (Unreleased)
+
+
 ## 2.0.0 (2021-07-20)
 
 * GA of 2.0.0 version, no changes from 2.0.0-beta.2 version.

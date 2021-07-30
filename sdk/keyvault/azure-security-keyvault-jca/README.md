@@ -18,7 +18,7 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -122,6 +122,41 @@ azure:
     custom:         # The file location where you store the custom certificate
 ```
 
+### Key-Less certificates
+You can set the private key as [non-exportable] to ensure the security of the key.
+
+Note if you want to use key less certificate, you must add `sign` permission.
+
+You can add permission in portal: ![Sign To Principal](resources/SignToPrincipal.png)
+
+Or add permission by cli command:
+```shell
+  az keyvault set-policy --name ${KEY_VAULT} \
+        --object-id ${MANAGED_IDENTITY} \
+        --key-permissions get list sign\
+        --secret-permissions get list \
+        --certificate-permissions get list
+```
+Please replace `${KEY_VAULT}` with your key vault name and replace `${MANAGED_IDENTITY}` with your principal's object-id.
+
+### Supported key type
+Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |
+-------------|----------|---------------------------------|---------------- |-------- |
+PKCS #12     | RSA      | 2048                            | RSASSA-PSS      | ✔       |     
+PKCS #12     | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PKCS #12     | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PKCS #12     | EC       | P-256                           | SHA256withECDSA | ✔       |
+PKCS #12     | EC       | P-384                           | SHA384withECDSA | ✔       |
+PKCS #12     | EC       | P-521                           | SHA512withECDSA | ✔       |
+PKCS #12     | EC       | P-256K                          |                 | ✘       |
+PEM          | RSA      | 2048                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PEM          | EC       | P-256                           | SHA256withECDSA | ✔       |
+PEM          | EC       | P-384                           | SHA384withECDSA | ✔       |
+PEM          | EC       | P-521                           | SHA512withECDSA | ✔       | 
+PEM          | EC       | P-256K                          |                 | ✘       |
+
 ## Troubleshooting
 ### General
 Azure Key Vault JCA clients raise exceptions. For example, if you try to check a client's identity with a certificate chain that does not include a trusted certificate, a `CertificateException` will be thrown. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
@@ -167,5 +202,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [spring_boot_starter]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-jca%2FREADME.png)

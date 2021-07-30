@@ -5,6 +5,7 @@
 ### Features Added
 
 - Supported `start` and `stop` for `KubernetesCluster`.
+- Supported `listOrchestrators` for `KubernetesCluster`.
 
 ## 2.6.0 (2021-06-18)
 
