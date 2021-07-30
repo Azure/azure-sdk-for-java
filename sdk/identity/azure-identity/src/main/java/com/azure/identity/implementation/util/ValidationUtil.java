@@ -32,6 +32,20 @@ public final class ValidationUtil {
         }
     }
 
+    public static void validateAllEmpty(String className, Map<String, Object> parameters) {
+        ClientLogger logger = new ClientLogger(className);
+        List<String> missing = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+            if (entry.getValue() == null) {
+                missing.add(entry.getKey());
+            }
+        }
+        if (missing.size() == parameters.size()) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Must provide non-null values for "
+                + String.join(" or ", missing) + " properties in " + className));
+        }
+    }
+
     public static void validateAuthHost(String className, String authHost) {
         ClientLogger logger = new ClientLogger(className);
         try {

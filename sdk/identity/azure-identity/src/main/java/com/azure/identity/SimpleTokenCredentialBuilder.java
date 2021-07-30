@@ -3,10 +3,13 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.util.IdentityConstants;
+import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.function.Consumer;
 
 /**
@@ -15,29 +18,28 @@ import java.util.function.Consumer;
  * @see SimpleTokenCredential
  */
 public class SimpleTokenCredentialBuilder {
-    private String accessToken;
-    private OffsetDateTime tokenExpiryTime;
+    private String accessTokenString;
+    private AccessToken accessToken;
 
     /**
-     * Sets the consumer to meet the device code challenge. If not specified a default consumer is used which prints
-     * the device code info message to stdout.
+     * Sets the specified access token with default expiry time of 1 hour.
      *
      * @param accessToken the user specified access token.
      * @return the SimpleTokenCredentialBuilder itself
      */
     public SimpleTokenCredentialBuilder accessToken(String accessToken) {
-        this.accessToken = accessToken;
+        this.accessTokenString = accessToken;
         return this;
     }
 
     /**
-     * Sets the custom token expiry time for the specified access token.
+     * Sets the specified access token.
      *
-     * @param tokenExpiryTime the expiry time of specified access token..
+     * @param accessToken the user specified access token.
      * @return the SimpleTokenCredentialBuilder itself
      */
-    public SimpleTokenCredentialBuilder tokenExpiryTime(OffsetDateTime tokenExpiryTime) {
-        this.tokenExpiryTime = tokenExpiryTime;
+    public SimpleTokenCredentialBuilder accessToken(AccessToken accessToken) {
+        this.accessToken = accessToken;
         return this;
     }
 
@@ -48,6 +50,10 @@ public class SimpleTokenCredentialBuilder {
      * @return a {@link SimpleTokenCredential} with the current configurations.
      */
     public SimpleTokenCredential build() {
-        return new SimpleTokenCredential(accessToken, tokenExpiryTime);
+        ValidationUtil.validateAllEmpty(getClass().getSimpleName(), new HashMap<String, Object>() {{
+            put("accessToken", accessToken);
+            put("accessTokenString", accessTokenString);
+        }});
+        return new SimpleTokenCredential(accessTokenString, accessToken);
     }
 }

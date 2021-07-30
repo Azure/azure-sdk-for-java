@@ -21,21 +21,19 @@ import java.time.OffsetDateTime;
  */
 @Immutable
 public class SimpleTokenCredential implements TokenCredential {
-    private final ClientLogger logger = new ClientLogger(SimpleTokenCredential.class);
-    private final String accessToken;
-    private final OffsetDateTime tokenExpiryTime;
+    private final AccessToken accessToken;
 
     /**
-     * Creates an AzureCliSecretCredential with default identity client options.
+     * Creates a SimpleTokenCredential using specified access token and expiry time.
      * @param accessToken the user specified access token.
      */
-    SimpleTokenCredential(String accessToken, OffsetDateTime tokenExpiryTime) {
-        this.accessToken = accessToken;
-        this.tokenExpiryTime = tokenExpiryTime;
+    SimpleTokenCredential(String accessTokenStr, AccessToken accessToken) {
+        this.accessToken = accessTokenStr == null ? accessToken
+            : new AccessToken(accessTokenStr, OffsetDateTime.now().plusMinutes(10));
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        return Mono.just(new AccessToken(accessToken, tokenExpiryTime));
+        return Mono.just(accessToken);
     }
 }
