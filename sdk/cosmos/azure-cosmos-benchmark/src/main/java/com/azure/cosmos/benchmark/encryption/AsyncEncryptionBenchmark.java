@@ -311,8 +311,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
             case QuerySingleMany:
             case QueryParallel:
             case QueryOrderby:
-            case QueryAggregate:
-            case QueryAggregateTopOrderby:
             case QueryTopOrderby:
             case Mixed:
                 return true;
@@ -415,7 +413,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     // load config from resource src/resources/encryption_settings.properties
     private static Properties loadConfig() throws IOException {
-
         try (InputStream input = AsyncEncryptionBenchmark.class.getClassLoader().getResourceAsStream("encryption_setting.properties");) {
             Properties prop = new Properties();
             prop.load(input);
@@ -456,7 +453,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
             .clientSecret(clientSecret)
             .build();
 
-        // TODO: implement certificate base sample
         return credentials;
     }
 

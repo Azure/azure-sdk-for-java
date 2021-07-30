@@ -434,7 +434,6 @@ public class Configuration {
         }
     }
 
-
     public int getNumberOfCollectionForCtl(){
         return this.numberOfCollectionForCtl;
     }

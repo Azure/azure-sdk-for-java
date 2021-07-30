@@ -8,8 +8,6 @@ import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.codahale.metrics.Timer;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import org.reactivestreams.Subscription;
@@ -18,8 +16,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<FeedResponse<PojoizedJson>> {
@@ -98,34 +94,10 @@ public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<Feed
 
             String sqlQuery = "Select * from c order by c._ts";
             obs = cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregate) {
-
-            String sqlQuery = "Select value max(c._ts) from c";
-            obs = cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregateTopOrderby) {
-
-            String sqlQuery = "Select top 1 value count(c) from c order by c._ts";
-            obs = cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QueryTopOrderby) {
 
             String sqlQuery = "Select top 1000 * from c order by c._ts";
             obs = cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryInClauseParallel) {
-
-            EncryptionReadMyWriteWorkflow.QueryBuilder queryBuilder = new EncryptionReadMyWriteWorkflow.QueryBuilder();
-            options.setMaxDegreeOfParallelism(200);
-            List<SqlParameter> parameters = new ArrayList<>();
-            int j = 0;
-            for(PojoizedJson doc: docsToRead) {
-                String partitionKeyValue = doc.getId();
-                parameters.add(new SqlParameter("@param" + j, partitionKeyValue));
-                j++;
-            }
-
-            queryBuilder.whereClause(new EncryptionReadMyWriteWorkflow.QueryBuilder.WhereClause.InWhereClause(partitionKey,
-                                                                                                    parameters));
-            SqlQuerySpec query = queryBuilder.toSqlQuerySpec();
-            obs = cosmosEncryptionAsyncContainer.queryItems(query, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.ReadAllItemsOfLogicalPartition) {
             throw new IllegalArgumentException("Unsupported Operation on encryption: " + configuration.getOperationType());
         } else {

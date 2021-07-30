@@ -9,7 +9,6 @@ import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQueryBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQuerySinglePartitionMultiple;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionReadBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionWriteBenchmark;
-import com.azure.cosmos.benchmark.encryption.EncryptionReadMyWriteWorkflow;
 import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -188,19 +187,13 @@ public class Main {
                 case QuerySingle:
                 case QueryParallel:
                 case QueryOrderby:
-                case QueryAggregate:
                 case QueryTopOrderby:
-                case QueryAggregateTopOrderby:
                 case QueryInClauseParallel:
                     benchmark = new AsyncEncryptionQueryBenchmark(cfg);
                     break;
 
                 case QuerySingleMany:
                     benchmark = new AsyncEncryptionQuerySinglePartitionMultiple(cfg);
-                    break;
-
-                case ReadMyWrites:
-                    benchmark = new EncryptionReadMyWriteWorkflow(cfg);
                     break;
 
                 default:
