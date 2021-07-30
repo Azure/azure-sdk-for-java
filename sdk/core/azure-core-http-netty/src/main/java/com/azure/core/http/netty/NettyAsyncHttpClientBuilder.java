@@ -100,12 +100,7 @@ public class NettyAsyncHttpClientBuilder {
 
         nettyHttpClient = nettyHttpClient
             .port(port)
-            .wiretap(enableWiretap)
-            .doOnRequest((request, connection) -> addWriteTimeoutHandler(connection, getTimeoutMillis(writeTimeout)))
-            .doAfterRequest((request, connection) ->
-                addResponseTimeoutHandler(connection, getTimeoutMillis(responseTimeout)))
-            .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, getTimeoutMillis(readTimeout)))
-            .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection));
+            .wiretap(enableWiretap);
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -167,7 +162,8 @@ public class NettyAsyncHttpClientBuilder {
             }
         }
 
-        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, getTimeoutMillis(readTimeout),
+                getTimeoutMillis(writeTimeout), getTimeoutMillis(responseTimeout));
     }
 
     /**
@@ -372,38 +368,6 @@ public class NettyAsyncHttpClientBuilder {
         InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
 
         return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
-    }
-
-    /*
-     * Adds the write timeout handler once the request is ready to begin sending.
-     */
-    private static void addWriteTimeoutHandler(Connection connection, long timeoutMillis) {
-        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(timeoutMillis));
-    }
-
-    /*
-     * First removes the write timeout handler from the connection as the request has finished sending, then adds the
-     * response timeout handler.
-     */
-    private static void addResponseTimeoutHandler(Connection connection, long timeoutMillis) {
-        connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(timeoutMillis));
-    }
-
-    /*
-     * First removes the response timeout handler from the connection as the response has been received, then adds the
-     * read timeout handler.
-     */
-    private static void addReadTimeoutHandler(Connection connection, long timeoutMillis) {
-        connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(timeoutMillis));
-    }
-
-    /*
-     * Removes the read timeout handler as the complete response has been received.
-     */
-    private static void removeReadTimeoutHandler(Connection connection) {
-        connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
     }
 
     /*
