@@ -50,7 +50,7 @@ public class TracerJavaDocCodeSnippets {
         // END: com.azure.core.util.tracing.start#string-context-processKind-SEND
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-MESSAGE
-        String diagnosticIdKey = "diagnostic-id";
+        String diagnosticIdKey = "Diagnostic-Id";
         // start a new tracing span with explicit parent, sets the diagnostic Id (traceparent headers) on the current
         // context when process kind MESSAGE
         Context updatedReceiveContext = tracer.start("azure.eventhubs.receive", traceContext,

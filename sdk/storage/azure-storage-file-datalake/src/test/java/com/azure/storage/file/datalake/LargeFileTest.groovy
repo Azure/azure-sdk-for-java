@@ -8,143 +8,101 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy
+import com.azure.storage.common.test.shared.TestEnvironment
+import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import org.apache.commons.lang3.SystemUtils
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Ignore
-import spock.lang.Requires
+import spock.lang.IgnoreIf
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
-import java.util.function.BiFunction
 
+@LiveOnly
+@ResourceLock("LargeFileTest")
+@IgnoreIf({ TestEnvironment.getInstance().httpClientType == TestHttpClientType.OK_HTTP || SystemUtils.IS_OS_MAC }) // https://github.com/Azure/azure-sdk-for-java/issues/23221
 class LargeFileTest extends APISpec{
     static long defaultSingleUploadThreshold = 100L * Constants.MB
-    long maxBlockSize =  4000L * Constants.MB
-    boolean collectSize = true
+    long largeBlockSize =  2500L * Constants.MB
+
     List<Long> appendPayloadSizes = Collections.synchronizedList(new ArrayList<>())
     AtomicLong count = new AtomicLong()
 
     DataLakeFileClient fc
-    DataLakeFileClient fcPayloadDropping
-    DataLakeFileAsyncClient fcAsyncPayloadDropping
+    DataLakeFileAsyncClient fcAsync
     String fileName
 
     def setup() {
         fileName = generatePathName()
-        fc = fsc.getFileClient(fileName)
-        fcPayloadDropping = getFileClient(
+        def fileClient = fsc.getFileClient(fileName)
+        fc = getFileClient(
             env.dataLakeAccount.credential,
-            fc.getFileUrl(),
-            new PayloadDroppingPolicy(),
-            new StorageSharedKeyCredentialPolicy(env.dataLakeAccount.credential)
+            fileClient.getFileUrl(),
+            new CountingPolicy()
         )
-        fcAsyncPayloadDropping = getFileAsyncClient(
+        fcAsync = getFileAsyncClient(
             env.dataLakeAccount.credential,
-            fc.getFileUrl(),
-            new PayloadDroppingPolicy(),
-            new StorageSharedKeyCredentialPolicy(env.dataLakeAccount.credential)
+            fileClient.getFileUrl(),
+            new CountingPolicy()
         )
 
-        fc.create()
+        fileClient.create()
     }
 
-    @LiveOnly
-    @Ignore("Takes really long time")
-    // This test sends payload over the wire
-    def "Append Large Block Real"() {
-        given:
-        def stream = createLargeInputStream(maxBlockSize)
-
-        when:
-        fc.append(stream, 0, maxBlockSize)
-
-        then:
-        notThrown(DataLakeStorageException)
-    }
-
-    @LiveOnly
-    @Ignore("IS mark/reset")
-    // This test does not send large payload over the wire
     def "Append Large Block"() {
         given:
-        def stream = createLargeInputStream(maxBlockSize)
+        def stream = createLargeInputStream(largeBlockSize)
 
         when:
-        fcPayloadDropping.append(stream, 0, maxBlockSize)
+        fc.append(stream, 0, largeBlockSize)
 
         then:
         notThrown(DataLakeStorageException)
         count.get() == 1
-        appendPayloadSizes[0] == maxBlockSize
+        appendPayloadSizes[0] == largeBlockSize
     }
 
-    @LiveOnly
-    // This test does not send large payload over the wire
     def "Append Large Block Async"() {
         given:
-        def data = createLargeBuffer(maxBlockSize)
+        def data = createLargeBuffer(largeBlockSize)
 
         when:
-        fcAsyncPayloadDropping.append(data, 0, maxBlockSize).block()
+        fcAsync.append(data, 0, largeBlockSize).block()
 
         then:
         notThrown(DataLakeStorageException)
         count.get() == 1
-        appendPayloadSizes[0] == maxBlockSize
+        appendPayloadSizes[0] == largeBlockSize
     }
 
-    @LiveOnly
-    @Ignore("Allocates too much memory for current CI machines") // TODO (rickle-msft): Enable when test resources can allocate 8GB
-    // This test does not send large payload over the wire
     def "Upload Large Data Async"() {
         given:
-        def data = createLargeBuffer(2 * maxBlockSize)
+        def tail = 1L * Constants.MB
+        def data = createLargeBuffer(largeBlockSize + tail)
 
         when:
-        fcAsyncPayloadDropping.upload(data, new ParallelTransferOptions().setBlockSizeLong(maxBlockSize), true).block()
+        fcAsync.upload(data, new ParallelTransferOptions().setBlockSizeLong(largeBlockSize), true).block()
 
         then:
         notThrown(DataLakeStorageException)
         count.get() == 2
+        appendPayloadSizes.contains(largeBlockSize)
+        appendPayloadSizes.contains(tail)
     }
 
-    @LiveOnly
-    @Ignore("Allocates too much memory for current CI machines") // TODO (rickle-msft): Enable when test resources can allocate 8GB
-    // This test does not send large payload over the wire
-    def "Append Large File"() {
+    def "Upload Large File"() {
         given:
-        def file = getLargeRandomFile(2 * maxBlockSize)
-
-        when:
-        fcPayloadDropping.uploadFromFile(
-            file.toPath().toString(),
-            new ParallelTransferOptions().setBlockSizeLong(maxBlockSize),
-            null,
-            null,
-            null,
-            null
-        )
-
-        then:
-        notThrown(DataLakeStorageException)
-        count.get() == 2
-    }
-
-    @LiveOnly
-    @Ignore("Takes really long time")
-    // This test sends payload over the wire
-    def "Append Large File Real"() {
-        given:
-        def file = getLargeRandomFile(2 * maxBlockSize)
+        def tail = 1L * Constants.MB
+        def file = getLargeRandomFile(largeBlockSize + tail)
 
         when:
         fc.uploadFromFile(
             file.toPath().toString(),
-            new ParallelTransferOptions().setBlockSizeLong(maxBlockSize),
+            new ParallelTransferOptions().setBlockSizeLong(largeBlockSize),
             null,
             null,
             null,
@@ -153,10 +111,12 @@ class LargeFileTest extends APISpec{
 
         then:
         notThrown(DataLakeStorageException)
+        count.get() == 2
+        appendPayloadSizes.contains(largeBlockSize)
+        appendPayloadSizes.contains(tail)
     }
 
     @Unroll
-    @LiveOnly
     // This test does not send large payload over the wire
     def "Should honor default single upload threshold"() {
         given:
@@ -165,7 +125,7 @@ class LargeFileTest extends APISpec{
             .setBlockSizeLong(10L * Constants.MB) // set this much lower than default single upload size to make it tempting.
 
         when:
-        fcAsyncPayloadDropping.upload(data, transferOptions, true).block()
+        fcAsync.upload(data, transferOptions, true).block()
 
         then:
         notThrown(DataLakeStorageException)
@@ -206,7 +166,12 @@ class LargeFileTest extends APISpec{
         for (long i = 0; i < numberOfSubStreams; i++) {
             subStreams.add(new ByteArrayInputStream(bytes))
         }
-        return new SequenceInputStream(subStreams.elements())
+        return new SequenceInputStream(subStreams.elements()) {
+            @Override
+            void reset() throws IOException {
+                // no-op
+            }
+        }
     }
 
     File getLargeRandomFile(long size) {
@@ -231,49 +196,27 @@ class LargeFileTest extends APISpec{
      * This class is intended for large payload test cases only and reports directly into this test class's
      * state members.
      */
-    private class PayloadDroppingPolicy implements HttpPipelinePolicy {
+    private class CountingPolicy implements HttpPipelinePolicy {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
-            def dummyBody = "dummyBody"
             def request = httpPipelineCallContext.httpRequest
-            def urlString = request.getUrl().toString()
-            // Substitute large body for put block requests and collect size of original body
+
             if (isAppendRequest(request)) {
                 count.incrementAndGet()
-                Mono<Long> count = interceptBody(request, dummyBody)
-                if (count != null) {
-                    return count.flatMap { bytes ->
-                        appendPayloadSizes.add(bytes)
-                        return httpPipelineNextPolicy.process()
-                    }
-                }
-            } else if(isFlushRequest(request)) {
-                request.setUrl(urlString.replaceAll("position=\\d+", "position=" + dummyBody.length()))
+
+                AtomicLong size = new AtomicLong();
+
+                def bodySubstitute = request.getBody().map({ buffer ->
+                    size.addAndGet(buffer.remaining())
+                    return buffer
+                }).doOnComplete({ appendPayloadSizes.add(size.get()) })
+                request.setBody(bodySubstitute)
             }
             return httpPipelineNextPolicy.process()
         }
 
-        private Mono<Long> interceptBody(HttpRequest request, String substitute) {
-            Mono<Long> result = null
-            if (collectSize) {
-                result = request.getBody().reduce(0L, new BiFunction<Long, ByteBuffer, Long>() {
-                    @Override
-                    Long apply(Long a, ByteBuffer byteBuffer) {
-                        return a + byteBuffer.remaining()
-                    }
-                })
-            }
-            request.setBody(substitute)
-
-            return result
-        }
-
         private boolean isAppendRequest(HttpRequest request) {
             return request.url.getQuery() != null && request.url.getQuery().contains("action=append")
-        }
-
-        private boolean isFlushRequest(HttpRequest request) {
-            return request.url.getQuery() != null && request.url.getQuery().contains("action=flush")
         }
 
         HttpPipelinePosition getPipelinePosition() {

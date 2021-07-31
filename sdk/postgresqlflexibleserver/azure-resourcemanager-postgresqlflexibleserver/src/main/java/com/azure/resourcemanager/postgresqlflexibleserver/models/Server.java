@@ -49,13 +49,6 @@ public interface Server {
     Map<String, String> tags();
 
     /**
-     * Gets the identity property: The Azure Active Directory identity of the server.
-     *
-     * @return the identity value.
-     */
-    Identity identity();
-
-    /**
      * Gets the sku property: The SKU (pricing tier) of the server.
      *
      * @return the sku value.
@@ -251,7 +244,6 @@ public interface Server {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
                 DefinitionStages.WithSku,
                 DefinitionStages.WithAdministratorLogin,
                 DefinitionStages.WithAdministratorLoginPassword,
@@ -289,16 +281,6 @@ public interface Server {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the Server definition allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The Azure Active Directory identity of the server..
-             *
-             * @param identity The Azure Active Directory identity of the server.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(Identity identity);
         }
         /** The stage of the Server definition allowing to specify sku. */
         interface WithSku {

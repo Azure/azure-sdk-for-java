@@ -59,7 +59,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName2 = "";
     private final Region region = Region.US_EAST;
     private final Region regionProxPlacementGroup = Region.US_WEST;
-    private final Region regionProxPlacementGroup2 = Region.US_SOUTH_CENTRAL;
+    private final Region regionProxPlacementGroup2 = Region.US_EAST;
     private final String vmName = "javavm";
     private final String proxGroupName = "testproxgroup1";
     private final String proxGroupName2 = "testproxgroup2";
@@ -123,7 +123,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .create();
 
         NetworkInterface primaryNic = vm.getPrimaryNetworkInterface();
@@ -694,7 +694,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk1")
                 .withNewVhd(100)
@@ -740,7 +740,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2as_v4"))
@@ -790,7 +790,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("firstuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
@@ -802,7 +802,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Map<String, String> testTags = new HashMap<String, String>();
         testTags.put("testTag", "testValue");
         virtualMachine.update().withTags(testTags).apply();
-        Assertions.assertEquals(testTags, virtualMachine.innerModel().tags());
+        Assertions.assertEquals(testTags.get("testTag"), virtualMachine.innerModel().tags().get("testTag"));
     }
 
     @Test
@@ -819,7 +819,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("firstuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .create();
 
         List<String> installGit = new ArrayList<>();
@@ -960,7 +960,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     .withNewPrimaryPublicIPAddress(publicIPAddressCreatable)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
-                    .withRootPassword(password())
+                    .withSsh(sshPublicKey())
                     .withUnmanagedDisks()
                     .withNewStorageAccount(storageAccountCreatable);
 

@@ -1,7 +1,202 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
+
+## 1.0.0-beta.3 (2021-07-29)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.OrcCompressionCodec` was removed
+
+* `models.AvroCompressionCodec` was removed
+
+#### `models.IntegrationRuntimeSsisProperties` was modified
+
+* `managedCredential()` was removed
+* `withManagedCredential(models.EntityReference)` was removed
+
+#### `models.AvroDataset` was modified
+
+* `withAvroCompressionCodec(models.AvroCompressionCodec)` was removed
+* `models.AvroCompressionCodec avroCompressionCodec()` -> `java.lang.Object avroCompressionCodec()`
+
+#### `models.OrcDataset` was modified
+
+* `models.OrcCompressionCodec orcCompressionCodec()` -> `java.lang.Object orcCompressionCodec()`
+* `withOrcCompressionCodec(models.OrcCompressionCodec)` was removed
+
+### Features Added
+
+* `models.SqlUpsertSettings` was added
+
+* `models.ManagedIdentityCredential` was added
+
+* `models.ServicePrincipalCredential` was added
+
+* `models.GitHubClientSecret` was added
+
+* `models.Credential` was added
+
+* `models.SqlDWUpsertSettings` was added
+
+* `models.CredentialReference` was added
+
+#### `models.SqlMISink` was modified
+
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+* `upsertSettings()` was added
+* `withUpsertSettings(models.SqlUpsertSettings)` was added
+* `withWriteBehavior(java.lang.Object)` was added
+* `writeBehavior()` was added
+* `sqlWriterUseTableLock()` was added
+
+#### `models.SqlServerSink` was modified
+
+* `sqlWriterUseTableLock()` was added
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+* `withUpsertSettings(models.SqlUpsertSettings)` was added
+* `withWriteBehavior(java.lang.Object)` was added
+* `writeBehavior()` was added
+* `upsertSettings()` was added
+
+#### `models.HDInsightOnDemandLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureBatchLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.SqlDWSink` was modified
+
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+* `upsertSettings()` was added
+* `sqlWriterUseTableLock()` was added
+* `withUpsertSettings(models.SqlDWUpsertSettings)` was added
+* `writeBehavior()` was added
+* `withWriteBehavior(java.lang.Object)` was added
+
+#### `models.PipelineRunInvokedBy` was modified
+
+* `pipelineRunId()` was added
+* `pipelineName()` was added
+
+#### `models.IntegrationRuntimeSsisProperties` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.WebActivityAuthentication` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AvroDataset` was modified
+
+* `withAvroCompressionCodec(java.lang.Object)` was added
+
+#### `models.FactoryGitHubConfiguration` was modified
+
+* `withClientId(java.lang.String)` was added
+* `clientSecret()` was added
+* `clientId()` was added
+* `withClientSecret(models.GitHubClientSecret)` was added
+
+#### `models.AzureSqlDatabaseLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureSqlDWLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureBlobStorageLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureDataLakeStoreLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.OrcDataset` was modified
+
+* `withOrcCompressionCodec(java.lang.Object)` was added
+
+#### `models.RestServiceLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureMLLinkedService` was modified
+
+* `withAuthentication(java.lang.Object)` was added
+* `authentication()` was added
+
+#### `models.SqlSink` was modified
+
+* `writeBehavior()` was added
+* `upsertSettings()` was added
+* `withWriteBehavior(java.lang.Object)` was added
+* `sqlWriterUseTableLock()` was added
+* `withUpsertSettings(models.SqlUpsertSettings)` was added
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+
+#### `models.AzureFunctionLinkedService` was modified
+
+* `authentication()` was added
+* `withAuthentication(java.lang.Object)` was added
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+* `withResourceId(java.lang.Object)` was added
+* `resourceId()` was added
+
+#### `models.AzureSqlSink` was modified
+
+* `upsertSettings()` was added
+* `withWriteBehavior(java.lang.Object)` was added
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+* `writeBehavior()` was added
+* `sqlWriterUseTableLock()` was added
+* `withUpsertSettings(models.SqlUpsertSettings)` was added
+
+#### `models.GitHubAccessTokenRequest` was modified
+
+* `gitHubClientSecret()` was added
+* `withGitHubClientSecret(models.GitHubClientSecret)` was added
+
+#### `models.AzureDatabricksLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureDataExplorerLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureKeyVaultLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureSqlMILinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
 
 ## 1.0.0-beta.2 (2021-06-16)
 

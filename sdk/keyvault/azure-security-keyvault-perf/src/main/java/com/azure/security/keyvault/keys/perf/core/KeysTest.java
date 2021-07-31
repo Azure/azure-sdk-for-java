@@ -25,16 +25,18 @@ public abstract class KeysTest<TOptions extends PerfStressOptions> extends PerfS
         super(options);
 
         configuration = Configuration.getGlobalConfiguration().clone();
-        String vaultUrl = configuration.get("AZURE_KEYVAULT_CLIENT_ID");
+        String vaultUrl = configuration.get("AZURE_KEYVAULT_URL");
 
         if (CoreUtils.isNullOrEmpty(vaultUrl)) {
-            throw new IllegalStateException("Environment variable AZURE_KEYVAULT_CLIENT_ID must be set");
+            throw new IllegalStateException("Environment variable AZURE_KEYVAULT_URL must be set");
         }
 
         // Setup the service client
         KeyClientBuilder builder = new KeyClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new DefaultAzureCredentialBuilder().build());
+
+        ConfigureClientBuilder(builder);
 
         keyClient = builder.buildClient();
         keyAsyncClient = builder.buildAsyncClient();

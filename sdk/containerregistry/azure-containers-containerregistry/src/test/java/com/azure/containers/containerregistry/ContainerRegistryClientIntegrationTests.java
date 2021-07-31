@@ -8,6 +8,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
+import com.azure.identity.AzureAuthorityHosts;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -31,6 +33,7 @@ import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
+import static com.azure.containers.containerregistry.TestUtils.getAuthority;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -176,6 +179,9 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void authenticationScopeTest(HttpClient httpClient) {
+        Assumptions.assumeFalse(getTestMode().equals(TestMode.PLAYBACK));
+        Assumptions.assumeFalse(REGISTRY_ENDPOINT == null);
+        Assumptions.assumeTrue(getAuthority(REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
         ContainerRegistryClient registryClient = getContainerRegistryBuilder(httpClient)
             .authenticationScope(AZURE_GLOBAL_AUTHENTICATION_SCOPE)
             .buildClient();
@@ -183,13 +189,10 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         List<String> repositories = registryClient.listRepositoryNames().stream().collect(Collectors.toList());
         validateRepositories(repositories);
 
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // Now doing the same should fail with the separate registryClient;
-            ContainerRegistryClient throwableRegistryClient = getContainerRegistryBuilder(httpClient)
-                .authenticationScope(AZURE_GOV_AUTHENTICATION_SCOPE)
-                .buildClient();
-            assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream().collect(Collectors.toList()));
-        }
+        ContainerRegistryClient throwableRegistryClient = getContainerRegistryBuilder(httpClient)
+            .authenticationScope(AZURE_GOV_AUTHENTICATION_SCOPE)
+            .buildClient();
+        assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream().collect(Collectors.toList()));
     }
 }
 
