@@ -15,7 +15,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.azure.spring.utils.PropertyLoader.loadProperties;
+import static com.azure.spring.utils.PropertyLoader.loadPropertiesFromFile;
 
 /**
  * Convert legacy properties to the current and set into environment before {@link KeyVaultEnvironmentPostProcessor}.
@@ -31,7 +31,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
     static {
         // Load the mapping relationship of Key Vault legacy properties and associated current properties from
         // classpath, this is used for handling multiple key vault cases.
-        keyvaultPropertySuffixMap = loadProperties("legacy-keyvault-property-suffix-mapping.properties");
+        keyvaultPropertySuffixMap = loadPropertiesFromFile("legacy-keyvault-property-suffix-mapping.properties");
     }
 
     @Override
@@ -127,8 +127,7 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
             Object currentPropertyValue = getPropertyValue(currentPropertyName);
             if (currentPropertyValue == null) {
                 properties.put(currentPropertyName, legacyPropertyValue);
-                LOGGER.warn("Deprecated property {} detected! Use {} instead!", legacyPropertyName,
-                    currentPropertyName);
+                LOGGER.warn(toLogString(legacyPropertyName, currentPropertyName));
 
             }
         }
@@ -159,5 +158,9 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
                 new PropertiesPropertySource(PreLegacyPropertyEnvironmentPostProcessor.class.getName(), properties);
             environment.getPropertySources().addLast(convertedPropertySource);
         }
+    }
+
+    public static String toLogString(String legacyPropertyName, String currentPropertyName) {
+        return String.format("Deprecated property %s detected! Use %s instead!", legacyPropertyName, currentPropertyName);
     }
 }

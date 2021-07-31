@@ -62,8 +62,7 @@ public class PostLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPr
                 Object currentPropertyValue = kvSource.getProperty(currentPropertyName);
                 if (currentPropertyValue == null) {
                     properties.put(currentPropertyName, legacyPropertyValue);
-                    LOGGER.warn("Deprecated property {} detected in Key Vault property source {}! "
-                        + "Use {} instead!", legacyPropertyName, kvSource.getName(), currentPropertyName);
+                    LOGGER.warn(toLogString(legacyPropertyName, currentPropertyName, kvSource.getName()));
                 }
             }
         }
@@ -104,5 +103,10 @@ public class PostLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPr
                 sources.addFirst(convertedPropertySource);
             }
         }
+    }
+
+    public static String toLogString(String legacyPropertyName, String currentPropertyName, String propertySource) {
+        return String.format("Deprecated property %s detected in Key Vault property source %s! Use %s instead!",
+            legacyPropertyName, propertySource, currentPropertyName);
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Properties;
 
-import static com.azure.spring.utils.PropertyLoader.loadProperties;
+import static com.azure.spring.utils.PropertyLoader.loadPropertiesFromFile;
 
 /**
  * Abstract class to convert legacy properties to the current when only legacy properties are configured,
@@ -24,7 +24,7 @@ public abstract class AbstractLegacyPropertyEnvironmentPostProcessor implements 
     protected ConfigurableEnvironment environment;
     static {
         // Load the map of each service's legacy properties and associated current properties from classpath.
-        springPropertyMap = loadProperties("legacy-property-mapping.properties");
+        springPropertyMap = loadPropertiesFromFile("legacy-property-mapping.properties");
     }
 
     @Override

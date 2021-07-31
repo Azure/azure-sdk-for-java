@@ -49,12 +49,11 @@ public class PropertyLoader {
      * @throws UncheckedIOException If an I/O error occurs.
      * @return The {@link Properties} Object.
      */
-    public static Properties loadProperties(String file) {
+    public static Properties loadPropertiesFromFile(String file) {
         try {
             return PropertiesLoaderUtils.loadProperties(new ClassPathResource(file));
         } catch (IOException exception) {
-            throw new UncheckedIOException("Fail to load legacy-keyvault-property-suffix-mapping.properties",
-                exception);
+            throw new UncheckedIOException("Fail to load " + file, exception);
         }
     }
 }

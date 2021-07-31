@@ -6,12 +6,17 @@ import com.azure.spring.autoconfigure.unity.PreLegacyPropertyEnvironmentPostProc
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -22,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import static com.azure.spring.autoconfigure.unity.PreLegacyPropertyEnvironmentPostProcessor.toLogString;
+import static com.azure.spring.keyvault.PostLegacyPropertyEnvironmentPostProcessor.toLogString;
 import static com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessorHelper.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -32,8 +39,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
+@Execution(ExecutionMode.SAME_THREAD)
+@ExtendWith(OutputCaptureExtension.class)
 public class PostLegacyPropertyProcessorTest {
 
+    private static final String KEYVAULT_PROPERTY_SOURCE_FIRST = "first";
+    private static final String KEYVAULT_PROPERTY_SOURCE_SECOND = "second";
     private PostLegacyPropertyEnvironmentPostProcessor processor = new PostLegacyPropertyEnvironmentPostProcessor();
     private AutoCloseable closeable;
 
@@ -59,7 +70,7 @@ public class PostLegacyPropertyProcessorTest {
     }
 
     @Test
-    public void testMappingSingleKvSources() {
+    public void testMappingSingleKvSources(CapturedOutput output) {
         when(keyVaultOperationOne.getProperty("azure.cosmos.uri")).thenReturn("one");
         when(keyVaultOperationOne.getProperty("spring.cloud.azure.cosmos.uri")).thenReturn(null);
 
@@ -69,13 +80,15 @@ public class PostLegacyPropertyProcessorTest {
 
         ConfigurableEnvironment environment = getEnvironment(sourceList, processor);
         MutablePropertySources propertySources = environment.getPropertySources();
-        PropertySource<?> kvPropertySource = propertySources.get("first");
+        PropertySource<?> kvPropertySource = propertySources.get(KEYVAULT_PROPERTY_SOURCE_FIRST);
         PropertySource<?> postPropertySource = propertySources.get(processor.getClass().getName());
 
         assertNotNull(kvPropertySource);
         assertNotNull(postPropertySource);
         assertEquals("one", environment.getProperty("spring.cloud.azure.cosmos.uri"));
         assertTrue(propertySources.precedenceOf(kvPropertySource) > propertySources.precedenceOf(postPropertySource));
+        assertTrue(output.getOut().contains(
+            toLogString("azure.cosmos.uri", "spring.cloud.azure.cosmos.uri", KEYVAULT_PROPERTY_SOURCE_FIRST)));
     }
 
     @Test
@@ -102,10 +115,10 @@ public class PostLegacyPropertyProcessorTest {
     }
 
     @Test
-    public void testMappingMultipleKvSources() {
+    public void testMappingMultipleKvSources(CapturedOutput output) {
         when(keyVaultOperationOne.getProperty("azure.cosmos.uri")).thenReturn("one");
         when(keyVaultOperationTwo.getProperty("azure.cosmos.uri")).thenReturn("two");
-        when(keyVaultOperationTwo.getProperty("spring.cloud.azure.cosmos.uri")).thenReturn("two");
+        when(keyVaultOperationTwo.getProperty("spring.cloud.azure.cosmos.uri")).thenReturn("three");
 
         List<PropertySource<?>> sourceList = new ArrayList<PropertySource<?>>();
         buildNonKvPropertySource(sourceList);
@@ -113,8 +126,13 @@ public class PostLegacyPropertyProcessorTest {
 
         ConfigurableEnvironment environment = getEnvironment(sourceList, processor);
         assertEquals("one", environment.getProperty("spring.cloud.azure.cosmos.uri"));
-        assertEquals("two", environment.getPropertySources().get("second")
+        assertEquals("three", environment.getPropertySources().get(KEYVAULT_PROPERTY_SOURCE_SECOND)
                                        .getProperty("spring.cloud.azure.cosmos.uri"));
+        assertTrue(output.getOut().contains(
+            toLogString("azure.cosmos.uri", "spring.cloud.azure.cosmos.uri", KEYVAULT_PROPERTY_SOURCE_FIRST)));
+        assertFalse(output.getOut().contains(
+            toLogString("azure.cosmos.uri", "spring.cloud.azure.cosmos.uri", KEYVAULT_PROPERTY_SOURCE_SECOND)));
+
     }
 
     @Test
@@ -142,12 +160,10 @@ public class PostLegacyPropertyProcessorTest {
     }
 
     private List<PropertySource<?>> buildKvPropertySource(List<PropertySource<?>> sourceList) {
-        KeyVaultPropertySource kvSourceOne = new KeyVaultPropertySource("first", keyVaultOperationOne);
-
-        KeyVaultPropertySource kvSourceTwo = new KeyVaultPropertySource("second", keyVaultOperationTwo);
+        KeyVaultPropertySource kvSourceOne = new KeyVaultPropertySource(KEYVAULT_PROPERTY_SOURCE_FIRST, keyVaultOperationOne);
+        KeyVaultPropertySource kvSourceTwo = new KeyVaultPropertySource(KEYVAULT_PROPERTY_SOURCE_SECOND, keyVaultOperationTwo);
         sourceList.add(kvSourceTwo);
         sourceList.add(kvSourceOne);
-
         return sourceList;
     }
 
@@ -169,7 +185,7 @@ public class PostLegacyPropertyProcessorTest {
     }
 
     @Test
-    public void testBothProcessorsConfigured() {
+    public void testBothProcessorsConfigured(CapturedOutput output) {
         when(keyVaultOperationOne.getProperty("azure.storage.account-key")).thenReturn("LegacyKey");
         when(keyVaultOperationOne.getProperty("azure.cosmos.uri")).thenReturn("LegacyUri");
         when(keyVaultOperationOne.getProperty("spring.cloud.azure.storage.account-key")).thenReturn("CurrentKey");
@@ -207,6 +223,15 @@ public class PostLegacyPropertyProcessorTest {
         assertEquals("LegacyUri", environment.getProperty("spring.cloud.azure.cosmos.uri"));
         assertEquals("CurrentId", environment.getProperty("spring.cloud.azure.keyvault.credential.client-id"));
         assertEquals("fakesecret", environment.getProperty("spring.cloud.azure.keyvault.credential.client-secret"));
+
+        assertTrue(output.getOut().contains(
+            toLogString("azure.cosmos.uri", "spring.cloud.azure.cosmos.uri")));
+        assertTrue(output.getOut().contains(
+            toLogString("azure.cosmos.uri", "spring.cloud.azure.cosmos.uri", AZURE_KEYVAULT_PROPERTYSOURCE_NAME)));
+        assertFalse(output.getOut().contains(
+            toLogString("azure.storage.account-key", "spring.cloud.azure.storage.account-key", AZURE_KEYVAULT_PROPERTYSOURCE_NAME)));
+
+
     }
 
     private ConfigurableEnvironment getEnvironment(PropertiesPropertySource propertiesPropertySource,
