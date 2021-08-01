@@ -17,28 +17,51 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URI;
 
+/**
+ * Pipeline policy for testing proxy.
+ */
 public class TestProxyPolicy implements HttpPipelinePolicy {
     private final URI uri;
-    
+
     private String recordingId;
     private String mode;
 
+    /**
+     * Creates an instance of proxy policy to test.
+     * @param uri The endpoint uri.
+     */
     public TestProxyPolicy(URI uri) {
         this.uri = uri;
     }
 
+    /**
+     * Returns the test mode.
+     * @return The test mode.
+     */
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Sets the test mode.
+     * @param mode The test mode.
+     */
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * Returns the recording id.
+     * @return the recording id.
+     */
     public String getRecordingId() {
         return recordingId;
     }
 
+    /**
+     * Sets the recording id.
+     * @param recordingId the recording id.
+     */
     public void setRecordingId(String recordingId) {
         this.recordingId = recordingId;
     }
@@ -46,13 +69,13 @@ public class TestProxyPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if (!CoreUtils.isNullOrEmpty(recordingId) && !CoreUtils.isNullOrEmpty(mode)) {
-            RedirectToTestProxy(context.getHttpRequest());
+            redirectToTestProxy(context.getHttpRequest());
         }
 
         return next.process();
     }
 
-    private void RedirectToTestProxy(HttpRequest request) {
+    private void redirectToTestProxy(HttpRequest request) {
         request.setHeader("x-recording-id", recordingId);
         request.setHeader("x-recording-mode", mode);
         request.setHeader("x-recording-remove", Boolean.toString(false));
@@ -63,18 +86,16 @@ public class TestProxyPolicy implements HttpPipelinePolicy {
             // Ensure x-recording-upstream-base-uri header is only set once, since the same HttpRequest may be reused on retries
             if (request.getHeaders().get("x-recording-upstream-base-uri") == null) {
                 URI baseUri = new URI(requestUri.getScheme(), requestUri.getUserInfo(), requestUri.getHost(), requestUri.getPort(),
-                    null, null, null);
+                        null, null, null);
                 request.setHeader("x-recording-upstream-base-uri", baseUri.toString());
             }
 
             URI testProxyUri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(),
-                requestUri.getPath(), requestUri.getQuery(), requestUri.getFragment());
+                    requestUri.getPath(), requestUri.getQuery(), requestUri.getFragment());
             request.setUrl(testProxyUri.toURL());
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             throw new IllegalStateException(e);
         }
     }
