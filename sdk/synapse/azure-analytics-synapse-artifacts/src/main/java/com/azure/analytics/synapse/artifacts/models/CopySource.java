@@ -84,6 +84,14 @@ public class CopySource {
     private Object maxConcurrentConnections;
 
     /*
+     * Columns that define the additional columns to copying data from source data store to sink. Example:
+     * [{"name": "filePath","value": "$$FILEPATH"},{"name": "newColName","value": "$$COLUMN:SourceColumnA"},{"name": "staticValue","value": "sampleValue"}]
+     * Type: array (or Expression with resultType array)
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
+    /*
      * A copy activity source.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -149,6 +157,26 @@ public class CopySource {
      */
     public CopySource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Additional columns to copying data from source data store to sink.
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Additional columns to copying data from source data store to sink.
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the CopySource object itself.
+     */
+    public CopySource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 
