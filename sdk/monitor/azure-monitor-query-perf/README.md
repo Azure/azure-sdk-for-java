@@ -39,7 +39,7 @@ AZURE_MONITOR_METRICS_RESOURCE_ID=<Resource ID of an Azure Resource>
    java -jar sdk/monitor/azure-monitor-query-perf/target/azure-monitor-query-perf-1.0.0-beta.1-jar-with-dependencies.jar metricsquery --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
 ```   
 
-#### Common perf test command line options for Text Analytics
+#### Common perf test command line options for Azure Monitor Query
 - `--duration` - Number of seconds to run the main test for. Default is 10.
 - `--iterations` - Number of iterations of main test loop.
 - `--parallel` - Number of operations to execute in parallel,

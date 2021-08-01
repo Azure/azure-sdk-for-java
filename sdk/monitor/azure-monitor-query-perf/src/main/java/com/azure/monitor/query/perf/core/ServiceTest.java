@@ -16,11 +16,11 @@ import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 
 /**
- * Base class for Azure Formrecognizer performance tests.
+ * Base class for Azure Monitor Query performance tests.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     public static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
-                                                          + "or system properties.%n";
+            + "or system properties.%n";
 
     protected final LogsQueryClient logsQueryClient;
     protected final LogsQueryAsyncClient logsQueryAsyncClient;
@@ -28,11 +28,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected final MetricsQueryAsyncClient metricsQueryAsyncClient;
 
     /**
-     * The base class for Azure Text Analytics tests.
-     *
+     * The base class for Azure Monitor Query performance tests.
      * @param options the configurable options for performing perf testing on this class.
-     *
-     * @throws RuntimeException if "AZURE_TEXT_ANALYTICS_ENDPOINT" or "AZURE_TEXT_ANALYTICS_API_KEY" is null or empty.
      */
     public ServiceTest(TOptions options) {
         super(options);
@@ -43,9 +40,9 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         MetricsQueryClientBuilder metricsQueryClientBuilder = new MetricsQueryClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build());
         this.logsQueryClient = logsQueryClientBuilder.buildClient();
-        this.logsQueryAsyncClient  = logsQueryClientBuilder.buildAsyncClient();
+        this.logsQueryAsyncClient = logsQueryClientBuilder.buildAsyncClient();
 
         this.metricsQueryClient = metricsQueryClientBuilder.buildClient();
-        this.metricsQueryAsyncClient  = metricsQueryClientBuilder.buildAsyncClient();
+        this.metricsQueryAsyncClient = metricsQueryClientBuilder.buildAsyncClient();
     }
 }
