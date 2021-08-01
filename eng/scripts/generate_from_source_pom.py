@@ -176,6 +176,9 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
 
     for dependency in dependencies:
         dependency_identifier = create_artifact_identifier(dependency)
+        if dependency_identifier is None:
+            continue
+
         if not dependency_identifier in artifact_identifier_to_source_version:
             continue
 
@@ -220,6 +223,13 @@ def is_track_two_pom(tree_root: ET.Element):
 
 # Creates an artifacts identifier.
 def create_artifact_identifier(element: ET.Element):
+    artifact_id = element_find(element, 'artifactId')
+
+    # not all <dependency> describe maven dependencies
+    # so there might not be an <artifactId>
+    if artifact_id is None:
+        return None
+
     group_id = element_find(element, 'groupId')
 
     # POMs allow the groupId to be inferred from the parent POM.
@@ -227,7 +237,7 @@ def create_artifact_identifier(element: ET.Element):
     if group_id is None:
         group_id = element_find(element_find(element, 'parent'), 'groupId')
 
-    return group_id.text + ':' + element_find(element, 'artifactId').text
+    return group_id.text + ':' + artifact_id.text
 
 # Gets the dependency version.
 def get_dependency_version(element: ET.Element):
