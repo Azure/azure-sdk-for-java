@@ -48,6 +48,11 @@
     <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
     <boring-ssl-classifier></boring-ssl-classifier>
+    <jackson.annotations.version>2.12.4</jackson.annotations.version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+    <jackson.core.version>2.12.4</jackson.core.version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+    <jackson.databind.version>2.12.4</jackson.databind.version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    <jackson.jsr310.version>2.12.4</jackson.jsr310.version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+    <jackson.xml.version>2.12.4</jackson.xml.version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
   </properties>
 
   <developers>
@@ -61,27 +66,27 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>${jackson.annotations.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>${jackson.core.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>${jackson.databind.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>${jackson.jsr310.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>${jackson.xml.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -200,11 +205,11 @@
               <includes>
                 <include>io.netty:netty-tcnative-boringssl-static:[2.0.40.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
                 <include>io.projectreactor:reactor-core:[3.4.8]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-core:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[${jackson.annotations.version}]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[${jackson.core.version}]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[${jackson.databind.version}]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[${jackson.xml.version}]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[${jackson.jsr310.version}]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
@@ -321,5 +326,55 @@
         <boring-ssl-classifier>windows-x86_64</boring-ssl-classifier>
       </properties>
     </profile>
+
+
+    <profile>
+      <id>jackson-version-test-matrix</id>
+      <activation>
+        <property><name>env.AZURE_CORE_TEST_JACKSON_VERSION</name></property>
+      </activation>
+      <properties>
+        <jackson.annotation.version>${env.AZURE_CORE_TEST_JACKSON_VERSION}</jackson.annotation.version>
+        <jackson.core.version>${env.AZURE_CORE_TEST_JACKSON_VERSION}</jackson.core.version>
+        <jackson.databind.version>${env.AZURE_CORE_TEST_JACKSON_VERSION}</jackson.databind.version>
+        <jackson.jsr310.version>${env.AZURE_CORE_TEST_JACKSON_VERSION}</jackson.jsr310.version>
+        <jackson.xml.version>${env.AZURE_CORE_TEST_JACKSON_VERSION}</jackson.xml.version>
+      </properties>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+
+                --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.credential=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
+                --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
+
+                --add-reads com.azure.core=ALL-UNNAMED
+              </argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
 </project>
