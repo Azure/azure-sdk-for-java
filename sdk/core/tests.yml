@@ -4,6 +4,11 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: core
+      AdditionalMatrixConfigs:
+        - Name: jackson_version_tests
+          Path: sdk/core/azure-core/test-config/test-config.json
+          Selection: sparse
+          GenerateVMJobs: true      
       Artifacts:
         - name: azure-core
           groupId: com.azure
