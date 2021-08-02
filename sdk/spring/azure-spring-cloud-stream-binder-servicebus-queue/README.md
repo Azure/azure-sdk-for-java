@@ -100,6 +100,15 @@ Controls the maximum number of concurrent sessions to process at any given time.
 
 Default: `1`
 
+**_concurrency_**
+
+When `sessionsEnabled` is true, controls the maximum number of concurrent sessions to process at any given time.
+When `sessionsEnabled` is false, controls the max concurrent calls of service bus message handler and the size of fixed thread pool that handles user's business logic.
+
+Deprecated, replaced with `maxConcurrentSessions` when `sessionsEnabled` is true and `maxConcurrentCalls` when `sessionsEnabled` is false
+
+Default: `1`
+
 **_sessionsEnabled_**
 
 Controls if is a session aware consumer. Set it to `true` if is a queue with sessions enabled.
