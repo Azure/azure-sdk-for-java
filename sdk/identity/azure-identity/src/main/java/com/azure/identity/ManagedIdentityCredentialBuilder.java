@@ -3,6 +3,8 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.Configuration;
+
 /**
  * Fluent credential builder for instantiating a {@link ManagedIdentityCredential}.
  *
@@ -11,6 +13,11 @@ package com.azure.identity;
 public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<ManagedIdentityCredentialBuilder> {
     private String clientId;
 
+    public ManagedIdentityCredentialBuilder() {
+        super();
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+    }
     /**
      * Specifies the client ID of user assigned or system assigned identity.
      *
