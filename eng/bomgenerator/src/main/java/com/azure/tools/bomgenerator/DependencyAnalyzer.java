@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import static com.azure.tools.bomgenerator.Utils.IGNORE_CONFLICT_LIST;
 import static com.azure.tools.bomgenerator.Utils.RESOLVED_EXCLUSION_LIST;
 import static com.azure.tools.bomgenerator.Utils.toBomDependencyNoVersion;
 
@@ -70,6 +71,7 @@ public class DependencyAnalyzer {
 
     public boolean validate() {
         analyze();
+        generateReport();
         return nameToVersionToChildrenDependencyTree.values().stream().anyMatch(value -> value.size() > 1);
     }
 
@@ -135,6 +137,7 @@ public class DependencyAnalyzer {
             try {
 
                 BomDependency parentDependency = new BomDependency(gaLibrary.getGroupId(), gaLibrary.getArtifactId(), gaLibrary.getVersion());
+
                 addDependencyToDependencyTree(parentDependency, null, nameToVersionToChildrenDependencyTree);
 
                 List<BomDependency> dependencies = getDependencies(gaLibrary);
@@ -183,6 +186,10 @@ public class DependencyAnalyzer {
     }
 
     private static void addDependencyToDependencyTree(BomDependency dependency, BomDependency parentDependency, Map<BomDependencyNoVersion, HashMap<String, Collection<BomDependency>>> dependencyTree) {
+        if (IGNORE_CONFLICT_LIST.contains(dependency.getArtifactId())) {
+            return;
+        }
+
         dependencyTree.computeIfAbsent(new BomDependencyNoVersion(dependency.getGroupId(), dependency.getArtifactId()), key -> new HashMap<>());
 
         var value = dependencyTree.get(dependency).computeIfAbsent(dependency.getVersion(), key -> new ArrayList<>());

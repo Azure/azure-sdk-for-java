@@ -4,23 +4,25 @@
 package com.azure.tools.bomgenerator;
 
 import java.util.regex.Matcher;
-
-import static com.azure.tools.bomgenerator.Utils.BASE_AZURE_GROUPID;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_EXTERNALDEPENDENCIES;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_GROUPID;
+import static com.azure.tools.bomgenerator.Utils.ANALYZE_MODE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_INPUTFILE;
+import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_MODE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OUTPUTFILE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_POMFILE;
+import static com.azure.tools.bomgenerator.Utils.GENERATE_MODE;
+import static com.azure.tools.bomgenerator.Utils.validateNotNullOrEmpty;
+import static com.azure.tools.bomgenerator.Utils.validateNull;
+import static com.azure.tools.bomgenerator.Utils.validateValues;
 
 public class Main {
 
     public static void main(String[] args) {
-        BomGenerator generator = parseCommandLine(args);
-        generator.generate();
+        BomGenerator generator = new BomGenerator();
+        parseCommandLine(args, generator);
+        generator.run();
     }
 
-    private static BomGenerator parseCommandLine(String[] args) {
-        String inputFile = null, outputFile = null, pomFile = null;
+    private static void parseCommandLine(String[] args, BomGenerator generator) {
         for (String arg : args) {
             Matcher matcher = Utils.COMMANDLINE_REGEX.matcher(arg);
             if (matcher.matches()) {
@@ -30,35 +32,46 @@ public class Main {
 
                     switch (argName.toLowerCase()) {
                         case COMMANDLINE_INPUTFILE:
-                            inputFile = argValue;
+                            validateNotNullOrEmpty(argName, argValue);
+                            generator.setInputFileName(argValue);
                             break;
 
                         case COMMANDLINE_OUTPUTFILE:
-                            outputFile = argValue;
+                            validateNotNullOrEmpty(argName, argValue);
+                            generator.setOutputFileName(argValue);
                             break;
 
                         case COMMANDLINE_POMFILE:
-                            pomFile = argValue;
+                            validateNotNullOrEmpty(argName, argValue);
+                            generator.setPomFileName(argValue);
+                            break;
+
+                        case COMMANDLINE_MODE:
+                            validateNotNullOrEmpty(argName, argValue);
+                            validateValues(argName, argValue, GENERATE_MODE, ANALYZE_MODE);
+                            generator.setMode(argValue);
                             break;
                     }
                 }
             }
         }
 
-        // validate that each of these are present.
-        validateInputs(inputFile, outputFile, pomFile);
-        return new BomGenerator(inputFile, outputFile, pomFile);
+        validateOptions(generator);
     }
 
-    private static void validateInputs(String inputFile, String outputFile, String pomFile) {
-        validateInput(inputFile, COMMANDLINE_INPUTFILE);
-        validateInput(outputFile, COMMANDLINE_OUTPUTFILE);
-        validateInput(pomFile, COMMANDLINE_POMFILE);
-    }
+    private static void validateOptions(BomGenerator generator) {
+        switch (generator.getMode()) {
+            case ANALYZE_MODE:
+                // In analyze mode, we should ensure that the pom file is set.
+                validateNotNullOrEmpty(generator.getPomFileName(), "pomFile");
+                break;
 
-    private static void validateInput(String argName, String argValue) {
-        if(argValue == null || argValue.isEmpty()) {
-            throw new NullPointerException(String.format("%s can't be null", argName));
+            case GENERATE_MODE:
+                // In generate mode, we should have the inputFile, outputFile and the pomFile.
+                validateNotNullOrEmpty(generator.getPomFileName(), "pomFile");
+                validateNotNullOrEmpty(generator.getInputFileName(), "inputFileName");
+                validateNotNullOrEmpty(generator.getOutputFileName(), "outputFileName");
+                break;
         }
     }
 }
