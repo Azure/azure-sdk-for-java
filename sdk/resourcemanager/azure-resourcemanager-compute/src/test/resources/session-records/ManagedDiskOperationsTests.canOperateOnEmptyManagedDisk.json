@@ -319,7 +319,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210721T072005Z:c319f75f-faf0-43ac-b2a5-a2daffbfb65a",
       "Expires" : "-1",
       "x-ms-request-id" : "5303a7fe-f4f8-41ed-8278-bc870c1c68db",
-      "Body" : "{\r\n  \"startTime\": \"2021-07-21T07:19:34.8942322+00:00\",\r\n  \"endTime\": \"2021-07-21T07:19:35.1286072+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"https://md-hdd-gsdb5tjdgfnn.z22.blob.storage.azure.net/t1l5xz1wh0dx/abcd?sv=2018-03-28&sr=b&si=992a2a15-7120-40bc-8f0a-d8e0ca563bd9&sig=***REMOVED***\"\r\n}\r\n  },\r\n  \"name\": \"69d9cd47-72d9-4a5e-8176-627ed8e93e80\"\r\n}",
+      "Body" : "{\r\n  \"startTime\": \"2021-07-21T07:19:34.8942322+00:00\",\r\n  \"endTime\": \"2021-07-21T07:19:35.1286072+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"***REMOVED***\"\r\n}\r\n  },\r\n  \"name\": \"69d9cd47-72d9-4a5e-8176-627ed8e93e80\"\r\n}",
       "x-ms-client-request-id" : "8bc18375-0ac3-4834-99d3-dd9359e33d3b",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -348,7 +348,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210721T072006Z:0fec106c-caa4-477f-bc27-6377c486af20",
       "Expires" : "-1",
       "x-ms-request-id" : "1681c506-0f96-4151-b75b-f5ce3e23b8b2",
-      "Body" : "{\r\n  \"accessSAS\": \"https://md-hdd-gsdb5tjdgfnn.z22.blob.storage.azure.net/t1l5xz1wh0dx/abcd?sv=2018-03-28&sr=b&si=992a2a15-7120-40bc-8f0a-d8e0ca563bd9&sig=***REMOVED***\"\r\n}",
+      "Body" : "{\r\n  \"accessSAS\": \"***REMOVED***\"\r\n}",
       "x-ms-client-request-id" : "d3a33bab-83bb-4a39-bdfd-ef718d181153",
       "Content-Type" : "application/json; charset=utf-8"
     },

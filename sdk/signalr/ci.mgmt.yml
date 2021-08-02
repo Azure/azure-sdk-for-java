@@ -8,7 +8,15 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/signalr/ci.mgmt.yml
+      - sdk/signalr/mgmt-v2018_03_01_preview/
+      - sdk/signalr/mgmt-v2018_10_01/
+      - sdk/signalr/mgmt-v2020_05_01/
+    exclude:
+      - sdk/signalr/pom.xml
+      - sdk/signalr/mgmt-v2018_03_01_preview/pom.xml
+      - sdk/signalr/mgmt-v2018_10_01/pom.xml
+      - sdk/signalr/mgmt-v2020_05_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +27,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/signalr/ci.mgmt.yml
+      - sdk/signalr/mgmt-v2018_03_01_preview/
+      - sdk/signalr/mgmt-v2018_10_01/
+      - sdk/signalr/mgmt-v2020_05_01/
+    exclude:
+      - sdk/signalr/pom.xml
+      - sdk/signalr/mgmt-v2018_03_01_preview/pom.xml
+      - sdk/signalr/mgmt-v2018_10_01/pom.xml
+      - sdk/signalr/mgmt-v2020_05_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

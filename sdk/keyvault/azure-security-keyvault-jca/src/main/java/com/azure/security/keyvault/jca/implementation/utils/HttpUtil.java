@@ -50,17 +50,7 @@ public final class HttpUtil {
     }
 
     public static String post(String url, String body, String contentType) {
-        String result = null;
-        try (CloseableHttpClient client = HttpClients.createDefault()) {
-            HttpPost httpPost = new HttpPost(url);
-            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
-            httpPost.setEntity(
-                new StringEntity(body, ContentType.create(contentType)));
-            result = client.execute(httpPost, createResponseHandler());
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-        return result;
+        return post(url, null, body, contentType);
     }
 
     public static String getUserAgentPrefix() {
@@ -74,6 +64,24 @@ public final class HttpUtil {
                        .findFirst()
                        .orElse(DEFAULT_USER_AGENT_VALUE_PREFIX);
     }
+
+    public static String post(String url, Map<String, String> headers, String body, String contentType) {
+        String result = null;
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+            if (headers != null) {
+                headers.forEach(httpPost::addHeader);
+                httpPost.addHeader("Content-Type", contentType);
+            }
+            httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
+            result = client.execute(httpPost, createResponseHandler());
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return result;
+    }
+
 
     private static ResponseHandler<String> createResponseHandler() {
         return (HttpResponse response) -> {

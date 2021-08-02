@@ -49,6 +49,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final String dataDiskName = "disk2";
 
         try {
@@ -202,7 +203,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                     .withoutPrimaryPublicIPAddress()
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withUnmanagedDisks()
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();

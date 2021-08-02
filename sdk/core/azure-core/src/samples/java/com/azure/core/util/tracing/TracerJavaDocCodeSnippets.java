@@ -28,6 +28,15 @@ public class TracerJavaDocCodeSnippets {
             updatedContext.getData(PARENT_SPAN_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context
 
+        // BEGIN: com.azure.core.util.tracing.start#options-context
+        // start a new CLIENT tracing span with the given start options and explicit parent span
+        StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT)
+            .setAttribute("key", "value");
+        Context updatedClientSpanContext = tracer.start("azure.keyvault.secrets/setsecret", options, traceContext);
+        System.out.printf("Span returned in the context object: %s%n",
+            updatedClientSpanContext.getData(PARENT_SPAN_KEY).get());
+        // END: com.azure.core.util.tracing.start#options-context
+
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-SEND
         // pass the current tracing span and request metadata to the calling method
         Context sendContext = new Context(PARENT_SPAN_KEY, "<user-current-span>")
@@ -119,6 +128,28 @@ public class TracerJavaDocCodeSnippets {
         Context spanContext = tracer.extractContext("valid-diagnostic-id", Context.NONE);
         System.out.printf("Span context of the current tracing span: %s%n", spanContext.getData(spanImplContext).get());
         // END: com.azure.core.util.tracing.extractContext#string-context
+    }
+
+
+    /**
+     * Code snippet for {@link Tracer#makeSpanCurrent(Context)}
+     */
+    @SuppressWarnings("try")
+    public void makeSpanCurrent() {
+        // BEGIN: com.azure.core.util.tracing.makeSpanCurrent#context
+        // Starts a span, makes it current and then stops it.
+        Context traceContext = tracer.start("EventHub.process", Context.NONE);
+
+        // Make sure to always use try-with-resource statement with makeSpanCurrent
+        try (AutoCloseable ignored = tracer.makeSpanCurrent(traceContext)) {
+            System.out.println("doing some work...");
+        } catch (Throwable throwable) {
+            tracer.end("Failure", throwable, traceContext);
+        } finally {
+            tracer.end("OK", null, traceContext);
+        }
+
+        // END: com.azure.core.util.tracing.makeSpanCurrent#context
     }
 
     /**

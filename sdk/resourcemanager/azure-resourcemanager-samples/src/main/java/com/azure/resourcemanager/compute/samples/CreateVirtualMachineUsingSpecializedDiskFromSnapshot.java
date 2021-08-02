@@ -49,7 +49,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_WEST;
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
@@ -72,7 +72,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                     .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withNewDataDisk(100)
                     .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
                     .defineNewExtension("CustomScriptForLinux")

@@ -288,7 +288,7 @@
       "x-ms-gatewayversion" : "version=2.11.0",
       "Content-Length" : "1299",
       "x-ms-request-id" : "1e179e5d-29a3-4438-97dc-1d18001ffe26",
-      "Body" : "{\"connectionStrings\":[{\"connectionString\":\"REDACTED\",\"description\":\"Primary MongoDB Connection String\"},{\"connectionString\":\"REDACTED\",\"description\":\"Secondary MongoDB Connection String\"},{\"connectionString\":\"REDACTED\",\"description\":\"Primary Read-Only MongoDB Connection String\"},{\"connectionString\":\"REDACTED\",\"description\":\"Secondary Read-Only MongoDB Connection String\"}]}",
+      "Body" : "{\"connectionStrings\":[{\"connectionString\":\"***REMOVED***\",\"description\":\"Primary MongoDB Connection String\"},{\"connectionString\":\"***REMOVED***\",\"description\":\"Secondary MongoDB Connection String\"},{\"connectionString\":\"***REMOVED***\",\"description\":\"Primary Read-Only MongoDB Connection String\"},{\"connectionString\":\"***REMOVED***\",\"description\":\"Secondary Read-Only MongoDB Connection String\"}]}",
       "Content-Type" : "application/json"
     },
     "Exception" : null

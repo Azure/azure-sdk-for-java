@@ -3,6 +3,8 @@
 
 package com.azure.perf.test.core;
 
+import java.net.URI;
+
 import com.beust.jcommander.Parameter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -14,11 +16,11 @@ public class PerfStressOptions {
     @Parameter(names = { "-d", "--duration" }, description = "duration of test in seconds")
     private int duration = 10;
 
-    @Parameter(names = { "--host" }, description = "Host to redirect HTTP requests")
-    private String host;
-
     @Parameter(names = { "--insecure" }, description = "Allow untrusted SSL server certs")
     private boolean insecure = false;
+
+    @Parameter(names = { "-x", "--test-proxy" }, description = "URI of TestProxy Server")
+    private URI testProxy;
 
     @Parameter(names = { "-i", "--iterations" }, description = "Number of iterations of main test loop")
     private int iterations = 1;
@@ -28,9 +30,6 @@ public class PerfStressOptions {
 
     @Parameter(names = { "-p", "--parallel" }, description = "Number of operations to execute in parallel")
     private int parallel = 1;
-
-    @Parameter(names = { "--port" }, description = "port to redirect HTTP requests")
-    private int port = -1;
 
     @Parameter(names = { "-w", "--warmup" }, description = "duration of warmup in seconds")
     private int warmup = 10;
@@ -69,19 +68,19 @@ public class PerfStressOptions {
     }
 
     /**
-     * Get the configured host for performance test.
-     * @return The host.
-     */
-    public String getHost() {
-        return host;
-    }
-
-    /**
      * Get the host security status for performance test.
      * @return The insecure status.
      */
     public boolean isInsecure() {
         return insecure;
+    }
+
+    /**
+     * Get the configured test proxy for performance test.
+     * @return The configured test proxy.
+     */
+    public URI getTestProxy() {
+        return testProxy;
     }
 
     /**
@@ -106,14 +105,6 @@ public class PerfStressOptions {
      */
     public int getParallel() {
         return parallel;
-    }
-
-    /**
-     * Get the configured port for performance test.
-     * @return The port.
-     */
-    public int getPort() {
-        return port;
     }
 
     /**
