@@ -39,8 +39,6 @@ import java.nio.file.StandardOpenOption;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -54,7 +52,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -208,11 +205,13 @@ public class FluxUtilTest {
 
     private static Stream<Arguments> writeFileDoesNotSwallowErrorSupplier() throws IOException {
         // AsynchronousFileChannel that throws NonWritableChannelException.
-        AsynchronousFileChannel throwOnWriteChannel = mock(AsynchronousFileChannel.class);
-        doThrow(NonWritableChannelException.class).when(throwOnWriteChannel)
-            .write(any(), anyLong(), any(), any());
+        Path nonWritableFile = Files.createTempFile("nonWritableFile" + UUID.randomUUID(), ".txt");
+        nonWritableFile.toFile().deleteOnExit();
+        AsynchronousFileChannel nonWritableChannel = AsynchronousFileChannel.open(nonWritableFile,
+            StandardOpenOption.READ);
 
-        Flux<ByteBuffer> fluxThatThrows = Flux.generate(() -> 0, (count, sink) -> {
+        // Flux<ByteBuffer> that throws an error during processing.
+        Flux<ByteBuffer> exceptionThrowingFlux = Flux.generate(() -> 0, (count, sink) -> {
             if (count == 10) {
                 sink.error(new IOException());
                 return count;
@@ -221,12 +220,13 @@ public class FluxUtilTest {
             sink.next(ByteBuffer.allocate(16));
             return count + 1;
         });
-        Path fluxThatThrowsFile = Files.createTempFile("fluxThatThrows" + UUID.randomUUID(), ".txt");
-        fluxThatThrowsFile.toFile().deleteOnExit();
-        AsynchronousFileChannel fluxThatThrowsChannel = AsynchronousFileChannel.open(fluxThatThrowsFile,
+        Path exceptionThrowingFile = Files.createTempFile("exceptionThrowingFile" + UUID.randomUUID(), ".txt");
+        exceptionThrowingFile.toFile().deleteOnExit();
+        AsynchronousFileChannel exceptionThrowingChannel = AsynchronousFileChannel.open(exceptionThrowingFile,
             StandardOpenOption.WRITE);
 
-        Flux<ByteBuffer> fluxThatIgnoresOnNextRequest = new Flux<ByteBuffer>() {
+        // Improper Flux<ByteBuffer> implementation that ignores downstream requests.
+        Flux<ByteBuffer> ignoresRequestFlux = new Flux<ByteBuffer>() {
             @Override
             public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
                 final byte[] data = new byte[16 * 4096];
@@ -248,25 +248,12 @@ public class FluxUtilTest {
                 });
             }
         };
+        Path ignoresRequestFile = Files.createTempFile("ignoresRequestFile" + UUID.randomUUID(), ".txt");
+        ignoresRequestFile.toFile().deleteOnExit();
+        AsynchronousFileChannel ignoresRequestChannel = AsynchronousFileChannel.open(ignoresRequestFile,
+            StandardOpenOption.WRITE);
 
-        // AsynchronousFileChannel that simply emits completion status after a pause to mock writing.
-        AsynchronousFileChannel alwaysSuccessFileChannel = mock(AsynchronousFileChannel.class);
-        Timer timer = new Timer(true);
-        doAnswer(invocation -> {
-            ByteBuffer buffer = invocation.getArgument(0);
-            CompletionHandler<Integer, ByteBuffer> completionHandler = invocation.getArgument(3);
-
-            // Trigger completion with bytes written equal to the remaining bytes in the ByteBuffer and set the
-            // ByteBuffer's position to its limit to mock a full read.
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    completionHandler.completed(buffer.remaining(), buffer.position(buffer.limit()));
-                }
-            }, 100);
-            return null;
-        }).when(alwaysSuccessFileChannel).write(any(), anyLong(), any(), any());
-
+        // CompletionHandler that emits a writing error.
         AsynchronousFileChannel completionHandlerPropagatesError = mock(AsynchronousFileChannel.class);
         doAnswer(invocation -> {
             CompletionHandler<Integer, ByteBuffer> completionHandler = invocation.getArgument(3);
@@ -278,13 +265,13 @@ public class FluxUtilTest {
 
         return Stream.of(
             // AsynchronousFileChannel doesn't have write capabilities.
-            Arguments.of(Flux.just(ByteBuffer.allocate(0)), throwOnWriteChannel, NonWritableChannelException.class),
+            Arguments.of(Flux.just(ByteBuffer.allocate(0)), nonWritableChannel, NonWritableChannelException.class),
 
             // Flux<ByteBuffer> has an exception during processing.
-            Arguments.of(fluxThatThrows, fluxThatThrowsChannel, IOException.class),
+            Arguments.of(exceptionThrowingFlux, exceptionThrowingChannel, IOException.class),
 
             // Flux<ByteBuffer> that ignores onNext request.
-            Arguments.of(fluxThatIgnoresOnNextRequest, alwaysSuccessFileChannel, IllegalStateException.class),
+            Arguments.of(ignoresRequestFlux, ignoresRequestChannel, IllegalStateException.class),
 
             // AsynchronousFileChannel that has an error propagated from the CompletionHandler.
             Arguments.of(Flux.just(ByteBuffer.allocate(0)), completionHandlerPropagatesError,
