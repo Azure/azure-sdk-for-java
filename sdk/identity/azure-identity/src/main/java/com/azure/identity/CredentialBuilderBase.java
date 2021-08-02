@@ -89,4 +89,15 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         this.identityClientOptions.setHttpClient(client);
         return (T) this;
     }
+
+    /**
+     * Allows to log the pii information in the application level logs.
+     *
+     * @return An updated instance of this builder with pii logging enabled.
+     */
+    @SuppressWarnings("unchecked")
+    public T allowPiiLogging() {
+        this.identityClientOptions.setAllowPiiLogging(true);
+        return (T) this;
+    }
 }

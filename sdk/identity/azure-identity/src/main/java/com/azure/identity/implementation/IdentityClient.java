@@ -872,6 +872,10 @@ public class IdentityClient {
                             }
                         } else {
                             requestedAccount = accounts.values().iterator().next();
+                            if (options.isPiiLoggingAllowed()) {
+                                logger.verbose(
+                                    "Successfully retrieved the access token for the username: %s" + username);
+                            }
                         }
 
 

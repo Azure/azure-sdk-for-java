@@ -38,6 +38,7 @@ public final class IdentityClientOptions {
     private AuthenticationRecord authenticationRecord;
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
     private boolean cp1Disabled;
+    private boolean piiLogging;
     private RegionalAuthority regionalAuthority;
 
     /**
@@ -271,6 +272,28 @@ public final class IdentityClientOptions {
         this.includeX5c = includeX5c;
         return this;
     }
+
+    /**
+     * Specifies if the pii logging should be enabled or not.
+     *
+     * @param allowPiiLogging true if the credential should log pii information.
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setAllowPiiLogging(boolean allowPiiLogging) {
+        this.piiLogging = allowPiiLogging;
+        return this;
+    }
+
+
+    /**
+     * Get the flag indicating where PII logging should be done or not.
+     *
+     * @return the status indiciating if PII logging should be enabled.
+     */
+    public boolean isPiiLoggingAllowed() {
+        return piiLogging;
+    }
+
 
     /**
      * Get the configured {@link AuthenticationRecord}.
