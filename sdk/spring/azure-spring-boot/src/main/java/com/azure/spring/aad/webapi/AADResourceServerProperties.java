@@ -1,16 +1,21 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.webapi;
 
 import com.azure.spring.aad.implementation.constants.AADTokenClaim;
 import com.azure.spring.aad.implementation.constants.AuthorityPrefix;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.StringUtils;
-
+/**
+ * Configuration properties for Azure Active Directory B2C.
+ */
 @ConfigurationProperties("azure.activedirectory.resource-server")
 public class AADResourceServerProperties implements InitializingBean {
 
