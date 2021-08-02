@@ -340,6 +340,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                         s"(first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after 15 " +
                         s"minutes: $operationsLog"
                   ))
+                  cancelWork()
                 }
 
                 throwIfCapturedExceptionExists()
