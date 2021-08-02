@@ -4,7 +4,8 @@
 This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
-
+### New Features
+- Support the configuration of the following related properties `prefetchCount`, `shareConnection`, `customEndpointAddress`, `retryOptions`, `transport`, `loadBalancingStrategy`, `loadBalancingUpdateInterval`, `partitionOwnershipExpirationInterval`, `trackLastEnqueuedEventProperties`. For details, please refer to the eventhub binder document.
 
 ## 2.7.0 (2021-07-20)
 ### Key Bug Fixes

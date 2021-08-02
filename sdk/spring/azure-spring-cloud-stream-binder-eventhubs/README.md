@@ -110,6 +110,68 @@ Effective only if `sync` is set to true. The amount of time to wait for a respon
 
 Default: `10000`
 
+**_custom-endpoint-address_**
+
+Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through an intermediary.
+
+Default: `null`
+
+**_prefetch-count_**
+
+Sets the count used by the receiver to control the number of events the Event Hub consumer will actively receive and queue locally without regard to whether a receive operation is currently active.
+
+Default: `1`
+
+**_share-connection_**
+
+Toggles the builder to use the same connection for producers or consumers that are built from this instance. By default, a new connection is constructed and used created for each Event Hub consumer or producer created.
+
+Default: `false`
+
+**retry-options.max-retries**
+
+Sets the maximum number of retry attempts before considering the associated operation to have failed.
+
+Default: `3`
+
+**retry-options.delay**
+
+Gets the delay between retry attempts for a fixed approach or the delay on which to base calculations for a backoff-approach.
+
+Default: `0.8s`
+
+**retry-options.max-delay**
+
+Sets the maximum permissible delay between retry attempts.
+
+Default: `1m`
+
+**retry-options.try-timeout**
+
+Sets the maximum duration to wait for completion of a single attempt, whether the initial attempt or a retry.
+
+Default: `1m`
+
+**retry-options.try-timeout**
+
+Sets the approach to use for calculating retry delays.
+
+`FIXED`, Retry attempts happen at fixed intervals; each delay is a consistent duration.
+
+`EXPONENTIAL`, Retry attempts will delay based on a backoff strategy, where each attempt will increase the duration that it waits before retrying.
+
+Default: `AmqpRetryMode.EXPONENTIAL`
+
+**transport**
+
+Sets the transport type by which all the communication with Azure Event Hubs occurs.
+
+`AMQP`, AMQP over TCP. Uses port 5671 - assigned by IANA for secure AMQP (AMQPS).
+
+`AMQP_WEB_SOCKETS`, AMQP over Web Sockets. Uses port 443.
+
+Default: `AmqpTransportType.AMQP`
+
 #### Event Hub Consumer Properties ####
 
 It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
@@ -148,6 +210,98 @@ Default: `10`
 Effectively only when `checkpoint-mode` is `Time`. Decides The time interval to do one checkpoint.
 
 Default: `5s`
+
+**_custom-endpoint-address_**
+
+Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through an intermediary.
+
+Default: `null`
+
+**_prefetch-count_**
+
+Sets the count used by the receiver to control the number of events the Event Hub consumer will actively receive and queue locally without regard to whether a receive operation is currently active.
+
+Default: `1`
+
+**_share-connection_**
+
+Toggles the builder to use the same connection for producers or consumers that are built from this instance. By default, a new connection is constructed and used created for each Event Hub consumer or producer created.
+
+Default: `false`
+
+**retry-options.max-retries**
+
+Sets the maximum number of retry attempts before considering the associated operation to have failed.
+
+Default: `3`
+
+**retry-options.delay**
+
+Gets the delay between retry attempts for a fixed approach or the delay on which to base calculations for a backoff-approach.
+
+Default: `0.8s`
+
+**retry-options.max-delay**
+
+Sets the maximum permissible delay between retry attempts.
+
+Default: `1m`
+
+**retry-options.try-timeout**
+
+Sets the maximum duration to wait for completion of a single attempt, whether the initial attempt or a retry.
+
+Default: `1m`
+
+**retry-options.try-timeout**
+
+Sets the approach to use for calculating retry delays.
+
+`FIXED`, Retry attempts happen at fixed intervals; each delay is a consistent duration.
+
+`EXPONENTIAL`, Retry attempts will delay based on a backoff strategy, where each attempt will increase the duration that it waits before retrying.
+
+Default: `AmqpRetryMode.EXPONENTIAL`
+
+**transport**
+
+Sets the transport type by which all the communication with Azure Event Hubs occurs.
+
+`AMQP`, AMQP over TCP. Uses port 5671 - assigned by IANA for secure AMQP (AMQPS).
+
+`AMQP_WEB_SOCKETS`, AMQP over Web Sockets. Uses port 443.
+
+Default: `AmqpTransportType.AMQP`
+
+**loadBalancingStrategy**
+
+The LoadBalancingStrategy the event processor will use for claiming partition ownership. By default, a Balanced approach will be used.
+
+`BALANCED`, The event processor will use a steady approach to claim ownership of partitions and slowly trend towards a stable state where all active processors will have an even distribution of Event Hub partitions. 
+This strategy may take longer to settle into a balanced partition distribution among active processor instances. This strategy is geared towards minimizing ownership contention and reducing the need to transfer ownership frequently, especially when multiple instances are initialized together, until a stable state is reached.
+
+`GREEDY`, The event processor will attempt to claim its fair share of partition ownership greedily. This enables event processing of all partitions to start/resume quickly when there is an imbalance detected by the processor. 
+This may result in ownership of partitions frequently changing when multiple instances are starting up but will eventually converge to a stable state.
+
+Default: `LoadBalancingStrategy.BALANCED`
+
+**retry-options.loadBalancingUpdateInterval**
+
+The time interval between load balancing update cycles. This is also generally the interval at which ownership of partitions are renewed. By default, this interval is set to 10 seconds.
+
+Default: `10s`
+
+**retry-options.partitionOwnershipExpirationInterval**
+
+The time duration after which the ownership of partition expires if it's not renewed by the owning processor instance. This is the duration that this processor instance will wait before taking over the ownership of partitions previously owned by an inactive processor. By default, this duration is set to a minute.
+
+Default: `1m`
+
+**retry-options.trackLastEnqueuedEventProperties**
+
+Sets whether or not the event processor should request information on the last enqueued event on its associated partition, and track that information as events are received.
+
+Default: `false`
 
 ### Error Channels
 **_consumer error channel_**
