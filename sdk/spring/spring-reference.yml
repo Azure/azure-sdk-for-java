@@ -17,7 +17,7 @@
       artifacts:                                                                                    # Package list of a service feature.
         - artifactId: azure-spring-boot-bom
           groupId: com.azure.spring
-          versionGA: 3.4.0                                                                          # The latest GA version if exists.
+          versionGA: 3.7.0                                                                          # The latest GA version if exists.
           versionPreview: 3.0.0-beta.1                                                              # The latest preview version if exists.
           description: BOM for Microsoft Azure Spring Boot support.                                 # Introduction of an library.
           type: spring                                                                              # To mark if the package is Spring library, Azure service client library or management library, supported values are spring, client and mgmt.
@@ -62,7 +62,7 @@
       artifacts:
         - artifactId: azure-spring-cloud-dependencies
           groupId: com.azure.spring
-          versionGA: 2.4.0
+          versionGA: 2.7.0
           description: BOM for Microsoft Azure Spring Cloud support.
           type: spring
           links:
@@ -103,13 +103,14 @@
       artifacts:
         - artifactId: azure-spring-boot-starter-active-directory
           groupId: com.azure.spring
-          versionGA: 3.4.0
+          versionGA: 3.7.0
           description: Microsoft's Spring Boot Starter provides the most optimal way to connect your Web application to an Azure Active Directory(AAD for short) tenant and protect resource server with AAD. It uses the Oauth 2.0 protocol to protect Web applications and resource servers.
           type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-readme?view=azure-java-stable           # Documentation url of repository azure-docs-for-java.
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-starter-active-directory             # Github Sample repo url.
           springProperties:
             starter: true
             bom: azure-spring-boot-bom                                                              # To map the bom package of each Spring library, we use this property to index the `artifactId` property of a library's bom.
@@ -131,7 +132,7 @@
       artifacts:
         - artifactId: azure-spring-boot-starter-active-directory-b2c
           groupId: com.azure.spring
-          versionGA: 3.4.0
+          versionGA: 3.7.0
           versionPreview: 3.0.0-beta.1
           description: Microsoft's Spring Boot Starter provides auto-configuration of Azure Active Directory B2C, which allows you to manage customer, consumer, and citizen access to your business-to-consumer (B2C) applications.
           type: spring
@@ -139,6 +140,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-b2c-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-starter-active-directory-b2c
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -163,7 +165,7 @@
       artifacts:
         - artifactId: azure-spring-boot-starter-cosmos
           groupId: com.azure.spring
-          versionGA: 3.4.0
+          versionGA: 3.7.0
           versionPreview: 3.0.0-beta.1
           description: Microsoft's Spring Boot Starter enables developers to use Spring Boot applications that easily integrate with Azure Cosmos DB by using the SQL API.
           type: spring
@@ -171,6 +173,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-cosmos
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-cosmos-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-cosmos
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/cosmos/azure-spring-boot-starter-cosmos
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -195,7 +198,8 @@
       artifacts:
         - artifactId: azure-security-keyvault-jca
           groupId: com.azure
-          versionPreview: 1.0.0-beta.6
+          versionGA: 1.0.1
+          versionPreview: 1.0.0-beta.7
           type: client
           links:
             repopath: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca
@@ -204,7 +208,8 @@
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca
         - artifactId: azure-spring-boot-starter-keyvault-certificates
           groupId: com.azure.spring
-          versionPreview: 3.0.0-beta.6
+          versionGA: 3.0.1
+          versionPreview: 3.0.0-beta.7
           description: Microsoft's Spring Boot Starter provides a secure and frictionless way to enable TLS with help from Azure Key Vault and managed identity for Azure resources.
           type: spring
           links:
@@ -212,6 +217,7 @@
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-certificates-readme?view=azure-java-preview
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-boot-starter-keyvault-certificates/3.0.0-beta.4/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-keyvault-certificates
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-starter-keyvault-certificates
           springProperties:
             starter: true
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
@@ -229,7 +235,7 @@
       artifacts:
         - artifactId: azure-spring-boot-starter-keyvault-secrets
           groupId: com.azure.spring
-          versionGA: 3.4.0
+          versionGA: 3.7.0
           versionPreview: 3.0.0-beta.1
           description: Microsoft's Spring Boot Starter adds Azure Key Vault as one of Spring PropertySource. Secrets stored in Azure Key Vault could be easily used and conveniently accessed like other externalized configuration property
           type: spring
@@ -237,6 +243,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-secrets
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-secrets-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-keyvault-secrets
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-starter-keyvault-secrets
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -261,7 +268,7 @@
       artifacts:
         - artifactId: azure-spring-boot-starter-storage
           groupId: com.azure.spring
-          versionGA: 3.4.0
+          versionGA: 3.7.0
           versionPreview: 3.0.0-beta.1
           description: Microsoft's Spring Boot Starter implements Spring Resource abstraction for Azure Storage service which allows you to interact with Azure Blob storage using Spring programming model.
           type: spring
@@ -269,6 +276,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-storage
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-storage-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-storage
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/storage/azure-spring-boot-starter-storage
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -291,7 +299,7 @@
       artifacts:
         - artifactId: azure-spring-cloud-starter-storage-queue
           groupId: com.azure.spring
-          versionGA: 2.4.0
+          versionGA: 2.7.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Starter helps developers to finish the auto-configuration of Storage Queue and provides Spring Integration with Storage Queue.
           type: spring
@@ -299,6 +307,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-storage-queue
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-storage-queue-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-storage-queue
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/storage/azure-spring-cloud-starter-storage-queue
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies
@@ -323,7 +332,7 @@
       artifacts:
         - artifactId: azure-spring-cloud-stream-binder-servicebus-topic
           groupId: com.azure.spring
-          versionGA: 2.4.0
+          versionGA: 2.7.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure Service Bus Topic which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Service Bus Topic.
           type: spring
@@ -332,6 +341,7 @@
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-servicebus-topic-readme?view=azure-java-stable
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-topic/2.3.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-topic
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
@@ -346,7 +356,7 @@
                 version: 2.2.0
         - artifactId: azure-spring-cloud-stream-binder-servicebus-queue
           groupId: com.azure.spring
-          versionGA: 2.4.0
+          versionGA: 2.7.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure Service Bus Queue which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Service Bus Queue.
           type: spring
@@ -355,6 +365,7 @@
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-servicebus-queue-readme?view=azure-java-stable
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-queue/2.3.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-queue
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.4.0-M1,2.4.5]"
@@ -369,7 +380,7 @@
                 version: 2.2.0
         - artifactId: azure-spring-cloud-starter-servicebus
           groupId: com.azure.spring
-          versionGA: 2.4.0
+          versionGA: 2.7.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Starter helps developers to finish the auto-configuration of Service Bus and provides Spring Integration with Service Bus.
           type: spring
@@ -377,6 +388,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-servicebus
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-servicebus-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-servicebus
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-starter-servicebus
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies
@@ -399,7 +411,7 @@
       artifacts:
         - artifactId: azure-spring-boot-starter-servicebus-jms
           groupId: com.azure.spring
-          versionGA: 3.4.0
+          versionGA: 3.7.0
           versionPreview: 3.0.0-beta.1
           description: Microsoft's Spring Boot Starter provides integration of Spring JMS Queue and Topic with Azure Service Bus.
           type: spring
@@ -407,6 +419,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-servicebus-jms-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-servicebus-jms
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-starter-servicebus-jms
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -431,7 +444,7 @@
       artifacts:
         - artifactId: azure-spring-cloud-starter-eventhubs
           groupId: com.azure.spring
-          versionGA: 2.4.0
+          versionGA: 2.7.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Starter helps developers to finish the auto-configuration of Event Hubs and provides Spring Integration on Event Hubs.
           type: spring
@@ -439,6 +452,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-starter-eventhubs
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies
@@ -454,7 +468,7 @@
                 version: 2.2.0
         - artifactId: azure-spring-cloud-stream-binder-eventhubs
           groupId: com.azure.spring
-          versionGA: 2.4.0
+          versionGA: 2.7.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure Event Hub which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Event Hub service.
           type: spring
@@ -463,6 +477,7 @@
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-eventhubs-readme?view=azure-java-stable
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-eventhubs/2.3.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-eventhubs
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-stream-binder-eventhubs
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
@@ -481,7 +496,7 @@
       artifacts:
         - artifactId: azure-spring-cloud-starter-eventhubs-kafka
           groupId: com.azure.spring
-          versionGA: 2.4.0
+          versionGA: 2.7.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Stream Binder helps developers to finish the auto-configuration of Event Hubs with Kafka protocol.
           type: spring
@@ -489,6 +504,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-kafka-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-starter-eventhubs-kafka
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies
