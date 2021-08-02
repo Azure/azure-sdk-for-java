@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 package com.azure.security.attestation.models;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.ByteArrayInputStream;
@@ -13,6 +15,8 @@ import java.util.Arrays;
 /**
  * Represents an attestation signing certificate returned by the attestation service.
  */
+@Fluent
+@Immutable
 public class AttestationSigner {
 
      /**
