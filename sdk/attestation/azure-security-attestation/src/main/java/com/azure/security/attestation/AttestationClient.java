@@ -34,7 +34,7 @@ public final class AttestationClient {
      * @return Object containing the OpenId metadata configuration for this instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object getOpenIdMetadataWithResponse() {
+    public Object getOpenIdMetadata() {
         return asyncClient.getOpenIdMetadataWithResponse(Context.NONE)
             .map(Response::getValue).block();
     }
