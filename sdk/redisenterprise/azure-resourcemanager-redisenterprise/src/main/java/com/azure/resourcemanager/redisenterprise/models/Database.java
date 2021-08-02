@@ -220,11 +220,7 @@ public interface Database {
 
     /** The template for Database update. */
     interface Update
-        extends UpdateStages.WithClientProtocol,
-            UpdateStages.WithClusteringPolicy,
-            UpdateStages.WithEvictionPolicy,
-            UpdateStages.WithPersistence,
-            UpdateStages.WithModules {
+        extends UpdateStages.WithClientProtocol, UpdateStages.WithEvictionPolicy, UpdateStages.WithPersistence {
         /**
          * Executes the update request.
          *
@@ -254,17 +250,6 @@ public interface Database {
              */
             Update withClientProtocol(Protocol clientProtocol);
         }
-        /** The stage of the Database update allowing to specify clusteringPolicy. */
-        interface WithClusteringPolicy {
-            /**
-             * Specifies the clusteringPolicy property: Clustering policy - default is OSSCluster. Specified at create
-             * time..
-             *
-             * @param clusteringPolicy Clustering policy - default is OSSCluster. Specified at create time.
-             * @return the next definition stage.
-             */
-            Update withClusteringPolicy(ClusteringPolicy clusteringPolicy);
-        }
         /** The stage of the Database update allowing to specify evictionPolicy. */
         interface WithEvictionPolicy {
             /**
@@ -284,18 +269,6 @@ public interface Database {
              * @return the next definition stage.
              */
             Update withPersistence(Persistence persistence);
-        }
-        /** The stage of the Database update allowing to specify modules. */
-        interface WithModules {
-            /**
-             * Specifies the modules property: Optional set of redis modules to enable in this database - modules can
-             * only be added at creation time..
-             *
-             * @param modules Optional set of redis modules to enable in this database - modules can only be added at
-             *     creation time.
-             * @return the next definition stage.
-             */
-            Update withModules(List<Module> modules);
         }
     }
     /**
@@ -357,7 +330,7 @@ public interface Database {
     AccessKeys regenerateKey(RegenerateKeyParameters parameters, Context context);
 
     /**
-     * Imports a database file to target database.
+     * Imports database files to target database.
      *
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,7 +340,7 @@ public interface Database {
     void importMethod(ImportClusterParameters parameters);
 
     /**
-     * Imports a database file to target database.
+     * Imports database files to target database.
      *
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.

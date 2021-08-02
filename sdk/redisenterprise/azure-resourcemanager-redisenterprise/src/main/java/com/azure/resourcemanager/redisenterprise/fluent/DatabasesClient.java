@@ -369,7 +369,7 @@ public interface DatabasesClient {
         Context context);
 
     /**
-     * Imports a database file to target database.
+     * Imports database files to target database.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the RedisEnterprise cluster.
@@ -385,7 +385,7 @@ public interface DatabasesClient {
         String resourceGroupName, String clusterName, String databaseName, ImportClusterParameters parameters);
 
     /**
-     * Imports a database file to target database.
+     * Imports database files to target database.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the RedisEnterprise cluster.
@@ -406,7 +406,7 @@ public interface DatabasesClient {
         Context context);
 
     /**
-     * Imports a database file to target database.
+     * Imports database files to target database.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the RedisEnterprise cluster.
@@ -421,7 +421,7 @@ public interface DatabasesClient {
         String resourceGroupName, String clusterName, String databaseName, ImportClusterParameters parameters);
 
     /**
-     * Imports a database file to target database.
+     * Imports database files to target database.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the RedisEnterprise cluster.

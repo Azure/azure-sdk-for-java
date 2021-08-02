@@ -225,13 +225,8 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public DatabaseImpl withClusteringPolicy(ClusteringPolicy clusteringPolicy) {
-        if (isInCreateMode()) {
-            this.innerModel().withClusteringPolicy(clusteringPolicy);
-            return this;
-        } else {
-            this.updateParameters.withClusteringPolicy(clusteringPolicy);
-            return this;
-        }
+        this.innerModel().withClusteringPolicy(clusteringPolicy);
+        return this;
     }
 
     public DatabaseImpl withEvictionPolicy(EvictionPolicy evictionPolicy) {
@@ -255,13 +250,8 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public DatabaseImpl withModules(List<Module> modules) {
-        if (isInCreateMode()) {
-            this.innerModel().withModules(modules);
-            return this;
-        } else {
-            this.updateParameters.withModules(modules);
-            return this;
-        }
+        this.innerModel().withModules(modules);
+        return this;
     }
 
     private boolean isInCreateMode() {

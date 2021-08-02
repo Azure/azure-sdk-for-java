@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Parameters for a Redis Enterprise import operation. */
 @Fluent
@@ -15,28 +16,28 @@ public final class ImportClusterParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportClusterParameters.class);
 
     /*
-     * SAS URI for the target blob to import from
+     * SAS URIs for the target blobs to import from
      */
-    @JsonProperty(value = "sasUri", required = true)
-    private String sasUri;
+    @JsonProperty(value = "sasUris", required = true)
+    private List<String> sasUris;
 
     /**
-     * Get the sasUri property: SAS URI for the target blob to import from.
+     * Get the sasUris property: SAS URIs for the target blobs to import from.
      *
-     * @return the sasUri value.
+     * @return the sasUris value.
      */
-    public String sasUri() {
-        return this.sasUri;
+    public List<String> sasUris() {
+        return this.sasUris;
     }
 
     /**
-     * Set the sasUri property: SAS URI for the target blob to import from.
+     * Set the sasUris property: SAS URIs for the target blobs to import from.
      *
-     * @param sasUri the sasUri value to set.
+     * @param sasUris the sasUris value to set.
      * @return the ImportClusterParameters object itself.
      */
-    public ImportClusterParameters withSasUri(String sasUri) {
-        this.sasUri = sasUri;
+    public ImportClusterParameters withSasUris(List<String> sasUris) {
+        this.sasUris = sasUris;
         return this;
     }
 
@@ -46,10 +47,10 @@ public final class ImportClusterParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sasUri() == null) {
+        if (sasUris() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sasUri in model ImportClusterParameters"));
+                    new IllegalArgumentException("Missing required property sasUris in model ImportClusterParameters"));
         }
     }
 }
