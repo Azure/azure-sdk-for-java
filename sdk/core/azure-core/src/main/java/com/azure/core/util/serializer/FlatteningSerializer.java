@@ -4,6 +4,7 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -170,7 +171,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             || value.getClass().isEnum()
             || value instanceof OffsetDateTime
             || value instanceof Duration
-            || value instanceof String) {
+            || value instanceof String
+            || value instanceof ExpandableStringEnum) {
             return;
         }
 
@@ -198,13 +200,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         }
 
         for (Field f : getAllDeclaredFields(value.getClass())) {
-            // only drill into classes defined in azure sdk
-            if (value.getClass().getPackage().getName().contains("com.azure")) {
-                // Why is this setting accessible to true?
-                f.setAccessible(true);
-            } else {
-                return;
-            }
+            // Why is this setting accessible to true?
+            f.setAccessible(true);
             try {
                 escapeMapKeys(f.get(value), logger);
             } catch (IllegalAccessException e) {
