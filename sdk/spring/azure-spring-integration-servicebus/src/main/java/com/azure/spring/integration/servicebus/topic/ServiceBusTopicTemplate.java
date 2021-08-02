@@ -23,6 +23,7 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.util.Assert;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
@@ -40,7 +41,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
     private static final String MSG_SUCCESS_CHECKPOINT = "Consumer group '%s' of topic '%s' checkpointed %s in %s mode";
 
-    private final Set<Tuple<String, String>> nameAndConsumerGroups = Sets.newConcurrentHashSet();
+    private final Set<Tuple<String, String>> nameAndConsumerGroups = ConcurrentHashMap.newKeySet();
 
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory,
                                    InstrumentationManager instrumentationManager) {

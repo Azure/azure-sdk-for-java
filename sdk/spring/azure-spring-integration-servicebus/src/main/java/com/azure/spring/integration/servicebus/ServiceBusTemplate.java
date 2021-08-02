@@ -22,6 +22,7 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static com.azure.spring.integration.core.api.CheckpointMode.MANUAL;
@@ -62,10 +63,10 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
                                                  PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
         ServiceBusSenderAsyncClient senderAsyncClient = null;
-        String partitionKey = getPartitionKey(partitionSupplier);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
-        if (StringUtils.hasText(partitionKey)) {
+        if (Objects.nonNull(serviceBusMessage) && !StringUtils.hasText(serviceBusMessage.getPartitionKey())) {
+            String partitionKey = getPartitionKey(partitionSupplier);
             serviceBusMessage.setPartitionKey(partitionKey);
         }
         try {

@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.selenium.logout;
 
-import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static com.azure.test.aad.selenium.AADITHelper.createDefaultProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

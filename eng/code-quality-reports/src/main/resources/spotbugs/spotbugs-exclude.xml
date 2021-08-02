@@ -53,6 +53,29 @@
       UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD,
       NM_FIELD_NAMING_CONVENTION"/>
   </Match>
+  
+  <!-- Internal implementation details, not at risk.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
+      <Bug pattern="EI_EXPOSE_REP,
+      EI_EXPOSE_REP2"/>
+  </Match>
+  
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxDatabase"/>
+      <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+  
+  <!-- Third party source code files, kept as it is.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.LittleEndianDataInputStream"/>
+      <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+  
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.Salsa20"/>
+      <Bug pattern="DM_DEFAULT_ENCODING"/>
+  </Match>
 
   <!-- Exception needs to be caught here.-->
   <Match>
@@ -144,7 +167,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.JreCertificates$JREKeyStore"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates$JREKeyStore"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -733,6 +756,10 @@
     <Or>
       <Package name="com.azure.storage.blob.perf"/>
       <Package name="com.azure.storage.blob.perf.core"/>
+      <Package name="com.azure.storage.file.datalake.perf"/>
+      <Package name="com.azure.storage.file.datalake.perf.core"/>
+      <Package name="com.azure.storage.file.share.perf"/>
+      <Package name="com.azure.storage.file.share.perf.core"/>
     </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST, DM_EXIT, RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
@@ -1965,7 +1992,7 @@
 
   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.clientTelemetry.ReportPayload"/>
+    <Class name="com.azure.cosmos.implementation.clienttelemetry.ReportPayload"/>
     <Method name="equals"/>
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
@@ -2309,6 +2336,11 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
   <!-- The transient fields are not used if deserialization happens. -->
   <Match>
     <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>
@@ -2328,8 +2360,10 @@
     <Or>
       <Method name="getIntellijServicePrincipalDetails"/>
       <Method name="getKdbxPassword"/>
+      <Method name="getCredentialFromKdbx"/>
     </Or>
-    <Bug pattern="DM_DEFAULT_ENCODING"/>
+    <Bug pattern="DM_DEFAULT_ENCODING,
+    REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- The field is designed to be unread and for serialization purpose. -->
@@ -2431,7 +2465,7 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
   <Match>
-    <Class name="com.azure.security.keyvault.jca.LegacyRestClient"/>
+    <Class name="com.azure.security.keyvault.jca.implementation.utils.HttpUtil"/>
     <Method name="~(get|post)"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
@@ -2459,8 +2493,14 @@
 
   <!-- Machine generated classes for MAA service generate spotBugs errors -->
   <Match>
-    <Class name="~com.azure.security.attestation.models\.[\w]+"/>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+    <Or>
+      <Class name="~com.azure.security.attestation.implementation.models.*"/>
+      <Class name="~com.azure.security.attestation.models.*+"/>
+    </Or>
+    <Or>
+      <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+      <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Or>
   </Match>
 
   <!-- Generated implementation of Anomaly Detector is using an inline class -->
@@ -2498,5 +2538,12 @@
     <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
     <Method name="clone"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- If the ServiceVersion type doesn't implement Enum it would have already thrown an exception. -->
+  <Match>
+    <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider"/>
+    <Method name="getServiceVersions"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 </FindBugsFilter>

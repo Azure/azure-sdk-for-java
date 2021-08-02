@@ -1,9 +1,9 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.webpubsubdev.azure.com/api/hubs/test/users/testRemoveNonExistentUserFromGroup/groups/java?api-version=2021-05-01-preview",
+    "Uri" : "https://REDACTED.webpubsub.azure.com/api/hubs/test/users/testRemoveNonExistentUserFromGroup/groups/java",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-messaging-webpubsub/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-messaging-webpubsub/1.0.0-beta.3 (14.0.2; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -12,8 +12,8 @@
       "Vary" : "Accept-Encoding",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "User id not found.",
-      "Date" : "Wed, 21 Apr 2021 23:56:06 GMT",
+      "Body" : "User `testRemoveNonExistentUserFromGroup` is not found.",
+      "Date" : "Wed, 21 Jul 2021 23:31:00 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null

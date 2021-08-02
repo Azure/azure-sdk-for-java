@@ -14,7 +14,6 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeader
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.health.Instrumentation;
 import com.azure.spring.integration.servicebus.health.InstrumentationManager;
-import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.support.MessageBuilder;
@@ -24,6 +23,7 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.util.Assert;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
@@ -38,7 +38,7 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in queue '%s' in %s mode";
 
-    private final Set<String> subscribedQueues = Sets.newConcurrentHashSet();
+    private final Set<String> subscribedQueues = ConcurrentHashMap.newKeySet();
 
     public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory,
                                    InstrumentationManager instrumentationManager) {

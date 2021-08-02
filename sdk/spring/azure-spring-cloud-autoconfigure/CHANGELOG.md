@@ -1,9 +1,29 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.8.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.
+### Key Bug Fixes
+- Fixed service bus cleint factory destroyed, resource not released bug.([#23195](https://github.com/Azure/azure-sdk-for-java/pull/23195))
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+### Breaking Changes
+- Override paritionkey when session id is set. ([#23135](https://github.com/Azure/azure-sdk-for-java/pull/23135))
+- Adjust the order of different partition key header. ([#23135](https://github.com/Azure/azure-sdk-for-java/pull/23135))
+
+## 2.7.0 (2021-07-20)
 ### Key Bug Fixes
 - Fixed `EventHubMessageConverter` to load all system properties of `EventData` and put in the header of org.springframework.messaging.Message.([#22683](https://github.com/Azure/azure-sdk-for-java/pull/22683/))
+- Fix bug of setting message headers repeatedly with different value types. ([#22939](https://github.com/Azure/azure-sdk-for-java/pull/22939))
 
+### New Features
+- Support configuration of `AmqpTransportType` for ServiceBusClientBuilder with property of `spring.cloud.azure.servicebus.transportType`, supported values are `AMQP` and `AMQP_WEB_SOCKETS`.
+
+### Breaking Changes
+- Encode message payload with UTF-8 charset instead of default charset of JVM when the payload is String. ([#23056](https://github.com/Azure/azure-sdk-for-java/pull/23056))
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
 
 ## 2.6.0 (2021-06-23)
 ### Breaking Changes

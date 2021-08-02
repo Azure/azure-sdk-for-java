@@ -14,7 +14,7 @@ import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
 import com.azure.security.attestation.models.PolicyCertificatesResponse;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AttestationClient type. */
+/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class PolicyCertificatesAsyncClient {
     private final PolicyCertificatesImpl serviceClient;
@@ -37,7 +37,8 @@ public final class PolicyCertificatesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyCertificatesResponse>> getWithResponse() {
-        return this.serviceClient.getWithResponseAsync();
+        return this.serviceClient.getWithResponseAsync()
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyCertificatesResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -48,8 +49,10 @@ public final class PolicyCertificatesAsyncClient {
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyCertificatesResponse> get() {
-        return this.serviceClient.getAsync();
+    public Mono<PolicyCertificatesResponse> get()
+    {
+        return this.serviceClient.getAsync()
+            .map(PolicyCertificatesResponse::fromGenerated);
     }
 
     /**
@@ -63,7 +66,8 @@ public final class PolicyCertificatesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyCertificatesModifyResponse>> addWithResponse(String policyCertificateToAdd) {
-        return this.serviceClient.addWithResponseAsync(policyCertificateToAdd);
+        return this.serviceClient.addWithResponseAsync(policyCertificateToAdd)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -77,7 +81,8 @@ public final class PolicyCertificatesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyCertificatesModifyResponse> add(String policyCertificateToAdd) {
-        return this.serviceClient.addAsync(policyCertificateToAdd);
+        return this.serviceClient.addAsync(policyCertificateToAdd)
+            .map(PolicyCertificatesModifyResponse::fromGenerated);
     }
 
     /**
@@ -92,7 +97,8 @@ public final class PolicyCertificatesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyCertificatesModifyResponse>> removeWithResponse(String policyCertificateToRemove) {
-        return this.serviceClient.removeWithResponseAsync(policyCertificateToRemove);
+        return this.serviceClient.removeWithResponseAsync(policyCertificateToRemove)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -107,6 +113,7 @@ public final class PolicyCertificatesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyCertificatesModifyResponse> remove(String policyCertificateToRemove) {
-        return this.serviceClient.removeAsync(policyCertificateToRemove);
+        return this.serviceClient.removeAsync(policyCertificateToRemove)
+            .map(PolicyCertificatesModifyResponse::fromGenerated);
     }
 }
