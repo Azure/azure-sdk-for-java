@@ -55,8 +55,8 @@ parameters:
       groupId: com.azure.spring
       safeName: azurespringcloudtesteventhubs
     - name: azure-spring-cloud-test-eventhubs-kafka
-        groupId: com.azure.spring
-        safeName: azurespringcloudtesteventhubskafka
+      groupId: com.azure.spring
+      safeName: azurespringcloudtesteventhubskafka
     - name: azure-spring-boot-test-storage
       groupId: com.azure.spring
       safeName: azurespringbootteststorage
