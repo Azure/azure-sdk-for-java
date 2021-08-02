@@ -16,7 +16,6 @@ import java.util.Arrays;
  * Represents an attestation signing certificate returned by the attestation service.
  */
 @Fluent
-@Immutable
 public class AttestationSigner {
 
      /**
