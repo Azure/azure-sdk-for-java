@@ -92,7 +92,7 @@ public final class AzureWebPubSubServiceRestAPIImpl {
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    public AzureWebPubSubServiceRestAPIImpl(String host, String apiVersion) {
+    AzureWebPubSubServiceRestAPIImpl(String host, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -109,7 +109,7 @@ public final class AzureWebPubSubServiceRestAPIImpl {
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    public AzureWebPubSubServiceRestAPIImpl(HttpPipeline httpPipeline, String host, String apiVersion) {
+    AzureWebPubSubServiceRestAPIImpl(HttpPipeline httpPipeline, String host, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, apiVersion);
     }
 
@@ -121,7 +121,7 @@ public final class AzureWebPubSubServiceRestAPIImpl {
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    public AzureWebPubSubServiceRestAPIImpl(
+    AzureWebPubSubServiceRestAPIImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
