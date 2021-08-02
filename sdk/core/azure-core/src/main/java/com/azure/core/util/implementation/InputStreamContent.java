@@ -3,6 +3,7 @@
 
 package com.azure.core.util.implementation;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -76,20 +77,7 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.generate(() -> 0, (count, sink) -> {
-            byte[] data = new byte[STREAM_READ_SIZE];
-            try {
-                int read = this.content.read(data, 0, data.length);
-                if (read == -1) {
-                    sink.complete();
-                } else {
-                    sink.next(ByteBuffer.wrap(data, 0, read));
-                }
-            } catch (IOException ex) {
-                sink.error(ex);
-            }
-            return 0;
-        });
+        return FluxUtil.toFluxByteBuffer(this.content, STREAM_READ_SIZE);
     }
 
     private byte[] getBytes() {

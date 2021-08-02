@@ -7,6 +7,7 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * A {@link BinaryDataContent} implementation which is backed by a serializable object.
  */
-public class SerializableContent extends BinaryDataContent {
+public final class SerializableContent extends BinaryDataContent {
 
     private final Object content;
     private final ObjectSerializer serializer;
@@ -27,10 +28,10 @@ public class SerializableContent extends BinaryDataContent {
      * Creates a new instance of {@link SerializableContent}.
      * @param content The serializable object that forms the content of this instance.
      * @param serializer The serializer that serializes the {@code content}.
-     * @throws NullPointerException if {@code content} or {@code serializer} is null.
+     * @throws NullPointerException if {@code serializer} is null.
      */
     public SerializableContent(Object content, ObjectSerializer serializer) {
-        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+        this.content = content;
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
     }
 
@@ -56,15 +57,12 @@ public class SerializableContent extends BinaryDataContent {
 
     @Override
     public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        if (content == null) {
-            return null;
-        }
         return serializer.deserializeFromBytes(toBytes(), typeReference);
     }
 
     @Override
     public InputStream toStream() {
-        return null;
+        return new ByteArrayInputStream(getBytes());
     }
 
     @Override
@@ -78,11 +76,6 @@ public class SerializableContent extends BinaryDataContent {
     }
 
     private byte[] getBytes() {
-        // if (content == ZERO_BYTE_ARRAY) {
-        //     return ZERO_BYTE_ARRAY;
-        // }
         return serializer.serializeToBytes(content);
     }
-
-
 }

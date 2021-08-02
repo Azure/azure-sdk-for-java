@@ -129,7 +129,6 @@ public final class BinaryData {
      * @throws NullPointerException If {@code inputStream} is null.
      */
     public static BinaryData fromStream(InputStream inputStream) {
-        Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
         return new BinaryData(new InputStreamContent(inputStream));
     }
 
@@ -208,7 +207,6 @@ public final class BinaryData {
      * @throws NullPointerException If {@code data} is null.
      */
     public static BinaryData fromString(String data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
         return new BinaryData(new StringContent(data));
     }
 
@@ -230,7 +228,6 @@ public final class BinaryData {
      * @throws NullPointerException If {@code data} is null.
      */
     public static BinaryData fromBytes(byte[] data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
         return new BinaryData(new ByteArrayContent(data));
     }
 
@@ -252,7 +249,6 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public static BinaryData fromObject(Object data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
         return fromObject(data, SERIALIZER);
     }
 
@@ -274,7 +270,6 @@ public final class BinaryData {
      * @see JsonSerializer
      */
     public static Mono<BinaryData> fromObjectAsync(Object data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
         return fromObjectAsync(data, SERIALIZER);
     }
 
@@ -296,17 +291,16 @@ public final class BinaryData {
      *
      * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer}
      *
-     * @param data The object that will be serialized that {@link BinaryData} will represent.
+     * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
+     * determines how {@code null} data is serialized.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link BinaryData} representing the serialized object.
-     * @throws NullPointerException If {@code serializer} is null or {@code data} is null.
+     * @throws NullPointerException If {@code serializer} is null.
      * @see ObjectSerializer
      * @see JsonSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
-        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         return new BinaryData(new SerializableContent(data, serializer));
     }
 
@@ -329,7 +323,8 @@ public final class BinaryData {
      *
      * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer}
      *
-     * @param data The object that will be serialized that {@link BinaryData} will represent.
+     * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
+     * determines how {@code null} data is serialized.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link Mono} of {@link BinaryData} representing the serialized object.
      * @throws NullPointerException If {@code serializer} is null or {@code data} is null.
@@ -373,13 +368,9 @@ public final class BinaryData {
      * @throws NullPointerException If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
      * length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, int chunkSize) {
-        Objects.requireNonNull(file, "'file' cannot be null.");
-        if (chunkSize <= 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "'chunkSize' cannot be less than or equal to 0."));
-        }
         return new BinaryData(new FileContent(file, chunkSize));
     }
 

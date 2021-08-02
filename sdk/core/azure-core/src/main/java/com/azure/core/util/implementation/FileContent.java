@@ -3,7 +3,6 @@
 
 package com.azure.core.util.implementation;
 
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -19,6 +18,7 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -128,12 +128,11 @@ public final class FileContent extends BinaryDataContent {
     }
 
     private byte[] getBytes() {
-
-        return FluxUtil.collectBytesInByteBufferStream(toFluxByteBuffer())
-                // this doesn't seem to be working (newBoundedElastic() didn't work either)
-                // .publishOn(Schedulers.boundedElastic())
-                .share()
-                .block();
+        try {
+            return Files.readAllBytes(file);
+        } catch (IOException exception) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+        }
     }
 }
 
