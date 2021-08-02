@@ -457,7 +457,7 @@ public class OpenTelemetryTracerTest {
 
         final Context started = openTelemetryTracer.start(METHOD_NAME, tracingContext);
 
-        try (var scope = openTelemetryTracer.makeSpanCurrent(started)) {
+        try (AutoCloseable scope = openTelemetryTracer.makeSpanCurrent(started)) {
             assertSame(Span.current(), started.getData(PARENT_SPAN_KEY).get());
         } catch (Exception e) {
             fail();
