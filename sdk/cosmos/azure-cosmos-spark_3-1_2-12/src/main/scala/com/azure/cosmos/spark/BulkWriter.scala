@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 // scalastyle:off underscore.import
 import com.azure.cosmos._
 
+import scala.collection.mutable
 import scala.concurrent.duration.Duration
 // scalastyle:on underscore.import
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
@@ -40,12 +41,14 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
   // TODO: moderakh add a mocking unit test for Bulk where CosmosClient is mocked to simulator failure/retry scenario
-  log.logInfo("BulkWriter instantiated ....")
 
   // TODO: moderakh this requires tuning.
   // TODO: moderakh should we do a max on the max memory to ensure we don't run out of memory?
+  private val cpuCount = SparkUtils.getNumberOfHostCPUCores
   private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
-    .getOrElse(SparkUtils.getNumberOfHostCPUCores * DefaultMaxPendingOperationPerCore)
+    .getOrElse(math.max(cpuCount, 1) * DefaultMaxPendingOperationPerCore)
+  log.logInfo(
+    s"BulkWriter instantiated (CPU count: ${cpuCount}, maxPendingOperations: ${maxPendingOperations} ...")
 
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock
@@ -206,20 +209,29 @@ class BulkWriter(container: CosmosAsyncContainer,
     throwIfCapturedExceptionExists()
 
     var acquisitionAttempt = 0
+    val operationContext = OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1)
     while (!semaphore.tryAcquire(1, TimeUnit.MINUTES)) {
       acquisitionAttempt += 1
+
+      throwIfCapturedExceptionExists()
+
       if (subscriptionDisposable.isDisposed) {
         throw new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already");
       }
 
+      val operationsLog = getActiveOperationsLog(activeOperations.clone())
+
       log.logWarning(
-        s"Semaphore acquisition attempt#${acquisitionAttempt} timed out after 1 minute. Retrying...")
+        s"Semaphore acquisition attempt#${acquisitionAttempt} timed out after 1 minute. " +
+          s"Active Tasks: ${activeTasks.get}, " +
+          s"ActiveOperations (first ${BulkWriter.maxItemOperationsToShowInErrorMessage}): ${operationsLog}, " +
+          s"Retrying..., Context: ${operationContext.toString}")
     }
 
     val cnt = totalScheduledMetrics.getAndIncrement()
     log.logDebug(s"total scheduled $cnt, Context: ${operationContext.toString}")
 
-    scheduleWriteInternal(partitionKeyValue, objectNode, OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1))
+    scheduleWriteInternal(partitionKeyValue, objectNode, operationContext)
   }
 
   private def scheduleWriteInternal(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationContext: OperationContext): Unit = {
@@ -263,6 +275,25 @@ class BulkWriter(container: CosmosAsyncContainer,
     }
   }
 
+  private[this] def getActiveOperationsLog(activeOperationsSnapshot: mutable.Set[CosmosItemOperation]): String = {
+    val sb = new StringBuilder()
+
+    activeOperationsSnapshot
+      .take(BulkWriter.maxItemOperationsToShowInErrorMessage)
+      .foreach(itemOperation => {
+        if (sb.nonEmpty) {
+          sb.append(", ")
+        }
+
+        sb.append(itemOperation.getOperationType)
+        sb.append("->")
+        val ctx = itemOperation.getContext[OperationContext]
+        sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
+      })
+
+    sb.toString()
+  }
+
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
@@ -287,33 +318,18 @@ class BulkWriter(container: CosmosAsyncContainer,
               val activeOperationsSnapshot = activeOperations.clone()
               val awaitCompleted = pendingTasksCompleted.await(1, TimeUnit.MINUTES)
               if (!awaitCompleted) {
-                val sb = new StringBuilder()
-                //scalastyle:off magic.number
-                val maxItemOperationsToShowInErrorMessage = 10
-                //scalastyle:on magic.number
-                activeOperationsSnapshot
-                  .take(maxItemOperationsToShowInErrorMessage)
-                  .foreach(itemOperation => {
-                    if (sb.nonEmpty) {
-                      sb.append(", ")
-                    }
-
-                    sb.append(itemOperation.getOperationType)
-                    sb.append("->")
-                    val ctx = itemOperation.getContext[OperationContext]
-                    sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
-                  })
+                val operationsLog = getActiveOperationsLog(activeOperationsSnapshot)
 
                 if (activeOperationsSnapshot.equals(activeOperations)) {
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots += 1
                   log.logWarning(
                     s"FlushAndClose has been waiting ${numberOfIntervalsWithIdenticalActiveOperationSnapshots} " +
-                      s"times for identical set of operations: ${sb} Context: ${operationContext.toString}"
+                      s"times for identical set of operations: ${operationsLog} Context: ${operationContext.toString}"
                   )
                 } else {
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots = 0
                   log.logInfo(
-                    s"FlushAndClose is waiting for active operations: ${sb} Context: ${operationContext.toString}"
+                    s"FlushAndClose is waiting for active operations: ${operationsLog} Context: ${operationContext.toString}"
                   )
                 }
 
@@ -321,7 +337,8 @@ class BulkWriter(container: CosmosAsyncContainer,
                   captureIfFirstFailure(
                     new IllegalStateException(
                       s"Stale bulk ingestion identified - the following active operations have not been completed " +
-                        s"(first ${maxItemOperationsToShowInErrorMessage} shown) or progressed after 15 minutes: $sb"
+                        s"(first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after 15 " +
+                        s"minutes: $operationsLog"
                   ))
                 }
 
@@ -329,19 +346,14 @@ class BulkWriter(container: CosmosAsyncContainer,
               }
               activeTasksSnapshot = activeTasks.get()
               val semaphoreAvailablePermitsSnapshot = semaphore.availablePermits()
-              val toBeReleased = maxPendingOperations - activeTasksSnapshot - semaphoreAvailablePermitsSnapshot
-              if (toBeReleased > 0) {
-                log.logWarning(s"Semaphore available Permits is ${semaphoreAvailablePermitsSnapshot} " +
-                s"instead of expected ${maxPendingOperations - activeTasksSnapshot}. Releasing additional " +
-                s"${toBeReleased} permits. Context: ${operationContext.toString}");
-                semaphore.release(toBeReleased)
-              }
+
 
               if (awaitCompleted) {
                 log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, " +
                   s"Context: ${operationContext.toString}")
               } else {
-                log.logInfo(s"Waiting interrupted for pending activeTasks $activeTasksSnapshot, " +
+                log.logInfo(s"Waiting interrupted for pending activeTasks $activeTasksSnapshot - " +
+                  s"available permits ${semaphoreAvailablePermitsSnapshot}, " +
                   s"Context: ${operationContext.toString}")
               }
             }
@@ -446,6 +458,10 @@ class BulkWriter(container: CosmosAsyncContainer,
 }
 
 private object BulkWriter {
+  //scalastyle:off magic.number
+  val maxItemOperationsToShowInErrorMessage = 10
+  //scalastyle:on magic.number
+
   // let's say the spark executor VM has 16 CPU cores.
   // let's say we have a cosmos container with 1M RU which is 167 partitions
   // let's say we are ingesting items of size 1KB

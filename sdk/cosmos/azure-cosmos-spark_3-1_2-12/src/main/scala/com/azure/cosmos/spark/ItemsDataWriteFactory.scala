@@ -74,7 +74,6 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val client = CosmosClientCache(CosmosClientConfiguration(userConfig, useEventualConsistency = true), Some(cosmosClientStateHandle))
 
     private val container = ThroughputControlHelper.getContainer(userConfig, cosmosTargetContainerConfig, client)
-
     private val containerDefinition = container.read().block().getProperties
     private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 

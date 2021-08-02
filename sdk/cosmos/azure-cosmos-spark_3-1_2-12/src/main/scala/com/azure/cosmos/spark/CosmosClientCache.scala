@@ -110,7 +110,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] def onCleanup(): Unit = {
     try {
       logInfo(s"-->onCleanup (${cache.size} clients)")
-      val snapshot = cache.foreach((pair) => {
+      val snapshot = cache.readOnlySnapshot()
+      snapshot.foreach((pair) => {
         val clientConfig = pair._1
         val clientMetadata = pair._2
 

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.Utils;
 import io.netty.channel.ChannelException;
 import io.netty.handler.timeout.ReadTimeoutException;
+import reactor.netty.http.client.PrematureCloseException;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
@@ -76,7 +77,8 @@ public class WebExceptionUtility {
         if (ex instanceof ClosedChannelException
             || ex instanceof SocketException
             || ex instanceof SSLException
-            || ex instanceof UnknownHostException) {
+            || ex instanceof UnknownHostException
+            || ex instanceof PrematureCloseException) {
             return true;
         }
 
