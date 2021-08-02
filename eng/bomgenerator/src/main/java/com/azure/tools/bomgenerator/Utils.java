@@ -73,7 +73,7 @@ public class Utils {
 
     static void validateValues(String argName, String argValue, String ... expectedValues) {
         if(Arrays.stream(expectedValues).noneMatch(a -> a.equals(argValue))) {
-            throw new IllegalArgumentException(String.format("%s must match %s", argName, expectedValues));
+            throw new IllegalArgumentException(String.format("%s must match %s", argName, Arrays.toString(expectedValues)));
         }
     }
 
