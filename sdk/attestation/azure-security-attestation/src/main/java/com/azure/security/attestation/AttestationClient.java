@@ -15,8 +15,6 @@ import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.CloudErrorException;
 
-import static com.azure.core.util.FluxUtil.withContext;
-
 /** Initializes a new instance of the synchronous AttestationClient object. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class AttestationClient {
@@ -36,8 +34,8 @@ public final class AttestationClient {
      * @return Object containing the OpenId metadata configuration for this instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object getOpenIdMetadata() {
-        return withContext(context -> asyncClient.getOpenIdMetadataWithResponse(context))
+    public Object getOpenIdMetadataWithResponse() {
+        return asyncClient.getOpenIdMetadataWithResponse(Context.NONE)
             .map(Response::getValue).block();
     }
 
@@ -61,7 +59,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationSigner[] getAttestationSigners() {
-        return withContext(context -> asyncClient.getAttestationSignersWithResponse(context))
+        return asyncClient.getAttestationSignersWithResponse(Context.NONE)
             .map(Response::getValue).block();
     }
 

@@ -27,7 +27,6 @@ import java.util.Objects;
             PolicyClient.class,
             PolicyCertificatesClient.class,
             AttestationClient.class,
-            SigningCertificatesClient.class,
             PolicyAsyncClient.class,
             PolicyCertificatesAsyncClient.class,
         })
