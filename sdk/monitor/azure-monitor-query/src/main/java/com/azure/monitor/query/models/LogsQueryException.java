@@ -19,7 +19,7 @@ public final class LogsQueryException extends HttpResponseException {
      * @param error The {@link LogsQueryError error} details.
      */
     public LogsQueryException(HttpResponse response, LogsQueryError error) {
-        super("Failed to executed logs query", response, error);
+        super("Failed to execute logs query", response, error);
         this.error = error;
     }
 
