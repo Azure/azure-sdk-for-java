@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
