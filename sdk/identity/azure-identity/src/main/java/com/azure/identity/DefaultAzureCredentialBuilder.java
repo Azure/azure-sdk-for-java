@@ -21,6 +21,7 @@ import java.util.concurrent.ForkJoinPool;
 public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<DefaultAzureCredentialBuilder> {
     private String tenantId;
     private String managedIdentityClientId;
+    private String interactiveBrowserClientId;
     private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
     /**
@@ -90,6 +91,18 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder managedIdentityClientId(String clientId) {
         this.managedIdentityClientId = clientId;
+        return this;
+    }
+
+    /**
+     * Specifies the client ID of the public client app to be interactively authorized using the user credentials.
+     * If unset, the default public client id of AZURE CLI will be used.
+     *
+     * @param clientId the client ID
+     * @return the DefaultAzureCredentialBuilder itself
+     */
+    public DefaultAzureCredentialBuilder interactiveBrowserClientId(String clientId) {
+        this.interactiveBrowserClientId = clientId;
         return this;
     }
 
