@@ -75,21 +75,21 @@ The following are configuration items related to the producer:
 
 The number of target partitions for the data, if partitioning is enabled.
 
-Default: 1
+Default: `1`
 
 **_partition-key-extractor-name_**
 
 The name of the bean that implements `PartitionKeyExtractorStrategy`. 
 The partition handler will first use the `PartitionKeyExtractorStrategy#extractKey` method to obtain the partition key value.
 
-Default: null
+Default: `null`
 
 **_partition-key-expression_**
 
 A SpEL expression that determines how to partition outbound data. 
 When interface `PartitionKeyExtractorStrategy` is not implemented, it will be called in the method `PartitionHandler#extractKey`.
 
-Default: null
+Default: `null`
 
 For more information about setting partition for the producer properties, please refer to the [Producer Properties of Spring Cloud Stream][spring_cloud_stream_current_producer_properties].
 
@@ -128,31 +128,31 @@ Toggles the builder to use the same connection for producers or consumers that a
 
 Default: `false`
 
-**retry-options.max-retries**
+**_retry-options.max-retries_**
 
 Sets the maximum number of retry attempts before considering the associated operation to have failed.
 
 Default: `3`
 
-**retry-options.delay**
+**_retry-options.delay_**
 
 Gets the delay between retry attempts for a fixed approach or the delay on which to base calculations for a backoff-approach.
 
 Default: `0.8s`
 
-**retry-options.max-delay**
+**_retry-options.max-delay_**
 
 Sets the maximum permissible delay between retry attempts.
 
 Default: `1m`
 
-**retry-options.try-timeout**
+**_retry-options.try-timeout_**
 
 Sets the maximum duration to wait for completion of a single attempt, whether the initial attempt or a retry.
 
 Default: `1m`
 
-**retry-options.try-timeout**
+**_retry-options.try-timeout_**
 
 Sets the approach to use for calculating retry delays.
 
@@ -162,7 +162,7 @@ Sets the approach to use for calculating retry delays.
 
 Default: `AmqpRetryMode.EXPONENTIAL`
 
-**transport**
+**_transport_**
 
 Sets the transport type by which all the communication with Azure Event Hubs occurs.
 
@@ -229,31 +229,31 @@ Toggles the builder to use the same connection for producers or consumers that a
 
 Default: `false`
 
-**retry-options.max-retries**
+**_retry-options.max-retries_**
 
 Sets the maximum number of retry attempts before considering the associated operation to have failed.
 
 Default: `3`
 
-**retry-options.delay**
+**_retry-options.delay_**
 
 Gets the delay between retry attempts for a fixed approach or the delay on which to base calculations for a backoff-approach.
 
 Default: `0.8s`
 
-**retry-options.max-delay**
+**_retry-options.max-delay_**
 
 Sets the maximum permissible delay between retry attempts.
 
 Default: `1m`
 
-**retry-options.try-timeout**
+**_retry-options.try-timeout_**
 
 Sets the maximum duration to wait for completion of a single attempt, whether the initial attempt or a retry.
 
 Default: `1m`
 
-**retry-options.try-timeout**
+**_retry-options.try-timeout_**
 
 Sets the approach to use for calculating retry delays.
 
@@ -263,7 +263,7 @@ Sets the approach to use for calculating retry delays.
 
 Default: `AmqpRetryMode.EXPONENTIAL`
 
-**transport**
+**_transport_**
 
 Sets the transport type by which all the communication with Azure Event Hubs occurs.
 
@@ -273,7 +273,7 @@ Sets the transport type by which all the communication with Azure Event Hubs occ
 
 Default: `AmqpTransportType.AMQP`
 
-**loadBalancingStrategy**
+**_loadBalancingStrategy_**
 
 The LoadBalancingStrategy the event processor will use for claiming partition ownership. By default, a Balanced approach will be used.
 
@@ -285,19 +285,19 @@ This may result in ownership of partitions frequently changing when multiple ins
 
 Default: `LoadBalancingStrategy.BALANCED`
 
-**retry-options.loadBalancingUpdateInterval**
+**_loadBalancingUpdateInterval_**
 
 The time interval between load balancing update cycles. This is also generally the interval at which ownership of partitions are renewed. By default, this interval is set to 10 seconds.
 
 Default: `10s`
 
-**retry-options.partitionOwnershipExpirationInterval**
+**_partitionOwnershipExpirationInterval_**
 
 The time duration after which the ownership of partition expires if it's not renewed by the owning processor instance. This is the duration that this processor instance will wait before taking over the ownership of partitions previously owned by an inactive processor. By default, this duration is set to a minute.
 
 Default: `1m`
 
-**retry-options.trackLastEnqueuedEventProperties**
+**_trackLastEnqueuedEventProperties_**
 
 Sets whether or not the event processor should request information on the last enqueued event on its associated partition, and track that information as events are received.
 
