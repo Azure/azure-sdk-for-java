@@ -30,22 +30,7 @@ import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
-import com.microsoft.aad.msal4j.ClaimsRequest;
-import com.microsoft.aad.msal4j.ClientCredentialFactory;
-import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
-import com.microsoft.aad.msal4j.IAccount;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.aad.msal4j.IClientCredential;
-import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
-import com.microsoft.aad.msal4j.Prompt;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.RefreshTokenParameters;
-import com.microsoft.aad.msal4j.SilentParameters;
-import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4j.*;
 import com.sun.jna.Platform;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -524,6 +509,26 @@ public class IdentityClient {
                 return Mono.error(last);
             }));
     }
+
+
+    /**
+     * Asynchronously acquire a token from Active Directory with Azure Power Shell.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithOBO(TokenRequestContext request, UserAssertion userAssertion) {
+
+        return confidentialClientApplicationAccessor.getValue()
+            .flatMap(confidentialClient -> {
+
+                return Mono.fromFuture(() -> confidentialClient.acquireToken(OnBehalfOfParameters
+                        .builder(new HashSet<>(request.getScopes()), userAssertion)
+                        .build()))
+                    .map(MsalToken::new);
+            });
+    }
+
 
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
                                                            PowershellManager powershellManager) {
