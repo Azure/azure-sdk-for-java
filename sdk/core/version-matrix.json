@@ -1,9 +1,9 @@
 {
   "displayNames": { 
-	"2.10.5": "jackson2_10",
-	"2.11.4": "jackson2_11",
-	"2.12.4": "jackson2_12",
-	"2.13.0-rc1": "jackson2_13_rc"
+    "2.10.5": "jackson2_10",
+    "2.11.4": "jackson2_11",
+    "2.12.4": "jackson2_12",
+    "2.13.0-rc1": "jackson2_13_rc"
   },
   "matrix": {
     "Agent": {
@@ -13,11 +13,11 @@
     "AZURE_TEST_HTTP_CLIENTS": "netty",
     "TestGoals": "surefire:test",
     "AZURE_CORE_TEST_JACKSON_VERSION": [
-	    "2.10.5",
-	    "2.11.4",
-	    "2.12.4",
-	    "2.13.0-rc1"
-	],
-	"TestFromSource": true
+        "2.10.5",
+        "2.11.4",
+        "2.12.4",
+        "2.13.0-rc1"
+    ],
+    "TestFromSource": true
   }
 }
