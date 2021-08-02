@@ -25,6 +25,8 @@ import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -122,22 +124,25 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
 
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
-    public synchronized void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
-        boolean clientCreated = false;
+    public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
+        AtomicReference<String> proxyConfigurationRef = new AtomicReference<>(proxyConfiguration);
+        AtomicBoolean expectedClientCreationRef = new AtomicBoolean(expectedClientCreation);
+        AtomicReference<Configuration> configuration = new AtomicReference<>(Configuration.getGlobalConfiguration().clone());
+        configuration.get().put(Configuration.PROPERTY_HTTP_PROXY, proxyConfigurationRef.get());
+        AtomicBoolean clientCreated = new AtomicBoolean(false);
         try {
-            EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
+            AtomicReference<EventHubConsumerAsyncClient> asyncClient = new AtomicReference<>(new EventHubClientBuilder()
                 .connectionString(CORRECT_CONNECTION_STRING)
-                .configuration(configuration)
+                .configuration(configuration.get())
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-                .buildAsyncConsumerClient();
-            clientCreated = true;
+                .buildAsyncConsumerClient());
+            clientCreated.set(true);
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
-        Assertions.assertEquals(expectedClientCreation, clientCreated);
+        Assertions.assertEquals(expectedClientCreationRef.get(), clientCreated.get());
     }
 
     @Test
@@ -160,7 +165,7 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
                     assertTrue(batch.tryAdd(testData));
                     return asyncProducerClient.send(batch);
                 })
-            ).verifyComplete();
+            ).expectComplete().verify(TIMEOUT);
         } finally {
             asyncProducerClient.close();
         }
