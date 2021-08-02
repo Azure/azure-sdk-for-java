@@ -501,7 +501,7 @@
           description: Microsoft's Spring Cloud Stream Binder helps developers to finish the auto-configuration of Event Hubs with Kafka protocol.
           type: spring
           links:
-            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs-kafka
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-kafka-readme?view=azure-java-stable
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-starter-eventhubs-kafka
