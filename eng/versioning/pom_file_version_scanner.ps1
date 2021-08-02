@@ -400,9 +400,9 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     {
         return
     }
-	
-	# azure-core-jackson-tests verifies compatibility with different 
-	# Jackson versions, it should be excluded from version checks
+
+    # azure-core-jackson-tests verifies compatibility with different 
+    # Jackson versions, it should be excluded from version checks
     if ($_.FullName -like "*azure-core-jackson-tests*")		
     {
         return
