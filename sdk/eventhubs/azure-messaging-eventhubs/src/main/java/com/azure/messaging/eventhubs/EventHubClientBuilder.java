@@ -19,9 +19,9 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -490,6 +490,16 @@ public class EventHubClientBuilder {
 
         this.prefetchCount = prefetchCount;
         return this;
+    }
+
+    /**
+     * Package-private method that gets the prefetch count.
+     *
+     * @return Gets the prefetch count or {@code null} if it has not been set.
+     * @see #DEFAULT_PREFETCH_COUNT for default prefetch count.
+     */
+    Integer getPrefetchCount() {
+        return prefetchCount;
     }
 
     /**

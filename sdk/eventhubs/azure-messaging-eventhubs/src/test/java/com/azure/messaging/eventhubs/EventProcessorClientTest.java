@@ -8,16 +8,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +26,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,6 +64,7 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link EventProcessorClient}.
  */
 public class EventProcessorClientTest {
+    private AutoCloseable mocksDisposable;
 
     @Mock
     private EventHubClientBuilder eventHubClientBuilder;
@@ -79,11 +80,15 @@ public class EventProcessorClientTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksDisposable = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
+        if (mocksDisposable != null) {
+            mocksDisposable.close();
+        }
+
         consumer1 = null;
         consumer2 = null;
         consumer3 = null;
@@ -267,10 +272,12 @@ public class EventProcessorClientTest {
         final EventPosition position = EventPosition.latest();
 
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
+        when(eventHubClientBuilder.getPrefetchCount()).thenReturn(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
+
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt()))
+        when(eventHubAsyncClient.createConsumer(anyString(), eq(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT)))
             .thenReturn(consumer1, consumer2, consumer3);
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(identifiers));
@@ -325,6 +332,51 @@ public class EventProcessorClientTest {
             }).verifyComplete();
     }
 
+    @Test
+    public void testPrefetchCountSet() throws Exception {
+        // Arrange
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+
+        final String consumerGroup = "my-consumer-group";
+        final int prefetch = 15;
+
+        when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
+        when(eventHubClientBuilder.getPrefetchCount()).thenReturn(prefetch);
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient
+            .createConsumer(eq(consumerGroup), eq(prefetch)))
+            .thenReturn(consumer1);
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData3.getSequenceNumber()).thenReturn(3L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
+        when(eventData3.getOffset()).thenReturn(150L);
+
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
+        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
+        CountDownLatch countDownLatch = new CountDownLatch(3);
+        testPartitionProcessor.countDownLatch = countDownLatch;
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, consumerGroup,
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+
+        // Act
+        eventProcessorClient.start();
+        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
+        eventProcessorClient.stop();
+
+        // Assert
+        assertTrue(completed);
+        assertIterableEquals(testPartitionProcessor.receivedEventsCount, Arrays.asList(2, 1));
+
+        verify(eventHubAsyncClient).createConsumer(eq(consumerGroup), eq(prefetch));
+    }
 
     @Test
     public void testBatchReceive() throws Exception {
