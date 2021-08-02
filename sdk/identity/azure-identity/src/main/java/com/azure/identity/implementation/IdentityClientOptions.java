@@ -32,6 +32,7 @@ public final class IdentityClientOptions {
     private ExecutorService executorService;
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
+    private boolean allowMultiTenantAuthentication;
     private boolean sharedTokenCacheEnabled;
     private String keePassDatabasePath;
     private boolean includeX5c;
@@ -197,9 +198,29 @@ public final class IdentityClientOptions {
         return this;
     }
 
+    /**
+     * Allows to override the tenant being used in the authentication request
+     * via {@link com.azure.core.experimental.credential.TokenRequestContext#setTenantId(String)}.
+     *
+     * @param allowMultiTenantAuthentication the flag to indicate if multi tenant authentication is enabled or not.
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setAllowMultiTenantAuthentication(boolean allowMultiTenantAuthentication) {
+        this.allowMultiTenantAuthentication = allowMultiTenantAuthentication;
+        return this;
+    }
+
+
     public boolean getAllowUnencryptedCache() {
         return this.allowUnencryptedCache;
     }
+
+    /**
+     * Get the flag indicating if multi tenant authentication is enabled or not.
+     *
+     * @return the boolean status indicating if multi tenant authentication is enabled or not.
+     */
+    public boolean getAllowMultiTenantAuthentication() { return this.allowMultiTenantAuthentication; }
 
     /**
      * Specifies the database to extract IntelliJ cached credentials from.

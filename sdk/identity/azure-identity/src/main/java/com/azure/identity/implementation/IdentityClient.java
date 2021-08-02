@@ -27,6 +27,7 @@ import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityConstants;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -569,10 +570,16 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithConfidentialClient(TokenRequestContext request) {
-        return confidentialClientApplicationAccessor.getValue()
-                .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(
-                    ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build()))
-                    .map(MsalToken::new));
+        return Mono.defer(() -> {
+            return confidentialClientApplicationAccessor.getValue()
+                .flatMap(confidentialClient -> {
+                    ClientCredentialParameters.ClientCredentialParametersBuilder builder =
+                        ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
+                            .tenant(IdentityUtil
+                                .resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
+                    return Mono.fromFuture(() -> confidentialClient.acquireToken(builder.build())).map(MsalToken::new);
+                });
+        });
     }
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
@@ -607,6 +614,8 @@ public class IdentityClient {
                                                                .formatAsClaimsRequest(request.getClaims());
                        userNamePasswordParametersBuilder.claims(customClaimRequest);
                    }
+                   userNamePasswordParametersBuilder.tenant(
+                       IdentityUtil.resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
                    return pc.acquireToken(userNamePasswordParametersBuilder.build());
                }
                )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
@@ -634,6 +643,8 @@ public class IdentityClient {
                 if (account != null) {
                     parametersBuilder = parametersBuilder.account(account);
                 }
+                parametersBuilder.tenant(
+                    IdentityUtil.resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
                 try {
                     return pc.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -672,7 +683,9 @@ public class IdentityClient {
         return confidentialClientApplicationAccessor.getValue()
             .flatMap(confidentialClient -> Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
-                        new HashSet<>(request.getScopes()));
+                        new HashSet<>(request.getScopes()))
+                    .tenant(IdentityUtil.resolveTenantId(tenantId, request,
+                        options.getAllowMultiTenantAuthentication()));
                 try {
                     return confidentialClient.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -700,7 +713,9 @@ public class IdentityClient {
                     DeviceCodeFlowParameters.builder(
                         new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
                             new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                                OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
+                                OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())))
+                    .tenant(IdentityUtil
+                        .resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -759,7 +774,9 @@ public class IdentityClient {
                                                              URI redirectUrl) {
         AuthorizationCodeParameters.AuthorizationCodeParametersBuilder parametersBuilder =
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
-            .scopes(new HashSet<>(request.getScopes()));
+            .scopes(new HashSet<>(request.getScopes()))
+            .tenant(IdentityUtil
+                .resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -811,7 +828,9 @@ public class IdentityClient {
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
             InteractiveRequestParameters.builder(redirectUri)
                 .scopes(new HashSet<>(request.getScopes()))
-                .prompt(Prompt.SELECT_ACCOUNT);
+                .prompt(Prompt.SELECT_ACCOUNT)
+                .tenant(IdentityUtil
+                    .resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());

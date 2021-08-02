@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.experimental.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -87,6 +88,17 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     public T httpClient(HttpClient client) {
         Objects.requireNonNull(client);
         this.identityClientOptions.setHttpClient(client);
+        return (T) this;
+    }
+
+    /**
+     * Allows to override the tenant being used in the authentication request
+     * via {@link com.azure.core.experimental.credential.TokenRequestContext#setTenantId(String)}.
+     *
+     * @return An updated instance of this builder.
+     */
+    public T allowMultiTenantAuthentication() {
+        this.identityClientOptions.setAllowMultiTenantAuthentication(true);
         return (T) this;
     }
 }
