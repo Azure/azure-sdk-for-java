@@ -8,10 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.azure.spring.autoconfigure.aad.AADTokenClaim.ROLES;
+import static com.azure.spring.aad.implementation.constants.AADTokenClaim.ROLES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -43,7 +44,7 @@ public class AADIdTokenRolesExtractionTest {
     @Test
     public void testRolesClaimIllegal() {
         OidcIdToken idToken = mock(OidcIdToken.class);
-        Set<String> rolesClaim = new HashSet<>(Arrays.asList("Admin"));
+        Set<String> rolesClaim = new HashSet<>(Collections.singletonList("Admin"));
         when(idToken.getClaim(ROLES)).thenReturn(rolesClaim);
         Set<String> authorityStrings = getUserService().extractRolesFromIdToken(idToken);
         assertThat(authorityStrings).hasSize(0);
