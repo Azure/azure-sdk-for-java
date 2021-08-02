@@ -80,6 +80,10 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
+
+    TokenCredentialType getCredentialType() {
+        return TokenCredentialType.MANAGED_IDENTITY_CREDENTIAL;
+    }
 }
 
 

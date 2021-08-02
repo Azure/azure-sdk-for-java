@@ -79,4 +79,9 @@ public class ChainedTokenCredential implements TokenCredential {
                 return Mono.error(last);
             }));
     }
+
+    public TokenCredentialType getCredentialType() {
+        // Return the type of the cached successful credential.
+        return null;
+    }
 }

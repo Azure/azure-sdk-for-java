@@ -35,4 +35,8 @@ public class AzurePowerShellCredential implements TokenCredential {
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
+
+    TokenCredentialType getCredentialType() {
+        return TokenCredentialType.AZURE_POWERSHELL_CREDENTIAL;
+    }
 }

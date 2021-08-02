@@ -129,4 +129,8 @@ public class DeviceCodeCredential implements TokenCredential {
                     msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
+
+    TokenCredentialType getCredentialType() {
+        return TokenCredentialType.DEVICE_CODE_CREDENTIAL;
+    }
 }

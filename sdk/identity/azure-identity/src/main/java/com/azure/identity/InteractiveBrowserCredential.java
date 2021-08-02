@@ -132,4 +132,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
                     msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
+
+    TokenCredentialType getCredentialType() {
+        return TokenCredentialType.INTERACTIVE_BROWSER_CREDENTIAL;
+    }
 }

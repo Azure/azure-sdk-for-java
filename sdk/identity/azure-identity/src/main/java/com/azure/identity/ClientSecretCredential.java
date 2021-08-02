@@ -58,4 +58,8 @@ public class ClientSecretCredential implements TokenCredential {
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
+
+    TokenCredentialType getCredentialType() {
+        return TokenCredentialType.CLIENT_SECRET_CREDENTIAL;
+    }
 }

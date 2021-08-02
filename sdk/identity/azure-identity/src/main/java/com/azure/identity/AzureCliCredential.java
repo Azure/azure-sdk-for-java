@@ -37,4 +37,8 @@ public class AzureCliCredential implements TokenCredential {
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
+
+    TokenCredentialType getCredentialType() {
+        return TokenCredentialType.AZURE_CLI_CREDENTIAL;
+    }
 }

@@ -108,4 +108,8 @@ public class UsernamePasswordCredential implements TokenCredential {
                     msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
+
+    TokenCredentialType getCredentialType() {
+        return TokenCredentialType.USERNAME_PASSWORD_CREDENTIAL;
+    }
 }
