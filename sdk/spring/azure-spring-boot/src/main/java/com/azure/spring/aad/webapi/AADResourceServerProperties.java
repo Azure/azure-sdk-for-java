@@ -23,7 +23,29 @@ public class AADResourceServerProperties implements InitializingBean {
         DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP = Collections.unmodifiableMap(claimAuthorityMap);
     }
 
+    /**
+     * <pre>
+     * Configure which claim in access token be returned in AuthenticatedPrincipal#getName.
+     * Default value is "sub".
+     *
+     * Example:
+     * If use the default value, and the access_token's "sub" scope value is "testValue",
+     * then AuthenticatedPrincipal#getName will return "testValue".
+     * </pre>
+     * @see org.springframework.security.core.AuthenticatedPrincipal#getName
+     */
     private String principalClaimName;
+    /**
+     * <pre>
+     * Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value.
+     * Default value is: "scp" -> "SCOPE_", "roles" -> "APPROLE_".
+     *
+     * Example:
+     * If use the default value, and the access_token's "scp" scope value is "testValue",
+     * then GrantedAuthority with "SCOPE_testValue" will be created..
+     * </pre>
+     * @see org.springframework.security.core.GrantedAuthority
+     */
     private Map<String, String> claimToAuthorityPrefixMap;
 
     public String getPrincipalClaimName() {
