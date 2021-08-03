@@ -105,7 +105,15 @@ public class AttestationClientTestBase extends TestBase {
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
     AttestationClientBuilder getBuilder(HttpClient httpClient, String clientUri) {
-        return new AttestationClientBuilder().pipeline(getHttpPipeline(httpClient)).endpoint(clientUri);
+        AttestationClientBuilder builder = new AttestationClientBuilder()
+            .endpoint(clientUri)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+//            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isPlaybackMode()) {
+            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+        }
+        return builder;
     }
 
     /**
@@ -154,7 +162,7 @@ public class AttestationClientTestBase extends TestBase {
         }
 
         SignedJWT finalToken = token;
-        return getSigningCertificateByKeyId(token, httpClient, clientUri)
+        return getSigningCertificateByKeyId(token.getHeader().getKeyID(), httpClient, clientUri)
             .handle((signer, sink) -> {
                 final PublicKey key = signer.getCertificates()[0].getPublicKey();
                 final RSAPublicKey rsaKey = (RSAPublicKey) key;
@@ -215,11 +223,10 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Base URI for the attestation client.
      * @return X509Certificate which will have been used to sign the token.
      */
-    Mono<AttestationSigner> getSigningCertificateByKeyId(SignedJWT token, HttpClient client, String clientUri) {
+    Mono<AttestationSigner> getSigningCertificateByKeyId(String keyId, HttpClient client, String clientUri) {
         AttestationClientBuilder builder = getBuilder(client, clientUri);
         return builder.buildAttestationAsyncClient().getAttestationSigners()
             .handle((signers, sink) -> {
-                final String keyId = token.getHeader().getKeyID();
                 boolean foundKey = false;
 
                 for (AttestationSigner signer : signers) {

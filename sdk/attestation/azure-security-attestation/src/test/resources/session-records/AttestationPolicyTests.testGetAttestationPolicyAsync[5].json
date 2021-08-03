@@ -2,16 +2,18 @@
   "networkCallRecords" : [ {
     "Method" : "GET",
     "Uri" : "https://REDACTED.wus.attest.azure.net/policies/Tpm?api-version=2020-10-01",
-    "Headers" : { },
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.9; Windows 10; 10.0)"
+    },
     "Response" : {
       "content-length" : "751",
       "Server" : "Kestrel",
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-52a4dfd7c504cb0f2f3c5ea0129b8b4c-0000000000000000-00",
-      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmlzby53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsImtpZCI6InJQdEJHUldUbFBtenM1dTM1TDBRUkQ5V2R5bWVLUFJ4dGVUZVRsd04wRWM9IiwidHlwIjoiSldUIn0.eyJleHAiOjE2Mjc5NzEwMDksImlhdCI6MTYyNzk2NzQwOSwiaXNzIjoiaHR0cHM6Ly9qYWxhcnJ5b2F0dGVzdGF0aW9uaXNvLnd1cy5hdHRlc3QuYXp1cmUubmV0IiwibmJmIjoxNjI3OTY3NDA5LCJ4LW1zLXBvbGljeSI6ImV5SmhiR2NpT2lKdWIyNWxJbjAuLiJ9.VH1vGGIcjafh250NBkgX7xzjTTY8sQvooZ9OEhlnNIzgXRIJw4jI1uzOxsr3IC5lUjWLWd1wY6vPcHzuSH_wmvrbjcCMF53kwBz5Qr8V2Tocc6IP34ByRkuUxlfA2mK___OZ-jxkndyQzZUDgwKVXTlt7vxapzyzJgjXacRtpsj08oy1eWrZTVVLGD7wIXqDIHjNGp8VkVD3kZMEddjREQx_rFhGDUebG8M4WmrSQjf5oJ8kMwlbikJYfczwcmAUk_zLD3wh9Twi6geDj0OaqKniCGmAtxqDR8A9kUqluctbVGaVf7X4X1TbKZuzMlSN-cG-OfZHF9iuvvC1NphaAg\"}",
-      "Date" : "Tue, 03 Aug 2021 05:10:08 GMT",
+      "x-ms-request-id" : "00-db0baa79bd2e8184de0b2f6dd81c3b9e-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmlzby53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsImtpZCI6InJQdEJHUldUbFBtenM1dTM1TDBRUkQ5V2R5bWVLUFJ4dGVUZVRsd04wRWM9IiwidHlwIjoiSldUIn0.eyJleHAiOjE2MjgwMjUxMTksImlhdCI6MTYyODAyMTUxOSwiaXNzIjoiaHR0cHM6Ly9qYWxhcnJ5b2F0dGVzdGF0aW9uaXNvLnd1cy5hdHRlc3QuYXp1cmUubmV0IiwibmJmIjoxNjI4MDIxNTE5LCJ4LW1zLXBvbGljeSI6ImV5SmhiR2NpT2lKdWIyNWxJbjAuLiJ9.06Hx-GOsbIUcL_P5Y9FNTeCCONQ-vGYRJCmuHVnSz3_LJ_hfBP_g3kfv6fYvtZ0fyLlQgMf1uYGPY0OvGHtXr56ud4SodTbHP22uL59ar0XShkdLnUbuFkCGQkZHWhtEsaWvjfEzvdmGcN0vOmUJ4fdrHtfwyEHYBkPJw81hfc-ngxNXAIeV31rp0ZFs3w9TtYKvm1GUMlzlPig0LflkndqKtHGw2WMOdOPsK7D9Meydzg2WHUyGzm9Oa1C_ntrSMdj-2QKkinM_qs8M9RX6gXJfFAkei0q1LXp9xEW-kqVyJsVs4QcrTujdJbD0ZnCOKOMdXwlXMQ7sZQXpDdGSew\"}",
+      "Date" : "Tue, 03 Aug 2021 20:11:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
