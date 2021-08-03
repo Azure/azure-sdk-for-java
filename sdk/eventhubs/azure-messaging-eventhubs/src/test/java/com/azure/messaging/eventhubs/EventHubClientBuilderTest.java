@@ -9,6 +9,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Assertions;
@@ -129,7 +130,9 @@ public class EventHubClientBuilderTest {
                     proxyConfiguration, ex.getMessage(), ex);
             ex.printStackTrace();
         }
-        Assertions.assertEquals(expectedClientCreation, clientCreated);
+        if (!CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_HTTP_PROXY))) {
+            Assertions.assertEquals(expectedClientCreation, clientCreated);
+        }
     }
 
     @Test

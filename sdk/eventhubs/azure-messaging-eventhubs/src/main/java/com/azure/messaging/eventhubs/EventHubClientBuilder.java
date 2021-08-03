@@ -785,6 +785,8 @@ public class EventHubClientBuilder {
             authentication = proxyOptions.getAuthentication();
         }
 
+        logger.info("getDefaultProxyConfiguration proxy configuration value = "
+                + configuration.get(Configuration.PROPERTY_HTTP_PROXY) + " config instance = " + configuration);
         String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
 
         if (CoreUtils.isNullOrEmpty(proxyAddress)) {
@@ -807,6 +809,8 @@ public class EventHubClientBuilder {
             final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
             return new ProxyOptions(authentication, proxy, username, password);
         } else {
+            logger.info("getProxyOptions proxy configuration value = "
+                    + configuration.get(Configuration.PROPERTY_HTTP_PROXY) + " config instance = " + configuration);
             com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
                 .fromConfiguration(configuration);
             if (coreProxyOptions == null) {
