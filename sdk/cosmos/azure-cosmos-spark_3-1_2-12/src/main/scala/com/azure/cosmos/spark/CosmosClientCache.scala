@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosItemOperation, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, ThrottlingRetryOptions}
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 
@@ -26,22 +26,21 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] val cleanupIntervalInSeconds = 60
   private[this] val cache = new TrieMap[CosmosClientConfiguration, CosmosClientCacheMetadata]
   private[this] val executorService:ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
-    new CosmosDaemonThreadFactory("CosmosClientCache"));
+    new CosmosDaemonThreadFactory("CosmosClientCache"))
 
   this.executorService.scheduleWithFixedDelay(
-    () => this.onCleanup,
+    () => this.onCleanup(),
     this.cleanupIntervalInSeconds,
     this.cleanupIntervalInSeconds,
-    TimeUnit.SECONDS);
+    TimeUnit.SECONDS)
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosAsyncClient = {
 
     cache.get(cosmosClientConfiguration) match {
-      case Some(clientCacheMetadata) => {
+      case Some(clientCacheMetadata) =>
         clientCacheMetadata.lastRetrieved.set(Instant.now.toEpochMilli)
         clientCacheMetadata.client
-      }
       case None => syncCreate(cosmosClientConfiguration, cosmosClientStateHandle)
     }
   }
@@ -63,10 +62,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]])
   : CosmosAsyncClient = synchronized {
     cache.get(cosmosClientConfiguration) match {
-      case Some(clientCacheMetadata) => {
+      case Some(clientCacheMetadata) =>
         clientCacheMetadata.lastRetrieved.set(Instant.now.toEpochMilli)
         clientCacheMetadata.client
-      }
       case None =>
         var builder = new CosmosClientBuilder()
           .key(cosmosClientConfiguration.key)
@@ -90,11 +88,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         }
 
         // We saw incidents where even when Spark restarted Executors we haven't been able
-        // to recover - most likely due to stale cache state being broadcasted
+        // to recover - most likely due to stale cache state being broadcast
         // Ideally the SDK would always be able to recover from stale cache state
         // but the main purpose of broadcasting teh cache state is to avoid peeks in metadata
         // RU usage when multiple workers/executors are all started at the same time
-        // Skipping the broadcasted cache state for retries should be safe - because not all executors
+        // Skipping the broadcast cache state for retries should be safe - because not all executors
         // will be restarted at the same time - and it adds an additional layer of safety.
         val isTaskRetryAttempt: Boolean = TaskContext.get() != null && TaskContext.get().attemptNumber() > 0
 
@@ -139,7 +137,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     try {
       logInfo(s"-->onCleanup (${cache.size} clients)")
       val snapshot = cache.readOnlySnapshot()
-      snapshot.foreach((pair) => {
+      snapshot.foreach(pair => {
         val clientConfig = pair._1
         val clientMetadata = pair._2
 
