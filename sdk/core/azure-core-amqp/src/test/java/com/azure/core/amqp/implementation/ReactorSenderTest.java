@@ -42,17 +42,20 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doAnswer;
@@ -92,6 +95,8 @@ public class ReactorSenderTest {
     private TransactionalState transactionalState;
     @Mock
     private ReactorDispatcher reactorDispatcher;
+    @Mock
+    private Scheduler scheduler;
 
     @Captor
     private  ArgumentCaptor<DeliveryState> deliveryStateArgumentCaptor;
@@ -105,6 +110,11 @@ public class ReactorSenderTest {
     public void setup() throws IOException {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
+        doAnswer(invocation -> {
+            final Runnable argument = invocation.getArgument(0);
+            argument.run();
+            return null;
+        }).when(scheduler).schedule(any(Runnable.class));
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
         Delivery delivery = mock(Delivery.class);
@@ -165,7 +175,7 @@ public class ReactorSenderTest {
     @Test
     public void testLinkSize() {
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
 
         StepVerifier.create(reactorSender.getLinkSize())
             .expectNext(1000)
@@ -183,7 +193,7 @@ public class ReactorSenderTest {
         final String exceptionString = "fake exception";
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         final Throwable exception = new RuntimeException(exceptionString);
@@ -207,7 +217,7 @@ public class ReactorSenderTest {
     public void testSendWithTransaction() {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(),
@@ -233,9 +243,14 @@ public class ReactorSenderTest {
         // Arrange
         // This is specific to this message and needs to align with this message.
         when(sender.send(any(byte[].class), anyInt(), anyInt())).thenReturn(26);
+        doAnswer(invocationOnMock -> {
+            final Runnable argument = invocationOnMock.getArgument(0);
+            argument.run();
+            return null;
+        }).when(scheduler).schedule(any(Runnable.class), anyLong(), any(TimeUnit.class));
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
 
         // Creating delivery for sending.
         final Delivery deliveryToSend = mock(Delivery.class);
@@ -265,7 +280,7 @@ public class ReactorSenderTest {
     public void testSend() {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
@@ -289,7 +304,7 @@ public class ReactorSenderTest {
         message2.setBody(new AmqpValue("world"));
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
@@ -311,7 +326,7 @@ public class ReactorSenderTest {
         when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(10));
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
@@ -336,7 +351,7 @@ public class ReactorSenderTest {
     void parentDisposesConnection() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false, "Test-shutdown-signal");
 
         doAnswer(invocationOnMock -> {
@@ -369,7 +384,7 @@ public class ReactorSenderTest {
     void parentClosesEndpoint() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false, "Test-shutdown-signal");
 
         doAnswer(invocationOnMock -> {
@@ -406,7 +421,7 @@ public class ReactorSenderTest {
     void disposesOnHandlerError() {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final UnsupportedOperationException testException = new UnsupportedOperationException("test-exception");
 
         // Act and Assert
@@ -436,7 +451,7 @@ public class ReactorSenderTest {
     void disposesOnHandlerComplete() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
 
         doAnswer(invocationOnMock -> {
             final Runnable work = invocationOnMock.getArgument(0);
@@ -467,7 +482,7 @@ public class ReactorSenderTest {
     void disposeCompletes() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final String message = "some-message";
         final AmqpErrorCondition errorCondition = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
         final ErrorCondition condition = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()),
@@ -512,7 +527,7 @@ public class ReactorSenderTest {
     void pendingMessagesError() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final UnsupportedOperationException testException = new UnsupportedOperationException("test-exception");
         final Message message = Proton.message();
         final UnsignedLong size = new UnsignedLong(2048L);
@@ -548,7 +563,7 @@ public class ReactorSenderTest {
     void pendingMessagesErrorWithShutdown() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final Message message = Proton.message();
         final UnsignedLong size = new UnsignedLong(2048L);
         when(sender.getRemoteMaxMessageSize()).thenReturn(size);
@@ -592,7 +607,7 @@ public class ReactorSenderTest {
     void closesWhenNoLongerAuthorized() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
         final AmqpException error = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "not-allowed",
             new AmqpErrorContext("foo-bar"));
 
@@ -617,7 +632,7 @@ public class ReactorSenderTest {
     void closesWhenAuthorizationResultsComplete() throws IOException {
         // Arrange
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options);
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
 
         doAnswer(invocationOnMock -> {
             final Runnable work = invocationOnMock.getArgument(0);
