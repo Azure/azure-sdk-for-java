@@ -22,7 +22,11 @@ public class ServiceBusQueueHealthIndicator extends AbstractHealthIndicator {
     }
 
     @Override
-    protected void doHealthCheck(Health.Builder builder) throws Exception {
+    protected void doHealthCheck(Health.Builder builder) {
+        if (instrumentationManager.getHealthInstrumentations().isEmpty()) {
+            builder.unknown();
+            return;
+        }
         if (instrumentationManager.getHealthInstrumentations().stream()
                                   .allMatch(Instrumentation::isUp)) {
             builder.up();
@@ -36,7 +40,8 @@ public class ServiceBusQueueHealthIndicator extends AbstractHealthIndicator {
         builder.down();
         instrumentationManager.getHealthInstrumentations().stream()
                               .filter(instrumentation -> !instrumentation.isStarted())
-                              .forEach(instrumentation1 -> builder
-                                  .withException(instrumentation1.getStartException()));
+                              .forEach(instrumentation -> builder
+                                  .withDetail(instrumentation.getName() + ":" + instrumentation.getType().getTypeName(),
+                                      instrumentation.getStartException()));
     }
 }

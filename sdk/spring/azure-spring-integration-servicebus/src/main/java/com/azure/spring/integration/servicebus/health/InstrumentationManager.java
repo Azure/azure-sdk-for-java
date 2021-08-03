@@ -21,11 +21,12 @@ public class InstrumentationManager {
     }
 
     public void addHealthInstrumentation(Instrumentation instrumentation) {
-        healthInstrumentations.put(instrumentation.getName(), instrumentation);
+        healthInstrumentations.put(instrumentation.getName() + ":" + instrumentation.getType().getTypeName(),
+            instrumentation);
     }
 
-    public Instrumentation getHealthInstrumentation(String key) {
-        return healthInstrumentations.get(key);
+    public Instrumentation getHealthInstrumentation(Instrumentation instrumentation) {
+        return healthInstrumentations.get(instrumentation.getName() + ":" + instrumentation.getType().getTypeName());
     }
 
 }

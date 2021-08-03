@@ -71,18 +71,16 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
                 return String.format(MSG_SUCCESS_CHECKPOINT, message, name, getCheckpointConfig().getCheckpointMode());
             }
         };
+        Instrumentation instrumentation = new Instrumentation(name, Instrumentation.Type.CONSUME);
         try {
-            instrumentationManager.addHealthInstrumentation(new Instrumentation(name, Instrumentation.Type.CONSUME));
+            instrumentationManager.addHealthInstrumentation(instrumentation);
             ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, clientConfig,
                 messageProcessor);
             processorClient.start();
-            instrumentationManager.getHealthInstrumentation(name).markStartedSuccessfully();
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
         } catch (Exception e) {
-            instrumentationManager.getHealthInstrumentation(name).markStartFailed(e);
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);
             LOGGER.error("ServiceBus processorClient startup failed, Caused by " + e.getMessage());
-            throw new MessagingException(MessageBuilder.withPayload(
-                "ServiceBus processorClient startup failed, Caused by " + e.getMessage())
-                                                       .build(), e);
         }
     }
 

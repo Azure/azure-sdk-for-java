@@ -16,14 +16,14 @@ public class Instrumentation {
 
         SUPPLY("supply");
 
-        private String type;
+        private String typeName;
 
-        Type(String type) {
-            this.type = type;
+        Type(String typeName) {
+            this.typeName = typeName;
         }
 
-        public String getType() {
-            return type;
+        public String getTypeName() {
+            return typeName;
         }
     }
 

@@ -67,16 +67,14 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
             String partitionKey = getPartitionKey(partitionSupplier);
             serviceBusMessage.setPartitionKey(partitionKey);
         }
+        Instrumentation instrumentation = new Instrumentation(destination, Instrumentation.Type.SUPPLY);
         try {
-            instrumentationManager.addHealthInstrumentation(new Instrumentation(destination, Instrumentation.Type.SUPPLY));
+            instrumentationManager.addHealthInstrumentation(instrumentation);
             senderAsyncClient = this.clientFactory.getOrCreateSender(destination);
-            instrumentationManager.getHealthInstrumentation(destination).markStartedSuccessfully();
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
         } catch (Exception e) {
-            instrumentationManager.getHealthInstrumentation(destination).markStartFailed(e);
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);
             LOGGER.error("ServiceBus senderAsyncClient startup failed, Caused by " + e.getMessage());
-            throw new MessagingException(MessageBuilder.withPayload(
-                "ServiceBus senderAsyncClient startup failed, Caused by " + e.getMessage())
-                                                       .build(), e);
         }
 
         return senderAsyncClient.sendMessage(serviceBusMessage).toFuture();

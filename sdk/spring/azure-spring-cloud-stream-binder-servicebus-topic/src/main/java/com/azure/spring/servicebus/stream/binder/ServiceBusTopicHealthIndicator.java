@@ -9,8 +9,7 @@ import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
 /**
- * Implementation of a {@link AbstractHealthIndicator} returning status information for
- * service bus topic.
+ * Implementation of a {@link AbstractHealthIndicator} returning status information for service bus topic.
  */
 public class ServiceBusTopicHealthIndicator extends AbstractHealthIndicator {
     private final InstrumentationManager instrumentationManager;
@@ -20,9 +19,12 @@ public class ServiceBusTopicHealthIndicator extends AbstractHealthIndicator {
         this.instrumentationManager = serviceBusTopicTemplate.getInstrumentationManager();
     }
 
-
     @Override
-    protected void doHealthCheck(Health.Builder builder) throws Exception {
+    protected void doHealthCheck(Health.Builder builder) {
+        if (instrumentationManager.getHealthInstrumentations().isEmpty()) {
+            builder.unknown();
+            return;
+        }
         if (instrumentationManager.getHealthInstrumentations().stream()
                                   .allMatch(Instrumentation::isUp)) {
             builder.up();
@@ -36,7 +38,8 @@ public class ServiceBusTopicHealthIndicator extends AbstractHealthIndicator {
         builder.down();
         instrumentationManager.getHealthInstrumentations().stream()
                               .filter(instrumentation -> !instrumentation.isStarted())
-                              .forEach(instrumentation1 -> builder
-                                  .withException(instrumentation1.getStartException()));
+                              .forEach(instrumentation -> builder
+                                  .withDetail(instrumentation.getName() + ":" + instrumentation.getType().getTypeName(),
+                                      instrumentation.getStartException()));
     }
 }

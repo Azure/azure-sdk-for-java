@@ -110,19 +110,16 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
                     getCheckpointConfig().getCheckpointMode());
             }
         };
-
+        Instrumentation instrumentation = new Instrumentation(name + consumerGroup, Instrumentation.Type.CONSUME);
         try {
-            instrumentationManager.addHealthInstrumentation(new Instrumentation(name + consumerGroup, Instrumentation.Type.CONSUME));
+            instrumentationManager.addHealthInstrumentation(instrumentation);
             ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, consumerGroup,
                 this.clientConfig, messageProcessor);
             processorClient.start();
-            instrumentationManager.getHealthInstrumentation(name + consumerGroup).markStartedSuccessfully();
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
         } catch (Exception e) {
-            instrumentationManager.getHealthInstrumentation(name + consumerGroup).markStartFailed(e);
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);
             LOGGER.error("ServiceBus processorClient startup failed, Caused by " + e.getMessage());
-            throw new MessagingException(MessageBuilder.withPayload(
-                "ServiceBus processorClient startup failed, Caused by " + e.getMessage())
-                                                       .build(), e);
         }
     }
 
