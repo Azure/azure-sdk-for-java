@@ -30,7 +30,7 @@ public class RecognizeBusinessCardFromUrl {
             .buildClient();
 
         String businessCardUrl =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
                 + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
 
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeBusinessCardPoller =

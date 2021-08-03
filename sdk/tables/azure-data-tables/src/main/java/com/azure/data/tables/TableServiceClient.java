@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
@@ -301,7 +300,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.listTables(options, context), timeout));
+        return new PagedIterable<>(client.listTables(options, context, timeout));
     }
 
     /**
@@ -361,7 +360,7 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service. Prints out the details of the
-     * {@link Response HTTP response}.</p></p>
+     * {@link Response HTTP response}.</p>
      * {@codesnippet com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context}
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.

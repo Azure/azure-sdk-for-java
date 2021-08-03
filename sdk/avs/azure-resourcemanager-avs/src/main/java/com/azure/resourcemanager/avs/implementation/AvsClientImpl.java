@@ -21,13 +21,21 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.avs.fluent.AddonsClient;
 import com.azure.resourcemanager.avs.fluent.AuthorizationsClient;
 import com.azure.resourcemanager.avs.fluent.AvsClient;
+import com.azure.resourcemanager.avs.fluent.CloudLinksClient;
 import com.azure.resourcemanager.avs.fluent.ClustersClient;
+import com.azure.resourcemanager.avs.fluent.DatastoresClient;
+import com.azure.resourcemanager.avs.fluent.GlobalReachConnectionsClient;
 import com.azure.resourcemanager.avs.fluent.HcxEnterpriseSitesClient;
 import com.azure.resourcemanager.avs.fluent.LocationsClient;
 import com.azure.resourcemanager.avs.fluent.OperationsClient;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
+import com.azure.resourcemanager.avs.fluent.ScriptCmdletsClient;
+import com.azure.resourcemanager.avs.fluent.ScriptExecutionsClient;
+import com.azure.resourcemanager.avs.fluent.ScriptPackagesClient;
+import com.azure.resourcemanager.avs.fluent.WorkloadNetworksClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -163,6 +171,18 @@ public final class AvsClientImpl implements AvsClient {
         return this.clusters;
     }
 
+    /** The DatastoresClient object to access its operations. */
+    private final DatastoresClient datastores;
+
+    /**
+     * Gets the DatastoresClient object to access its operations.
+     *
+     * @return the DatastoresClient object.
+     */
+    public DatastoresClient getDatastores() {
+        return this.datastores;
+    }
+
     /** The HcxEnterpriseSitesClient object to access its operations. */
     private final HcxEnterpriseSitesClient hcxEnterpriseSites;
 
@@ -187,6 +207,90 @@ public final class AvsClientImpl implements AvsClient {
         return this.authorizations;
     }
 
+    /** The GlobalReachConnectionsClient object to access its operations. */
+    private final GlobalReachConnectionsClient globalReachConnections;
+
+    /**
+     * Gets the GlobalReachConnectionsClient object to access its operations.
+     *
+     * @return the GlobalReachConnectionsClient object.
+     */
+    public GlobalReachConnectionsClient getGlobalReachConnections() {
+        return this.globalReachConnections;
+    }
+
+    /** The WorkloadNetworksClient object to access its operations. */
+    private final WorkloadNetworksClient workloadNetworks;
+
+    /**
+     * Gets the WorkloadNetworksClient object to access its operations.
+     *
+     * @return the WorkloadNetworksClient object.
+     */
+    public WorkloadNetworksClient getWorkloadNetworks() {
+        return this.workloadNetworks;
+    }
+
+    /** The CloudLinksClient object to access its operations. */
+    private final CloudLinksClient cloudLinks;
+
+    /**
+     * Gets the CloudLinksClient object to access its operations.
+     *
+     * @return the CloudLinksClient object.
+     */
+    public CloudLinksClient getCloudLinks() {
+        return this.cloudLinks;
+    }
+
+    /** The AddonsClient object to access its operations. */
+    private final AddonsClient addons;
+
+    /**
+     * Gets the AddonsClient object to access its operations.
+     *
+     * @return the AddonsClient object.
+     */
+    public AddonsClient getAddons() {
+        return this.addons;
+    }
+
+    /** The ScriptPackagesClient object to access its operations. */
+    private final ScriptPackagesClient scriptPackages;
+
+    /**
+     * Gets the ScriptPackagesClient object to access its operations.
+     *
+     * @return the ScriptPackagesClient object.
+     */
+    public ScriptPackagesClient getScriptPackages() {
+        return this.scriptPackages;
+    }
+
+    /** The ScriptCmdletsClient object to access its operations. */
+    private final ScriptCmdletsClient scriptCmdlets;
+
+    /**
+     * Gets the ScriptCmdletsClient object to access its operations.
+     *
+     * @return the ScriptCmdletsClient object.
+     */
+    public ScriptCmdletsClient getScriptCmdlets() {
+        return this.scriptCmdlets;
+    }
+
+    /** The ScriptExecutionsClient object to access its operations. */
+    private final ScriptExecutionsClient scriptExecutions;
+
+    /**
+     * Gets the ScriptExecutionsClient object to access its operations.
+     *
+     * @return the ScriptExecutionsClient object.
+     */
+    public ScriptExecutionsClient getScriptExecutions() {
+        return this.scriptExecutions;
+    }
+
     /**
      * Initializes an instance of AvsClient client.
      *
@@ -209,13 +313,21 @@ public final class AvsClientImpl implements AvsClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-03-20";
+        this.apiVersion = "2021-06-01";
         this.operations = new OperationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
         this.privateClouds = new PrivateCloudsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
+        this.datastores = new DatastoresClientImpl(this);
         this.hcxEnterpriseSites = new HcxEnterpriseSitesClientImpl(this);
         this.authorizations = new AuthorizationsClientImpl(this);
+        this.globalReachConnections = new GlobalReachConnectionsClientImpl(this);
+        this.workloadNetworks = new WorkloadNetworksClientImpl(this);
+        this.cloudLinks = new CloudLinksClientImpl(this);
+        this.addons = new AddonsClientImpl(this);
+        this.scriptPackages = new ScriptPackagesClientImpl(this);
+        this.scriptCmdlets = new ScriptCmdletsClientImpl(this);
+        this.scriptExecutions = new ScriptExecutionsClientImpl(this);
     }
 
     /**

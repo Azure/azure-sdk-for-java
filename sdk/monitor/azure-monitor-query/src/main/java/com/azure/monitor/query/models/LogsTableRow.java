@@ -46,7 +46,7 @@ public final class LogsTableRow {
      * Returns the collection of values in this row.
      * @return the collection of values in this row.
      */
-    public List<LogsTableCell> getTableRow() {
+    public List<LogsTableCell> getRow() {
         return tableRow;
     }
 

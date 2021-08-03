@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/maintenance/
+      - sdk/maintenance/ci.yml
+      - sdk/maintenance/azure-resourcemanager-maintenance/
+    exclude:
+      - sdk/maintenance/pom.xml
+      - sdk/maintenance/azure-resourcemanager-maintenance/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/maintenance/
+      - sdk/maintenance/ci.yml
+      - sdk/maintenance/azure-resourcemanager-maintenance/
+    exclude:
+      - sdk/maintenance/pom.xml
+      - sdk/maintenance/azure-resourcemanager-maintenance/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

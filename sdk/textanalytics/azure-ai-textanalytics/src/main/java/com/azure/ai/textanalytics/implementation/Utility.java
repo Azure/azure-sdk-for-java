@@ -50,6 +50,7 @@ import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
+import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
@@ -334,8 +335,9 @@ public final class Utility {
                     new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
                         final CategorizedEntity categorizedEntity = new CategorizedEntity(entity.getText(),
                             EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
-                            entity.getConfidenceScore(), entity.getOffset());
+                            entity.getConfidenceScore());
                         CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
                         return categorizedEntity;
                     }).collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
@@ -450,22 +452,27 @@ public final class Utility {
                     null,
                     new LinkedEntityCollection(new IterableStream<>(
                         documentLinkedEntities.getEntities().stream().map(
-                            linkedEntity -> new LinkedEntity(
-                                linkedEntity.getName(),
-                                new IterableStream<>(
-                                    linkedEntity.getMatches().stream().map(
-                                        match -> {
-                                            final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch(
-                                                match.getText(), match.getConfidenceScore(), match.getOffset());
-                                            LinkedEntityMatchPropertiesHelper.setLength(linkedEntityMatch,
-                                                match.getLength());
-                                            return linkedEntityMatch;
-                                        }).collect(Collectors.toList())),
-                                linkedEntity.getLanguage(),
-                                linkedEntity.getId(),
-                                linkedEntity.getUrl(),
-                                linkedEntity.getDataSource(),
-                                linkedEntity.getBingId())).collect(Collectors.toList())),
+                            linkedEntity -> {
+                                final LinkedEntity entity = new LinkedEntity(
+                                    linkedEntity.getName(),
+                                    new IterableStream<>(
+                                        linkedEntity.getMatches().stream().map(
+                                            match -> {
+                                                final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch(
+                                                    match.getText(), match.getConfidenceScore());
+                                                LinkedEntityMatchPropertiesHelper.setOffset(linkedEntityMatch,
+                                                    match.getOffset());
+                                                LinkedEntityMatchPropertiesHelper.setLength(linkedEntityMatch,
+                                                    match.getLength());
+                                                return linkedEntityMatch;
+                                            }).collect(Collectors.toList())),
+                                    linkedEntity.getLanguage(),
+                                    linkedEntity.getId(),
+                                    linkedEntity.getUrl(),
+                                    linkedEntity.getDataSource());
+                                LinkedEntityPropertiesHelper.setBingEntitySearchApiId(entity, linkedEntity.getBingId());
+                                return entity;
+                            }).collect(Collectors.toList())),
                         new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
                             warning -> {
                                 final WarningCodeValue warningCodeValue = warning.getCode();
@@ -524,7 +531,10 @@ public final class Utility {
                         final HealthcareEntity healthcareEntity = new HealthcareEntity();
                         HealthcareEntityPropertiesHelper.setText(healthcareEntity, entity.getText());
                         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity, entity.getName());
-                        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity, entity.getCategory());
+                        if (entity.getCategory() != null) {
+                            HealthcareEntityPropertiesHelper.setCategory(healthcareEntity,
+                                HealthcareEntityCategory.fromString(entity.getCategory().toString()));
+                        }
                         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity,
                             entity.getConfidenceScore());
                         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());

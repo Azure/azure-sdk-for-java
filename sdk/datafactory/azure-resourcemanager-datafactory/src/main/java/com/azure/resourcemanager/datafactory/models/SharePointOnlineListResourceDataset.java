@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SharePointOnlineListDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,38 +17,23 @@ import java.util.Map;
 /** The sharepoint online list resource dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SharePointOnlineListResource")
-@JsonFlatten
 @Fluent
-public class SharePointOnlineListResourceDataset extends Dataset {
+public final class SharePointOnlineListResourceDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SharePointOnlineListResourceDataset.class);
 
     /*
-     * The name of the SharePoint Online list. Type: string (or Expression with
-     * resultType string).
+     * Sharepoint online list dataset properties.
      */
-    @JsonProperty(value = "typeProperties.listName")
-    private Object listName;
+    @JsonProperty(value = "typeProperties")
+    private SharePointOnlineListDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the listName property: The name of the SharePoint Online list. Type: string (or Expression with resultType
-     * string).
+     * Get the innerTypeProperties property: Sharepoint online list dataset properties.
      *
-     * @return the listName value.
+     * @return the innerTypeProperties value.
      */
-    public Object listName() {
-        return this.listName;
-    }
-
-    /**
-     * Set the listName property: The name of the SharePoint Online list. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param listName the listName value to set.
-     * @return the SharePointOnlineListResourceDataset object itself.
-     */
-    public SharePointOnlineListResourceDataset withListName(Object listName) {
-        this.listName = listName;
-        return this;
+    private SharePointOnlineListDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,6 +86,31 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     }
 
     /**
+     * Get the listName property: The name of the SharePoint Online list. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the listName value.
+     */
+    public Object listName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().listName();
+    }
+
+    /**
+     * Set the listName property: The name of the SharePoint Online list. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param listName the listName value to set.
+     * @return the SharePointOnlineListResourceDataset object itself.
+     */
+    public SharePointOnlineListResourceDataset withListName(Object listName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SharePointOnlineListDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withListName(listName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,5 +118,8 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

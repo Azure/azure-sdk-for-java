@@ -4,11 +4,13 @@
 package com.azure.data.tables;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,17 @@ public class ReadmeSamples {
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .endpoint("<your-table-account-url>")
             .sasToken("<sas-token-string>")
+            .buildClient();
+    }
+
+    /**
+     * Code sample for authenticating with a {@link TokenCredential}.
+     */
+    public void authenticateWithTokenCredential() {
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
+            .endpoint("<your-table-account-url>")
+            .credential(tokenCredential)
             .buildClient();
     }
 

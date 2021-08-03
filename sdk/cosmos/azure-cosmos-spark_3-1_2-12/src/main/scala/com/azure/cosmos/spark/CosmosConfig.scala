@@ -20,7 +20,7 @@ import org.apache.spark.sql.connector.read.streaming.ReadLimit
 import java.net.{URI, URISyntaxException, URL}
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
-import java.util.Locale
+import java.util.{Locale, ServiceLoader}
 import scala.collection.immutable.{HashSet, Map}
 
 // scalastyle:off underscore.import
@@ -124,6 +124,8 @@ private object CosmosConfigNames {
   }
 }
 
+
+
 private object CosmosConfig {
   def getEffectiveConfig
   (
@@ -133,8 +135,18 @@ private object CosmosConfig {
     // spark application configteams
     userProvidedOptions: Map[String, String] // user provided config
   ) : Map[String, String] = {
+    var accountDataResolverCls = None : Option[AccountDataResolver]
+    val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
+    val iterator = serviceLoader.iterator()
+    if (iterator.hasNext()) {
+        accountDataResolverCls = Some(iterator.next())
+    }
 
     var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
+    if (accountDataResolverCls.isDefined) {
+        val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
+        effectiveUserConfig = CaseInsensitiveMap(accountDataConfig)
+    }
 
     if (databaseName.isDefined) {
       effectiveUserConfig += (CosmosContainerConfig.DATABASE_NAME_KEY -> databaseName.get)

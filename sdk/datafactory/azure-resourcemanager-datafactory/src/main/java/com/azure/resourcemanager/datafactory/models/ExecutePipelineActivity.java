@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.ExecutePipelineActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,90 +17,23 @@ import java.util.Map;
 /** Execute pipeline activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ExecutePipeline")
-@JsonFlatten
 @Fluent
-public class ExecutePipelineActivity extends ControlActivity {
+public final class ExecutePipelineActivity extends ControlActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecutePipelineActivity.class);
 
     /*
-     * Pipeline reference.
+     * Execute pipeline activity properties.
      */
-    @JsonProperty(value = "typeProperties.pipeline", required = true)
-    private PipelineReference pipeline;
-
-    /*
-     * Pipeline parameters.
-     */
-    @JsonProperty(value = "typeProperties.parameters")
-    private Map<String, Object> parameters;
-
-    /*
-     * Defines whether activity execution will wait for the dependent pipeline
-     * execution to finish. Default is false.
-     */
-    @JsonProperty(value = "typeProperties.waitOnCompletion")
-    private Boolean waitOnCompletion;
+    @JsonProperty(value = "typeProperties", required = true)
+    private ExecutePipelineActivityTypeProperties innerTypeProperties = new ExecutePipelineActivityTypeProperties();
 
     /**
-     * Get the pipeline property: Pipeline reference.
+     * Get the innerTypeProperties property: Execute pipeline activity properties.
      *
-     * @return the pipeline value.
+     * @return the innerTypeProperties value.
      */
-    public PipelineReference pipeline() {
-        return this.pipeline;
-    }
-
-    /**
-     * Set the pipeline property: Pipeline reference.
-     *
-     * @param pipeline the pipeline value to set.
-     * @return the ExecutePipelineActivity object itself.
-     */
-    public ExecutePipelineActivity withPipeline(PipelineReference pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /**
-     * Get the parameters property: Pipeline parameters.
-     *
-     * @return the parameters value.
-     */
-    public Map<String, Object> parameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Pipeline parameters.
-     *
-     * @param parameters the parameters value to set.
-     * @return the ExecutePipelineActivity object itself.
-     */
-    public ExecutePipelineActivity withParameters(Map<String, Object> parameters) {
-        this.parameters = parameters;
-        return this;
-    }
-
-    /**
-     * Get the waitOnCompletion property: Defines whether activity execution will wait for the dependent pipeline
-     * execution to finish. Default is false.
-     *
-     * @return the waitOnCompletion value.
-     */
-    public Boolean waitOnCompletion() {
-        return this.waitOnCompletion;
-    }
-
-    /**
-     * Set the waitOnCompletion property: Defines whether activity execution will wait for the dependent pipeline
-     * execution to finish. Default is false.
-     *
-     * @param waitOnCompletion the waitOnCompletion value to set.
-     * @return the ExecutePipelineActivity object itself.
-     */
-    public ExecutePipelineActivity withWaitOnCompletion(Boolean waitOnCompletion) {
-        this.waitOnCompletion = waitOnCompletion;
-        return this;
+    private ExecutePipelineActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -132,6 +65,77 @@ public class ExecutePipelineActivity extends ControlActivity {
     }
 
     /**
+     * Get the pipeline property: Pipeline reference.
+     *
+     * @return the pipeline value.
+     */
+    public PipelineReference pipeline() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().pipeline();
+    }
+
+    /**
+     * Set the pipeline property: Pipeline reference.
+     *
+     * @param pipeline the pipeline value to set.
+     * @return the ExecutePipelineActivity object itself.
+     */
+    public ExecutePipelineActivity withPipeline(PipelineReference pipeline) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecutePipelineActivityTypeProperties();
+        }
+        this.innerTypeProperties().withPipeline(pipeline);
+        return this;
+    }
+
+    /**
+     * Get the parameters property: Pipeline parameters.
+     *
+     * @return the parameters value.
+     */
+    public Map<String, Object> parameters() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().parameters();
+    }
+
+    /**
+     * Set the parameters property: Pipeline parameters.
+     *
+     * @param parameters the parameters value to set.
+     * @return the ExecutePipelineActivity object itself.
+     */
+    public ExecutePipelineActivity withParameters(Map<String, Object> parameters) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecutePipelineActivityTypeProperties();
+        }
+        this.innerTypeProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
+     * Get the waitOnCompletion property: Defines whether activity execution will wait for the dependent pipeline
+     * execution to finish. Default is false.
+     *
+     * @return the waitOnCompletion value.
+     */
+    public Boolean waitOnCompletion() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().waitOnCompletion();
+    }
+
+    /**
+     * Set the waitOnCompletion property: Defines whether activity execution will wait for the dependent pipeline
+     * execution to finish. Default is false.
+     *
+     * @param waitOnCompletion the waitOnCompletion value to set.
+     * @return the ExecutePipelineActivity object itself.
+     */
+    public ExecutePipelineActivity withWaitOnCompletion(Boolean waitOnCompletion) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecutePipelineActivityTypeProperties();
+        }
+        this.innerTypeProperties().withWaitOnCompletion(waitOnCompletion);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -139,13 +143,13 @@ public class ExecutePipelineActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
-        if (pipeline() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property pipeline in model ExecutePipelineActivity"));
+                        "Missing required property innerTypeProperties in model ExecutePipelineActivity"));
         } else {
-            pipeline().validate();
+            innerTypeProperties().validate();
         }
     }
 }

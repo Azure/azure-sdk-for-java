@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
@@ -14,8 +15,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -26,10 +27,11 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
@@ -185,10 +187,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeEntitiesForBatchInputShowStatistics(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeEntitiesForBatchInputShowStatisticsWithRecognizeEntitiesOption(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -361,10 +359,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizeLinkedEntitiesForBatchInputShowStatistics(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeLinkedEntitiesForBatchInputShowStatisticsWithRecognizeLinkedEntitiesOption(
-        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient,
@@ -634,6 +628,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeActionsEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void analyzeEntitiesRecognitionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
@@ -645,7 +642,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeLinkedEntityActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeKeyPhrasesExtractionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -729,13 +729,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(textDocumentInputs, options);
     }
 
-    void recognizeBatchCategorizedEntitiesShowStatsWithRecognizeEntitiesOptionRunner(
-        BiConsumer<List<TextDocumentInput>, RecognizeEntitiesOptions> testRunner) {
-        final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(CATEGORIZED_ENTITY_INPUTS);
-        RecognizeEntitiesOptions options = new RecognizeEntitiesOptions().setIncludeStatistics(true);
-        testRunner.accept(textDocumentInputs, options);
-    }
-
     void recognizeStringBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
@@ -789,7 +782,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         BiConsumer<List<String>, RecognizePiiEntitiesOptions> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS,
             new RecognizePiiEntitiesOptions().setCategoriesFilter(
-                PiiEntityCategory.USSOCIAL_SECURITY_NUMBER, PiiEntityCategory.ABAROUTING_NUMBER));
+                PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER, PiiEntityCategory.ABA_ROUTING_NUMBER));
     }
 
     // Linked Entity runner
@@ -805,13 +798,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeBatchLinkedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
-
-        testRunner.accept(TestUtils.getTextDocumentInputs(LINKED_ENTITY_INPUTS), options);
-    }
-
-    void recognizeBatchLinkedEntitiesShowStatsWithRecognizeLinkedEntitiesOptionsRunner(
-        BiConsumer<List<TextDocumentInput>, RecognizeLinkedEntitiesOptions> testRunner) {
-        RecognizeLinkedEntitiesOptions options = new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true);
 
         testRunner.accept(TestUtils.getTextDocumentInputs(LINKED_ENTITY_INPUTS), options);
     }
@@ -1028,9 +1014,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
-                .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()));
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction())
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction())
+        );
     }
 
     void analyzeBatchActionsPaginationRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner,
@@ -1041,39 +1030,21 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
         testRunner.accept(documents,
             new TextAnalyticsActions().setDisplayName("Test1")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
-                .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()));
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction())
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction())
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction()));
     }
 
-    void analyzeBatchActionsPartialCompletedRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+    void analyzeEntitiesRecognitionRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
         testRunner.accept(
             asList(
                 new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setExtractKeyPhrasesOptions(
-                    new ExtractKeyPhrasesOptions().setModelVersion("latest"))
-                .setRecognizePiiEntitiesOptions(
-                    new RecognizePiiEntitiesOptions().setModelVersion("invalidVersion"),
-                    new RecognizePiiEntitiesOptions().setModelVersion("latest")));
-    }
-
-    void analyzeBatchActionsAllFailedRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
-        testRunner.accept(
-            asList(
-                new TextDocumentInput("0", PII_ENTITY_INPUTS.get(0)),
-                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(1))),
-            new TextAnalyticsActions()
-                .setDisplayName("Test1")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions().setModelVersion("invalidVersion"))
-                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"))
-                .setRecognizePiiEntitiesOptions(
-                    new RecognizePiiEntitiesOptions().setModelVersion("invalidaVersion"),
-                    new RecognizePiiEntitiesOptions().setModelVersion("2929")));
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction()));
     }
 
     void analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
@@ -1084,9 +1055,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(1))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizePiiEntitiesOptions(
-                    new RecognizePiiEntitiesOptions()
-                        .setCategoriesFilter(PiiEntityCategory.USSOCIAL_SECURITY_NUMBER)
+                .setRecognizePiiEntitiesActions(
+                    new RecognizePiiEntitiesAction()
+                        .setCategoriesFilter(PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER,
+                            PiiEntityCategory.ABA_ROUTING_NUMBER)
                 ));
     }
 
@@ -1098,8 +1070,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(1))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizePiiEntitiesOptions(
-                    new RecognizePiiEntitiesOptions()
+                .setRecognizePiiEntitiesActions(
+                    new RecognizePiiEntitiesAction()
                         .setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION)
                 ));
     }
@@ -1109,14 +1081,24 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             LINKED_ENTITY_INPUTS,
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizeLinkedEntitiesOptions(new RecognizeLinkedEntitiesOptions()));
+                .setRecognizeLinkedEntitiesActions(
+                    new RecognizeLinkedEntitiesAction()));
+    }
+
+    void extractKeyPhrasesRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(CATEGORIZED_ENTITY_INPUTS.get(0), PII_ENTITY_INPUTS.get(0)),
+            new TextAnalyticsActions()
+                .setDisplayName("Test1")
+                .setExtractKeyPhrasesActions(
+                    new ExtractKeyPhrasesAction()));
     }
 
     void analyzeSentimentRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(
             SENTIMENT_INPUTS,
             new TextAnalyticsActions()
-                .setAnalyzeSentimentOptions(new AnalyzeSentimentOptions()));
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction()));
     }
 
     String getEndpoint() {
@@ -1138,8 +1120,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(FAKE_API_KEY));
         } else {
-            builder.credential(new AzureKeyCredential(
-                Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")));
+            builder.credential((new AzureKeyCredential(
+                Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY"))));
         }
         return builder;
     }
@@ -1305,7 +1287,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
         }
         assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
-        assertEquals(expectedLinkedEntity.getBingEntitySearchApiId(), actualLinkedEntity.getBingEntitySearchApiId());
+        // TODO: Bing ID is missing. https://github.com/Azure/azure-sdk-for-java/issues/22208
+        // assertEquals(expectedLinkedEntity.getBingEntitySearchApiId(), actualLinkedEntity.getBingEntitySearchApiId());
         validateLinkedEntityMatches(expectedLinkedEntity.getMatches().stream().collect(Collectors.toList()),
             actualLinkedEntity.getMatches().stream().collect(Collectors.toList()));
     }
@@ -1594,20 +1577,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 //        }
 
         validateRecognizeEntitiesActionResults(showStatistics,
-            expected.getRecognizeEntitiesActionResults().stream().collect(Collectors.toList()),
-            actual.getRecognizeEntitiesActionResults().stream().collect(Collectors.toList()));
+            expected.getRecognizeEntitiesResults().stream().collect(Collectors.toList()),
+            actual.getRecognizeEntitiesResults().stream().collect(Collectors.toList()));
         validateRecognizeLinkedEntitiesActionResults(showStatistics,
-            expected.getRecognizeLinkedEntitiesActionResults().stream().collect(Collectors.toList()),
-            actual.getRecognizeLinkedEntitiesActionResults().stream().collect(Collectors.toList()));
+            expected.getRecognizeLinkedEntitiesResults().stream().collect(Collectors.toList()),
+            actual.getRecognizeLinkedEntitiesResults().stream().collect(Collectors.toList()));
         validateRecognizePiiEntitiesActionResults(showStatistics,
-            expected.getRecognizePiiEntitiesActionResults().stream().collect(Collectors.toList()),
-            actual.getRecognizePiiEntitiesActionResults().stream().collect(Collectors.toList()));
+            expected.getRecognizePiiEntitiesResults().stream().collect(Collectors.toList()),
+            actual.getRecognizePiiEntitiesResults().stream().collect(Collectors.toList()));
         validateExtractKeyPhrasesActionResults(showStatistics,
-            expected.getExtractKeyPhrasesActionResults().stream().collect(Collectors.toList()),
-            actual.getExtractKeyPhrasesActionResults().stream().collect(Collectors.toList()));
+            expected.getExtractKeyPhrasesResults().stream().collect(Collectors.toList()),
+            actual.getExtractKeyPhrasesResults().stream().collect(Collectors.toList()));
         validateAnalyzeSentimentActionResults(showStatistics, includeOpinionMining,
-            expected.getAnalyzeSentimentActionResults().stream().collect(Collectors.toList()),
-            actual.getAnalyzeSentimentActionResults().stream().collect(Collectors.toList()));
+            expected.getAnalyzeSentimentResults().stream().collect(Collectors.toList()),
+            actual.getAnalyzeSentimentResults().stream().collect(Collectors.toList()));
     }
 
     // Action results validation
@@ -1663,7 +1646,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validateCategorizedEntitiesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
+            validateCategorizedEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
@@ -1678,7 +1661,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validateLinkedEntitiesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
+            validateLinkedEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
@@ -1693,7 +1676,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validatePiiEntitiesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
+            validatePiiEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
@@ -1708,7 +1691,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validateExtractKeyPhrasesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
+            validateExtractKeyPhrasesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
@@ -1724,7 +1707,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             }
         } else {
             validateAnalyzeSentimentResultCollection(showStatistics, includeOpinionMining,
-                expected.getDocumentResults(), actual.getDocumentResults());
+                expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 

@@ -3,24 +3,32 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/keyvault/ci.yml
+      - sdk/keyvault/azure-security-keyvault-administration/
+      - sdk/keyvault/azure-security-keyvault-certificates/
+      - sdk/keyvault/azure-security-keyvault-jca/
+      - sdk/keyvault/azure-security-keyvault-keys/
+      - sdk/keyvault/azure-security-keyvault-perf/
+      - sdk/keyvault/azure-security-keyvault-secrets/
+      - sdk/keyvault/azure-security-test-keyvault-jca/
+    exclude:
       - sdk/keyvault/pom.xml
-      - sdk/keyvault/azure-security-keyvault-administration
-      - sdk/keyvault/azure-security-keyvault-certificates
-      - sdk/keyvault/azure-security-keyvault-jca
-      - sdk/keyvault/azure-security-keyvault-keys
-      - sdk/keyvault/azure-security-keyvault-secrets
+      - sdk/keyvault/azure-security-keyvault-administration/pom.xml
+      - sdk/keyvault/azure-security-keyvault-certificates/pom.xml
+      - sdk/keyvault/azure-security-keyvault-jca/pom.xml
+      - sdk/keyvault/azure-security-keyvault-keys/pom.xml
+      - sdk/keyvault/azure-security-keyvault-perf/pom.xml
+      - sdk/keyvault/azure-security-keyvault-secrets/pom.xml
+      - sdk/keyvault/azure-security-test-keyvault-jca/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -28,15 +36,22 @@ pr:
   paths:
     include:
       - sdk/keyvault/ci.yml
+      - sdk/keyvault/azure-security-keyvault-administration/
+      - sdk/keyvault/azure-security-keyvault-certificates/
+      - sdk/keyvault/azure-security-keyvault-jca/
+      - sdk/keyvault/azure-security-keyvault-keys/
+      - sdk/keyvault/azure-security-keyvault-perf/
+      - sdk/keyvault/azure-security-keyvault-secrets/
+      - sdk/keyvault/azure-security-test-keyvault-jca/
+    exclude:
       - sdk/keyvault/pom.xml
-      - sdk/keyvault/test-resources.json
-      - sdk/keyvault/test-resources-post.ps1
-      - sdk/keyvault/tests.yml
-      - sdk/keyvault/azure-security-keyvault-administration
-      - sdk/keyvault/azure-security-keyvault-certificates
-      - sdk/keyvault/azure-security-keyvault-jca
-      - sdk/keyvault/azure-security-keyvault-keys
-      - sdk/keyvault/azure-security-keyvault-secrets
+      - sdk/keyvault/azure-security-keyvault-administration/pom.xml
+      - sdk/keyvault/azure-security-keyvault-certificates/pom.xml
+      - sdk/keyvault/azure-security-keyvault-jca/pom.xml
+      - sdk/keyvault/azure-security-keyvault-keys/pom.xml
+      - sdk/keyvault/azure-security-keyvault-perf/pom.xml
+      - sdk/keyvault/azure-security-keyvault-secrets/pom.xml
+      - sdk/keyvault/azure-security-test-keyvault-jca/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

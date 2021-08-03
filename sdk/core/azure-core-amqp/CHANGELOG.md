@@ -1,6 +1,18 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.4.0-beta.1 (Unreleased)
+
+
+## 2.3.0 (2021-07-01)
+
+### Features Added
+
+- Added `AmqpTransactionCoordinator` interface for transactions support.
+- Added support for sequence and value AMQP types in `AmqpMessageBody`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
 
 ## 2.2.0 (2021-06-11)
 

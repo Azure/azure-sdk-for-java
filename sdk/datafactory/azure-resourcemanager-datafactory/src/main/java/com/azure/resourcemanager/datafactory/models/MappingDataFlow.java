@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.MappingDataFlowTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,113 +16,23 @@ import java.util.List;
 /** Mapping data flow. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MappingDataFlow")
-@JsonFlatten
 @Fluent
-public class MappingDataFlow extends DataFlow {
+public final class MappingDataFlow extends DataFlow {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MappingDataFlow.class);
 
     /*
-     * List of sources in data flow.
+     * Mapping data flow type properties.
      */
-    @JsonProperty(value = "typeProperties.sources")
-    private List<DataFlowSource> sources;
-
-    /*
-     * List of sinks in data flow.
-     */
-    @JsonProperty(value = "typeProperties.sinks")
-    private List<DataFlowSink> sinks;
-
-    /*
-     * List of transformations in data flow.
-     */
-    @JsonProperty(value = "typeProperties.transformations")
-    private List<Transformation> transformations;
-
-    /*
-     * DataFlow script.
-     */
-    @JsonProperty(value = "typeProperties.script")
-    private String script;
+    @JsonProperty(value = "typeProperties")
+    private MappingDataFlowTypeProperties innerTypeProperties;
 
     /**
-     * Get the sources property: List of sources in data flow.
+     * Get the innerTypeProperties property: Mapping data flow type properties.
      *
-     * @return the sources value.
+     * @return the innerTypeProperties value.
      */
-    public List<DataFlowSource> sources() {
-        return this.sources;
-    }
-
-    /**
-     * Set the sources property: List of sources in data flow.
-     *
-     * @param sources the sources value to set.
-     * @return the MappingDataFlow object itself.
-     */
-    public MappingDataFlow withSources(List<DataFlowSource> sources) {
-        this.sources = sources;
-        return this;
-    }
-
-    /**
-     * Get the sinks property: List of sinks in data flow.
-     *
-     * @return the sinks value.
-     */
-    public List<DataFlowSink> sinks() {
-        return this.sinks;
-    }
-
-    /**
-     * Set the sinks property: List of sinks in data flow.
-     *
-     * @param sinks the sinks value to set.
-     * @return the MappingDataFlow object itself.
-     */
-    public MappingDataFlow withSinks(List<DataFlowSink> sinks) {
-        this.sinks = sinks;
-        return this;
-    }
-
-    /**
-     * Get the transformations property: List of transformations in data flow.
-     *
-     * @return the transformations value.
-     */
-    public List<Transformation> transformations() {
-        return this.transformations;
-    }
-
-    /**
-     * Set the transformations property: List of transformations in data flow.
-     *
-     * @param transformations the transformations value to set.
-     * @return the MappingDataFlow object itself.
-     */
-    public MappingDataFlow withTransformations(List<Transformation> transformations) {
-        this.transformations = transformations;
-        return this;
-    }
-
-    /**
-     * Get the script property: DataFlow script.
-     *
-     * @return the script value.
-     */
-    public String script() {
-        return this.script;
-    }
-
-    /**
-     * Set the script property: DataFlow script.
-     *
-     * @param script the script value to set.
-     * @return the MappingDataFlow object itself.
-     */
-    public MappingDataFlow withScript(String script) {
-        this.script = script;
-        return this;
+    private MappingDataFlowTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -147,6 +57,98 @@ public class MappingDataFlow extends DataFlow {
     }
 
     /**
+     * Get the sources property: List of sources in data flow.
+     *
+     * @return the sources value.
+     */
+    public List<DataFlowSource> sources() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sources();
+    }
+
+    /**
+     * Set the sources property: List of sources in data flow.
+     *
+     * @param sources the sources value to set.
+     * @return the MappingDataFlow object itself.
+     */
+    public MappingDataFlow withSources(List<DataFlowSource> sources) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MappingDataFlowTypeProperties();
+        }
+        this.innerTypeProperties().withSources(sources);
+        return this;
+    }
+
+    /**
+     * Get the sinks property: List of sinks in data flow.
+     *
+     * @return the sinks value.
+     */
+    public List<DataFlowSink> sinks() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sinks();
+    }
+
+    /**
+     * Set the sinks property: List of sinks in data flow.
+     *
+     * @param sinks the sinks value to set.
+     * @return the MappingDataFlow object itself.
+     */
+    public MappingDataFlow withSinks(List<DataFlowSink> sinks) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MappingDataFlowTypeProperties();
+        }
+        this.innerTypeProperties().withSinks(sinks);
+        return this;
+    }
+
+    /**
+     * Get the transformations property: List of transformations in data flow.
+     *
+     * @return the transformations value.
+     */
+    public List<Transformation> transformations() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().transformations();
+    }
+
+    /**
+     * Set the transformations property: List of transformations in data flow.
+     *
+     * @param transformations the transformations value to set.
+     * @return the MappingDataFlow object itself.
+     */
+    public MappingDataFlow withTransformations(List<Transformation> transformations) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MappingDataFlowTypeProperties();
+        }
+        this.innerTypeProperties().withTransformations(transformations);
+        return this;
+    }
+
+    /**
+     * Get the script property: DataFlow script.
+     *
+     * @return the script value.
+     */
+    public String script() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().script();
+    }
+
+    /**
+     * Set the script property: DataFlow script.
+     *
+     * @param script the script value to set.
+     * @return the MappingDataFlow object itself.
+     */
+    public MappingDataFlow withScript(String script) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MappingDataFlowTypeProperties();
+        }
+        this.innerTypeProperties().withScript(script);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -154,14 +156,8 @@ public class MappingDataFlow extends DataFlow {
     @Override
     public void validate() {
         super.validate();
-        if (sources() != null) {
-            sources().forEach(e -> e.validate());
-        }
-        if (sinks() != null) {
-            sinks().forEach(e -> e.validate());
-        }
-        if (transformations() != null) {
-            transformations().forEach(e -> e.validate());
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

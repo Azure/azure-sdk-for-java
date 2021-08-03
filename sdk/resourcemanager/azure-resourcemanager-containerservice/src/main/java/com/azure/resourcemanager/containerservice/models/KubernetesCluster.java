@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -87,6 +88,32 @@ public interface KubernetesCluster
      *     assigned to the Kubernetes cluster.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
+
+    // Actions
+
+    /**
+     * Starts a stopped Kubernetes cluster.
+     */
+    void start();
+
+    /**
+     * Starts a stopped Kubernetes cluster.
+     *
+     * @return the completion.
+     */
+    Mono<Void> startAsync();
+
+    /**
+     * Stops a running Kubernetes cluster.
+     */
+    void stop();
+
+    /**
+     * Stops a running Kubernetes cluster.
+     *
+     * @return the completion.
+     */
+    Mono<Void> stopAsync();
 
     // Fluent interfaces
 

@@ -37,7 +37,8 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
 
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
-    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuerRepo, int connectTimeout,
+    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuerRepo,
+                                   int connectTimeout,
                                    int readTimeout, int sizeLimit) {
         this.trustedIssuerRepo = trustedIssuerRepo;
         this.connectTimeout = connectTimeout;
@@ -60,8 +61,8 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
         Map<String, Object> configurationForOidcIssuerLocation = AADJwtDecoderProviderConfiguration
             .getConfigurationForOidcIssuerLocation(getOidcIssuerLocation(issuer));
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
-        DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
-            sizeLimit);
+        DefaultResourceRetriever jwkSetRetriever =
+            new DefaultResourceRetriever(connectTimeout, readTimeout, sizeLimit);
         try {
             JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), jwkSetRetriever);
             return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);

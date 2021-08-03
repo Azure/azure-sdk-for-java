@@ -9,11 +9,12 @@ import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Retry
+import spock.lang.Specification
 import spock.lang.Unroll
 
 // Tests for package-private functionality.
 @Retry(count = 3, delay = 1000)
-class RetryTest extends APISpec {
+class RetryTest extends Specification {
     static URL retryTestURL = new URL("https://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST)
     static RequestRetryOptions retryTestOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 6, 2,
         1000L, 4000L, RequestRetryTestFactory.RETRY_TEST_SECONDARY_HOST)
@@ -81,6 +82,36 @@ class RetryTest extends APISpec {
     def "Retries network error"() {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NETWORK_ERROR, retryTestOptions)
+
+        when:
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
+
+        then:
+        StepVerifier.create(responseMono)
+            .assertNext({
+                assert it.getStatusCode() == 200
+                assert retryTestFactory.getTryNumber() == 3
+            }).verifyComplete()
+    }
+
+    def "Retries wrapped network error"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_WRAPPED_NETWORK_ERROR, retryTestOptions)
+
+        when:
+        def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }
+
+        then:
+        StepVerifier.create(responseMono)
+            .assertNext({
+                assert it.getStatusCode() == 200
+                assert retryTestFactory.getTryNumber() == 3
+            }).verifyComplete()
+    }
+
+    def "Retries wrapped timeout error"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR, retryTestOptions)
 
         when:
         def responseMono = Mono.defer { retryTestFactory.send(retryTestURL) }

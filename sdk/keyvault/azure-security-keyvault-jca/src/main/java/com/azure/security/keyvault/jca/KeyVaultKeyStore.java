@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.certificates.AzureCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.ClasspathCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
@@ -164,7 +169,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                                                  .orElse(null);
 
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificate == null) {
-            KeyVaultCertificates.updateLastForceRefreshTime();
+            keyVaultCertificates.refreshCertificates();
             certificate = keyVaultCertificates.getCertificates().get(alias);
         }
         return certificate;

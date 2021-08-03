@@ -5,12 +5,16 @@ package com.azure.storage.file.share
 
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
+import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
+import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
+import com.azure.storage.file.share.models.DownloadRetryOptions
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -22,13 +26,14 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
@@ -224,7 +229,7 @@ class FileAPITests extends APISpec {
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(downloadResponse, 200, 206)
         headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()
@@ -269,7 +274,7 @@ class FileAPITests extends APISpec {
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(downloadResponse, 200, 206)
         headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()
@@ -302,6 +307,52 @@ class FileAPITests extends APISpec {
         data.defaultBytes == stream.toByteArray()
     }
 
+    def "Parallel Upload InputStream no length"() {
+        when:
+        primaryFileClient.create(data.defaultDataSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Parallel Upload InputStream bad length"() {
+        when:
+        primaryFileClient.create(data.defaultDataSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream, length), null, null)
+
+        then:
+        thrown(Exception)
+
+        where:
+        _ | length
+        _ | 0
+        _ | -100
+        _ | data.defaultDataSize - 1
+        _ | data.defaultDataSize + 1
+    }
+
+    def "Upload successful retry"() {
+        given:
+        primaryFileClient.create(data.defaultDataSize)
+        def clientWithFailure = getFileClient(
+            env.primaryAccount.credential,
+            primaryFileClient.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
     def "Upload range and download data"() {
         given:
         primaryFileClient.create(data.defaultDataSizeLong)
@@ -315,7 +366,7 @@ class FileAPITests extends APISpec {
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(downloadResponse, 200, 206)
         headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()
@@ -346,6 +397,100 @@ class FileAPITests extends APISpec {
         downloadResponse.getDeserializedHeaders().getContentLength() == (long) data.defaultDataSizeLong
 
         data.defaultBytes == stream.toByteArray()
+    }
+
+    def "Download all null"() {
+        given:
+        primaryFileClient.create(data.defaultDataSizeLong)
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
+
+        when:
+        def stream = new ByteArrayOutputStream()
+        def response = primaryFileClient.downloadWithResponse(stream, null, null, null)
+        def body = stream.toByteArray()
+        def headers = response.getDeserializedHeaders()
+
+        then:
+        body == data.defaultBytes
+        CoreUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getContentLength() != null
+        headers.getContentType() != null
+        headers.getContentMd5() == null
+        headers.getContentEncoding() == null
+        headers.getCacheControl() == null
+        headers.getContentDisposition() == null
+        headers.getContentLanguage() == null
+    }
+
+    @Unroll
+    def "Download empty file"() {
+        setup:
+        primaryFileClient.create(fileSize)
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        primaryFileClient.download(outStream)
+        def result = outStream.toByteArray()
+
+        then:
+        notThrown(ShareStorageException)
+        result.length == fileSize
+        if (fileSize > 0) {
+            assert !result[0]
+        }
+
+        where:
+        fileSize | _
+        0        | _
+        1        | _
+    }
+
+    /*
+    This is to test the appropriate integration of DownloadResponse, including setting the correct range values on
+    HttpGetterInfo.
+     */
+
+    def "Download with retry range"() {
+        /*
+        We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
+        a retry per the DownloadRetryOptions. The next request should have the same range header, which was generated
+        from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
+        don't need to check the data here, but we want to ensure that the correct range is set each time. This will
+        test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it was
+        constructed in FileClient.download().
+         */
+        setup:
+        primaryFileClient.create(data.defaultDataSizeLong)
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
+        def fc2 = getFileClient(env.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
+
+        when:
+        def range = new ShareFileRange(2, 6L)
+        def options = new DownloadRetryOptions().setMaxRetryRequests(3)
+        fc2.downloadWithResponse(new ByteArrayOutputStream(), new ShareFileDownloadOptions().setRange(range).setRetryOptions(options), null, null)
+
+        then:
+        /*
+        Because the dummy Flux always throws an error. This will also validate that an IllegalArgumentException is
+        NOT thrown because the types would not match.
+         */
+        def e = thrown(RuntimeException)
+        e.getCause() instanceof IOException
+    }
+
+    def "Download retry default"() {
+        setup:
+        primaryFileClient.create(data.defaultDataSizeLong)
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
+        def failureClient = getFileClient(env.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockFailureResponsePolicy(5))
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        failureClient.download(outStream)
+        String bodyStr = outStream.toString()
+
+        then:
+        bodyStr == data.defaultText
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")

@@ -10,6 +10,12 @@ import java.util.Collection;
 
 /** Defines values for ConditionalOperator. */
 public final class ConditionalOperator extends ExpandableStringEnum<ConditionalOperator> {
+    /** Static value GreaterThanOrEqual for ConditionalOperator. */
+    public static final ConditionalOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
+
+    /** Static value LessThanOrEqual for ConditionalOperator. */
+    public static final ConditionalOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
+
     /** Static value GreaterThan for ConditionalOperator. */
     public static final ConditionalOperator GREATER_THAN = fromString("GreaterThan");
 

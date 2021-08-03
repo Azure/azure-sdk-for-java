@@ -9,7 +9,6 @@ import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -91,7 +90,7 @@ class RecognizeLinkedEntityAsyncClient {
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
     Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatch(
-        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options) {
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
             inputDocumentsValidation(documents);
             return withContext(context -> getRecognizedLinkedEntitiesResponse(documents, options, context));
@@ -105,14 +104,14 @@ class RecognizeLinkedEntityAsyncClient {
      * which contains {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @param documents The list of documents to recognize linked entities for.
-     * @param options The {@link RecognizeLinkedEntitiesOptions} request options.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
     Mono<Response<RecognizeLinkedEntitiesResultCollection>>
         recognizeLinkedEntitiesBatchWithContext(Iterable<TextDocumentInput> documents,
-            RecognizeLinkedEntitiesOptions options, Context context) {
+            TextAnalyticsRequestOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             return getRecognizedLinkedEntitiesResponse(documents, options, context);
@@ -131,8 +130,8 @@ class RecognizeLinkedEntityAsyncClient {
      * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
     private Mono<Response<RecognizeLinkedEntitiesResultCollection>> getRecognizedLinkedEntitiesResponse(
-        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options, Context context) {
-        options = options == null ? new RecognizeLinkedEntitiesOptions() : options;
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        options = options == null ? new TextAnalyticsRequestOptions() : options;
         return service.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(),

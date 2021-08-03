@@ -61,7 +61,7 @@ public final class MetricAlertConfiguration {
      *
      * @return The negation operation value.
      */
-    public boolean isNegationOperationEnabled() {
+    public Boolean isNegationOperationEnabled() {
         return this.negationOperation;
     }
 

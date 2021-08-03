@@ -3,9 +3,9 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,27 +25,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
-    private AADWebAppClientRegistrationRepository clientRepo;
-    private ClientRegistration azure;
-    private ClientRegistration arm;
-
-    private final WebApplicationContextRunner contextRunner = WebApplicationContextRunnerUtils
-        .getContextRunnerWithRequiredProperties().withPropertyValues(
-            "azure.activedirectory.base-uri = fake-uri",
-            "azure.activedirectory.authorization-clients.arm.scopes = Calendars.Read",
-            "azure.activedirectory.authorization-clients.arm.on-demand=true");
-
-    private void getBeans(AssertableWebApplicationContext context) {
-        clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
-        azure = clientRepo.findByRegistrationId("azure");
-        arm = clientRepo.findByRegistrationId("arm");
+    private WebApplicationContextRunner getContextRunner() {
+        return WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.base-uri = fake-uri",
+                "azure.activedirectory.authorization-clients.arm.scopes = Calendars.Read",
+                "azure.activedirectory.authorization-clients.arm.on-demand=true");
     }
 
     @Test
     public void addScopeForDefaultClient() {
-        contextRunner.run(context -> {
-            getBeans(context);
-            MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
+        getContextRunner().run(context -> {
+            AADClientRegistrationRepository clientRepo =
+                context.getBean(AADClientRegistrationRepository.class);
+            ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+            MultiValueMap<String, String> body = convertedBodyOf(clientRepo, createCodeGrantRequest(azure));
             assertEquals(
                 "openid profile offline_access",
                 body.getFirst("scope")
@@ -55,9 +50,11 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     @Test
     public void addScopeForOnDemandClient() {
-        contextRunner.run(context -> {
-            getBeans(context);
-            MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(arm));
+        getContextRunner().run(context -> {
+            AADClientRegistrationRepository clientRepo =
+                context.getBean(AADClientRegistrationRepository.class);
+            ClientRegistration arm = clientRepo.findByRegistrationId("arm");
+            MultiValueMap<String, String> body = convertedBodyOf(clientRepo, createCodeGrantRequest(arm));
             assertEquals("Calendars.Read openid profile", body.getFirst("scope"));
         });
     }
@@ -65,24 +62,29 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     @Test
     @SuppressWarnings("unchecked")
     public void addHeadersForDefaultClient() {
-        contextRunner.run(context -> {
-            getBeans(context);
-            HttpHeaders httpHeaders = convertedHeaderOf(createCodeGrantRequest(azure));
-            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders()));
+        getContextRunner().run(context -> {
+            AADClientRegistrationRepository clientRepo =
+                context.getBean(AADClientRegistrationRepository.class);
+            ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+            HttpHeaders httpHeaders = convertedHeaderOf(clientRepo, createCodeGrantRequest(azure));
+            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders(clientRepo)));
         });
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void addHeadersForOnDemandClient() {
-        contextRunner.run(context -> {
-            getBeans(context);
-            HttpHeaders httpHeaders = convertedHeaderOf(createCodeGrantRequest(arm));
-            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders()));
+        getContextRunner().run(context -> {
+            AADClientRegistrationRepository clientRepo =
+                context.getBean(AADClientRegistrationRepository.class);
+            ClientRegistration arm = clientRepo.findByRegistrationId("arm");
+            HttpHeaders httpHeaders = convertedHeaderOf(clientRepo, createCodeGrantRequest(arm));
+            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders(clientRepo)));
         });
     }
 
-    private HttpHeaders convertedHeaderOf(OAuth2AuthorizationCodeGrantRequest request) {
+    private HttpHeaders convertedHeaderOf(AADClientRegistrationRepository clientRepo,
+                                          OAuth2AuthorizationCodeGrantRequest request) {
         AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
             new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
@@ -91,7 +93,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
             .orElse(null);
     }
 
-    private Object[] expectedHeaders() {
+    private Object[] expectedHeaders(AADClientRegistrationRepository clientRepo) {
         return new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient())
             .getHttpHeaders()
             .entrySet()
@@ -100,7 +102,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
             .toArray();
     }
 
-    private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
+    private MultiValueMap<String, String> convertedBodyOf(AADClientRegistrationRepository clientRepo,
+                                                          OAuth2AuthorizationCodeGrantRequest request) {
         AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
             new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);

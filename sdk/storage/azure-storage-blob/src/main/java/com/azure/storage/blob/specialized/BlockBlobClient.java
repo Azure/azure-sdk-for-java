@@ -29,6 +29,7 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -103,7 +104,7 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @Override
     public BlockBlobClient getEncryptionScopeClient(String encryptionScope) {
-        return new BlockBlobClient(client.getEncryptionScopeClient(encryptionScope));
+        return new BlockBlobClient(client.getEncryptionScopeAsyncClient(encryptionScope));
     }
 
     /**
@@ -115,7 +116,7 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @Override
     public BlockBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new BlockBlobClient(client.getCustomerProvidedKeyClient(customerProvidedKey));
+        return new BlockBlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**
@@ -563,8 +564,31 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
             byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Duration timeout,
             Context context) {
-        Mono<Response<Void>> response = client.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl,
-            sourceRange, sourceContentMd5, leaseId, sourceRequestConditions, context);
+        return stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
+            .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
+            .setSourceRequestConditions(sourceRequestConditions), timeout, context);
+    }
+
+    /**
+     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-from-url">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions-Duration-Context}
+     *
+     * @param options Parameters for the operation
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A response containing status code and HTTP headers
+     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<Void>> response = client.stageBlockFromUrlWithResponse(options, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 

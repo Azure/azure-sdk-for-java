@@ -3,11 +3,8 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpResponse
+
 import com.azure.core.http.RequestConditions
-import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
@@ -45,19 +42,18 @@ import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
+import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
 import reactor.core.Exceptions
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
-import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
-import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 import spock.lang.Ignore
 
@@ -214,6 +210,45 @@ class BlobAPITest extends APISpec {
         expect:
         bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultBinaryData), null, null)
             .getValue().getETag() != null
+    }
+
+    def "Upload InputStream no length"() {
+        when:
+        bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        bc.downloadContent().toBytes() == data.defaultBytes
+    }
+
+    def "Upload InputStream bad length"() {
+        when:
+        bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, length), null, null)
+
+        then:
+        thrown(Exception)
+
+        where:
+        _ | length
+        _ | 0
+        _ | -100
+        _ | data.defaultDataSize - 1
+        _ | data.defaultDataSize + 1
+    }
+
+    def "Upload successful retry"() {
+        given:
+        def clientWithFailure = getBlobClient(
+            env.primaryAccount.credential,
+            bc.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        bc.downloadContent().toBytes() == data.defaultBytes
     }
 
     @LiveOnly
@@ -377,7 +412,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         when:
         def range = new BlobRange(2, 5L)
@@ -568,7 +603,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll
@@ -596,7 +631,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll
@@ -624,7 +659,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Download md5"() {
@@ -816,6 +851,7 @@ class BlobAPITest extends APISpec {
 
     @LiveOnly
     @Unroll
+    @IgnoreIf({ getEnv().httpClientType == TestHttpClientType.OK_HTTP}) // https://github.com/Azure/azure-sdk-for-java/issues/23243
     def "Download file"() {
         setup:
         def file = getRandomFile(fileSize)
@@ -969,12 +1005,12 @@ class BlobAPITest extends APISpec {
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                         | _
+        range                                              | _
         new BlobRange(0, data.defaultDataSize)             | _ // Exact count
         new BlobRange(1, data.defaultDataSize - 1 as Long) | _ // Offset and exact count
-        new BlobRange(3, 2)                           | _ // Narrow range in middle
+        new BlobRange(3, 2)                                | _ // Narrow range in middle
         new BlobRange(0, data.defaultDataSize - 1 as Long) | _ // Count that is less than total
-        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
+        new BlobRange(0, 10 * 1024)                        | _ // Count much larger than remaining data
     }
 
     /*
@@ -1221,7 +1257,8 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Ignore("Very large data sizes.") /* Enable once we have ability to run large resource heavy tests in CI. */
+    @Ignore("Very large data sizes.")
+    /* Enable once we have ability to run large resource heavy tests in CI. */
     def "Download to file blockSize"() {
         def file = getRandomFile(sizeOfData)
         bc.uploadFromFile(file.toPath().toString(), true)
@@ -1239,10 +1276,10 @@ class BlobAPITest extends APISpec {
         notThrown(BlobStorageException)
 
         where:
-        sizeOfData           | downloadBlockSize   || _
-        5000 * Constants.MB  | 5000 * Constants.MB || _ /* This was the default before. */
-        6000 * Constants.MB  | 6000 * Constants.MB || _ /* Trying to see if we can set it to a number greater than previous default. */
-        6000 * Constants.MB  | 5100 * Constants.MB || _ /* Testing chunking with a large size */
+        sizeOfData          | downloadBlockSize   || _
+        5000 * Constants.MB | 5000 * Constants.MB || _ /* This was the default before. */
+        6000 * Constants.MB | 6000 * Constants.MB || _ /* Trying to see if we can set it to a number greater than previous default. */
+        6000 * Constants.MB | 5100 * Constants.MB || _ /* Testing chunking with a large size */
     }
 
 
@@ -1348,7 +1385,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     /*
@@ -1454,8 +1491,8 @@ class BlobAPITest extends APISpec {
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
-        null         | null               | null            | null            | null                                                                                          | null
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                             | contentType
+        null         | null               | null            | null            | null                                                                                   | null
         "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 
@@ -1516,7 +1553,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Set HTTP headers error"() {
@@ -1569,11 +1606,11 @@ class BlobAPITest extends APISpec {
         bc.getProperties().getMetadata() == metadata
 
         where:
-        key1  | value1        | key2   | value2 || statusCode
-        null  | null          | null   | null   || 200
-        "foo" | "bar"         | "fizz" | "buzz" || 200
-        "i0"  | "a"           | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
-        "foo" | "bar0, bar1"  | null   | null   || 200 /* Test comma separated values */
+        key1  | value1       | key2   | value2 || statusCode
+        null  | null         | null   | null   || 200
+        "foo" | "bar"        | "fizz" | "buzz" || 200
+        "i0"  | "a"          | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
+        "foo" | "bar0, bar1" | null   | null   || 200 /* Test comma separated values */
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -1633,7 +1670,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll
@@ -1652,11 +1689,11 @@ class BlobAPITest extends APISpec {
         // On Playback, the framework will throw Exceptions.ReactiveException.
 
         where:
-        key     | value  || _
-        " foo"  | "bar"  || _ // Leading whitespace key
-        "foo "  | "bar"  || _ // Trailing whitespace key
-        "foo"   | " bar" || _ // Leading whitespace value
-        "foo"   | "bar " || _ // Trailing whitespace value
+        key    | value  || _
+        " foo" | "bar"  || _ // Leading whitespace key
+        "foo " | "bar"  || _ // Trailing whitespace key
+        "foo"  | " bar" || _ // Leading whitespace value
+        "foo"  | "bar " || _ // Trailing whitespace value
     }
 
     def "Set metadata error"() {
@@ -1988,7 +2025,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Snapshot error"() {
@@ -2183,13 +2220,13 @@ class BlobAPITest extends APISpec {
         response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
-        modified | unmodified | match        | noneMatch    | tags
-        null     | null       | null         | null         | null
-        oldDate  | null       | null         | null         | null
-        null     | newDate    | null         | null         | null
-        null     | null       | receivedEtag | null         | null
-        null     | null       | null         | garbageEtag  | null
-        null     | null       | null         | null         | "\"foo\" = 'bar'"
+        modified | unmodified | match        | noneMatch   | tags
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -2212,12 +2249,12 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch     | tags
-        newDate  | null       | null        | null          | null
-        null     | oldDate    | null        | null          | null
-        null     | null       | garbageEtag | null          | null
-        null     | null       | null        | receivedEtag  | null
-        null     | null       | null         | null         | "\"notfoo\" = 'notbar'"
+        modified | unmodified | match       | noneMatch    | tags
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | "\"notfoo\" = 'notbar'"
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -2285,7 +2322,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Abort copy lease fail"() {
@@ -2601,7 +2638,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Sync copy error"() {
@@ -2709,7 +2746,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Blob delete error"() {
@@ -3054,8 +3091,16 @@ class BlobAPITest extends APISpec {
     }
 
     def "Get Blob Name"() {
+        setup:
+        bc = cc.getBlobClient(inputName)
+
         expect:
-        blobName == bc.getBlobName()
+        expectedOutputName == bc.getBlobName()
+
+        where:
+        inputName                           | expectedOutputName
+        "blobName"                          | "blobName" // standard names should be preserved
+        Utility.urlEncode("dir1/a%20b.txt") | "dir1/a%20b.txt" // encoded names should be decoded (not double decoded
     }
 
     def "Get Blob Name and Build Client"() {
@@ -3103,16 +3148,16 @@ class BlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf({ getEnv().serviceVersion != null })
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
-     def "Per call policy"() {
-         bc = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
+    def "Per call policy"() {
+        bc = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
 
-         when:
-         def response = bc.getPropertiesWithResponse(null, null, null)
+        when:
+        def response = bc.getPropertiesWithResponse(null, null, null)
 
-         then:
-         notThrown(BlobStorageException)
-         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
-     }
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

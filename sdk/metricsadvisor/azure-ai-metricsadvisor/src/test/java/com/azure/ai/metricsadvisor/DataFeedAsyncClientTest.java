@@ -8,10 +8,10 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeed;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.CoreUtils;
@@ -80,23 +80,27 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
 
             listDataFeedRunner(inputDataFeedList -> {
+                DataFeed[] dataFeedList  = new DataFeed[2];
+                dataFeedList[0] = client.createDataFeed(inputDataFeedList.get(0)).block();
+                dataFeedList[1] = client.createDataFeed(inputDataFeedList.get(1)).block();
                 List<DataFeed> actualDataFeedList = new ArrayList<>();
-                List<DataFeed> expectedDataFeedList =
-                    inputDataFeedList.stream().map(dataFeed -> client.createDataFeed(dataFeed).block())
-                        .collect(Collectors.toList());
+                List<DataFeed> expectedDataFeedList = new ArrayList<>();
+                expectedDataFeedIdList.set(Arrays.asList(dataFeedList[0].getId(), dataFeedList[1].getId()));
 
                 // Act
-                StepVerifier.create(client.listDataFeeds())
+                StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
+                    .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedGranularityType(DAILY)
+                        .setName("java_"))))
                     .thenConsumeWhile(actualDataFeedList::add)
                     .verifyComplete();
 
-                expectedDataFeedIdList.set(expectedDataFeedList.stream().map(DataFeed::getId)
-                    .collect(Collectors.toList()));
-                final List<DataFeed> actualList =
-                    actualDataFeedList.stream().filter(dataFeed -> expectedDataFeedIdList.get().contains(dataFeed.getId()))
-                        .collect(Collectors.toList());
+                assertNotNull(actualDataFeedList);
+                final List<DataFeed> actualList = actualDataFeedList.stream()
+                    .filter(dataFeed -> expectedDataFeedIdList.get().contains(dataFeed.getId()))
+                    .collect(Collectors.toList());
 
                 // Assert
+                assertNotNull(actualList);
                 assertEquals(inputDataFeedList.size(), actualList.size());
                 expectedDataFeedList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
                 actualList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
@@ -115,7 +119,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
     /**
      * Verifies the result of the list data feed method to return only 3 results using
-     * {@link ListDataFeedOptions#setMaxPageSize(int)}.
+     * {@link ListDataFeedOptions#setMaxPageSize(Integer)}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -152,9 +156,13 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
                 // Act & Assert
                 StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
-                    .setListDataFeedFilter(new ListDataFeedFilter()
-                        .setCreator(createdDataFeed.getCreator()))))
-                    .thenConsumeWhile(dataFeed -> createdDataFeed.getCreator().equals(dataFeed.getCreator()))
+                        .setListDataFeedFilter(new ListDataFeedFilter()
+                        .setCreator(createdDataFeed.getCreator()))).byPage().take(4))
+                    .thenConsumeWhile(dataFeedPagedResponse -> {
+                        dataFeedPagedResponse.getValue()
+                            .forEach(dataFeed -> createdDataFeed.getCreator().equals(dataFeed.getCreator()));
+                        return true;
+                    })
                     .verifyComplete();
             }, POSTGRE_SQL_DB);
         } finally {
@@ -223,8 +231,11 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         StepVerifier.create(client.listDataFeeds(
             new ListDataFeedOptions()
                 .setListDataFeedFilter(new ListDataFeedFilter()
-                    .setDataFeedStatus(ACTIVE))))
-            .thenConsumeWhile(dataFeed -> ACTIVE.equals(dataFeed.getStatus()))
+                    .setDataFeedStatus(ACTIVE))).byPage().take(4))
+            .thenConsumeWhile(dataFeedPagedResponse -> {
+                dataFeedPagedResponse.getValue().forEach(dataFeed -> ACTIVE.equals(dataFeed.getStatus()));
+                return true;
+            })
             .verifyComplete();
     }
 
@@ -240,9 +251,12 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
         // Act & Assert
         StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
-            .setListDataFeedFilter(new ListDataFeedFilter()
-                .setDataFeedGranularityType(DAILY))))
-            .thenConsumeWhile(dataFeed -> DAILY.equals(dataFeed.getGranularity().getGranularityType()))
+            .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedGranularityType(DAILY))).byPage().take(4))
+            .thenConsumeWhile(dataFeedPagedResponse -> {
+                dataFeedPagedResponse.getValue()
+                    .forEach(dataFeed -> DAILY.equals(dataFeed.getGranularity().getGranularityType()));
+                return true;
+            })
             .verifyComplete();
     }
 

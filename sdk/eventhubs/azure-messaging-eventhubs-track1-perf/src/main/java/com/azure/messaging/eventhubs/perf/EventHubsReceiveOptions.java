@@ -10,11 +10,13 @@ import com.microsoft.azure.eventhubs.EventHubClient;
  * Options for performance tests related to receiving.
  *
  * @see ReceiveEventsTest
- * @see EventProcessorTest
  */
-public class EventHubsReceiveOptions extends EventHubsOptions {
+public class EventHubsReceiveOptions extends EventHubsPartitionOptions {
     @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
     private String consumerGroup;
+
+    @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")
+    private int prefetch = 500;
 
     /**
      * Creates an instance of the class with the default consumer group.
@@ -31,5 +33,14 @@ public class EventHubsReceiveOptions extends EventHubsOptions {
      */
     public String getConsumerGroup() {
         return consumerGroup;
+    }
+
+    /**
+     * Gets the prefetch for the receiver.
+     *
+     * @return The prefetch for the receiver.
+     */
+    public int getPrefetch() {
+        return prefetch;
     }
 }

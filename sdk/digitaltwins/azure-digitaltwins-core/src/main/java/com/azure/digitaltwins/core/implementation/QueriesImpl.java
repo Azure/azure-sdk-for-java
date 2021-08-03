@@ -47,7 +47,7 @@ public final class QueriesImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsAPI")
-    private interface QueriesService {
+    public interface QueriesService {
         @Post("/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

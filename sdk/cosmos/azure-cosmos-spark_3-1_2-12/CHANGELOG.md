@@ -1,8 +1,21 @@
 ## Release History
 
-### 4.2.0-beta.1 (Unreleased)
+### 4.2.1-beta.2 (Unreleased)
+
+### 4.2.1-beta.1 (2021-07-15)
+* Fixed Catalog api synapse integration.
+
+### 4.2.0 (2021-06-23)
 #### Configuration Changes
 * Changed the default value of `spark.cosmos.read.inferSchema.forceNullableProperties` from `false` to `true` based on user feedback, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22049).
+
+#### Key Bug Fixes
+* Fixes conversion for MapType schema, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22291).
+* Not-nullable properties to include "id", see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22143).
+* Support CustomQuery to be used for inference, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22079).
+* Fixes collision resolution on schema inference, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/21933).
+* Fixes max length of userAgent header, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22018).
+* Improves bulk ingestion throttling rate by dynamically adjusting the max micro-batch size, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/22290).
 
 ### 4.1.0 (2021-05-27)
 #### New Features

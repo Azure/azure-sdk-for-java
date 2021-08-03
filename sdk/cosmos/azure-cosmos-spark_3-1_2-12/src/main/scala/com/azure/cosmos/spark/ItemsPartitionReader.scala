@@ -56,6 +56,7 @@ private case class ItemsPartitionReader
       val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
         taskContext.stageId(),
         taskContext.partitionId(),
+        taskContext.taskAttemptId(),
         feedRange.toString + " " + cosmosQuery.toSqlQuerySpec.getQueryText)
 
       val listener: OperationListener =

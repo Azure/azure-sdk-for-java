@@ -122,9 +122,8 @@ public class CosmosEncryptionDatabase {
         try {
             return cosmosClientEncryptionKeyResponseMono.block();
         } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
+            if (ex instanceof CosmosException) {
+                throw (CosmosException) ex;
             } else {
                 throw ex;
             }

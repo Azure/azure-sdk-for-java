@@ -58,6 +58,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,6 +69,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
@@ -718,10 +720,10 @@ public final class TableAsyncClient {
             token -> withContext(context -> listEntitiesNextPage(token, context, options, TableEntity.class)));
     }
 
-    PagedFlux<TableEntity> listEntities(ListEntitiesOptions options, Context context) {
+    PagedFlux<TableEntity> listEntities(ListEntitiesOptions options, Context context, Duration timeout) {
         return new PagedFlux<>(
-            () -> listEntitiesFirstPage(context, options, TableEntity.class),
-            token -> listEntitiesNextPage(token, context, options, TableEntity.class));
+            () -> applyOptionalTimeout(listEntitiesFirstPage(context, options, TableEntity.class), timeout),
+            token -> applyOptionalTimeout(listEntitiesNextPage(token, context, options, TableEntity.class), timeout));
     }
 
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesFirstPage(Context context,

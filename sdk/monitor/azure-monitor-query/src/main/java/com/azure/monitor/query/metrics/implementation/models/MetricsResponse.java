@@ -37,13 +37,13 @@ public final class MetricsResponse {
     private Duration interval;
 
     /*
-     * The namespace of the metrics been queried
+     * The namespace of the metrics being queried
      */
     @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
-     * The region of the resource been queried for metrics.
+     * The region of the resource being queried for metrics.
      */
     @JsonProperty(value = "resourceregion")
     private String resourceregion;
@@ -124,7 +124,7 @@ public final class MetricsResponse {
     }
 
     /**
-     * Get the namespace property: The namespace of the metrics been queried.
+     * Get the namespace property: The namespace of the metrics being queried.
      *
      * @return the namespace value.
      */
@@ -133,7 +133,7 @@ public final class MetricsResponse {
     }
 
     /**
-     * Set the namespace property: The namespace of the metrics been queried.
+     * Set the namespace property: The namespace of the metrics being queried.
      *
      * @param namespace the namespace value to set.
      * @return the MetricsResponse object itself.
@@ -144,7 +144,7 @@ public final class MetricsResponse {
     }
 
     /**
-     * Get the resourceregion property: The region of the resource been queried for metrics.
+     * Get the resourceregion property: The region of the resource being queried for metrics.
      *
      * @return the resourceregion value.
      */
@@ -153,7 +153,7 @@ public final class MetricsResponse {
     }
 
     /**
-     * Set the resourceregion property: The region of the resource been queried for metrics.
+     * Set the resourceregion property: The region of the resource being queried for metrics.
      *
      * @param resourceregion the resourceregion value to set.
      * @return the MetricsResponse object itself.

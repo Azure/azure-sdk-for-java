@@ -34,10 +34,10 @@ import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesResponse
 import com.azure.storage.blob.implementation.models.PremiumPageBlobAccessTier;
 import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -75,9 +75,9 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsCreateResponse> create(
                 @HostParam("url") String url,
-                @HeaderParam("x-ms-blob-type") String blobType,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @HeaderParam("x-ms-blob-type") String blobType,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("x-ms-access-tier") PremiumPageBlobAccessTier tier,
@@ -103,6 +103,9 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-tags") String blobTagsString,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -111,10 +114,10 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsUploadPagesResponse> uploadPages(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-page-write") String pageWrite,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-page-write") String pageWrite,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Content-MD5") String transactionalContentMD5,
                 @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
@@ -144,10 +147,10 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsClearPagesResponse> clearPages(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-page-write") String pageWrite,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-page-write") String pageWrite,
                 @HeaderParam("Content-Length") long contentLength,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-range") String range,
@@ -174,11 +177,11 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-page-write") String pageWrite,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
-                @HeaderParam("x-ms-copy-source") URL sourceUrl,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-page-write") String pageWrite,
+                @HeaderParam("x-ms-copy-source") String sourceUrl,
                 @HeaderParam("x-ms-source-range") String sourceRange,
                 @HeaderParam("x-ms-source-content-md5") String sourceContentMD5,
                 @HeaderParam("x-ms-source-content-crc64") String sourceContentcrc64,
@@ -204,6 +207,7 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -212,9 +216,9 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsGetPageRangesResponse> getPageRanges(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("snapshot") String snapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-range") String range,
@@ -234,13 +238,13 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("snapshot") String snapshot,
                 @QueryParam("timeout") Integer timeout,
                 @QueryParam("prevsnapshot") String prevsnapshot,
-                @HeaderParam("x-ms-previous-snapshot-url") URL prevSnapshotUrl,
+                @HeaderParam("x-ms-previous-snapshot-url") String prevSnapshotUrl,
                 @HeaderParam("x-ms-range") String range,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -258,9 +262,9 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsResizeResponse> resize(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
@@ -283,9 +287,9 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -305,16 +309,16 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<PageBlobsCopyIncrementalResponse> copyIncremental(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
                 @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("x-ms-if-tags") String ifTags,
-                @HeaderParam("x-ms-copy-source") URL copySource,
+                @HeaderParam("x-ms-copy-source") String copySource,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("Accept") String accept,
@@ -352,6 +356,9 @@ public final class PageBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param legalHold Specified if a legal hold should be set on the blob.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScope Parameter group.
@@ -379,6 +386,9 @@ public final class PageBlobsImpl {
             Long blobSequenceNumber,
             String requestId,
             String blobTagsString,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Boolean legalHold,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScope,
@@ -440,11 +450,13 @@ public final class PageBlobsImpl {
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.create(
                 this.client.getUrl(),
-                blobType,
                 containerName,
                 blob,
+                blobType,
                 timeout,
                 contentLength,
                 tier,
@@ -470,6 +482,9 @@ public final class PageBlobsImpl {
                 this.client.getVersion(),
                 requestId,
                 blobTagsString,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                legalHold,
                 accept,
                 context);
     }
@@ -565,10 +580,10 @@ public final class PageBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.uploadPages(
                 this.client.getUrl(),
-                comp,
-                pageWrite,
                 containerName,
                 blob,
+                comp,
+                pageWrite,
                 contentLength,
                 transactionalContentMD5Converted,
                 transactionalContentCrc64Converted,
@@ -677,10 +692,10 @@ public final class PageBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.clearPages(
                 this.client.getUrl(),
-                comp,
-                pageWrite,
                 containerName,
                 blob,
+                comp,
+                pageWrite,
                 contentLength,
                 timeout,
                 range,
@@ -742,6 +757,8 @@ public final class PageBlobsImpl {
      * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
      * @param cpkInfo Parameter group.
      * @param encryptionScope Parameter group.
      * @param context The context to associate with this operation.
@@ -754,7 +771,7 @@ public final class PageBlobsImpl {
     public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURLWithResponseAsync(
             String containerName,
             String blob,
-            URL sourceUrl,
+            String sourceUrl,
             String sourceRange,
             long contentLength,
             String range,
@@ -775,6 +792,7 @@ public final class PageBlobsImpl {
             String sourceIfMatch,
             String sourceIfNoneMatch,
             String requestId,
+            String copySourceAuthorization,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScope,
             Context context) {
@@ -813,10 +831,10 @@ public final class PageBlobsImpl {
                 sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         return service.uploadPagesFromURL(
                 this.client.getUrl(),
-                comp,
-                pageWrite,
                 containerName,
                 blob,
+                comp,
+                pageWrite,
                 sourceUrl,
                 sourceRange,
                 sourceContentMD5Converted,
@@ -843,6 +861,7 @@ public final class PageBlobsImpl {
                 sourceIfNoneMatch,
                 this.client.getVersion(),
                 requestId,
+                copySourceAuthorization,
                 accept,
                 context);
     }
@@ -900,9 +919,9 @@ public final class PageBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.getPageRanges(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 snapshot,
                 timeout,
                 range,
@@ -963,7 +982,7 @@ public final class PageBlobsImpl {
             String snapshot,
             Integer timeout,
             String prevsnapshot,
-            URL prevSnapshotUrl,
+            String prevSnapshotUrl,
             String range,
             String leaseId,
             OffsetDateTime ifModifiedSince,
@@ -981,9 +1000,9 @@ public final class PageBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.getPageRangesDiff(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 snapshot,
                 timeout,
                 prevsnapshot,
@@ -1073,9 +1092,9 @@ public final class PageBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.resize(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 leaseId,
                 encryptionKey,
@@ -1146,9 +1165,9 @@ public final class PageBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.updateSequenceNumber(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 leaseId,
                 ifModifiedSinceConverted,
@@ -1197,7 +1216,7 @@ public final class PageBlobsImpl {
     public Mono<PageBlobsCopyIncrementalResponse> copyIncrementalWithResponseAsync(
             String containerName,
             String blob,
-            URL copySource,
+            String copySource,
             Integer timeout,
             OffsetDateTime ifModifiedSince,
             OffsetDateTime ifUnmodifiedSince,
@@ -1214,9 +1233,9 @@ public final class PageBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.copyIncremental(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,

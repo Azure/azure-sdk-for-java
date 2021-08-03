@@ -1538,7 +1538,12 @@ class VirtualMachineImpl
 
     @Override
     public NetworkInterface getPrimaryNetworkInterface() {
-        return this.networkManager.networkInterfaces().getById(primaryNetworkInterfaceId());
+        return this.getPrimaryNetworkInterfaceAsync().block();
+    }
+
+    @Override
+    public Mono<NetworkInterface> getPrimaryNetworkInterfaceAsync() {
+        return this.networkManager.networkInterfaces().getByIdAsync(primaryNetworkInterfaceId());
     }
 
     @Override
@@ -2389,7 +2394,7 @@ class VirtualMachineImpl
     }
 
     private void copyInnerToUpdateParameter(VirtualMachineUpdateInner updateParameter) {
-        updateParameter.withPlan(this.innerModel().plan());
+        //updateParameter.withPlan(this.innerModel().plan());   // update cannot change plan
         updateParameter.withHardwareProfile(this.innerModel().hardwareProfile());
         updateParameter.withStorageProfile(this.innerModel().storageProfile());
         updateParameter.withOsProfile(this.innerModel().osProfile());

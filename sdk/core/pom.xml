@@ -32,12 +32,12 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+          <version>1.19.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-amqp</artifactId>
-          <version>2.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -47,7 +47,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-experimental</artifactId>
-          <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+          <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -72,7 +72,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-serializer-avro-apache</artifactId>
-          <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+          <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -87,7 +87,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-tracing-opentelemetry</artifactId>
-          <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+          <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
         </dependency>
       </dependencies>
 

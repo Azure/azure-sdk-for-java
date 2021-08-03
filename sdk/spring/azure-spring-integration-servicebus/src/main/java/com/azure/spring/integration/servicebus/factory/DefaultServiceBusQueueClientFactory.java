@@ -4,6 +4,7 @@
 package com.azure.spring.integration.servicebus.factory;
 
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
@@ -12,9 +13,13 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * Default implementation of {@link ServiceBusQueueClientFactory}. Client will be cached to improve performance
@@ -22,8 +27,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Warren Zhu
  */
 public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSenderFactory
-    implements ServiceBusQueueClientFactory {
+    implements ServiceBusQueueClientFactory, DisposableBean {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusQueueClientFactory.class);
     private final Map<String, ServiceBusProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> senderClientMap = new ConcurrentHashMap<>();
 
@@ -31,9 +37,29 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     private final ServiceBusClientBuilder serviceBusClientBuilder;
 
     public DefaultServiceBusQueueClientFactory(String connectionString) {
+        this(connectionString, AmqpTransportType.AMQP);
+    }
+
+    public DefaultServiceBusQueueClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         super(connectionString);
         this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
+        this.serviceBusClientBuilder.transportType(amqpTransportType);
+    }
 
+    private <K, V> void close(Map<K, V> map, Consumer<V> close) {
+        map.values().forEach(it -> {
+            try {
+                close.accept(it);
+            } catch (Exception ex) {
+                LOGGER.warn("Failed to clean service bus queue client factory", ex);
+            }
+        });
+    }
+
+    @Override
+    public void destroy() {
+        close(senderClientMap, ServiceBusSenderAsyncClient::close);
+        close(processorClientMap, ServiceBusProcessorClient::close);
     }
 
     @Override

@@ -389,6 +389,10 @@ public class ProjectRepositoryIT {
         projects = TestUtils.toList(repository.findByCreatorIn(Arrays.asList(CREATOR_0, FAKE_CREATOR)));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
+
+        projects = TestUtils.toList(repository.findByCreatorIn(Collections.singletonList(CREATOR_1)));
+
+        assertProjectListEquals(projects, Collections.singletonList(PROJECT_1));
     }
 
     @Test
@@ -409,6 +413,24 @@ public class ProjectRepositoryIT {
             Arrays.asList(STAR_COUNT_0, STAR_COUNT_1, STAR_COUNT_2)));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_2, PROJECT_4));
+    }
+
+    @Test
+    public void testFindByInWithOr() {
+        List<Project> projects = TestUtils.toList(repository.findByCreatorInOrStarCount(Arrays.asList(CREATOR_0,
+            CREATOR_1), STAR_COUNT_2));
+
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4, PROJECT_1, PROJECT_2));
+
+        projects = TestUtils.toList(repository.findByCreatorInOrStarCount(Collections.singletonList(CREATOR_1),
+            STAR_COUNT_2));
+
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_1, PROJECT_2));
+
+        projects = TestUtils.toList(repository.findByCreatorInOrStarCount(Collections.singletonList(CREATOR_0),
+            STAR_COUNT_0));
+
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
     }
 
     @Test
