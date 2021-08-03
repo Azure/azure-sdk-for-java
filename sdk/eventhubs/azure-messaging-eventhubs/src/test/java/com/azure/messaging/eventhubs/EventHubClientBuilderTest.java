@@ -116,7 +116,6 @@ public class EventHubClientBuilderTest {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
         boolean clientCreated = false;
-        String errorMessage = null;
         try {
             EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
                 .connectionString(CORRECT_CONNECTION_STRING)
@@ -126,11 +125,10 @@ public class EventHubClientBuilderTest {
                 .buildAsyncConsumerClient();
             clientCreated = true;
         } catch (Exception ex) {
-            logger.error("testProxyOptionsConfiguration: Failed to create client for proxyConfiguration "
-                    + proxyConfiguration);
-            errorMessage = ex.getMessage();
+            logger.error("testProxyOptionsConfiguration: Failed to create client for proxyConfiguration {}: {}",
+                    proxyConfiguration, ex);
         }
-        Assertions.assertEquals(expectedClientCreation, clientCreated, errorMessage);
+        Assertions.assertEquals(expectedClientCreation, clientCreated);
     }
 
     @Test
