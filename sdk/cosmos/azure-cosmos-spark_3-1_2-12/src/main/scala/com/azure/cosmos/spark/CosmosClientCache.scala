@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosItemOperation, ThrottlingRetryOptions}
+import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 
 import java.time.{Duration, Instant}
@@ -32,6 +33,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosAsyncClient = {
+
     cache.get(cosmosClientConfiguration) match {
       case Some(clientCacheMetadata) => {
         clientCacheMetadata.lastRetrieved.set(Instant.now.toEpochMilli)
@@ -53,6 +55,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   }
 
   // scalastyle:off method.length
+  // scalastyle:off cyclomatic.complexity
   private[this] def syncCreate(cosmosClientConfiguration: CosmosClientConfiguration,
                                cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]])
   : CosmosAsyncClient = synchronized {
@@ -83,7 +86,21 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           builder.preferredRegions(cosmosClientConfiguration.preferredRegionsList.get.toList.asJava)
         }
 
-        cosmosClientStateHandle match {
+        val isTaskRetryAttempt: Boolean = TaskContext.get() != null && TaskContext.get().attemptNumber() > 0
+
+        val effectiveClientStateHandle = if (cosmosClientStateHandle.isDefined && !isTaskRetryAttempt) {
+          Some(cosmosClientStateHandle.get)
+        } else {
+
+          if (cosmosClientStateHandle.isDefined && isTaskRetryAttempt) {
+            logInfo(s"Ignoring broadcast client state handle because Task is getting retried. " +
+              s"Attempt Count: ${TaskContext.get().attemptNumber()}")
+          }
+
+          None
+        }
+
+        effectiveClientStateHandle match {
           case Some(handle) =>
             val metadataCache = handle.value
             SparkBridgeImplementationInternal.setMetadataCacheSnapshot(builder, metadataCache)
@@ -106,6 +123,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
   // scalastyle:on method.length
+  // scalastyle:on cyclomatic.complexity
 
   private[this] def onCleanup(): Unit = {
     try {

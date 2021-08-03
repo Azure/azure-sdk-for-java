@@ -333,12 +333,14 @@ class BulkWriter(container: CosmosAsyncContainer,
                   )
                 }
 
-                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots >= 15) {
+                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots >=
+                    BulkWriter.maxAllowedMinutesWithoutAnyProgress) {
+
                   captureIfFirstFailure(
                     new IllegalStateException(
                       s"Stale bulk ingestion identified - the following active operations have not been completed " +
-                        s"(first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after 15 " +
-                        s"minutes: $operationsLog"
+                        s"(first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
+                        s"${BulkWriter.maxAllowedMinutesWithoutAnyProgress} minutes: $operationsLog"
                   ))
                   cancelWork()
                 }
@@ -461,6 +463,10 @@ class BulkWriter(container: CosmosAsyncContainer,
 private object BulkWriter {
   //scalastyle:off magic.number
   val maxItemOperationsToShowInErrorMessage = 10
+
+  // we used to use 15 minutes here - extending it because of several incidents where
+  // backend returned 420/3088 (ThrottleDueToSplit) for >= 30 minutes
+  val maxAllowedMinutesWithoutAnyProgress = 240
   //scalastyle:on magic.number
 
   // let's say the spark executor VM has 16 CPU cores.
