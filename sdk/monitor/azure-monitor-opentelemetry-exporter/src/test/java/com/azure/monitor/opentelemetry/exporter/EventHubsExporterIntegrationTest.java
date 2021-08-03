@@ -27,10 +27,9 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled
 public class EventHubsExporterIntegrationTest extends AzureMonitorTraceExporterTestBase {
 
-    private static final String CONNECTION_STRING = System.getenv("EVENT_HUB_CONNECTION_STRING");
+    private static final String CONNECTION_STRING = System.getenv("AZURE_EVENTHUBS_CONNECTION_STRING");
     private static final String STORAGE_CONNECTION_STRING = System.getenv("STORAGE_CONNECTION_STRING");
     private static final String CONTAINER_NAME = System.getenv("STORAGE_CONTAINER_NAME");
 
