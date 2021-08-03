@@ -10,6 +10,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Instrumentation {
 
+    /**
+     * Specifies the type of queue and topic currently in use.
+     */
     public enum Type {
 
         CONSUME("consume"),
