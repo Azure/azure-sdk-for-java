@@ -3,7 +3,7 @@
 # Note: com.azure:azure-sdk-parent is in version_client.txt
 
 com.azure:azure-data-sdk-parent;1.3.0;1.3.0
-com.microsoft.azure:azure-batch;9.0.0;9.1.0-beta.1
+com.microsoft.azure:azure-batch;9.0.0;10.0.0
 com.microsoft.azure:azure-applicationinsights-query;1.0.0-beta-2;1.0.0-beta-2
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-spellcheck;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-textanalytics;1.1.0-beta.1;1.1.0-beta.1

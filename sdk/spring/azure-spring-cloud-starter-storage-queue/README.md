@@ -1,4 +1,4 @@
-# Azure Spring cloud Starter Storage Queue client library for Java
+# Spring Cloud for Azure Starter Storage Queue client library for Java
 
 The Spring Cloud Storage Queue starter helps developers to finish the auto-configuration of Storage Queue and provides Spring Integration with Storage Queue.
 

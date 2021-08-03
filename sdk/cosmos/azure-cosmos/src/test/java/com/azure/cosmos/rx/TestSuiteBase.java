@@ -73,6 +73,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -534,7 +535,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected CosmosContainerProperties getCollectionDefinition(String collectionId, PartitionKeyDefinition partitionKeyDefinition) {
         return new CosmosContainerProperties(collectionId, partitionKeyDefinition);
     }
-    
+
     static protected CosmosContainerProperties getCollectionDefinitionForHashV2(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
@@ -1236,5 +1237,14 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosClientBuilder copyCosmosClientBuilder(CosmosClientBuilder builder) {
         return CosmosBridgeInternal.cloneCosmosClientBuilder(builder);
+    }
+
+    public byte[] decodeHexString(String string) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        for (int i = 0; i < string.length(); i+=2) {
+            int b = Integer.parseInt(string.substring(i, i + 2), 16);
+            outputStream.write(b);
+        }
+        return outputStream.toByteArray();
     }
 }
