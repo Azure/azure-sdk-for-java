@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.models.ApiOperationDisplay;
 import com.azure.resourcemanager.storagecache.models.ApiOperationPropertiesServiceSpecification;
@@ -16,9 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * REST API operation description: see
  * https://github.com/Azure/azure-rest-api-specs/blob/master/documentation/openapi-authoring-automated-guidelines.md#r3023-operationsapiimplementation.
  */
-@JsonFlatten
 @Fluent
-public class ApiOperationInner {
+public final class ApiOperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiOperationInner.class);
 
     /*
@@ -46,10 +44,10 @@ public class ApiOperationInner {
     private String name;
 
     /*
-     * Specification of the all the metrics provided for a resource type.
+     * Additional details about an operation.
      */
-    @JsonProperty(value = "properties.serviceSpecification")
-    private ApiOperationPropertiesServiceSpecification serviceSpecification;
+    @JsonProperty(value = "properties")
+    private ApiOperationProperties innerProperties;
 
     /**
      * Get the display property: The object that represents the operation.
@@ -132,12 +130,21 @@ public class ApiOperationInner {
     }
 
     /**
+     * Get the innerProperties property: Additional details about an operation.
+     *
+     * @return the innerProperties value.
+     */
+    private ApiOperationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the serviceSpecification property: Specification of the all the metrics provided for a resource type.
      *
      * @return the serviceSpecification value.
      */
     public ApiOperationPropertiesServiceSpecification serviceSpecification() {
-        return this.serviceSpecification;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceSpecification();
     }
 
     /**
@@ -147,7 +154,10 @@ public class ApiOperationInner {
      * @return the ApiOperationInner object itself.
      */
     public ApiOperationInner withServiceSpecification(ApiOperationPropertiesServiceSpecification serviceSpecification) {
-        this.serviceSpecification = serviceSpecification;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiOperationProperties();
+        }
+        this.innerProperties().withServiceSpecification(serviceSpecification);
         return this;
     }
 
@@ -160,8 +170,8 @@ public class ApiOperationInner {
         if (display() != null) {
             display().validate();
         }
-        if (serviceSpecification() != null) {
-            serviceSpecification().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
