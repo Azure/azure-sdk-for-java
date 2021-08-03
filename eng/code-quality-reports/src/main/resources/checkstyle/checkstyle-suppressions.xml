@@ -448,6 +448,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.azure.perf.test.core.HttpPipelineOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.messaging.servicebus.perf.ServiceBusStressOptions.java"/>
 
   <!-- Nested blocks are still readable in the switch statements in Avro. -->

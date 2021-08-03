@@ -112,6 +112,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("cacheName") String cacheName,
             @PathParam("storageTargetName") String storageTargetName,
+            @QueryParam("force") String force,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -211,7 +212,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
                             storageTargetName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -478,7 +479,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -618,6 +619,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -625,7 +628,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String cacheName, String storageTargetName) {
+        String resourceGroupName, String cacheName, String storageTargetName, String force) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -661,9 +664,10 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
                             this.client.getSubscriptionId(),
                             cacheName,
                             storageTargetName,
+                            force,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -676,6 +680,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -684,7 +690,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        String resourceGroupName, String cacheName, String storageTargetName, String force, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -718,6 +724,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
                 this.client.getSubscriptionId(),
                 cacheName,
                 storageTargetName,
+                force,
                 accept,
                 context);
     }
@@ -732,6 +739,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -739,9 +748,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String cacheName, String storageTargetName) {
+        String resourceGroupName, String cacheName, String storageTargetName, String force) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, cacheName, storageTargetName);
+            deleteWithResponseAsync(resourceGroupName, cacheName, storageTargetName, force);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
@@ -757,6 +766,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -765,10 +776,10 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        String resourceGroupName, String cacheName, String storageTargetName, String force, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, cacheName, storageTargetName, context);
+            deleteWithResponseAsync(resourceGroupName, cacheName, storageTargetName, force, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -784,6 +795,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -791,8 +804,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+        String resourceGroupName, String cacheName, String storageTargetName, String force) {
+        return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName, force).getSyncPoller();
     }
 
     /**
@@ -805,6 +818,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -813,8 +828,32 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+        String resourceGroupName, String cacheName, String storageTargetName, String force, Context context) {
+        return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName, force, context).getSyncPoller();
+    }
+
+    /**
+     * Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or
+     * unhealthy, the actual removal of the Storage Target may be delayed until the Cache is healthy again. Note that if
+     * the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target will be
+     * deleted.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String cacheName, String storageTargetName, String force) {
+        return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName, force)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -834,7 +873,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName)
+        final String force = null;
+        return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName, force)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -849,6 +889,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -857,10 +899,31 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
-        String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName, context)
+        String resourceGroupName, String cacheName, String storageTargetName, String force, Context context) {
+        return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName, force, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or
+     * unhealthy, the actual removal of the Storage Target may be delayed until the Cache is healthy again. Note that if
+     * the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target will be
+     * deleted.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String cacheName, String storageTargetName, String force) {
+        deleteAsync(resourceGroupName, cacheName, storageTargetName, force).block();
     }
 
     /**
@@ -879,7 +942,8 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cacheName, String storageTargetName) {
-        deleteAsync(resourceGroupName, cacheName, storageTargetName).block();
+        final String force = null;
+        deleteAsync(resourceGroupName, cacheName, storageTargetName, force).block();
     }
 
     /**
@@ -892,14 +956,17 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        deleteAsync(resourceGroupName, cacheName, storageTargetName, context).block();
+    public void delete(
+        String resourceGroupName, String cacheName, String storageTargetName, String force, Context context) {
+        deleteAsync(resourceGroupName, cacheName, storageTargetName, force, context).block();
     }
 
     /**
@@ -954,7 +1021,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
                             storageTargetName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1129,7 +1196,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
                             storagetarget,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1464,7 +1531,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

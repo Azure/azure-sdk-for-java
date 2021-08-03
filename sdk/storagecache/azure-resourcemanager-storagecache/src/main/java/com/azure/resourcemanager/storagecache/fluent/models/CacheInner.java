@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.models.CacheDirectorySettings;
 import com.azure.resourcemanager.storagecache.models.CacheEncryptionSettings;
@@ -17,7 +17,6 @@ import com.azure.resourcemanager.storagecache.models.CacheSecuritySettings;
 import com.azure.resourcemanager.storagecache.models.CacheSku;
 import com.azure.resourcemanager.storagecache.models.CacheUpgradeStatus;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
-import com.azure.resourcemanager.storagecache.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -27,9 +26,8 @@ import java.util.Map;
  * A Cache instance. Follows Azure Resource Manager standards:
  * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md.
  */
-@JsonFlatten
 @Fluent
-public class CacheInner extends Resource {
+public final class CacheInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheInner.class);
 
     /*
@@ -45,71 +43,16 @@ public class CacheInner extends Resource {
     private SystemData systemData;
 
     /*
+     * Properties of the Cache.
+     */
+    @JsonProperty(value = "properties")
+    private CacheProperties innerProperties;
+
+    /*
      * SKU for the Cache.
      */
     @JsonProperty(value = "sku")
     private CacheSku sku;
-
-    /*
-     * The size of this Cache, in GB.
-     */
-    @JsonProperty(value = "properties.cacheSizeGB")
-    private Integer cacheSizeGB;
-
-    /*
-     * Health of the Cache.
-     */
-    @JsonProperty(value = "properties.health", access = JsonProperty.Access.WRITE_ONLY)
-    private CacheHealth health;
-
-    /*
-     * Array of IP addresses that can be used by clients mounting this Cache.
-     */
-    @JsonProperty(value = "properties.mountAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> mountAddresses;
-
-    /*
-     * ARM provisioning state, see
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private ProvisioningStateType provisioningState;
-
-    /*
-     * Subnet used for the Cache.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private String subnet;
-
-    /*
-     * Upgrade status of the Cache.
-     */
-    @JsonProperty(value = "properties.upgradeStatus")
-    private CacheUpgradeStatus upgradeStatus;
-
-    /*
-     * Specifies network settings of the cache.
-     */
-    @JsonProperty(value = "properties.networkSettings")
-    private CacheNetworkSettings networkSettings;
-
-    /*
-     * Specifies encryption settings of the cache.
-     */
-    @JsonProperty(value = "properties.encryptionSettings")
-    private CacheEncryptionSettings encryptionSettings;
-
-    /*
-     * Specifies security settings of the cache.
-     */
-    @JsonProperty(value = "properties.securitySettings")
-    private CacheSecuritySettings securitySettings;
-
-    /*
-     * Specifies Directory Services settings of the cache.
-     */
-    @JsonProperty(value = "properties.directoryServicesSettings")
-    private CacheDirectorySettings directoryServicesSettings;
 
     /**
      * Get the identity property: The identity of the cache, if configured.
@@ -141,6 +84,15 @@ public class CacheInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Properties of the Cache.
+     *
+     * @return the innerProperties value.
+     */
+    private CacheProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sku property: SKU for the Cache.
      *
      * @return the sku value.
@@ -160,186 +112,6 @@ public class CacheInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the cacheSizeGB property: The size of this Cache, in GB.
-     *
-     * @return the cacheSizeGB value.
-     */
-    public Integer cacheSizeGB() {
-        return this.cacheSizeGB;
-    }
-
-    /**
-     * Set the cacheSizeGB property: The size of this Cache, in GB.
-     *
-     * @param cacheSizeGB the cacheSizeGB value to set.
-     * @return the CacheInner object itself.
-     */
-    public CacheInner withCacheSizeGB(Integer cacheSizeGB) {
-        this.cacheSizeGB = cacheSizeGB;
-        return this;
-    }
-
-    /**
-     * Get the health property: Health of the Cache.
-     *
-     * @return the health value.
-     */
-    public CacheHealth health() {
-        return this.health;
-    }
-
-    /**
-     * Get the mountAddresses property: Array of IP addresses that can be used by clients mounting this Cache.
-     *
-     * @return the mountAddresses value.
-     */
-    public List<String> mountAddresses() {
-        return this.mountAddresses;
-    }
-
-    /**
-     * Get the provisioningState property: ARM provisioning state, see
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningStateType provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: ARM provisioning state, see
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the CacheInner object itself.
-     */
-    public CacheInner withProvisioningState(ProvisioningStateType provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
-     * Get the subnet property: Subnet used for the Cache.
-     *
-     * @return the subnet value.
-     */
-    public String subnet() {
-        return this.subnet;
-    }
-
-    /**
-     * Set the subnet property: Subnet used for the Cache.
-     *
-     * @param subnet the subnet value to set.
-     * @return the CacheInner object itself.
-     */
-    public CacheInner withSubnet(String subnet) {
-        this.subnet = subnet;
-        return this;
-    }
-
-    /**
-     * Get the upgradeStatus property: Upgrade status of the Cache.
-     *
-     * @return the upgradeStatus value.
-     */
-    public CacheUpgradeStatus upgradeStatus() {
-        return this.upgradeStatus;
-    }
-
-    /**
-     * Set the upgradeStatus property: Upgrade status of the Cache.
-     *
-     * @param upgradeStatus the upgradeStatus value to set.
-     * @return the CacheInner object itself.
-     */
-    public CacheInner withUpgradeStatus(CacheUpgradeStatus upgradeStatus) {
-        this.upgradeStatus = upgradeStatus;
-        return this;
-    }
-
-    /**
-     * Get the networkSettings property: Specifies network settings of the cache.
-     *
-     * @return the networkSettings value.
-     */
-    public CacheNetworkSettings networkSettings() {
-        return this.networkSettings;
-    }
-
-    /**
-     * Set the networkSettings property: Specifies network settings of the cache.
-     *
-     * @param networkSettings the networkSettings value to set.
-     * @return the CacheInner object itself.
-     */
-    public CacheInner withNetworkSettings(CacheNetworkSettings networkSettings) {
-        this.networkSettings = networkSettings;
-        return this;
-    }
-
-    /**
-     * Get the encryptionSettings property: Specifies encryption settings of the cache.
-     *
-     * @return the encryptionSettings value.
-     */
-    public CacheEncryptionSettings encryptionSettings() {
-        return this.encryptionSettings;
-    }
-
-    /**
-     * Set the encryptionSettings property: Specifies encryption settings of the cache.
-     *
-     * @param encryptionSettings the encryptionSettings value to set.
-     * @return the CacheInner object itself.
-     */
-    public CacheInner withEncryptionSettings(CacheEncryptionSettings encryptionSettings) {
-        this.encryptionSettings = encryptionSettings;
-        return this;
-    }
-
-    /**
-     * Get the securitySettings property: Specifies security settings of the cache.
-     *
-     * @return the securitySettings value.
-     */
-    public CacheSecuritySettings securitySettings() {
-        return this.securitySettings;
-    }
-
-    /**
-     * Set the securitySettings property: Specifies security settings of the cache.
-     *
-     * @param securitySettings the securitySettings value to set.
-     * @return the CacheInner object itself.
-     */
-    public CacheInner withSecuritySettings(CacheSecuritySettings securitySettings) {
-        this.securitySettings = securitySettings;
-        return this;
-    }
-
-    /**
-     * Get the directoryServicesSettings property: Specifies Directory Services settings of the cache.
-     *
-     * @return the directoryServicesSettings value.
-     */
-    public CacheDirectorySettings directoryServicesSettings() {
-        return this.directoryServicesSettings;
-    }
-
-    /**
-     * Set the directoryServicesSettings property: Specifies Directory Services settings of the cache.
-     *
-     * @param directoryServicesSettings the directoryServicesSettings value to set.
-     * @return the CacheInner object itself.
-     */
-    public CacheInner withDirectoryServicesSettings(CacheDirectorySettings directoryServicesSettings) {
-        this.directoryServicesSettings = directoryServicesSettings;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public CacheInner withLocation(String location) {
@@ -355,6 +127,181 @@ public class CacheInner extends Resource {
     }
 
     /**
+     * Get the cacheSizeGB property: The size of this Cache, in GB.
+     *
+     * @return the cacheSizeGB value.
+     */
+    public Integer cacheSizeGB() {
+        return this.innerProperties() == null ? null : this.innerProperties().cacheSizeGB();
+    }
+
+    /**
+     * Set the cacheSizeGB property: The size of this Cache, in GB.
+     *
+     * @param cacheSizeGB the cacheSizeGB value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withCacheSizeGB(Integer cacheSizeGB) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withCacheSizeGB(cacheSizeGB);
+        return this;
+    }
+
+    /**
+     * Get the health property: Health of the Cache.
+     *
+     * @return the health value.
+     */
+    public CacheHealth health() {
+        return this.innerProperties() == null ? null : this.innerProperties().health();
+    }
+
+    /**
+     * Get the mountAddresses property: Array of IP addresses that can be used by clients mounting this Cache.
+     *
+     * @return the mountAddresses value.
+     */
+    public List<String> mountAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().mountAddresses();
+    }
+
+    /**
+     * Get the provisioningState property: ARM provisioning state, see
+     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningStateType provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the subnet property: Subnet used for the Cache.
+     *
+     * @return the subnet value.
+     */
+    public String subnet() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
+    }
+
+    /**
+     * Set the subnet property: Subnet used for the Cache.
+     *
+     * @param subnet the subnet value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withSubnet(String subnet) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withSubnet(subnet);
+        return this;
+    }
+
+    /**
+     * Get the upgradeStatus property: Upgrade status of the Cache.
+     *
+     * @return the upgradeStatus value.
+     */
+    public CacheUpgradeStatus upgradeStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeStatus();
+    }
+
+    /**
+     * Get the networkSettings property: Specifies network settings of the cache.
+     *
+     * @return the networkSettings value.
+     */
+    public CacheNetworkSettings networkSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkSettings();
+    }
+
+    /**
+     * Set the networkSettings property: Specifies network settings of the cache.
+     *
+     * @param networkSettings the networkSettings value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withNetworkSettings(CacheNetworkSettings networkSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withNetworkSettings(networkSettings);
+        return this;
+    }
+
+    /**
+     * Get the encryptionSettings property: Specifies encryption settings of the cache.
+     *
+     * @return the encryptionSettings value.
+     */
+    public CacheEncryptionSettings encryptionSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionSettings();
+    }
+
+    /**
+     * Set the encryptionSettings property: Specifies encryption settings of the cache.
+     *
+     * @param encryptionSettings the encryptionSettings value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withEncryptionSettings(CacheEncryptionSettings encryptionSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withEncryptionSettings(encryptionSettings);
+        return this;
+    }
+
+    /**
+     * Get the securitySettings property: Specifies security settings of the cache.
+     *
+     * @return the securitySettings value.
+     */
+    public CacheSecuritySettings securitySettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().securitySettings();
+    }
+
+    /**
+     * Set the securitySettings property: Specifies security settings of the cache.
+     *
+     * @param securitySettings the securitySettings value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withSecuritySettings(CacheSecuritySettings securitySettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withSecuritySettings(securitySettings);
+        return this;
+    }
+
+    /**
+     * Get the directoryServicesSettings property: Specifies Directory Services settings of the cache.
+     *
+     * @return the directoryServicesSettings value.
+     */
+    public CacheDirectorySettings directoryServicesSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().directoryServicesSettings();
+    }
+
+    /**
+     * Set the directoryServicesSettings property: Specifies Directory Services settings of the cache.
+     *
+     * @param directoryServicesSettings the directoryServicesSettings value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withDirectoryServicesSettings(CacheDirectorySettings directoryServicesSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withDirectoryServicesSettings(directoryServicesSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -363,29 +310,11 @@ public class CacheInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (systemData() != null) {
-            systemData().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (sku() != null) {
             sku().validate();
-        }
-        if (health() != null) {
-            health().validate();
-        }
-        if (upgradeStatus() != null) {
-            upgradeStatus().validate();
-        }
-        if (networkSettings() != null) {
-            networkSettings().validate();
-        }
-        if (encryptionSettings() != null) {
-            encryptionSettings().validate();
-        }
-        if (securitySettings() != null) {
-            securitySettings().validate();
-        }
-        if (directoryServicesSettings() != null) {
-            directoryServicesSettings().validate();
         }
     }
 }

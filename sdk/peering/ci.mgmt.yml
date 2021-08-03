@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/peering/
+      - sdk/peering/ci.mgmt.yml
+      - sdk/peering/mgmt-v2019_08_01_preview/
+    exclude:
+      - sdk/peering/pom.xml
+      - sdk/peering/mgmt-v2019_08_01_preview/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/peering/
+      - sdk/peering/ci.mgmt.yml
+      - sdk/peering/mgmt-v2019_08_01_preview/
+    exclude:
+      - sdk/peering/pom.xml
+      - sdk/peering/mgmt-v2019_08_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

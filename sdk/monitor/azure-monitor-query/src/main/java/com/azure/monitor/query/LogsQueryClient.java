@@ -46,13 +46,18 @@ public final class LogsQueryClient {
 
     /**
      * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
-     * @param options The query options.
+     * @param workspaceId The workspaceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeSpan The time period for which the logs should be looked up.
+     * @param options The log query options to configure server timeout, set additional workspaces or enable
+     * statistics and rendering information in response.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The logs matching the query including the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsQueryResult> queryLogsWithResponse(LogsQueryOptions options, Context context) {
-        return asyncClient.queryLogsWithResponse(options, context).block();
+    public Response<LogsQueryResult> queryLogsWithResponse(String workspaceId, String query, QueryTimeSpan timeSpan,
+                                                           LogsQueryOptions options, Context context) {
+        return asyncClient.queryLogsWithResponse(workspaceId, query, timeSpan, options, context).block();
     }
 
     /**
