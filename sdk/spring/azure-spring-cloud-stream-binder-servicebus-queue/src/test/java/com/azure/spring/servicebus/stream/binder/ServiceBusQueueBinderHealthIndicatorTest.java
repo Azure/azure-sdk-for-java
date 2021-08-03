@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
@@ -16,8 +19,10 @@ import org.springframework.messaging.Message;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 public class ServiceBusQueueBinderHealthIndicatorTest {
@@ -49,6 +54,7 @@ public class ServiceBusQueueBinderHealthIndicatorTest {
         assertThat(health.getStatus()).isEqualTo(Status.UNKNOWN);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusQueueIsUp() {
         when(serviceBusQueueClientFactory.getOrCreateProcessor(anyString(), any(ServiceBusClientConfig.class),
@@ -58,11 +64,15 @@ public class ServiceBusQueueBinderHealthIndicatorTest {
         assertThat(health.getStatus()).isEqualTo(Status.UP);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusQueueIsDown() {
         when(serviceBusQueueClientFactory.getOrCreateProcessor(anyString(), any(ServiceBusClientConfig.class),
-            any(ServiceBusMessageProcessor.class))).thenThrow(RuntimeException.class);
-        serviceBusQueueTemplate.subscribe("queue-test-1", consumer, byte[].class);
+            any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
+        doThrow(RuntimeException.class).when(processorClient).start();
+        assertThrows(RuntimeException.class, () -> {
+            serviceBusQueueTemplate.subscribe("queue-test-1", consumer, byte[].class);
+        });
         final Health health = serviceBusQueueHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.DOWN);
     }
