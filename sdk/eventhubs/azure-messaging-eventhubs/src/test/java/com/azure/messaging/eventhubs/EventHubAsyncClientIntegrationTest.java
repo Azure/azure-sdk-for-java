@@ -131,9 +131,10 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         try (EventHubAsyncClient client = createBuilder(true)
             .buildAsyncClient()) {
-            EventHubProperties properties = client.getProperties().block(TIMEOUT);
-            Assertions.assertEquals(getEventHubName(), properties.getName());
-            Assertions.assertEquals(NUMBER_OF_EVENTS, properties.getPartitionIds().stream().count());
+            client.getProperties().subscribe(properties -> {
+                Assertions.assertEquals(getEventHubName(), properties.getName());
+                Assertions.assertEquals(NUMBER_OF_EVENTS, properties.getPartitionIds().stream().count());
+            });
 //            StepVerifier.create(client.getProperties())
 //                .assertNext(properties -> {
 //                    Assertions.assertEquals(getEventHubName(), properties.getName());
