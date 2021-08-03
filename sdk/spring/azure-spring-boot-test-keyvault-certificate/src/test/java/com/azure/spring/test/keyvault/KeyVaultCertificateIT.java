@@ -14,6 +14,8 @@ import org.apache.http.ssl.SSLContexts;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,11 +25,14 @@ import java.security.KeyStore;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static com.azure.spring.test.keyvault.PropertyConvertorUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KeyVaultCertificateIT {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultCertificateIT.class);
 
     private RestTemplate restTemplate;
 
@@ -73,13 +78,17 @@ public class KeyVaultCertificateIT {
         setRestTemplate(sslContext);
     }
 
-    public void setMTLSRestTemplate() throws Exception {
-        KeyStore keyStore = getAzureKeyVaultKeyStore();
-        SSLContext sslContext = SSLContexts.custom()
-            .loadTrustMaterial(keyStore, null)
-            .loadKeyMaterial(keyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
-            .build();
-        setRestTemplate(sslContext);
+    public void setMTLSRestTemplate(String certificateName) {
+        try {
+            KeyStore keyStore = getAzureKeyVaultKeyStore();
+            SSLContext sslContext = SSLContexts.custom()
+                .loadTrustMaterial(keyStore, null)
+                .loadKeyMaterial(keyStore, "".toCharArray(), new ClientPrivateKeyStrategy(certificateName))
+                .build();
+            setRestTemplate(sslContext);
+        }catch (Exception e) {
+            LOGGER.error("Exception happened when create MTLSRestTemplate", e);
+        }
     }
 
     public void startAppRunner(Map<String, String> properties) {
@@ -104,12 +113,49 @@ public class KeyVaultCertificateIT {
      */
     @Test
     public void testSpringBootWebApplication() throws Exception {
-        Map<String, String> properties = getDefaultMap();
-        startAppRunner(properties);
+        startSpringBootWebApplication(null);
+    }
 
+    /**
+     * Test the Spring Boot Health indicator integration.
+     */
+    @Test
+    public void testSpringBootWebApplicationWithRSAKeyLess() throws Exception {
+        startSpringBootWebApplication(new HashMap<String, String>() {{ put("server.ssl.key-alias", "myaliasForRSAKeyLess");}});
+    }
+
+    /**
+     * Test the Spring Boot Health indicator integration.
+     */
+    @Test
+    public void testSpringBootWebApplicationWithEC256KeyLess() throws Exception {
+        startSpringBootWebApplication(new HashMap<String, String>() {{ put("server.ssl.key-alias", "myaliasForEC256KeyLess");}});
+    }
+
+    /**
+     * Test the Spring Boot Health indicator integration.
+     */
+    @Test
+    public void testSpringBootWebApplicationWithEC384KeyLess() throws Exception {
+        startSpringBootWebApplication(new HashMap<String, String>() {{ put("server.ssl.key-alias", "myaliasForEC384KeyLess");}});
+    }
+
+    /**
+     * Test the Spring Boot Health indicator integration.
+     */
+    @Test
+    public void testSpringBootWebApplicationWithEC521KeyLess() throws Exception {
+        startSpringBootWebApplication(new HashMap<String, String>() {{ put("server.ssl.key-alias", "myaliasForEC521KeyLess");}});
+    }
+
+    private void startSpringBootWebApplication(Map<String, String> additionalProperties) throws Exception {
+        Map<String, String> properties = getDefaultMap();
+        properties.putAll(additionalProperties);
+        startAppRunner(properties);
         setRestTemplate();
         sendRequest();
     }
+
 
     @AfterAll
     public static void destroy() {
@@ -120,17 +166,33 @@ public class KeyVaultCertificateIT {
      * Test the Spring Boot Health indicator integration.
      */
     @Test
-    public void testSpringBootMTLSWebApplication() throws Exception {
-
+    public void testSpringBootMTLSWebApplication() {
         Map<String, String> properties = getDefaultMap();
         properties.put("server.ssl.client-auth", "need");
         properties.put("server.ssl.trust-store-type", "AzureKeyVault");
-
         startAppRunner(properties);
-
-        setMTLSRestTemplate();
+        setMTLSRestTemplate("myalias");
         sendRequest();
     }
+
+    @Test
+    public void testSpringBootMTLSWebApplicationWithKeyLess() {
+        Map<String, String> properties = getDefaultMap();
+        properties.put("server.ssl.client-auth", "need");
+        properties.put("server.ssl.trust-store-type", "AzureKeyVault");
+        startAppRunner(properties);
+
+        Stream.of(
+            "myaliasForRSAKeyLess",
+            "myaliasForEC256KeyLess",
+            "myaliasForEC384KeyLess",
+            "myaliasForEC521KeyLess")
+            .forEach(certificateName -> {
+                setMTLSRestTemplate(certificateName);
+                sendRequest();
+            });
+    }
+
 
     public void sendRequest() {
         final String response = restTemplate.getForObject(
@@ -139,9 +201,16 @@ public class KeyVaultCertificateIT {
     }
 
     private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
+
+        String certificateName;
+
+        private ClientPrivateKeyStrategy(String certificateName) {
+            this.certificateName = certificateName;
+        }
+
         @Override
         public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
-            return "myalias"; // It should be your certificate alias used in client-side
+            return certificateName; // It should be your certificate alias used in client-side
         }
     }
 
