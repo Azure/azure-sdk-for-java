@@ -6,6 +6,7 @@ package com.azure.spring.servicebus.stream.binder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,8 +71,8 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
         when(serviceBusTopicClientFactory.getOrCreateProcessor(anyString(), anyString(),
             any(ServiceBusClientConfig.class),
             any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
-        doThrow(RuntimeException.class).when(processorClient).start();
-        assertThrows(RuntimeException.class, () -> {
+        doThrow(NullPointerException.class).when(processorClient).start();
+        assertThrows(ServiceBusRuntimeException.class, () -> {
             serviceBusTopicTemplate.subscribe("topic-test-1", "topicSubTest", consumer, byte[].class);
         });
         final Health health = serviceBusTopicHealthIndicator.health();

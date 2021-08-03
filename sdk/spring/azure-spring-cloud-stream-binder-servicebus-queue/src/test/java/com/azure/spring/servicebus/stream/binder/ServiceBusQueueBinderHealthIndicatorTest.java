@@ -6,6 +6,7 @@ package com.azure.spring.servicebus.stream.binder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,8 +70,8 @@ public class ServiceBusQueueBinderHealthIndicatorTest {
     public void testServiceBusQueueIsDown() {
         when(serviceBusQueueClientFactory.getOrCreateProcessor(anyString(), any(ServiceBusClientConfig.class),
             any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
-        doThrow(RuntimeException.class).when(processorClient).start();
-        assertThrows(RuntimeException.class, () -> {
+        doThrow(NullPointerException.class).when(processorClient).start();
+        assertThrows(ServiceBusRuntimeException.class, () -> {
             serviceBusQueueTemplate.subscribe("queue-test-1", consumer, byte[].class);
         });
         final Health health = serviceBusQueueHealthIndicator.health();

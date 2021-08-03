@@ -6,6 +6,7 @@ package com.azure.spring.integration.test.support;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.SendOperation;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
@@ -43,7 +44,7 @@ public abstract class SendOperationTest<O extends SendOperation> {
     public void testSendCreateSenderFailure() throws Throwable {
         whenSendWithException();
 
-        assertThrows(NullPointerException.class,
+        assertThrows(NestedRuntimeException.class,
             () -> this.sendOperation.sendAsync(destination, this.message, null).get());
     }
 

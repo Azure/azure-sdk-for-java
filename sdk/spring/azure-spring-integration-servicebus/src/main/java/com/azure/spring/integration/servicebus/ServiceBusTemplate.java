@@ -73,6 +73,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         } catch (Exception e) {
             instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);
             LOGGER.error("ServiceBus senderAsyncClient startup failed, Caused by " + e.getMessage());
+            throw new ServiceBusRuntimeException("ServiceBus send client startup failed, Caused by " + e.getMessage(), e);
         }
 
         return senderAsyncClient.sendMessage(serviceBusMessage).toFuture();

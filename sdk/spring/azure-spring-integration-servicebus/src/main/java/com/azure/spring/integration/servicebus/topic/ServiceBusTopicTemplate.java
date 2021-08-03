@@ -118,6 +118,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         } catch (Exception e) {
             instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);
             LOGGER.error("ServiceBus processorClient startup failed, Caused by " + e.getMessage());
+            throw new ServiceBusRuntimeException("ServiceBus processor client startup failed, Caused by " + e.getMessage(), e);
         }
     }
 
