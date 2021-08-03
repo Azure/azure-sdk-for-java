@@ -726,10 +726,11 @@ public class EventHubClientBuilder {
     }
 
     private ConnectionOptions getConnectionOptions() {
-        configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration = configuration == null ? Configuration.getGlobalConfiguration().clone() :
+                configuration;
 
         if (credentials == null) {
-            final String connectionString = configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
+            final String connectionString = buildConfiguration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
 
             if (CoreUtils.isNullOrEmpty(connectionString)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
@@ -742,7 +743,7 @@ public class EventHubClientBuilder {
         }
 
         if (proxyOptions == null) {
-            proxyOptions = getDefaultProxyConfiguration(configuration);
+            proxyOptions = getDefaultProxyConfiguration(buildConfiguration);
         }
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
@@ -790,10 +791,11 @@ public class EventHubClientBuilder {
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
-        return getProxyOptions(authentication, proxyAddress);
+        return getProxyOptions(authentication, proxyAddress, configuration);
     }
 
-    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress) {
+    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress,
+                                         Configuration configuration) {
         String host;
         int port;
         if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
