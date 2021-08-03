@@ -4,7 +4,6 @@
 package com.azure.core.util;
 
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
