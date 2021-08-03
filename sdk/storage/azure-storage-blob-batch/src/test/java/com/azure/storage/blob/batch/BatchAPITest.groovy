@@ -1,11 +1,9 @@
 package com.azure.storage.blob.batch
 
-import com.azure.core.http.HttpPipelineBuilder
-import com.azure.core.http.policy.HttpPipelinePolicy
+
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
-import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.batch.options.BlobBatchSetBlobAccessTierOptions
 import com.azure.storage.blob.models.AccessTier
@@ -13,18 +11,19 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.sas.BlobContainerSasPermission
-import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import reactor.test.StepVerifier
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
+import java.time.Duration
+import java.util.stream.Collectors
 
 class BatchAPITest extends APISpec {
     /*
@@ -33,6 +32,7 @@ class BatchAPITest extends APISpec {
      * as these requests will be properly associated to the response by their `Content-ID` but this causes issues in
      * playback as we are using a static response that cannot handle changes in operation order.
      */
+
     static def assertExpectedOrException(Response<?> response, int expectedStatusCode) {
         try {
             def statusCode = response.getStatusCode()
@@ -45,10 +45,13 @@ class BatchAPITest extends APISpec {
     }
 
     BlobBatchClient batchClient
+    BlobBatchAsyncClient batchAsyncClient
     BlobBatchClient oauthBatchClient
 
     def setup() {
-        batchClient = new BlobBatchClientBuilder(primaryBlobServiceClient).buildClient()
+        def blobBatchClientBuilder = new BlobBatchClientBuilder(primaryBlobServiceAsyncClient)
+        batchClient = blobBatchClientBuilder.buildClient()
+        batchAsyncClient = blobBatchClientBuilder.buildAsyncClient()
         oauthBatchClient = new BlobBatchClientBuilder(getOAuthServiceClient()).buildClient()
     }
 
@@ -189,9 +192,39 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
 
         where:
-        leaseId         | tags
-        garbageLeaseID  | null
-        null            | "\"notfoo\" = 'notbar'"
+        leaseId        | tags
+        garbageLeaseID | null
+        null           | "\"notfoo\" = 'notbar'"
+    }
+
+    // Ensures errors in the batch using BlobBatchAsyncClient are emitted as onError and are not thrown.
+    @Unroll
+    def "Set tier AC fail async"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def batch = batchAsyncClient.getBlobBatch()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
+        def blobClient1 = containerClient.getBlobClient(blobName1)
+        blobClient1.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(blobClient1.getBlobUrl(), AccessTier.HOT)
+            .setLeaseId(leaseId).setTagsConditions(tags))
+        def request = batchAsyncClient.submitBatch(batch)
+
+        then:
+        StepVerifier.create(request)
+            .expectError(BlobBatchStorageException.class)
+            .verify(Duration.ofSeconds(30))
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
+
+        where:
+        leaseId        | tags
+        garbageLeaseID | null
+        null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Set tier some succeed throw on any error"() {
@@ -210,6 +243,41 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobBatchStorageException)
+
+        // In PLAYBACK check responses in an order invariant fashion.
+        if (env.testMode == TestMode.PLAYBACK) {
+            assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
+        } else {
+            assert response1.getStatusCode() == 200
+            try {
+                response2.getStatusCode()
+            } catch (def exception) {
+                assert exception instanceof BlobStorageException
+            }
+        }
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
+    }
+
+    def "Set tier some succeed throw on any error async"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def blobName2 = generateBlobName()
+        def batch = batchAsyncClient.getBlobBatch()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
+        def response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL)
+        def request = batchAsyncClient.submitBatch(batch)
+
+        then:
+        StepVerifier.create(request)
+            .expectError(BlobBatchStorageException.class)
+            .verify(Duration.ofSeconds(30))
 
         // In PLAYBACK check responses in an order invariant fashion.
         if (env.testMode == TestMode.PLAYBACK) {
@@ -507,7 +575,9 @@ class BatchAPITest extends APISpec {
         def responses = batchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE)
 
         then:
-        for (def response : responses) {
+        def responseList = responses.stream().collect(Collectors.toList())
+        assert responseList.size() == 10
+        for (def response : responseList) {
             assert response.getStatusCode() == 202
         }
 
@@ -530,7 +600,9 @@ class BatchAPITest extends APISpec {
         def responses = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT)
 
         then:
-        for (def response : responses) {
+        def responseList = responses.stream().collect(Collectors.toList())
+        assert responseList.size() == 10
+        for (def response : responseList) {
             assert response.getStatusCode() == 200
         }
 
@@ -553,7 +625,9 @@ class BatchAPITest extends APISpec {
         def responses = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT)
 
         then:
-        for (def response : responses) {
+        def responseList = responses.stream().collect(Collectors.toList())
+        assert responseList.size() == 1
+        for (def response : responseList) {
             assert response.getStatusCode() == 200
         }
 
@@ -579,7 +653,9 @@ class BatchAPITest extends APISpec {
         def responses = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT)
 
         then:
-        for (def response : responses) {
+        def responseList = responses.stream().collect(Collectors.toList())
+        assert responseList.size() == 1
+        for (def response : responseList) {
             assert response.getStatusCode() == 200
         }
 
@@ -601,7 +677,8 @@ class BatchAPITest extends APISpec {
         batchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).iterator().next()
 
         then:
-        thrown(BlobStorageException)
+        def ex = thrown(RuntimeException)
+        assert ex instanceof BlobStorageException || ex.getCause() instanceof BlobStorageException
 
         cleanup:
         primaryBlobServiceClient.deleteBlobContainer(containerName)
@@ -711,7 +788,7 @@ class BatchAPITest extends APISpec {
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 
         def batchClient = new BlobBatchClientBuilder(getServiceClient(sas, primaryBlobServiceClient.getAccountUrl()))
-                    .buildClient()
+            .buildClient()
 
         def batch = batchClient.getBlobBatch()
 
