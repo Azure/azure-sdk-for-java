@@ -126,7 +126,8 @@ public class EventHubClientBuilderTest {
             clientCreated = true;
         } catch (Exception ex) {
             logger.error("testProxyOptionsConfiguration: Failed to create client for proxyConfiguration {}: {}",
-                    proxyConfiguration, ex);
+                    proxyConfiguration, ex.getMessage(), ex);
+            ex.printStackTrace();
         }
         Assertions.assertEquals(expectedClientCreation, clientCreated);
     }
