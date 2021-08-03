@@ -298,7 +298,7 @@ public final class CoreUtils {
      * @return {@link HttpHeaders} containing the {@link Header} values from {@link ClientOptions#getHeaders()} if
      * {@code clientOptions} isn't null and contains {@link Header} values, otherwise null.
      */
-    public static HttpHeaders createAddHeadersFromClientOptions(ClientOptions clientOptions) {
+    public static HttpHeaders createHttpHeadersFromClientOptions(ClientOptions clientOptions) {
         if (clientOptions == null) {
             return null;
         }

@@ -201,9 +201,9 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @MethodSource("createAddHeadersFromClientOptionsSupplier")
-    public void createAddHeadersFromClientOptions(ClientOptions clientOptions, HttpHeaders expected) {
-        HttpHeaders actual = CoreUtils.createAddHeadersFromClientOptions(clientOptions);
+    @MethodSource("createHttpHeadersFromClientOptionsSupplier")
+    public void createHttpHeadersFromClientOptions(ClientOptions clientOptions, HttpHeaders expected) {
+        HttpHeaders actual = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
         if (expected == null) {
             assertNull(actual);
         } else {
@@ -211,7 +211,7 @@ public class CoreUtilsTests {
         }
     }
 
-    private static Stream<Arguments> createAddHeadersFromClientOptionsSupplier() {
+    private static Stream<Arguments> createHttpHeadersFromClientOptionsSupplier() {
         List<Header> multipleHeadersList = new ArrayList<>();
         multipleHeadersList.add(new Header("a", "header"));
         multipleHeadersList.add(new Header("another", "headerValue"));
