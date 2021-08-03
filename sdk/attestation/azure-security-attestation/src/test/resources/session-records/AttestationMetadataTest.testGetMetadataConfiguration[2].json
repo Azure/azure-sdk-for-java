@@ -9,9 +9,9 @@
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-c7953766e567ed52fb1cad32aba89f88-0000000000000000-00",
+      "x-ms-request-id" : "00-bac7faa7426f50a4425e19dfb4829240-0000000000000000-00",
       "Body" : "{\"response_types_supported\":[\"token\",\"none\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"revocation_endpoint\":\"https://jalarryoattestationiso.wus.attest.azure.net/revoke\",\"issuer\":\"https://jalarryoattestationiso.wus.attest.azure.net\",\"jwks_uri\":\"https://jalarryoattestationiso.wus.attest.azure.net/certs\",\"claims_supported\":[\"cnf\",\"nonce\",\"x-ms-ver\",\"x-ms-attestation-type\",\"x-ms-policy-hash\",\"x-ms-policy-signer\",\"x-ms-sgx-is-debuggable\",\"x-ms-sgx-mrenclave\",\"x-ms-sgx-mrsigner\",\"x-ms-sgx-svn\",\"x-ms-sgx-ehd\",\"x-ms-sgx-collateral\",\"is-debuggable\",\"sgx-mrsigner\",\"sgx-mrenclave\",\"product-id\",\"svn\",\"tee\"]}",
-      "Date" : "Tue, 20 Jul 2021 21:50:17 GMT",
+      "Date" : "Mon, 02 Aug 2021 21:44:50 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -25,9 +25,9 @@
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-15c6fc9b694e6882492f016efb87367b-0000000000000000-00",
+      "x-ms-request-id" : "00-9dc334a823c8e8a6f0e4cdf4b8420f32-0000000000000000-00",
       "Body" : "{\"response_types_supported\":[\"token\",\"none\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"revocation_endpoint\":\"https://jalarryoattestationiso.wus.attest.azure.net/revoke\",\"issuer\":\"https://jalarryoattestationiso.wus.attest.azure.net\",\"jwks_uri\":\"https://jalarryoattestationiso.wus.attest.azure.net/certs\",\"claims_supported\":[\"cnf\",\"nonce\",\"x-ms-ver\",\"x-ms-attestation-type\",\"x-ms-policy-hash\",\"x-ms-policy-signer\",\"x-ms-sgx-is-debuggable\",\"x-ms-sgx-mrenclave\",\"x-ms-sgx-mrsigner\",\"x-ms-sgx-svn\",\"x-ms-sgx-ehd\",\"x-ms-sgx-collateral\",\"is-debuggable\",\"sgx-mrsigner\",\"sgx-mrenclave\",\"product-id\",\"svn\",\"tee\"]}",
-      "Date" : "Tue, 20 Jul 2021 21:50:17 GMT",
+      "Date" : "Mon, 02 Aug 2021 21:44:51 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

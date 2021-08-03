@@ -14,10 +14,14 @@ import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.implementation.SigningCertificatesImpl;
+import com.azure.security.attestation.implementation.models.DataType;
+import com.azure.security.attestation.implementation.models.InitTimeData;
+import com.azure.security.attestation.implementation.models.RuntimeData;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
-import com.azure.security.attestation.models.AttestationResponse;
+import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationToken;
 import com.azure.security.attestation.models.CloudErrorException;
 import reactor.core.publisher.Mono;
 
@@ -133,7 +137,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request) {
+    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request) {
         return withContext(context -> this.attestOpenEnclaveWithResponse(request, context));
     }
 
@@ -149,9 +153,32 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request, Context context) {
-        return this.attestImpl.attestOpenEnclaveWithResponseAsync(request.toGenerated(), context)
-            .map(response -> Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
+    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request, Context context) {
+        // Ensure that the incoming request makes sense.
+        request.validate();
+
+        return this.attestImpl.attestOpenEnclaveWithResponseAsync(openEnclaveRequestToInternal(request), context)
+            // Create an AttestationToken from the raw response from the service.
+            .map(response -> Utilities.generateResponseFromModelType(response, new AttestationToken(response.getValue().getToken())))
+            // Extract the AttestationResult from the AttestationToken.
+            .map(response -> Utilities.generateAttestationResponseFromModelType(response, response.getValue(), response.getValue().getBody(AttestationResult.class)));
+    }
+
+    /**
+     * Returns an internal type from a public type.
+     * @return implementation type.
+     */
+    private com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest openEnclaveRequestToInternal(AttestOpenEnclaveRequest request) {
+
+        return new com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest()
+            .setDraftPolicyForAttestation(request.getDraftPolicyForAttestation())
+            .setRuntimeData(request.getInitTimeData() != null ? new RuntimeData()
+                .setData(request.getRuntimeData())
+                .setDataType(DataType.fromString(request.getRunTimeDataType())) : null)
+            .setInitTimeData(request.getInitTimeData() != null ? new InitTimeData()
+                .setData(request.getInitTimeData())
+                .setDataType(DataType.fromString(request.getInitTimeDataType())) : null)
+            .setReport(request.getReport());
     }
 
     /**
@@ -165,7 +192,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse> attestOpenEnclave(AttestOpenEnclaveRequest request) {
+    public Mono<AttestationResult> attestOpenEnclave(AttestOpenEnclaveRequest request) {
         return withContext(context -> attestOpenEnclaveWithResponse(request, context))
             .flatMap(FluxUtil::toMono);
     }
@@ -181,7 +208,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request) {
+    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request) {
         return withContext(context -> attestSgxEnclaveWithResponse(request, context));
     }
 
@@ -196,9 +223,12 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request, Context context) {
-        return this.attestImpl.attestSgxEnclaveWithResponseAsync(request.toGenerated(), context)
-            .map(response ->  Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue())));
+    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request, Context context) {
+        return this.attestImpl.attestSgxEnclaveWithResponseAsync(sgxEnclaveRequestToInternal(request), context)
+            .map(response -> {
+                AttestationToken token = new AttestationToken(response.getValue().getToken());
+                return Utilities.generateAttestationResponseFromModelType(response, token, token.getBody(AttestationResult.class));
+            });
     }
 
     /**
@@ -212,10 +242,27 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse> attestSgxEnclave(AttestSgxEnclaveRequest request) {
+    public Mono<AttestationResult> attestSgxEnclave(AttestSgxEnclaveRequest request) {
         return withContext(context -> attestSgxEnclaveWithResponse(request, context))
             .flatMap(FluxUtil::toMono);
     }
+
+    /**
+     * Returns an internal type from a public type.
+     * @return implementation type.
+     */
+    private com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest sgxEnclaveRequestToInternal(AttestSgxEnclaveRequest request) {
+        return new com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest()
+            .setDraftPolicyForAttestation(request.getDraftPolicyForAttestation())
+            .setRuntimeData(request.getRuntimeData() != null ? new RuntimeData()
+                .setData(request.getRuntimeData())
+                .setDataType(DataType.fromString(request.getRuntimeDataType())) : null)
+            .setInitTimeData(request.getInitTimeData() != null ? new InitTimeData()
+                .setData(request.getInitTimeData())
+                .setDataType(DataType.fromString(request.getInitTimeDataType())) : null)
+            .setQuote(request.getQuote());
+    }
+
 
     /**
      * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result

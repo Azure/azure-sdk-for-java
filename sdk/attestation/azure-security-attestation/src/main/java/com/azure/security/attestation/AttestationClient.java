@@ -11,7 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
-import com.azure.security.attestation.models.AttestationResponse;
+import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.CloudErrorException;
 
@@ -90,7 +90,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse attestOpenEnclave(AttestOpenEnclaveRequest request) {
+    public AttestationResult attestOpenEnclave(AttestOpenEnclaveRequest request) {
         return asyncClient.attestOpenEnclave(request).block();
     }
 
@@ -106,7 +106,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResponse> attestOpenEnclaveWithResponse(
+    public Response<AttestationResult> attestOpenEnclaveWithResponse(
             AttestOpenEnclaveRequest request, Context context) {
         return asyncClient.attestOpenEnclaveWithResponse(request, context).block();
     }
@@ -122,7 +122,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse attestSgxEnclave(AttestSgxEnclaveRequest request) {
+    public AttestationResult attestSgxEnclave(AttestSgxEnclaveRequest request) {
         return asyncClient.attestSgxEnclave(request).block();
     }
 
@@ -138,7 +138,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResponse> attestSgxEnclaveWithResponse(
+    public Response<AttestationResult> attestSgxEnclaveWithResponse(
             AttestSgxEnclaveRequest request, Context context) {
         return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }

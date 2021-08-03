@@ -4,11 +4,9 @@ package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
+import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
-import com.azure.security.attestation.models.AttestationResponse;
-import com.azure.security.attestation.models.DataType;
-import com.azure.security.attestation.models.RuntimeData;
-import com.nimbusds.jwt.JWTClaimsSet;
+import com.azure.security.attestation.models.AttestationResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,7 +16,6 @@ import java.util.Arrays;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AttestationTest extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -33,7 +30,7 @@ public class AttestationTest extends AttestationClientTestBase {
             + "ICB9CiAgICAgICAgfQogICAgICAgIA";
 
 
-    private final String sgxQuote =
+    private final String openEnclaveReport =
         "AQAAAAIAAADkEQAAAAAAAAMAAg"
         + "AAAAAABQAKAJOacjP3nEyplAoNs5V_Bgc42MPzGo7hPWS_h-3tExJrAAAAABERAwX_g"
         + "AYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAA"
@@ -138,25 +135,18 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestationClient client = attestationBuilder.buildAttestationClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
-        byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(sgxQuote);
+        byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
 
         AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest()
-            .setQuote(Arrays.copyOfRange(decodedSgxQuote, 0x10, decodedSgxQuote.length))
-            .setRuntimeData(
-                new RuntimeData()
-                    .setDataType(DataType.BINARY)
-                    .setData(decodedRuntimeData)
-            );
-        AttestationResponse response = client.attestSgxEnclave(request);
+            .setQuote(Arrays.copyOfRange(decodedOpenEnclaveReport, 0x10, decodedOpenEnclaveReport.length))
+            .setRuntimeData(decodedRuntimeData);
+        AttestationResult result = client.attestSgxEnclave(request);
 
-        JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
-
-        assertNotNull(claims);
-        assertTrue(claims.getClaims().containsKey("iss"));
+        assertNotNull(result.getIss());
 
         // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
         if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
-            Assertions.assertEquals(clientUri, claims.getClaims().get("iss"));
+            Assertions.assertEquals(clientUri, result.getIss());
         }
 
     }
@@ -169,28 +159,75 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
-        byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(sgxQuote);
+        byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(openEnclaveReport);
 
         AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest()
             .setQuote(Arrays.copyOfRange(decodedSgxQuote, 0x10, decodedSgxQuote.length))
-            .setRuntimeData(
-                new RuntimeData()
-                    .setDataType(DataType.BINARY)
-                    .setData(decodedRuntimeData)
-            );
+            .setRuntimeData(decodedRuntimeData);
 
-        StepVerifier.create(client.attestSgxEnclave(request)
-                .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken())))
-            .assertNext(claims -> {
-                assertTrue(claims.getClaims().containsKey("iss"));
+        StepVerifier.create(client.attestSgxEnclave(request))
+            .assertNext(result -> {
+                assertNotNull(result.getIss());
 
                 // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
                 if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
-                    Assertions.assertEquals(clientUri, claims.getClaims().get("iss"));
+                    Assertions.assertEquals(clientUri, result.getIss());
                 }
             })
             .expectComplete()
             .verify();
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclave(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildAttestationClient();
+
+        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
+        byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
+
+        AttestOpenEnclaveRequest request = new AttestOpenEnclaveRequest()
+            .setReport(decodedOpenEnclaveReport)
+            .setRuntimeData(decodedRuntimeData);
+        AttestationResult response = client.attestOpenEnclave(request);
+
+        assertNotNull(response.getIss());
+
+        // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
+        if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
+            Assertions.assertEquals(clientUri, response.getIss());
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+
+        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
+        byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
+
+        AttestOpenEnclaveRequest request = new AttestOpenEnclaveRequest()
+            .setReport(decodedOpenEnclaveReport)
+            .setRuntimeData(decodedRuntimeData);
+
+        StepVerifier.create(client.attestOpenEnclave(request))
+            .assertNext(attestationResult -> {
+                assertNotNull(attestationResult.getIss());
+
+                // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
+                if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
+                    Assertions.assertEquals(clientUri, attestationResult.getIss());
+                }
+            })
+            .expectComplete()
+            .verify();
+    }
+
 }
 

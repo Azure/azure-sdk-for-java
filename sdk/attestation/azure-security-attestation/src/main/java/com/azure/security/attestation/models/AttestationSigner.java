@@ -4,12 +4,17 @@
 package com.azure.security.attestation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.util.Base64;
 
 import java.io.ByteArrayInputStream;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents an attestation signing certificate returned by the attestation service.
@@ -31,8 +36,7 @@ public class AttestationSigner {
      * Clone an X.509 certificate chain. Used to ensure that the `certificates` property remains immutable.
      *
      * @param certificates X.509 certificate chain to clone.
-     * @return Cloned X.509 certificate chain. Each element is a newly certificate deep copied from an
-     *  existing certificate.
+     * @return Deep cloned X.509 certificate chain.
      */
     private X509Certificate[] cloneX509CertificateChain(X509Certificate[] certificates) {
         ClientLogger logger = new ClientLogger(AttestationSigner.class);
@@ -86,6 +90,55 @@ public class AttestationSigner {
      */
     public String getKeyId() {
         return keyId;
+    }
+
+    /**
+     * Validate that the attestation signer is valid.
+     */
+    public void validate() {
+        Objects.requireNonNull(certificates);
+        for (X509Certificate certificate : certificates) {
+            Objects.requireNonNull(certificate);
+        }
+    }
+
+    static AttestationSigner fromCertificateChain(List<Base64> certificateChain) {
+        X509Certificate[] certChain = certificateChain
+            .stream()
+            .map(AttestationSigner::certificateFromBase64)
+            .toArray(X509Certificate[]::new);
+        return new AttestationSigner()
+            .certificates(certChain);
+    }
+
+    static AttestationSigner fromJWK(JWK jwk) {
+        List<X509Certificate> certificateChain = jwk.getParsedX509CertChain();
+        if (certificateChain != null) {
+            X509Certificate[] certificateArray =  certificateChain.toArray(new X509Certificate[0]);
+            return new AttestationSigner()
+                .certificates(certificateArray)
+                .keyId(jwk.getKeyID());
+        }
+        throw new Error("Could not resolve AttestationSigner from JWK.");
+    }
+
+    static X509Certificate certificateFromBase64(Base64 base64certificate) {
+        ClientLogger logger = new ClientLogger(AttestationSigner.class);
+
+        CertificateFactory cf;
+        try {
+            cf = CertificateFactory.getInstance("X.509");
+        } catch (CertificateException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+        Certificate cert;
+        try {
+            cert = cf.generateCertificate(new ByteArrayInputStream(base64certificate.decode()));
+        } catch (CertificateException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+
+        return (X509Certificate) cert;
     }
 
     private java.security.cert.X509Certificate[] certificates;

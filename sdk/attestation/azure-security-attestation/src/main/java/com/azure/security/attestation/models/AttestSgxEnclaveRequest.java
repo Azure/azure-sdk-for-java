@@ -5,9 +5,10 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.security.attestation.implementation.models.DataType;
+
+import java.util.Objects;
 
 /** Attestation request for Intel SGX enclaves. */
 @Fluent
@@ -15,8 +16,7 @@ public final class AttestSgxEnclaveRequest {
     /*
      * Quote of the enclave to be attested
      */
-    @JsonProperty(value = "quote")
-    private Base64Url quote;
+    private byte[] quote;
 
     /*
      * Runtime data provided by the enclave at the time of quote generation.
@@ -24,22 +24,21 @@ public final class AttestSgxEnclaveRequest {
      * the quote contains the SHA256 hash of the decoded "data" field of the
      * runtime data.
      */
-    @JsonProperty(value = "runtimeData")
-    private RuntimeData runtimeData;
+    private byte[] runTimeData;
+    private DataType runTimeDataType;
 
     /*
      * Initialization data provided when the enclave is created. MAA will
      * verify that the init data was known to the enclave. Note that
      * InitTimeData is invalid for CoffeeLake processors.
      */
-    @JsonProperty(value = "initTimeData")
-    private InitTimeData initTimeData;
+    private byte[] initTimeData;
+    private DataType initTimeDataType;
 
     /*
      * Attest against the provided draft policy. Note that the resulting token
      * cannot be validated.
      */
-    @JsonProperty(value = "draftPolicyForAttestation")
     private String draftPolicyForAttestation;
 
     /**
@@ -48,10 +47,7 @@ public final class AttestSgxEnclaveRequest {
      * @return the quote value.
      */
     public byte[] getQuote() {
-        if (this.quote == null) {
-            return null;
-        }
-        return this.quote.decodedBytes();
+        return CoreUtils.clone(this.quote);
     }
 
     /**
@@ -61,11 +57,7 @@ public final class AttestSgxEnclaveRequest {
      * @return the AttestSgxEnclaveRequest object itself.
      */
     public AttestSgxEnclaveRequest setQuote(byte[] quote) {
-        if (quote == null) {
-            this.quote = null;
-        } else {
-            this.quote = Base64Url.encode(CoreUtils.clone(quote));
-        }
+        this.quote = CoreUtils.clone(quote);
         return this;
     }
 
@@ -76,8 +68,16 @@ public final class AttestSgxEnclaveRequest {
      *
      * @return the runtimeData value.
      */
-    public RuntimeData getRuntimeData() {
-        return this.runtimeData;
+    public byte[] getRuntimeData() {
+        return CoreUtils.clone(this.runTimeData);
+    }
+
+    /**
+     * Gets the type of the RuntimeData property.
+     * @return String representing the data type.
+     */
+    public String getRuntimeDataType() {
+        return this.runTimeDataType.toString();
     }
 
     /**
@@ -88,19 +88,43 @@ public final class AttestSgxEnclaveRequest {
      * @param runtimeData the runtimeData value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
-    public AttestSgxEnclaveRequest setRuntimeData(RuntimeData runtimeData) {
-        this.runtimeData = runtimeData;
+    public AttestSgxEnclaveRequest setRuntimeData(byte[] runtimeData) {
+        this.runTimeData = runtimeData.clone();
+        this.runTimeDataType = DataType.BINARY;
         return this;
     }
 
     /**
-     * Get the initTimeData property: Initialization data provided when the enclave is created. MAA will verify that the
+     * Set the runtimeData property: Runtime data provided by the enclave at the time of quote generation. The MAA will
+     * verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the decoded
+     * "data" field of the runtime data.
+     *
+     * @param runtimeData the runtimeData value to set.
+     * @return the AttestSgxEnclaveRequest object itself.
+     */
+    public AttestSgxEnclaveRequest setRuntimeJson(byte[] runtimeData) {
+        this.runTimeData = CoreUtils.clone(runtimeData);
+        this.runTimeDataType = DataType.JSON;
+        return this;
+    }
+
+
+    /**
+     * Get the initTimeData property as Binary: Initialization data provided when the enclave is created. MAA will verify that the
      * init data was known to the enclave. Note that InitTimeData is invalid for CoffeeLake processors.
      *
      * @return the initTimeData value.
      */
-    public InitTimeData getInitTimeData() {
-        return this.initTimeData;
+    public byte[] getInitTimeData() {
+        return CoreUtils.clone(this.initTimeData);
+    }
+
+    /**
+     * Returns the type of the InitTimeData field.
+     * @return String containing the type of the InitTimeData field.
+     */
+    public String getInitTimeDataType() {
+        return this.initTimeDataType.toString();
     }
 
     /**
@@ -110,8 +134,22 @@ public final class AttestSgxEnclaveRequest {
      * @param initTimeData the initTimeData value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
-    public AttestSgxEnclaveRequest setInitTimeData(InitTimeData initTimeData) {
-        this.initTimeData = initTimeData;
+    public AttestSgxEnclaveRequest setInitTimeData(byte[] initTimeData) {
+        this.initTimeData = CoreUtils.clone(initTimeData);
+        this.initTimeDataType = DataType.BINARY;
+        return this;
+    }
+
+    /**
+     * Set the initTimeData property as JSON: Initialization data provided when the enclave is created. MAA will verify that the
+     * init data was known to the enclave. Note that InitTimeData is invalid for CoffeeLake processors.
+     *
+     * @param initTimeData the initTimeData value to set.
+     * @return the AttestSgxEnclaveRequest object itself.
+     */
+    public AttestSgxEnclaveRequest setInitTimeJson(byte[] initTimeData) {
+        this.initTimeData = CoreUtils.clone(initTimeData);
+        this.initTimeDataType = DataType.JSON;
         return this;
     }
 
@@ -143,23 +181,6 @@ public final class AttestSgxEnclaveRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getRuntimeData() != null) {
-            getRuntimeData().validate();
-        }
-        if (getInitTimeData() != null) {
-            getInitTimeData().validate();
-        }
-    }
-
-    /**
-     * Returns an internal type from a public type.
-     * @return implementation type.
-     */
-    public com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest toGenerated() {
-        return new com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest()
-            .setDraftPolicyForAttestation(draftPolicyForAttestation)
-            .setRuntimeData(runtimeData != null ? runtimeData.toGenerated() : null)
-            .setInitTimeData(initTimeData != null ? initTimeData.toGenerated() : null)
-            .setQuote(quote.decodedBytes());
+        Objects.requireNonNull(quote);
     }
 }
