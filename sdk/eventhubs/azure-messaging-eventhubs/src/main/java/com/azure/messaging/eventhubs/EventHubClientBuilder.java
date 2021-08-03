@@ -807,8 +807,15 @@ public class EventHubClientBuilder {
         } else {
             com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
                 .fromConfiguration(configuration);
-            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
-                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
+            if (coreProxyOptions == null) {
+                logger.info("coreProxyOptions is null for proxyAddress " + proxyAddress
+                        +  " configuration value = " + configuration.get(Configuration.PROPERTY_HTTP_PROXY));
+            }
+            Proxy.Type proxyType = coreProxyOptions.getType().toProxyType();
+            InetSocketAddress coreProxyAddress = coreProxyOptions.getAddress();
+            String username = coreProxyOptions.getUsername();
+            String password = coreProxyOptions.getPassword();
+            return new ProxyOptions(authentication, new Proxy(proxyType, coreProxyAddress), username, password);
         }
     }
 }
