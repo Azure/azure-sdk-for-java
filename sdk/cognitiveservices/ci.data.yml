@@ -8,10 +8,9 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/cognitiveservices/
+      - sdk/cognitiveservices/ci.data.yml
     exclude:
-      - sdk/cognitiveservices/mgmt-v2016_02_01_preview
-      - sdk/cognitiveservices/mgmt-v2017_04_18
+      - sdk/cognitiveservices/pom.xml
 
 pr:
   branches:
@@ -22,10 +21,9 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/cognitiveservices/
+      - sdk/cognitiveservices/ci.data.yml
     exclude:
-      - sdk/cognitiveservices/mgmt-v2016_02_01_preview
-      - sdk/cognitiveservices/mgmt-v2017_04_18
+      - sdk/cognitiveservices/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

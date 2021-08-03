@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/databox/
+      - sdk/databox/ci.yml
+      - sdk/databox/azure-resourcemanager-databox/
+    exclude:
+      - sdk/databox/pom.xml
+      - sdk/databox/azure-resourcemanager-databox/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/databox/
+      - sdk/databox/ci.yml
+      - sdk/databox/azure-resourcemanager-databox/
+    exclude:
+      - sdk/databox/pom.xml
+      - sdk/databox/azure-resourcemanager-databox/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

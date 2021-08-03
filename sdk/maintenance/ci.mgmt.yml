@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/maintenance/
+      - sdk/maintenance/ci.mgmt.yml
+      - sdk/maintenance/mgmt-v2018_06_01_preview/
+    exclude:
+      - sdk/maintenance/pom.xml
+      - sdk/maintenance/mgmt-v2018_06_01_preview/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/maintenance/
+      - sdk/maintenance/ci.mgmt.yml
+      - sdk/maintenance/mgmt-v2018_06_01_preview/
+    exclude:
+      - sdk/maintenance/pom.xml
+      - sdk/maintenance/mgmt-v2018_06_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

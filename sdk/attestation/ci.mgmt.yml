@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/attestation/
+      - sdk/attestation/ci.mgmt.yml
+      - sdk/attestation/mgmt-v2020_10_01/
+    exclude:
+      - sdk/attestation/pom.xml
+      - sdk/attestation/mgmt-v2020_10_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/attestation/
+      - sdk/attestation/ci.mgmt.yml
+      - sdk/attestation/mgmt-v2020_10_01/
+    exclude:
+      - sdk/attestation/pom.xml
+      - sdk/attestation/mgmt-v2020_10_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

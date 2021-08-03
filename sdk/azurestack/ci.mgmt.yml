@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/azurestack/
+      - sdk/azurestack/ci.mgmt.yml
+      - sdk/azurestack/mgmt-v2017_06_01/
+    exclude:
+      - sdk/azurestack/pom.xml
+      - sdk/azurestack/mgmt-v2017_06_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/azurestack/
+      - sdk/azurestack/ci.mgmt.yml
+      - sdk/azurestack/mgmt-v2017_06_01/
+    exclude:
+      - sdk/azurestack/pom.xml
+      - sdk/azurestack/mgmt-v2017_06_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

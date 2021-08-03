@@ -8,7 +8,23 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/communication/
+      - sdk/communication/ci.yml
+      - sdk/communication/azure-communication-callingserver/
+      - sdk/communication/azure-communication-chat/
+      - sdk/communication/azure-communication-common/
+      - sdk/communication/azure-communication-identity/
+      - sdk/communication/azure-communication-phonenumbers/
+      - sdk/communication/azure-communication-sms/
+      - sdk/communication/azure-resourcemanager-communication/
+    exclude:
+      - sdk/communication/pom.xml
+      - sdk/communication/azure-communication-callingserver/pom.xml
+      - sdk/communication/azure-communication-chat/pom.xml
+      - sdk/communication/azure-communication-common/pom.xml
+      - sdk/communication/azure-communication-identity/pom.xml
+      - sdk/communication/azure-communication-phonenumbers/pom.xml
+      - sdk/communication/azure-communication-sms/pom.xml
+      - sdk/communication/azure-resourcemanager-communication/pom.xml
 
 pr:
   branches:
@@ -19,7 +35,23 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/communication/
+      - sdk/communication/ci.yml
+      - sdk/communication/azure-communication-callingserver/
+      - sdk/communication/azure-communication-chat/
+      - sdk/communication/azure-communication-common/
+      - sdk/communication/azure-communication-identity/
+      - sdk/communication/azure-communication-phonenumbers/
+      - sdk/communication/azure-communication-sms/
+      - sdk/communication/azure-resourcemanager-communication/
+    exclude:
+      - sdk/communication/pom.xml
+      - sdk/communication/azure-communication-callingserver/pom.xml
+      - sdk/communication/azure-communication-chat/pom.xml
+      - sdk/communication/azure-communication-common/pom.xml
+      - sdk/communication/azure-communication-identity/pom.xml
+      - sdk/communication/azure-communication-phonenumbers/pom.xml
+      - sdk/communication/azure-communication-sms/pom.xml
+      - sdk/communication/azure-resourcemanager-communication/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
