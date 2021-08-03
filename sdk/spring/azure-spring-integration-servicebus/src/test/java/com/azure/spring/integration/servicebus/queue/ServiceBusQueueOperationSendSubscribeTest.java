@@ -5,7 +5,6 @@ package com.azure.spring.integration.servicebus.queue;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.support.ServiceBusQueueTestOperation;
 import com.azure.spring.integration.test.support.SendSubscribeWithoutGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -15,9 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ServiceBusQueueOperationSendSubscribeTest
@@ -28,13 +25,11 @@ public class ServiceBusQueueOperationSendSubscribeTest
     @Mock
     ServiceBusQueueClientFactory clientFactory;
 
-    private InstrumentationManager instrumentationManager = new InstrumentationManager();
-
     @BeforeEach
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.sendSubscribeOperation = new ServiceBusQueueTestOperation(clientFactory, instrumentationManager);
+        this.sendSubscribeOperation = new ServiceBusQueueTestOperation(clientFactory);
     }
 
     @AfterEach

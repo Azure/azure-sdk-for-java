@@ -12,8 +12,6 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
-import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +32,7 @@ import org.springframework.util.Assert;
  */
 @Configuration
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
-@ConditionalOnClass(value = { ServiceBusProcessorClient.class, ServiceBusTopicClientFactory.class })
+@ConditionalOnClass(value = {ServiceBusProcessorClient.class, ServiceBusTopicClientFactory.class})
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 public class AzureServiceBusTopicAutoConfiguration {
 
@@ -91,15 +89,8 @@ public class AzureServiceBusTopicAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusTopicClientFactory.class)
-    public ServiceBusTopicOperation topicOperation(ServiceBusTopicClientFactory factory,
-                                                   ServiceBusMessageConverter messageConverter,
-                                                   InstrumentationManager instrumentationManager) {
-        return new ServiceBusTopicTemplate(factory, messageConverter, instrumentationManager);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public InstrumentationManager instrumentationManager() {
-        return new InstrumentationManager();
+    public ServiceBusTopicTemplate topicOperation(ServiceBusTopicClientFactory factory,
+                                                   ServiceBusMessageConverter messageConverter) {
+        return new ServiceBusTopicTemplate(factory, messageConverter);
     }
 }

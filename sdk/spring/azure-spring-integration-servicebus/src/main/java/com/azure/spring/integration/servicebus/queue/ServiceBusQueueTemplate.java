@@ -13,7 +13,6 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.health.Instrumentation;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.support.MessageBuilder;
@@ -40,15 +39,13 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     private final Set<String> subscribedQueues = ConcurrentHashMap.newKeySet();
 
-    public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory,
-                                   InstrumentationManager instrumentationManager) {
-        super(clientFactory, instrumentationManager);
+    public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory) {
+        super(clientFactory);
     }
 
     public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory,
-                                   ServiceBusMessageConverter messageConverter,
-                                   InstrumentationManager instrumentationManager) {
-        super(clientFactory, messageConverter, instrumentationManager);
+                                   ServiceBusMessageConverter messageConverter) {
+        super(clientFactory, messageConverter);
     }
 
     /**
@@ -75,7 +72,7 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
             }
         };
         try {
-            instrumentationManager.addHealthInstrumentation(new Instrumentation(name));
+            instrumentationManager.addHealthInstrumentation(new Instrumentation(name, Instrumentation.Type.CONSUME));
             ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, clientConfig,
                 messageProcessor);
             processorClient.start();

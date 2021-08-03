@@ -9,26 +9,16 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * A test implementation of {@link ServiceBusQueueTemplate}. This is used for testing.
@@ -44,9 +34,8 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     private final AtomicInteger completeCalledTimes = new AtomicInteger(0);
     private final AtomicInteger deadLetterCalledTimes = new AtomicInteger(0);
 
-    public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory,
-                                        InstrumentationManager instrumentationManager) {
-        super(clientFactory, instrumentationManager);
+    public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory) {
+        super(clientFactory);
     }
 
     @Override

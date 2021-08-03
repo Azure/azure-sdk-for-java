@@ -4,7 +4,6 @@
 package com.azure.spring.integration.servicebus.queue;
 
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusQueueInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.support.ServiceBusQueueTestOperation;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
@@ -19,15 +18,13 @@ public class ServiceBusQueueInboundAdapterTest extends InboundChannelAdapterTest
     ServiceBusQueueClientFactory clientFactory;
 
     private AutoCloseable closeable;
-    private InstrumentationManager instrumentationManager = new InstrumentationManager();
-
 
     @BeforeEach
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.adapter = new ServiceBusQueueInboundChannelAdapter(destination,
-            new ServiceBusQueueTestOperation(clientFactory, instrumentationManager));
+            new ServiceBusQueueTestOperation(clientFactory));
     }
 
     @AfterEach

@@ -12,7 +12,6 @@ import com.azure.spring.integration.servicebus.ServiceBusTemplate;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.health.Instrumentation;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.support.MessageBuilder;
@@ -42,15 +41,13 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
     private final Set<Tuple<String, String>> nameAndConsumerGroups = ConcurrentHashMap.newKeySet();
 
-    public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory,
-                                   InstrumentationManager instrumentationManager) {
-        super(clientFactory, instrumentationManager);
+    public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory) {
+        super(clientFactory);
     }
 
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory,
-                                   ServiceBusMessageConverter messageConverter,
-                                   InstrumentationManager instrumentationManager) {
-        super(clientFactory, messageConverter, instrumentationManager);
+                                   ServiceBusMessageConverter messageConverter) {
+        super(clientFactory, messageConverter);
     }
 
     @Override
@@ -115,7 +112,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         };
 
         try {
-            instrumentationManager.addHealthInstrumentation(new Instrumentation(name + consumerGroup));
+            instrumentationManager.addHealthInstrumentation(new Instrumentation(name + consumerGroup, Instrumentation.Type.CONSUME));
             ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, consumerGroup,
                 this.clientConfig, messageProcessor);
             processorClient.start();

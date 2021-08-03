@@ -4,18 +4,20 @@ package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.spring.integration.servicebus.health.Instrumentation;
 import com.azure.spring.integration.servicebus.health.InstrumentationManager;
+import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
 /**
- *  Implementation of a {@link AbstractHealthIndicator} returning status information for
- *  service bus topic.
+ * Implementation of a {@link AbstractHealthIndicator} returning status information for
+ * service bus topic.
  */
 public class ServiceBusTopicHealthIndicator extends AbstractHealthIndicator {
     private final InstrumentationManager instrumentationManager;
 
-    public ServiceBusTopicHealthIndicator(InstrumentationManager instrumentationManager) {
-        this.instrumentationManager = instrumentationManager;
+    public ServiceBusTopicHealthIndicator(ServiceBusTopicTemplate serviceBusTopicTemplate) {
+        super("Service bus health check failed");
+        this.instrumentationManager = serviceBusTopicTemplate.getInstrumentationManager();
     }
 
 

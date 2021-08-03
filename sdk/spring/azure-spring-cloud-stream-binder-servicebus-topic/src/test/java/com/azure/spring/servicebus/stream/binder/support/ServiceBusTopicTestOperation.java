@@ -9,16 +9,11 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -35,9 +30,8 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     private final Map<String, Map<String, DefaultServiceBusMessageProcessor>> processorsByTopicAndSub =
         new ConcurrentHashMap<>();
 
-    public ServiceBusTopicTestOperation(ServiceBusTopicClientFactory clientFactory,
-                                        InstrumentationManager instrumentationManager) {
-        super(clientFactory, instrumentationManager);
+    public ServiceBusTopicTestOperation(ServiceBusTopicClientFactory clientFactory) {
+        super(clientFactory);
     }
 
     @Override

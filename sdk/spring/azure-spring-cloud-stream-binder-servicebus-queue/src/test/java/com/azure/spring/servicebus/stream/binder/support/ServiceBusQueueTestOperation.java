@@ -9,19 +9,11 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -39,9 +31,8 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     private final Map<String, List<ServiceBusReceivedMessageContext>> queuesByName = new HashMap<>();
     private final Map<String, List<DefaultServiceBusMessageProcessor>> processorsByQueue = new HashMap<>();
 
-    public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory,
-                                        InstrumentationManager instrumentationManager) {
-        super(clientFactory, instrumentationManager);
+    public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory) {
+        super(clientFactory);
     }
 
     @Override

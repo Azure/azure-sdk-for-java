@@ -6,15 +6,12 @@ package com.azure.spring.integration.servicebus.health;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
  * ServiceBus health details management class.
  */
 public class InstrumentationManager {
-
-    private final Map<String, Object> runtime = new ConcurrentHashMap<>();
 
     private final Map<String, Instrumentation> healthInstrumentations = new HashMap<>();
 
@@ -29,10 +26,6 @@ public class InstrumentationManager {
 
     public Instrumentation getHealthInstrumentation(String key) {
         return healthInstrumentations.get(key);
-    }
-
-    public Map<String, Object> getRuntime() {
-        return runtime;
     }
 
 }

@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.integration.servicebus.ServiceBusTemplateSendTest;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
@@ -22,7 +21,6 @@ public class QueueTemplateSendTest
     extends ServiceBusTemplateSendTest<ServiceBusQueueClientFactory, ServiceBusSenderAsyncClient> {
 
     private AutoCloseable closeable;
-    private InstrumentationManager instrumentationManager = new InstrumentationManager();
 
     @BeforeEach
     @Override
@@ -34,8 +32,7 @@ public class QueueTemplateSendTest
         when(this.mockClientFactory.getOrCreateSender(anyString())).thenReturn(this.mockClient);
         when(this.mockClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
 
-        this.sendOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter(),
-            instrumentationManager);
+        this.sendOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
     }
 
 

@@ -4,7 +4,6 @@
 package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusProducerProperties;
 import com.azure.spring.servicebus.stream.binder.support.ServiceBusQueueTestOperation;
@@ -35,12 +34,9 @@ public class ServiceBusQueuePartitionBinderTests
 
     private ServiceBusQueueTestBinder binder;
 
-    private InstrumentationManager instrumentationManager = new InstrumentationManager();
-
     @Before
     public void setUp() {
-        this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory,
-            instrumentationManager));
+        this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory));
     }
 
     @Override

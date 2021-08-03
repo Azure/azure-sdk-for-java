@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.servicebus.stream.binder.config;
 
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
+import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import com.azure.spring.servicebus.stream.binder.ServiceBusTopicHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceBusTopicBinderHealthIndicatorConfiguration {
 
     @Bean
-    public ServiceBusTopicHealthIndicator serviceBusQueueHealthIndicator(InstrumentationManager instrumentationManager) {
-        return new ServiceBusTopicHealthIndicator(instrumentationManager);
+    public ServiceBusTopicHealthIndicator serviceBusQueueHealthIndicator(ServiceBusTopicTemplate serviceBusTopicTemplate) {
+        return new ServiceBusTopicHealthIndicator(serviceBusTopicTemplate);
     }
 
 }

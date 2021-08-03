@@ -5,7 +5,6 @@ package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.integration.test.support.SendSubscribeWithGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -15,9 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceBusTopicOperationSendSubscribeTest
     extends SendSubscribeWithGroupOperationTest<ServiceBusTopicOperation> {
@@ -27,12 +24,11 @@ public class ServiceBusTopicOperationSendSubscribeTest
 
     private AutoCloseable closeable;
 
-    private InstrumentationManager instrumentationManager = new InstrumentationManager();
 
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.sendSubscribeOperation = new ServiceBusTopicTestOperation(clientFactory, instrumentationManager);
+        this.sendSubscribeOperation = new ServiceBusTopicTestOperation(clientFactory);
     }
 
     @AfterEach

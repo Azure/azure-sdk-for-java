@@ -5,7 +5,6 @@ package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.support.ServiceBusProcessorClientWrapper;
 import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -16,10 +15,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<ServiceBusTopicOperation> {
 
@@ -27,15 +23,13 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
     private ServiceBusTopicClientFactory mockClientFactory;
     private ServiceBusProcessorClientWrapper processorClientWrapper;
     private AutoCloseable closeable;
-    private InstrumentationManager instrumentationManager = new InstrumentationManager();
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
         ServiceBusProcessorClientWrapper anotherProcessorClientWrapper = new ServiceBusProcessorClientWrapper();
 
-        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory,
-            new ServiceBusMessageConverter(), instrumentationManager);
+        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateProcessor(eq(this.destination),
                                                          eq(this.consumerGroup),
                                                          any(),

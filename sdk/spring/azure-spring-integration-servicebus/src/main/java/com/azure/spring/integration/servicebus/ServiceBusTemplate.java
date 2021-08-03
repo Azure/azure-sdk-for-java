@@ -39,21 +39,19 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTemplate.class);
     private static final CheckpointConfig CHECKPOINT_RECORD = CheckpointConfig.builder().checkpointMode(RECORD).build();
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
+    protected InstrumentationManager instrumentationManager = new InstrumentationManager();
     protected final T clientFactory;
     protected CheckpointConfig checkpointConfig = CHECKPOINT_RECORD;
     protected ServiceBusClientConfig clientConfig = ServiceBusClientConfig.builder().build();
     protected ServiceBusMessageConverter messageConverter;
-    protected InstrumentationManager instrumentationManager;
 
-    public ServiceBusTemplate(@NonNull T senderFactory, InstrumentationManager instrumentationManager) {
-        this(senderFactory, DEFAULT_CONVERTER, instrumentationManager);
+    public ServiceBusTemplate(@NonNull T senderFactory) {
+        this(senderFactory, DEFAULT_CONVERTER);
     }
 
-    public ServiceBusTemplate(@NonNull T senderFactory, @NonNull ServiceBusMessageConverter messageConverter,
-                              InstrumentationManager instrumentationManager) {
+    public ServiceBusTemplate(@NonNull T senderFactory, @NonNull ServiceBusMessageConverter messageConverter) {
         this.clientFactory = senderFactory;
         this.messageConverter = messageConverter;
-        this.instrumentationManager = instrumentationManager;
         LOGGER.info("Started ServiceBusTemplate with properties: {}", checkpointConfig);
     }
 
@@ -70,7 +68,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
             serviceBusMessage.setPartitionKey(partitionKey);
         }
         try {
-            instrumentationManager.addHealthInstrumentation(new Instrumentation(destination));
+            instrumentationManager.addHealthInstrumentation(new Instrumentation(destination, Instrumentation.Type.SUPPLY));
             senderAsyncClient = this.clientFactory.getOrCreateSender(destination);
             instrumentationManager.getHealthInstrumentation(destination).markStartedSuccessfully();
         } catch (Exception e) {
@@ -82,6 +80,10 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         }
 
         return senderAsyncClient.sendMessage(serviceBusMessage).toFuture();
+    }
+
+    public InstrumentationManager getInstrumentationManager() {
+        return instrumentationManager;
     }
 
     public CheckpointConfig getCheckpointConfig() {
