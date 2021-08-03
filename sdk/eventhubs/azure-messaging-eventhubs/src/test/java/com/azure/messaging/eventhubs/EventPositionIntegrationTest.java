@@ -182,8 +182,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
                 .take(numberOfEvents))
                 .then(() -> producer.send(events, options))
                 .expectNextCount(numberOfEvents)
-                .expectComplete()
-                .verify(TIMEOUT);
+                .verifyComplete();
 
             // Act
         } catch (Exception ex) {
