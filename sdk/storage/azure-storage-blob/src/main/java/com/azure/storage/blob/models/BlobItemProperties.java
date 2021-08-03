@@ -237,6 +237,23 @@ public final class BlobItemProperties {
     @JsonProperty(value = "LastAccessTime")
     private OffsetDateTime lastAccessedTime;
 
+    /*
+     * The Expiry-Time property.
+     */
+    @JsonProperty(value = "Expiry-Time")
+    private OffsetDateTime expiryTime;
+
+    /*
+     * The ImmutabilityPolicyUntilDate and ImmutabilityPolicyMode property.
+     */
+    private BlobImmutabilityPolicy immutabilityPolicy;
+
+    /*
+     * The LegalHold property.
+     */
+    @JsonProperty(value = "LegalHold")
+    private Boolean hasLegalHold;
+
     /**
      * Get the creationTime property: The creationTime property.
      *
@@ -983,6 +1000,66 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setLastAccessedTime(OffsetDateTime lastAccessedTime) {
         this.lastAccessedTime = lastAccessedTime;
+        return this;
+    }
+
+    /**
+     * Get the expiryTime property: The Expiry-Time property.
+     *
+     * @return the expiryTime value.
+     */
+    public OffsetDateTime getExpiryTime() {
+        return this.expiryTime;
+    }
+
+    /**
+     * Set the expiryTime property: The Expiry-Time property.
+     *
+     * @param expiryTime the expiryTime value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setExpiryTime(OffsetDateTime expiryTime) {
+        this.expiryTime = expiryTime;
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicy property: The ImmutabilityPolicyUntilDate and ImmutabilityPolicyMode property.
+     *
+     * @return the immutabilityPolicy value.
+     */
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return this.immutabilityPolicy;
+    }
+
+    /**
+     * Set the immutabilityPolicy property: The ImmutabilityPolicyUntilDate and ImmutabilityPolicyMode property.
+     *
+     * @param immutabilityPolicy the immutabilityPolicy value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        this.immutabilityPolicy = immutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * Get the hasLegalHold property: The LegalHold property.
+     *
+     * @return the hasLegalHold value.
+     */
+    public Boolean hasLegalHold() {
+        return this.hasLegalHold;
+    }
+
+    /**
+     * Set the hasLegalHold property: The LegalHold property.
+     *
+     * @param hasLegalHold the v value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setHasLegalHold(Boolean hasLegalHold) {
+        this.hasLegalHold = hasLegalHold;
         return this;
     }
 }

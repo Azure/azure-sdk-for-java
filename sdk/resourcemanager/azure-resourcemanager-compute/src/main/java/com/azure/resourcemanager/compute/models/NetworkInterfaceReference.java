@@ -24,6 +24,12 @@ public class NetworkInterfaceReference extends SubResource {
     @JsonProperty(value = "properties.primary")
     private Boolean primary;
 
+    /*
+     * Specify what happens to the network interface when the VM is deleted
+     */
+    @JsonProperty(value = "properties.deleteOption")
+    private DeleteOptions deleteOption;
+
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
@@ -43,6 +49,26 @@ public class NetworkInterfaceReference extends SubResource {
      */
     public NetworkInterfaceReference withPrimary(Boolean primary) {
         this.primary = primary;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the NetworkInterfaceReference object itself.
+     */
+    public NetworkInterfaceReference withDeleteOption(DeleteOptions deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 

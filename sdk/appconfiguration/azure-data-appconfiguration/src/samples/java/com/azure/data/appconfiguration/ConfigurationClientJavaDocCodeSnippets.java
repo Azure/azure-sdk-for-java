@@ -88,10 +88,20 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         System.out.printf("Key: %s, Label: %s, Value: %s", result.getKey(), result.getLabel(), result.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String
 
-    /**
-      Generates code sample for using
-     {@link ConfigurationClient#addConfigurationSettingWithResponse(ConfigurationSetting, Context)}
-     */
+        /**
+         Generates code sample for using
+         {@link ConfigurationClient#addConfigurationSetting(ConfigurationSetting)}
+         */
+        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting
+        ConfigurationSetting setting = configurationClient.addConfigurationSetting(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"));
+        System.out.printf("Key: %s, Label: %s, Value: %s", setting.getKey(), setting.getLabel(), setting.getValue());
+        // END: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting
+
+        /**
+          Generates code sample for using
+         {@link ConfigurationClient#addConfigurationSettingWithResponse(ConfigurationSetting, Context)}
+         */
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context
         Response<ConfigurationSetting> responseResultSetting = configurationClient
             .addConfigurationSettingWithResponse(
@@ -120,10 +130,21 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         System.out.printf("Key: %s, Label: %s, Value: %s", result.getKey(), result.getLabel(), result.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String
 
-    /**
-     * Generates code sample for using
-     * {@link ConfigurationClient#setConfigurationSettingWithResponse(ConfigurationSetting, boolean, Context)}
-     */
+        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting
+        ConfigurationSetting setting = configurationClient.setConfigurationSetting(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"));
+        System.out.printf("Key: %s, Label: %s, Value: %s", setting.getKey(), setting.getLabel(), setting.getValue());
+
+        // Update the value of the setting to "updated_db_connection".
+        setting = configurationClient.setConfigurationSetting(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("updated_db_connection"));
+        System.out.printf("Key: %s, Label: %s, Value: %s", setting.getKey(), setting.getLabel(), setting.getValue());
+        // END: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting
+
+        /**
+         * Generates code sample for using
+         * {@link ConfigurationClient#setConfigurationSettingWithResponse(ConfigurationSetting, boolean, Context)}
+         */
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context
         // Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection"
         Response<ConfigurationSetting> responseSetting = configurationClient.setConfigurationSettingWithResponse(
@@ -164,6 +185,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime
 
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting
+        ConfigurationSetting setting = configurationClient.getConfigurationSetting(
+            new ConfigurationSetting().setKey("prodDBConnection"));
+        System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting
+
     /**
       * Generates code sample for using {@link ConfigurationClient#getConfigurationSettingWithResponse(
       * ConfigurationSetting, OffsetDateTime, boolean, Context)}
@@ -184,11 +211,15 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void deleteConfigurationSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string
-        ConfigurationSetting result = configurationClient
-            .deleteConfigurationSetting("prodDBConnection", null);
+        ConfigurationSetting result = configurationClient.deleteConfigurationSetting("prodDBConnection", null);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
-
         // END: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string
+
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting
+        ConfigurationSetting setting = configurationClient.deleteConfigurationSetting(
+            new ConfigurationSetting().setKey("prodDBConnection"));
+        System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting
 
         /**
          * Generates code sample for using
@@ -213,6 +244,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean
 
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean
+        ConfigurationSetting setting = configurationClient.setReadOnly(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), true);
+        System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean
+
         /**
          * Generates code sample for using {@link ConfigurationClient#setReadOnlyWithResponse(ConfigurationSetting, Boolean, Context)}
          */
@@ -233,6 +270,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationSetting result = configurationClient.setReadOnly("prodDBConnection", "westUS", false);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly
+
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly
+        ConfigurationSetting setting = configurationClient.setReadOnly(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false);
+        System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly
 
         /**
          * Generates code sample for using

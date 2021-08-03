@@ -3,20 +3,20 @@
 
 package com.azure.spring.servicebus.stream.binder;
 
-import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
-import com.azure.spring.servicebus.stream.binder.properties.ServiceBusExtendedBindingProperties;
-import com.azure.spring.servicebus.stream.binder.properties.ServiceBusProducerProperties;
-import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.core.DefaultMessageHandler;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
+import com.azure.spring.servicebus.stream.binder.properties.ServiceBusExtendedBindingProperties;
+import com.azure.spring.servicebus.stream.binder.properties.ServiceBusProducerProperties;
+import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
+import org.springframework.cloud.stream.binder.BinderHeaders;
+import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
-import org.springframework.cloud.stream.binder.BinderHeaders;
-import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.integration.support.DefaultErrorMessageStrategy;
@@ -31,9 +31,9 @@ import org.springframework.messaging.MessageHandler;
  */
 public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtendedBindingProperties> extends
     AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
-            ExtendedProducerProperties<ServiceBusProducerProperties>,
+        ExtendedProducerProperties<ServiceBusProducerProperties>,
         ServiceBusChannelProvisioner>
-        implements
+    implements
     ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 
     protected T bindingProperties;
@@ -47,8 +47,11 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     }
 
     @Override
-    protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
-        ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {
+    protected MessageHandler createProducerMessageHandler(
+        ProducerDestination destination,
+        ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties,
+        MessageChannel errorChannel) {
+
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), getSendOperation());
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
@@ -56,7 +59,7 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
         handler.setSendFailureChannel(errorChannel);
         if (producerProperties.isPartitioned()) {
             handler.setPartitionKeyExpressionString(
-                    "'partitionKey-' + headers['" + BinderHeaders.PARTITION_HEADER + "']");
+                "'partitionKey-' + headers['" + BinderHeaders.PARTITION_HEADER + "']");
         } else {
             handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }
@@ -94,16 +97,22 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     }
 
     protected CheckpointConfig buildCheckpointConfig(
-            ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        return CheckpointConfig.builder().checkpointMode(properties.getExtension().getCheckpointMode()).build();
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+
+        return CheckpointConfig.builder()
+                               .checkpointMode(properties.getExtension().getCheckpointMode())
+                               .build();
     }
 
     protected ServiceBusClientConfig buildClientConfig(
-            ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+
         ServiceBusConsumerProperties consumerProperties = properties.getExtension();
-        return ServiceBusClientConfig.builder().setPrefetchCount(consumerProperties.getPrefetchCount())
-                .setConcurrency(consumerProperties.getConcurrency())
-                .setSessionsEnabled(consumerProperties.isSessionsEnabled()).build();
+        return ServiceBusClientConfig.builder()
+                                     .setPrefetchCount(consumerProperties.getPrefetchCount())
+                                     .setConcurrency(consumerProperties.getConcurrency())
+                                     .setSessionsEnabled(consumerProperties.isSessionsEnabled())
+                                     .build();
     }
 
     abstract SendOperation getSendOperation();

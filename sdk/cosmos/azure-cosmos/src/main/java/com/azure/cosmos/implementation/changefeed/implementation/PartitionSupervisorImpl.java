@@ -20,20 +20,17 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Implementation for {@link PartitionSupervisor}.
  */
-class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
+class PartitionSupervisorImpl implements PartitionSupervisor {
     private final Lease lease;
     private final ChangeFeedObserver observer;
     private final PartitionProcessor processor;
     private final LeaseRenewer renewer;
-    private CancellationTokenSource renewerCancellation;
-    private CancellationTokenSource processorCancellation;
+    private CancellationTokenSource childShutdownCts;
 
     private volatile RuntimeException resultException;
 
@@ -49,6 +46,8 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
         if (scheduler == null) {
             this.scheduler = Schedulers.boundedElastic();
         }
+
+        this.childShutdownCts = new CancellationTokenSource();
     }
 
     @Override
@@ -59,14 +58,10 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
         this.observer.open(context);
 
-        this.processorCancellation = new CancellationTokenSource();
-
-        this.scheduler.schedule(() -> this.processor.run(this.processorCancellation.getToken())
+        this.scheduler.schedule(() -> this.processor.run(this.childShutdownCts.getToken())
             .subscribe());
 
-        this.renewerCancellation = new CancellationTokenSource();
-
-        this.scheduler.schedule(() -> this.renewer.run(this.renewerCancellation.getToken())
+        this.scheduler.schedule(() -> this.renewer.run(this.childShutdownCts.getToken())
             .subscribe());
 
         return Mono.just(this)
@@ -81,8 +76,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
         try {
 
-            this.processorCancellation.cancel();
-            this.renewerCancellation.cancel();
+            this.childShutdownCts.cancel();
 
             if (this.processor.getResultException() != null) {
                 throw this.processor.getResultException();
@@ -127,11 +121,9 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        if (this.processorCancellation != null) {
-            this.processorCancellation.close();
+    public void shutdown() {
+        if (this.childShutdownCts != null) {
+            this.childShutdownCts.cancel();
         }
-
-        this.renewerCancellation.close();
     }
 }

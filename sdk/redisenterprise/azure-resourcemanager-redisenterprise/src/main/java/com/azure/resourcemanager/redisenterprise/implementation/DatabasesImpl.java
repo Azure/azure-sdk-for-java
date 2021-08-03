@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.fluent.DatabasesClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
@@ -26,9 +25,10 @@ public final class DatabasesImpl implements Databases {
 
     private final DatabasesClient innerClient;
 
-    private final RedisEnterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    public DatabasesImpl(DatabasesClient innerClient, RedisEnterpriseManager serviceManager) {
+    public DatabasesImpl(
+        DatabasesClient innerClient, com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -266,7 +266,7 @@ public final class DatabasesImpl implements Databases {
         return this.innerClient;
     }
 
-    private RedisEnterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 

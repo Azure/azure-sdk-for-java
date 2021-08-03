@@ -32,6 +32,7 @@ public final class CosmosChangeFeedRequestOptions {
     private ChangeFeedMode mode;
     private ChangeFeedStartFromInternal startFromInternal;
     private boolean isSplitHandlingDisabled;
+    private boolean quotaInfoEnabled;
     private String throughputControlGroupName;
 
     private CosmosChangeFeedRequestOptions(
@@ -144,6 +145,30 @@ public final class CosmosChangeFeedRequestOptions {
         this.maxPrefetchPageCount = maxPrefetchPageCount;
 
         return this;
+    }
+
+    /**
+     * Gets the quotaInfoEnabled setting for change feed request in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting quota related stats
+     *
+     * @return true if quotaInfoEnabled is enabled
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public boolean isQuotaInfoEnabled() {
+        return quotaInfoEnabled;
+    }
+
+    /**
+     * Gets the quotaInfoEnabled setting for change feed request in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting quota related stats
+     *
+     * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
+        this.quotaInfoEnabled = quotaInfoEnabled;
     }
 
     boolean isSplitHandlingDisabled() {

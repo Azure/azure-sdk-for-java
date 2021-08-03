@@ -2,23 +2,26 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/appconfiguration/ci.mgmt.yml
-      - sdk/appconfiguration/pom.mgmt.xml
-      - sdk/appconfiguration/mgmt-v2019_02_01_preview
-      - sdk/appconfiguration/mgmt-v2019_10_01
-      - sdk/appconfiguration/mgmt-v2019_11_01_preview
-      - sdk/appconfiguration/mgmt-v2019_06_01
+      - sdk/appconfiguration/mgmt-v2019_02_01_preview/
+      - sdk/appconfiguration/mgmt-v2019_10_01/
+      - sdk/appconfiguration/mgmt-v2019_11_01_preview/
+      - sdk/appconfiguration/mgmt-v2020_06_01/
+    exclude:
+      - sdk/appconfiguration/pom.xml
+      - sdk/appconfiguration/mgmt-v2019_02_01_preview/pom.xml
+      - sdk/appconfiguration/mgmt-v2019_10_01/pom.xml
+      - sdk/appconfiguration/mgmt-v2019_11_01_preview/pom.xml
+      - sdk/appconfiguration/mgmt-v2020_06_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -26,11 +29,16 @@ pr:
   paths:
     include:
       - sdk/appconfiguration/ci.mgmt.yml
-      - sdk/appconfiguration/pom.mgmt.xml
-      - sdk/appconfiguration/mgmt-v2019_02_01_preview
-      - sdk/appconfiguration/mgmt-v2019_10_01
-      - sdk/appconfiguration/mgmt-v2019_11_01_preview
-      - sdk/appconfiguration/mgmt-v2019_06_01
+      - sdk/appconfiguration/mgmt-v2019_02_01_preview/
+      - sdk/appconfiguration/mgmt-v2019_10_01/
+      - sdk/appconfiguration/mgmt-v2019_11_01_preview/
+      - sdk/appconfiguration/mgmt-v2020_06_01/
+    exclude:
+      - sdk/appconfiguration/pom.xml
+      - sdk/appconfiguration/mgmt-v2019_02_01_preview/pom.xml
+      - sdk/appconfiguration/mgmt-v2019_10_01/pom.xml
+      - sdk/appconfiguration/mgmt-v2019_11_01_preview/pom.xml
+      - sdk/appconfiguration/mgmt-v2020_06_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -1,5 +1,38 @@
-## 1.0.0-beta.4 (Unreleased)
+# Release History
 
+## 1.0.0-beta.5 (Unreleased)
+
+
+## 1.0.0-beta.4 (2021-04-06)
+
+### New Features
+- Update with Azure Data Factory(ADF) swagger changes/2019-06-01-preview
+
+### Breaking Changes
+- `DataFlowDebugSessionClient#createDataFlowDebugSessionWithResponse()` now returns `DataFlowDebugSessionsCreateDataFlowDebugSessionResponse`
+- `DataFlowDebugSessionClient#executeCommandWithResponse()` now returns `DataFlowDebugSessionsExecuteCommandResponse`
+- `LibraryAsyncClient#getOperationResultWithResponse()` now returns `Mono<Response<LibraryResource>>`
+- `LibraryAsyncClient#getOperationResult()` now returns `Mono<Response<LibraryResource>>`
+- `LibraryClient#getOperationResultWithResponse()` now returns `Response<LibraryResource>`
+- `LibraryClient#getOperationResult()` now returns `Response<LibraryResource>`
+- `AvroDataset.avroCompressionCodec` property is now of type `Object`
+- `CommonDataServiceForAppsLinkedService.servicePrincipalCredentialType` property is now of type `Object`
+- `DatasetDeflateCompression.level` property is now of type `Object`
+- `DatasetGZipCompression.level` property is now of type `Object`
+- `DatasetZipDeflateCompression.level` property is now of type `Object`
+- `DelimitedTextDataset.compressionCoded` property is now of type `CompressionCodec`
+- `DelimitedTextDataset.compressionLevel` property is now of type `Object`
+- `DynamicsCrmLinkedService.servicePrincipalCredentialType` property is now of type `Object`
+- `DynamicsLinkedService.hostName` property is now of type `Object`
+- `DynamicsLinkedService.port` property is now of type `Object`
+- `DynamicsLinkedService.serviceUri` property is now of type `Object`
+- `DynamicsLinkedService.organizationName` property is now of type `Object`
+- `ParquetDataset.compressionCodec` property is now of type `Object`
+- `RerunTumblingWindowTrigger.maxCurrency` property is renamed to `rerunCurrency`
+- `WaitActivity.waitTimeInSeconds` property is now of type `Object`
+
+### Dependency Updates
+- Update azure-core to 1.15.0
 
 ## 1.0.0-beta.3 (2021-03-09)
 

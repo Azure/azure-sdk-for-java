@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyPropertiesInner;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOption;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyProperties;
@@ -16,9 +15,11 @@ import java.util.UUID;
 public final class ContentKeyPolicyPropertiesImpl implements ContentKeyPolicyProperties {
     private ContentKeyPolicyPropertiesInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    ContentKeyPolicyPropertiesImpl(ContentKeyPolicyPropertiesInner innerObject, MediaservicesManager serviceManager) {
+    ContentKeyPolicyPropertiesImpl(
+        ContentKeyPolicyPropertiesInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -52,7 +53,7 @@ public final class ContentKeyPolicyPropertiesImpl implements ContentKeyPolicyPro
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 }

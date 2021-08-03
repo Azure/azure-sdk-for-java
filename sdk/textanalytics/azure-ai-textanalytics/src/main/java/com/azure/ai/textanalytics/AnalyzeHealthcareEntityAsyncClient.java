@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
@@ -21,8 +22,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -46,7 +47,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
@@ -70,7 +70,7 @@ class AnalyzeHealthcareEntityAsyncClient {
         this.service = service;
     }
 
-    PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+    PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
         try {
@@ -80,13 +80,13 @@ class AnalyzeHealthcareEntityAsyncClient {
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: after poller has the poll interval, use it.
-                // https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        options.getModelVersion(),
+                        StringIndexType.UTF16CODE_UNIT,
+                        options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -98,7 +98,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                 pollingOperation(operationId -> service.healthStatusWithResponseAsync(operationId,
                     null, null, finalIncludeStatistics, finalContext)),
                 cancelOperation(operationId -> service.cancelHealthJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperation(operationId -> Mono.just(getHealthcareEntitiesResultCollectionFluxPage(operationId,
+                fetchingOperation(operationId -> Mono.just(getHealthcareEntitiesPagedFlux(operationId,
                     null, null, finalIncludeStatistics, finalContext)))
             );
         } catch (RuntimeException ex) {
@@ -106,7 +106,7 @@ class AnalyzeHealthcareEntityAsyncClient {
         }
     }
 
-    PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+    PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
         beginAnalyzeHealthcarePagedIterable(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options, Context context) {
         try {
@@ -116,13 +116,13 @@ class AnalyzeHealthcareEntityAsyncClient {
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
-                // TODO: after poller has the poll interval, use it.
-                // https://github.com/Azure/azure-sdk-for-java/issues/18827
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        options.getModelVersion(),
+                        StringIndexType.UTF16CODE_UNIT,
+                        options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -134,29 +134,31 @@ class AnalyzeHealthcareEntityAsyncClient {
                 pollingOperation(operationId -> service.healthStatusWithResponseAsync(operationId, null,
                     null, finalIncludeStatistics, finalContext)),
                 cancelOperation(operationId -> service.cancelHealthJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperationIterable(operationId -> Mono.just(new PagedIterable<>(
-                    getHealthcareEntitiesResultCollectionFluxPage(operationId, null, null, finalIncludeStatistics,
-                        finalContext)))));
+                fetchingOperationIterable(operationId -> Mono.just(new AnalyzeHealthcareEntitiesPagedIterable(
+                    getHealthcareEntitiesPagedFlux(operationId, null, null, finalIncludeStatistics,
+                        finalContext))))
+            );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
-    PagedFlux<AnalyzeHealthcareEntitiesResultCollection> getHealthcareEntitiesResultCollectionFluxPage(
+    AnalyzeHealthcareEntitiesPagedFlux getHealthcareEntitiesPagedFlux(
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new PagedFlux<>(
-            () -> getPagedResult(null, operationId, top, skip, showStats, context),
-            continuationToken -> getPagedResult(continuationToken, operationId, top, skip, showStats, context));
+        return new AnalyzeHealthcareEntitiesPagedFlux(
+            () -> (continuationToken, pageSize) ->
+                      getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
     }
 
     Mono<PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> getPagedResult(String continuationToken,
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
-                final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
-                final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
-                final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStats, context)
+                final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+                final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
+                final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+                final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStatsValue, context)
                            .map(this::toTextAnalyticsPagedResponse)
                            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } else {
@@ -242,8 +244,8 @@ class AnalyzeHealthcareEntityAsyncClient {
 
     // Fetching operation
     private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-                        Mono<PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>>
-        fetchingOperation(Function<UUID, Mono<PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>> fetchingFunction) {
+                        Mono<AnalyzeHealthcareEntitiesPagedFlux>>
+        fetchingOperation(Function<UUID, Mono<AnalyzeHealthcareEntitiesPagedFlux>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
@@ -278,9 +280,8 @@ class AnalyzeHealthcareEntityAsyncClient {
 
     // Fetching iterable operation
     private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-                        Mono<PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>>
-        fetchingOperationIterable(
-        final Function<UUID, Mono<PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>> fetchingFunction) {
+        Mono<AnalyzeHealthcareEntitiesPagedIterable>> fetchingOperationIterable(
+            final Function<UUID, Mono<AnalyzeHealthcareEntitiesPagedIterable>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());

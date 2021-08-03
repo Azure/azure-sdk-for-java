@@ -17,6 +17,9 @@ public final class PrivateEndpointConnectionsParentType
     /** Static value domains for PrivateEndpointConnectionsParentType. */
     public static final PrivateEndpointConnectionsParentType DOMAINS = fromString("domains");
 
+    /** Static value partnerNamespaces for PrivateEndpointConnectionsParentType. */
+    public static final PrivateEndpointConnectionsParentType PARTNER_NAMESPACES = fromString("partnerNamespaces");
+
     /**
      * Creates or finds a PrivateEndpointConnectionsParentType from its string representation.
      *

@@ -7,8 +7,11 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
@@ -21,6 +24,7 @@ import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
+import com.azure.spring.data.cosmos.domain.AutoScaleSample;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -59,6 +63,8 @@ import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -92,6 +98,7 @@ public class ReactiveCosmosTemplateIT {
     @Value("${cosmos.key}")
     private String cosmosDbKey;
 
+    private static CosmosAsyncClient client;
     private static ReactiveCosmosTemplate cosmosTemplate;
     private static String containerName;
     private static CosmosEntityInformation<Person, String> personInfo;
@@ -115,7 +122,7 @@ public class ReactiveCosmosTemplateIT {
         if (cosmosTemplate == null) {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
             cosmosClientBuilder.credential(azureKeyCredential);
-            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
+            client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
@@ -501,4 +508,20 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
     }
 
+    @Test
+    public void createWithAutoscale() {
+        final CosmosEntityInformation<AutoScaleSample, String> autoScaleSampleInfo =
+            new CosmosEntityInformation<>(AutoScaleSample.class);
+        CosmosContainerResponse containerResponse = cosmosTemplate
+            .createContainerIfNotExists(autoScaleSampleInfo)
+            .block();
+        assertNotNull(containerResponse);
+        ThroughputResponse throughput = client.getDatabase(TestConstants.DB_NAME)
+            .getContainer(autoScaleSampleInfo.getContainerName())
+            .readThroughput()
+            .block();
+        assertNotNull(throughput);
+        assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
+            throughput.getProperties().getAutoscaleMaxThroughput());
+    }
 }

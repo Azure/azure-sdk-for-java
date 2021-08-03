@@ -42,6 +42,11 @@ public class BlacklistedWordsCheckTest extends AbstractModuleTestSupport {
         verify(checker, getPath("BlacklistedWordsTestData.java"), expected);
     }
 
+    @Test
+    public void blacklistedWordsInterface() throws Exception {
+        verify(checker, getPath("BlacklistedWordsInterface.java"));
+    }
+
     private String expectedErrorMessage(int line, int column, String errorMessage) {
         return String.format("%d:%d: %s", line, column, errorMessage);
     }

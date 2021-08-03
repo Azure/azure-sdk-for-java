@@ -226,7 +226,7 @@ public final class ServicesImpl {
      *     operation crosses a partition boundary, then the service will return a continuation token for retrieving the
      *     remainder of the results. For this reason, it is possible that the service will return fewer results than
      *     specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify that the queues's metadata be returned as part of the response
+     * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
      *     body.
      * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting

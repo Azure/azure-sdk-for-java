@@ -10,9 +10,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.hdinsight.fluent.models.AsyncOperationResultInner;
+import com.azure.resourcemanager.hdinsight.fluent.models.AzureMonitorResponseInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterMonitoringResponseInner;
-import com.azure.resourcemanager.hdinsight.fluent.models.ExtensionInner;
+import com.azure.resourcemanager.hdinsight.models.AzureMonitorRequest;
 import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringRequest;
+import com.azure.resourcemanager.hdinsight.models.Extension;
 
 /** An instance of this class provides access to all the operations defined in ExtensionsClient. */
 public interface ExtensionsClient {
@@ -157,6 +160,146 @@ public interface ExtensionsClient {
     void disableMonitoring(String resourceGroupName, String clusterName, Context context);
 
     /**
+     * Enables the Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(
+        String resourceGroupName, String clusterName, AzureMonitorRequest parameters);
+
+    /**
+     * Enables the Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(
+        String resourceGroupName, String clusterName, AzureMonitorRequest parameters, Context context);
+
+    /**
+     * Enables the Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void enableAzureMonitor(String resourceGroupName, String clusterName, AzureMonitorRequest parameters);
+
+    /**
+     * Enables the Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The Log Analytics workspace parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void enableAzureMonitor(
+        String resourceGroupName, String clusterName, AzureMonitorRequest parameters, Context context);
+
+    /**
+     * Gets the status of Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of Azure Monitor on the HDInsight cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureMonitorResponseInner getAzureMonitorStatus(String resourceGroupName, String clusterName);
+
+    /**
+     * Gets the status of Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of Azure Monitor on the HDInsight cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AzureMonitorResponseInner> getAzureMonitorStatusWithResponse(
+        String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Disables the Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(String resourceGroupName, String clusterName);
+
+    /**
+     * Disables the Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(
+        String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Disables the Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableAzureMonitor(String resourceGroupName, String clusterName);
+
+    /**
+     * Disables the Azure Monitor on the HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableAzureMonitor(String resourceGroupName, String clusterName, Context context);
+
+    /**
      * Creates an HDInsight cluster extension.
      *
      * @param resourceGroupName The name of the resource group.
@@ -170,7 +313,7 @@ public interface ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<Void>, Void> beginCreate(
-        String resourceGroupName, String clusterName, String extensionName, ExtensionInner parameters);
+        String resourceGroupName, String clusterName, String extensionName, Extension parameters);
 
     /**
      * Creates an HDInsight cluster extension.
@@ -187,7 +330,7 @@ public interface ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<Void>, Void> beginCreate(
-        String resourceGroupName, String clusterName, String extensionName, ExtensionInner parameters, Context context);
+        String resourceGroupName, String clusterName, String extensionName, Extension parameters, Context context);
 
     /**
      * Creates an HDInsight cluster extension.
@@ -201,7 +344,7 @@ public interface ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void create(String resourceGroupName, String clusterName, String extensionName, ExtensionInner parameters);
+    void create(String resourceGroupName, String clusterName, String extensionName, Extension parameters);
 
     /**
      * Creates an HDInsight cluster extension.
@@ -217,7 +360,7 @@ public interface ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void create(
-        String resourceGroupName, String clusterName, String extensionName, ExtensionInner parameters, Context context);
+        String resourceGroupName, String clusterName, String extensionName, Extension parameters, Context context);
 
     /**
      * Gets the extension properties for the specified HDInsight cluster extension.
@@ -231,7 +374,7 @@ public interface ExtensionsClient {
      * @return the extension properties for the specified HDInsight cluster extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtensionInner get(String resourceGroupName, String clusterName, String extensionName);
+    ClusterMonitoringResponseInner get(String resourceGroupName, String clusterName, String extensionName);
 
     /**
      * Gets the extension properties for the specified HDInsight cluster extension.
@@ -246,7 +389,7 @@ public interface ExtensionsClient {
      * @return the extension properties for the specified HDInsight cluster extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtensionInner> getWithResponse(
+    Response<ClusterMonitoringResponseInner> getWithResponse(
         String resourceGroupName, String clusterName, String extensionName, Context context);
 
     /**
@@ -305,4 +448,37 @@ public interface ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String clusterName, String extensionName, Context context);
+
+    /**
+     * Gets the async operation status.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param extensionName The name of the cluster extension.
+     * @param operationId The long running operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the async operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationResultInner getAzureAsyncOperationStatus(
+        String resourceGroupName, String clusterName, String extensionName, String operationId);
+
+    /**
+     * Gets the async operation status.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param extensionName The name of the cluster extension.
+     * @param operationId The long running operation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the async operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(
+        String resourceGroupName, String clusterName, String extensionName, String operationId, Context context);
 }

@@ -39,4 +39,9 @@ public interface NicIpConfigurationBase extends HasSubnet, HasPrivateIpAddress {
 
     /** @return the application gateway backends associated with this network IP configuration */
     Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends();
+
+    /**
+     * @return the application security groups associated with this network IP configuration
+     */
+    List<ApplicationSecurityGroup> listAssociatedApplicationSecurityGroups();
 }

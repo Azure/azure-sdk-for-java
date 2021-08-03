@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADB2CLogoutSuccessHandlerTest {
 
     private static final String BASE_URI = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com";
@@ -17,7 +19,7 @@ public class AADB2CLogoutSuccessHandlerTest {
 
     private AADB2CProperties properties;
 
-    @Before
+    @BeforeAll
     public void setUp() {
         properties = new AADB2CProperties();
 

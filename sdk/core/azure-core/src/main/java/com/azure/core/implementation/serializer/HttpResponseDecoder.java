@@ -49,7 +49,7 @@ public final class HttpResponseDecoder {
         private final SerializerAdapter serializer;
         private final HttpResponseDecodeData decodeData;
         private Mono<Object> bodyCached;
-        private Mono<Object> headersCached;
+        private Object headersCached;
 
         /**
          * Creates HttpDecodedResponse.
@@ -104,11 +104,11 @@ public final class HttpResponseDecoder {
          *
          * @return publisher that emits entity instance representing decoded http headers
          */
-        public Mono<Object> getDecodedHeaders() {
+        public Object getDecodedHeaders() {
             if (this.headersCached == null) {
                 this.headersCached = HttpResponseHeaderDecoder.decode(this.response,
                     this.serializer,
-                    this.decodeData).cache();
+                    this.decodeData);
             }
             return this.headersCached;
         }

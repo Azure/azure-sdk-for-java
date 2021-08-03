@@ -1,8 +1,0 @@
-# In v2.0 tokens, `aud` is always the client ID of the API, while in v1.0 tokens it can be the resource URI used in the request.
-
-azure:
-  activedirectory:
-    b2c:
-      tenant-id: ${your-tenant-id}
-      app-id-uri: ${your-app-id-uri}         # If you are using v1.0 token, please configure app-id-uri for `aud` verification
-      client-id: ${your-client-id}           # If you are using v2.0 token, please configure client-id for `aud` verification

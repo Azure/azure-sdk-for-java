@@ -2,8 +2,9 @@ $Language = "java"
 $LanguageDisplayName = "Java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
-$MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
+$MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
+$CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
@@ -12,14 +13,25 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
   {
     $projectData = New-Object -TypeName XML
     $projectData.load($projectPath)
+
+    if ($projectData.project.psobject.properties.name -notcontains "artifactId" -or !$projectData.project.artifactId) {
+      Write-Host "$projectPath doesn't have a defined artifactId so skipping this pom."
+      return $null
+    }
+
+    if ($projectData.project.psobject.properties.name -notcontains "version" -or !$projectData.project.version) {
+      Write-Host "$projectPath doesn't have a defined version so skipping this pom."
+      return $null
+    }
+
+    if ($projectData.project.psobject.properties.name -notcontains "groupid" -or !$projectData.project.groupId) {
+      Write-Host "$projectPath doesn't have a defined groupId so skipping this pom."
+      return $null
+    }
+
     $projectPkgName = $projectData.project.artifactId
     $pkgVersion = $projectData.project.version
-    if ($projectData.project.psobject.properties.name -contains "groupId") {
-      $pkgGroup = $projectData.project.groupId
-    }
-    else {
-      $pkgGroup = "unknown"
-    }
+    $pkgGroup = $projectData.project.groupId
 
     $pkgProp = [PackageProps]::new($projectPkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
     if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
@@ -144,7 +156,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       $IndexHtml = Join-Path -Path $UnjarredDocumentationPath -ChildPath "index.html"
       if (!(Test-Path -path $IndexHtml))
       {
-        Write-Host "$($PkgName) does not have an index.html file, skippping."
+        Write-Host "$($PkgName) does not have an index.html file, skipping."
         continue
       }
 
@@ -157,13 +169,19 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       $Version = $PomXml.project.version
       $ArtifactId = $PomXml.project.artifactId
 
+      # inject the ga tag just before we upload the index to storage.
+      $indexContent = Get-Content -Path $IndexHtml -Raw
+      $tagContent = Get-Content -Path $CampaignTag -Raw
+
+      $indexContent = $indexContent.Replace("</head>", $tagContent + "</head>")
+      Set-Content -Path $IndexHtml -Value $indexContent -NoNewline
+
       Write-Host "Start Upload for $($PkgName)/$($Version)"
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
       $releaseTag = RetrieveReleaseTag $PublicArtifactLocation
       Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
-
     }
     Finally
     {
@@ -194,7 +212,7 @@ function Get-java-GithubIoDocIndex()
   # Build up the artifact to service name mapping for GithubIo toc.
   $tocContent = Get-TocMapping -metadata $uniquePackages -artifacts $artifacts
   # Generate yml/md toc files and build site.
-  GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
+  GenerateDocfxTocContent -tocContent $tocContent -lang "Java" -campaignId "UA-62780441-42"
 }
 
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different

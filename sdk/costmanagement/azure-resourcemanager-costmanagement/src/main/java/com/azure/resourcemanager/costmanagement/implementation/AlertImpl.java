@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.costmanagement.implementation;
 
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.models.AlertInner;
 import com.azure.resourcemanager.costmanagement.models.Alert;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDefinition;
@@ -17,9 +16,9 @@ import java.util.Map;
 public final class AlertImpl implements Alert {
     private AlertInner innerObject;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    AlertImpl(AlertInner innerObject, CostManagementManager serviceManager) {
+    AlertImpl(AlertInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,6 +33,15 @@ public final class AlertImpl implements Alert {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public AlertPropertiesDefinition definition() {
@@ -80,20 +88,11 @@ public final class AlertImpl implements Alert {
         return this.innerModel().statusModificationTime();
     }
 
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public AlertInner innerModel() {
         return this.innerObject;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 }

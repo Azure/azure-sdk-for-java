@@ -74,6 +74,12 @@ public final class FieldValue {
     private FieldValueSelectionMark valueSelectionMark;
 
     /*
+     * 3-letter country code (ISO 3166-1 alpha-3).
+     */
+    @JsonProperty(value = "valueCountryRegion")
+    private String valueCountryRegion;
+
+    /*
      * Text content of the extracted field.
      */
     @JsonProperty(value = "text")
@@ -301,6 +307,26 @@ public final class FieldValue {
      */
     public FieldValue setValueSelectionMark(FieldValueSelectionMark valueSelectionMark) {
         this.valueSelectionMark = valueSelectionMark;
+        return this;
+    }
+
+    /**
+     * Get the valueCountryRegion property: 3-letter country code (ISO 3166-1 alpha-3).
+     *
+     * @return the valueCountryRegion value.
+     */
+    public String getValueCountryRegion() {
+        return this.valueCountryRegion;
+    }
+
+    /**
+     * Set the valueCountryRegion property: 3-letter country code (ISO 3166-1 alpha-3).
+     *
+     * @param valueCountryRegion the valueCountryRegion value to set.
+     * @return the FieldValue object itself.
+     */
+    public FieldValue setValueCountryRegion(String valueCountryRegion) {
+        this.valueCountryRegion = valueCountryRegion;
         return this;
     }
 

@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
 import org.slf4j.Logger;

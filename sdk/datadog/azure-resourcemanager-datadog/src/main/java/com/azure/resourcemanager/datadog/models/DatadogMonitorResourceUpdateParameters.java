@@ -28,6 +28,12 @@ public final class DatadogMonitorResourceUpdateParameters {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
+    /*
+     * The sku property.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
     /**
      * Get the properties property: The set of properties that can be update in a PATCH request to a monitor resource.
      *
@@ -69,6 +75,26 @@ public final class DatadogMonitorResourceUpdateParameters {
     }
 
     /**
+     * Get the sku property: The sku property.
+     *
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The sku property.
+     *
+     * @param sku the sku value to set.
+     * @return the DatadogMonitorResourceUpdateParameters object itself.
+     */
+    public DatadogMonitorResourceUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -76,6 +102,9 @@ public final class DatadogMonitorResourceUpdateParameters {
     public void validate() {
         if (properties() != null) {
             properties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
         }
     }
 }

@@ -76,8 +76,8 @@ public class AuthenticationChallengeTest {
     @Test
     public void bearerTokenAuthenticationChallengeParsingTest() {
         // Create custom Headers
-        ARMChallengeAuthenticationPolicy armChallengeAuthenticationPolicy =
-            new ARMChallengeAuthenticationPolicy(mockCredential, AzureEnvironment.AZURE, DUMMY_SCOPE);
+        ArmChallengeAuthenticationPolicy armChallengeAuthenticationPolicy =
+            new ArmChallengeAuthenticationPolicy(mockCredential, AzureEnvironment.AZURE, DUMMY_SCOPE);
 
         for (String authChallenge : AUTHENTICATION_CHALLENGE_MAP.keySet()) {
             List<AuthenticationChallenge> authenticationChallenges = armChallengeAuthenticationPolicy

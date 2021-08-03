@@ -7,10 +7,10 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationVisibilityState;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -425,8 +425,5 @@ public class PartnerRegistrationInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (systemData() != null) {
-            systemData().validate();
-        }
     }
 }

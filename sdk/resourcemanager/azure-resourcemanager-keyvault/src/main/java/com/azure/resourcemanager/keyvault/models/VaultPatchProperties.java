@@ -30,7 +30,7 @@ public final class VaultPatchProperties {
     private Sku sku;
 
     /*
-     * An array of 0 to 1024 identities that have access to the key vault. All
+     * An array of 0 to 16 identities that have access to the key vault. All
      * identities in the array must use the same tenant ID as the key vault's
      * tenant ID.
      */
@@ -60,10 +60,28 @@ public final class VaultPatchProperties {
 
     /*
      * Property to specify whether the 'soft delete' functionality is enabled
-     * for this key vault. It does not accept false value.
+     * for this key vault. Once set to true, it cannot be reverted to false.
      */
     @JsonProperty(value = "enableSoftDelete")
     private Boolean enableSoftDelete;
+
+    /*
+     * Property that controls how data actions are authorized. When true, the
+     * key vault will use Role Based Access Control (RBAC) for authorization of
+     * data actions, and the access policies specified in vault properties will
+     * be  ignored (warning: this is a preview feature). When false, the key
+     * vault will use the access policies specified in vault properties, and
+     * any policy stored on Azure Resource Manager will be ignored. If null or
+     * not specified, the value of this property will not change.
+     */
+    @JsonProperty(value = "enableRbacAuthorization")
+    private Boolean enableRbacAuthorization;
+
+    /*
+     * softDelete data retention days. It accepts >=7 and <=90.
+     */
+    @JsonProperty(value = "softDeleteRetentionInDays")
+    private Integer softDeleteRetentionInDays;
 
     /*
      * The vault's create mode to indicate whether the vault need to be
@@ -133,8 +151,8 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the accessPolicies property: An array of 0 to 1024 identities that have access to the key vault. All
-     * identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Get the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
+     * in the array must use the same tenant ID as the key vault's tenant ID.
      *
      * @return the accessPolicies value.
      */
@@ -143,8 +161,8 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the accessPolicies property: An array of 0 to 1024 identities that have access to the key vault. All
-     * identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Set the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
+     * in the array must use the same tenant ID as the key vault's tenant ID.
      *
      * @param accessPolicies the accessPolicies value to set.
      * @return the VaultPatchProperties object itself.
@@ -222,7 +240,7 @@ public final class VaultPatchProperties {
 
     /**
      * Get the enableSoftDelete property: Property to specify whether the 'soft delete' functionality is enabled for
-     * this key vault. It does not accept false value.
+     * this key vault. Once set to true, it cannot be reverted to false.
      *
      * @return the enableSoftDelete value.
      */
@@ -232,13 +250,61 @@ public final class VaultPatchProperties {
 
     /**
      * Set the enableSoftDelete property: Property to specify whether the 'soft delete' functionality is enabled for
-     * this key vault. It does not accept false value.
+     * this key vault. Once set to true, it cannot be reverted to false.
      *
      * @param enableSoftDelete the enableSoftDelete value to set.
      * @return the VaultPatchProperties object itself.
      */
     public VaultPatchProperties withEnableSoftDelete(Boolean enableSoftDelete) {
         this.enableSoftDelete = enableSoftDelete;
+        return this;
+    }
+
+    /**
+     * Get the enableRbacAuthorization property: Property that controls how data actions are authorized. When true, the
+     * key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies
+     * specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault
+     * will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will
+     * be ignored. If null or not specified, the value of this property will not change.
+     *
+     * @return the enableRbacAuthorization value.
+     */
+    public Boolean enableRbacAuthorization() {
+        return this.enableRbacAuthorization;
+    }
+
+    /**
+     * Set the enableRbacAuthorization property: Property that controls how data actions are authorized. When true, the
+     * key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies
+     * specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault
+     * will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will
+     * be ignored. If null or not specified, the value of this property will not change.
+     *
+     * @param enableRbacAuthorization the enableRbacAuthorization value to set.
+     * @return the VaultPatchProperties object itself.
+     */
+    public VaultPatchProperties withEnableRbacAuthorization(Boolean enableRbacAuthorization) {
+        this.enableRbacAuthorization = enableRbacAuthorization;
+        return this;
+    }
+
+    /**
+     * Get the softDeleteRetentionInDays property: softDelete data retention days. It accepts &gt;=7 and &lt;=90.
+     *
+     * @return the softDeleteRetentionInDays value.
+     */
+    public Integer softDeleteRetentionInDays() {
+        return this.softDeleteRetentionInDays;
+    }
+
+    /**
+     * Set the softDeleteRetentionInDays property: softDelete data retention days. It accepts &gt;=7 and &lt;=90.
+     *
+     * @param softDeleteRetentionInDays the softDeleteRetentionInDays value to set.
+     * @return the VaultPatchProperties object itself.
+     */
+    public VaultPatchProperties withSoftDeleteRetentionInDays(Integer softDeleteRetentionInDays) {
+        this.softDeleteRetentionInDays = softDeleteRetentionInDays;
         return this;
     }
 

@@ -38,7 +38,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-storage-blob</artifactId>
-	<version>11.0.2</version>
+	<version>11.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

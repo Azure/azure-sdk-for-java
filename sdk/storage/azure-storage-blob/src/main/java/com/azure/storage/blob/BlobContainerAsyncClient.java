@@ -53,7 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -505,7 +505,7 @@ public final class BlobContainerAsyncClient {
                     hd.getLastModified(), hd.getXMsLeaseDuration(), hd.getXMsLeaseState(), hd.getXMsLeaseStatus(),
                     hd.getXMsBlobPublicAccess(), Boolean.TRUE.equals(hd.isXMsHasImmutabilityPolicy()),
                     Boolean.TRUE.equals(hd.isXMsHasLegalHold()), hd.getXMsDefaultEncryptionScope(),
-                    hd.isXMsDenyEncryptionScopeOverride());
+                    hd.isXMsDenyEncryptionScopeOverride(), hd.isXMsImmutableStorageWithVersioningEnabled());
                 return new SimpleResponse<>(rb, properties);
             });
     }
@@ -837,25 +837,40 @@ public final class BlobContainerAsyncClient {
      */
     PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, String continuationToken,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<BlobItem>>> func =
-            marker -> listBlobsFlatSegment(marker, options, timeout)
-                .map(response -> {
-                    List<BlobItem> value = response.getValue().getSegment() == null
-                        ? Collections.emptyList()
-                        : response.getValue().getSegment().getBlobItems().stream()
-                        .map(ModelHelper::populateBlobItem)
-                        .collect(Collectors.toList());
+        BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
+            (marker, pageSize) -> {
+                ListBlobsOptions finalOptions;
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
+                    } else {
+                        finalOptions = new ListBlobsOptions()
+                            .setMaxResultsPerPage(pageSize)
+                            .setPrefix(options.getPrefix())
+                            .setDetails(options.getDetails());
+                    }
+                } else {
+                    finalOptions = options;
+                }
 
-                    return new PagedResponseBase<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        value,
-                        response.getValue().getNextMarker(),
-                        response.getDeserializedHeaders());
-                });
+                return listBlobsFlatSegment(marker, finalOptions, timeout)
+                    .map(response -> {
+                        List<BlobItem> value = response.getValue().getSegment() == null
+                            ? Collections.emptyList()
+                            : response.getValue().getSegment().getBlobItems().stream()
+                            .map(ModelHelper::populateBlobItem)
+                            .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> func.apply(continuationToken), func);
+                        return new PagedResponseBase<>(
+                            response.getRequest(),
+                            response.getStatusCode(),
+                            response.getHeaders(),
+                            value,
+                            response.getValue().getNextMarker(),
+                            response.getDeserializedHeaders());
+                    });
+            };
+        return new PagedFlux<>(pageSize -> func.apply(continuationToken, pageSize), func);
     }
 
     /*
@@ -980,8 +995,27 @@ public final class BlobContainerAsyncClient {
      */
     PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<BlobItem>>> func =
-            marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
+        BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func =
+            (marker, pageSize) -> {
+                ListBlobsOptions finalOptions;
+                /*
+                 If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+                 Otherwise, prefer the new value.
+                 */
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
+                    } else {
+                        // Note that this prefers the value passed to .byPage(int) over the value on the options
+                        finalOptions = new ListBlobsOptions()
+                            .setMaxResultsPerPage(pageSize)
+                            .setPrefix(options.getPrefix())
+                            .setDetails(options.getDetails());
+                    }
+                } else {
+                    finalOptions = options;
+                }
+                return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? Collections.emptyList()
@@ -999,8 +1033,8 @@ public final class BlobContainerAsyncClient {
                         response.getValue().getNextMarker(),
                         response.getDeserializedHeaders());
                 });
-
-        return new PagedFlux<>(() -> func.apply(null), func);
+            };
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,

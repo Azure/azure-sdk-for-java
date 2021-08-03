@@ -122,9 +122,18 @@ public class DatabaseAccountUpdateParameters {
     private String keyVaultKeyUri;
 
     /*
+     * The default identity for accessing key vault used in features like
+     * customer managed keys. The default identity needs to be explicitly set
+     * by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity"
+     * and more.
+     */
+    @JsonProperty(value = "properties.defaultIdentity")
+    private String defaultIdentity;
+
+    /*
      * Whether requests from Public Network are allowed
      */
-    @JsonProperty(value = "properties.publicNetworkAccess", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
@@ -144,6 +153,12 @@ public class DatabaseAccountUpdateParameters {
      */
     @JsonProperty(value = "properties.enableAnalyticalStorage")
     private Boolean enableAnalyticalStorage;
+
+    /*
+     * Analytical storage specific properties.
+     */
+    @JsonProperty(value = "properties.analyticalStorageConfiguration")
+    private AnalyticalStorageConfiguration analyticalStorageConfiguration;
 
     /*
      * The object representing the policy for taking backups on an account.
@@ -169,6 +184,13 @@ public class DatabaseAccountUpdateParameters {
      */
     @JsonProperty(value = "properties.networkAclBypassResourceIds")
     private List<String> networkAclBypassResourceIds;
+
+    /*
+     * Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
 
     /**
      * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
@@ -490,12 +512,47 @@ public class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the defaultIdentity property: The default identity for accessing key vault used in features like customer
+     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
+     * "SystemAssignedIdentity" and more.
+     *
+     * @return the defaultIdentity value.
+     */
+    public String defaultIdentity() {
+        return this.defaultIdentity;
+    }
+
+    /**
+     * Set the defaultIdentity property: The default identity for accessing key vault used in features like customer
+     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
+     * "SystemAssignedIdentity" and more.
+     *
+     * @param defaultIdentity the defaultIdentity value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withDefaultIdentity(String defaultIdentity) {
+        this.defaultIdentity = defaultIdentity;
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
      *
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
         return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
     }
 
     /**
@@ -555,6 +612,27 @@ public class DatabaseAccountUpdateParameters {
      */
     public DatabaseAccountUpdateParameters withEnableAnalyticalStorage(Boolean enableAnalyticalStorage) {
         this.enableAnalyticalStorage = enableAnalyticalStorage;
+        return this;
+    }
+
+    /**
+     * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @return the analyticalStorageConfiguration value.
+     */
+    public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
+        return this.analyticalStorageConfiguration;
+    }
+
+    /**
+     * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+        this.analyticalStorageConfiguration = analyticalStorageConfiguration;
         return this;
     }
 
@@ -641,6 +719,28 @@ public class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -666,6 +766,9 @@ public class DatabaseAccountUpdateParameters {
         }
         if (apiProperties() != null) {
             apiProperties().validate();
+        }
+        if (analyticalStorageConfiguration() != null) {
+            analyticalStorageConfiguration().validate();
         }
         if (backupPolicy() != null) {
             backupPolicy().validate();

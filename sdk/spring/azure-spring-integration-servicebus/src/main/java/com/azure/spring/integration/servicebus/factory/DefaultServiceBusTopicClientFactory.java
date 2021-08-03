@@ -3,79 +3,116 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.azure.resourcemanager.servicebus.models.Topic;
-import com.azure.spring.cloud.context.core.util.Memoizer;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.context.core.util.Tuple;
-import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
-import com.microsoft.azure.servicebus.IMessageSender;
-import com.microsoft.azure.servicebus.ISubscriptionClient;
-import com.microsoft.azure.servicebus.ReceiveMode;
-import com.microsoft.azure.servicebus.SubscriptionClient;
-import com.microsoft.azure.servicebus.TopicClient;
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import org.springframework.util.StringUtils;
+import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
- * Default implementation of {@link ServiceBusTopicClientFactory}. Client will
- * be cached to improve performance
+ * Default implementation of {@link ServiceBusTopicClientFactory}. Client will be cached to improve performance
  *
  * @author Warren Zhu
  */
 public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSenderFactory
-    implements ServiceBusTopicClientFactory {
+    implements ServiceBusTopicClientFactory, DisposableBean {
 
-    private static final String SUBSCRIPTION_PATH = "%s/subscriptions/%s";
-    private final BiFunction<String, String, ISubscriptionClient> subscriptionClientCreator = Memoizer
-            .memoize(this::createSubscriptionClient);
-    private final Function<String, ? extends IMessageSender> sendCreator = Memoizer.memoize(this::createTopicClient);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusTopicClientFactory.class);
+    private final ServiceBusClientBuilder serviceBusClientBuilder;
+    private final Map<Tuple<String, String>, ServiceBusProcessorClient> topicProcessorMap = new ConcurrentHashMap<>();
+    private final Map<String, ServiceBusSenderAsyncClient> topicSenderMap = new ConcurrentHashMap<>();
 
     public DefaultServiceBusTopicClientFactory(String connectionString) {
+        this(connectionString, AmqpTransportType.AMQP);
+    }
+
+    public DefaultServiceBusTopicClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         super(connectionString);
+        this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
+        this.serviceBusClientBuilder.transportType(amqpTransportType);
     }
 
-    private ISubscriptionClient createSubscriptionClient(String topicName, String subscription) {
-
-        if (serviceBusTopicSubscriptionManager != null && StringUtils.hasText(namespace)) {
-            ServiceBusNamespace serviceBusNamespace = serviceBusNamespaceManager.get(namespace);
-            Topic topic = serviceBusTopicManager.getOrCreate(Tuple.of(serviceBusNamespace, topicName));
-            serviceBusTopicSubscriptionManager.getOrCreate(Tuple.of(topic, subscription));
-        }
-
-        String subscriptionPath = String.format(SUBSCRIPTION_PATH, topicName, subscription);
-        try {
-            return new SubscriptionClient(new ConnectionStringBuilder(connectionString, subscriptionPath),
-                    ReceiveMode.PEEKLOCK);
-        } catch (InterruptedException | ServiceBusException e) {
-            throw new ServiceBusRuntimeException("Failed to create service bus subscription client", e);
-        }
-    }
-
-    private IMessageSender createTopicClient(String topicName) {
-        if (serviceBusNamespaceManager != null && serviceBusTopicManager != null && StringUtils.hasText(namespace)) {
-            ServiceBusNamespace serviceBusNamespace = serviceBusNamespaceManager.getOrCreate(namespace);
-            serviceBusTopicManager.getOrCreate(Tuple.of(serviceBusNamespace, topicName));
-        }
-
-        try {
-            return new TopicClient(new ConnectionStringBuilder(connectionString, topicName));
-        } catch (InterruptedException | ServiceBusException e) {
-            throw new ServiceBusRuntimeException("Failed to create service bus topic client", e);
-        }
+    private <K, V> void close(Map<K, V> map, Consumer<V> close) {
+        map.values().forEach(it -> {
+            try {
+                close.accept(it);
+            } catch (Exception ex) {
+                LOGGER.warn("Failed to clean service bus queue client factory", ex);
+            }
+        });
     }
 
     @Override
-    public ISubscriptionClient getOrCreateSubscriptionClient(String topic, String subscription) {
-        return this.subscriptionClientCreator.apply(topic, subscription);
+    public void destroy() {
+        close(topicSenderMap, ServiceBusSenderAsyncClient::close);
+        close(topicProcessorMap, ServiceBusProcessorClient::close);
     }
 
     @Override
-    public IMessageSender getOrCreateSender(String name) {
-        return this.sendCreator.apply(name);
+    public ServiceBusProcessorClient getOrCreateProcessor(
+        String topic,
+        String subscription,
+        ServiceBusClientConfig clientConfig,
+        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+        return this.topicProcessorMap.computeIfAbsent(Tuple.of(topic, subscription),
+                                                      t -> createProcessor(t.getFirst(),
+                                                                           t.getSecond(),
+                                                                           clientConfig,
+                                                                           messageProcessor));
+    }
+
+    @Override
+    public ServiceBusSenderAsyncClient getOrCreateSender(String name) {
+        return this.topicSenderMap.computeIfAbsent(name, this::createTopicSender);
+    }
+
+
+    private ServiceBusProcessorClient createProcessor(String topic,
+                                                      String subscription,
+                                                      ServiceBusClientConfig config,
+                                                      ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
+                                                                                    ServiceBusErrorContext> messageProcessor) {
+        if (config.isSessionsEnabled()) {
+            return serviceBusClientBuilder.sessionProcessor()
+                                          .topicName(topic)
+                                          .subscriptionName(subscription)
+                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                                          .maxConcurrentCalls(1)
+                                          // TODO, make it a constant or get duration is not exposed it from
+                                          //  clientConfig. And it looks like max auto renew
+                                          .maxConcurrentSessions(config.getConcurrency())
+                                          .prefetchCount(config.getPrefetchCount())
+                                          .disableAutoComplete()
+                                          .processMessage(messageProcessor.processMessage())
+                                          .processError(messageProcessor.processError())
+                                          .buildProcessorClient();
+        } else {
+            return serviceBusClientBuilder.processor()
+                                          .topicName(topic)
+                                          .subscriptionName(subscription)
+                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                                          .maxConcurrentCalls(config.getConcurrency())
+                                          .prefetchCount(config.getPrefetchCount())
+                                          .disableAutoComplete()
+                                          .processMessage(messageProcessor.processMessage())
+                                          .processError(messageProcessor.processError())
+                                          .buildProcessorClient();
+        }
+    }
+
+    private ServiceBusSenderAsyncClient createTopicSender(String name) {
+        return serviceBusClientBuilder.sender().topicName(name).buildAsyncClient();
     }
 }

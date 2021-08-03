@@ -24,13 +24,6 @@ public final class TextLine {
     private List<Float> boundingBox;
 
     /*
-     * The detected language of this line, if different from the overall page
-     * language.
-     */
-    @JsonProperty(value = "language")
-    private Language language;
-
-    /*
      * List of words in the text line.
      */
     @JsonProperty(value = "words", required = true)
@@ -79,26 +72,6 @@ public final class TextLine {
      */
     public TextLine setBoundingBox(List<Float> boundingBox) {
         this.boundingBox = boundingBox;
-        return this;
-    }
-
-    /**
-     * Get the language property: The detected language of this line, if different from the overall page language.
-     *
-     * @return the language value.
-     */
-    public Language getLanguage() {
-        return this.language;
-    }
-
-    /**
-     * Set the language property: The detected language of this line, if different from the overall page language.
-     *
-     * @param language the language value to set.
-     * @return the TextLine object itself.
-     */
-    public TextLine setLanguage(Language language) {
-        this.language = language;
         return this;
     }
 

@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
-import com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

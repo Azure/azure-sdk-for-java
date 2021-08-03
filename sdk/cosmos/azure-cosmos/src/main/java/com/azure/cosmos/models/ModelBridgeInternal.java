@@ -724,11 +724,19 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Map<String, Object> getPropertiesFromChangeFeedRequestOptions(CosmosChangeFeedRequestOptions options) {
+        if (options == null) {
+            return null;
+        }
+
         return options.getProperties();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Map<String, Object> getPropertiesFromQueryRequestOptions(CosmosQueryRequestOptions options) {
+        if (options == null) {
+            return null;
+        }
+
         return options.getProperties();
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mediaservices.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.mediaservices.models.PrivateEndpoint;
 import com.azure.resourcemanager.mediaservices.models.PrivateEndpointConnection;
@@ -16,7 +15,7 @@ public final class PrivateEndpointConnectionImpl
     implements PrivateEndpointConnection, PrivateEndpointConnection.Definition, PrivateEndpointConnection.Update {
     private PrivateEndpointConnectionInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -46,7 +45,7 @@ public final class PrivateEndpointConnectionImpl
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -82,7 +81,8 @@ public final class PrivateEndpointConnectionImpl
         return this;
     }
 
-    PrivateEndpointConnectionImpl(String name, MediaservicesManager serviceManager) {
+    PrivateEndpointConnectionImpl(
+        String name, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = new PrivateEndpointConnectionInner();
         this.serviceManager = serviceManager;
         this.name = name;
@@ -112,7 +112,9 @@ public final class PrivateEndpointConnectionImpl
         return this;
     }
 
-    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject, MediaservicesManager serviceManager) {
+    PrivateEndpointConnectionImpl(
+        PrivateEndpointConnectionInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

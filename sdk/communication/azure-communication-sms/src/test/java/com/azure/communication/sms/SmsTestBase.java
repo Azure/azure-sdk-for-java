@@ -16,7 +16,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
@@ -29,22 +28,18 @@ import com.azure.core.http.HttpResponse;
 
 public class SmsTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
-    protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
-
-    protected static final String ACCESSKEYRAW = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-    protected static final String ACCESSKEYENCODED = Base64.getEncoder().encodeToString(ACCESSKEYRAW.getBytes());
-    protected static final String ACCESSKEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ACCESS_KEY", ACCESSKEYENCODED);
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
+        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
+        .get("AZURE_PHONE_NUMBER", "+15551234567");
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_PHONE_NUMBER", "+15551234567");
+        .get("AZURE_PHONE_NUMBER", "+15551234567");
+
+    private static final String SKIP_INT_SMS_TEST = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_SKIP_INT_SMS_TEST", "False");
 
     protected static final String MESSAGE = "Hello";
 
@@ -57,10 +52,13 @@ public class SmsTestBase extends TestBase {
         Pattern.CASE_INSENSITIVE);
 
     protected SmsClientBuilder getSmsClient(HttpClient httpClient) {
-        AzureKeyCredential azureKeyCredential = new AzureKeyCredential(ACCESSKEY);
+        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+        String communicationEndpoint = communicationConnectionString.getEndpoint();
+        String communicationAccessKey = communicationConnectionString.getAccessKey(); 
+        
         SmsClientBuilder builder = new SmsClientBuilder();
-        builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
-            .credential(azureKeyCredential)
+        builder.endpoint(communicationEndpoint)
+            .credential(new AzureKeyCredential(communicationAccessKey))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
@@ -149,5 +147,9 @@ public class SmsTestBase extends TestBase {
             }
         }
         return content;
+    }
+
+    protected boolean shouldEnableSmsTests() {
+        return !Boolean.parseBoolean(SKIP_INT_SMS_TEST);
     }
 }

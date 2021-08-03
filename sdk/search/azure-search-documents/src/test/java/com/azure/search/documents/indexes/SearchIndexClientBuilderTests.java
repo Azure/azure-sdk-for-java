@@ -110,11 +110,6 @@ public class SearchIndexClientBuilderTests {
     }
 
     @Test
-    public void nullCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new SearchIndexClientBuilder().credential(null));
-    }
-
-    @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new SearchIndexClientBuilder()
             .credential(new AzureKeyCredential("")));
@@ -139,7 +134,7 @@ public class SearchIndexClientBuilderTests {
 
     public static HttpRequest request(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.HEAD,
-            new URL(url), new HttpHeaders().put("Content-Length", "0"),
+            new URL(url), new HttpHeaders().set("Content-Length", "0"),
             Flux.empty());
     }
 
@@ -166,6 +161,7 @@ public class SearchIndexClientBuilderTests {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
         SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
@@ -176,13 +172,14 @@ public class SearchIndexClientBuilderTests {
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, searchIndexClient::getServiceStatistics);
+        assertThrows(HttpResponseException.class, searchIndexClient::getServiceStatistics);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void applicationIdFallsBackToLogOptions() {
         SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
@@ -192,11 +189,11 @@ public class SearchIndexClientBuilderTests {
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, searchIndexClient::getServiceStatistics);
+        assertThrows(HttpResponseException.class, searchIndexClient::getServiceStatistics);
     }
 
     @Test
@@ -209,10 +206,10 @@ public class SearchIndexClientBuilderTests {
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, searchIndexClient::getServiceStatistics);
+        assertThrows(HttpResponseException.class, searchIndexClient::getServiceStatistics);
     }
 }

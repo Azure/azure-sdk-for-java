@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 final class Utils {
     static String getValueFromIdByName(String id, String name) {
@@ -79,76 +79,84 @@ final class Utils {
 
     private static final class PagedIterableImpl<T, S> extends PagedIterable<S> {
 
-        private final PagedIterable<T> pageIterable;
+        private final PagedIterable<T> pagedIterable;
         private final Function<T, S> mapper;
         private final Function<PagedResponse<T>, PagedResponse<S>> pageMapper;
 
-        private PagedIterableImpl(PagedIterable<T> pageIterable, Function<T, S> mapper) {
-            super(new PagedFlux<S>(Mono::empty));
-            this.pageIterable = pageIterable;
+        private PagedIterableImpl(PagedIterable<T> pagedIterable, Function<T, S> mapper) {
+            super(
+                PagedFlux
+                    .create(
+                        () ->
+                            (continuationToken, pageSize) ->
+                                Flux.fromStream(pagedIterable.streamByPage().map(getPageMapper(mapper)))));
+            this.pagedIterable = pagedIterable;
             this.mapper = mapper;
-            this.pageMapper =
-                page ->
-                    new PagedResponseBase<Void, S>(
-                        page.getRequest(),
-                        page.getStatusCode(),
-                        page.getHeaders(),
-                        page.getElements().stream().map(mapper).collect(Collectors.toList()),
-                        page.getContinuationToken(),
-                        null);
+            this.pageMapper = getPageMapper(mapper);
+        }
+
+        private static <T, S> Function<PagedResponse<T>, PagedResponse<S>> getPageMapper(Function<T, S> mapper) {
+            return page ->
+                new PagedResponseBase<Void, S>(
+                    page.getRequest(),
+                    page.getStatusCode(),
+                    page.getHeaders(),
+                    page.getElements().stream().map(mapper).collect(Collectors.toList()),
+                    page.getContinuationToken(),
+                    null);
         }
 
         @Override
         public Stream<S> stream() {
-            return pageIterable.stream().map(mapper);
+            return pagedIterable.stream().map(mapper);
         }
 
         @Override
         public Stream<PagedResponse<S>> streamByPage() {
-            return pageIterable.streamByPage().map(pageMapper);
+            return pagedIterable.streamByPage().map(pageMapper);
         }
 
         @Override
         public Stream<PagedResponse<S>> streamByPage(String continuationToken) {
-            return pageIterable.streamByPage(continuationToken).map(pageMapper);
+            return pagedIterable.streamByPage(continuationToken).map(pageMapper);
         }
 
         @Override
         public Stream<PagedResponse<S>> streamByPage(int preferredPageSize) {
-            return pageIterable.streamByPage(preferredPageSize).map(pageMapper);
+            return pagedIterable.streamByPage(preferredPageSize).map(pageMapper);
         }
 
         @Override
         public Stream<PagedResponse<S>> streamByPage(String continuationToken, int preferredPageSize) {
-            return pageIterable.streamByPage(continuationToken, preferredPageSize).map(pageMapper);
+            return pagedIterable.streamByPage(continuationToken, preferredPageSize).map(pageMapper);
         }
 
         @Override
         public Iterator<S> iterator() {
-            return new IteratorImpl<T, S>(pageIterable.iterator(), mapper);
+            return new IteratorImpl<T, S>(pagedIterable.iterator(), mapper);
         }
 
         @Override
         public Iterable<PagedResponse<S>> iterableByPage() {
-            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(pageIterable.iterableByPage(), pageMapper);
+            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(pagedIterable.iterableByPage(), pageMapper);
         }
 
         @Override
         public Iterable<PagedResponse<S>> iterableByPage(String continuationToken) {
             return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
-                pageIterable.iterableByPage(continuationToken), pageMapper);
+                pagedIterable.iterableByPage(continuationToken), pageMapper);
         }
 
         @Override
         public Iterable<PagedResponse<S>> iterableByPage(int preferredPageSize) {
             return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
-                pageIterable.iterableByPage(preferredPageSize), pageMapper);
+                pagedIterable.iterableByPage(preferredPageSize), pageMapper);
         }
 
         @Override
         public Iterable<PagedResponse<S>> iterableByPage(String continuationToken, int preferredPageSize) {
             return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
-                pageIterable.iterableByPage(continuationToken, preferredPageSize), pageMapper);
+                pagedIterable.iterableByPage(continuationToken, preferredPageSize), pageMapper);
         }
     }
 

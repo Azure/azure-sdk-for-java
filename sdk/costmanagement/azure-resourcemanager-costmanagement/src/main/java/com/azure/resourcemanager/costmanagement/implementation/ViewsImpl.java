@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.ViewsClient;
 import com.azure.resourcemanager.costmanagement.fluent.models.ViewInner;
 import com.azure.resourcemanager.costmanagement.models.View;
@@ -21,31 +20,32 @@ public final class ViewsImpl implements Views {
 
     private final ViewsClient innerClient;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public ViewsImpl(ViewsClient innerClient, CostManagementManager serviceManager) {
+    public ViewsImpl(
+        ViewsClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<View> list() {
         PagedIterable<ViewInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new ViewImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
     }
 
     public PagedIterable<View> list(Context context) {
         PagedIterable<ViewInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new ViewImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
     }
 
     public PagedIterable<View> listByScope(String scope) {
         PagedIterable<ViewInner> inner = this.serviceClient().listByScope(scope);
-        return inner.mapPage(inner1 -> new ViewImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
     }
 
     public PagedIterable<View> listByScope(String scope, Context context) {
         PagedIterable<ViewInner> inner = this.serviceClient().listByScope(scope, context);
-        return inner.mapPage(inner1 -> new ViewImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
     }
 
     public View get(String viewName) {
@@ -230,7 +230,7 @@ public final class ViewsImpl implements Views {
         return this.innerClient;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 

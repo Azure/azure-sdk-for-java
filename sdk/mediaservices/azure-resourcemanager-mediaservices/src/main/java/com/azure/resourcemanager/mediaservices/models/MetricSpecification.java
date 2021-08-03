@@ -63,6 +63,30 @@ public final class MetricSpecification {
     @JsonProperty(value = "dimensions", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricDimension> dimensions;
 
+    /*
+     * Indicates whether regional MDM account is enabled.
+     */
+    @JsonProperty(value = "enableRegionalMdmAccount", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean enableRegionalMdmAccount;
+
+    /*
+     * The source MDM account.
+     */
+    @JsonProperty(value = "sourceMdmAccount", access = JsonProperty.Access.WRITE_ONLY)
+    private String sourceMdmAccount;
+
+    /*
+     * The source MDM namespace.
+     */
+    @JsonProperty(value = "sourceMdmNamespace", access = JsonProperty.Access.WRITE_ONLY)
+    private String sourceMdmNamespace;
+
+    /*
+     * The supported time grain types.
+     */
+    @JsonProperty(value = "supportedTimeGrainTypes", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> supportedTimeGrainTypes;
+
     /**
      * Get the name property: The metric name.
      *
@@ -144,6 +168,42 @@ public final class MetricSpecification {
      */
     public List<MetricDimension> dimensions() {
         return this.dimensions;
+    }
+
+    /**
+     * Get the enableRegionalMdmAccount property: Indicates whether regional MDM account is enabled.
+     *
+     * @return the enableRegionalMdmAccount value.
+     */
+    public Boolean enableRegionalMdmAccount() {
+        return this.enableRegionalMdmAccount;
+    }
+
+    /**
+     * Get the sourceMdmAccount property: The source MDM account.
+     *
+     * @return the sourceMdmAccount value.
+     */
+    public String sourceMdmAccount() {
+        return this.sourceMdmAccount;
+    }
+
+    /**
+     * Get the sourceMdmNamespace property: The source MDM namespace.
+     *
+     * @return the sourceMdmNamespace value.
+     */
+    public String sourceMdmNamespace() {
+        return this.sourceMdmNamespace;
+    }
+
+    /**
+     * Get the supportedTimeGrainTypes property: The supported time grain types.
+     *
+     * @return the supportedTimeGrainTypes value.
+     */
+    public List<String> supportedTimeGrainTypes() {
+        return this.supportedTimeGrainTypes;
     }
 
     /**

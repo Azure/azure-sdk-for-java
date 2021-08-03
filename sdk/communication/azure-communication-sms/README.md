@@ -21,7 +21,7 @@ Azure Communication SMS is used to send simple text messages.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 
@@ -33,18 +33,14 @@ A `DefaultAzureCredential` object must be passed to the `SmsClientBuilder` via t
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables
 are needed to create a DefaultAzureCredential object.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L70-L80 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L56-L62 -->
 ```java
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
-// Create an HttpClient builder of your choice and customize it
-HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
 SmsClient smsClient = new SmsClientBuilder()
     .endpoint(endpoint)
     .credential(new DefaultAzureCredentialBuilder().build())
-    .httpClient(httpClient)
     .buildClient();
 ```
 
@@ -52,34 +48,26 @@ SmsClient smsClient = new SmsClientBuilder()
 SMS uses HMAC authentication with the resource access key.
 The access key must be provided to the `SmsClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L21-L32 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L19-L26 -->
 ```java
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<resource-name>.communication.azure.com";
 AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 
-// Create an HttpClient builder of your choice and customize it
-HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
 SmsClient smsClient = new SmsClientBuilder()
     .endpoint(endpoint)
     .credential(azureKeyCredential)
-    .httpClient(httpClient)
     .buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L55-L64 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L45-L50 -->
 ```java
 // You can find your connection string from your resource in the Azure Portal
 String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
-// Create an HttpClient builder of your choice and customize it
-HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
 SmsClient smsClient = new SmsClientBuilder()
     .connectionString(connectionString)
-    .httpClient(httpClient)
     .buildClient();
 ```
 
@@ -92,7 +80,7 @@ There are two different forms of authentication to use the Azure Communication S
 ### Send a 1:1 SMS Message
 Use the `send` or `sendWithResponse` function to send a SMS message to a single phone number.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L103-L110 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L82-L89 -->
 ```java
 SmsSendResult sendResult = smsClient.send(
     "<from-phone-number>",
@@ -106,7 +94,7 @@ System.out.println("Send Result Successful:" + sendResult.isSuccessful());
 ### Send a 1:N SMS Message
 To send a SMS message to a list of recipients, call the `send` or `sendWithResponse` function with a list of recipient phone numbers. You may also add pass in an options object to specify whether the delivery report should be enabled and set custom tags.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L116-L131 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L95-L110 -->
 ```java
 SmsSendOptions options = new SmsSendOptions();
 options.setDeliveryReportEnabled(true);
@@ -131,7 +119,7 @@ for (SmsSendResult result : sendResults) {
 SMS operations will throw an exception if the request to the server fails.
 Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
 Please use the `isSuccessful()` flag to validate each individual result to verify if the message was sent.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L153-L176 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L132-L155 -->
 ```java
 try {
     SmsSendOptions options = new SmsSendOptions();
@@ -172,7 +160,7 @@ try {
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-sms
 [api_documentation]: https://aka.ms/java-docs
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-sms/src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-sms/src
 [handle_sms_events]: https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/handle-sms-events
 [next_steps]:https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/send?pivots=programming-language-java
 

@@ -1,6 +1,43 @@
 # Release History
 
-## 4.1.0 (2020-03-25)
+## 4.6.0-beta.1 (Unreleased)
+
+
+## 4.5.0 (2021-07-19)
+### Features Added
+- Added `EventGridPublisherClientBuilder#credential(TokenCredential credential)` to support Azure Active Directory authentication.
+- Added field `metadata` to system event classes `AcsChatMessageEditedEventData`, `AcsChatMessageEditedInThreadEventData`, `AcsChatMessageReceivedEventData` and `AcsChatMessageReceivedInThreadEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.18.0`.
+- Update `azure-core-http-netty` dependency to `1.10.1`.
+
+## 4.4.0 (2021-06-09)
+### New Features
+- Added new Storage system event `StorageBlobInventoryPolicyCompletedEventData`.
+- Added new attributes `contentLocation` and `metadataLocation` to `AcsRecordingChunkInfoProperties`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.17.0`.
+- Update `azure-core-http-netty` dependency to `1.10.0`.
+
+
+## 4.3.0 (2021-05-12)
+### New Features
+- Added new Storage system events `StorageAsyncOperationInitiatedEventData` and `StorageBlobTierChangedEventData`.
+- Added new Policy Insights system events `PolicyInsightsPolicyStateCreatedEventData`, `PolicyInsightsPolicyStateChangedEventData`, and `PolicyInsightsPolicyStateDeletedEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.16.0`.
+- Update `azure-core-http-netty` dependency to `1.9.2`.
+
+## 4.2.0 (2021-04-07)
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.15.0`.
+- Update `azure-core-http-netty` dependency to `1.9.1`.
+
+## 4.1.0 (2021-03-25)
 ### New Features
 - Added new system event model class `AcsRecordingFileStatusUpdatedEventData`.
 - Added new attribute `transactionId` to `AcsChatEventInThreadBaseProperties`.
@@ -11,7 +48,7 @@
 - Added `COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD` to `SystemEventNames` and deprecated `COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD`.
 - Added `COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER` to `SystemEventNames` and deprecated `COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER`.
 
-## 4.0.0 (2020-03-11)
+## 4.0.0 (2021-03-11)
 ### New Features
 - added `sendEvent` to `EventGridPublisherClient` and `EventGridPublisherAsyncClient` to send a single event.
 
@@ -33,7 +70,7 @@
 - Update `azure-core` dependency to `1.14.0`.
 - Update `azure-core-http-netty` dependency to `1.9.0`.
 
-## 2.0.0-beta.4 (2020-02-10)
+## 2.0.0-beta.4 (2021-02-10)
 ### Breaking changes
 - `CloudEvent` constructor now accepts parameter "data". Removed `setData()`.
 - `CloudEvent.parse()` and `EventGridEvent.parse()` are renamed to `fromString()`.
@@ -56,7 +93,7 @@
 ## 2.0.0-beta.2 (2020-09-24)
 Added system event classes for Azure Communication Services under package `com.azure.messaging.eventgrid.systemevents`.
 
-## 2.0.0-beta.1 (2020-09-09): 
+## 2.0.0-beta.1 (2020-09-09)
 
 Initial preview of the Event Grid library with an effort to create a Java idiomatic
 set of libraries that are consistent across multiple services as well as different languages.

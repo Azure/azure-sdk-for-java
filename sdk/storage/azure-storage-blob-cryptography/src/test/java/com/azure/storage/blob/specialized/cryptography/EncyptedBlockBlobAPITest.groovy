@@ -26,6 +26,8 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.TestHttpClientType
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.microsoft.azure.storage.CloudStorageAccount
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy
 import com.microsoft.azure.storage.blob.BlobRequestOptions
@@ -37,6 +39,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.IgnoreIf
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Unroll
@@ -57,11 +60,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     EncryptedBlobClient ebc // encrypted client for download
 
     String keyId
-
-    @Shared
     FakeKey fakeKey
-
-    @Shared
     def fakeKeyResolver
 
 
@@ -70,29 +69,28 @@ class EncyptedBlockBlobAPITest extends APISpec {
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
-        cc = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        cc = getServiceClientBuilder(env.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
-        beac = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        beac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient()
 
-        bec = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        bec = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
 
         def blobName = generateBlobName()
 
-        def builder = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
 
-        builder.buildEncryptedBlobAsyncClient().upload(defaultFlux, null).block()
+        builder.buildEncryptedBlobAsyncClient().upload(data.defaultFlux, null).block()
 
         ebc = builder.buildEncryptedBlobClient()
     }
@@ -104,7 +102,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // Key and key resolver null
     def "Create encryption client fails"() {
         when:
-        beac = getEncryptedClientBuilder(null, null, primaryCredential,
+        beac = getEncryptedClientBuilder(null, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient()
@@ -113,7 +111,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         when:
-        bec = getEncryptedClientBuilder(null, null, primaryCredential,
+        bec = getEncryptedClientBuilder(null, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
@@ -138,7 +136,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         } else {
             keyResolver = null
         }
-        beac = getEncryptedClientBuilder(key, keyResolver, primaryCredential,
+        beac = getEncryptedClientBuilder(key, keyResolver, env.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient()
@@ -147,7 +145,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         notThrown(IllegalArgumentException)
 
         when:
-        bec = getEncryptedClientBuilder(key, keyResolver, primaryCredential,
+        bec = getEncryptedClientBuilder(key, keyResolver, env.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
@@ -199,7 +197,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encryption large"() {
         expect:
         encryptionTestHelper(size, byteBufferCount)
@@ -234,7 +232,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encryption computeMd5"() {
         setup:
         def byteBufferList = []
@@ -269,8 +267,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Buffered upload
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(defaultDataSize).setMaxConcurrency(2)
-        beac.uploadWithResponse(defaultFlux, parallelTransferOptions, headers, null, null, null).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(data.defaultDataSize).setMaxConcurrency(2)
+        beac.uploadWithResponse(data.defaultFlux, parallelTransferOptions, headers, null, null, null).block()
         def response = beac.getPropertiesWithResponse(null).block()
 
         then:
@@ -288,7 +286,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks that metadata in encryption is successfully set
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encryption metadata"() {
         setup:
         Map<String, String> metadata = new HashMap<>()
@@ -300,7 +298,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
 
         when:
-        beac.uploadWithResponse(defaultFlux, null, null, metadata, null, null).block()
+        beac.uploadWithResponse(data.defaultFlux, null, null, metadata, null, null).block()
         def properties = beac.getProperties().block()
 
         then:
@@ -309,9 +307,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
         when:
         // Buffered upload
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong(defaultDataSize)
+            .setBlockSizeLong(data.defaultDataSize)
             .setMaxConcurrency(2)
-        beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, metadata, null, null).block()
+        beac.uploadWithResponse(data.defaultFlux, parallelTransferOptions, null, metadata, null, null).block()
         properties = beac.getProperties().block()
 
         then:
@@ -327,7 +325,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Encryption AC"() {
         when:
-        beac.upload(defaultFlux, null).block()
+        beac.upload(data.defaultFlux, null).block()
         def etag = setupBlobMatchCondition(beac, match)
         leaseID = setupBlobLeaseCondition(beac, leaseID)
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -338,15 +336,15 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .setLeaseId(leaseID)
 
         then:
-        beac.uploadWithResponse(defaultFlux, null, null, null, null, bac).block().getStatusCode() == 201
+        beac.uploadWithResponse(data.defaultFlux, null, null, null, null, bac).block().getStatusCode() == 201
 
         when:
         etag = setupBlobMatchCondition(beac, match)
         bac.setIfMatch(etag)
 
         then:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(defaultDataSize).setMaxConcurrency(2)
-        beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, null, null, bac)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(data.defaultDataSize).setMaxConcurrency(2)
+        beac.uploadWithResponse(data.defaultFlux, parallelTransferOptions, null, null, null, bac)
             .block().getStatusCode() == 201
 
         where:
@@ -363,7 +361,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Encryption AC fail"() {
         setup:
-        beac.upload(defaultFlux, null).block()
+        beac.upload(data.defaultFlux, null).block()
         noneMatch = setupBlobMatchCondition(beac, noneMatch)
         setupBlobLeaseCondition(beac, leaseID)
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -374,8 +372,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .setLeaseId(leaseID)
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(defaultDataSize).setMaxConcurrency(2)
-        beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, null, null, bac).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(data.defaultDataSize).setMaxConcurrency(2)
+        beac.uploadWithResponse(data.defaultFlux, parallelTransferOptions, null, null, null, bac).block()
 
         then:
         def e = thrown(BlobStorageException)
@@ -392,7 +390,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks the upload to file method on an encrypted client
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Encrypted upload file"() {
         setup:
         def file = getRandomFile(Constants.MB)
@@ -411,11 +409,11 @@ class EncyptedBlockBlobAPITest extends APISpec {
         //def dataFlux = Flux.just(defaultData).map{buf -> buf.duplicate()}
 
         when:
-        beac.upload(defaultFlux, null).block()
+        beac.upload(data.defaultFlux, null).block()
         beac.downloadToFile(path).block()
 
         then:
-        compareDataToFile(defaultFlux, new File(path))
+        compareDataToFile(data.defaultFlux, new File(path))
 
         cleanup:
         new File(path).delete()
@@ -424,8 +422,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Download unencrypted data"() {
         setup:
         // Create an async client
-        BlobContainerClient cac = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        BlobContainerClient cac = getServiceClientBuilder(env.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
 
@@ -436,14 +433,14 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         // Uses builder method that takes in regular blob clients
         EncryptedBlobClient client = getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null,
-            primaryCredential, cac.getBlobContainerUrl())
+            env.primaryAccount.credential, cac.getBlobContainerUrl())
             .blobName(blobName)
             .buildEncryptedBlobClient()
 
         when:
 
         // Upload encrypted data with regular client
-        normalClient.uploadWithResponse(new ByteArrayInputStream(defaultData.array()), defaultDataSize, null, null,
+        normalClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null,
             null, null, null, null, null)
 
         // Download data with encrypted client - command should fail
@@ -452,7 +449,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         notThrown(IllegalStateException)
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
 
         cleanup:
         cac.delete()
@@ -479,7 +476,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // Tests key resolver
     @Unroll
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Key resolver used to decrypt data large"() {
         expect:
         keyResolverTestHelper(size, byteBufferCount)
@@ -494,13 +491,13 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def blobName = generateBlobName()
 
         EncryptedBlobAsyncClient decryptResolverClient =
-            getEncryptedClientBuilder(null, fakeKeyResolver as AsyncKeyEncryptionKeyResolver, primaryCredential,
+            getEncryptedClientBuilder(null, fakeKeyResolver as AsyncKeyEncryptionKeyResolver, env.primaryAccount.credential,
                 cc.getBlobContainerUrl())
                 .blobName(blobName)
                 .buildEncryptedBlobAsyncClient()
 
         EncryptedBlobAsyncClient encryptClient =
-            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential, cc.getBlobContainerUrl())
+            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
                 .blobName(blobName)
                 .buildEncryptedBlobAsyncClient()
 
@@ -524,13 +521,13 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with old SDK download with new SDK.
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Cross platform test upload old download new"() {
         setup:
         def blobName = generateBlobName()
         def containerName = cc.getBlobContainerName()
 
-        CloudStorageAccount v8Account = CloudStorageAccount.parse(connectionString)
+        CloudStorageAccount v8Account = CloudStorageAccount.parse(env.primaryAccount.connectionString)
         CloudBlobClient blobClient = v8Account.createCloudBlobClient()
         CloudBlobContainer container = blobClient.getContainerReference(containerName)
         CloudBlockBlob v8EncryptBlob = container.getBlockBlobReference(blobName)
@@ -539,7 +536,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         uploadOptions.setEncryptionPolicy(uploadPolicy)
 
         EncryptedBlobClient decryptClient =
-            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential, cc.getBlobContainerUrl())
+            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
                 .blobName(blobName)
                 .buildEncryptedBlobClient()
 
@@ -559,19 +556,19 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // Upload with new SDK download with old SDK.
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Cross platform test upload new download old"() {
         setup:
         def blobName = generateBlobName()
         def containerName = cc.getBlobContainerName()
 
         EncryptedBlobAsyncClient encryptClient =
-            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential,
+            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, env.primaryAccount.credential,
                 cc.getBlobContainerUrl())
                 .blobName(blobName)
                 .buildEncryptedBlobAsyncClient()
 
-        CloudStorageAccount v8Account = CloudStorageAccount.parse(connectionString)
+        CloudStorageAccount v8Account = CloudStorageAccount.parse(env.primaryAccount.connectionString)
         CloudBlobClient blobClient = v8Account.createCloudBlobClient()
         CloudBlobContainer container = blobClient.getContainerReference(containerName)
         container.createIfNotExists()
@@ -582,19 +579,19 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         // Upload with current version
-        encryptClient.upload(defaultFlux, null).block()
+        encryptClient.upload(data.defaultFlux, null).block()
 
         // Download with v8
         ByteArrayOutputStream stream = new ByteArrayOutputStream()
         v8DecryptBlob.download(stream, null, downloadOptions, null)
 
         then:
-        stream.toByteArray() == defaultData.array()
+        stream.toByteArray() == data.defaultBytes
     }
 
     def "encrypted client file upload overwrite false"() {
         setup:
-        def file = getRandomFile(KB)
+        def file = getRandomFile(Constants.KB)
 
         when:
         beac.uploadFromFile(file.toPath().toString()).block()
@@ -607,7 +604,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "encrypted client file upload overwrite true"() {
         setup:
-        def file = getRandomFile(KB)
+        def file = getRandomFile(Constants.KB)
 
         when:
         beac.uploadFromFile(file.toPath().toString()).block()
@@ -679,7 +676,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def headers = response.getDeserializedHeaders()
 
         then:
-        body == defaultData
+        body == data.defaultData
         headers.getMetadata()
         headers.getContentLength() != null
         headers.getContentType() != null
@@ -721,7 +718,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def builder = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             ebc.getBlobUrl(), new MockRetryRangeResponsePolicy())
 
         ebc = builder.buildEncryptedBlobClient()
@@ -747,7 +744,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == defaultData.array()
+        result == data.defaultBytes
     }
 
     @Unroll
@@ -765,9 +762,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         where:
         offset | count || expectedData
-        0      | null  || defaultText
-        0      | 5L    || defaultText.substring(0, 5)
-        3      | 2L    || defaultText.substring(3, 3 + 2)
+        0      | null  || data.defaultText
+        0      | 5L    || data.defaultText.substring(0, 5)
+        3      | 2L    || data.defaultText.substring(3, 3 + 2)
     }
 
     @Unroll
@@ -854,7 +851,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download to file exists"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -873,7 +870,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download to file exists succeeds"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -882,7 +879,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFile(testFile.getPath(), true)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -890,7 +887,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download to file does not exist"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -899,7 +896,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFile(testFile.getPath())
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -907,7 +904,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download file does not exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -920,7 +917,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -928,7 +925,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download file exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -942,19 +939,20 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
+    @IgnoreIf({ getEnv().httpClientType == TestHttpClientType.OK_HTTP}) // https://github.com/Azure/azure-sdk-for-java/issues/23243
     def "Download file"() {
         setup:
         def file = getRandomFile(fileSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -984,14 +982,14 @@ class EncyptedBlockBlobAPITest extends APISpec {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file sync buffer copy"() {
         setup:
         def containerName = generateContainerName()
         def blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildClient()
 
         def encryptedBlobClient = new EncryptedBlobClientBuilder()
@@ -1001,7 +999,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         encryptedBlobClient.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1031,14 +1029,14 @@ class EncyptedBlockBlobAPITest extends APISpec {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file async buffer copy"() {
         setup:
         def containerName = generateContainerName()
         def blobServiceAsyncClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildAsyncClient()
 
         def encryptedBlobAsyncClient = new EncryptedBlobClientBuilder()
@@ -1049,7 +1047,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         encryptedBlobAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1079,13 +1077,13 @@ class EncyptedBlockBlobAPITest extends APISpec {
         50 * Constants.MB    | _ // large file requiring multiple requests
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file range"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60))
+        def outFile = new File(namer.getRandomName(60))
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1105,25 +1103,25 @@ class EncyptedBlockBlobAPITest extends APISpec {
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                         | _
-        new BlobRange(0, defaultDataSize)             | _ // Exact count
-        new BlobRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
-        new BlobRange(3, 2)                           | _ // Narrow range in middle
-        new BlobRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
-        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
+        range                                              | _
+        new BlobRange(0, data.defaultDataSize)             | _ // Exact count
+        new BlobRange(1, data.defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new BlobRange(3, 2)                                | _ // Narrow range in middle
+        new BlobRange(0, data.defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new BlobRange(0, 10 * 1024)                        | _ // Count much larger than remaining data
     }
 
     /*
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file range fail"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1140,12 +1138,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Download file count null"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1154,20 +1152,20 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, false, null, null)
 
         then:
-        compareFiles(file, outFile, 0, defaultDataSize)
+        compareFiles(file, outFile, 0, data.defaultDataSize)
 
         cleanup:
         outFile.delete()
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file AC"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1198,13 +1196,13 @@ class EncyptedBlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file AC fail"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1236,16 +1234,16 @@ class EncyptedBlockBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(Constants.MB)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
 
         expect:
-        def bac = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        def bac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             ebc.getBlobUrl().toString())
             .buildEncryptedBlobAsyncClient()
 
@@ -1269,7 +1267,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
          * so that the download is able to get an ETag before it is changed.
          */
         StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
-            .doOnSubscribe({ bac.upload(defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+            .doOnSubscribe({ bac.upload(data.defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
                 /*
                  * If an operation is running on multiple threads and multiple return an exception Reactor will combine
@@ -1298,12 +1296,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
         outFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
         ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1357,14 +1355,14 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Download requiresEncryption"() {
         setup:
         def blobName = bec.getBlobName()
-        def bc = getBlobClientBuilder(primaryCredential, cc.getBlobContainerUrl().toString())
+        def bc = getBlobClientBuilder(env.primaryAccount.credential, cc.getBlobContainerUrl().toString())
             .blobName(blobName)
             .buildClient()
 
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         when: "Sync min"
-        bec = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        bec = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
             .requiresEncryption(true)
@@ -1381,7 +1379,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalStateException)
 
         when: "Async min"
-        beac = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+        beac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
             .requiresEncryption(true)
@@ -1400,7 +1398,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Encryption upload IS overwrite fails"() {
         when:
-        ebc.upload(defaultInputStream.get(), defaultDataSize)
+        ebc.upload(data.defaultInputStream, data.defaultDataSize)
 
         then:
         thrown(BlobStorageException)
@@ -1436,7 +1434,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         outputByteBuffer.array() != byteBuffer.array()
     }
 
-    @Requires( { liveMode() } )
+    @LiveOnly
     def "Encryption upload IS large data"() {
         setup:
         def randomData = getRandomByteArray(20 * Constants.MB)
@@ -1456,11 +1454,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     @Unroll
+    @LiveOnly
     def "Encryption uploadIS numBlocks"() {
         setup:
-        if (numBlocks > 0 && !liveMode()) {
-            return // Multipart upload paths use randomly generated block ids that can't be recorded and played back.
-        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
@@ -1496,9 +1492,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def client = getEncryptedClientBuilder(fakeKey, fakeKeyResolver, primaryCredential, bec.getBlobUrl(), getPerCallVersionPolicy()).buildEncryptedBlobClient()
+        def client = getEncryptedClientBuilder(fakeKey, fakeKeyResolver, env.primaryAccount.credential, bec.getBlobUrl(), getPerCallVersionPolicy()).buildEncryptedBlobClient()
 
         client.upload(new ByteArrayInputStream(new byte[0]), 0)
 

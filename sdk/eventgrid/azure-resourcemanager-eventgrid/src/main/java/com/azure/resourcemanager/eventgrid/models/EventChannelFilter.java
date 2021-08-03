@@ -17,7 +17,8 @@ public final class EventChannelFilter {
 
     /*
      * Allows advanced filters to be evaluated against an array of values
-     * instead of expecting a singular value.
+     * instead of expecting a singular value. The default value is either false
+     * or null.
      */
     @JsonProperty(value = "enableAdvancedFilteringOnArrays")
     private Boolean enableAdvancedFilteringOnArrays;
@@ -30,7 +31,7 @@ public final class EventChannelFilter {
 
     /**
      * Get the enableAdvancedFilteringOnArrays property: Allows advanced filters to be evaluated against an array of
-     * values instead of expecting a singular value.
+     * values instead of expecting a singular value. The default value is either false or null.
      *
      * @return the enableAdvancedFilteringOnArrays value.
      */
@@ -40,7 +41,7 @@ public final class EventChannelFilter {
 
     /**
      * Set the enableAdvancedFilteringOnArrays property: Allows advanced filters to be evaluated against an array of
-     * values instead of expecting a singular value.
+     * values instead of expecting a singular value. The default value is either false or null.
      *
      * @param enableAdvancedFilteringOnArrays the enableAdvancedFilteringOnArrays value to set.
      * @return the EventChannelFilter object itself.

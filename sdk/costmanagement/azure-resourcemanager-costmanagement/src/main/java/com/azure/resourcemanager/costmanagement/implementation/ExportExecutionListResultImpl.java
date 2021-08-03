@@ -4,34 +4,28 @@
 
 package com.azure.resourcemanager.costmanagement.implementation;
 
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
-import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionInner;
 import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionListResultInner;
 import com.azure.resourcemanager.costmanagement.models.ExportExecution;
 import com.azure.resourcemanager.costmanagement.models.ExportExecutionListResult;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class ExportExecutionListResultImpl implements ExportExecutionListResult {
     private ExportExecutionListResultInner innerObject;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    ExportExecutionListResultImpl(ExportExecutionListResultInner innerObject, CostManagementManager serviceManager) {
+    ExportExecutionListResultImpl(
+        ExportExecutionListResultInner innerObject,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
     public List<ExportExecution> value() {
-        List<ExportExecutionInner> inner = this.innerModel().value();
+        List<ExportExecution> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ExportExecutionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
         }
@@ -41,7 +35,7 @@ public final class ExportExecutionListResultImpl implements ExportExecutionListR
         return this.innerObject;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 }

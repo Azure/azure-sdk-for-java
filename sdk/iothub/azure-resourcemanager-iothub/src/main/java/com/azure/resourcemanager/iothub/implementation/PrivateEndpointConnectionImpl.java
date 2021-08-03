@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnectionProperties;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.iothub.models.PrivateEndpointConnectionProperti
 public final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
     private PrivateEndpointConnectionInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject, IotHubManager serviceManager) {
+    PrivateEndpointConnectionImpl(
+        PrivateEndpointConnectionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

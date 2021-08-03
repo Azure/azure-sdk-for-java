@@ -4,6 +4,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.LockContainer;
@@ -28,7 +29,7 @@ import java.util.function.Function;
 /**
  * Represents an session that is received when "any" session is accepted from the service.
  */
-class ServiceBusSessionReceiver implements AutoCloseable {
+class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final LockContainer<OffsetDateTime> lockContainer;
     private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();
@@ -41,6 +42,7 @@ class ServiceBusSessionReceiver implements AutoCloseable {
     private final MonoProcessor<ServiceBusMessageContext> cancelReceiveProcessor = MonoProcessor.create();
     private final DirectProcessor<String> messageReceivedEmitter = DirectProcessor.create();
     private final FluxSink<String> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final AmqpRetryOptions retryOptions;
 
     /**
      * Creates a receiver for the first available session.
@@ -62,6 +64,7 @@ class ServiceBusSessionReceiver implements AutoCloseable {
 
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
+        this.retryOptions = retryOptions;
 
         receiveLink.setEmptyCreditListener(() -> 0);
 
@@ -71,14 +74,14 @@ class ServiceBusSessionReceiver implements AutoCloseable {
             .doOnSubscribe(subscription -> {
                 logger.verbose("Adding prefetch to receive link.");
                 if (prefetch > 0) {
-                    receiveLink.addCredits(prefetch);
+                    receiveLink.addCredits(prefetch).subscribe();
                 }
             })
             .doOnRequest(request -> {  // request is of type long.
                 if (prefetch == 0) {  //  add "request" number of credits
-                    receiveLink.addCredits((int) request);
+                    receiveLink.addCredits((int) request).subscribe();
                 } else {  // keep total credits "prefetch" if prefetch is not 0.
-                    receiveLink.addCredits(Math.max(0, prefetch - receiveLink.getCredits()));
+                    receiveLink.addCredits(Math.max(0, prefetch - receiveLink.getCredits())).subscribe();
                 }
             })
             .takeUntilOther(cancelReceiveProcessor)
@@ -122,7 +125,7 @@ class ServiceBusSessionReceiver implements AutoCloseable {
         // receiver is idle.
         if (disposeOnIdle) {
             this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
-                .map((String lockToken) -> Mono.delay(retryOptions.getTryTimeout())))
+                .map((String lockToken) -> Mono.delay(this.retryOptions.getTryTimeout())))
                 .subscribe(item -> {
                     logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
                         receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
@@ -196,9 +199,9 @@ class ServiceBusSessionReceiver implements AutoCloseable {
     }
 
     @Override
-    public void close() {
+    public Mono<Void> closeAsync() {
         if (isDisposed.getAndSet(true)) {
-            return;
+            return receiveLink.closeAsync();
         }
 
         final LockRenewalOperation operation = renewalOperation.getAndSet(null);
@@ -206,7 +209,11 @@ class ServiceBusSessionReceiver implements AutoCloseable {
             operation.close();
         }
 
-        receiveLink.dispose();
-        subscriptions.dispose();
+        return receiveLink.closeAsync().doFinally(signal -> subscriptions.dispose());
+    }
+
+    @Override
+    public void close() {
+        closeAsync().block(retryOptions.getTryTimeout());
     }
 }

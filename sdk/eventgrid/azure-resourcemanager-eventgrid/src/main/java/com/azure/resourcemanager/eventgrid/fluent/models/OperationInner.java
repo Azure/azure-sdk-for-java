@@ -34,6 +34,13 @@ public final class OperationInner {
     private String origin;
 
     /*
+     * This Boolean is used to determine if the operation is a data plane
+     * action or not.
+     */
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
+
+    /*
      * Properties of the operation
      */
     @JsonProperty(value = "properties")
@@ -96,6 +103,26 @@ public final class OperationInner {
      */
     public OperationInner withOrigin(String origin) {
         this.origin = origin;
+        return this;
+    }
+
+    /**
+     * Get the isDataAction property: This Boolean is used to determine if the operation is a data plane action or not.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Set the isDataAction property: This Boolean is used to determine if the operation is a data plane action or not.
+     *
+     * @param isDataAction the isDataAction value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
         return this;
     }
 

@@ -3,20 +3,16 @@
 
 package com.azure.core.models;
 
+import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -28,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class JsonPatchDocumentTests {
     private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
-    private static final JsonSerializer JSON_SERIALIZER = new JacksonAdapterJsonSerializer(new JacksonAdapter());
+    private static final JsonSerializer JSON_SERIALIZER = new DefaultJsonSerializer();
 
     @ParameterizedTest
     @MethodSource("formattingSupplier")
@@ -224,41 +220,5 @@ public class JsonPatchDocumentTests {
 
     private static JsonPatchDocument newDocument() {
         return new JsonPatchDocument(JSON_SERIALIZER);
-    }
-
-    private static final class JacksonAdapterJsonSerializer implements JsonSerializer {
-        private final JacksonAdapter jacksonAdapter;
-
-        private JacksonAdapterJsonSerializer(JacksonAdapter jacksonAdapter) {
-            this.jacksonAdapter = jacksonAdapter;
-        }
-
-        @Override
-        public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
-            try {
-                return jacksonAdapter.deserialize(stream, typeReference.getJavaType(), SerializerEncoding.JSON);
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        }
-
-        @Override
-        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
-            return Mono.fromCallable(() -> deserialize(stream, typeReference));
-        }
-
-        @Override
-        public void serialize(OutputStream stream, Object value) {
-            try {
-                jacksonAdapter.serialize(value, SerializerEncoding.JSON, stream);
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        }
-
-        @Override
-        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
-            return Mono.fromRunnable(() -> serialize(stream, value));
-        }
     }
 }

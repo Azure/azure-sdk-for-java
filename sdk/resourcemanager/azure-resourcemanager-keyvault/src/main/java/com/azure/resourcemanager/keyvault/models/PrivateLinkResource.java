@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A private link resource. */
 @JsonFlatten
@@ -71,6 +72,20 @@ public class PrivateLinkResource extends Resource {
      */
     public PrivateLinkResource withRequiredZoneNames(List<String> requiredZoneNames) {
         this.requiredZoneNames = requiredZoneNames;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkResource withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkResource withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

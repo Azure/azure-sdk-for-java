@@ -25,6 +25,7 @@ import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAP
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -279,12 +280,18 @@ public class DataLakeServiceAsyncClient {
             .listBlobContainers(Transforms.toListBlobContainersOptions(options));
         /* We need to create a new PagedFlux here because PagedFlux extends Flux, but not all operations were
             overriden to return PagedFlux - so we need to do the transformations and recreate a PagedFlux. */
-        /* Note: pageSize is not passed in as a parameter since the underlying implementation of listBlobContainers
-           does not use the pageSize parameter. Passing it in will have no effect. */
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BlobContainerItem>> flux = (continuationToken == null)
-                ? inputPagedFlux.byPage()
-                : inputPagedFlux.byPage(continuationToken);
+            Flux<PagedResponse<BlobContainerItem>> flux;
+            if (continuationToken != null && pageSize != null) {
+                flux = inputPagedFlux.byPage(continuationToken, pageSize);
+            } else if (continuationToken != null) {
+                flux = inputPagedFlux.byPage(continuationToken);
+            } else if (pageSize != null) {
+                flux = inputPagedFlux.byPage(pageSize);
+            } else {
+                flux = inputPagedFlux.byPage();
+            }
+
             flux = flux.onErrorMap(DataLakeImplUtils::transformBlobStorageException);
             if (timeout != null) {
                 flux = flux.timeout(timeout);
@@ -301,6 +308,96 @@ public class DataLakeServiceAsyncClient {
                     blobsPagedResponse.getContinuationToken(),
                     null));
         });
+    }
+
+    /**
+     * Gets the properties of a storage account’s DataLake service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getProperties}
+     *
+     * @return A reactive response containing the storage account properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataLakeServiceProperties> getProperties() {
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Gets the properties of a storage account’s DataLake service. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getPropertiesWithResponse}
+     *
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the storage
+     * account properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeServiceProperties>> getPropertiesWithResponse() {
+        try {
+            return this.blobServiceAsyncClient.getPropertiesWithResponse()
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+                .map(response ->
+                    new SimpleResponse<>(response, Transforms.toDataLakeServiceProperties(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets properties for a storage account's DataLake service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.setProperties#DataLakeServiceProperties}
+     *
+     * @param properties Configures the service.
+     * @return A {@link Mono} containing the storage account properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setProperties(DataLakeServiceProperties properties) {
+        try {
+            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets properties for a storage account's DataLake service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.setPropertiesWithResponse#DataLakeServiceProperties}
+     *
+     * @param properties Configures the service.
+     * @return A {@link Mono} containing the storage account properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesWithResponse(DataLakeServiceProperties properties) {
+        try {
+            return this.blobServiceAsyncClient.setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**

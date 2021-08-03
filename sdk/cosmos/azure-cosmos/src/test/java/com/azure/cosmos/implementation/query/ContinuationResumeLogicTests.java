@@ -64,7 +64,7 @@ public class ContinuationResumeLogicTests {
         Range<String> range = createRange(Strings.Emtpy, "A");
         FeedRangeEpkImpl range1 = new FeedRangeEpkImpl(range);
         FeedRangeEpkImpl range2 = new FeedRangeEpkImpl(createRange("A", "B"));
-        FeedRangeEpkImpl range3 = new FeedRangeEpkImpl(createRange("B", Strings.Emtpy));
+        FeedRangeEpkImpl range3 = new FeedRangeEpkImpl(createRange("B", "FF"));
         IPartitionedToken token = new CompositeContinuationToken(UUID.randomUUID().toString(),
                                                                  range);
 
@@ -77,10 +77,10 @@ public class ContinuationResumeLogicTests {
     }
 
     @Test(groups = {"unit"})
-    public void resumeEmptyEnd() {
+    public void resumeMaxEnd() {
         FeedRangeEpkImpl range1 = new FeedRangeEpkImpl(createRange(Strings.Emtpy, "A"));
         FeedRangeEpkImpl range2 = new FeedRangeEpkImpl(createRange("A", "B"));
-        Range<String> range = createRange("B", Strings.Emtpy);
+        Range<String> range = createRange("B", "FF");
         FeedRangeEpkImpl range3 = new FeedRangeEpkImpl(range);
         IPartitionedToken token = new CompositeContinuationToken(UUID.randomUUID().toString(),
                                                                  range);

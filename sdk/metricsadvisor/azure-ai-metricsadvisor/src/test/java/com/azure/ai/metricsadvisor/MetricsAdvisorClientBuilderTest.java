@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor;
 
+import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,7 +21,6 @@ import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.METRIC_ID;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INVALID_ENDPOINT;
@@ -32,6 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests for Metrics Advisor client builder
  */
 public class MetricsAdvisorClientBuilderTest extends TestBase {
+    private static final String METRIC_ID = "27e3015f-04fd-44ba-a20b-bc529a0aebae";
+    private static final int PAGE_SIZE = 10;
+    private static final int LISTING_LIMIT = 100;
+
     /**
      * Test client builder with invalid API key
      */
@@ -59,7 +63,11 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
         clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, (clientBuilder) ->
             clientBuilder
                 .buildClient()
-                .listFeedback(METRIC_ID)
+                .listFeedback(METRIC_ID,
+                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
+                    Context.NONE)
+                .stream()
+                .limit(LISTING_LIMIT)
                 .forEach(metricFeedback -> assertNotNull(metricFeedback)));
 
     }
@@ -70,11 +78,16 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, (clientBuilder) ->
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, (clientBuilder) -> {
             clientBuilder
                 .buildClient()
-                .listFeedback(METRIC_ID)
-                .forEach(metricFeedback -> assertNotNull(metricFeedback)));
+                .listFeedback(METRIC_ID,
+                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
+                    Context.NONE)
+                .stream()
+                .limit(LISTING_LIMIT)
+                .forEach(metricFeedback -> assertNotNull(metricFeedback));
+        });
     }
 
     /**
@@ -102,7 +115,11 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
         clientBuilderWithTokenCredentialRunner(httpClient, serviceVersion, (clientBuilder) ->
             clientBuilder
                 .buildClient()
-                .listFeedback(METRIC_ID)
+                .listFeedback(METRIC_ID,
+                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
+                    Context.NONE)
+                .stream()
+                .limit(LISTING_LIMIT)
                 .forEach(metricFeedback -> assertNotNull(metricFeedback)));
     }
 

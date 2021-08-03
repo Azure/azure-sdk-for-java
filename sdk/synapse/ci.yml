@@ -1,30 +1,53 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/synapse/
+      - sdk/synapse/ci.yml
+      - sdk/synapse/azure-analytics-synapse-accesscontrol/
+      - sdk/synapse/azure-analytics-synapse-artifacts/
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/
+      - sdk/synapse/azure-analytics-synapse-monitoring/
+      - sdk/synapse/azure-analytics-synapse-spark/
+      - sdk/synapse/azure-resourcemanager-synapse/
     exclude:
-      - sdk/synapse/mgmt-v2019_06_01_preview
+      - sdk/synapse/pom.xml
+      - sdk/synapse/azure-analytics-synapse-accesscontrol/pom.xml
+      - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/pom.xml
+      - sdk/synapse/azure-analytics-synapse-monitoring/pom.xml
+      - sdk/synapse/azure-analytics-synapse-spark/pom.xml
+      - sdk/synapse/azure-resourcemanager-synapse/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/synapse/
+      - sdk/synapse/ci.yml
+      - sdk/synapse/azure-analytics-synapse-accesscontrol/
+      - sdk/synapse/azure-analytics-synapse-artifacts/
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/
+      - sdk/synapse/azure-analytics-synapse-monitoring/
+      - sdk/synapse/azure-analytics-synapse-spark/
+      - sdk/synapse/azure-resourcemanager-synapse/
     exclude:
-      - sdk/synapse/mgmt-v2019_06_01_preview
+      - sdk/synapse/pom.xml
+      - sdk/synapse/azure-analytics-synapse-accesscontrol/pom.xml
+      - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/pom.xml
+      - sdk/synapse/azure-analytics-synapse-monitoring/pom.xml
+      - sdk/synapse/azure-analytics-synapse-spark/pom.xml
+      - sdk/synapse/azure-resourcemanager-synapse/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -46,3 +69,6 @@ extends:
       - name: azure-analytics-synapse-monitoring
         groupId: com.azure
         safeName: azureanalyticssynapsemonitoring
+      - name: azure-resourcemanager-synapse
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersynapse

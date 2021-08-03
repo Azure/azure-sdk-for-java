@@ -4,8 +4,12 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
+import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,7 +32,11 @@ public class CosmosQueryRequestOptions {
     private Map<String, Object> properties;
     private boolean emptyPagesAllowed;
     private FeedRange feedRange;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
+    private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
+    private Duration thresholdForDiagnosticsOnTracer;
+    private Map<String, String> customOptions;
 
     /**
      * Instantiates a new query request options.
@@ -57,6 +65,17 @@ public class CosmosQueryRequestOptions {
         this.queryMetricsEnabled = options.queryMetricsEnabled;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
         this.throughputControlGroupName = options.throughputControlGroupName;
+        this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
+        this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+        this.customOptions = options.customOptions;
+    }
+
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
     }
 
     /**
@@ -416,5 +435,108 @@ public class CosmosQueryRequestOptions {
     public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
         return this;
+    }
+
+    /**
+     * Gets the Dedicated Gateway Request Options
+     * @return the Dedicated Gateway Request Options
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return this.dedicatedGatewayRequestOptions;
+    }
+
+    /**
+     * Sets the Dedicated Gateway Request Options
+     * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
+     * @return the CosmosQueryRequestOptions
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
+        return this;
+    }
+
+    /**
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms.
+     *
+     * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     */
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return thresholdForDiagnosticsOnTracer;
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms
+     *
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        return this;
+    }
+
+    /**
+     * Sets the custom query request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a string representing the custom option's value
+     *
+     * @return the CosmosQueryRequestOptions.
+     */
+    CosmosQueryRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Gets the custom query request options
+     *
+     * @return Map of custom request options
+     */
+    Map<String, String> getHeaders() {
+        return this.customOptions;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.setCosmosQueryRequestOptionsAccessor(
+            new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
+
+                @Override
+                public void setOperationContext(CosmosQueryRequestOptions queryRequestOptions,
+                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                    queryRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name
+                    , String value) {
+                    return queryRequestOptions.setHeader(name, value);
+                }
+
+                @Override
+                public Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.getHeaders();
+                }
+            });
     }
 }

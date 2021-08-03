@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.confluent.implementation;
 
-import com.azure.resourcemanager.confluent.ConfluentManager;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.confluent.fluent.models.ConfluentAgreementResourceInner;
 import com.azure.resourcemanager.confluent.models.ConfluentAgreementResource;
 import java.time.OffsetDateTime;
@@ -12,9 +12,11 @@ import java.time.OffsetDateTime;
 public final class ConfluentAgreementResourceImpl implements ConfluentAgreementResource {
     private ConfluentAgreementResourceInner innerObject;
 
-    private final ConfluentManager serviceManager;
+    private final com.azure.resourcemanager.confluent.ConfluentManager serviceManager;
 
-    ConfluentAgreementResourceImpl(ConfluentAgreementResourceInner innerObject, ConfluentManager serviceManager) {
+    ConfluentAgreementResourceImpl(
+        ConfluentAgreementResourceInner innerObject,
+        com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -29,6 +31,10 @@ public final class ConfluentAgreementResourceImpl implements ConfluentAgreementR
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String publisher() {
@@ -67,7 +73,7 @@ public final class ConfluentAgreementResourceImpl implements ConfluentAgreementR
         return this.innerObject;
     }
 
-    private ConfluentManager manager() {
+    private com.azure.resourcemanager.confluent.ConfluentManager manager() {
         return this.serviceManager;
     }
 }

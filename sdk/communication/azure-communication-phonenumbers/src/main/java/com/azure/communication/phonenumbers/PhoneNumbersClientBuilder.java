@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -269,6 +270,10 @@ public final class PhoneNumbersClientBuilder {
         return new UserAgentPolicy(applicationId, sdkName, sdkVersion, configuration);
     }
 
+    HttpPipelinePolicy createRequestIdPolicy() {
+        return new RequestIdPolicy();
+    }
+
     CookiePolicy createCookiePolicy() {
         return new CookiePolicy();
     }
@@ -284,9 +289,6 @@ public final class PhoneNumbersClientBuilder {
     private void validateRequiredFields() {
         Objects.requireNonNull(this.endpoint);
 
-        if (this.pipeline == null) {
-            Objects.requireNonNull(this.httpClient);
-        }
     }
 
     private PhoneNumberAdminClientImpl createPhoneNumberAdminClient() {
@@ -315,14 +317,16 @@ public final class PhoneNumbersClientBuilder {
         }
 
         // Add required policies
-        policyList.add(this.createAuthenticationPolicy());
         policyList.add(this.createUserAgentPolicy(
             applicationId,
             PROPERTIES.get(SDK_NAME),
             PROPERTIES.get(SDK_VERSION),
             this.configuration
         ));
+        policyList.add(this.createRequestIdPolicy());
         policyList.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
+        // auth policy is per request, should be after retry
+        policyList.add(this.createAuthenticationPolicy());
         policyList.add(this.createCookiePolicy());
 
         // Add additional policies

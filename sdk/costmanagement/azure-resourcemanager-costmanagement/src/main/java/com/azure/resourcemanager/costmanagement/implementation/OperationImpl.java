@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.costmanagement.implementation;
 
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.models.OperationInner;
 import com.azure.resourcemanager.costmanagement.models.Operation;
 import com.azure.resourcemanager.costmanagement.models.OperationDisplay;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.costmanagement.models.OperationDisplay;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    OperationImpl(OperationInner innerObject, CostManagementManager serviceManager) {
+    OperationImpl(
+        OperationInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -31,7 +31,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 }

@@ -29,10 +29,20 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
     @Override
     public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
+        outputStream.write(serializeToBytes(object, encoding));
+    }
+
+    @Override
+    public String serialize(Object object, SerializerEncoding encoding) throws IOException {
+        return new String(serializeToBytes(object, encoding), StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
         if (object instanceof Map) {
-            super.serialize(insertTypeProperties(object), encoding, outputStream);
+            return super.serializeToBytes(insertTypeProperties(object), encoding);
         } else {
-            super.serialize(object, encoding, outputStream);
+            return super.serializeToBytes(object, encoding);
         }
     }
 
@@ -76,48 +86,40 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
     @Override
     public <U> U deserialize(String value, Type type, SerializerEncoding serializerEncoding) throws IOException {
-        if (type == TableEntityQueryResponse.class
-            || (type instanceof ParameterizedType) && ((ParameterizedType) type).getRawType() == Map.class) {
-
-            return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type,
-                serializerEncoding);
-        } else {
-            return super.deserialize(value, type, serializerEncoding);
-        }
+        return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type, serializerEncoding);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding)
         throws IOException {
-
-        if (inputStream != null
-            && type == TableEntityQueryResponse.class) {
-
-            return deserializeTableEntityQueryResponse(inputStream);
-        } else if (inputStream != null
-            && (type instanceof ParameterizedType)
-            && ((ParameterizedType) type).getRawType() == Map.class) {
-
-            return deserializeTableEntity(inputStream);
+        if (inputStream != null && type == TableEntityQueryResponse.class) {
+            return deserializeTableEntityQueryResponse(super.serializer().readTree(inputStream));
+        } else if (inputStream != null && shouldGetEntityFieldsAsMap(type)) {
+            return (U) getEntityFieldsAsMap(super.serializer().readTree(inputStream));
         } else {
             return super.deserialize(inputStream, type, serializerEncoding);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <U> U deserializeTableEntity(InputStream inputStream) throws IOException {
-        final JsonNode node = super.serializer().readTree(inputStream);
+    @Override
+    public <U> U deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
+        if (bytes == null || bytes.length == 0) {
+            return super.deserialize(bytes, type, encoding);
+        } else {
+            return deserialize(new ByteArrayInputStream(bytes), type, encoding);
+        }
+    }
 
-        return (U) getEntityFieldsAsMap(node);
+    private static boolean shouldGetEntityFieldsAsMap(Type type) {
+        return type instanceof ParameterizedType
+            && ((ParameterizedType) type).getRawType() == Map.class;
     }
 
     @SuppressWarnings("unchecked")
-    private <U> U deserializeTableEntityQueryResponse(InputStream inputStream) throws IOException {
+    private <U> U deserializeTableEntityQueryResponse(JsonNode node) throws IOException {
         String odataMetadata = null;
         List<Map<String, Object>> values = new ArrayList<>();
-
-        // Represents the entries in the response. It should always ba a multiple entity response.
-        final JsonNode node = super.serializer().readTree(inputStream);
 
         for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext();) {
             final Map.Entry<String, JsonNode> entry = it.next();
@@ -173,7 +175,7 @@ public class TablesJacksonSerializer extends JacksonAdapter {
         String typeString = typeNode.asText();
         EntityDataModelType type = EntityDataModelType.fromString(typeString);
         if (type == null) {
-            logger.warning(String.format("'%s' value has unknown OData type %s", fieldName, typeString));
+            logger.warning("'{}' value has unknown OData type {}", fieldName, typeString);
             return serializer().treeToValue(valueNode, Object.class);
         }
 

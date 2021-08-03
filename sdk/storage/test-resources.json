@@ -32,13 +32,17 @@
         "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
         "primaryAccountName": "[concat('prim', parameters('baseName'))]",
         "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
+        "softDeleteAccountName": "[concat('sftdl', parameters('baseName'))]",
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
         "versionedAccountName": "[concat('ver', parameters('baseName'))]",
         "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
+        "dataLakeSoftDeleteAccountName": "[concat('dtlksd', parameters('baseName'))]",
         "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
         "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
         "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
-        "location": "[resourceGroup().location]"
+        "location": "[resourceGroup().location]",
+        "resourceGroupName": "[resourceGroup().name]",
+        "subscriptionId": "[subscription().subscriptionId]"
     },
     "resources": [
         {
@@ -190,6 +194,70 @@
             }
         },
         {
+          "type": "Microsoft.Storage/storageAccounts",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[variables('softDeleteAccountName')]",
+          "location": "[variables('location')]",
+          "sku": {
+            "name": "Standard_RAGRS",
+            "tier": "Standard"
+          },
+          "kind": "StorageV2",
+          "properties": {
+            "networkAcls": {
+              "bypass": "AzureServices",
+              "virtualNetworkRules": [],
+              "ipRules": [],
+              "defaultAction": "Allow"
+            },
+            "supportsHttpsTrafficOnly": true,
+            "encryption": {
+              "services": {
+                "file": {
+                  "enabled": true
+                },
+                "blob": {
+                  "enabled": true
+                }
+              },
+              "keySource": "Microsoft.Storage"
+            },
+            "accessTier": "Hot"
+          }
+        },
+        {
+          "type": "Microsoft.Storage/storageAccounts/blobServices",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[concat(variables('softDeleteAccountName'), '/default')]",
+          "properties": {
+            "deleteRetentionPolicy": {
+              "enabled": true,
+              "days": 1
+            },
+            "containerDeleteRetentionPolicy": {
+              "enabled": true,
+              "days": 1
+            }
+          },
+          "dependsOn": [
+            "[variables('softDeleteAccountName')]"
+          ]
+        },
+        {
+          "type": "Microsoft.Storage/storageAccounts/fileServices",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[concat(variables('softDeleteAccountName'), '/default')]",
+          "properties": {
+            "shareDeleteRetentionPolicy": {
+              "enabled": true,
+              "days": 1
+            }
+          },
+          "dependsOn": [
+            "[variables('softDeleteAccountName')]"
+          ]
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[variables('premiumAccountName')]",
@@ -312,6 +380,53 @@
             ]
         },
         {
+          "type": "Microsoft.Storage/storageAccounts",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[variables('dataLakeSoftDeleteAccountName')]",
+          "location": "[variables('location')]",
+          "sku": {
+            "name": "Standard_RAGRS",
+            "tier": "Standard"
+          },
+          "kind": "StorageV2",
+          "properties": {
+            "isHnsEnabled": true,
+            "networkAcls": {
+              "bypass": "AzureServices",
+              "virtualNetworkRules": [],
+              "ipRules": [],
+              "defaultAction": "Allow"
+            },
+            "supportsHttpsTrafficOnly": true,
+            "encryption": {
+              "services": {
+                "file": {
+                  "enabled": true
+                },
+                "blob": {
+                  "enabled": true
+                }
+              },
+              "keySource": "Microsoft.Storage"
+            },
+            "accessTier": "Hot"
+          }
+        },
+        {
+          "type": "Microsoft.Storage/storageAccounts/blobServices",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[concat(variables('dataLakeSoftDeleteAccountName'), '/default')]",
+          "properties": {
+            "containerDeleteRetentionPolicy": {
+              "enabled": true,
+              "days": 1
+            }
+          },
+          "dependsOn": [
+            "[variables('dataLakeSoftDeleteAccountName')]"
+          ]
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[variables('premiumFileAccountName')]",
@@ -420,6 +535,18 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
+        "PRIMARY_STORAGE_BLOB_ENDPOINT": {
+          "type": "string",
+          "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.blob]"
+        },
+        "PRIMARY_STORAGE_FILE_ENDPOINT": {
+          "type": "string",
+          "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
+        },
+        "PRIMARY_STORAGE_CONNECTION_STRING": {
+          "type": "string",
+          "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+        },
         "SECONDARY_STORAGE_ACCOUNT_NAME": {
             "type": "string",
             "value": "[variables('secondaryAccountName')]"
@@ -427,6 +554,14 @@
         "SECONDARY_STORAGE_ACCOUNT_KEY": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+        "SOFT_DELETE_STORAGE_ACCOUNT_NAME": {
+          "type": "string",
+          "value": "[variables('softDeleteAccountName')]"
+        },
+        "SOFT_DELETE_STORAGE_ACCOUNT_KEY": {
+          "type": "string",
+          "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('softDeleteAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
         "BLOB_STORAGE_ACCOUNT_NAME": {
             "type": "string",
@@ -452,18 +587,6 @@
           "type": "string",
           "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('versionedAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-        "AZURE_STORAGE_FILE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('primaryAccountName')]"
-        },
-        "AZURE_STORAGE_FILE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "AZURE_STORAGE_FILE_ENDPOINT": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
-        },
         "PREMIUM_STORAGE_FILE_ACCOUNT_NAME": {
             "type": "string",
             "value": "[variables('premiumFileAccountName')]"
@@ -471,18 +594,6 @@
         "PREMIUM_STORAGE_FILE_ACCOUNT_KEY": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumFileAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "AZURE_STORAGE_QUEUE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('primaryAccountName')]"
-        },
-        "AZURE_STORAGE_QUEUE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "AZURE_STORAGE_QUEUE_ENDPOINT": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.queue]"
         },
         "STORAGE_DATA_LAKE_ACCOUNT_NAME": {
             "type": "string",
@@ -492,22 +603,29 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
-
-        "AZURE_STORAGE_BLOB_CONNECTION_STRING": {
+        "STORAGE_DATA_LAKE_CONNECTION_STRING": {
             "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('dataLakeAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
         },
-        "AZURE_STORAGE_FILE_CONNECTION_STRING": {
-            "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+        "STORAGE_DATA_LAKE_SOFT_DELETE_ACCOUNT_NAME": {
+          "type": "string",
+          "value": "[variables('dataLakeSoftDeleteAccountName')]"
         },
-        "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
-            "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+        "STORAGE_DATA_LAKE_SOFT_DELETE_ACCOUNT_KEY": {
+          "type": "string",
+          "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeSoftDeleteAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
         "KEYVAULT_URL":{
             "type": "string",
             "value": "[variables('azureKeyVaultUrl')]"
+        },
+        "STORAGE_RESOURCE_GROUP_NAME": {
+            "type": "string",
+            "value": "[variables('resourceGroupName')]"
+        },
+        "STORAGE_SUBSCRIPTION_ID": {
+            "type": "string",
+            "value": "[variables('subscriptionId')]"
         }
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.costmanagement.implementation;
 
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.models.AlertInner;
 import com.azure.resourcemanager.costmanagement.fluent.models.AlertsResultInner;
 import com.azure.resourcemanager.costmanagement.models.Alert;
@@ -16,9 +15,10 @@ import java.util.stream.Collectors;
 public final class AlertsResultImpl implements AlertsResult {
     private AlertsResultInner innerObject;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    AlertsResultImpl(AlertsResultInner innerObject, CostManagementManager serviceManager) {
+    AlertsResultImpl(
+        AlertsResultInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +42,7 @@ public final class AlertsResultImpl implements AlertsResult {
         return this.innerObject;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 }

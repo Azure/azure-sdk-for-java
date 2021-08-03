@@ -6,18 +6,29 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
-import com.azure.cosmos.models.ChangeFeedPolicy;
+import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -29,15 +40,19 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosContainerTest extends TestSuiteBase {
 
@@ -55,6 +70,7 @@ public class CosmosContainerTest extends TestSuiteBase {
     public void before_CosmosContainerTest() {
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
+        createEncryptionKey();
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -102,13 +118,13 @@ public class CosmosContainerTest extends TestSuiteBase {
         path1.setPath("/path1");
         path1.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
         path1.setEncryptionType("Randomized");
-        path1.setClientEncryptionKeyId("key1");
+        path1.setClientEncryptionKeyId("containerTestKey1");
 
         ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
         path2.setPath("/path2");
         path2.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
         path2.setEncryptionType("Deterministic");
-        path2.setClientEncryptionKeyId("key2");
+        path2.setClientEncryptionKeyId("containerTestKey2");
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(path1);
@@ -118,6 +134,83 @@ public class CosmosContainerTest extends TestSuiteBase {
         containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
+        validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void createContainer_withPartitionKeyInEncryption() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+
+        ClientEncryptionIncludedPath path1 = new ClientEncryptionIncludedPath();
+        path1.setPath("/mypk");
+        path1.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path1.setEncryptionType("Randomized");
+        path1.setClientEncryptionKeyId("containerTestKey1");
+
+        ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
+        path2.setPath("/path2");
+        path2.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path2.setEncryptionType("Deterministic");
+        path2.setClientEncryptionKeyId("containerTestKey2");
+
+        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+        paths.add(path1);
+        paths.add(path2);
+
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
+        CosmosContainerResponse containerResponse = null;
+
+        //Verify partition key in CosmosContainerProperties constructor with encrypted field.
+        try {
+            containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+            containerResponse = createdDatabase.createContainer(containerProperties);
+            fail("createContainer should fail as mypk which is part of the partition key cannot be included in the " +
+                "ClientEncryptionPolicy.");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be included in" +
+                " the ClientEncryptionPolicy.");
+        }
+
+
+        //Verify for composite key
+        collectionName = UUID.randomUUID().toString();
+        containerProperties = new CosmosContainerProperties(collectionName, "/mypk/mypk1");
+        try {
+            containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+            containerResponse = createdDatabase.createContainer(containerProperties);
+            fail("createContainer should fail as mypk which is part of the partition key cannot be included in the " +
+                "ClientEncryptionPolicy.");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be included in" +
+                " the ClientEncryptionPolicy.");
+        }
+
+
+        //Verify setPartitionKeyDefinition with encrypted field.
+        collectionName = UUID.randomUUID().toString();
+        containerProperties = new CosmosContainerProperties(collectionName, "/differentKey");
+        try {
+            containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+            PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+            List<String> keyPaths = new ArrayList<>();
+            keyPaths.add("/mypk");
+            partitionKeyDefinition.setPaths(keyPaths);
+            containerProperties.setPartitionKeyDefinition(partitionKeyDefinition);
+            containerResponse = createdDatabase.createContainer(containerProperties);
+            fail("createContainer should fail as mypk which is part of the partition key cannot be included in the " +
+                "ClientEncryptionPolicy.");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be included in" +
+                " the ClientEncryptionPolicy.");
+        }
+
+        //This should pass as we check only the first key of the composite key.
+        collectionName = UUID.randomUUID().toString();
+        containerProperties = new CosmosContainerProperties(collectionName, "/mypk1/mypk");
+        containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+        containerResponse = createdDatabase.createContainer(containerProperties);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
     }
@@ -312,11 +405,242 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(feedRanges)
             .isNotNull()
             .hasSize(1);
-        assertThat(feedRanges.get(0).toString())
+
+        assertFeedRange(feedRanges.get(0), "{\"Range\":{\"min\":\"\",\"max\":\"FF\"}}");
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void trySplitRanges_for_NonExistingContainer() throws Exception {
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        CosmosAsyncContainer nonExistingContainer =
+            createdDatabase.getContainer("NonExistingContainer").asyncContainer;
+
+        CosmosException cosmosException = null;
+        try {
+            List<FeedRangeEpkImpl> splitFeedRanges = nonExistingContainer.trySplitFeedRange(
+                FeedRange.forFullRange(),
+                3
+            ).block();
+        } catch (CosmosException error) {
+            cosmosException = error;
+        }
+
+        assertThat(cosmosException).isNotNull();
+        assertThat(cosmosException.getStatusCode()).isEqualTo(404);
+    }
+
+    private void assertFeedRange(FeedRange feedRange, String expectedJson)
+    {
+        assertThat(((FeedRangeInternal)feedRange).toJson())
             .isNotNull()
-            .isEqualTo(Base64.getUrlEncoder().encodeToString(
-                "{\"PKRangeId\":\"0\"}".getBytes(StandardCharsets.UTF_8)
+            .isEqualTo(expectedJson);
+
+        assertThat(feedRange.toString())
+            .isNotNull()
+            .isEqualTo(Base64.getUrlEncoder().encodeToString(expectedJson.getBytes(StandardCharsets.UTF_8)
             ));
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void getNormalizedFeedRanges_HashV1() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        createdDatabase.createContainer(containerProperties, options);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
+
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+
+        FeedRange fullRange = FeedRange.forFullRange();
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(fullRange).block())
+            .isNotNull()
+            .isEqualTo(new Range<>("", "FF", true, false));
+
+        Range<String> expectedRange = new Range<>("AA", "BB", true, false);
+        FeedRange epkRange = new FeedRangeEpkImpl(expectedRange);
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(epkRange).block())
+            .isNotNull()
+            .isEqualTo(expectedRange);
+
+        FeedRange pointEpkRange = new FeedRangeEpkImpl(
+            new Range<>("05C1D5AB55AB54", "05C1D5AB55AB54", true, true));
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(pointEpkRange).block())
+            .isNotNull()
+            .isEqualTo(new Range<>("05C1D5AB55AB54", "05C1D5AB55AB55", true, false));
+
+        FeedRange pkRangeIdRange = new FeedRangePartitionKeyRangeImpl("0");
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(pkRangeIdRange).block())
+            .isNotNull()
+            .isEqualTo(new Range<>("", "FF", true, false));
+
+        FeedRange logicalPartitionFeedRange = FeedRange.forLogicalPartition(new PartitionKey("Hello World"));
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(logicalPartitionFeedRange).block())
+            .isNotNull()
+            .isEqualTo(new Range<>(
+                "05C1C5D58F13B00849666D6D70215870736D6500",
+                "05C1C5D58F13B00849666D6D70215870736D6501",
+                true,
+                false));
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void getNormalizedFeedRanges_HashV2() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinitionForHashV2(collectionName);
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        createdDatabase.createContainer(containerProperties, options);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
+
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+
+        FeedRange fullRange = FeedRange.forFullRange();
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(fullRange).block())
+            .isNotNull()
+            .isEqualTo(new Range<>("", "FF", true, false));
+
+        Range<String> expectedRange = new Range<>("AA", "BB", true, false);
+        FeedRange epkRange = new FeedRangeEpkImpl(expectedRange);
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(epkRange).block())
+            .isNotNull()
+            .isEqualTo(expectedRange);
+
+        FeedRange pointEpkRange = new FeedRangeEpkImpl(
+            new Range<>("05C1D5AB55AB54", "05C1D5AB55AB54", true, true));
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(pointEpkRange).block())
+            .isNotNull()
+            .isEqualTo(new Range<>("05C1D5AB55AB54", "05C1D5AB55AB55", true, false));
+
+        FeedRange pkRangeIdRange = new FeedRangePartitionKeyRangeImpl("0");
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(pkRangeIdRange).block())
+            .isNotNull()
+            .isEqualTo(new Range<>("", "FF", true, false));
+
+        FeedRange logicalPartitionFeedRange = FeedRange.forLogicalPartition(new PartitionKey("Hello World"));
+        assertThat(syncContainer.asyncContainer.getNormalizedEffectiveRange(logicalPartitionFeedRange).block())
+            .isNotNull()
+            .isEqualTo(new Range<>(
+                "306C52B42DECB3AE9D3C7586975E30B9",
+                "306C52B42DECB3AE9D3C7586975E30BA",
+                true,
+                false));
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void getFeedRanges_withMultiplePartitions() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(
+            containerProperties,
+            ThroughputProperties.createManualThroughput(18000));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
+
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+
+        List<FeedRange> feedRanges = syncContainer.getFeedRanges();
+        assertThat(feedRanges)
+            .isNotNull()
+            .hasSize(3);
+
+        assertFeedRange(feedRanges.get(0), "{\"Range\":{\"min\":\"\",\"max\":\"05C1D5AB55AB54\"}}");
+        assertFeedRange(feedRanges.get(1), "{\"Range\":{\"min\":\"05C1D5AB55AB54\",\"max\":\"05C1E5AB55AB54\"}}");
+        assertFeedRange(feedRanges.get(2), "{\"Range\":{\"min\":\"05C1E5AB55AB54\",\"max\":\"FF\"}}");
+
+        Range<String> firstEpkRange = getEffectiveRange(syncContainer, feedRanges.get(0));
+        Range<String> secondEpkRange = getEffectiveRange(syncContainer, feedRanges.get(1));
+        Range<String> thirdEpkRange = getEffectiveRange(syncContainer, feedRanges.get(2));
+
+        List<FeedRangeEpkImpl> feedRangesAfterSplit = syncContainer
+            .asyncContainer
+            .trySplitFeedRange(FeedRange.forFullRange(), 3)
+            .block();
+        assertThat(feedRangesAfterSplit)
+            .isNotNull()
+            .hasSize(3);
+
+        String leftMin = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMin();
+        String rightMin = firstEpkRange.getMin();
+        String leftMax = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMax();
+        String rightMax = firstEpkRange.getMax();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).equals(firstEpkRange))
+            .isTrue();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(1)).equals(secondEpkRange))
+            .isTrue();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(2)).equals(thirdEpkRange))
+            .isTrue();
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void getFeedRanges_withMultiplePartitions_HashV2() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinitionForHashV2(collectionName);
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(
+            containerProperties,
+            ThroughputProperties.createManualThroughput(18000));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
+
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+
+        List<FeedRange> feedRanges = syncContainer.getFeedRanges();
+        assertThat(feedRanges)
+            .isNotNull()
+            .hasSize(3);
+
+        assertFeedRange(
+            feedRanges.get(0),
+            "{\"Range\":{\"min\":\"\",\"max\":\"15555555555555555555555555555555\"}}");
+        assertFeedRange(
+            feedRanges.get(1),
+            "{\"Range\":{\"min\":\"15555555555555555555555555555555\"," +
+            "\"max\":\"2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}}");
+        assertFeedRange(
+            feedRanges.get(2),
+            "{\"Range\":{\"min\":\"2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"max\":\"FF\"}}");
+
+        Range<String> firstEpkRange = getEffectiveRange(syncContainer, feedRanges.get(0));
+        Range<String> secondEpkRange = getEffectiveRange(syncContainer, feedRanges.get(1));
+        Range<String> thirdEpkRange = getEffectiveRange(syncContainer, feedRanges.get(2));
+
+        List<FeedRangeEpkImpl> feedRangesAfterSplit = syncContainer
+            .asyncContainer
+            .trySplitFeedRange(FeedRange.forFullRange(), 3)
+            .block();
+        assertThat(feedRangesAfterSplit)
+            .isNotNull()
+            .hasSize(3);
+
+        String leftMin = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMin();
+        String rightMin = firstEpkRange.getMin();
+        String leftMax = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMax();
+        String rightMax = firstEpkRange.getMax();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).equals(firstEpkRange))
+            .isTrue();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(1)).equals(secondEpkRange))
+            .isTrue();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(2)).equals(thirdEpkRange))
+            .isTrue();
+    }
+
+    private static Range<String> getEffectiveRange(CosmosContainer container, FeedRange feedRange) {
+        AsyncDocumentClient clientWrapper = container.asyncContainer.getDatabase().getDocClientWrapper();
+        return FeedRangeInternal
+            .convert(feedRange)
+            .getNormalizedEffectiveRange(
+                clientWrapper.getPartitionKeyRangeCache(),
+                null,
+                Mono.just(Utils.ValueHolder.initialize(
+                    clientWrapper.getCollectionCache().resolveByNameAsync(
+                        null,
+                        container.asyncContainer.getLink(),
+                        null
+                    ).block()))).block();
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -443,6 +767,40 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
     }
 
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void crudMultiHashContainer() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        partitionKeyDefinition.setKind(PartitionKind.MULTI_HASH);
+        partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/city");
+        paths.add("/zipcode");
+        partitionKeyDefinition.setPaths(paths);
+
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName, partitionKeyDefinition);
+
+        //MultiHash collection create
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        validateContainerResponse(containerProperties, containerResponse);
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getKind() == PartitionKind.MULTI_HASH);
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().size() == paths.size());
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().get(0) == paths.get(0));
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().get(1) == paths.get(1));
+
+        //MultiHash collection read
+        CosmosContainer multiHashContainer = createdDatabase.getContainer(collectionName);
+        containerResponse = multiHashContainer.read();
+        validateContainerResponse(containerProperties, containerResponse);
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getKind() == PartitionKind.MULTI_HASH);
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().size() == paths.size());
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().get(0) == paths.get(0));
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().get(1) == paths.get(1));
+
+        //MultiHash collection delete
+        CosmosContainerResponse deleteResponse = multiHashContainer.delete();
+    }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void queryContainer() throws Exception{
@@ -501,5 +859,20 @@ public class CosmosContainerTest extends TestSuiteBase {
                 }
             }
         }
+    }
+
+    private void createEncryptionKey() {
+        EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key1", "tempmetadata1", "custom");
+        byte[] key = decodeHexString(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
+            "ae 1e d9 1c").replace(" ", ""));
+
+        CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties1 =
+            new CosmosClientEncryptionKeyProperties("containerTestKey1", "AEAD_AES_256_CBC_HMAC_SHA256", key,
+                encryptionKeyWrapMetadata);
+        CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties2 =
+            new CosmosClientEncryptionKeyProperties("containerTestKey2", "AEAD_AES_256_CBC_HMAC_SHA256", key,
+                encryptionKeyWrapMetadata);
+        client.asyncClient().getDatabase(createdDatabase.getId()).createClientEncryptionKey(cosmosClientEncryptionKeyProperties1).block();
+        client.asyncClient().getDatabase(createdDatabase.getId()).createClientEncryptionKey(cosmosClientEncryptionKeyProperties2).block();
     }
 }

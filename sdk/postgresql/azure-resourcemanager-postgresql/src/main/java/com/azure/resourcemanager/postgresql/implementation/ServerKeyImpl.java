@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.ServerKeyInner;
 import com.azure.resourcemanager.postgresql.models.ServerKey;
 import com.azure.resourcemanager.postgresql.models.ServerKeyType;
@@ -14,7 +13,7 @@ import java.time.OffsetDateTime;
 public final class ServerKeyImpl implements ServerKey, ServerKey.Definition, ServerKey.Update {
     private ServerKeyInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -48,7 +47,7 @@ public final class ServerKeyImpl implements ServerKey, ServerKey.Definition, Ser
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 
@@ -82,7 +81,7 @@ public final class ServerKeyImpl implements ServerKey, ServerKey.Definition, Ser
         return this;
     }
 
-    ServerKeyImpl(String name, PostgreSqlManager serviceManager) {
+    ServerKeyImpl(String name, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = new ServerKeyInner();
         this.serviceManager = serviceManager;
         this.keyName = name;
@@ -110,7 +109,7 @@ public final class ServerKeyImpl implements ServerKey, ServerKey.Definition, Ser
         return this;
     }
 
-    ServerKeyImpl(ServerKeyInner innerObject, PostgreSqlManager serviceManager) {
+    ServerKeyImpl(ServerKeyInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");

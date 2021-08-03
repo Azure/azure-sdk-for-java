@@ -144,6 +144,14 @@ public interface GenericResource extends
             WithCreate withPlan(String name, String publisher, String product, String promotionCode);
 
             /**
+             * Specifies the plan of the resource. The plan can only be set for 3rd party resources.
+             *
+             * @param plan the plan
+             * @return the next stage of the definition.
+             */
+            WithCreate withPlan(Plan plan);
+
+            /**
              * Specifies the plan of the resource.
              *
              * @return the next stage of the definition
@@ -288,6 +296,14 @@ public interface GenericResource extends
              * @return the next stage of the generic resource update
              */
             Update withPlan(String name, String publisher, String product, String promotionCode);
+
+            /**
+             * Specifies the plan of the resource.
+             *
+             * @param plan the plan
+             * @return the next stage of the generic resource update
+             */
+            Update withPlan(Plan plan);
 
             /**
              * Specifies the plan of the resource.

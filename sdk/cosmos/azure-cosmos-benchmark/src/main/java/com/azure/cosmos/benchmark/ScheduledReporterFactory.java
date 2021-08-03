@@ -11,6 +11,8 @@ import com.codahale.metrics.ScheduledReporter;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -30,8 +32,19 @@ public class ScheduledReporterFactory {
             final Graphite graphite = new Graphite(new InetSocketAddress(
                 configuration.getGraphiteEndpoint(),
                 configuration.getGraphiteEndpointPort()));
+
+            String graphiteReporterPrefix = configuration.getOperationType().name();
+            if (configuration.isAccountNameInGraphiteReporter()) {
+                try {
+                    URI uri = new URI(configuration.getServiceEndpoint());
+                    graphiteReporterPrefix = graphiteReporterPrefix + "-" + uri.getHost().substring(0, uri.getHost().indexOf("."));
+                } catch (URISyntaxException e) {
+                    // do nothing, graphiteReporterPrefix will be configuration.getOperationType().name()
+                }
+            }
+
             return GraphiteReporter.forRegistry(metricsRegistry)
-                .prefixedWith(configuration.getOperationType().name())
+                .prefixedWith(graphiteReporterPrefix)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .filter(MetricFilter.ALL)

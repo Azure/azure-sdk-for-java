@@ -6,7 +6,7 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
-
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.models.AppendBlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
@@ -17,6 +17,8 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -76,9 +78,9 @@ class AppendBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                  | contentType
-        null         | null               | null            | null            | null                                                                                        | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.getBytes())) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                       | contentType
+        null         | null               | null            | null            | null                                                                                             | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultText.getBytes())) | "type"
     }
 
     @Unroll
@@ -105,6 +107,7 @@ class AppendBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Create tags"() {
         setup:
@@ -130,6 +133,7 @@ class AppendBlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Create AC"() {
         setup:
@@ -191,7 +195,7 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block defaults"() {
         setup:
-        def appendResponse = bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+        def appendResponse = bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null,
             null)
 
         when:
@@ -199,7 +203,7 @@ class AppendBlobAPITest extends APISpec {
         bc.download(downloadStream)
 
         then:
-        downloadStream.toByteArray() == defaultData.array()
+        downloadStream.toByteArray() == data.defaultBytes
         validateBasicHeaders(appendResponse.getHeaders())
         appendResponse.getHeaders().getValue("x-ms-content-crc64") != null
         appendResponse.getValue().getBlobAppendOffset() != null
@@ -210,23 +214,23 @@ class AppendBlobAPITest extends APISpec {
     }
 
     def "Append block min"() {
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null,
             null).getStatusCode() == 201
     }
 
     @Unroll
     def "Append block IA"() {
         when:
-        bc.appendBlock(data, dataSize)
+        bc.appendBlock(stream, dataSize)
 
         then:
         thrown(exceptionType)
 
         where:
-        data                     | dataSize            | exceptionType
-        null                     | defaultDataSize     | NullPointerException
-        defaultInputStream.get() | defaultDataSize + 1 | UnexpectedLengthException
-        defaultInputStream.get() | defaultDataSize - 1 | UnexpectedLengthException
+        stream                   | dataSize                 | exceptionType
+        null                     | data.defaultDataSize     | NullPointerException
+        data.defaultInputStream | data.defaultDataSize + 1 | UnexpectedLengthException
+        data.defaultInputStream | data.defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Append block empty body"() {
@@ -247,15 +251,15 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block transactionalMD5"() {
         setup:
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
 
         expect:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, md5, null, null, null).statusCode == 201
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, md5, null, null, null).statusCode == 201
     }
 
     def "Append block transactionalMD5 fail"() {
         when:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize,
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize,
             MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
 
         then:
@@ -263,6 +267,7 @@ class AppendBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Append block AC"() {
         setup:
@@ -282,7 +287,7 @@ class AppendBlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         expect:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, bac, null, null)
             .getStatusCode() == 201
 
         where:
@@ -315,13 +320,13 @@ class AppendBlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, bac, null, null)
 
         then:
         thrown(BlobStorageException)
 
         cleanup:
-        defaultInputStream.get().reset()
+        data.defaultInputStream.reset()
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE | tags
@@ -340,7 +345,7 @@ class AppendBlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
 
         when:
-        bc.appendBlock(defaultInputStream.get(), defaultDataSize)
+        bc.appendBlock(data.defaultInputStream, data.defaultDataSize)
 
         then:
         thrown(BlobStorageException)
@@ -349,18 +354,18 @@ class AppendBlobAPITest extends APISpec {
     def "Append block retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             bc.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getAppendBlobClient()
 
         when:
-        clientWithFailure.appendBlock(defaultInputStream.get(), defaultDataSize)
+        clientWithFailure.appendBlock(data.defaultInputStream, data.defaultDataSize)
 
         then:
         def os = new ByteArrayOutputStream()
         bc.download(os)
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
     }
 
     def "Append block from URL min"() {
@@ -434,6 +439,7 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Append block from URL destination AC"() {
         setup:
@@ -455,7 +461,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+        sourceURL.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null)
             .getStatusCode()
 
         expect:
@@ -493,7 +499,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+        sourceURL.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null)
             .getStatusCode()
 
         when:
@@ -521,7 +527,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+        sourceURL.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null)
             .getStatusCode()
 
         def smac = new BlobRequestConditions()
@@ -549,7 +555,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+        sourceURL.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null)
             .getStatusCode()
 
         def smac = new BlobRequestConditions()
@@ -598,6 +604,7 @@ class AppendBlobAPITest extends APISpec {
         notThrown(Throwable)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Seal defaults"() {
         when:
         def sealResponse = bc.sealWithResponse(null, null, null)
@@ -607,6 +614,7 @@ class AppendBlobAPITest extends APISpec {
         sealResponse.getHeaders().getValue("x-ms-blob-sealed")
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Seal min"() {
         when:
         bc.seal()
@@ -616,6 +624,7 @@ class AppendBlobAPITest extends APISpec {
         bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, null).getDeserializedHeaders().isSealed()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Seal error"() {
         setup:
         bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
@@ -627,6 +636,7 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Seal AC"() {
         setup:
@@ -655,6 +665,7 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | 0
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Seal AC fail"() {
         setup:
@@ -685,10 +696,11 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | null           | 1
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def specialBlob = getSpecializedBuilder(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+        def specialBlob = getSpecializedBuilder(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
             .buildAppendBlobClient()
 
         when:

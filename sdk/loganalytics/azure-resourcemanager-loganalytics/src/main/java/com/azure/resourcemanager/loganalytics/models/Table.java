@@ -30,34 +30,12 @@ public interface Table {
     String type();
 
     /**
-     * Gets the retentionInDays property: The data table data retention in days, between 7 and 730. Setting this
+     * Gets the retentionInDays property: The data table data retention in days, between 30 and 730. Setting this
      * property to null will default to the workspace retention.
      *
      * @return the retentionInDays value.
      */
     Integer retentionInDays();
-
-    /**
-     * Gets the isTroubleshootingAllowed property: Specifies if IsTroubleshootingEnabled property can be set for this
-     * table.
-     *
-     * @return the isTroubleshootingAllowed value.
-     */
-    Boolean isTroubleshootingAllowed();
-
-    /**
-     * Gets the isTroubleshootEnabled property: Enable or disable troubleshoot for this table.
-     *
-     * @return the isTroubleshootEnabled value.
-     */
-    Boolean isTroubleshootEnabled();
-
-    /**
-     * Gets the lastTroubleshootDate property: Last time when troubleshooting was set for this table.
-     *
-     * @return the lastTroubleshootDate value.
-     */
-    String lastTroubleshootDate();
 
     /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.TableInner object.

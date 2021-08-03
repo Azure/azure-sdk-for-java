@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.credential.TokenCredential;
@@ -15,9 +14,11 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.time.Duration;
@@ -29,21 +30,38 @@ import java.util.stream.Stream;
 public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
+    protected static final boolean IS_MANAGED_HSM_DEPLOYED =
+        Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
     static final String DISPLAY_NAME = "{displayName}";
+
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
+        Assumptions.assumeTrue(IS_MANAGED_HSM_DEPLOYED || getTestMode() == TestMode.PLAYBACK);
+    }
 
     @Override
     protected String getTestName() {
         return "";
     }
 
-    void beforeTestSetup() {
-    }
-
     protected List<HttpPipelinePolicy> getPolicies() {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            credential = new AzureCliCredentialBuilder().build();
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+
+            Objects.requireNonNull(clientId, "The client id cannot be null");
+            Objects.requireNonNull(clientKey, "The client key cannot be null");
+            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
+
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(clientKey)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .build();
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -67,7 +85,8 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode() ? "http://localhost:8080"
-            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+            : Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT");
+
         Objects.requireNonNull(endpoint);
 
         return endpoint;
@@ -80,17 +99,5 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
      */
     static Stream<Arguments> createHttpClients() {
         return TestBase.getHttpClients().map(Arguments::of);
-    }
-
-    public void sleepInLiveOrRecordMode(long millis) {
-        if (interceptorManager.isPlaybackMode()) {
-            return;
-        }
-
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

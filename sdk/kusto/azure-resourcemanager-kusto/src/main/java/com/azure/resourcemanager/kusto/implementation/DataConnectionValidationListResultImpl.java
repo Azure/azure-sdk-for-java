@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kusto.implementation;
 
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionValidationListResultInner;
 import com.azure.resourcemanager.kusto.models.DataConnectionValidationListResult;
 import com.azure.resourcemanager.kusto.models.DataConnectionValidationResult;
@@ -14,10 +13,11 @@ import java.util.List;
 public final class DataConnectionValidationListResultImpl implements DataConnectionValidationListResult {
     private DataConnectionValidationListResultInner innerObject;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
     DataConnectionValidationListResultImpl(
-        DataConnectionValidationListResultInner innerObject, KustoManager serviceManager) {
+        DataConnectionValidationListResultInner innerObject,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,7 +35,7 @@ public final class DataConnectionValidationListResultImpl implements DataConnect
         return this.innerObject;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 }

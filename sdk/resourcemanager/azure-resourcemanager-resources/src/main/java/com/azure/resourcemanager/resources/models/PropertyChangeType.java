@@ -19,7 +19,10 @@ public enum PropertyChangeType {
     MODIFY("Modify"),
 
     /** Enum value Array. */
-    ARRAY("Array");
+    ARRAY("Array"),
+
+    /** Enum value NoEffect. */
+    NO_EFFECT("NoEffect");
 
     /** The actual serialized value for a PropertyChangeType instance. */
     private final String value;

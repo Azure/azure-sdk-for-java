@@ -19,6 +19,7 @@ public final class RecognizeContentOptions {
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private FormRecognizerLanguage language;
     private List<String> pages;
+    private FormReadingOrder readingOrder;
 
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -66,10 +67,8 @@ public final class RecognizeContentOptions {
 
     /**
      * Get the BCP-47 language code of the text in the document.
-     * See supported language codes here:
-     * <a>
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support.
-     * </a>
+     * See supported language codes
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
      *
      * @return the language code for the text in the document.
      */
@@ -79,10 +78,8 @@ public final class RecognizeContentOptions {
 
     /**
      * Set the BCP-47 language code of the text in the document.
-     * See supported language codes here:
-     * <a>
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support.
-     * </a>
+     * See supported language codes
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
      *
      * @param language the language code value to set.
      * @return the updated {@code RecognizeContentOptions} value.
@@ -115,6 +112,28 @@ public final class RecognizeContentOptions {
      */
     public RecognizeContentOptions setPages(List<String> pages) {
         this.pages = pages;
+        return this;
+    }
+
+    /**
+     * Get the order in which recognized text lines are returned.
+     *
+     * @return the order in which the recognized lines are returned.
+     */
+    public FormReadingOrder getReadingOrder() {
+        return readingOrder;
+    }
+
+    /**
+     * Specifies the order in which recognized text lines are returned. As the sorting order
+     * depends on the detected text, it may change across images and OCR version updates. Thus,
+     * business logic should be built upon the actual line location instead of order.
+     *
+     * @param readingOrder the order specifies in which text lines are returned
+     * @return the updated {@code RecognizeContentOptions} value.
+     */
+    public RecognizeContentOptions setReadingOrder(FormReadingOrder readingOrder) {
+        this.readingOrder = readingOrder;
         return this;
     }
 }

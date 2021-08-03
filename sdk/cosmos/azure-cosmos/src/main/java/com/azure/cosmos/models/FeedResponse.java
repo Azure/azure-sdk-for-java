@@ -186,6 +186,24 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
+     * Gets the current size of the documents in a container in kilobytes from the Azure Cosmos DB service.
+     *
+     * @return The current size of a container in kilobytes.
+     */
+    public long getDocumentUsage() {
+        return this.currentQuotaHeader(Constants.Quota.DOCUMENTS_SIZE);
+    }
+
+    /**
+     * Current document count usage.
+     *
+     * @return the document count usage.
+     */
+    public long getDocumentCountUsage() {
+        return this.currentQuotaHeader(Constants.Quota.DOCUMENTS_COUNT);
+    }
+
+    /**
      * Gets the maximum quota of stored procedures for a container from the Azure Cosmos DB service.
      *
      * @return The maximum stored procedure quota.
@@ -430,6 +448,12 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
             } else if (headerMaxQuotaWords[i].equalsIgnoreCase(Constants.Quota.TRIGGER)) {
                 this.quotaHeaders.put(Constants.Quota.TRIGGER, Long.valueOf(headerMaxQuotaWords[i + 1]));
                 this.usageHeaders.put(Constants.Quota.TRIGGER, Long.valueOf(headerCurrentUsageWords[i + 1]));
+            } else if (headerMaxQuotaWords[i].equalsIgnoreCase(Constants.Quota.DOCUMENTS_SIZE)) {
+                this.quotaHeaders.put(Constants.Quota.DOCUMENTS_SIZE, Long.valueOf(headerMaxQuotaWords[i + 1]));
+                this.usageHeaders.put(Constants.Quota.DOCUMENTS_SIZE, Long.valueOf(headerCurrentUsageWords[i + 1]));
+            } else if (headerMaxQuotaWords[i].equalsIgnoreCase(Constants.Quota.DOCUMENTS_COUNT)) {
+                this.quotaHeaders.put(Constants.Quota.DOCUMENTS_COUNT, Long.valueOf(headerMaxQuotaWords[i + 1]));
+                this.usageHeaders.put(Constants.Quota.DOCUMENTS_COUNT, Long.valueOf(headerCurrentUsageWords[i + 1]));
             } else if (headerMaxQuotaWords[i].equalsIgnoreCase(Constants.Quota.USER_DEFINED_FUNCTION)) {
                 this.quotaHeaders.put(Constants.Quota.USER_DEFINED_FUNCTION, Long.valueOf(headerMaxQuotaWords[i + 1]));
                 this.usageHeaders.put(Constants.Quota.USER_DEFINED_FUNCTION,

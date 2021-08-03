@@ -5,7 +5,6 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ public abstract class IncidentDetectedTestBase extends MetricsAdvisorClientTestB
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-10-20T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-10-21T00:00:00Z");
         final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions()
-            .setTop(1000);
+            .setMaxPageSize(1000);
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
     }
 

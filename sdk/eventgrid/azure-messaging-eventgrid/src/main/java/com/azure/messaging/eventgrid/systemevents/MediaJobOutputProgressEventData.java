@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Job Output Progress Event Data. */
+/**
+ * Job Output Progress Event Data. Schema of the Data property of an EventGridEvent for a
+ * Microsoft.Media.JobOutputProgress event.
+ */
 @Fluent
 public final class MediaJobOutputProgressEventData {
     /*

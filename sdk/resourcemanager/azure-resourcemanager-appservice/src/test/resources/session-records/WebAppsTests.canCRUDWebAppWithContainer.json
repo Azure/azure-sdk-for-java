@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg8829036f?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg8829036f?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.implementation/2.0.0 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "04338dda-56ec-4ef8-ac32-451317e9415c",
@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/serverfarms/java-asp-5583543e?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/serverfarms/java-asp-5583543e?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice.implementation/2.0.0 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "84345e2e-d836-4d4b-a811-cd02d90c3d47",
@@ -56,7 +56,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/sites/java-webapp-762533?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/sites/java-webapp-762533?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice.implementation/2.0.0 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "94915b69-2e7e-40be-ac86-a0ff8ae1bb98",
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/sites/java-webapp-762533/config/web?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/sites/java-webapp-762533/config/web?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice.implementation/2.0.0 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ccf7df7f-9873-4cc5-b695-a36c3bded739",
@@ -116,7 +116,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/sites/java-webapp-762533/config/appsettings/list?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/sites/java-webapp-762533/config/appsettings/list?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice.implementation/2.0.0 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "11c5edeb-a9fb-439d-95bf-a0e01b107206",
@@ -145,7 +145,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/sites/java-webapp-762533/config/appsettings?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8829036f/providers/Microsoft.Web/sites/java-webapp-762533/config/appsettings?api-version=2020-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice.implementation/2.0.0 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "447867a0-cad2-4c6f-a718-62fdfdedb14d",
@@ -175,7 +175,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg8829036f?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg8829036f?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.implementation/2.0.0 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5cb94952-fd1a-44c2-a65d-8479a6cb38ff",

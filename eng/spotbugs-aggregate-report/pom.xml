@@ -112,22 +112,22 @@
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-batch</artifactId>
-          <version>9.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
+          <version>10.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-eventhubs</artifactId>
-          <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
+          <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-eventhubs-eph</artifactId>
-          <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-eph;current} -->
+          <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-eph;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-eventhubs-extensions</artifactId>
-          <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
+          <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
         </dependency>
         <!-- Storage is excluded from Spotbugs report as it collides with the storage library
              dependency in eventhubs code. This issue is under investigation.
@@ -140,7 +140,7 @@
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-servicebus</artifactId>
-          <version>3.7.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
+          <version>3.6.4</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
         </dependency>
       </dependencies>
       <properties>

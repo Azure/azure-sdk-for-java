@@ -3,11 +3,13 @@
 
 package com.azure.iot.core;
 
+import java.util.Scanner;
+
 /**
  * Entry point for running samples.
  */
 public class Main {
-    static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
 
         // DtmiConventions samples
         DtmiConventionsSamples.isValidDtmi();
@@ -20,5 +22,10 @@ public class Main {
         ModelResolutionSamples.getModelsFromGlobalRepository();
         ModelResolutionSamples.getModelsFromLocalRepository();
         ModelResolutionSamples.getMultipleModelsFromGlobalRepository();
+
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Press any key to exit.");
+        userInput.nextLine();
+        System.exit(1);
     }
 }

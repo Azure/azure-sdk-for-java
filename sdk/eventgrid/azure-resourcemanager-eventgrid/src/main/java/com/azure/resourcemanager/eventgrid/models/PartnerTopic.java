@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.eventgrid.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerTopicInner;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -46,18 +47,18 @@ public interface PartnerTopic {
     Map<String, String> tags();
 
     /**
-     * Gets the identity property: Identity information for the resource.
-     *
-     * @return the identity value.
-     */
-    IdentityInfo identity();
-
-    /**
      * Gets the systemData property: The system metadata relating to Partner Topic resource.
      *
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the identity property: Identity information for the Partner Topic resource.
+     *
+     * @return the identity value.
+     */
+    IdentityInfo identity();
 
     /**
      * Gets the source property: Source associated with this partner topic. This represents a unique partner resource.

@@ -38,10 +38,9 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile PartitionKeyInternal effectivePartitionKey;
     public volatile CosmosDiagnostics cosmosDiagnostics;
     public volatile String resourcePhysicalAddress;
-    public RetryContext retryContext;
+    public volatile String throughputControlCycleId;
 
     public DocumentServiceRequestContext() {
-        retryContext = new RetryContext();
     }
 
     /**
@@ -78,52 +77,6 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.usePreferredLocations = null;
     }
 
-    public void updateRetryContext(IRetryPolicy retryPolicy, boolean isGenericRetry) {
-        if (isGenericRetry) {
-            if (this.retryContext.directRetrySpecificStatusAndSubStatusCodes != null && this.retryContext.directRetrySpecificStatusAndSubStatusCodes.size() > 0) {
-                for (int i = this.retryContext.directRetrySpecificStatusAndSubStatusCodes.size() - 1; i >= 0; i--) {
-                    retryPolicy.incrementRetry();
-                    retryPolicy.addStatusAndSubStatusCode(0, this.retryContext.directRetrySpecificStatusAndSubStatusCodes.get(i)[0],
-                        this.retryContext.directRetrySpecificStatusAndSubStatusCodes.get(i)[1]);
-                }
-                this.retryContext.directRetrySpecificStatusAndSubStatusCodes.clear();
-            }
-
-            if (retryPolicy.getStatusAndSubStatusCodes() != null) {
-                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes()));
-            } else {
-                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>());
-            }
-            this.retryContext.retryCount = retryPolicy.getRetryCount();
-            this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
-            if (this.retryContext.retryStartTime == null) {
-                this.retryContext.retryStartTime = retryPolicy.getStartTime();
-            }
-            this.retryContext.retryEndTime = retryPolicy.getEndTime();
-        } else {
-            if (this.retryContext.genericRetrySpecificStatusAndSubStatusCodes != null && this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.size() > 0) {
-                for (int i = this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.size() - 1; i >= 0; i--) {
-                    retryPolicy.incrementRetry();
-                    retryPolicy.addStatusAndSubStatusCode(0, this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.get(i)[0],
-                        this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.get(i)[1]);
-                }
-                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes.clear();
-            }
-
-            if (retryPolicy.getStatusAndSubStatusCodes() != null) {
-                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes()));
-            } else {
-                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>());
-            }
-            this.retryContext.retryCount = retryPolicy.getRetryCount();
-            this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
-            if (this.retryContext.retryStartTime == null) {
-                this.retryContext.retryStartTime = retryPolicy.getStartTime();
-            }
-            this.retryContext.retryEndTime = retryPolicy.getEndTime();
-        }
-    }
-
     @Override
     public DocumentServiceRequestContext clone() {
         DocumentServiceRequestContext context = new DocumentServiceRequestContext();
@@ -147,8 +100,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
         context.cosmosDiagnostics = this.cosmosDiagnostics;
         context.resourcePhysicalAddress = this.resourcePhysicalAddress;
-        context.retryContext = new RetryContext(this.retryContext);
-
+        context.throughputControlCycleId = this.throughputControlCycleId;
         return context;
     }
 }

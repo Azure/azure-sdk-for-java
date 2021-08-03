@@ -48,7 +48,7 @@ public interface Tracer {
     /**
      * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
      */
-    String DIAGNOSTIC_ID_KEY = "diagnostic-id";
+    String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
 
     /**
      * Key for {@link Context} the scope of code where the given Span is in the current Context.
@@ -93,6 +93,29 @@ public interface Tracer {
      * @throws NullPointerException if {@code methodName} or {@code context} is {@code null}.
      */
     Context start(String methodName, Context context);
+
+    /**
+     * Creates a new tracing span.
+     * <p>
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
+     * downstream {@code start()} calls will use the created span as the parent.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Starts a tracing span with provided method name and explicit parent span</p>
+     * {@codesnippet com.azure.core.util.tracing.start#options-context}
+     *
+     * @param methodName Name of the method triggering the span creation.
+     * @param options span creation options.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return The updated {@link Context} object containing the returned span.
+     * @throws NullPointerException if {@code options} or {@code context} is {@code null}.
+     */
+    default Context start(String methodName, StartSpanOptions options, Context context) {
+        // fall back to old API if not overriden.
+        return start(methodName, context);
+    }
 
     /**
      * Creates a new tracing span for AMQP calls.
@@ -248,7 +271,50 @@ public interface Tracer {
      * @param attributes the additional attributes to be set for the event.
      * @param timestamp The instant, in UTC, at which the event will be associated to the span.
      * @throws NullPointerException if {@code eventName} is {@code null}.
+     * @deprecated Use {@link #addEvent(String, Map, OffsetDateTime, Context)}
      */
+    @Deprecated
     default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {
     }
+
+    /**
+     * Adds an event to the span present in the {@code Context} with the provided {@code timestamp}
+     * and {@code attributes}.
+     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
+     * span timeline</p>
+     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
+     * Any other Object value type and null values will be silently ignored.</p>
+     *
+     * @param name the name of the event.
+     * @param attributes the additional attributes to be set for the event.
+     * @param timestamp The instant, in UTC, at which the event will be associated to the span.
+     * @param context the call metadata containing information of the span to which the event should be associated with.
+     * @throws NullPointerException if {@code eventName} is {@code null}.
+     */
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp,
+                          Context context) {
+
+    }
+
+    /**
+     * Makes span current. Implementations may put it on ThreadLocal.
+     * Make sure to always use try-with-resource statement with makeSpanCurrent
+     * @param context Context with span.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Starts a tracing span, makes it current and ends it</p>
+     * {@codesnippet com.azure.core.util.tracing.makeSpanCurrent#context}
+     *
+     * @return Closeable that should be closed in the same thread with try-with-resource statement.
+     */
+    default AutoCloseable makeSpanCurrent(Context context) {
+        return NOOP_CLOSEABLE;
+    }
+
+    AutoCloseable NOOP_CLOSEABLE = new AutoCloseable() {
+        @Override
+        public void close() {
+        }
+    };
 }

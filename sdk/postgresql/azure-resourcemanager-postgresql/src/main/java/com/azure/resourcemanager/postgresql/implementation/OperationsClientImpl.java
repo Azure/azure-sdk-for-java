@@ -54,7 +54,7 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceInterface(name = "PostgreSqlManagement")
     private interface OperationsService {
         @Headers({"Content-Type: application/json"})
-        @Get("/providers/Microsoft.DBForPostgreSQL/operations")
+        @Get("/providers/Microsoft.DBforPostgreSQL/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResultInner>> list(
@@ -83,7 +83,7 @@ public final class OperationsClientImpl implements OperationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

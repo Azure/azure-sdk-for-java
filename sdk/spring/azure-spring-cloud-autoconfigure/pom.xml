@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-  <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
 
   <name>Azure Spring Cloud Autoconfigure</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -26,34 +26,27 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
-    </dependency>
-
-		<!-- Telemetry -->
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-telemetry</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
 
 		<!-- Cloud SQL -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
-      <version>3.4.5</version> <!-- {x-version-update;com.zaxxer:HikariCP;external_dependency} -->
+      <version>4.0.3</version> <!-- {x-version-update;com.zaxxer:HikariCP;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -61,7 +54,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.2.18</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.2.23</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -69,7 +62,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.23</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
+      <version>8.0.26</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -77,7 +70,7 @@
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
-      <version>8.4.1.jre8</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+      <version>9.2.1.jre8</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -85,7 +78,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-eventhubs</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -93,7 +86,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-servicebus</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -101,7 +94,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-redis</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -109,7 +102,7 @@
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
-      <version>2.6.6</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+      <version>2.7.4</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -117,75 +110,48 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-mongodb</artifactId>
-      <version>3.1.5</version> <!-- {x-version-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
+      <version>3.2.3</version> <!-- {x-version-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>6.1.7.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+      <version>6.2.0.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.12.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
+    <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-api-mockito2</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-module-junit4</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -193,7 +159,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-storage</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
       <scope>test</scope>
     </dependency>
 
@@ -209,19 +175,19 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-core:[2.12.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.microsoft.sqlserver:mssql-jdbc:[8.4.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
-                <include>mysql:mysql-connector-java:[8.0.23]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
-                <include>org.hibernate.validator:hibernate-validator:[6.1.7.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.2.18]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.data:spring-data-mongodb:[3.1.5]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
-                <include>org.springframework.data:spring-data-redis:[2.4.5]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
-                <include>org.springframework.kafka:spring-kafka:[2.6.6]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
-                <include>org.springframework:spring-context-support:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
-                <include>org.springframework:spring-jdbc:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.microsoft.sqlserver:mssql-jdbc:[9.2.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+                <include>mysql:mysql-connector-java:[8.0.26]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
+                <include>org.hibernate.validator:hibernate-validator:[6.2.0.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.2.23]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.data:spring-data-mongodb:[3.2.3]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
+                <include>org.springframework.data:spring-data-redis:[2.5.3]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
+                <include>org.springframework.kafka:spring-kafka:[2.7.4]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+                <include>org.springframework:spring-context-support:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
+                <include>org.springframework:spring-jdbc:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

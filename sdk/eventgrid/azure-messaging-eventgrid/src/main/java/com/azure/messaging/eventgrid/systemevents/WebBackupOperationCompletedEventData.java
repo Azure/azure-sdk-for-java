@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Web.BackupOperationCompleted event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Web.BackupOperationCompleted event. */
 @Fluent
 public final class WebBackupOperationCompletedEventData {
     /*

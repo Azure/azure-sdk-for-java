@@ -42,7 +42,7 @@ class DtmiConventionTests {
     public void getModelUriTests(String repository, String expectedUri) {
         final String dtmi = "dtmi:com:example:Thermostat;1";
 
-        URI repositoryUri = DtmiConventions.convertToUri(repository);
+        URI repositoryUri = TestHelper.convertToUri(repository);
 
         if (expectedUri == null || expectedUri.isEmpty()) {
             Assertions.assertThrows(IllegalArgumentException.class, () -> DtmiConventions.getModelUri(dtmi, repositoryUri, false));

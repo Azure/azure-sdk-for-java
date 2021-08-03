@@ -67,6 +67,12 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
+    /*
+     * The DirectoryId property.
+     */
+    @JsonProperty(value = "DirectoryId")
+    private String directoryId;
+
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
      *
@@ -244,6 +250,26 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      */
     public ListFilesAndDirectoriesSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
+        return this;
+    }
+
+    /**
+     * Get the directoryId property: The DirectoryId property.
+     *
+     * @return the directoryId value.
+     */
+    public String getDirectoryId() {
+        return this.directoryId;
+    }
+
+    /**
+     * Set the directoryId property: The DirectoryId property.
+     *
+     * @param directoryId the directoryId value to set.
+     * @return the ListFilesAndDirectoriesSegmentResponse object itself.
+     */
+    public ListFilesAndDirectoriesSegmentResponse setDirectoryId(String directoryId) {
+        this.directoryId = directoryId;
         return this;
     }
 }

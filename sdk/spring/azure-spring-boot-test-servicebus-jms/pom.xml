@@ -11,6 +11,7 @@
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-test-servicebus-jms</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-servicebus-jms;current} -->
 
@@ -18,19 +19,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-      <version>3.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current} -->
     </dependency>
-
+    <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.junit.vintage</groupId>
-          <artifactId>junit-vintage-engine</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>

@@ -3,16 +3,16 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
@@ -76,6 +76,31 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting}
+     *
+     * @param setting The setting to add based on its key and optional label combination.
+     *
+     * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
+     * is an invalid value (which will also throw ServiceRequestException described below).
+     *
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
+     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationSetting addConfigurationSetting(ConfigurationSetting setting) {
+        return addConfigurationSettingWithResponse(setting, Context.NONE).getValue();
+    }
+
+    /**
+     * Adds a configuration value in the service if that key and label does not exist. The label value of the
+     * ConfigurationSetting is optional.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
      * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context}
@@ -119,6 +144,34 @@ public final class ConfigurationClient {
     public ConfigurationSetting setConfigurationSetting(String key, String label, String value) {
         return setConfigurationSettingWithResponse(
             new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), false, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
+     * configuration setting is updated.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
+     * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting}
+     *
+     * @param setting The setting to create or update based on its key, optional label and optional ETag combination.
+     *
+     * @return The {@link ConfigurationSetting} that was created or updated, or {@code null} if the key is an invalid
+     * value (which will also throw ServiceRequestException described below).
+     *
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceModifiedException If the {@link ConfigurationSetting#getETag() ETag} was specified, is not the
+     * wildcard character, and the current configuration value's ETag does not match, or the setting exists and is
+     * read-only.
+     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationSetting setConfigurationSetting(ConfigurationSetting setting) {
+        return setConfigurationSettingWithResponse(setting, false, Context.NONE).getValue();
     }
 
     /**
@@ -214,6 +267,31 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting}
+     *
+     * @param setting The setting to retrieve.
+     *
+     * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
+     * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
+     *
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
+     * @throws HttpResponseException If the {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationSetting getConfigurationSetting(ConfigurationSetting setting) {
+        return getConfigurationSettingWithResponse(setting, null, false, Context.NONE).getValue();
+    }
+
+    /**
+     * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
+     * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the setting with the key "prodDBConnection".</p>
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context}
      *
      * @param setting The setting to retrieve.
@@ -232,9 +310,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                 OffsetDateTime acceptDateTime,
-                                                                 boolean ifChanged,
-                                                                 Context context) {
+        OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
         return client.getConfigurationSetting(setting, acceptDateTime, ifChanged, context).block();
     }
 
@@ -259,6 +335,33 @@ public final class ConfigurationClient {
     public ConfigurationSetting deleteConfigurationSetting(String key, String label) {
         return deleteConfigurationSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label),
             false, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
+     * {@link ConfigurationSetting#getLabel() label} and optional ETag combination.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the setting with the key "prodDBConnection".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting}
+     *
+     * @param setting The setting to delete based on its key, optional label and optional ETag combination.
+     *
+     * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
+     * {@code key} is an invalid value (which will also throw ServiceRequestException described below).
+     *
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws NullPointerException When {@code setting} is {@code null}.
+     * @throws ResourceModifiedException If {@code setting} is read-only.
+     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() ETag} is specified, not the wildcard
+     * character, and does not match the current ETag value.
+     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationSetting deleteConfigurationSetting(ConfigurationSetting setting) {
+        return deleteConfigurationSettingWithResponse(setting, false, Context.NONE).getValue();
     }
 
     /**
@@ -292,8 +395,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
-                                                                                 boolean ifUnchanged,
-                                                                                 Context context) {
+        boolean ifUnchanged, Context context) {
         return client.deleteConfigurationSetting(setting, ifUnchanged, context).block();
     }
 
@@ -325,6 +427,34 @@ public final class ConfigurationClient {
     public ConfigurationSetting setReadOnly(String key, String label, boolean isReadOnly) {
         return setReadOnlyWithResponse(new ConfigurationSetting().setKey(key).setLabel(label), isReadOnly, Context.NONE)
             .getValue();
+    }
+
+    /**
+     * Sets the read-only status for the {@link ConfigurationSetting}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean}
+     *
+     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly}
+     *
+     * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
+     * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the
+     * configuration into a read-only state, {@code false} will clear the state.
+     *
+     * @return The {@link ConfigurationSetting} that is read-only, or {@code null} is also returned if a key collision
+     * occurs or the key is an invalid value (which will also throw HttpResponseException described below).
+     *
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationSetting setReadOnly(ConfigurationSetting setting, boolean isReadOnly) {
+        return setReadOnlyWithResponse(setting, isReadOnly, Context.NONE).getValue();
     }
 
     /**
@@ -399,7 +529,7 @@ public final class ConfigurationClient {
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
-     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/en-us/pricing/details/app-configuration/">Pricing</a>
+     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
      * for more information.
      *
      *
@@ -423,7 +553,7 @@ public final class ConfigurationClient {
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
-     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/en-us/pricing/details/app-configuration/">Pricing</a>
+     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
      * for more information.
      *
      * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
@@ -442,5 +572,15 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         return new PagedIterable<>(client.listRevisions(selector, context));
+    }
+
+    /**
+     * Adds an external synchronization token to ensure service requests receive up-to-date values.
+     *
+     * @param token an external synchronization token to ensure service requests receive up-to-date values.
+     * @throws NullPointerException if the given token is null.
+     */
+    public void updateSyncToken(String token) {
+        client.updateSyncToken(token);
     }
 }

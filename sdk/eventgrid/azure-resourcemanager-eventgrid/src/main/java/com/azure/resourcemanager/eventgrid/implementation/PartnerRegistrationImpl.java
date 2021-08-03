@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.eventgrid.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInner;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationVisibilityState;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ public final class PartnerRegistrationImpl
     implements PartnerRegistration, PartnerRegistration.Definition, PartnerRegistration.Update {
     private PartnerRegistrationInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -121,7 +120,7 @@ public final class PartnerRegistrationImpl
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -156,7 +155,7 @@ public final class PartnerRegistrationImpl
         return this;
     }
 
-    PartnerRegistrationImpl(String name, EventGridManager serviceManager) {
+    PartnerRegistrationImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new PartnerRegistrationInner();
         this.serviceManager = serviceManager;
         this.partnerRegistrationName = name;
@@ -189,7 +188,8 @@ public final class PartnerRegistrationImpl
         return this;
     }
 
-    PartnerRegistrationImpl(PartnerRegistrationInner innerObject, EventGridManager serviceManager) {
+    PartnerRegistrationImpl(
+        PartnerRegistrationInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

@@ -36,7 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.NotebookWorkspacesClient;
 import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceConnectionInfoResultInner;
 import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceInner;
-import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
+import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceListResult;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 import java.nio.ByteBuffer;
@@ -115,7 +115,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("notebookWorkspaceName") NotebookWorkspaceName notebookWorkspaceName,
-            @BodyParam("application/json") ArmProxyResource notebookCreateUpdateParameters,
+            @BodyParam("application/json") NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -233,7 +233,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -401,7 +401,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -533,7 +533,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -580,7 +580,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             notebookCreateUpdateParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -601,7 +601,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -666,7 +666,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters);
@@ -698,7 +698,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -731,7 +731,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters)
             .getSyncPoller();
@@ -755,7 +755,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters, context)
@@ -779,7 +779,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters)
             .last()
@@ -804,7 +804,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters, context)
@@ -829,7 +829,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters) {
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         return createOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters)
             .block();
@@ -853,7 +853,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
         return createOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters, context)
@@ -911,7 +911,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1167,7 +1167,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1334,7 +1334,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1592,7 +1592,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             notebookWorkspaceName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

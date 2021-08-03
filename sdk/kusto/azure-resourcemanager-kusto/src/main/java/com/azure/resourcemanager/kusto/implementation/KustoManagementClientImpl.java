@@ -29,6 +29,8 @@ import com.azure.resourcemanager.kusto.fluent.DatabasePrincipalAssignmentsClient
 import com.azure.resourcemanager.kusto.fluent.DatabasesClient;
 import com.azure.resourcemanager.kusto.fluent.KustoManagementClient;
 import com.azure.resourcemanager.kusto.fluent.OperationsClient;
+import com.azure.resourcemanager.kusto.fluent.OperationsResultsClient;
+import com.azure.resourcemanager.kusto.fluent.ScriptsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -168,6 +170,18 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         return this.databasePrincipalAssignments;
     }
 
+    /** The ScriptsClient object to access its operations. */
+    private final ScriptsClient scripts;
+
+    /**
+     * Gets the ScriptsClient object to access its operations.
+     *
+     * @return the ScriptsClient object.
+     */
+    public ScriptsClient getScripts() {
+        return this.scripts;
+    }
+
     /** The AttachedDatabaseConfigurationsClient object to access its operations. */
     private final AttachedDatabaseConfigurationsClient attachedDatabaseConfigurations;
 
@@ -204,6 +218,18 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         return this.operations;
     }
 
+    /** The OperationsResultsClient object to access its operations. */
+    private final OperationsResultsClient operationsResults;
+
+    /**
+     * Gets the OperationsResultsClient object to access its operations.
+     *
+     * @return the OperationsResultsClient object.
+     */
+    public OperationsResultsClient getOperationsResults() {
+        return this.operationsResults;
+    }
+
     /**
      * Initializes an instance of KustoManagementClient client.
      *
@@ -227,14 +253,16 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-09-18";
+        this.apiVersion = "2021-01-01";
         this.clusters = new ClustersClientImpl(this);
         this.clusterPrincipalAssignments = new ClusterPrincipalAssignmentsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.databasePrincipalAssignments = new DatabasePrincipalAssignmentsClientImpl(this);
+        this.scripts = new ScriptsClientImpl(this);
         this.attachedDatabaseConfigurations = new AttachedDatabaseConfigurationsClientImpl(this);
         this.dataConnections = new DataConnectionsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.operationsResults = new OperationsResultsClientImpl(this);
     }
 
     /**
@@ -319,7 +347,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
-                    } catch (IOException ioe) {
+                    } catch (IOException | RuntimeException ioe) {
                         logger.logThrowableAsWarning(ioe);
                     }
                 }
@@ -348,7 +376,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

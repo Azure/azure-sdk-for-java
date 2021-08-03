@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
@@ -655,7 +656,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final Flux<ServiceBusMessageContext> withAutoLockRenewal;
         if (!receiverOptions.isSessionReceiver() && receiverOptions.isAutoLockRenewEnabled()) {
-            withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(),
+            withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions,
                 renewalContainer, this::renewMessageLock);
         } else {
             withAutoLockRenewal = messageFlux;
@@ -1170,7 +1171,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String linkName = StringUtil.getRandomString(entityPath);
         logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
 
-        final Flux<ServiceBusReceiveLink> receiveLink = connectionProcessor.flatMap(connection -> {
+        // Use withRetry below to retry transient errors like connection lost.
+        final Flux<ServiceBusReceiveLink> receiveLink = withRetry(connectionProcessor.flatMap(connection -> {
             if (receiverOptions.isSessionReceiver()) {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
                     null, entityType, receiverOptions.getSessionId());
@@ -1184,13 +1186,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
                 logger.verbose(format, next.getEntityPath(), receiverOptions.getReceiveMode(),
                     CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()), "N/A", entityType);
-            })
+            }),
+            connectionProcessor.getRetryOptions(), "Failed to create receive link " + linkName, true)
             .repeat();
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
-            new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy,
-                receiverOptions.getReceiveMode()));
+            new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
 
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
             messageSerializer, receiverOptions);

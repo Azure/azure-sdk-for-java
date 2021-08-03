@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "82cadbab-804b-442c-9a0a-b21db5de54cb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "109",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "82cadbab-804b-442c-9a0a-b21db5de54cb",
+      "StatusCode" : "200",
+      "Date" : "Tue, 13 Jul 2021 19:14:36 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "82cadbab-804b-442c-9a0a-b21db5de54cb",
+      "elapsed-time" : "79",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"value\":[{\"text\":\"pool\",\"queryPlusText\":\"<b>pool</b>\"},{\"text\":\"popular\",\"queryPlusText\":\"<b>popular</b>\"}]}",
+      "x-ms-client-request-id" : "82cadbab-804b-442c-9a0a-b21db5de54cb",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

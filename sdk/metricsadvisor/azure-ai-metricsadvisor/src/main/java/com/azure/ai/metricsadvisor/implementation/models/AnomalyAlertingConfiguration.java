@@ -15,7 +15,7 @@ public final class AnomalyAlertingConfiguration {
     /*
      * anomaly alerting configuration unique id
      */
-    @JsonProperty(value = "anomalyAlertingConfigurationId")
+    @JsonProperty(value = "anomalyAlertingConfigurationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID anomalyAlertingConfigurationId;
 
     /*
@@ -37,7 +37,13 @@ public final class AnomalyAlertingConfiguration {
      * configurations
      */
     @JsonProperty(value = "crossMetricsOperator")
-    private AnomalyAlertingConfigurationCrossMetricsOperator crossMetricsOperator;
+    private AnomalyAlertingConfigurationLogicType crossMetricsOperator;
+
+    /*
+     * dimensions used to split alert
+     */
+    @JsonProperty(value = "splitAlertByDimensions")
+    private List<String> splitAlertByDimensions;
 
     /*
      * hook unique ids
@@ -58,17 +64,6 @@ public final class AnomalyAlertingConfiguration {
      */
     public UUID getAnomalyAlertingConfigurationId() {
         return this.anomalyAlertingConfigurationId;
-    }
-
-    /**
-     * Set the anomalyAlertingConfigurationId property: anomaly alerting configuration unique id.
-     *
-     * @param anomalyAlertingConfigurationId the anomalyAlertingConfigurationId value to set.
-     * @return the AnomalyAlertingConfiguration object itself.
-     */
-    public AnomalyAlertingConfiguration setAnomalyAlertingConfigurationId(UUID anomalyAlertingConfigurationId) {
-        this.anomalyAlertingConfigurationId = anomalyAlertingConfigurationId;
-        return this;
     }
 
     /**
@@ -118,7 +113,7 @@ public final class AnomalyAlertingConfiguration {
      *
      * @return the crossMetricsOperator value.
      */
-    public AnomalyAlertingConfigurationCrossMetricsOperator getCrossMetricsOperator() {
+    public AnomalyAlertingConfigurationLogicType getCrossMetricsOperator() {
         return this.crossMetricsOperator;
     }
 
@@ -131,8 +126,28 @@ public final class AnomalyAlertingConfiguration {
      * @return the AnomalyAlertingConfiguration object itself.
      */
     public AnomalyAlertingConfiguration setCrossMetricsOperator(
-            AnomalyAlertingConfigurationCrossMetricsOperator crossMetricsOperator) {
+            AnomalyAlertingConfigurationLogicType crossMetricsOperator) {
         this.crossMetricsOperator = crossMetricsOperator;
+        return this;
+    }
+
+    /**
+     * Get the splitAlertByDimensions property: dimensions used to split alert.
+     *
+     * @return the splitAlertByDimensions value.
+     */
+    public List<String> getSplitAlertByDimensions() {
+        return this.splitAlertByDimensions;
+    }
+
+    /**
+     * Set the splitAlertByDimensions property: dimensions used to split alert.
+     *
+     * @param splitAlertByDimensions the splitAlertByDimensions value to set.
+     * @return the AnomalyAlertingConfiguration object itself.
+     */
+    public AnomalyAlertingConfiguration setSplitAlertByDimensions(List<String> splitAlertByDimensions) {
+        this.splitAlertByDimensions = splitAlertByDimensions;
         return this;
     }
 

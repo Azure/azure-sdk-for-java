@@ -12,22 +12,51 @@ import java.util.List;
 @Fluent
 public final class TagList {
     /*
+     * Registry login server name.  This is likely to be similar to
+     * {registry-name}.azurecr.io
+     */
+    @JsonProperty(value = "registry", required = true)
+    private String registryLoginServer;
+
+    /*
      * Image name
      */
-    @JsonProperty(value = "imageName")
+    @JsonProperty(value = "imageName", required = true)
     private String repository;
 
     /*
      * List of tag attribute details
      */
-    @JsonProperty(value = "tags")
-    private List<TagAttributesBase> tags;
+    @JsonProperty(value = "tags", required = true)
+    private List<TagAttributesBase> tagAttributeBases;
 
     /*
      * The link property.
      */
     @JsonProperty(value = "link")
     private String link;
+
+    /**
+     * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
+     *
+     * @return the registryLoginServer value.
+     */
+    public String getRegistryLoginServer() {
+        return this.registryLoginServer;
+    }
+
+    /**
+     * Set the registryLoginServer property: Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
+     *
+     * @param registryLoginServer the registryLoginServer value to set.
+     * @return the TagList object itself.
+     */
+    public TagList setRegistryLoginServer(String registryLoginServer) {
+        this.registryLoginServer = registryLoginServer;
+        return this;
+    }
 
     /**
      * Get the repository property: Image name.
@@ -50,22 +79,22 @@ public final class TagList {
     }
 
     /**
-     * Get the tags property: List of tag attribute details.
+     * Get the tagAttributeBases property: List of tag attribute details.
      *
-     * @return the tags value.
+     * @return the tagAttributeBases value.
      */
-    public List<TagAttributesBase> getTags() {
-        return this.tags;
+    public List<TagAttributesBase> getTagAttributeBases() {
+        return this.tagAttributeBases;
     }
 
     /**
-     * Set the tags property: List of tag attribute details.
+     * Set the tagAttributeBases property: List of tag attribute details.
      *
-     * @param tags the tags value to set.
+     * @param tagAttributeBases the tagAttributeBases value to set.
      * @return the TagList object itself.
      */
-    public TagList setTags(List<TagAttributesBase> tags) {
-        this.tags = tags;
+    public TagList setTagAttributeBases(List<TagAttributesBase> tagAttributeBases) {
+        this.tagAttributeBases = tagAttributeBases;
         return this;
     }
 

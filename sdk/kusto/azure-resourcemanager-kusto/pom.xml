@@ -9,11 +9,11 @@
 
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-kusto</artifactId>
-    <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-kusto;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-kusto;current} -->
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for Kusto Management</name>
-    <description>This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2020-09-18. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt</description>
+    <description>This package contains Microsoft Azure SDK for Kusto Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2021-01.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <licenses>
@@ -43,8 +43,13 @@
     <dependencies>
         <dependency>
             <groupId>com.azure</groupId>
+            <artifactId>azure-core</artifactId>
+            <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
             <artifactId>azure-core-management</artifactId>
-            <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+            <version>1.3.1</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
         </dependency>
     </dependencies>
     <build>

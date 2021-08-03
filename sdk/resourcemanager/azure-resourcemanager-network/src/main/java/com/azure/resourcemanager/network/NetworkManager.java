@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.implementation.ExpressRouteCrossConnect
 import com.azure.resourcemanager.network.implementation.LoadBalancersImpl;
 import com.azure.resourcemanager.network.implementation.LocalNetworkGatewaysImpl;
 import com.azure.resourcemanager.network.implementation.NetworkInterfacesImpl;
+import com.azure.resourcemanager.network.implementation.NetworkProfilesImpl;
 import com.azure.resourcemanager.network.implementation.NetworkSecurityGroupsImpl;
 import com.azure.resourcemanager.network.implementation.NetworkUsagesImpl;
 import com.azure.resourcemanager.network.implementation.NetworkWatchersImpl;
@@ -32,6 +33,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCrossConnections;
 import com.azure.resourcemanager.network.models.LoadBalancers;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
+import com.azure.resourcemanager.network.models.NetworkProfiles;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
@@ -70,6 +72,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     private DdosProtectionPlans ddosProtectionPlans;
     private ExpressRouteCrossConnections expressRouteCrossConnections;
     private PrivateEndpoints privateEndpoints;
+    private NetworkProfiles networkProfiles;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager} with optional configuration.
@@ -275,5 +278,13 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
             this.privateEndpoints = new PrivateEndpointsImpl(this);
         }
         return this.privateEndpoints;
+    }
+
+    /** @return entry point to network profiles management */
+    public NetworkProfiles networkProfiles() {
+        if (this.networkProfiles == null) {
+            this.networkProfiles = new NetworkProfilesImpl(this);
+        }
+        return this.networkProfiles;
     }
 }

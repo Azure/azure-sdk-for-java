@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//languages",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/languages?showStats=false&loggingOptOut=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.5 (11.0.9.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "15d20789-394c-48d1-9d4a-c6b586208584",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f42eab68-d5e8-4cf7-99b1-69494f10a79a",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "34",
+      "x-envoy-upstream-service-time" : "9",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=3",
-      "apim-request-id" : "4ad48c6d-ef04-42e5-be5c-5c8a66e9138b",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=3,CognitiveServices.TextAnalytics.TextRecords=3",
+      "apim-request-id" : "782261a7-7a58-4e53-b563-d5f3992dab1d",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"2\",\"detectedLanguage\":{\"name\":\"Dari\",\"iso6391Name\":\"prs\",\"confidenceScore\":0.82},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-05\"}",
-      "Date" : "Wed, 24 Feb 2021 02:51:44 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":0.85},\"warnings\":[]},{\"id\":\"2\",\"detectedLanguage\":{\"name\":\"(Unknown)\",\"iso6391Name\":\"(Unknown)\",\"confidenceScore\":0.0},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-05\"}",
+      "Date" : "Mon, 14 Jun 2021 20:40:38 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

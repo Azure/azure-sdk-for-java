@@ -18,34 +18,15 @@ public class TableInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TableInner.class);
 
     /*
-     * The data table data retention in days, between 7 and 730. Setting this
+     * The data table data retention in days, between 30 and 730. Setting this
      * property to null will default to the workspace retention.
      */
     @JsonProperty(value = "properties.retentionInDays")
     private Integer retentionInDays;
 
-    /*
-     * Specifies if IsTroubleshootingEnabled property can be set for this
-     * table.
-     */
-    @JsonProperty(value = "properties.isTroubleshootingAllowed", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isTroubleshootingAllowed;
-
-    /*
-     * Enable or disable troubleshoot for this table.
-     */
-    @JsonProperty(value = "properties.isTroubleshootEnabled")
-    private Boolean isTroubleshootEnabled;
-
-    /*
-     * Last time when troubleshooting was set for this table.
-     */
-    @JsonProperty(value = "properties.lastTroubleshootDate", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastTroubleshootDate;
-
     /**
-     * Get the retentionInDays property: The data table data retention in days, between 7 and 730. Setting this property
-     * to null will default to the workspace retention.
+     * Get the retentionInDays property: The data table data retention in days, between 30 and 730. Setting this
+     * property to null will default to the workspace retention.
      *
      * @return the retentionInDays value.
      */
@@ -54,8 +35,8 @@ public class TableInner extends ProxyResource {
     }
 
     /**
-     * Set the retentionInDays property: The data table data retention in days, between 7 and 730. Setting this property
-     * to null will default to the workspace retention.
+     * Set the retentionInDays property: The data table data retention in days, between 30 and 730. Setting this
+     * property to null will default to the workspace retention.
      *
      * @param retentionInDays the retentionInDays value to set.
      * @return the TableInner object itself.
@@ -63,45 +44,6 @@ public class TableInner extends ProxyResource {
     public TableInner withRetentionInDays(Integer retentionInDays) {
         this.retentionInDays = retentionInDays;
         return this;
-    }
-
-    /**
-     * Get the isTroubleshootingAllowed property: Specifies if IsTroubleshootingEnabled property can be set for this
-     * table.
-     *
-     * @return the isTroubleshootingAllowed value.
-     */
-    public Boolean isTroubleshootingAllowed() {
-        return this.isTroubleshootingAllowed;
-    }
-
-    /**
-     * Get the isTroubleshootEnabled property: Enable or disable troubleshoot for this table.
-     *
-     * @return the isTroubleshootEnabled value.
-     */
-    public Boolean isTroubleshootEnabled() {
-        return this.isTroubleshootEnabled;
-    }
-
-    /**
-     * Set the isTroubleshootEnabled property: Enable or disable troubleshoot for this table.
-     *
-     * @param isTroubleshootEnabled the isTroubleshootEnabled value to set.
-     * @return the TableInner object itself.
-     */
-    public TableInner withIsTroubleshootEnabled(Boolean isTroubleshootEnabled) {
-        this.isTroubleshootEnabled = isTroubleshootEnabled;
-        return this;
-    }
-
-    /**
-     * Get the lastTroubleshootDate property: Last time when troubleshooting was set for this table.
-     *
-     * @return the lastTroubleshootDate value.
-     */
-    public String lastTroubleshootDate() {
-        return this.lastTroubleshootDate;
     }
 
     /**

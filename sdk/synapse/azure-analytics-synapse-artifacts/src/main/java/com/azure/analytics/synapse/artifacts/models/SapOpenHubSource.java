@@ -30,6 +30,21 @@ public final class SapOpenHubSource extends TabularSource {
     @JsonProperty(value = "baseRequestId")
     private Object baseRequestId;
 
+    /*
+     * Specifies the custom RFC function module that will be used to read data
+     * from SAP Table. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "customRfcReadTableFunctionModule")
+    private Object customRfcReadTableFunctionModule;
+
+    /*
+     * The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "sapDataColumnDelimiter")
+    private Object sapDataColumnDelimiter;
+
     /**
      * Get the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
      * true. Type: boolean (or Expression with resultType boolean).
@@ -73,6 +88,50 @@ public final class SapOpenHubSource extends TabularSource {
      */
     public SapOpenHubSource setBaseRequestId(Object baseRequestId) {
         this.baseRequestId = baseRequestId;
+        return this;
+    }
+
+    /**
+     * Get the customRfcReadTableFunctionModule property: Specifies the custom RFC function module that will be used to
+     * read data from SAP Table. Type: string (or Expression with resultType string).
+     *
+     * @return the customRfcReadTableFunctionModule value.
+     */
+    public Object getCustomRfcReadTableFunctionModule() {
+        return this.customRfcReadTableFunctionModule;
+    }
+
+    /**
+     * Set the customRfcReadTableFunctionModule property: Specifies the custom RFC function module that will be used to
+     * read data from SAP Table. Type: string (or Expression with resultType string).
+     *
+     * @param customRfcReadTableFunctionModule the customRfcReadTableFunctionModule value to set.
+     * @return the SapOpenHubSource object itself.
+     */
+    public SapOpenHubSource setCustomRfcReadTableFunctionModule(Object customRfcReadTableFunctionModule) {
+        this.customRfcReadTableFunctionModule = customRfcReadTableFunctionModule;
+        return this;
+    }
+
+    /**
+     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     *
+     * @return the sapDataColumnDelimiter value.
+     */
+    public Object getSapDataColumnDelimiter() {
+        return this.sapDataColumnDelimiter;
+    }
+
+    /**
+     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     *
+     * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set.
+     * @return the SapOpenHubSource object itself.
+     */
+    public SapOpenHubSource setSapDataColumnDelimiter(Object sapDataColumnDelimiter) {
+        this.sapDataColumnDelimiter = sapDataColumnDelimiter;
         return this;
     }
 }

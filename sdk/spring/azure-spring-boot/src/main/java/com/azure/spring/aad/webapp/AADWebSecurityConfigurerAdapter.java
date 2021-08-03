@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,8 +20,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
 
-import java.net.URI;
-
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
  * take effect.
@@ -28,7 +27,7 @@ import java.net.URI;
 public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AADWebAppClientRegistrationRepository repo;
+    private AADClientRegistrationRepository repo;
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
     @Autowired
@@ -60,8 +59,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
             new OidcClientInitiatedLogoutSuccessHandler(this.repo);
         String uri = this.properties.getPostLogoutRedirectUri();
         if (StringUtils.hasText(uri)) {
-            // TODO (jack) Remove deprecated method after we do not need to support spring-boot-2.2.x
-            oidcLogoutSuccessHandler.setPostLogoutRedirectUri(URI.create(uri));
+            oidcLogoutSuccessHandler.setPostLogoutRedirectUri(uri);
         }
         return oidcLogoutSuccessHandler;
     }
@@ -74,6 +72,6 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     }
 
     protected OAuth2AuthorizationRequestResolver requestResolver() {
-        return new AADOAuth2AuthorizationRequestResolver(this.repo);
+        return new AADOAuth2AuthorizationRequestResolver(this.repo, properties);
     }
 }

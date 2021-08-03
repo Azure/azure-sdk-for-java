@@ -56,6 +56,19 @@ public final class TabularTranslator extends CopyTranslator {
     @JsonProperty(value = "mappings")
     private Object mappings;
 
+    /*
+     * Whether to enable the advanced type conversion feature in the Copy
+     * activity. Type: boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "typeConversion")
+    private Object typeConversion;
+
+    /*
+     * Type conversion settings
+     */
+    @JsonProperty(value = "typeConversionSettings")
+    private TypeConversionSettings typeConversionSettings;
+
     /**
      * Get the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type:
      * string (or Expression with resultType string). This property will be retired. Please use mappings property.
@@ -171,6 +184,48 @@ public final class TabularTranslator extends CopyTranslator {
      */
     public TabularTranslator setMappings(Object mappings) {
         this.mappings = mappings;
+        return this;
+    }
+
+    /**
+     * Get the typeConversion property: Whether to enable the advanced type conversion feature in the Copy activity.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the typeConversion value.
+     */
+    public Object getTypeConversion() {
+        return this.typeConversion;
+    }
+
+    /**
+     * Set the typeConversion property: Whether to enable the advanced type conversion feature in the Copy activity.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @param typeConversion the typeConversion value to set.
+     * @return the TabularTranslator object itself.
+     */
+    public TabularTranslator setTypeConversion(Object typeConversion) {
+        this.typeConversion = typeConversion;
+        return this;
+    }
+
+    /**
+     * Get the typeConversionSettings property: Type conversion settings.
+     *
+     * @return the typeConversionSettings value.
+     */
+    public TypeConversionSettings getTypeConversionSettings() {
+        return this.typeConversionSettings;
+    }
+
+    /**
+     * Set the typeConversionSettings property: Type conversion settings.
+     *
+     * @param typeConversionSettings the typeConversionSettings value to set.
+     * @return the TabularTranslator object itself.
+     */
+    public TabularTranslator setTypeConversionSettings(TypeConversionSettings typeConversionSettings) {
+        this.typeConversionSettings = typeConversionSettings;
         return this;
     }
 }

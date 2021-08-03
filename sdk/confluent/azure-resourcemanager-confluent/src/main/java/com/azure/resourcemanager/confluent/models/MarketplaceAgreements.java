@@ -32,23 +32,23 @@ public interface MarketplaceAgreements {
     PagedIterable<ConfluentAgreementResource> list(Context context);
 
     /**
-     * Accept marketplace terms.
+     * Create Confluent Marketplace agreement in the subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent Agreements Resource.
+     * @return agreement Terms definition.
      */
     ConfluentAgreementResource create();
 
     /**
-     * Accept marketplace terms.
+     * Create Confluent Marketplace agreement in the subscription.
      *
-     * @param body Confluent Agreement resource.
+     * @param body Confluent Marketplace Agreement resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent Agreements Resource.
+     * @return agreement Terms definition.
      */
     Response<ConfluentAgreementResource> createWithResponse(ConfluentAgreementResourceInner body, Context context);
 }

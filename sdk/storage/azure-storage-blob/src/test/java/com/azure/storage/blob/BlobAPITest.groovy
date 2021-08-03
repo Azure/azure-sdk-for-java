@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
@@ -41,11 +42,18 @@ import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.TestHttpClientType
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
+import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
-import spock.lang.Requires
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 import spock.lang.Ignore
 
@@ -66,12 +74,12 @@ class BlobAPITest extends APISpec {
     def setup() {
         blobName = generateBlobName()
         bc = cc.getBlobClient(blobName)
-        bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        bc.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
     }
 
     def "Upload input stream overwrite fails"() {
         when:
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         then:
         thrown(BlobStorageException)
@@ -79,7 +87,7 @@ class BlobAPITest extends APISpec {
 
     def "Upload binary data overwrite fails"() {
         when:
-        bc.upload(defaultBinaryData)
+        bc.upload(data.defaultBinaryData)
 
         then:
         thrown(BlobStorageException)
@@ -136,7 +144,7 @@ class BlobAPITest extends APISpec {
 
     /* TODO (gapra): Add more tests to test large data sizes. */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Upload input stream large data"() {
         setup:
         def randomData = getRandomByteArray(20 * Constants.MB)
@@ -155,25 +163,23 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Upload incorrect size"() {
         when:
-        bc.upload(defaultInputStream.get(), dataSize, true)
+        bc.upload(data.defaultInputStream, dataSize, true)
 
         then:
         thrown(IllegalStateException)
 
         where:
-        dataSize            | threshold
-        defaultDataSize + 1 | null
-        defaultDataSize - 1 | null
-        defaultDataSize + 1 | 1 // Test the chunked case as well
-        defaultDataSize - 1 | 1
+        dataSize                 | threshold
+        data.defaultDataSize + 1 | null
+        data.defaultDataSize - 1 | null
+        data.defaultDataSize + 1 | 1 // Test the chunked case as well
+        data.defaultDataSize - 1 | 1
     }
 
     @Unroll
+    @LiveOnly
     def "Upload numBlocks"() {
         setup:
-        if (numBlocks > 0 && !liveMode()) {
-            return // skip multipart upload for playback/record as it uses randomly generated block ids
-        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
@@ -196,17 +202,56 @@ class BlobAPITest extends APISpec {
 
     def "Upload return value"() {
         expect:
-        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null, null)
+        bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize), null, null)
             .getValue().getETag() != null
     }
 
     def "Upload return value binary data"() {
         expect:
-        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultBinaryData), null, null)
+        bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultBinaryData), null, null)
             .getValue().getETag() != null
     }
 
-    @Requires({ liveMode() })
+    def "Upload InputStream no length"() {
+        when:
+        bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        bc.downloadContent().toBytes() == data.defaultBytes
+    }
+
+    def "Upload InputStream bad length"() {
+        when:
+        bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, length), null, null)
+
+        then:
+        thrown(Exception)
+
+        where:
+        _ | length
+        _ | 0
+        _ | -100
+        _ | data.defaultDataSize - 1
+        _ | data.defaultDataSize + 1
+    }
+
+    def "Upload successful retry"() {
+        given:
+        def clientWithFailure = getBlobClient(
+            env.primaryAccount.credential,
+            bc.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        bc.downloadContent().toBytes() == data.defaultBytes
+    }
+
+    @LiveOnly
     // Reading from recordings will not allow for the timing of the test to work correctly.
     def "Upload timeout"() {
         setup:
@@ -221,6 +266,7 @@ class BlobAPITest extends APISpec {
         thrown(IllegalStateException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Download all null"() {
         when:
         def stream = new ByteArrayOutputStream()
@@ -230,7 +276,7 @@ class BlobAPITest extends APISpec {
         def headers = response.getDeserializedHeaders()
 
         then:
-        body == defaultData
+        body == data.defaultData
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getTagCount() == 1
         headers.getContentLength() != null
@@ -259,6 +305,7 @@ class BlobAPITest extends APISpec {
 //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Download all null streaming"() {
         when:
         def stream = new ByteArrayOutputStream()
@@ -268,7 +315,7 @@ class BlobAPITest extends APISpec {
         def headers = response.getDeserializedHeaders()
 
         then:
-        body == defaultData
+        body == data.defaultData
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getTagCount() == 1
         headers.getContentLength() != null
@@ -297,6 +344,7 @@ class BlobAPITest extends APISpec {
 //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Download all null binary data"() {
         when:
         bc.setTags(Collections.singletonMap("foo", "bar"))
@@ -305,7 +353,7 @@ class BlobAPITest extends APISpec {
         def headers = response.getDeserializedHeaders()
 
         then:
-        body.toBytes() == defaultData.array()
+        body.toBytes() == data.defaultBytes
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getTagCount() == 1
         headers.getContentLength() != null
@@ -364,7 +412,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def bu2 = getBlobClient(primaryCredential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         when:
         def range = new BlobRange(2, 5L)
@@ -387,7 +435,7 @@ class BlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == defaultData.array()
+        result == data.defaultBytes
     }
 
     def "Download streaming min"() {
@@ -397,7 +445,7 @@ class BlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == defaultData.array()
+        result == data.defaultBytes
     }
 
     def "Download binary data min"() {
@@ -405,7 +453,7 @@ class BlobAPITest extends APISpec {
         def result = bc.downloadContent()
 
         then:
-        result.toBytes() == defaultData.array()
+        result.toBytes() == data.defaultBytes
     }
 
     @Unroll
@@ -423,11 +471,12 @@ class BlobAPITest extends APISpec {
 
         where:
         offset | count || expectedData
-        0      | null  || defaultText
-        0      | 5L    || defaultText.substring(0, 5)
-        3      | 2L    || defaultText.substring(3, 3 + 2)
+        0      | null  || data.defaultText
+        0      | 5L    || data.defaultText.substring(0, 5)
+        3      | 2L    || data.defaultText.substring(3, 3 + 2)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Download AC"() {
         setup:
@@ -461,6 +510,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Download AC streaming"() {
         setup:
@@ -494,6 +544,7 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Download AC binary data"() {
         setup:
@@ -552,7 +603,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll
@@ -580,7 +631,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll
@@ -608,7 +659,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Download md5"() {
@@ -617,7 +668,7 @@ class BlobAPITest extends APISpec {
         def contentMD5 = response.getDeserializedHeaders().getContentMd5()
 
         then:
-        contentMD5 == MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
+        contentMD5 == MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes())
     }
 
     def "Download md5 streaming"() {
@@ -626,7 +677,20 @@ class BlobAPITest extends APISpec {
         def contentMD5 = response.getDeserializedHeaders().getContentMd5()
 
         then:
-        contentMD5 == MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
+        contentMD5 == MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes())
+    }
+
+    def "Download retry default"() {
+        setup:
+        def failureBlobClient = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockFailureResponsePolicy(5))
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        failureBlobClient.download(outStream)
+        String bodyStr = outStream.toString()
+
+        then:
+        bodyStr == data.defaultText
     }
 
     def "Download error"() {
@@ -691,7 +755,7 @@ class BlobAPITest extends APISpec {
 
     def "Download to file exists"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -710,7 +774,7 @@ class BlobAPITest extends APISpec {
 
     def "Download to file exists succeeds"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -719,7 +783,7 @@ class BlobAPITest extends APISpec {
         bc.downloadToFile(testFile.getPath(), true)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -727,7 +791,7 @@ class BlobAPITest extends APISpec {
 
     def "Download to file does not exist"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -736,7 +800,7 @@ class BlobAPITest extends APISpec {
         bc.downloadToFile(testFile.getPath())
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -744,7 +808,7 @@ class BlobAPITest extends APISpec {
 
     def "Download file does not exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (testFile.exists()) {
             assert testFile.delete()
         }
@@ -757,7 +821,7 @@ class BlobAPITest extends APISpec {
         bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
@@ -765,7 +829,7 @@ class BlobAPITest extends APISpec {
 
     def "Download file exist open options"() {
         setup:
-        def testFile = new File(testName + ".txt")
+        def testFile = new File(namer.getResourcePrefix() + ".txt")
         if (!testFile.exists()) {
             assert testFile.createNewFile()
         }
@@ -779,19 +843,20 @@ class BlobAPITest extends APISpec {
         bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
 
         cleanup:
         testFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
+    @IgnoreIf({ getEnv().httpClientType == TestHttpClientType.OK_HTTP}) // https://github.com/Azure/azure-sdk-for-java/issues/23243
     def "Download file"() {
         setup:
         def file = getRandomFile(fileSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -822,14 +887,14 @@ class BlobAPITest extends APISpec {
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file sync buffer copy"() {
         setup:
         def containerName = generateContainerName()
         def blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildClient()
 
         def blobClient = blobServiceClient.createBlobContainer(containerName)
@@ -838,7 +903,7 @@ class BlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         blobClient.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -869,14 +934,14 @@ class BlobAPITest extends APISpec {
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file async buffer copy"() {
         setup:
         def containerName = generateContainerName()
         def blobServiceAsyncClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .credential(primaryCredential)
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildAsyncClient()
 
         def blobAsyncClient = blobServiceAsyncClient.createBlobContainer(containerName).block()
@@ -884,7 +949,7 @@ class BlobAPITest extends APISpec {
 
         def file = getRandomFile(fileSize)
         blobAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
-        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -914,13 +979,13 @@ class BlobAPITest extends APISpec {
         50 * Constants.MB    | _ // large file requiring multiple requests
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file range"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(resourceNamer.randomName(testName, 60))
+        def outFile = new File(namer.getRandomName(60))
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -940,31 +1005,31 @@ class BlobAPITest extends APISpec {
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                         | _
-        new BlobRange(0, defaultDataSize)             | _ // Exact count
-        new BlobRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
-        new BlobRange(3, 2)                           | _ // Narrow range in middle
-        new BlobRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
-        new BlobRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
+        range                                              | _
+        new BlobRange(0, data.defaultDataSize)             | _ // Exact count
+        new BlobRange(1, data.defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new BlobRange(3, 2)                                | _ // Narrow range in middle
+        new BlobRange(0, data.defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new BlobRange(0, 10 * 1024)                        | _ // Count much larger than remaining data
     }
 
     /*
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file range fail"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
 
         when:
-        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(defaultDataSize + 1), null, null, null, false,
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(data.defaultDataSize + 1), null, null, null, false,
             null, null)
 
         then:
@@ -975,12 +1040,12 @@ class BlobAPITest extends APISpec {
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Download file count null"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -989,20 +1054,20 @@ class BlobAPITest extends APISpec {
         bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, false, null, null)
 
         then:
-        compareFiles(file, outFile, 0, defaultDataSize)
+        compareFiles(file, outFile, 0, data.defaultDataSize)
 
         cleanup:
         outFile.delete()
         file.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file AC"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1033,13 +1098,13 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file AC fail"() {
         setup:
-        def file = getRandomFile(defaultDataSize)
+        def file = getRandomFile(data.defaultDataSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1071,18 +1136,18 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(Constants.MB)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
 
         expect:
-        def bac = new BlobClientBuilder()
+        def bac = instrument(new BlobClientBuilder()
             .pipeline(bc.getHttpPipeline())
-            .endpoint(bc.getBlobUrl())
+            .endpoint(bc.getBlobUrl()))
             .buildAsyncClient()
             .getBlockBlobAsyncClient()
 
@@ -1106,7 +1171,7 @@ class BlobAPITest extends APISpec {
          * so that the download is able to get an ETag before it is changed.
          */
         StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
-            .doOnSubscribe({ bac.upload(defaultFlux, defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+            .doOnSubscribe({ bac.upload(data.defaultFlux, data.defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
             .verifyErrorSatisfies({
                 /*
                  * If an operation is running on multiple threads and multiple return an exception Reactor will combine
@@ -1135,12 +1200,12 @@ class BlobAPITest extends APISpec {
         outFile.delete()
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Unroll
     def "Download file progress receiver"() {
         def file = getRandomFile(fileSize)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1192,11 +1257,12 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
-    @Ignore("Very large data sizes.") /* Enable once we have ability to run large resource heavy tests in CI. */
+    @Ignore("Very large data sizes.")
+    /* Enable once we have ability to run large resource heavy tests in CI. */
     def "Download to file blockSize"() {
         def file = getRandomFile(sizeOfData)
         bc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
+        def outFile = new File(namer.getResourcePrefix())
         if (outFile.exists()) {
             assert outFile.delete()
         }
@@ -1210,13 +1276,14 @@ class BlobAPITest extends APISpec {
         notThrown(BlobStorageException)
 
         where:
-        sizeOfData           | downloadBlockSize   || _
-        5000 * Constants.MB  | 5000 * Constants.MB || _ /* This was the default before. */
-        6000 * Constants.MB  | 6000 * Constants.MB || _ /* Trying to see if we can set it to a number greater than previous default. */
-        6000 * Constants.MB  | 5100 * Constants.MB || _ /* Testing chunking with a large size */
+        sizeOfData          | downloadBlockSize   || _
+        5000 * Constants.MB | 5000 * Constants.MB || _ /* This was the default before. */
+        6000 * Constants.MB | 6000 * Constants.MB || _ /* Trying to see if we can set it to a number greater than previous default. */
+        6000 * Constants.MB | 5100 * Constants.MB || _ /* Testing chunking with a large size */
     }
 
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get properties default"() {
         when:
         bc.setTags(Collections.singletonMap("foo", "bar"))
@@ -1265,6 +1332,7 @@ class BlobAPITest extends APISpec {
         bc.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Get properties AC"() {
         setup:
@@ -1317,7 +1385,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     /*
@@ -1325,7 +1393,7 @@ class BlobAPITest extends APISpec {
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
      */
 
-    @Requires({ playbackMode() })
+    @PlaybackOnly
     def "Get properties ORS"() {
         setup:
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1")
@@ -1397,7 +1465,7 @@ class BlobAPITest extends APISpec {
             .setContentType("type")
             .setCacheControl(properties.getCacheControl())
             .setContentLanguage(properties.getContentLanguage())
-            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
+            .setContentMd5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)))
 
         bc.setHttpHeaders(headers)
 
@@ -1423,12 +1491,12 @@ class BlobAPITest extends APISpec {
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
-        null         | null               | null            | null            | null                                                                                     | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                             | contentType
+        null         | null               | null            | null            | null                                                                                   | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 
-
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set HTTP headers AC"() {
         setup:
@@ -1485,7 +1553,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Set HTTP headers error"() {
@@ -1538,13 +1606,14 @@ class BlobAPITest extends APISpec {
         bc.getProperties().getMetadata() == metadata
 
         where:
-        key1  | value1        | key2   | value2 || statusCode
-        null  | null          | null   | null   || 200
-        "foo" | "bar"         | "fizz" | "buzz" || 200
-        "i0"  | "a"           | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
-        "foo" | "bar0, bar1"  | null   | null   || 200 /* Test comma separated values */
+        key1  | value1       | key2   | value2 || statusCode
+        null  | null         | null   | null   || 200
+        "foo" | "bar"        | "fizz" | "buzz" || 200
+        "i0"  | "a"          | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
+        "foo" | "bar0, bar1" | null   | null   || 200 /* Test comma separated values */
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set metadata AC"() {
         setup:
@@ -1601,7 +1670,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll
@@ -1620,11 +1689,11 @@ class BlobAPITest extends APISpec {
         // On Playback, the framework will throw Exceptions.ReactiveException.
 
         where:
-        key     | value  || _
-        " foo"  | "bar"  || _ // Leading whitespace key
-        "foo "  | "bar"  || _ // Trailing whitespace key
-        "foo"   | " bar" || _ // Leading whitespace value
-        "foo"   | "bar " || _ // Trailing whitespace value
+        key    | value  || _
+        " foo" | "bar"  || _ // Leading whitespace key
+        "foo " | "bar"  || _ // Trailing whitespace key
+        "foo"  | " bar" || _ // Leading whitespace value
+        "foo"  | "bar " || _ // Trailing whitespace value
     }
 
     def "Set metadata error"() {
@@ -1638,6 +1707,7 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tags all null"() {
         when:
         def response = bc.setTagsWithResponse(new BlobSetTagsOptions(new HashMap<String, String>()), null, null)
@@ -1647,6 +1717,7 @@ class BlobAPITest extends APISpec {
         response.getStatusCode() == 204
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tags min"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1659,6 +1730,7 @@ class BlobAPITest extends APISpec {
         bc.getTags() == tags
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tags tags"() {
         setup:
@@ -1681,6 +1753,7 @@ class BlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null   || 204
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tags AC"() {
         setup:
@@ -1699,6 +1772,7 @@ class BlobAPITest extends APISpec {
         "\"foo\" = 'bar'" || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_07_07")
     @Unroll
     def "Set tags AC fail"() {
         setup:
@@ -1716,6 +1790,7 @@ class BlobAPITest extends APISpec {
         "\"foo\" = 'bar'" || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Get tags AC"() {
         setup:
@@ -1760,6 +1835,7 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tags lease"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1775,6 +1851,7 @@ class BlobAPITest extends APISpec {
         bc.getTags() == tags
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get tags lease"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1791,6 +1868,7 @@ class BlobAPITest extends APISpec {
         response.getValue() == tags
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tags lease fail"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1805,6 +1883,7 @@ class BlobAPITest extends APISpec {
         e.getStatusCode() == 412
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Get tags lease fail"() {
         setup:
         def tags = new HashMap<String, String>()
@@ -1889,6 +1968,7 @@ class BlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Snapshot AC"() {
         setup:
@@ -1945,7 +2025,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Snapshot error"() {
@@ -2056,6 +2136,7 @@ class BlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy tags"() {
         setup:
@@ -2085,6 +2166,7 @@ class BlobAPITest extends APISpec {
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy seal"() {
         setup:
@@ -2114,6 +2196,7 @@ class BlobAPITest extends APISpec {
         false  | false
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy source AC"() {
         setup:
@@ -2137,13 +2220,13 @@ class BlobAPITest extends APISpec {
         response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
-        modified | unmodified | match        | noneMatch    | tags
-        null     | null       | null         | null         | null
-        oldDate  | null       | null         | null         | null
-        null     | newDate    | null         | null         | null
-        null     | null       | receivedEtag | null         | null
-        null     | null       | null         | garbageEtag  | null
-        null     | null       | null         | null         | "\"foo\" = 'bar'"
+        modified | unmodified | match        | noneMatch   | tags
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -2166,19 +2249,20 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch     | tags
-        newDate  | null       | null        | null          | null
-        null     | oldDate    | null        | null          | null
-        null     | null       | garbageEtag | null          | null
-        null     | null       | null        | receivedEtag  | null
-        null     | null       | null         | null         | "\"notfoo\" = 'notbar'"
+        modified | unmodified | match       | noneMatch    | tags
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | "\"notfoo\" = 'notbar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy dest AC"() {
         setup:
         def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
-        bu2.upload(defaultFlux, defaultDataSize).block()
+        bu2.upload(data.defaultFlux, data.defaultDataSize).block()
         def t = new HashMap<String, String>()
         t.put("foo", "bar")
         bu2.setTags(t).block()
@@ -2214,7 +2298,7 @@ class BlobAPITest extends APISpec {
     def "Copy dest AC fail"() {
         setup:
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu2.upload(defaultInputStream.get(), defaultDataSize)
+        bu2.upload(data.defaultInputStream, data.defaultDataSize)
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
         setupBlobLeaseCondition(bu2, leaseID)
         def bac = new BlobRequestConditions()
@@ -2238,7 +2322,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Abort copy lease fail"() {
@@ -2254,7 +2338,7 @@ class BlobAPITest extends APISpec {
         def cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName())
         cu2.create()
         def bu2 = cu2.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu2.upload(defaultInputStream.get(), defaultDataSize)
+        bu2.upload(data.defaultInputStream, data.defaultDataSize)
 
         def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
         def blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId)
@@ -2323,7 +2407,7 @@ class BlobAPITest extends APISpec {
         def cu2 = alternateBlobServiceClient.getBlobContainerClient(generateContainerName())
         cu2.create()
         def bu2 = cu2.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu2.upload(defaultInputStream.get(), defaultDataSize)
+        bu2.upload(data.defaultInputStream, data.defaultDataSize)
         def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
         def blobAccess = new BlobRequestConditions().setLeaseId(leaseId)
 
@@ -2414,6 +2498,7 @@ class BlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Sync copy tags"() {
         setup:
@@ -2490,12 +2575,13 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | receivedEtag
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Sync copy dest AC"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu2.upload(defaultInputStream.get(), defaultDataSize)
+        bu2.upload(data.defaultInputStream, data.defaultDataSize)
         def t = new HashMap<String, String>()
         t.put("foo", "bar")
         bu2.setTags(t)
@@ -2528,7 +2614,7 @@ class BlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu2.upload(defaultInputStream.get(), defaultDataSize)
+        bu2.upload(data.defaultInputStream, data.defaultDataSize)
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
         setupBlobLeaseCondition(bu2, leaseID)
         def bac = new BlobRequestConditions()
@@ -2552,7 +2638,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Sync copy error"() {
@@ -2589,7 +2675,7 @@ class BlobAPITest extends APISpec {
         bc.createSnapshot()
         // Create an extra blob so the list isn't empty (null) when we delete base blob, too
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu2.upload(defaultInputStream.get(), defaultDataSize)
+        bu2.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         bc.deleteWithResponse(option, null, null, null)
@@ -2603,6 +2689,7 @@ class BlobAPITest extends APISpec {
         DeleteSnapshotsOptionType.ONLY    | 2
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Delete AC"() {
         setup:
@@ -2659,7 +2746,7 @@ class BlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Blob delete error"() {
@@ -2676,9 +2763,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set tier block blob"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultData.remaining())
+        bc.upload(data.defaultInputStream, data.defaultData.remaining())
 
         when:
         def initialResponse = bc.setAccessTierWithResponse(tier, null, null, null, null)
@@ -2732,9 +2819,9 @@ class BlobAPITest extends APISpec {
 
     def "Set tier min"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bu = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bu.upload(defaultInputStream.get(), defaultData.remaining())
+        bu.upload(data.defaultInputStream, data.defaultData.remaining())
 
         when:
         def statusCode = bc.setAccessTierWithResponse(AccessTier.HOT, null, null, null, null).getStatusCode()
@@ -2748,9 +2835,9 @@ class BlobAPITest extends APISpec {
 
     def "Set tier inferred"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateBlobName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateBlobName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def inferred1 = bc.getProperties().isAccessTierInferred()
@@ -2771,9 +2858,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set tier archive status"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateBlobName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateBlobName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         bc.setAccessTier(sourceTier)
@@ -2790,6 +2877,7 @@ class BlobAPITest extends APISpec {
         AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tier rehydrate priority"() {
         setup:
@@ -2813,6 +2901,7 @@ class BlobAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tier snapshot"() {
         setup:
         def bc2 = bc.createSnapshot()
@@ -2840,9 +2929,9 @@ class BlobAPITest extends APISpec {
 
     def "Set tier error"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         bc.setAccessTier(AccessTier.fromString("garbage"))
@@ -2865,9 +2954,9 @@ class BlobAPITest extends APISpec {
 
     def "Set tier lease"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         when:
@@ -2882,9 +2971,9 @@ class BlobAPITest extends APISpec {
 
     def "Set tier lease fail"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         bc.setAccessTierWithResponse(AccessTier.HOT, null, "garbage", null, null)
@@ -2893,11 +2982,12 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set tier tags"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
         def t = new HashMap<String, String>()
         t.put("foo", "bar")
         bc.setTags(t)
@@ -2914,9 +3004,9 @@ class BlobAPITest extends APISpec {
 
     def "Set tier tags fail"() {
         setup:
-        def cc = blobServiceClient.createBlobContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setTagsConditions("\"foo\" = 'bar'"), null, null)
@@ -2930,7 +3020,7 @@ class BlobAPITest extends APISpec {
         setup:
         def blobName = generateBlobName()
         def bc = cc.getBlobClient(blobName).getBlockBlobClient()
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tier1, null, null, null, null)
+        bc.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, tier1, null, null, null, null)
         def bcCopy = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
@@ -2939,7 +3029,7 @@ class BlobAPITest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
         bcCopy.copyFromUrlWithResponse(bc.getBlobUrl().toString() + "?" + sas, null, tier2, null, null, null, null)
 
@@ -2950,33 +3040,6 @@ class BlobAPITest extends APISpec {
         tier1           | tier2
         AccessTier.HOT  | AccessTier.COOL
         AccessTier.COOL | AccessTier.HOT
-    }
-
-    def "Undelete"() {
-        setup:
-        enableSoftDelete()
-        bc.delete()
-
-        when:
-        def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
-        bc.getProperties()
-
-        then:
-        notThrown(BlobStorageException)
-        undeleteHeaders.getValue("x-ms-request-id") != null
-        undeleteHeaders.getValue("x-ms-version") != null
-        undeleteHeaders.getValue("Date") != null
-
-        disableSoftDelete() == null
-    }
-
-    def "Undelete min"() {
-        setup:
-        enableSoftDelete()
-        bc.delete()
-
-        expect:
-        bc.undeleteWithResponse(null, null).getStatusCode() == 200
     }
 
     def "Undelete error"() {
@@ -3028,8 +3091,16 @@ class BlobAPITest extends APISpec {
     }
 
     def "Get Blob Name"() {
+        setup:
+        bc = cc.getBlobClient(inputName)
+
         expect:
-        blobName == bc.getBlobName()
+        expectedOutputName == bc.getBlobName()
+
+        where:
+        inputName                           | expectedOutputName
+        "blobName"                          | "blobName" // standard names should be preserved
+        Utility.urlEncode("dir1/a%20b.txt") | "dir1/a%20b.txt" // encoded names should be decoded (not double decoded
     }
 
     def "Get Blob Name and Build Client"() {
@@ -3077,15 +3148,16 @@ class BlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @IgnoreIf({ getEnv().serviceVersion != null })
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
-     def "Per call policy"() {
-         bc = getBlobClient(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+    def "Per call policy"() {
+        bc = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
 
-         when:
-         def response = bc.getPropertiesWithResponse(null, null, null)
+        when:
+        def response = bc.getPropertiesWithResponse(null, null, null)
 
-         then:
-         notThrown(BlobStorageException)
-         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
-     }
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

@@ -103,7 +103,6 @@ public final class GatewaysClientImpl implements GatewaysClient {
         if (gatewayId == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -114,7 +113,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             resourceGroupName,
                             workspaceName,
                             gatewayId,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -156,7 +155,6 @@ public final class GatewaysClientImpl implements GatewaysClient {
         if (gatewayId == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -165,7 +163,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                 resourceGroupName,
                 workspaceName,
                 gatewayId,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 

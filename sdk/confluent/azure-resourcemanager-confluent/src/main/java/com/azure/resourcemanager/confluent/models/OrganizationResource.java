@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import java.time.OffsetDateTime;
@@ -46,6 +47,13 @@ public interface OrganizationResource {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the createdTime property: The creation time of the resource.
@@ -115,6 +123,8 @@ public interface OrganizationResource {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithOfferDetail,
+            DefinitionStages.WithUserDetail,
             DefinitionStages.WithCreate {
     }
     /** The OrganizationResource definition stages. */
@@ -148,17 +158,33 @@ public interface OrganizationResource {
              * @param resourceGroupName Resource group name.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithOfferDetail withExistingResourceGroup(String resourceGroupName);
+        }
+        /** The stage of the OrganizationResource definition allowing to specify offerDetail. */
+        interface WithOfferDetail {
+            /**
+             * Specifies the offerDetail property: Confluent offer detail.
+             *
+             * @param offerDetail Confluent offer detail.
+             * @return the next definition stage.
+             */
+            WithUserDetail withOfferDetail(OfferDetail offerDetail);
+        }
+        /** The stage of the OrganizationResource definition allowing to specify userDetail. */
+        interface WithUserDetail {
+            /**
+             * Specifies the userDetail property: Subscriber detail.
+             *
+             * @param userDetail Subscriber detail.
+             * @return the next definition stage.
+             */
+            WithCreate withUserDetail(UserDetail userDetail);
         }
         /**
          * The stage of the OrganizationResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithProvisioningState,
-                DefinitionStages.WithOfferDetail,
-                DefinitionStages.WithUserDetail {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              *
@@ -183,36 +209,6 @@ public interface OrganizationResource {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the OrganizationResource definition allowing to specify provisioningState. */
-        interface WithProvisioningState {
-            /**
-             * Specifies the provisioningState property: Provision states for confluent RP.
-             *
-             * @param provisioningState Provision states for confluent RP.
-             * @return the next definition stage.
-             */
-            WithCreate withProvisioningState(ProvisionState provisioningState);
-        }
-        /** The stage of the OrganizationResource definition allowing to specify offerDetail. */
-        interface WithOfferDetail {
-            /**
-             * Specifies the offerDetail property: Confluent offer detail.
-             *
-             * @param offerDetail Confluent offer detail.
-             * @return the next definition stage.
-             */
-            WithCreate withOfferDetail(OfferDetail offerDetail);
-        }
-        /** The stage of the OrganizationResource definition allowing to specify userDetail. */
-        interface WithUserDetail {
-            /**
-             * Specifies the userDetail property: Subscriber detail.
-             *
-             * @param userDetail Subscriber detail.
-             * @return the next definition stage.
-             */
-            WithCreate withUserDetail(UserDetail userDetail);
         }
     }
     /**

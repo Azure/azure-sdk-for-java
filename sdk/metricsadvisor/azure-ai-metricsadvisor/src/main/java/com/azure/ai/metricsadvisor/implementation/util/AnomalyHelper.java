@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.AnomalyStatus;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
@@ -22,6 +22,7 @@ public final class AnomalyHelper {
      * Type defining the methods to set the non-public properties of an {@link DataPointAnomaly} instance.
      */
     public interface AnomalyAccessor {
+        void setDataFeedId(DataPointAnomaly anomaly, String dataFeedId);
         void setMetricId(DataPointAnomaly anomaly, String metricId);
         void setSeriesKey(DataPointAnomaly anomaly, DimensionKey seriesKey);
         void setDetectionConfigurationId(DataPointAnomaly anomaly, String detectionConfigurationId);
@@ -30,6 +31,8 @@ public final class AnomalyHelper {
         void setTimeStamp(DataPointAnomaly anomaly, OffsetDateTime timeStamp);
         void setCreatedTime(DataPointAnomaly anomaly, OffsetDateTime createdTime);
         void setModifiedTime(DataPointAnomaly anomaly, OffsetDateTime modifiedTime);
+        void setValue(DataPointAnomaly anomaly, Double value);
+        void setExpectedValue(DataPointAnomaly anomaly, Double value);
     }
 
     /**
@@ -39,6 +42,10 @@ public final class AnomalyHelper {
      */
     public static void setAccessor(final AnomalyAccessor anomalyAccessor) {
         accessor = anomalyAccessor;
+    }
+
+    static void setDataFeedId(DataPointAnomaly anomaly, String dataFeedId) {
+        accessor.setDataFeedId(anomaly, dataFeedId);
     }
 
     static void setMetricId(DataPointAnomaly anomaly, String metricId) {
@@ -71,5 +78,13 @@ public final class AnomalyHelper {
 
     static void setModifiedTime(DataPointAnomaly anomaly, OffsetDateTime modifiedTime) {
         accessor.setModifiedTime(anomaly, modifiedTime);
+    }
+
+    static void setValue(DataPointAnomaly anomaly, Double value) {
+        accessor.setValue(anomaly, value);
+    }
+
+    static void setExpectedValue(DataPointAnomaly anomaly, Double value) {
+        accessor.setExpectedValue(anomaly, value);
     }
 }

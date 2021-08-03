@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.redisenterprise.implementation;
 
-import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.redisenterprise.models.AccessKeys;
 
 public final class AccessKeysImpl implements AccessKeys {
     private AccessKeysInner innerObject;
 
-    private final RedisEnterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    AccessKeysImpl(AccessKeysInner innerObject, RedisEnterpriseManager serviceManager) {
+    AccessKeysImpl(
+        AccessKeysInner innerObject, com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -30,7 +30,7 @@ public final class AccessKeysImpl implements AccessKeys {
         return this.innerObject;
     }
 
-    private RedisEnterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 }

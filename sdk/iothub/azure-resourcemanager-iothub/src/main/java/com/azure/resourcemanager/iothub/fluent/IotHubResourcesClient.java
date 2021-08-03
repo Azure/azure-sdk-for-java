@@ -22,6 +22,7 @@ import com.azure.resourcemanager.iothub.fluent.models.RegistryStatisticsInner;
 import com.azure.resourcemanager.iothub.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
 import com.azure.resourcemanager.iothub.fluent.models.TestAllRoutesResultInner;
 import com.azure.resourcemanager.iothub.fluent.models.TestRouteResultInner;
+import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupBodyDescription;
 import com.azure.resourcemanager.iothub.models.ExportDevicesRequest;
 import com.azure.resourcemanager.iothub.models.ImportDevicesRequest;
 import com.azure.resourcemanager.iothub.models.OperationInputs;
@@ -64,7 +65,8 @@ public interface IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -84,7 +86,8 @@ public interface IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -109,7 +112,8 @@ public interface IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -129,7 +133,8 @@ public interface IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -147,7 +152,8 @@ public interface IotHubResourcesClient {
     /**
      * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
      * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
-     * hub.
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -476,6 +482,7 @@ public interface IotHubResourcesClient {
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to add.
+     * @param consumerGroupBody The consumer group to add.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
@@ -484,7 +491,11 @@ public interface IotHubResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EventHubConsumerGroupInfoInner createEventHubConsumerGroup(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name);
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody);
 
     /**
      * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
@@ -493,6 +504,7 @@ public interface IotHubResourcesClient {
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to add.
+     * @param consumerGroupBody The consumer group to add.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
@@ -502,7 +514,12 @@ public interface IotHubResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupWithResponse(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context);
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody,
+        Context context);
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.

@@ -58,12 +58,12 @@ parameters:
   default: []
 - name: TestMode
   type: string
-  default: 'RECORD'
+  default: 'LIVE'
 - name: TestStepMavenInputs
   type: object
   default:
-    options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
-    mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+    options: '$(DefaultTestOptions)'
+    mavenOptions: '$(DefaultTestMavenOptions)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '$(JavaTestVersion)'
     jdkArchitectureOption: 'x64'
@@ -101,8 +101,7 @@ parameters:
   default: []
 - name: PlatformPreSteps
   type: object
-  default:
-    - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
+  default: []
 - name: PlatformPostSteps
   type: object
   default: []
@@ -157,5 +156,6 @@ stages:
               - ${{ parameters.MatrixReplace }}
             CloudConfig:
               SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
+              SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
               Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
               Cloud: ${{ cloud.key }}

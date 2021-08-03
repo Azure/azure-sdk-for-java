@@ -3,10 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,7 +20,6 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.util.Locale;
@@ -72,7 +69,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final int prefetchCount;
-    private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClosed;
     /**
@@ -84,14 +80,13 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
+        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
-        this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
         this.onClientClosed = onClientClosed;
     }
@@ -359,19 +354,18 @@ public class EventHubConsumerAsyncClient implements Closeable {
         final AtomicReference<Supplier<EventPosition>> initialPosition = new AtomicReference<>(() -> startingPosition);
         final Flux<AmqpReceiveLink> receiveLinkMono = connectionProcessor
             .flatMap(connection -> {
-                logger.info("connectionId[{}] linkName[{}]: Creating receive consumer for partition '{}'",
+                logger.info("connectionId[{}] linkName[{}] Creating receive consumer for partition '{}'",
                     connection.getId(), linkName, partitionId);
                 return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions);
             })
             .repeat();
 
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
-            new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy, connectionProcessor));
+            new AmqpReceiveLinkProcessor(entityPath, prefetchCount, connectionProcessor));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
-            receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
+            receiveOptions.getTrackLastEnqueuedEventProperties());
     }
 
     boolean isConnectionClosed() {

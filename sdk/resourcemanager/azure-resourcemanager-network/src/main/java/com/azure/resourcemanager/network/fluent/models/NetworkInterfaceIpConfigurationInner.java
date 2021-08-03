@@ -43,6 +43,12 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
     private String type;
 
     /*
+     * The reference to gateway load balancer frontend IP.
+     */
+    @JsonProperty(value = "properties.gatewayLoadBalancer")
+    private SubResource gatewayLoadBalancer;
+
+    /*
      * The reference to Virtual Network Taps.
      */
     @JsonProperty(value = "properties.virtualNetworkTaps")
@@ -168,6 +174,26 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
      */
     public NetworkInterfaceIpConfigurationInner withType(String type) {
         this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
+     *
+     * @return the gatewayLoadBalancer value.
+     */
+    public SubResource gatewayLoadBalancer() {
+        return this.gatewayLoadBalancer;
+    }
+
+    /**
+     * Set the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
+     *
+     * @param gatewayLoadBalancer the gatewayLoadBalancer value to set.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
+     */
+    public NetworkInterfaceIpConfigurationInner withGatewayLoadBalancer(SubResource gatewayLoadBalancer) {
+        this.gatewayLoadBalancer = gatewayLoadBalancer;
         return this;
     }
 

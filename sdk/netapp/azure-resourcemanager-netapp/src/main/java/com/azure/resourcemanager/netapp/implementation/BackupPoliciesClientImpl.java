@@ -123,7 +123,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                 + "/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupPolicyInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -198,7 +198,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -364,7 +364,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -535,7 +535,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                             body,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -793,7 +793,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupPolicyInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -838,7 +838,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                             body,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -855,7 +855,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupPolicyInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String backupPolicyName,
@@ -917,17 +917,129 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(
+        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body);
+        return this
+            .client
+            .<BackupPolicyInner, BackupPolicyInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BackupPolicyInner.class, BackupPolicyInner.class, Context.NONE);
+    }
+
+    /**
+     * Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @param body Backup policy object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup policy information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(
+        String resourceGroupName,
+        String accountName,
+        String backupPolicyName,
+        BackupPolicyPatch body,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body, context);
+        return this
+            .client
+            .<BackupPolicyInner, BackupPolicyInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BackupPolicyInner.class, BackupPolicyInner.class, context);
+    }
+
+    /**
+     * Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @param body Backup policy object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup policy information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
+        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
+        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
+    }
+
+    /**
+     * Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @param body Backup policy object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup policy information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
+        String resourceGroupName,
+        String accountName,
+        String backupPolicyName,
+        BackupPolicyPatch body,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body, context).getSyncPoller();
+    }
+
+    /**
+     * Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @param body Backup policy object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup policy information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupPolicyInner> updateAsync(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
-        return updateWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body)
-            .flatMap(
-                (Response<BackupPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @param body Backup policy object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup policy information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupPolicyInner> updateAsync(
+        String resourceGroupName,
+        String accountName,
+        String backupPolicyName,
+        BackupPolicyPatch body,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -962,13 +1074,13 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupPolicyInner> updateWithResponse(
+    public BackupPolicyInner update(
         String resourceGroupName,
         String accountName,
         String backupPolicyName,
         BackupPolicyPatch body,
         Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body, context).block();
+        return updateAsync(resourceGroupName, accountName, backupPolicyName, body, context).block();
     }
 
     /**
@@ -1020,7 +1132,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
                             backupPolicyName,
                             this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

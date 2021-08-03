@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.DatabasesClient;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
@@ -29,9 +28,9 @@ public final class DatabasesImpl implements Databases {
 
     private final DatabasesClient innerClient;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public DatabasesImpl(DatabasesClient innerClient, KustoManager serviceManager) {
+    public DatabasesImpl(DatabasesClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -66,13 +65,13 @@ public final class DatabasesImpl implements Databases {
 
     public PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<DatabaseInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return inner.mapPage(inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Context context) {
         PagedIterable<DatabaseInner> inner =
             this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return inner.mapPage(inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public Database get(String resourceGroupName, String clusterName, String databaseName) {
@@ -154,14 +153,14 @@ public final class DatabasesImpl implements Databases {
         String resourceGroupName, String clusterName, String databaseName) {
         PagedIterable<DatabasePrincipalInner> inner =
             this.serviceClient().listPrincipals(resourceGroupName, clusterName, databaseName);
-        return inner.mapPage(inner1 -> new DatabasePrincipalImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DatabasePrincipal> listPrincipals(
         String resourceGroupName, String clusterName, String databaseName, Context context) {
         PagedIterable<DatabasePrincipalInner> inner =
             this.serviceClient().listPrincipals(resourceGroupName, clusterName, databaseName, context);
-        return inner.mapPage(inner1 -> new DatabasePrincipalImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalImpl(inner1, this.manager()));
     }
 
     public DatabasePrincipalListResult addPrincipals(
@@ -242,7 +241,7 @@ public final class DatabasesImpl implements Databases {
         return this.innerClient;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 }

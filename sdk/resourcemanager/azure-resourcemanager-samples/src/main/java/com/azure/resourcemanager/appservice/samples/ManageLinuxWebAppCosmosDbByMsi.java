@@ -128,18 +128,12 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
             vault.secrets().define("azure-documentdb-uri")
                 .withValue(cosmosDBAccount.documentEndpoint())
                 .create();
-
             vault.secrets().define("azure-documentdb-key")
                 .withValue(cosmosDBAccount.listKeys().primaryMasterKey())
                 .create();
-
             vault.secrets().define("azure-documentdb-database")
                 .withValue("tododb")
                 .create();
-
-//            client.setSecret(new SetSecretRequest.Builder(vault.vaultUri(), "azure.documentdb.uri", cosmosDBAccount.documentEndpoint()).build());
-//            client.setSecret(new SetSecretRequest.Builder(vault.vaultUri(), "azure.documentdb.key", cosmosDBAccount.listKeys().primaryMasterKey()).build());
-//            client.setSecret(new SetSecretRequest.Builder(vault.vaultUri(), "azure.documentdb.database", "tododb").build());
 
             //=============================================================
             // Create an Azure Container Registry to store and manage private Docker container images

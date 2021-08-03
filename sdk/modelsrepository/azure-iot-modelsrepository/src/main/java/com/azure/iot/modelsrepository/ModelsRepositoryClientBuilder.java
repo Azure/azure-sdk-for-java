@@ -217,8 +217,7 @@ public final class ModelsRepositoryClientBuilder {
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
     public ModelsRepositoryClientBuilder repositoryEndpoint(String repositoryEndpoint) {
-        DtmiConventions.convertToUri(repositoryEndpoint);
-        this.repositoryEndpoint = DtmiConventions.convertToUri(repositoryEndpoint);
+        this.repositoryEndpoint = convertToUri(repositoryEndpoint);
         return this;
     }
 
@@ -329,5 +328,20 @@ public final class ModelsRepositoryClientBuilder {
     public ModelsRepositoryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
+    }
+
+    /**
+     * Converts a string to {@link URI}
+     *
+     * @param uri String format of the path
+     * @return {@link URI} representation of the path/uri.
+     * @throws IllegalArgumentException If the {@code uri} is invalid.
+     */
+    static URI convertToUri(String uri) throws IllegalArgumentException {
+        try {
+            return new URI(uri);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid URI format", e);
+        }
     }
 }

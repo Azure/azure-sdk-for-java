@@ -53,7 +53,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
     @DataProvider
     public static Object[][] directClientBuilder() {
-        return new Object[][] { { createDCBuilder(Protocol.HTTPS) }, { createDCBuilder(Protocol.TCP) } };
+        return new Object[][] { { createDCBuilder(Protocol.TCP) } };
     }
 
     static Builder createDCBuilder(Protocol protocol) {
@@ -94,7 +94,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
         AtomicBoolean forceRefreshHeaderSeen) {
 
         final HttpRequest request =
-            invocation.getArgumentAt(0, HttpRequest.class);
+            invocation.getArgument(0, HttpRequest.class);
 
         String forceRefreshAddressHeader = request
             .headers()
@@ -103,7 +103,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
         Mono<HttpResponse> responseObservable;
         if (invocation.getArguments().length == 2) {
-            responseObservable = originalClient.send(request, invocation.getArgumentAt(1, Duration.class));
+            responseObservable = originalClient.send(request, invocation.getArgument(1, Duration.class));
         } else {
             responseObservable = originalClient.send(request);
         }
@@ -153,9 +153,9 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
         doAnswer(invocation -> {
             final Uri physicalAddress =
-                invocation.getArgumentAt(0, Uri.class);
+                invocation.getArgument(0, Uri.class);
             final RxDocumentServiceRequest rxServiceRequest =
-                invocation.getArgumentAt(1, RxDocumentServiceRequest.class);
+                invocation.getArgument(1, RxDocumentServiceRequest.class);
 
             if (StringUtils.isEmpty(rxServiceRequest.requestContext.resourcePhysicalAddress)) {
                 rxServiceRequest.requestContext.resourcePhysicalAddress = physicalAddress.toString();

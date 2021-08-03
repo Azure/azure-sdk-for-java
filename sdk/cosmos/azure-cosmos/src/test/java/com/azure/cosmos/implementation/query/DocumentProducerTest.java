@@ -31,7 +31,7 @@ import com.azure.cosmos.implementation.guava25.collect.LinkedListMultimap;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,9 +59,8 @@ import java.util.stream.Stream;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -602,8 +601,7 @@ public class DocumentProducerTest {
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
         doReturn(cache).when(client).getPartitionKeyRangeCache();
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges)))
-            .when(cache).tryGetOverlappingRangesAsync(any(MetadataDiagnosticsContext.class), anyString(), any(Range.class), anyBoolean(), Matchers
-                                                                                                                                                                                                            .anyMapOf(String.class, Object.class));
+            .when(cache).tryGetOverlappingRangesAsync(any(), any(), any(), anyBoolean(), ArgumentMatchers.any());
         return client;
     }
 

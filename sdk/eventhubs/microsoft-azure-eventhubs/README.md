@@ -1,7 +1,7 @@
 
-# Azure Event Hubs (Track 1) client library for Java
+# Azure Event Hubs client library for Java
 
-<h1 align="center">Microsoft Azure Event Hubs Client for Java</h1>
+> Please note, a newer package [com.azure:azure-messaging-eventhubs](https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs) for [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is available as of February 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the [migration guide](https://aka.ms/azsdk/java/migrate/eh) for more details.
 
 Azure Event Hubs is a hyper-scale data ingestion service, fully-managed by Microsoft, that enables you to collect, store
 and process trillions of events from websites, apps, IoT devices, and any stream of data.
@@ -56,7 +56,7 @@ the required versions of Apache Qpid Proton-J, and the cryptography library BCPK
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-eventhubs</artifactId>
-    <version>2.3.1</version>
+    <version>3.2.3</version>
 </dependency>
 ```
 
@@ -86,7 +86,7 @@ and support" menu in the upper right-hand corner of the page.
 
 If you find issues in this library or have suggestions for improvement of code or documentation, you can [file an issue
 in the project's GitHub repository](https://github.com/Azure/azure-sdk-for-java/issues) or send across a pull request -
-see our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/CONTRIBUTING.md).
+see our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/CONTRIBUTING.md).
 
 Issues related to runtime behavior of the service, such as sporadic exceptions or apparent service-side performance or
 reliability issues cannot be handled here.

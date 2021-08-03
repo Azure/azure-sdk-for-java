@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
@@ -162,14 +164,43 @@ public class FluxUtilTest {
 
         Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(toReplace.getBytes(StandardCharsets.UTF_8)));
         File file = createFileIfNotExist();
-        FileOutputStream stream = new FileOutputStream(file);
-        stream.write(original.getBytes(StandardCharsets.UTF_8));
-        stream.close();
+
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            stream.write(original.getBytes(StandardCharsets.UTF_8));
+        }
+
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
             FluxUtil.writeFile(body, channel).block();
             byte[] outputStream = Files.readAllBytes(file.toPath());
             assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
         }
+    }
+
+    @Test
+    public void readFile() throws IOException {
+        final byte[] expectedFileBytes = new byte[10 * 1024 * 1024];
+        final SecureRandom random = new SecureRandom();
+        random.nextBytes(expectedFileBytes);
+
+        File file = createFileIfNotExist();
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            stream.write(expectedFileBytes);
+        }
+
+        Flux<ByteBuffer> fileReader = Flux.using(() -> AsynchronousFileChannel.open(file.toPath(),
+            StandardOpenOption.READ), FluxUtil::readFile, channel -> {
+                try {
+                    channel.close();
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+            });
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(fileReader, expectedFileBytes.length))
+            .assertNext(bytes -> assertArrayEquals(expectedFileBytes, bytes))
+            .verifyComplete();
+
+        Files.deleteIfExists(file.toPath());
     }
 
     @ParameterizedTest
@@ -278,8 +309,7 @@ public class FluxUtilTest {
     }
 
     private Flux<String> getCollection() {
-        return FluxUtil
-            .fluxContext(this::serviceCallCollection);
+        return FluxUtil.fluxContext(this::serviceCallCollection);
     }
 
     private Mono<String> getSingleWithContextAttributes() {
@@ -312,12 +342,19 @@ public class FluxUtilTest {
         return Mono.just(msg);
     }
 
-    private File createFileIfNotExist() throws IOException {
-        File file = new File("target/test1");
-        if (file.getParentFile() != null) {
-            file.getParentFile().mkdirs();
+    private File createFileIfNotExist() {
+        String fileName = UUID.randomUUID().toString();
+        File file = new File("target");
+        if (!file.exists()) {
+            if (!file.getParentFile().mkdirs()) {
+                throw new RuntimeException("Unable to create directories: " + file.getAbsolutePath());
+            }
         }
-        file.createNewFile();
-        return file;
+
+        try {
+            return Files.createTempFile(file.toPath(), fileName, "").toFile();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 }

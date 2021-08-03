@@ -20,6 +20,7 @@ jobs:
       matrix: ${{ parameters.Matrix }}
 
     pool:
+      name: $(Pool)
       vmImage: $(OSVmImage)
 
     variables:
@@ -29,6 +30,10 @@ jobs:
 
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(OSVmImage)
+
       - task: Maven@3
         displayName: Use the latest package version from the dev feed
         inputs:

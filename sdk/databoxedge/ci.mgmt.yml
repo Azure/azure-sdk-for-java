@@ -2,26 +2,36 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/databoxedge/
+      - sdk/databoxedge/ci.mgmt.yml
+      - sdk/databoxedge/mgmt-v2019_08_01/
+      - sdk/databoxedge/mgmt-v2020_05_01_preview/
+    exclude:
+      - sdk/databoxedge/pom.xml
+      - sdk/databoxedge/mgmt-v2019_08_01/pom.xml
+      - sdk/databoxedge/mgmt-v2020_05_01_preview/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/databoxedge/
+      - sdk/databoxedge/ci.mgmt.yml
+      - sdk/databoxedge/mgmt-v2019_08_01/
+      - sdk/databoxedge/mgmt-v2020_05_01_preview/
+    exclude:
+      - sdk/databoxedge/pom.xml
+      - sdk/databoxedge/mgmt-v2019_08_01/pom.xml
+      - sdk/databoxedge/mgmt-v2020_05_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

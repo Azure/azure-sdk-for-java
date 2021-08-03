@@ -5,9 +5,8 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.Duration;
+import java.util.List;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 
 /**
  * Options that may be passed when using recognize business card APIs on Form Recognizer client.
@@ -16,7 +15,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_IN
 public final class RecognizeBusinessCardsOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
-    private Duration pollInterval = DEFAULT_POLL_INTERVAL;
+    private List<String> pages;
     private FormRecognizerLocale locale;
 
     /**
@@ -35,16 +34,6 @@ public final class RecognizeBusinessCardsOptions {
      */
     public boolean isFieldElementsIncluded() {
         return includeFieldElements;
-    }
-
-    /**
-     * Get the duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @return the {@code pollInterval} value.
-     */
-    public Duration getPollInterval() {
-        return pollInterval;
     }
 
     /**
@@ -72,19 +61,6 @@ public final class RecognizeBusinessCardsOptions {
     }
 
     /**
-     * Set the duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @param pollInterval the duration to specify between each poll for the operation status.
-     *
-     * @return the updated {@code RecognizeBusinessCardOptions} value.
-     */
-    public RecognizeBusinessCardsOptions setPollInterval(final Duration pollInterval) {
-        this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
-        return this;
-    }
-
-    /**
      * Get the locale value.
      * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
      *
@@ -104,6 +80,32 @@ public final class RecognizeBusinessCardsOptions {
      */
     public RecognizeBusinessCardsOptions setLocale(final FormRecognizerLocale locale) {
         this.locale = locale;
+        return this;
+    }
+
+    /**
+     * Get the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * @return the list of custom page numbers for a multi page document.
+     */
+    public List<String> getPages() {
+        return pages;
+    }
+
+    /**
+     * Set the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * @param pages the custom page numbers value to set.
+     * @return the updated {@code RecognizeBusinessCardsOptions} value.
+     */
+    public RecognizeBusinessCardsOptions setPages(List<String> pages) {
+        this.pages = pages;
         return this;
     }
 }

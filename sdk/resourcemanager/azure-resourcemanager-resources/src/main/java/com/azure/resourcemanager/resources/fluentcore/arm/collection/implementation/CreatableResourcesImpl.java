@@ -46,7 +46,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     }
 
     @Override
-    public final CreatedResources<T> create(List<Creatable<T>> creatables) {
+    public final CreatedResources<T> create(List<? extends Creatable<T>> creatables) {
         return createAsyncNonStream(creatables)
                 .block();
     }
@@ -58,7 +58,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     }
 
     @Override
-    public final Flux<T> createAsync(List<Creatable<T>> creatables) {
+    public final Flux<T> createAsync(List<? extends Creatable<T>> creatables) {
         if (creatables == null) {
             return Flux.empty();
         }
@@ -66,7 +66,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
             .flatMapMany(rootResource -> Flux.fromIterable(rootResource.createdTopLevelResources()));
     }
 
-    private Mono<CreatedResources<T>> createAsyncNonStream(List<Creatable<T>> creatables) {
+    private Mono<CreatedResources<T>> createAsyncNonStream(List<? extends Creatable<T>> creatables) {
         return createWithRootResourceAsync(creatables)
                 .map(CreatedResourcesImpl::new);
     }
@@ -76,7 +76,8 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
         return createAsyncNonStream(Arrays.asList(creatables));
     }
 
-    private Mono<CreatableUpdatableResourcesRoot<T>> createWithRootResourceAsync(List<Creatable<T>> creatables) {
+    private Mono<CreatableUpdatableResourcesRoot<T>> createWithRootResourceAsync(
+        List<? extends Creatable<T>> creatables) {
         CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
         return rootResource.createAsync();
@@ -220,7 +221,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
             }
         }
 
-        void addCreatableDependencies(List<Creatable<T>> creatables) {
+        void addCreatableDependencies(List<? extends Creatable<T>> creatables) {
             for (Creatable<T> item : creatables) {
                 this.keys.add(this.addDependency(item));
             }

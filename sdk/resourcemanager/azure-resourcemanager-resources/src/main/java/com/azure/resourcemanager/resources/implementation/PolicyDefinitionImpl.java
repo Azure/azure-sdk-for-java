@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
+import com.azure.resourcemanager.resources.models.ParameterType;
 import com.azure.resourcemanager.resources.models.PolicyDefinition;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
@@ -13,6 +15,9 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Creat
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Implementation for {@link PolicyDefinition}.
@@ -49,6 +54,13 @@ final class PolicyDefinitionImpl extends
     @Override
     public Object policyRule() {
         return innerModel().policyRule();
+    }
+
+    @Override
+    public Map<String, ParameterDefinitionsValue> parameters() {
+        return innerModel().parameters() == null
+            ? Collections.emptyMap()
+            : Collections.unmodifiableMap(innerModel().parameters());
     }
 
     @Override
@@ -104,5 +116,26 @@ final class PolicyDefinitionImpl extends
     @Override
     public boolean isInCreateMode() {
         return id() == null;
+    }
+
+    @Override
+    public PolicyDefinitionImpl withParameter(String name, ParameterDefinitionsValue definition) {
+        if (innerModel().parameters() == null) {
+            innerModel().withParameters(new TreeMap<>());
+        }
+        innerModel().parameters().put(name, definition);
+        return this;
+    }
+
+    @Override
+    public PolicyDefinitionImpl withParameter(String name, ParameterType parameterType, Object defaultValue) {
+        if (innerModel().parameters() == null) {
+            innerModel().withParameters(new TreeMap<>());
+        }
+        innerModel().parameters().put(name,
+            new ParameterDefinitionsValue()
+                .withType(parameterType)
+                .withDefaultValue(defaultValue));
+        return this;
     }
 }

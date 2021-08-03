@@ -6,15 +6,12 @@ package com.azure.core.util.serializer;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -27,8 +24,6 @@ import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -41,7 +36,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -210,10 +204,24 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
-        serialize(object, encoding, stream);
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.writeValueAsString(object);
+        } else {
+            return serializer().writeValueAsString(object);
+        }
+    }
 
-        return new String(stream.toByteArray(), 0, stream.size(), StandardCharsets.UTF_8);
+    @Override
+    public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
+        if (object == null) {
+            return null;
+        }
+
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.writeValueAsBytes(object);
+        } else {
+            return serializer().writeValueAsBytes(object);
+        }
     }
 
     @Override
@@ -234,6 +242,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if (object == null) {
             return null;
         }
+
         try {
             return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
         } catch (IOException ex) {
@@ -253,7 +262,26 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type, encoding);
+        final JavaType javaType = createJavaType(type);
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.readValue(value, javaType);
+        } else {
+            return serializer().readValue(value, javaType);
+        }
+    }
+
+    @Override
+    public <T> T deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
+        if (bytes == null || bytes.length == 0) {
+            return null;
+        }
+
+        final JavaType javaType = createJavaType(type);
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.readValue(bytes, javaType);
+        } else {
+            return serializer().readValue(bytes, javaType);
+        }
     }
 
     @Override
@@ -264,14 +292,10 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         final JavaType javaType = createJavaType(type);
-        try {
-            if (encoding == SerializerEncoding.XML) {
-                return xmlMapper.readValue(inputStream, javaType);
-            } else {
-                return serializer().readValue(inputStream, javaType);
-            }
-        } catch (JsonParseException jpe) {
-            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
+        if (encoding == SerializerEncoding.XML) {
+            return xmlMapper.readValue(inputStream, javaType);
+        } else {
+            return serializer().readValue(inputStream, javaType);
         }
     }
 
@@ -377,6 +401,9 @@ public class JacksonAdapter implements SerializerAdapter {
             .addModule(DurationSerializer.getModule())
             .addModule(HttpHeadersSerializer.getModule())
             .addModule(UnixTimeSerializer.getModule())
+            .addModule(UnixTimeDeserializer.getModule())
+            .addModule(GeoJsonSerializer.getModule())
+            .addModule(GeoJsonDeserializer.getModule())
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
@@ -473,7 +500,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 Method setterMethod = deserializedHeaders.getClass().getDeclaredMethod(potentialSetterName, Map.class);
                 if (Modifier.isPublic(setterMethod.getModifiers())) {
                     setterMethod.invoke(deserializedHeaders, values);
-                    logger.verbose("User setter %s on class %s to set header collection.", potentialSetterName,
+                    logger.verbose("User setter {} on class {} to set header collection.", potentialSetterName,
                         deserializedHeaders.getClass().getSimpleName());
                     return true;
                 }

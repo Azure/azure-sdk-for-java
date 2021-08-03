@@ -6,7 +6,6 @@ package com.azure.resourcemanager.postgresql.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.ServerParametersClient;
 import com.azure.resourcemanager.postgresql.fluent.models.ConfigurationListResultInner;
 import com.azure.resourcemanager.postgresql.models.ConfigurationListResult;
@@ -18,9 +17,10 @@ public final class ServerParametersImpl implements ServerParameters {
 
     private final ServerParametersClient innerClient;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public ServerParametersImpl(ServerParametersClient innerClient, PostgreSqlManager serviceManager) {
+    public ServerParametersImpl(
+        ServerParametersClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -51,7 +51,7 @@ public final class ServerParametersImpl implements ServerParameters {
         return this.innerClient;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 }

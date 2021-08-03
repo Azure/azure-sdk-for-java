@@ -3,19 +3,23 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.azure.spring.cloud.context.core.util.Memoizer;
-import com.azure.spring.cloud.context.core.util.Tuple;
-import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
-import com.microsoft.azure.servicebus.IMessageSender;
-import com.microsoft.azure.servicebus.IQueueClient;
-import com.microsoft.azure.servicebus.QueueClient;
-import com.microsoft.azure.servicebus.ReceiveMode;
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import org.springframework.util.StringUtils;
 
-import java.util.function.Function;
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * Default implementation of {@link ServiceBusQueueClientFactory}. Client will be cached to improve performance
@@ -23,34 +27,88 @@ import java.util.function.Function;
  * @author Warren Zhu
  */
 public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSenderFactory
-    implements ServiceBusQueueClientFactory {
+    implements ServiceBusQueueClientFactory, DisposableBean {
 
-    private final Function<String, IQueueClient> queueClientCreator = Memoizer.memoize(this::createQueueClient);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusQueueClientFactory.class);
+    private final Map<String, ServiceBusProcessorClient> processorClientMap = new ConcurrentHashMap<>();
+    private final Map<String, ServiceBusSenderAsyncClient> senderClientMap = new ConcurrentHashMap<>();
+
+    // TODO (xiada) whether will this reuse the underlying connection?
+    private final ServiceBusClientBuilder serviceBusClientBuilder;
 
     public DefaultServiceBusQueueClientFactory(String connectionString) {
+        this(connectionString, AmqpTransportType.AMQP);
+    }
+
+    public DefaultServiceBusQueueClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         super(connectionString);
+        this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
+        this.serviceBusClientBuilder.transportType(amqpTransportType);
     }
 
-    private IQueueClient createQueueClient(String destination) {
-        if (serviceBusQueueManager != null && StringUtils.hasText(namespace)) {
-            ServiceBusNamespace serviceBusNamespace = serviceBusNamespaceManager.get(namespace);
-            serviceBusQueueManager.getOrCreate(Tuple.of(serviceBusNamespace, destination));
-        }
-
-        try {
-            return new QueueClient(new ConnectionStringBuilder(connectionString, destination), ReceiveMode.PEEKLOCK);
-        } catch (InterruptedException | ServiceBusException e) {
-            throw new ServiceBusRuntimeException("Failed to create service bus queue client", e);
-        }
-    }
-
-    @Override
-    public IQueueClient getOrCreateClient(String name) {
-        return this.queueClientCreator.apply(name);
+    private <K, V> void close(Map<K, V> map, Consumer<V> close) {
+        map.values().forEach(it -> {
+            try {
+                close.accept(it);
+            } catch (Exception ex) {
+                LOGGER.warn("Failed to clean service bus queue client factory", ex);
+            }
+        });
     }
 
     @Override
-    public IMessageSender getOrCreateSender(String name) {
-        return getOrCreateClient(name);
+    public void destroy() {
+        close(senderClientMap, ServiceBusSenderAsyncClient::close);
+        close(processorClientMap, ServiceBusProcessorClient::close);
+    }
+
+    @Override
+    public ServiceBusProcessorClient getOrCreateProcessor(
+        String name,
+        ServiceBusClientConfig clientConfig,
+        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+        return this.processorClientMap.computeIfAbsent(name,
+                                                       n -> createProcessorClient(n, clientConfig, messageProcessor));
+    }
+
+    @Override
+    public ServiceBusSenderAsyncClient getOrCreateSender(String name) {
+        return this.senderClientMap.computeIfAbsent(name, this::createQueueSender);
+    }
+
+    private ServiceBusProcessorClient createProcessorClient(
+        String name,
+        ServiceBusClientConfig clientConfig,
+        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+        if (clientConfig.isSessionsEnabled()) {
+            return serviceBusClientBuilder.sessionProcessor()
+                                          .queueName(name)
+                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                                          .maxConcurrentCalls(1)
+                                          // TODO, make it a constant or get it from clientConfig. And it looks like
+                                          //  max auto renew duration is not exposed
+                                          .maxConcurrentSessions(clientConfig.getConcurrency())
+                                          .prefetchCount(clientConfig.getPrefetchCount())
+                                          .disableAutoComplete()
+                                          .processMessage(messageProcessor.processMessage())
+                                          .processError(messageProcessor.processError())
+                                          .buildProcessorClient();
+
+        } else {
+            return serviceBusClientBuilder.processor()
+                                          .queueName(name)
+                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                                          .maxConcurrentCalls(clientConfig.getConcurrency())
+                                          .prefetchCount(clientConfig.getPrefetchCount())
+                                          .disableAutoComplete()
+                                          .processMessage(messageProcessor.processMessage())
+                                          .processError(messageProcessor.processError())
+                                          .buildProcessorClient();
+        }
+
+    }
+
+    private ServiceBusSenderAsyncClient createQueueSender(String name) {
+        return serviceBusClientBuilder.sender().queueName(name).buildAsyncClient();
     }
 }

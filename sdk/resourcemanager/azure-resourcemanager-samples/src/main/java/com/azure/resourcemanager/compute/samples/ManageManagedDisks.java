@@ -9,9 +9,10 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
-import com.jcraft.jsch.JSchException;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -28,10 +29,10 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.samples.SSHShell;
 
-import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public final class ManageManagedDisks {
         final Region region = Region.US_SOUTH_CENTRAL;
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
-        final String sshkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
+        final String sshPublicKey = Utils.sshPublicKey();
 
         try {
 
@@ -68,7 +69,7 @@ public final class ManageManagedDisks {
                     .withNewPrimaryPublicIPAddress(linuxVM1Pip)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withSsh(sshkey)
+                    .withSsh(sshPublicKey)
                     .withNewDataDisk(50)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
@@ -92,7 +93,7 @@ public final class ManageManagedDisks {
                         .withoutPrimaryInternalLoadBalancer()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername("tirekicker")
-                        .withSsh(sshkey)
+                        .withSsh(sshPublicKey)
                         .withNewDataDisk(50)
                         .withNewDataDisk(50, 1, CachingTypes.READ_WRITE)
                         .withNewDataDisk(50, 2, CachingTypes.READ_ONLY)
@@ -130,7 +131,7 @@ public final class ManageManagedDisks {
                     .withNewPrimaryPublicIPAddress(linuxVM2Pip)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withSsh(sshkey)
+                    .withSsh(sshPublicKey)
                     // Begin: Managed data disks
                     .withNewDataDisk(50)
                     .withNewDataDisk(50, 1, CachingTypes.READ_WRITE)
@@ -183,7 +184,7 @@ public final class ManageManagedDisks {
                     .withoutPrimaryPublicIPAddress()
                     .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
-                    .withSsh(sshkey)
+                    .withSsh(sshPublicKey)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
@@ -309,7 +310,7 @@ public final class ManageManagedDisks {
                     .withNewPrimaryPublicIPAddress(linuxVM7Pip)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
-                    .withSsh(sshkey)
+                    .withSsh(sshPublicKey)
                     .withUnmanagedDisks() // uses storage accounts
                     .withNewUnmanagedDataDisk(50)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
@@ -377,7 +378,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedUnmanagedVirtualMachine(AzureResourceManager azureResourceManager, Region region, String rgName) {
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
         final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip" + "-", 20);
 
@@ -389,7 +390,7 @@ public final class ManageManagedDisks {
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey)
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk-1")
                     .withNewVhd(100)
@@ -403,7 +404,7 @@ public final class ManageManagedDisks {
                 .create();
 
         // De-provision the virtual machine
-        deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIPAddress().fqdn(), 22, userName, password);
+        deprovisionAgentInLinuxVM(linuxVM);
         System.out.println("Deallocate VM: " + linuxVM.id());
         linuxVM.deallocate();
         System.out.println("Deallocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
@@ -415,7 +416,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedManagedVirtualMachine(AzureResourceManager azureResourceManager, Region region, String rgName) {
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip" + "-", 20);
 
@@ -427,14 +428,14 @@ public final class ManageManagedDisks {
                 .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey)
                 .withNewDataDisk(100)
                 .withNewDataDisk(200)
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
         // De-provision the virtual machine
-        deprovisionAgentInLinuxVM(linuxVM.getPrimaryPublicIPAddress().fqdn(), 22, userName, password);
+        deprovisionAgentInLinuxVM(linuxVM);
         System.out.println("Deallocate VM: " + linuxVM.id());
         linuxVM.deallocate();
         System.out.println("Deallocated VM: " + linuxVM.id() + "; state = " + linuxVM.powerState());
@@ -444,26 +445,22 @@ public final class ManageManagedDisks {
         return linuxVM;
     }
 
-    private static void deprovisionAgentInLinuxVM(String host, int port, String userName, String password) {
-        SSHShell shell = null;
-        try {
-            System.out.println("Trying to de-provision: " + host);
-            shell = SSHShell.open(host, port, userName, password);
-            List<String> deprovisionCommand = new ArrayList<>();
-            deprovisionCommand.add("sudo waagent -deprovision+user --force");
-            String output = shell.runCommands(deprovisionCommand);
-            System.out.println(output);
-        } catch (JSchException jSchException) {
-            System.out.println(jSchException.getMessage());
-        } catch (IOException ioException) {
-            System.out.println(ioException.getMessage());
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        } finally {
-            if (shell != null) {
-                shell.close();
-            }
-        }
+    /**
+     * De-provision an Azure linux virtual machine.
+     *
+     * @param virtualMachine the virtual machine
+     */
+    protected static void deprovisionAgentInLinuxVM(VirtualMachine virtualMachine) {
+        System.out.println("Trying to de-provision");
+
+        virtualMachine.manager().serviceClient().getVirtualMachines().beginRunCommand(
+            virtualMachine.resourceGroupName(), virtualMachine.name(),
+            new RunCommandInput()
+                .withCommandId("RunShellScript")
+                .withScript(Collections.singletonList("sudo waagent -deprovision+user --force")));
+
+        // wait as above command will not return as sync
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
     }
 
     private static Network prepareNetwork(AzureResourceManager azureResourceManager, Region region, String rgName) {

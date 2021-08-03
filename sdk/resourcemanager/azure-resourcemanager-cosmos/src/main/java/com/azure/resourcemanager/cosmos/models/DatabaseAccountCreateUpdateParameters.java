@@ -116,9 +116,18 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
     private String keyVaultKeyUri;
 
     /*
+     * The default identity for accessing key vault used in features like
+     * customer managed keys. The default identity needs to be explicitly set
+     * by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity"
+     * and more.
+     */
+    @JsonProperty(value = "properties.defaultIdentity")
+    private String defaultIdentity;
+
+    /*
      * Whether requests from Public Network are allowed
      */
-    @JsonProperty(value = "properties.publicNetworkAccess", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
@@ -138,6 +147,18 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
      */
     @JsonProperty(value = "properties.enableAnalyticalStorage")
     private Boolean enableAnalyticalStorage;
+
+    /*
+     * Analytical storage specific properties.
+     */
+    @JsonProperty(value = "properties.analyticalStorageConfiguration")
+    private AnalyticalStorageConfiguration analyticalStorageConfiguration;
+
+    /*
+     * Enum to indicate the mode of account creation.
+     */
+    @JsonProperty(value = "properties.createMode")
+    private CreateMode createMode;
 
     /*
      * The object representing the policy for taking backups on an account.
@@ -163,6 +184,19 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
      */
     @JsonProperty(value = "properties.networkAclBypassResourceIds")
     private List<String> networkAclBypassResourceIds;
+
+    /*
+     * Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /*
+     * Parameters to indicate the information about the restore.
+     */
+    @JsonProperty(value = "properties.restoreParameters")
+    private RestoreParameters restoreParameters;
 
     /** Creates an instance of DatabaseAccountCreateUpdateParameters class. */
     public DatabaseAccountCreateUpdateParameters() {
@@ -483,12 +517,47 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
     }
 
     /**
+     * Get the defaultIdentity property: The default identity for accessing key vault used in features like customer
+     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
+     * "SystemAssignedIdentity" and more.
+     *
+     * @return the defaultIdentity value.
+     */
+    public String defaultIdentity() {
+        return this.defaultIdentity;
+    }
+
+    /**
+     * Set the defaultIdentity property: The default identity for accessing key vault used in features like customer
+     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
+     * "SystemAssignedIdentity" and more.
+     *
+     * @param defaultIdentity the defaultIdentity value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withDefaultIdentity(String defaultIdentity) {
+        this.defaultIdentity = defaultIdentity;
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
      *
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
         return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
     }
 
     /**
@@ -548,6 +617,47 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
      */
     public DatabaseAccountCreateUpdateParameters withEnableAnalyticalStorage(Boolean enableAnalyticalStorage) {
         this.enableAnalyticalStorage = enableAnalyticalStorage;
+        return this;
+    }
+
+    /**
+     * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @return the analyticalStorageConfiguration value.
+     */
+    public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
+        return this.analyticalStorageConfiguration;
+    }
+
+    /**
+     * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+        this.analyticalStorageConfiguration = analyticalStorageConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Enum to indicate the mode of account creation.
+     *
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of account creation.
+     *
+     * @param createMode the createMode value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
         return this;
     }
 
@@ -634,6 +744,48 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
         return this;
     }
 
+    /**
+     * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @return the restoreParameters value.
+     */
+    public RestoreParameters restoreParameters() {
+        return this.restoreParameters;
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withRestoreParameters(RestoreParameters restoreParameters) {
+        this.restoreParameters = restoreParameters;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public DatabaseAccountCreateUpdateParameters withLocation(String location) {
@@ -682,11 +834,17 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
         if (apiProperties() != null) {
             apiProperties().validate();
         }
+        if (analyticalStorageConfiguration() != null) {
+            analyticalStorageConfiguration().validate();
+        }
         if (backupPolicy() != null) {
             backupPolicy().validate();
         }
         if (cors() != null) {
             cors().forEach(e -> e.validate());
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
         }
     }
 }

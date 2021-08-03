@@ -34,12 +34,11 @@ public class SpyClientUnderTestFactory {
 
     public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
 
-        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy,
-                            ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
-                            boolean contentResponseOnWriteEnabled) {
+        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+
             super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential,
                 null, false, false,
-                contentResponseOnWriteEnabled);
+                contentResponseOnWriteEnabled, null);
         }
 
         public abstract List<T> getCapturedRequests();
@@ -66,7 +65,7 @@ public class SpyClientUnderTestFactory {
                              boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
                 contentResponseOnWriteEnabled);
-            init(null);
+            init(null, null);
         }
 
         @Override
@@ -98,7 +97,7 @@ public class SpyClientUnderTestFactory {
             doAnswer(new Answer<Object>() {
                 @Override
                 public Object answer(InvocationOnMock invocationOnMock)  {
-                    RxDocumentServiceRequest req = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
+                    RxDocumentServiceRequest req = invocationOnMock.getArgument(0, RxDocumentServiceRequest.class);
                     requests.add(req);
                     return ClientWithGatewaySpy.this.origRxGatewayStoreModel.processMessage(req);
                 }
@@ -126,17 +125,21 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpResponse>>> requestsResponsePairs =
             Collections.synchronizedList(new ArrayList<>());
 
+
         ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
                         ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
                         boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
                 contentResponseOnWriteEnabled);
-            init(this::initHttpRequestCapture);
+            init(null, this::initHttpRequestCapture);
         }
 
         private Mono<HttpResponse> captureHttpRequest(InvocationOnMock invocationOnMock) {
-            HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
-            Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
+            HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (invocationOnMock.getArguments().length == 2) {
+                responseTimeout = invocationOnMock.getArgument(1, Duration.class);
+            }
             CompletableFuture<HttpResponse> f = new CompletableFuture<>();
             this.requestsResponsePairs.add(Pair.of(httpRequest, f));
 
@@ -205,7 +208,7 @@ public class SpyClientUnderTestFactory {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS),
                 credential, contentResponseOnWriteEnabled);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
-            init(null);
+            init(null, null);
 
             this.origHttpClient = ReflectionUtils.getDirectHttpsHttpClient(this);
             this.spyHttpClient = spy(this.origHttpClient);
@@ -224,8 +227,8 @@ public class SpyClientUnderTestFactory {
 
         void initRequestCapture(HttpClient spyClient) {
             doAnswer(invocationOnMock -> {
-                HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
-                Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
+                HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
+                Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
                 CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
                 requestsResponsePairs.add(Pair.of(httpRequest, f));
 

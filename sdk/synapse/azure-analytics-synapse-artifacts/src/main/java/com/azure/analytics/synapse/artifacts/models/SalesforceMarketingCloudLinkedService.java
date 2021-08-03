@@ -17,6 +17,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /*
+     * Properties used to connect to Salesforce Marketing Cloud. It is mutually
+     * exclusive with any other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /*
      * The client ID associated with the Salesforce Marketing Cloud
      * application. Type: string (or Expression with resultType string).
      */
@@ -62,6 +69,28 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get the connectionProperties property: Properties used to connect to Salesforce Marketing Cloud. It is mutually
+     * exclusive with any other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object getConnectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to Salesforce Marketing Cloud. It is mutually
+     * exclusive with any other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the SalesforceMarketingCloudLinkedService object itself.
+     */
+    public SalesforceMarketingCloudLinkedService setConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type: string

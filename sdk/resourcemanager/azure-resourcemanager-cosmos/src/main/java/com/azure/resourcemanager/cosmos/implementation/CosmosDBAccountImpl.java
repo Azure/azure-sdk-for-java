@@ -6,6 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
@@ -25,17 +26,18 @@ import com.azure.resourcemanager.cosmos.models.KeyKind;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.cosmos.models.PrivateLinkResource;
+import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionStateProperty;
 import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
 import com.azure.resourcemanager.cosmos.models.SqlDatabase;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -753,6 +755,36 @@ class CosmosDBAccountImpl
     public CosmosDBAccountImpl withDisableKeyBaseMetadataWriteAccess(boolean disabled) {
         this.innerModel().withDisableKeyBasedMetadataWriteAccess(disabled);
         return this;
+    }
+
+    @Override
+    public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
+        approvePrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return manager().serviceClient().getPrivateEndpointConnections().createOrUpdateAsync(
+            resourceGroupName(), name(), privateEndpointConnectionName,
+            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionStateProperty()
+                    .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED.toString())))
+            .then();
+    }
+
+    @Override
+    public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
+        rejectPrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return manager().serviceClient().getPrivateEndpointConnections().createOrUpdateAsync(
+            resourceGroupName(), name(), privateEndpointConnectionName,
+            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionStateProperty()
+                    .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED.toString())))
+            .then();
     }
 
     interface HasLocations {

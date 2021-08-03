@@ -11,6 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
@@ -18,6 +19,7 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.PathSasPermission
 import reactor.core.publisher.Mono
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
 import java.util.function.Consumer
@@ -453,6 +455,7 @@ class DirectoryAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive min"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -468,6 +471,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive batches"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -486,6 +490,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive batches resume"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -508,6 +513,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive batches progress"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -538,6 +544,7 @@ class DirectoryAPITest extends APISpec {
         (progress.cumulativeCounters[3].getChangedFilesCount() + progress.cumulativeCounters[3].getChangedDirectoriesCount()) == 7
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive batches follow token"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -572,15 +579,16 @@ class DirectoryAPITest extends APISpec {
     }
 
     def getSasDirectoryClient(DataLakeDirectoryClient directoryClient, String owner) {
-        def key = getOAuthServiceClient().getUserDelegationKey(null, getUTCNow().plusHours(1))
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def key = getOAuthServiceClient().getUserDelegationKey(null, namer.getUtcNow().plusHours(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
-        def sas = directoryClient.generateUserDelegationSas(new DataLakeServiceSasSignatureValues(getUTCNow().plusHours(1), PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), key)
+        def sas = directoryClient.generateUserDelegationSas(new DataLakeServiceSasSignatureValues(namer.getUtcNow().plusHours(1), PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), key)
         return getDirectoryClient(sas, directoryClient.getDirectoryUrl(), directoryClient.getDirectoryPath())
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive progress with failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -597,7 +605,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -630,6 +638,7 @@ class DirectoryAPITest extends APISpec {
         progress.failures[0].getErrorMessage()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive continue on failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -646,7 +655,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -687,6 +696,7 @@ class DirectoryAPITest extends APISpec {
         batchFailures.contains(subdir3.getObjectPath())
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive continue on failure batch failures"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -703,7 +713,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -745,6 +755,7 @@ class DirectoryAPITest extends APISpec {
         result.getValue().getContinuationToken() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Set ACL recursive continue on failure batches resume"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -761,7 +772,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -833,6 +844,7 @@ class DirectoryAPITest extends APISpec {
         e.getCause().class == DataLakeStorageException.class
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "Set ACL recursive error middle of batches"() {
         setup:
@@ -846,7 +858,7 @@ class DirectoryAPITest extends APISpec {
             return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
         }
 
-        dc = getDirectoryClient(primaryCredential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+        dc = getDirectoryClient(env.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
 
         when:
         def result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue()
@@ -861,6 +873,7 @@ class DirectoryAPITest extends APISpec {
         new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -875,6 +888,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive batches"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -893,6 +907,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive batches resume"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -915,6 +930,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive batches progress"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -945,6 +961,7 @@ class DirectoryAPITest extends APISpec {
         (progress.cumulativeCounters[3].getChangedFilesCount() + progress.cumulativeCounters[3].getChangedDirectoriesCount()) == 7
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive batches follow token"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -978,6 +995,7 @@ class DirectoryAPITest extends APISpec {
         iterations == 2
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive progress with failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -994,7 +1012,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1027,6 +1045,7 @@ class DirectoryAPITest extends APISpec {
         progress.failures[0].getErrorMessage()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive continue on failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1043,7 +1062,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1084,6 +1103,7 @@ class DirectoryAPITest extends APISpec {
         batchFailures.contains(subdir3.getObjectPath())
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive continue on failure batch failures"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1100,7 +1120,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1142,6 +1162,7 @@ class DirectoryAPITest extends APISpec {
         result.getValue().getContinuationToken() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Update ACL recursive continue on failure batches resume"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1158,7 +1179,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1230,6 +1251,7 @@ class DirectoryAPITest extends APISpec {
         e.getCause().class == DataLakeStorageException.class
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "Update ACL recursive error middle of batches"() {
         setup:
@@ -1243,7 +1265,7 @@ class DirectoryAPITest extends APISpec {
             return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
         }
 
-        dc = getDirectoryClient(primaryCredential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+        dc = getDirectoryClient(env.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
 
         when:
         def result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue()
@@ -1258,6 +1280,7 @@ class DirectoryAPITest extends APISpec {
         new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1271,6 +1294,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getFailedChangesCount() == 0
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive batches"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1289,6 +1313,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive batches resume"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1311,6 +1336,7 @@ class DirectoryAPITest extends APISpec {
         result.getBatchFailures() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive batches progress"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1341,6 +1367,7 @@ class DirectoryAPITest extends APISpec {
         (progress.cumulativeCounters[3].getChangedFilesCount() + progress.cumulativeCounters[3].getChangedDirectoriesCount()) == 7
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive batches follow token"() {
         setup:
         setupStandardRecursiveAclTest()
@@ -1374,6 +1401,7 @@ class DirectoryAPITest extends APISpec {
         iterations == 2
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive progress with failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1390,7 +1418,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1423,6 +1451,7 @@ class DirectoryAPITest extends APISpec {
         progress.failures[0].getErrorMessage()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive continue on failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1439,7 +1468,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1480,6 +1509,7 @@ class DirectoryAPITest extends APISpec {
         batchFailures.contains(subdir3.getObjectPath())
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive continue on failure batch failures"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1496,7 +1526,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1538,6 +1568,7 @@ class DirectoryAPITest extends APISpec {
         result.getValue().getContinuationToken() == null
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "Remove ACL recursive continue on failure batches resume"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1554,7 +1585,7 @@ class DirectoryAPITest extends APISpec {
         def file3 = subdir2.createFile(generatePathName())
 
         // Only allow subowner rights to the directory and it's subpaths
-        def subowner = getRandomUUID()
+        def subowner = namer.getRandomUuid()
         def rp = RolePermissions.parseSymbolic("rwx", false)
         def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
         topDirOauthClient.setPermissions(pathPermissions, null, subowner)
@@ -1626,6 +1657,7 @@ class DirectoryAPITest extends APISpec {
         e.getCause().class == DataLakeStorageException.class
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "Remove ACL recursive error middle of batches"() {
         setup:
@@ -1639,7 +1671,7 @@ class DirectoryAPITest extends APISpec {
             return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
         }
 
-        dc = getDirectoryClient(primaryCredential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+        dc = getDirectoryClient(env.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
 
         when:
         def result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue()
@@ -2879,10 +2911,11 @@ class DirectoryAPITest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def directoryClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), dc.getObjectPath(), getPerCallVersionPolicy())
+        def directoryClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), dc.getObjectPath(), getPerCallVersionPolicy())
 
         when: "blob endpoint"
         def response = directoryClient.getPropertiesWithResponse(null, null, null)
@@ -2988,6 +3021,19 @@ class DirectoryAPITest extends APISpec {
         response.getValue().get(0).getName() == dirName + "/bar"
         response.getValue().get(1).getName() == dirName + "/baz"
         response.getValue().size() == 2
+    }
+
+    def "List paths max results by page"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        expect:
+        for (def page : dir.listPaths(false, false, null, null).iterableByPage(2)) {
+            assert page.getValue().size() <= 2
+        }
     }
 
     def "List paths error"() {

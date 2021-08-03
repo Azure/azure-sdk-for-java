@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.JobResponseInner;
 import com.azure.resourcemanager.iothub.models.JobResponse;
 import com.azure.resourcemanager.iothub.models.JobStatus;
@@ -14,9 +13,9 @@ import java.time.OffsetDateTime;
 public final class JobResponseImpl implements JobResponse {
     private JobResponseInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    JobResponseImpl(JobResponseInner innerObject, IotHubManager serviceManager) {
+    JobResponseImpl(JobResponseInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -57,7 +56,7 @@ public final class JobResponseImpl implements JobResponse {
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

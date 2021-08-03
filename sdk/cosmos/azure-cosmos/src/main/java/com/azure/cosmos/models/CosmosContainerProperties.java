@@ -3,7 +3,9 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public final class CosmosContainerProperties {
 
     private final DocumentCollection documentCollection;
+    private static final String PARTITION_KEY_TOKEN_DELIMETER = "/";
 
     /**
      * Constructor
@@ -122,6 +125,10 @@ public final class CosmosContainerProperties {
      */
     public CosmosContainerProperties setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.documentCollection.setPartitionKey(partitionKeyDefinition);
+        if (this.getClientEncryptionPolicy() != null) {
+            this.getClientEncryptionPolicy().validatePartitionKeyPathsAreNotEncrypted(this.getPartitionKeyPathTokensList());
+        }
+
         return this;
     }
 
@@ -296,7 +303,7 @@ public final class CosmosContainerProperties {
      *
      * @return ClientEncryptionPolicy
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionPolicy getClientEncryptionPolicy() {
         return this.documentCollection.getClientEncryptionPolicy();
     }
@@ -307,8 +314,12 @@ public final class CosmosContainerProperties {
      * @param value ClientEncryptionPolicy to be used.
      * @return the CosmosContainerProperties.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosContainerProperties setClientEncryptionPolicy(ClientEncryptionPolicy value) {
+        if (value != null) {
+            value.validatePartitionKeyPathsAreNotEncrypted(this.getPartitionKeyPathTokensList());
+        }
+
         this.documentCollection.setClientEncryptionPolicy(value);
         return this;
     }
@@ -317,10 +328,47 @@ public final class CosmosContainerProperties {
         return this.documentCollection;
     }
 
+    String getSelfLink(){
+        return this.documentCollection.getSelfLink();
+    }
+
     DocumentCollection getV2Collection() {
         DocumentCollection collection = new DocumentCollection(this.documentCollection.toJson());
         collection.setPartitionKey(this.getPartitionKeyDefinition());
         collection.setIndexingPolicy(this.getIndexingPolicy());
         return collection;
+    }
+
+    List<List<String>> getPartitionKeyPathTokensList() {
+        if (this.getPartitionKeyDefinition() == null) {
+            throw new IllegalStateException("Container partition key is empty");
+        }
+
+        List<List<String>> partitionKeyPathTokensList = new ArrayList<>();
+        for (String path : this.getPartitionKeyDefinition().getPaths()) {
+            String[] splitPaths = path.split(PARTITION_KEY_TOKEN_DELIMETER);
+            List<String> splitPathsList = new ArrayList<>();
+            for (int i = 0; i < splitPaths.length; i++) {
+                if (StringUtils.isNotEmpty(splitPaths[i])) {
+                    splitPathsList.add(splitPaths[i]);
+                }
+            }
+            partitionKeyPathTokensList.add(splitPathsList);
+        }
+        return partitionKeyPathTokensList;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
+            new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {
+                @Override
+                public String getSelfLink(CosmosContainerProperties cosmosContainerProperties) {
+                    return cosmosContainerProperties.getSelfLink();
+                }
+            });
     }
 }

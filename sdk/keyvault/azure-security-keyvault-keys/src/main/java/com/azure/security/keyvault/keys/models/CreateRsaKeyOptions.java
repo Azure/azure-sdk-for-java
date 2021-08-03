@@ -9,13 +9,12 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * Represents the configurable options to create an Rsa key.
+ * Represents the configurable options to create an RSA key.
  */
 @Fluent
 public class CreateRsaKeyOptions extends CreateKeyOptions {
-
     /**
-     * The Rsa key size.
+     * The RSA key size.
      */
     private Integer keySize;
 
@@ -30,7 +29,8 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     private int publicExponent;
 
     /**
-     * Creates a RsaKeyCreateOptions with {@code name} as name of the Rsa key.
+     * Creates a {@link CreateRsaKeyOptions} with {@code name} as name of the RSA key.
+     *
      * @param name The name of the key.
      */
     public CreateRsaKeyOptions(String name) {
@@ -38,46 +38,30 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Get the keySize value.
+     * Set the key operations.
      *
-     * @return the keySize value
-     */
-    public Integer getKeySize() {
-        return this.keySize;
-    }
-
-    /**
-     * Set the keySize value.
+     * @param keyOperations The key operations to set.
      *
-     * @param keySize The keySize value to set
-     * @return the RsaKeyCreateOptions object itself.
-     */
-    public CreateRsaKeyOptions setKeySize(Integer keySize) {
-        this.keySize = keySize;
-        return this;
-    }
-
-    /**
-     * Set the key operations value.
-     *
-     * @param keyOperations The key operations value to set
-     * @return the RsaKeyCreateOptions object itself.
+     * @return The updated {@link CreateRsaKeyOptions} object.
      */
     @Override
     public CreateRsaKeyOptions setKeyOperations(KeyOperation... keyOperations) {
         super.setKeyOperations(keyOperations);
+
         return this;
     }
 
     /**
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
-     * @param notBefore The notBefore UTC time to set
-     * @return the RsaKeyCreateOptions object itself.
+     * @param notBefore The notBefore UTC time to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
      */
     @Override
     public CreateRsaKeyOptions setNotBefore(OffsetDateTime notBefore) {
         super.setNotBefore(notBefore);
+
         return this;
     }
 
@@ -85,52 +69,85 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expiresOn The expiry time to set for the key.
-     * @return the RsaKeyCreateOptions object itself.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
      */
     @Override
     public CreateRsaKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
         super.setExpiresOn(expiresOn);
+
         return this;
     }
 
     /**
      * Set the tags to be associated with the key.
      *
-     * @param tags The tags to set
-     * @return the RsaKeyCreateOptions object itself.
+     * @param tags The tags to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
      */
     @Override
     public CreateRsaKeyOptions setTags(Map<String, String> tags) {
         super.setTags(tags);
+
         return this;
     }
 
     /**
-     * Set the enabled value.
+     * Set a value that indicates if the key is enabled.
      *
-     * @param enabled The enabled value to set
-     * @return the RsaKeyCreateOptions object itself.
+     * @param enabled The enabled value to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
      */
     public CreateRsaKeyOptions setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
+
         return this;
     }
 
     /**
-     * Set whether the key being created is of hsm type or not.
-     * @param hardwareProtected The hsm value to set.
-     * @return the RsaKeyCreateOptions object itself.
+     * Set the key size.
+     *
+     * @param keySize The key size to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setKeySize(Integer keySize) {
+        this.keySize = keySize;
+
+        return this;
+    }
+
+    /**
+     * Get the key size in bits.
+     *
+     * @return The key size in bits.
+     */
+    public Integer getKeySize() {
+        return this.keySize;
+    }
+
+    /**
+     * Set whether the key being created is of HSM type or not.
+     *
+     * @param hardwareProtected The HSM value to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
      */
     public CreateRsaKeyOptions setHardwareProtected(Boolean hardwareProtected) {
         this.hardwareProtected = hardwareProtected;
         KeyType keyType = hardwareProtected ? KeyType.RSA_HSM : KeyType.RSA;
+
         setKeyType(keyType);
+
         return this;
     }
 
     /**
-     * Get the hsm value of the key being created.
-     * @return the hsm value.
+     * Get the HSM value of the key being created.
+     *
+     * @return The HSM value.
      */
     public Boolean isHardwareProtected() {
         return this.hardwareProtected;
@@ -141,7 +158,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      *
      * @return The public exponent.
      */
-    public int getPublicExponent() {
+    public Integer getPublicExponent() {
         return publicExponent;
     }
 
@@ -149,10 +166,12 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      * Set the public exponent for the key.
      *
      * @param publicExponent The public exponent to set.
+     *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
-    public CreateRsaKeyOptions setPublicExponent(int publicExponent) {
+    public CreateRsaKeyOptions setPublicExponent(Integer publicExponent) {
         this.publicExponent = publicExponent;
+
         return this;
     }
 }

@@ -109,54 +109,62 @@ class PartitionControllerImpl implements PartitionController {
     }
 
     private Mono<Void> removeLease(Lease lease) {
-            if (this.currentlyOwnedPartitions.get(lease.getLeaseToken()) != null) {
+        return Mono.just(this)
+            .flatMap(value -> {
                 WorkerTask workerTask = this.currentlyOwnedPartitions.remove(lease.getLeaseToken());
+                if (workerTask != null && workerTask.isRunning()) {
+                    workerTask.cancelJob();
+                }
+                logger.info("Partition {}: released.", lease.getLeaseToken());
 
-                if (workerTask.isRunning()) {
-                    workerTask.interrupt();
+                return this.leaseManager.release(lease);
+            })
+            .onErrorResume(e -> {
+                if (e instanceof LeaseLostException) {
+                    logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
+                } else {
+                    logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
                 }
 
-                logger.info("Partition {}: released.", lease.getLeaseToken());
-            }
-
-            return this.leaseManager.release(lease)
-                .onErrorResume(e -> {
-                    if (e instanceof LeaseLostException) {
-                        logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
-                    } else {
-                        logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
-                    }
-
-                    return Mono.empty();
-                })
-                .doOnSuccess(aVoid -> {
-                    logger.info("Partition {}: successfully removed lease.", lease.getLeaseToken());
-                });
+                return Mono.empty();
+            })
+            .doOnSuccess(aVoid -> {
+                logger.info("Partition {}: successfully removed lease.", lease.getLeaseToken());
+            });
     }
 
     private WorkerTask processPartition(PartitionSupervisor partitionSupervisor, Lease lease) {
-        CancellationToken cancellationToken = this.shutdownCts.getToken();
+        CancellationToken shutdownToken = this.shutdownCts.getToken();
 
-        WorkerTask partitionSupervisorTask = new WorkerTask(lease, () -> {
-            partitionSupervisor.run(cancellationToken)
-                .onErrorResume(throwable -> {
-                    if (throwable instanceof PartitionSplitException) {
-                        PartitionSplitException ex = (PartitionSplitException) throwable;
-                        return this.handleSplit(lease, ex.getLastContinuation());
-                    } else if (throwable instanceof TaskCancelledException) {
-                        logger.debug("Partition {}: processing canceled.", lease.getLeaseToken());
-                    } else {
-                        logger.warn("Partition {}: processing failed.", lease.getLeaseToken(), throwable);
-                    }
-
-                    return Mono.empty();
-                })
-                .then(this.removeLease(lease)).subscribe();
-        });
+        WorkerTask partitionSupervisorTask =
+            new WorkerTask(
+                lease,
+                partitionSupervisor,
+                getWorkerJob(partitionSupervisor, lease, shutdownToken));
 
         this.scheduler.schedule(partitionSupervisorTask);
 
         return partitionSupervisorTask;
+    }
+
+    private Mono<Void> getWorkerJob(
+        PartitionSupervisor partitionSupervisor,
+        Lease lease,
+        CancellationToken shutdownToken) {
+        return partitionSupervisor.run(shutdownToken)
+            .onErrorResume(throwable -> {
+                if (throwable instanceof PartitionSplitException) {
+                    PartitionSplitException ex = (PartitionSplitException) throwable;
+                    return this.handleSplit(lease, ex.getLastContinuation());
+                } else if (throwable instanceof TaskCancelledException) {
+                    logger.debug("Partition {}: processing canceled.", lease.getLeaseToken());
+                } else {
+                    logger.warn("Partition {}: processing failed.", lease.getLeaseToken(), throwable);
+                }
+
+                return Mono.empty();
+            })
+            .then(this.removeLease(lease));
     }
 
     private Mono<Void> handleSplit(Lease lease, String lastContinuationToken) {

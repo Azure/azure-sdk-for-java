@@ -10,7 +10,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  * Extended options that may be passed when restoring a file system.
  */
 @Fluent
-public class FileSystemUndeleteOptions {
+public final class FileSystemUndeleteOptions {
     private final String deletedFileSystemName;
     private final String deletedFileSystemVersion;
     private String destinationFileSystemName;
@@ -54,7 +54,9 @@ public class FileSystemUndeleteOptions {
      * already exists, the undelete operation will result in a 409 (conflict).
      *
      * @return The destination file system name.
+     * @deprecated Destination file system name must match deleted file system name
      */
+    @Deprecated
     public String getDestinationFileSystemName() {
         return destinationFileSystemName;
     }
@@ -68,7 +70,9 @@ public class FileSystemUndeleteOptions {
      *
      * @param destinationFileSystemName The destination file system name.
      * @return The updated options.
+     * @deprecated Destination file system name must match deleted file system name
      */
+    @Deprecated
     public FileSystemUndeleteOptions setDestinationFileSystemName(String destinationFileSystemName) {
         this.destinationFileSystemName = destinationFileSystemName;
         return this;

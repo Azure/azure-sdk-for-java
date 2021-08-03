@@ -9,7 +9,12 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.CharFilter;
 import com.azure.search.documents.indexes.models.CorsOptions;
+import com.azure.search.documents.indexes.models.LexicalAnalyzer;
+import com.azure.search.documents.indexes.models.LexicalNormalizer;
 import com.azure.search.documents.indexes.models.ScoringProfile;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -53,7 +58,7 @@ public final class SearchIndex {
      * The suggesters for the index.
      */
     @JsonProperty(value = "suggesters")
-    private List<Suggester> suggesters;
+    private List<SearchSuggester> suggesters;
 
     /*
      * The analyzers for the index.
@@ -78,6 +83,12 @@ public final class SearchIndex {
      */
     @JsonProperty(value = "charFilters")
     private List<CharFilter> charFilters;
+
+    /*
+     * The normalizers for the index.
+     */
+    @JsonProperty(value = "normalizers")
+    private List<LexicalNormalizer> normalizers;
 
     /*
      * A description of an encryption key that you create in Azure Key Vault.
@@ -218,7 +229,7 @@ public final class SearchIndex {
      *
      * @return the suggesters value.
      */
-    public List<Suggester> getSuggesters() {
+    public List<SearchSuggester> getSuggesters() {
         return this.suggesters;
     }
 
@@ -228,7 +239,7 @@ public final class SearchIndex {
      * @param suggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSuggesters(List<Suggester> suggesters) {
+    public SearchIndex setSuggesters(List<SearchSuggester> suggesters) {
         this.suggesters = suggesters;
         return this;
     }
@@ -310,6 +321,26 @@ public final class SearchIndex {
      */
     public SearchIndex setCharFilters(List<CharFilter> charFilters) {
         this.charFilters = charFilters;
+        return this;
+    }
+
+    /**
+     * Get the normalizers property: The normalizers for the index.
+     *
+     * @return the normalizers value.
+     */
+    public List<LexicalNormalizer> getNormalizers() {
+        return this.normalizers;
+    }
+
+    /**
+     * Set the normalizers property: The normalizers for the index.
+     *
+     * @param normalizers the normalizers value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setNormalizers(List<LexicalNormalizer> normalizers) {
+        this.normalizers = normalizers;
         return this;
     }
 

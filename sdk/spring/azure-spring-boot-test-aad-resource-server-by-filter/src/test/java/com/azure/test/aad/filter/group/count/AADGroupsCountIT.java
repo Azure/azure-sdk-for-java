@@ -6,8 +6,9 @@ package com.azure.test.aad.filter.group.count;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
 import com.azure.spring.test.aad.AADWebApiITHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -30,14 +31,15 @@ import static com.azure.spring.test.Constant.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADGroupsCountIT {
 
     private AADWebApiITHelper aadWebApiITHelper;
 
-    @Before
-    public void init() {
+    @BeforeAll
+    public void beforeAll() {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);

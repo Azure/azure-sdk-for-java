@@ -14,6 +14,7 @@ import com.microsoft.azure.batch.protocol.Accounts;
 import com.microsoft.azure.batch.protocol.Applications;
 import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.microsoft.azure.batch.protocol.Certificates;
+import com.microsoft.azure.batch.protocol.ComputeNodeExtensions;
 import com.microsoft.azure.batch.protocol.ComputeNodes;
 import com.microsoft.azure.batch.protocol.Files;
 import com.microsoft.azure.batch.protocol.Jobs;
@@ -260,6 +261,19 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
     }
 
     /**
+     * The ComputeNodeExtensions object to access its operations.
+     */
+    private ComputeNodeExtensions computeNodeExtensions;
+
+    /**
+     * Gets the ComputeNodeExtensions object to access its operations.
+     * @return the ComputeNodeExtensions object.
+     */
+    public ComputeNodeExtensions computeNodeExtensions() {
+        return this.computeNodeExtensions;
+    }
+
+    /**
      * Initializes an instance of BatchServiceClient client.
      *
      * @param credentials the management credentials for Azure
@@ -290,7 +304,7 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
     }
 
     protected void initialize() {
-        this.apiVersion = "2020-09-01.12.0";
+        this.apiVersion = "2021-06-01.14.0";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -303,6 +317,7 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
         this.jobSchedules = new JobSchedulesImpl(restClient().retrofit(), this);
         this.tasks = new TasksImpl(restClient().retrofit(), this);
         this.computeNodes = new ComputeNodesImpl(restClient().retrofit(), this);
+        this.computeNodeExtensions = new ComputeNodeExtensionsImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -313,6 +328,6 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "BatchServiceClient", "2020-09-01.12.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "BatchServiceClient", "2021-06-01.14.0");
     }
 }

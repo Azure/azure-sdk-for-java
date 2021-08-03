@@ -33,12 +33,6 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "keyVersion")
     private String keyVersion;
 
-    /*
-     * Selected key minimum required size.
-     */
-    @JsonProperty(value = "keyRsaSize")
-    private Integer keyRsaSize;
-
     /**
      * Get the keyVaultUri property: The Key Vault uri which holds they key associated with the Log Analytics cluster.
      *
@@ -96,26 +90,6 @@ public final class KeyVaultProperties {
      */
     public KeyVaultProperties withKeyVersion(String keyVersion) {
         this.keyVersion = keyVersion;
-        return this;
-    }
-
-    /**
-     * Get the keyRsaSize property: Selected key minimum required size.
-     *
-     * @return the keyRsaSize value.
-     */
-    public Integer keyRsaSize() {
-        return this.keyRsaSize;
-    }
-
-    /**
-     * Set the keyRsaSize property: Selected key minimum required size.
-     *
-     * @param keyRsaSize the keyRsaSize value to set.
-     * @return the KeyVaultProperties object itself.
-     */
-    public KeyVaultProperties withKeyRsaSize(Integer keyRsaSize) {
-        this.keyRsaSize = keyRsaSize;
         return this;
     }
 

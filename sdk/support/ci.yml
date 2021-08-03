@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/support/ci.yml
+      - sdk/support/azure-resourcemanager-support/
+    exclude:
+      - sdk/support/pom.xml
+      - sdk/support/azure-resourcemanager-support/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/support/ci.yml
+      - sdk/support/azure-resourcemanager-support/
+    exclude:
+      - sdk/support/pom.xml
+      - sdk/support/azure-resourcemanager-support/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: support
+    Artifacts:
+      - name: azure-resourcemanager-support
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersupport

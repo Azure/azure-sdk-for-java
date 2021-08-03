@@ -3,8 +3,13 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.models.GeoLineString;
+import com.azure.core.models.GeoPoint;
+import com.azure.core.models.GeoPolygon;
+import com.azure.core.models.GeoPosition;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.implementation.util.SpatialFormatter;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SuggestOptions;
@@ -68,6 +73,11 @@ public final class SearchFilter {
             return formattableString;
         }
 
+        return String.format(formattableString, cleanseArguments(args));
+    }
+
+    @SuppressWarnings("UseOfObsoleteDateTimeApi")
+    private static Object[] cleanseArguments(Object... args) {
         Object[] cleanedArgs = new Object[args.length];
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
@@ -92,13 +102,23 @@ public final class SearchFilter {
                 cleanedArgs[i] = quote(((CharSequence) arg).toString());
             } else if (argClass.isAssignableFrom(char.class) || arg instanceof Character) {
                 cleanedArgs[i] = quote(((Character) arg).toString());
+            } else if (arg instanceof GeoPosition) {
+                GeoPosition position = (GeoPosition) arg;
+                cleanedArgs[i] = SpatialFormatter.encodePoint(position.getLongitude(), position.getLatitude());
+            } else if (arg instanceof GeoPoint) {
+                GeoPosition position = ((GeoPoint) arg).getCoordinates();
+                cleanedArgs[i] = SpatialFormatter.encodePoint(position.getLongitude(), position.getLatitude());
+            } else if (arg instanceof GeoLineString) {
+                cleanedArgs[i] = SpatialFormatter.encodePolygon((GeoLineString) arg, LOGGER);
+            } else if (arg instanceof GeoPolygon) {
+                cleanedArgs[i] = SpatialFormatter.encodePolygon((GeoPolygon) arg, LOGGER);
             } else {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                     "Unable to convert argument %s from type %s to an OData literal.", arg, argClass.getName())));
             }
         }
 
-        return String.format(formattableString, cleanedArgs);
+        return cleanedArgs;
     }
 
     /*

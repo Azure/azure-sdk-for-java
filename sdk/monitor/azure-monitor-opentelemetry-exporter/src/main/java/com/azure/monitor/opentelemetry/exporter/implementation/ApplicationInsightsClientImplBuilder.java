@@ -18,6 +18,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorRedirectPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -215,6 +216,7 @@ public final class ApplicationInsightsClientImplBuilder {
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new AzureMonitorRedirectPolicy());
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);

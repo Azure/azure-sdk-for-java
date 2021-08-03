@@ -4,6 +4,9 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -15,7 +18,11 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Web App. */
 @Fluent
-public interface WebApp extends WebAppBasic, SupportsOneDeploy, WebAppBase, Updatable<WebApp.Update> {
+public interface WebApp extends WebAppBasic, SupportsOneDeploy, WebAppBase, Updatable<WebApp.Update>,
+    SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection,
+    SupportsUpdatingPrivateEndpointConnection {
+
     /** @return the entry point to deployment slot management API under the web app */
     DeploymentSlots deploymentSlots();
 

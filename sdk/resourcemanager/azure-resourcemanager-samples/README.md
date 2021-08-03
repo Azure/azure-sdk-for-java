@@ -17,7 +17,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager</artifactId>
-    <version>2.2.0</version>
+    <version>2.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,7 +32,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)

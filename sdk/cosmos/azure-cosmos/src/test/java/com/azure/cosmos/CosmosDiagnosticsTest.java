@@ -13,13 +13,17 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -30,19 +34,23 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -230,6 +238,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+            assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
@@ -240,6 +249,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 cosmosContainer.createItem(internalObjectNode);
                 fail("expected 409");
             } catch (CosmosException e) {
+                diagnostics = e.getDiagnostics().toString();
+                assertThat(diagnostics).contains("\"backendLatencyInMs\"");
                 validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
             }
         } finally {
@@ -250,7 +261,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void queryPlanDiagnostics() {
+    public void queryPlanDiagnostics() throws JsonProcessingException {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         List<String> itemIdList = new ArrayList<>();
         for(int i = 0; i< 100; i++) {
@@ -288,10 +299,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     assertThat(queryDiagnostics).contains("QueryPlan Start Time (UTC)=");
                     assertThat(queryDiagnostics).contains("QueryPlan End Time (UTC)=");
                     assertThat(queryDiagnostics).contains("QueryPlan Duration (ms)=");
+                    String requestTimeLine = OBJECT_MAPPER.writeValueAsString(feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext().getRequestTimeline());
+                    assertThat(requestTimeLine).contains("connectionConfigured");
+                    assertThat(requestTimeLine).contains("requestSent");
+                    assertThat(requestTimeLine).contains("transitTime");
+                    assertThat(requestTimeLine).contains("received");
                 } else {
                     assertThat(queryDiagnostics).doesNotContain("QueryPlan Start Time (UTC)=");
                     assertThat(queryDiagnostics).doesNotContain("QueryPlan End Time (UTC)=");
                     assertThat(queryDiagnostics).doesNotContain("QueryPlan Duration (ms)=");
+                    assertThat(queryDiagnostics).doesNotContain("QueryPlan RequestTimeline =");
                 }
                 feedResponseCounter++;
             }
@@ -498,10 +515,46 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
             assertThat(exception.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
+            assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             isValidJSON(diagnostics);
-            // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
-            // uncomment below if above issue is fixed
-            //validateTransportRequestTimelineDirect(diagnostics);
+            validateTransportRequestTimelineDirect(diagnostics);
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void directDiagnosticsOnMetadataException() {
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        CosmosClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            HttpClient mockHttpClient = Mockito.mock(HttpClient.class);
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
+                .thenReturn(Mono.error(new CosmosException(400, "TestBadRequest")));
+            RxStoreModel rxGatewayStoreModel = rxGatewayStoreModel = ReflectionUtils.getGatewayProxy((RxDocumentClientImpl) client.asyncClient().getDocClientWrapper());
+            ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
+            container.createItem(internalObjectNode);
+            fail("request should fail as bad request");
+        } catch (CosmosException exception) {
+            isValidJSON(exception.toString());
+            isValidJSON(exception.getMessage());
+            String diagnostics = exception.getDiagnostics().toString();
+            assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+            assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
+            assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
+            assertThat(diagnostics).contains("\"resourceType\":\"DocumentCollection\"");
+            assertThat(exception.getDiagnostics().getRegionsContacted()).isNotEmpty();
+            assertThat(exception.getDiagnostics().getDuration()).isNotNull();
+            isValidJSON(diagnostics);
         } finally {
             if (client != null) {
                 client.close();

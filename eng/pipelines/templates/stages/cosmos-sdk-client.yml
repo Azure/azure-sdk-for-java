@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20200916.1
+      ref: refs/tags/azure-sdk-build-tools_20210603.1
 
 parameters:
 - name: Artifacts
@@ -34,8 +34,6 @@ stages:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         SDKType: ${{parameters.SDKType}}
-        PreTestSteps:
-          - template: ../steps/install-reporting-tools.yml
         MatrixConfigs:
           - Name: Cosmos_ci_test
             Path: eng/pipelines/templates/stages/platform-matrix.json
@@ -60,9 +58,6 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
-        CloudConfig:
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          Cloud: Public
         AdditionalParameters:
           DisableAzureResourceCreation: true
           ServiceDirectory: cosmos
@@ -76,7 +71,8 @@ stages:
           TimeoutInMinutes: 90
           TestStepMavenInputs:
             goals: clean verify
-            options: '$(ProfileFlag) -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false $(AdditionalArgs) -pl $(ProjectList)'
+            options: '$(DefaultTestOptions) $(ProfileFlag) $(AdditionalArgs)'
+            mavenOptions: '$(DefaultTestMavenOptions)'
             mavenAuthenticateFeed: true
             jdkVersionOption: $(JavaTestVersion)
 
@@ -98,10 +94,27 @@ stages:
               cp $env:temp\CosmosDbEmulatorCert.cer .
               keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
             displayName: 'Create Java TrustStore'
-
-          # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
-          # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
-          - template: ../steps/install-reporting-tools.yml
+          - powershell: |
+              $downloadTarget = Join-Path -Path $env:temp -ChildPath "hadoopsource.zip"
+              $targetDir = "D:\Hadoop"
+              Write-Host "Downloading and extracting Hadoop winutils - https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline"
+              Write-Host "Target: $targetDir"
+              Invoke-WebRequest "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline" -OutFile $downloadTarget
+              if (Test-Path $targetDir) { Remove-Item -Recurse -Force $targetDir }
+              Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
+              Write-Host "Copying binaries to windows sytem32 folder"
+              Copy-Item -Path "D:\Hadoop\bin\*" -Destination "C:\Windows\System32" -Recurse
+              Write-Host "Updating environment variables for Hadoop usage"
+              [System.Environment]::SetEnvironmentVariable("HADOOP_HOME", "D:\Hadoop", [System.EnvironmentVariableTarget]::Machine)
+              $hadoopHome = [System.Environment]::GetEnvironmentVariable("HADOOP_HOME", [System.EnvironmentVariableTarget]::Machine)
+              Write-Host "New HADOOP_HOME environment variable: $hadoopHome"
+              $path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+              Write-Host "Original Path environment variable: $path"
+              $newPath = $path + ";D:\Hadoop\bin"
+              [System.Environment]::SetEnvironmentVariable("Path", $newPath,[System.EnvironmentVariableTarget]::Machine)
+              $updatedPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+              Write-Host "New Path environment variable: $updatedPath"
+            displayName: 'Download and Extract Hadoop winutils and update env variables for Hadoop usage'
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:

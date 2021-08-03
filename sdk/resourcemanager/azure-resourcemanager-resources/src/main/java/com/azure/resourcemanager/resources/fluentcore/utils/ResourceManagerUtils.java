@@ -159,27 +159,33 @@ public final class ResourceManagerUtils {
             if (url.contains(endpoint.getValue())) {
                 if (endpoint.getKey().equals(AzureEnvironment.Endpoint.KEYVAULT.identifier())) {
                     resource = String.format("https://%s/", endpoint.getValue().replaceAll("^\\.*", ""));
+                    resource = removeTrailingSlash(resource);
                     break;
                 } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.GRAPH.identifier())) {
                     resource = environment.getGraphEndpoint();
+                    resource = removeTrailingSlash(resource);
                     break;
                 } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.MICROSOFT_GRAPH.identifier())) {
                     resource = environment.getMicrosoftGraphEndpoint();
+                    resource = removeTrailingSlash(resource);
                     break;
                 } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.LOG_ANALYTICS.identifier())) {
                     resource = environment.getLogAnalyticsEndpoint();
+                    resource = removeTrailingSlash(resource);
                     break;
                 } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.APPLICATION_INSIGHTS.identifier())) {
                     resource = environment.getApplicationInsightsEndpoint();
+                    resource = removeTrailingSlash(resource);
                     break;
                 } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.DATA_LAKE_STORE.identifier())
                     || endpoint.getKey().equals(AzureEnvironment.Endpoint.DATA_LAKE_ANALYTICS.identifier())) {
                     resource = environment.getDataLakeEndpointResourceId();
+                    resource = removeTrailingSlash(resource);
                     break;
                 }
             }
         }
-        return removeTrailingSlash(resource) + "/.default";
+        return resource + "/.default";
     }
 
     /**

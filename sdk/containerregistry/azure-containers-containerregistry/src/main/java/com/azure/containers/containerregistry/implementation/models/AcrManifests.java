@@ -12,6 +12,13 @@ import java.util.List;
 @Fluent
 public final class AcrManifests {
     /*
+     * Registry login server name.  This is likely to be similar to
+     * {registry-name}.azurecr.io
+     */
+    @JsonProperty(value = "registry")
+    private String registryLoginServer;
+
+    /*
      * Image name
      */
     @JsonProperty(value = "imageName")
@@ -28,6 +35,28 @@ public final class AcrManifests {
      */
     @JsonProperty(value = "link")
     private String link;
+
+    /**
+     * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
+     *
+     * @return the registryLoginServer value.
+     */
+    public String getRegistryLoginServer() {
+        return this.registryLoginServer;
+    }
+
+    /**
+     * Set the registryLoginServer property: Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
+     *
+     * @param registryLoginServer the registryLoginServer value to set.
+     * @return the AcrManifests object itself.
+     */
+    public AcrManifests setRegistryLoginServer(String registryLoginServer) {
+        this.registryLoginServer = registryLoginServer;
+        return this;
+    }
 
     /**
      * Get the repository property: Image name.

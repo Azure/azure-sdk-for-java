@@ -10,6 +10,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
+import com.azure.resourcemanager.compute.fluent.CapacityReservationGroupsClient;
+import com.azure.resourcemanager.compute.fluent.CapacityReservationsClient;
 import com.azure.resourcemanager.compute.fluent.CloudServiceOperatingSystemsClient;
 import com.azure.resourcemanager.compute.fluent.CloudServiceRoleInstancesClient;
 import com.azure.resourcemanager.compute.fluent.CloudServiceRolesClient;
@@ -27,11 +29,17 @@ import com.azure.resourcemanager.compute.fluent.GalleryApplicationVersionsClient
 import com.azure.resourcemanager.compute.fluent.GalleryApplicationsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
+import com.azure.resourcemanager.compute.fluent.GallerySharingProfilesClient;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.compute.fluent.OperationsClient;
 import com.azure.resourcemanager.compute.fluent.ProximityPlacementGroupsClient;
 import com.azure.resourcemanager.compute.fluent.ResourceSkusClient;
+import com.azure.resourcemanager.compute.fluent.RestorePointCollectionsClient;
+import com.azure.resourcemanager.compute.fluent.RestorePointsClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleriesClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleryImageVersionsClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
 import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
@@ -300,6 +308,54 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.images;
     }
 
+    /** The RestorePointCollectionsClient object to access its operations. */
+    private final RestorePointCollectionsClient restorePointCollections;
+
+    /**
+     * Gets the RestorePointCollectionsClient object to access its operations.
+     *
+     * @return the RestorePointCollectionsClient object.
+     */
+    public RestorePointCollectionsClient getRestorePointCollections() {
+        return this.restorePointCollections;
+    }
+
+    /** The RestorePointsClient object to access its operations. */
+    private final RestorePointsClient restorePoints;
+
+    /**
+     * Gets the RestorePointsClient object to access its operations.
+     *
+     * @return the RestorePointsClient object.
+     */
+    public RestorePointsClient getRestorePoints() {
+        return this.restorePoints;
+    }
+
+    /** The CapacityReservationGroupsClient object to access its operations. */
+    private final CapacityReservationGroupsClient capacityReservationGroups;
+
+    /**
+     * Gets the CapacityReservationGroupsClient object to access its operations.
+     *
+     * @return the CapacityReservationGroupsClient object.
+     */
+    public CapacityReservationGroupsClient getCapacityReservationGroups() {
+        return this.capacityReservationGroups;
+    }
+
+    /** The CapacityReservationsClient object to access its operations. */
+    private final CapacityReservationsClient capacityReservations;
+
+    /**
+     * Gets the CapacityReservationsClient object to access its operations.
+     *
+     * @return the CapacityReservationsClient object.
+     */
+    public CapacityReservationsClient getCapacityReservations() {
+        return this.capacityReservations;
+    }
+
     /** The VirtualMachineScaleSetExtensionsClient object to access its operations. */
     private final VirtualMachineScaleSetExtensionsClient virtualMachineScaleSetExtensions;
 
@@ -516,6 +572,54 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.galleryApplicationVersions;
     }
 
+    /** The GallerySharingProfilesClient object to access its operations. */
+    private final GallerySharingProfilesClient gallerySharingProfiles;
+
+    /**
+     * Gets the GallerySharingProfilesClient object to access its operations.
+     *
+     * @return the GallerySharingProfilesClient object.
+     */
+    public GallerySharingProfilesClient getGallerySharingProfiles() {
+        return this.gallerySharingProfiles;
+    }
+
+    /** The SharedGalleriesClient object to access its operations. */
+    private final SharedGalleriesClient sharedGalleries;
+
+    /**
+     * Gets the SharedGalleriesClient object to access its operations.
+     *
+     * @return the SharedGalleriesClient object.
+     */
+    public SharedGalleriesClient getSharedGalleries() {
+        return this.sharedGalleries;
+    }
+
+    /** The SharedGalleryImagesClient object to access its operations. */
+    private final SharedGalleryImagesClient sharedGalleryImages;
+
+    /**
+     * Gets the SharedGalleryImagesClient object to access its operations.
+     *
+     * @return the SharedGalleryImagesClient object.
+     */
+    public SharedGalleryImagesClient getSharedGalleryImages() {
+        return this.sharedGalleryImages;
+    }
+
+    /** The SharedGalleryImageVersionsClient object to access its operations. */
+    private final SharedGalleryImageVersionsClient sharedGalleryImageVersions;
+
+    /**
+     * Gets the SharedGalleryImageVersionsClient object to access its operations.
+     *
+     * @return the SharedGalleryImageVersionsClient object.
+     */
+    public SharedGalleryImageVersionsClient getSharedGalleryImageVersions() {
+        return this.sharedGalleryImageVersions;
+    }
+
     /** The CloudServiceRoleInstancesClient object to access its operations. */
     private final CloudServiceRoleInstancesClient cloudServiceRoleInstances;
 
@@ -615,6 +719,10 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.virtualMachineScaleSets = new VirtualMachineScaleSetsClientImpl(this);
         this.virtualMachineSizes = new VirtualMachineSizesClientImpl(this);
         this.images = new ImagesClientImpl(this);
+        this.restorePointCollections = new RestorePointCollectionsClientImpl(this);
+        this.restorePoints = new RestorePointsClientImpl(this);
+        this.capacityReservationGroups = new CapacityReservationGroupsClientImpl(this);
+        this.capacityReservations = new CapacityReservationsClientImpl(this);
         this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsClientImpl(this);
         this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesClientImpl(this);
         this.virtualMachineScaleSetVMExtensions = new VirtualMachineScaleSetVMExtensionsClientImpl(this);
@@ -633,6 +741,10 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
         this.galleryApplications = new GalleryApplicationsClientImpl(this);
         this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
+        this.gallerySharingProfiles = new GallerySharingProfilesClientImpl(this);
+        this.sharedGalleries = new SharedGalleriesClientImpl(this);
+        this.sharedGalleryImages = new SharedGalleryImagesClientImpl(this);
+        this.sharedGalleryImageVersions = new SharedGalleryImageVersionsClientImpl(this);
         this.cloudServiceRoleInstances = new CloudServiceRoleInstancesClientImpl(this);
         this.cloudServiceRoles = new CloudServiceRolesClientImpl(this);
         this.cloudServices = new CloudServicesClientImpl(this);

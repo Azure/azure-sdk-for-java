@@ -9,7 +9,11 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
+import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -96,6 +100,71 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
 
         client.listFileSystems(options).subscribe(fileSystem -> System.out.printf("Name: %s%n", fileSystem.getName()));
         // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.listFileSystems#ListFileSystemsOptions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeServiceAsyncClient#getProperties()}
+     */
+    public void getProperties() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getProperties
+        client.getProperties().subscribe(response ->
+            System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
+                response.getHourMetrics().isEnabled(),
+                response.getMinuteMetrics().isEnabled()));
+        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getProperties
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getPropertiesWithResponse
+        client.getPropertiesWithResponse().subscribe(response ->
+            System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
+                response.getValue().getHourMetrics().isEnabled(),
+                response.getValue().getMinuteMetrics().isEnabled()));
+        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getPropertiesWithResponse
+    }
+
+    /**
+     * Code snippet for {@link DataLakeServiceAsyncClient#setProperties(DataLakeServiceProperties)}
+     */
+    public void setProperties() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.setProperties#DataLakeServiceProperties
+        DataLakeRetentionPolicy loggingRetentionPolicy = new DataLakeRetentionPolicy().setEnabled(true).setDays(3);
+        DataLakeRetentionPolicy metricsRetentionPolicy = new DataLakeRetentionPolicy().setEnabled(true).setDays(1);
+
+        DataLakeServiceProperties properties = new DataLakeServiceProperties()
+            .setLogging(new DataLakeAnalyticsLogging()
+                .setWrite(true)
+                .setDelete(true)
+                .setRetentionPolicy(loggingRetentionPolicy))
+            .setHourMetrics(new DataLakeMetrics()
+                .setEnabled(true)
+                .setRetentionPolicy(metricsRetentionPolicy))
+            .setMinuteMetrics(new DataLakeMetrics()
+                .setEnabled(true)
+                .setRetentionPolicy(metricsRetentionPolicy));
+
+        client.setProperties(properties).subscribe(
+            response -> System.out.printf("Setting properties completed%n"),
+            error -> System.out.printf("Setting properties failed: %s%n", error));
+        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.setProperties#DataLakeServiceProperties
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.setPropertiesWithResponse#DataLakeServiceProperties
+        loggingRetentionPolicy = new DataLakeRetentionPolicy().setEnabled(true).setDays(3);
+        metricsRetentionPolicy = new DataLakeRetentionPolicy().setEnabled(true).setDays(1);
+
+        properties = new DataLakeServiceProperties()
+            .setLogging(new DataLakeAnalyticsLogging()
+                .setWrite(true)
+                .setDelete(true)
+                .setRetentionPolicy(loggingRetentionPolicy))
+            .setHourMetrics(new DataLakeMetrics()
+                .setEnabled(true)
+                .setRetentionPolicy(metricsRetentionPolicy))
+            .setMinuteMetrics(new DataLakeMetrics()
+                .setEnabled(true)
+                .setRetentionPolicy(metricsRetentionPolicy));
+
+        client.setPropertiesWithResponse(properties).subscribe(response ->
+            System.out.printf("Setting properties completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.setPropertiesWithResponse#DataLakeServiceProperties
     }
 
     /**
@@ -191,8 +260,7 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
         client.listFileSystems(listFileSystemsOptions).flatMap(
             deletedFileSystem -> {
                 Mono<DataLakeFileSystemAsyncClient> fileSystemClient = client.undeleteFileSystemWithResponse(
-                    new FileSystemUndeleteOptions(deletedFileSystem.getName(), deletedFileSystem.getVersion())
-                        .setDestinationFileSystemName(deletedFileSystem.getName() + "V2"))
+                    new FileSystemUndeleteOptions(deletedFileSystem.getName(), deletedFileSystem.getVersion()))
                     .map(Response::getValue);
                 return fileSystemClient;
             }

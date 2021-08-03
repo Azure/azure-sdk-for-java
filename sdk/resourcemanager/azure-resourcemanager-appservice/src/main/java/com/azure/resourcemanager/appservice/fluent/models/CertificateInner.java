@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /** SSL certificate for an app. */
 @JsonFlatten
@@ -144,6 +145,12 @@ public class CertificateInner extends Resource {
      */
     @JsonProperty(value = "properties.canonicalName")
     private String canonicalName;
+
+    /*
+     * Method of domain validation for free cert
+     */
+    @JsonProperty(value = "properties.domainValidationMethod")
+    private String domainValidationMethod;
 
     /*
      * Kind of resource.
@@ -414,6 +421,26 @@ public class CertificateInner extends Resource {
     }
 
     /**
+     * Get the domainValidationMethod property: Method of domain validation for free cert.
+     *
+     * @return the domainValidationMethod value.
+     */
+    public String domainValidationMethod() {
+        return this.domainValidationMethod;
+    }
+
+    /**
+     * Set the domainValidationMethod property: Method of domain validation for free cert.
+     *
+     * @param domainValidationMethod the domainValidationMethod value to set.
+     * @return the CertificateInner object itself.
+     */
+    public CertificateInner withDomainValidationMethod(String domainValidationMethod) {
+        this.domainValidationMethod = domainValidationMethod;
+        return this;
+    }
+
+    /**
      * Get the kind property: Kind of resource.
      *
      * @return the kind value.
@@ -430,6 +457,20 @@ public class CertificateInner extends Resource {
      */
     public CertificateInner withKind(String kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CertificateInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CertificateInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

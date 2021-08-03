@@ -15,7 +15,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.converters.SearchIndexerConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
-import com.azure.search.documents.implementation.converters.SearchIndexerSkillsetConverter;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImplBuilder;
@@ -810,9 +809,8 @@ public class SearchIndexerAsyncClient {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         try {
             return restClient.getSkillsets()
-                .createWithResponseAsync(SearchIndexerSkillsetConverter.map(skillset), null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSkillset);
+                .createWithResponseAsync(skillset, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -856,8 +854,7 @@ public class SearchIndexerAsyncClient {
         try {
             return this.restClient.getSkillsets()
                 .getWithResponseAsync(skillsetName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSkillset);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -974,10 +971,8 @@ public class SearchIndexerAsyncClient {
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
             return restClient.getSkillsets()
-                .createOrUpdateWithResponseAsync(skillset.getName(), SearchIndexerSkillsetConverter.map(skillset),
-                    ifMatch, null, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSkillset);
+                .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -8,16 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.models.AssociatedWorkspace;
-import com.azure.resourcemanager.loganalytics.models.BillingType;
-import com.azure.resourcemanager.loganalytics.models.CapacityReservationProperties;
 import com.azure.resourcemanager.loganalytics.models.ClusterEntityStatus;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.Identity;
 import com.azure.resourcemanager.loganalytics.models.KeyVaultProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.Map;
 
 /** The top level Log Analytics cluster resource container. */
@@ -39,6 +35,12 @@ public class ClusterInner extends Resource {
     private ClusterSku sku;
 
     /*
+     * The link used to get the next page of recommendations.
+     */
+    @JsonProperty(value = "properties.nextLink")
+    private String nextLink;
+
+    /*
      * The ID associated with the cluster.
      */
     @JsonProperty(value = "properties.clusterId", access = JsonProperty.Access.WRITE_ONLY)
@@ -51,58 +53,10 @@ public class ClusterInner extends Resource {
     private ClusterEntityStatus provisioningState;
 
     /*
-     * Configures whether cluster will use double encryption. This Property can
-     * not be modified after cluster creation. Default value is 'true'
-     */
-    @JsonProperty(value = "properties.isDoubleEncryptionEnabled")
-    private Boolean isDoubleEncryptionEnabled;
-
-    /*
-     * Sets whether the cluster will support availability zones. This can be
-     * set as true only in regions where Azure Data Explorer support
-     * Availability Zones. This Property can not be modified after cluster
-     * creation. Default value is 'true' if region supports Availability Zones.
-     */
-    @JsonProperty(value = "properties.isAvailabilityZonesEnabled")
-    private Boolean isAvailabilityZonesEnabled;
-
-    /*
-     * Configures whether billing will be only on the cluster or each workspace
-     * will be billed by its proportional use. This does not change the overall
-     * billing, only how it will be distributed. Default value is 'Cluster'
-     */
-    @JsonProperty(value = "properties.billingType")
-    private BillingType billingType;
-
-    /*
      * The associated key properties.
      */
     @JsonProperty(value = "properties.keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
-
-    /*
-     * The last time the cluster was updated.
-     */
-    @JsonProperty(value = "properties.lastModifiedDate", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastModifiedDate;
-
-    /*
-     * The cluster creation time
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdDate;
-
-    /*
-     * The list of Log Analytics workspaces associated with the cluster
-     */
-    @JsonProperty(value = "properties.associatedWorkspaces")
-    private List<AssociatedWorkspace> associatedWorkspaces;
-
-    /*
-     * Additional properties for capacity reservation
-     */
-    @JsonProperty(value = "properties.capacityReservationProperties")
-    private CapacityReservationProperties capacityReservationProperties;
 
     /**
      * Get the identity property: The identity of the resource.
@@ -145,6 +99,26 @@ public class ClusterInner extends Resource {
     }
 
     /**
+     * Get the nextLink property: The link used to get the next page of recommendations.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link used to get the next page of recommendations.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Get the clusterId property: The ID associated with the cluster.
      *
      * @return the clusterId value.
@@ -160,76 +134,6 @@ public class ClusterInner extends Resource {
      */
     public ClusterEntityStatus provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the isDoubleEncryptionEnabled property: Configures whether cluster will use double encryption. This Property
-     * can not be modified after cluster creation. Default value is 'true'.
-     *
-     * @return the isDoubleEncryptionEnabled value.
-     */
-    public Boolean isDoubleEncryptionEnabled() {
-        return this.isDoubleEncryptionEnabled;
-    }
-
-    /**
-     * Set the isDoubleEncryptionEnabled property: Configures whether cluster will use double encryption. This Property
-     * can not be modified after cluster creation. Default value is 'true'.
-     *
-     * @param isDoubleEncryptionEnabled the isDoubleEncryptionEnabled value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withIsDoubleEncryptionEnabled(Boolean isDoubleEncryptionEnabled) {
-        this.isDoubleEncryptionEnabled = isDoubleEncryptionEnabled;
-        return this;
-    }
-
-    /**
-     * Get the isAvailabilityZonesEnabled property: Sets whether the cluster will support availability zones. This can
-     * be set as true only in regions where Azure Data Explorer support Availability Zones. This Property can not be
-     * modified after cluster creation. Default value is 'true' if region supports Availability Zones.
-     *
-     * @return the isAvailabilityZonesEnabled value.
-     */
-    public Boolean isAvailabilityZonesEnabled() {
-        return this.isAvailabilityZonesEnabled;
-    }
-
-    /**
-     * Set the isAvailabilityZonesEnabled property: Sets whether the cluster will support availability zones. This can
-     * be set as true only in regions where Azure Data Explorer support Availability Zones. This Property can not be
-     * modified after cluster creation. Default value is 'true' if region supports Availability Zones.
-     *
-     * @param isAvailabilityZonesEnabled the isAvailabilityZonesEnabled value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withIsAvailabilityZonesEnabled(Boolean isAvailabilityZonesEnabled) {
-        this.isAvailabilityZonesEnabled = isAvailabilityZonesEnabled;
-        return this;
-    }
-
-    /**
-     * Get the billingType property: Configures whether billing will be only on the cluster or each workspace will be
-     * billed by its proportional use. This does not change the overall billing, only how it will be distributed.
-     * Default value is 'Cluster'.
-     *
-     * @return the billingType value.
-     */
-    public BillingType billingType() {
-        return this.billingType;
-    }
-
-    /**
-     * Set the billingType property: Configures whether billing will be only on the cluster or each workspace will be
-     * billed by its proportional use. This does not change the overall billing, only how it will be distributed.
-     * Default value is 'Cluster'.
-     *
-     * @param billingType the billingType value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withBillingType(BillingType billingType) {
-        this.billingType = billingType;
-        return this;
     }
 
     /**
@@ -249,64 +153,6 @@ public class ClusterInner extends Resource {
      */
     public ClusterInner withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
         this.keyVaultProperties = keyVaultProperties;
-        return this;
-    }
-
-    /**
-     * Get the lastModifiedDate property: The last time the cluster was updated.
-     *
-     * @return the lastModifiedDate value.
-     */
-    public String lastModifiedDate() {
-        return this.lastModifiedDate;
-    }
-
-    /**
-     * Get the createdDate property: The cluster creation time.
-     *
-     * @return the createdDate value.
-     */
-    public String createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the associatedWorkspaces property: The list of Log Analytics workspaces associated with the cluster.
-     *
-     * @return the associatedWorkspaces value.
-     */
-    public List<AssociatedWorkspace> associatedWorkspaces() {
-        return this.associatedWorkspaces;
-    }
-
-    /**
-     * Set the associatedWorkspaces property: The list of Log Analytics workspaces associated with the cluster.
-     *
-     * @param associatedWorkspaces the associatedWorkspaces value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withAssociatedWorkspaces(List<AssociatedWorkspace> associatedWorkspaces) {
-        this.associatedWorkspaces = associatedWorkspaces;
-        return this;
-    }
-
-    /**
-     * Get the capacityReservationProperties property: Additional properties for capacity reservation.
-     *
-     * @return the capacityReservationProperties value.
-     */
-    public CapacityReservationProperties capacityReservationProperties() {
-        return this.capacityReservationProperties;
-    }
-
-    /**
-     * Set the capacityReservationProperties property: Additional properties for capacity reservation.
-     *
-     * @param capacityReservationProperties the capacityReservationProperties value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withCapacityReservationProperties(CapacityReservationProperties capacityReservationProperties) {
-        this.capacityReservationProperties = capacityReservationProperties;
         return this;
     }
 
@@ -338,12 +184,6 @@ public class ClusterInner extends Resource {
         }
         if (keyVaultProperties() != null) {
             keyVaultProperties().validate();
-        }
-        if (associatedWorkspaces() != null) {
-            associatedWorkspaces().forEach(e -> e.validate());
-        }
-        if (capacityReservationProperties() != null) {
-            capacityReservationProperties().validate();
         }
     }
 }

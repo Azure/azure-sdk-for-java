@@ -55,7 +55,7 @@ class LinkHandlerTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll
@@ -74,9 +74,7 @@ class LinkHandlerTest {
     void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
 
-        if (handler != null) {
-            handler.close();
-        }
+        handler.close();
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
@@ -258,6 +256,7 @@ class LinkHandlerTest {
                 handler.onLinkRemoteClose(event);
                 handler.onLinkFinal(finalEvent);
             })
+            .expectNext(EndpointState.CLOSED)
             .expectComplete()
             .verify();
 

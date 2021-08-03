@@ -11,14 +11,14 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
-  <version>1.3.0</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
+  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
   <name>Spring Cloud Starter Azure App Configuration Config</name>
 
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-      <version>1.3.0</version><!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
+      <version>1.4.0-beta.1</version><!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
     </dependency>
   </dependencies>
 
@@ -32,7 +32,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-appconfiguration-config:[1.3.0]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-appconfiguration-config:[1.4.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
               </includes>
             </bannedDependencies>
           </rules>

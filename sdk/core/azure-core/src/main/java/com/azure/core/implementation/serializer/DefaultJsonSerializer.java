@@ -25,6 +25,15 @@ public final class DefaultJsonSerializer implements JsonSerializer {
     private final ClientLogger logger = new ClientLogger(DefaultJsonSerializer.class);
 
     @Override
+    public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+        try {
+            return jacksonAdapter.deserialize(data, typeReference.getJavaType(), SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
         try {
             return jacksonAdapter.deserialize(stream, typeReference.getJavaType(), SerializerEncoding.JSON);
@@ -34,8 +43,22 @@ public final class DefaultJsonSerializer implements JsonSerializer {
     }
 
     @Override
+    public <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
+        return Mono.defer(() -> Mono.fromCallable(() -> deserializeFromBytes(data, typeReference)));
+    }
+
+    @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return Mono.defer(() -> Mono.fromCallable(() -> deserialize(stream, typeReference)));
+    }
+
+    @Override
+    public byte[] serializeToBytes(Object value) {
+        try {
+            return jacksonAdapter.serializeToBytes(value, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     @Override
@@ -45,6 +68,11 @@ public final class DefaultJsonSerializer implements JsonSerializer {
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
+    }
+
+    @Override
+    public Mono<byte[]> serializeToBytesAsync(Object value) {
+        return Mono.defer(() -> Mono.fromCallable(() -> serializeToBytes(value)));
     }
 
     @Override

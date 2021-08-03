@@ -4,8 +4,10 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -226,9 +228,18 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     // region Methods
 
     public boolean expire() {
-        final GoneException error = new GoneException(this.toString(), null, this.args.physicalAddress());
-        BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
+        final CosmosException error;
+        if (this.args.serviceRequest().isReadOnly() || !this.hasSendingRequestStarted()) {
+            // Convert from requestTimeoutException to GoneException for the following two scenarios so they can be safely retried:
+            // 1. RequestOnly request
+            // 2. Write request but not sent yet
+            error = new GoneException(this.toString(), null, this.args.physicalAddress());
+        } else {
+            // For sent write request, converting to requestTimeout, will not be retried.
+            error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
+        }
 
+        BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
         return this.completeExceptionally(error);
     }
 

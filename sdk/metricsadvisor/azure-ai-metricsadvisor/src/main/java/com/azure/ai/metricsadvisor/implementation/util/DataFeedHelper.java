@@ -3,9 +3,9 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
-import com.azure.ai.metricsadvisor.models.DataFeedStatus;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

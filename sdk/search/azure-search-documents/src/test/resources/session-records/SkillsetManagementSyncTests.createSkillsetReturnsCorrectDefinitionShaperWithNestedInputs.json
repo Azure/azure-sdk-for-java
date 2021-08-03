@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "235145b6-f30a-4349-b39a-90a16a0fed8e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "728",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "235145b6-f30a-4349-b39a-90a16a0fed8e",
+      "StatusCode" : "201",
+      "Date" : "Tue, 13 Jul 2021 19:27:10 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D9463435F3F102\"",
+      "client-request-id" : "235145b6-f30a-4349-b39a-90a16a0fed8e",
+      "elapsed-time" : "35",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D9463435F3F102\\\"\",\"name\":\"nested-skillset-with-sharperskill8875281ce2\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ShaperSkill\",\"name\":\"myshaper\",\"description\":\"Tested Shaper skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"doc\",\"source\":null,\"sourceContext\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/content\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"images\",\"source\":\"/document/normalized_images/*\",\"sourceContext\":null,\"inputs\":[]}]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myOutput\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "235145b6-f30a-4349-b39a-90a16a0fed8e",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://alzimmer-test.search.windows.net/skillsets('nested-skillset-with-sharperskill8875281ce2')?api-version=2021-04-30-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('nested-skillset-with-sharperskill8875281ce2')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "065a0659-d049-478d-92e6-e0a8ef36781a"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "065a0659-d049-478d-92e6-e0a8ef36781a",
+      "elapsed-time" : "22",
+      "Pragma" : "no-cache",
+      "Expires" : "-1",
+      "retry-after" : "0",
+      "request-id" : "065a0659-d049-478d-92e6-e0a8ef36781a",
+      "StatusCode" : "204",
+      "x-ms-client-request-id" : "065a0659-d049-478d-92e6-e0a8ef36781a",
+      "Date" : "Tue, 13 Jul 2021 19:27:10 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "nested-skillset-with-sharperskill8875281ce2" ]
+}

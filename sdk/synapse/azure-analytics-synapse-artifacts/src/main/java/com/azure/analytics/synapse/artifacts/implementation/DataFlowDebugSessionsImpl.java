@@ -234,7 +234,7 @@ public final class DataFlowDebugSessionsImpl {
      * @return response body structure for creating data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateDataFlowDebugSessionResponse> createDataFlowDebugSessionWithResponse(
+    public DataFlowDebugSessionsCreateDataFlowDebugSessionResponse createDataFlowDebugSessionWithResponse(
             CreateDataFlowDebugSessionRequest request, Context context) {
         return createDataFlowDebugSessionWithResponseAsync(request, context).block();
     }
@@ -659,7 +659,7 @@ public final class DataFlowDebugSessionsImpl {
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFlowDebugCommandResponse> executeCommandWithResponse(
+    public DataFlowDebugSessionsExecuteCommandResponse executeCommandWithResponse(
             DataFlowDebugCommandRequest request, Context context) {
         return executeCommandWithResponseAsync(request, context).block();
     }

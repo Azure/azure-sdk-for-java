@@ -18,6 +18,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -213,10 +214,9 @@ public final class SmsClientBuilder {
 
     private AzureCommunicationSMSServiceImpl createServiceImpl() {
         Objects.requireNonNull(endpoint);
-        if (this.pipeline == null) {
-            Objects.requireNonNull(httpClient);
-        }
+
         HttpPipeline builderPipeline = this.pipeline;
+
         if (this.pipeline == null) {
             builderPipeline = createHttpPipeline(httpClient);
         }
@@ -272,11 +272,13 @@ public final class SmsClientBuilder {
         }
 
         // Add required policies
-        policyList.add(this.createHttpPipelineAuthPolicy());
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
+        policyList.add(new RequestIdPolicy());
         policyList.add((this.retryPolicy == null) ? new RetryPolicy() : this.retryPolicy);
+        // auth policy is per request, should be after retry
+        policyList.add(this.createHttpPipelineAuthPolicy());
         policyList.add(new CookiePolicy());
 
         // Add additional policies

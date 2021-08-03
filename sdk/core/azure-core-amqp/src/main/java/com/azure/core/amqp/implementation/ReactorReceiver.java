@@ -3,32 +3,42 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Objects;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
+import static com.azure.core.util.FluxUtil.monoError;
+
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
-public class ReactorReceiver implements AmqpReceiveLink {
-    // Initial value is true because we could not have created this receiver without authorising against the CBS node
-    // first.
-    private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
-
+public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoCloseable {
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
@@ -36,53 +46,118 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final ReactorDispatcher dispatcher;
     private final Disposable subscriptions;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
     private final Flux<Message> messagesProcessor;
+    private final AmqpRetryOptions retryOptions;
     private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
     private final Flux<AmqpEndpointState> endpointStates;
 
     private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
 
-    protected ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorDispatcher dispatcher) {
+    protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
+        // Delivered messages are not published on another scheduler because we want the settlement method that happens
+        // in decodeDelivery to take place and since proton-j is not thread safe, it could end up with hundreds of
+        // backed up deliveries waiting to be settled. (Which, consequently, ends up in a FAIL_OVERFLOW error from
+        // the handler.
         this.messagesProcessor = this.handler.getDeliveredMessages()
-            .map(this::decodeDelivery)
-            .doOnNext(next -> {
-                if (receiver.getRemoteCredit() == 0 && !isDisposed.get()) {
-                    final Supplier<Integer> supplier = creditSupplier.get();
-                    if (supplier == null) {
-                        return;
-                    }
+            .flatMap(delivery -> {
+                return Mono.create(sink -> {
+                    try {
+                        this.dispatcher.invoke(() -> {
+                            final Message message = decodeDelivery(delivery);
+                            final int creditsLeft = receiver.getRemoteCredit();
 
-                    final Integer credits = supplier.get();
-                    if (credits != null && credits > 0) {
-                        addCredits(credits);
+                            if (creditsLeft > 0) {
+                                sink.success(message);
+                                return;
+                            }
+
+                            final Supplier<Integer> supplier = creditSupplier.get();
+                            final Integer credits = supplier.get();
+
+                            if (credits != null && credits > 0) {
+                                logger.info("connectionId[{}] linkName[{}] adding credits[{}]",
+                                    handler.getConnectionId(), getLinkName(), creditsLeft, credits);
+                                receiver.flow(credits);
+                            } else {
+                                logger.verbose("connectionId[{}] linkName[{}] There are no credits to add.",
+                                    handler.getConnectionId(), getLinkName(), creditsLeft, credits);
+                            }
+
+                            sink.success(message);
+                        });
+                    } catch (IOException e) {
+                        sink.error(e);
                     }
-                }
-            })
-            .publish()
-            .autoConnect();
+                });
+            }, 1);
+
+        this.retryOptions = retryOptions;
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
-                logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] State {}", handler.getConnectionId(),
                     entityPath, getLinkName(), state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
+            .doOnError(error -> {
+                final String message = isDisposed.getAndSet(true)
+                    ? "This was already disposed. Dropping error."
+                    : "Freeing resources due to error.";
+                logger.warning("connectionId[{}] entityPath[{}] linkName[{}] {}",
+                    handler.getConnectionId(), entityPath, getLinkName(), message, error);
+
+                completeClose();
+            })
+            .doOnComplete(() -> {
+                final String message = isDisposed.getAndSet(true)
+                    ? "This was already disposed."
+                    : "Freeing resources.";
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(),
+                    entityPath, getLinkName(), message);
+
+                completeClose();
+            })
             .cache(1);
 
-        this.subscriptions = this.tokenManager.getAuthorizationResults().subscribe(
-            response -> {
-                logger.verbose("Token refreshed: {}", response);
-                hasAuthorized.set(true);
-            }, error -> {
-                logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
-                    handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
-                hasAuthorized.set(false);
-            }, () -> hasAuthorized.set(false));
+        //@formatter:off
+        this.subscriptions = Disposables.composite(
+            this.endpointStates.subscribe(),
+            this.tokenManager.getAuthorizationResults()
+                .onErrorResume(error -> {
+                    // When we encounter an error refreshing authorization results, close the receive link.
+                    final Mono<Void> operation =
+                        closeAsync(String.format(
+                            "connectionId[%s] linkName[%s] Token renewal failure. Disposing receive link.",
+                            amqpConnection.getId(), getLinkName()),
+                            new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
+                                error.getMessage()));
+
+                    return operation.then(Mono.empty());
+                }).subscribe(response -> {
+                    logger.verbose("connectionId[{}] linkName[{}] response[{}] Token refreshed.",
+                        handler.getConnectionId(), getLinkName(), response);
+                }, error -> {
+                    }, () -> {
+                        logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed.",
+                            handler.getConnectionId(), entityPath, getLinkName());
+
+                        closeAsync("Authorization completed. Disposing.", null).subscribe();
+                    }),
+
+            amqpConnection.getShutdownSignals().flatMap(signal -> {
+                logger.verbose("connectionId[{}] linkName[{}] Shutdown signal received.", handler.getConnectionId(),
+                    getLinkName());
+
+                return closeAsync("Connection shutdown.", null);
+            }).subscribe());
+        //@formatter:on
     }
 
     @Override
@@ -96,19 +171,23 @@ public class ReactorReceiver implements AmqpReceiveLink {
     }
 
     @Override
-    public void addCredits(int credits) {
-        if (!isDisposed.get()) {
-            try {
-                dispatcher.invoke(() -> receiver.flow(credits));
-            } catch (IOException e) {
-                logger.warning("Unable to schedule work to add more credits.", e);
-            }
+    public Mono<Void> addCredits(int credits) {
+        if (isDisposed()) {
+            return monoError(logger, new IllegalStateException("Cannot add credits to closed link: " + getLinkName()));
         }
-    }
 
-    @Override
-    public void addCreditsInstantly(int credits) {
-        receiver.flow(credits);
+        return Mono.create(sink -> {
+            try {
+                dispatcher.invoke(() -> {
+                    receiver.flow(credits);
+                    sink.success();
+                });
+            } catch (IOException e) {
+                sink.error(new UncheckedIOException(String.format(
+                    "connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
+                    handler.getConnectionId(), getLinkName()), e));
+            }
+        });
     }
 
     @Override
@@ -124,7 +203,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public String getLinkName() {
-        return receiver.getName();
+        return handler.getLinkName();
     }
 
     @Override
@@ -144,57 +223,17 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public void dispose() {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        subscriptions.dispose();
-        tokenManager.close();
-        receiver.close();
-
-        try {
-            dispatcher.invoke(() -> {
-                receiver.free();
-                handler.close();
-            });
-        } catch (IOException e) {
-            logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
-            handler.close();
-        }
+        close();
     }
 
-    /**
-     * Disposes of the sender when an exception is encountered.
-     *
-     * @param condition Error condition associated with close operation.
-     */
-    void dispose(ErrorCondition condition) {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
+    @Override
+    public void close() {
+        closeAsync().block(retryOptions.getTryTimeout());
+    }
 
-        logger.verbose("connectionId[{}], path[{}], linkName[{}]: setting error condition {}",
-            handler.getConnectionId(), entityPath, getLinkName(), condition);
-
-        if (receiver.getLocalState() != EndpointState.CLOSED) {
-            receiver.close();
-
-            if (receiver.getCondition() == null) {
-                receiver.setCondition(condition);
-            }
-        }
-
-        try {
-            dispatcher.invoke(() -> {
-                receiver.free();
-                handler.close();
-            });
-        } catch (IOException e) {
-            logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
-            handler.close();
-        }
-
-        tokenManager.close();
+    @Override
+    public Mono<Void> closeAsync() {
+        return closeAsync("User invoked close operation.", null);
     }
 
     protected Message decodeDelivery(Delivery delivery) {
@@ -210,8 +249,66 @@ public class ReactorReceiver implements AmqpReceiveLink {
         return message;
     }
 
+    /**
+     * Disposes of the receiver when an exception is encountered.
+     *
+     * @param message Message to log.
+     * @param errorCondition Error condition associated with close operation.
+     */
+    Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
+        if (isDisposed.getAndSet(true)) {
+            return isClosedMono.asMono().publishOn(Schedulers.boundedElastic());
+        }
+
+        final String condition = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
+        logger.verbose("connectionId[{}], path[{}], linkName[{}] errorCondition[{}]: Setting error condition and "
+                + "disposing. {}",
+            handler.getConnectionId(), entityPath, getLinkName(), condition, message);
+
+        final Runnable closeReceiver = () -> {
+            if (receiver.getLocalState() != EndpointState.CLOSED) {
+                receiver.close();
+
+                if (receiver.getCondition() == null) {
+                    receiver.setCondition(errorCondition);
+                }
+            }
+        };
+
+        return Mono.fromRunnable(() -> {
+            try {
+                dispatcher.invoke(closeReceiver);
+            } catch (IOException | RejectedExecutionException e) {
+                logger.info("connectionId[{}] linkName[{}] Could not schedule disposing of receiver on "
+                        + "ReactorDispatcher. Manually invoking.", handler.getConnectionId(), getLinkName(), e);
+                closeReceiver.run();
+            }
+        }).then(isClosedMono.asMono()).publishOn(Schedulers.boundedElastic());
+    }
+
+    /**
+     * Takes care of disposing of subscriptions, reactor resources after they've been closed.
+     */
+    private void completeClose() {
+        isClosedMono.emitEmpty((signalType, result) -> {
+            logger.warning("connectionId[{}], signal[{}], result[{}]. Unable to emit shutdown signal.",
+                handler.getConnectionId(), signalType, result);
+            return false;
+        });
+
+        subscriptions.dispose();
+
+        if (tokenManager != null) {
+            tokenManager.close();
+        }
+
+        handler.close();
+        receiver.free();
+    }
+
     @Override
     public String toString() {
-        return String.format("link name: [%s], entity path: [%s]", receiver.getName(), entityPath);
+        return String.format("connectionId: [%s] entity path: [%s] linkName: [%s]", receiver.getName(), entityPath,
+            getLinkName());
     }
 }

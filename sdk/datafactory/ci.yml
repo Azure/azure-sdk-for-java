@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/datafactory/ci.yml
+      - sdk/datafactory/azure-resourcemanager-datafactory/
+    exclude:
+      - sdk/datafactory/pom.xml
+      - sdk/datafactory/azure-resourcemanager-datafactory/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/datafactory/ci.yml
+      - sdk/datafactory/azure-resourcemanager-datafactory/
+    exclude:
+      - sdk/datafactory/pom.xml
+      - sdk/datafactory/azure-resourcemanager-datafactory/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: datafactory
+    Artifacts:
+      - name: azure-resourcemanager-datafactory
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdatafactory

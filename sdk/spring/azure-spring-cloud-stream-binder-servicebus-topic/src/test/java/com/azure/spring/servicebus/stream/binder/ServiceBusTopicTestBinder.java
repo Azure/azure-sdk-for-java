@@ -3,10 +3,10 @@
 
 package com.azure.spring.servicebus.stream.binder;
 
+import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusProducerProperties;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import org.springframework.cloud.stream.binder.AbstractTestBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
@@ -16,16 +16,15 @@ import org.springframework.context.support.GenericApplicationContext;
 /**
  * @author Warren Zhu
  */
-public class ServiceBusTopicTestBinder extends
-        AbstractTestBinder<ServiceBusTopicMessageChannelBinder,
-                ExtendedConsumerProperties<ServiceBusConsumerProperties>,
-                ExtendedProducerProperties<ServiceBusProducerProperties>> {
+public class ServiceBusTopicTestBinder
+    extends AbstractTestBinder<ServiceBusTopicMessageChannelBinder,
+                                  ExtendedConsumerProperties<ServiceBusConsumerProperties>,
+                                  ExtendedProducerProperties<ServiceBusProducerProperties>> {
 
     ServiceBusTopicTestBinder(ServiceBusTopicOperation operation) {
 
-        ServiceBusTopicMessageChannelBinder binder =
-                new ServiceBusTopicMessageChannelBinder(BinderHeaders.STANDARD_HEADERS,
-                        new ServiceBusChannelProvisioner(), operation);
+        ServiceBusTopicMessageChannelBinder binder = new ServiceBusTopicMessageChannelBinder(
+            BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner(), operation);
         GenericApplicationContext context = new GenericApplicationContext();
         binder.setApplicationContext(context);
         this.setBinder(binder);

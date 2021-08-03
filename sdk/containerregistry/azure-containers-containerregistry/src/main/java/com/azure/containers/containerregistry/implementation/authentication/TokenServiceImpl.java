@@ -3,7 +3,6 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
-import com.azure.containers.containerregistry.implementation.models.PostContentSchemaGrantType;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -17,8 +16,9 @@ import java.time.OffsetDateTime;
  */
 public class TokenServiceImpl {
 
-    private final AccessTokensImpl accessTokensImpl;
-    private final RefreshTokensImpl refreshTokenImpl;
+    private final AuthenticationsImpl authenticationsImpl;
+    private static final String REFRESHTOKEN_GRANTTYPE = "refresh_token";
+    private static final String ACCESSTOKEN_GRANTTYPE = "access_token";
 
     /**
      * Creates an instance of the token service impl class.TokenServiceImpl.java
@@ -32,8 +32,7 @@ public class TokenServiceImpl {
             serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
 
-        this.accessTokensImpl = new AccessTokensImpl(url, pipeline, serializerAdapter);
-        this.refreshTokenImpl = new RefreshTokensImpl(url, pipeline, serializerAdapter);
+        this.authenticationsImpl = new AuthenticationsImpl(url, pipeline, serializerAdapter);
     }
 
     /**
@@ -43,8 +42,8 @@ public class TokenServiceImpl {
      * @param serviceName The name of the service.
      *
      */
-    public Mono<AccessToken> getAcrAccessTokenAsync(String acrRefreshToken, String scope, String serviceName) {
-        return this.accessTokensImpl.getAccessTokenAsync(PostContentSchemaGrantType.REFRESH_TOKEN.toString(), serviceName, scope, acrRefreshToken)
+    public Mono<AccessToken> getAcrAccessTokenAsync(String acrRefreshToken, String scope, String serviceName, String grantType) {
+        return this.authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenAsync(serviceName, scope, grantType, acrRefreshToken)
             .map(token -> {
                 String accessToken = token.getAccessToken();
                 OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(accessToken);
@@ -59,11 +58,9 @@ public class TokenServiceImpl {
      *
      */
     public Mono<AccessToken> getAcrRefreshTokenAsync(String aadAccessToken, String serviceName) {
-        return this.refreshTokenImpl.getRefreshTokenAsync(
-            PostContentSchemaGrantType.ACCESS_TOKEN.toString(),
-            aadAccessToken,
-            null,
-            serviceName).map(token -> {
+        return this.authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenAsync(
+            serviceName,
+            aadAccessToken).map(token -> {
                 String refreshToken = token.getRefreshToken();
                 OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(refreshToken);
                 return new AccessToken(refreshToken, expirationTime);

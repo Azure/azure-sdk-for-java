@@ -15,7 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceConnectionInfoResultInner;
 import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceInner;
-import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
+import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -142,7 +142,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -161,7 +161,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -180,7 +180,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -200,7 +200,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context);
 
     /**
@@ -220,7 +220,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -239,7 +239,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -259,7 +259,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context);
 
     /**

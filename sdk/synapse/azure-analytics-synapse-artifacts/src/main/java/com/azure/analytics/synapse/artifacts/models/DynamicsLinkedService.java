@@ -30,7 +30,7 @@ public class DynamicsLinkedService extends LinkedService {
      * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.hostName")
-    private String hostName;
+    private Object hostName;
 
     /*
      * The port of on-premises Dynamics server. The property is required for
@@ -38,7 +38,7 @@ public class DynamicsLinkedService extends LinkedService {
      * Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "typeProperties.port")
-    private String port;
+    private Object port;
 
     /*
      * The URL to the Microsoft Dynamics server. The property is required for
@@ -46,7 +46,7 @@ public class DynamicsLinkedService extends LinkedService {
      * resultType string).
      */
     @JsonProperty(value = "typeProperties.serviceUri")
-    private String serviceUri;
+    private Object serviceUri;
 
     /*
      * The organization name of the Dynamics instance. The property is required
@@ -55,7 +55,7 @@ public class DynamicsLinkedService extends LinkedService {
      * with resultType string).
      */
     @JsonProperty(value = "typeProperties.organizationName")
-    private String organizationName;
+    private Object organizationName;
 
     /*
      * The authentication type to connect to Dynamics server. 'Office365' for
@@ -143,7 +143,7 @@ public class DynamicsLinkedService extends LinkedService {
      *
      * @return the hostName value.
      */
-    public String getHostName() {
+    public Object getHostName() {
         return this.hostName;
     }
 
@@ -154,7 +154,7 @@ public class DynamicsLinkedService extends LinkedService {
      * @param hostName the hostName value to set.
      * @return the DynamicsLinkedService object itself.
      */
-    public DynamicsLinkedService setHostName(String hostName) {
+    public DynamicsLinkedService setHostName(Object hostName) {
         this.hostName = hostName;
         return this;
     }
@@ -165,7 +165,7 @@ public class DynamicsLinkedService extends LinkedService {
      *
      * @return the port value.
      */
-    public String getPort() {
+    public Object getPort() {
         return this.port;
     }
 
@@ -176,7 +176,7 @@ public class DynamicsLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the DynamicsLinkedService object itself.
      */
-    public DynamicsLinkedService setPort(String port) {
+    public DynamicsLinkedService setPort(Object port) {
         this.port = port;
         return this;
     }
@@ -187,7 +187,7 @@ public class DynamicsLinkedService extends LinkedService {
      *
      * @return the serviceUri value.
      */
-    public String getServiceUri() {
+    public Object getServiceUri() {
         return this.serviceUri;
     }
 
@@ -198,7 +198,7 @@ public class DynamicsLinkedService extends LinkedService {
      * @param serviceUri the serviceUri value to set.
      * @return the DynamicsLinkedService object itself.
      */
-    public DynamicsLinkedService setServiceUri(String serviceUri) {
+    public DynamicsLinkedService setServiceUri(Object serviceUri) {
         this.serviceUri = serviceUri;
         return this;
     }
@@ -210,7 +210,7 @@ public class DynamicsLinkedService extends LinkedService {
      *
      * @return the organizationName value.
      */
-    public String getOrganizationName() {
+    public Object getOrganizationName() {
         return this.organizationName;
     }
 
@@ -222,7 +222,7 @@ public class DynamicsLinkedService extends LinkedService {
      * @param organizationName the organizationName value to set.
      * @return the DynamicsLinkedService object itself.
      */
-    public DynamicsLinkedService setOrganizationName(String organizationName) {
+    public DynamicsLinkedService setOrganizationName(Object organizationName) {
         this.organizationName = organizationName;
         return this;
     }

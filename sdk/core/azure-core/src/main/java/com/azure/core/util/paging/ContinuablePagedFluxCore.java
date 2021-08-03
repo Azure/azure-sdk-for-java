@@ -4,11 +4,13 @@
 package com.azure.core.util.paging;
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -37,6 +39,8 @@ import java.util.function.Supplier;
  */
 public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C, T>>
     extends ContinuablePagedFlux<C, T, P> {
+    private final ClientLogger logger = new ClientLogger(ContinuablePagedFluxCore.class);
+
     final Supplier<PageRetriever<C, P>> pageRetrieverProvider;
     final Integer defaultPageSize;
 
@@ -44,11 +48,10 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      * Creates an instance of {@link ContinuablePagedFluxCore}.
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}.
+     * @throws NullPointerException If {@code pageRetrieverProvider} is null.
      */
     protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider) {
-        this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
-            "'pageRetrieverProvider' function cannot be null.");
-        this.defaultPageSize = null;
+        this(pageRetrieverProvider, null, null);
     }
 
     /**
@@ -56,13 +59,30 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}.
      * @param pageSize the preferred page size
-     * @throws IllegalArgumentException if defaultPageSize is not greater than zero
+     * @throws NullPointerException If {@code pageRetrieverProvider} is null.
+     * @throws IllegalArgumentException If {@code pageSize} is less than or equal to zero.
      */
     protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider, int pageSize) {
+        this(pageRetrieverProvider, pageSize, null);
+    }
+
+    /**
+     * Creates an instance of {@link ContinuablePagedFluxCore}.
+     *
+     * @param pageRetrieverProvider A provider that returns {@link PageRetriever}.
+     * @param pageSize The preferred page size.
+     * @param continuationPredicate A predicate which determines if paging should continue.
+     * @throws NullPointerException If {@code pageRetrieverProvider} is null.
+     * @throws IllegalArgumentException If {@code pageSize} is not null and is less than or equal to zero.
+     */
+    protected ContinuablePagedFluxCore(Supplier<PageRetriever<C, P>> pageRetrieverProvider, Integer pageSize,
+        Predicate<C> continuationPredicate) {
+        super(continuationPredicate);
         this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
             "'pageRetrieverProvider' function cannot be null.");
-        if (pageSize <= 0) {
-            throw new IllegalArgumentException("pageSize > 0 required but provided: " + pageSize);
+        if (pageSize != null && pageSize <= 0) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
         }
         this.defaultPageSize = pageSize;
     }
@@ -163,7 +183,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
          */
         return retrievePage(state, pageRetriever, pageSize)
             .expand(page -> {
-                state.setLastContinuationToken(page.getContinuationToken());
+                state.setLastContinuationToken(page.getContinuationToken(), t -> !getContinuationPredicate().test(t));
                 return Flux.defer(() -> retrievePage(state, pageRetriever, pageSize));
             }, 4);
     }

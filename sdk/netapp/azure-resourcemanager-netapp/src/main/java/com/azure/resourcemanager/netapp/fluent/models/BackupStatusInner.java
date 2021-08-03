@@ -46,6 +46,24 @@ public final class BackupStatusInner {
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
+    /*
+     * Displays the last transfer size
+     */
+    @JsonProperty(value = "lastTransferSize", access = JsonProperty.Access.WRITE_ONLY)
+    private Long lastTransferSize;
+
+    /*
+     * Displays the last transfer type
+     */
+    @JsonProperty(value = "lastTransferType", access = JsonProperty.Access.WRITE_ONLY)
+    private String lastTransferType;
+
+    /*
+     * Displays the total bytes transferred
+     */
+    @JsonProperty(value = "totalTransferBytes", access = JsonProperty.Access.WRITE_ONLY)
+    private Long totalTransferBytes;
+
     /**
      * Get the healthy property: Backup health status.
      *
@@ -89,6 +107,33 @@ public final class BackupStatusInner {
      */
     public String errorMessage() {
         return this.errorMessage;
+    }
+
+    /**
+     * Get the lastTransferSize property: Displays the last transfer size.
+     *
+     * @return the lastTransferSize value.
+     */
+    public Long lastTransferSize() {
+        return this.lastTransferSize;
+    }
+
+    /**
+     * Get the lastTransferType property: Displays the last transfer type.
+     *
+     * @return the lastTransferType value.
+     */
+    public String lastTransferType() {
+        return this.lastTransferType;
+    }
+
+    /**
+     * Get the totalTransferBytes property: Displays the total bytes transferred.
+     *
+     * @return the totalTransferBytes value.
+     */
+    public Long totalTransferBytes() {
+        return this.totalTransferBytes;
     }
 
     /**

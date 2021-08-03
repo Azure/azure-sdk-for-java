@@ -54,7 +54,9 @@ public class UndeleteBlobContainerOptions {
      * already exists, the undelete operation will result in a 409 (conflict).
      *
      * @return The destination blob container name.
+     * @deprecated Destination container name must match deleted container name
      */
+    @Deprecated
     public String getDestinationContainerName() {
         return destinationContainerName;
     }
@@ -68,7 +70,9 @@ public class UndeleteBlobContainerOptions {
      *
      * @param destinationContainerName The destination blob container name.
      * @return The updated options.
+     * @deprecated Destination container name must match deleted container name
      */
+    @Deprecated
     public UndeleteBlobContainerOptions setDestinationContainerName(String destinationContainerName) {
         this.destinationContainerName = destinationContainerName;
         return this;

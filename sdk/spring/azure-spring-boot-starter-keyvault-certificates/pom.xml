@@ -2,61 +2,90 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-client-sdk-parent</artifactId>
-        <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-        <relativePath>../../parents/azure-client-sdk-parent</relativePath>
-    </parent>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
 
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-    <version>3.0.0-beta.6</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;current} -->
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
+  <version>3.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;current} -->
 
-    <name>Azure Spring Boot Starter for Azure Key Vault Certificates</name>
-    <description>Spring Boot Starter supporting Azure Key Vault Certificates</description>
-    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <name>Azure Spring Boot Starter for Azure Key Vault Certificates</name>
+  <description>Spring Boot Starter supporting Azure Key Vault Certificates</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-            <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
-        </dependency>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-security-keyvault-jca</artifactId>
-            <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;dependency} -->
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-                <configuration>
-                    <rules>
-                        <bannedDependencies>
-                            <includes>
-                                <include>org.springframework.boot:spring-boot-starter:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                                <include>org.springframework.boot:spring-boot-starter-validation:[2.4.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
-                            </includes>
-                        </bannedDependencies>
-                    </rules>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+  <properties>
+    <jacoco.min.linecoverage>0.05</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.05</jacoco.min.branchcoverage>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-jca</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <!-- TEST-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.13</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-validation:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

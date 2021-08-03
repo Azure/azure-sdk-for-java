@@ -14,16 +14,16 @@ import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the ContainerRegistry type. */
 public final class ContainerRegistryImpl {
-    /** Registry login endpoint. */
-    private final String endpoint;
+    /** Registry login URL. */
+    private final String url;
 
     /**
-     * Gets Registry login endpoint.
+     * Gets Registry login URL.
      *
-     * @return the endpoint value.
+     * @return the url value.
      */
-    public String getEndpoint() {
-        return this.endpoint;
+    public String getUrl() {
+        return this.url;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -62,18 +62,6 @@ public final class ContainerRegistryImpl {
         return this.containerRegistries;
     }
 
-    /** The ContainerRegistryRepositoriesImpl object to access its operations. */
-    private final ContainerRegistryRepositoriesImpl containerRegistryRepositories;
-
-    /**
-     * Gets the ContainerRegistryRepositoriesImpl object to access its operations.
-     *
-     * @return the ContainerRegistryRepositoriesImpl object.
-     */
-    public ContainerRegistryRepositoriesImpl getContainerRegistryRepositories() {
-        return this.containerRegistryRepositories;
-    }
-
     /** The ContainerRegistryBlobsImpl object to access its operations. */
     private final ContainerRegistryBlobsImpl containerRegistryBlobs;
 
@@ -86,52 +74,40 @@ public final class ContainerRegistryImpl {
         return this.containerRegistryBlobs;
     }
 
-    /** The RefreshTokensImpl object to access its operations. */
-    private final RefreshTokensImpl refreshTokens;
+    /** The AuthenticationsImpl object to access its operations. */
+    private final AuthenticationsImpl authentications;
 
     /**
-     * Gets the RefreshTokensImpl object to access its operations.
+     * Gets the AuthenticationsImpl object to access its operations.
      *
-     * @return the RefreshTokensImpl object.
+     * @return the AuthenticationsImpl object.
      */
-    public RefreshTokensImpl getRefreshTokens() {
-        return this.refreshTokens;
-    }
-
-    /** The AccessTokensImpl object to access its operations. */
-    private final AccessTokensImpl accessTokens;
-
-    /**
-     * Gets the AccessTokensImpl object to access its operations.
-     *
-     * @return the AccessTokensImpl object.
-     */
-    public AccessTokensImpl getAccessTokens() {
-        return this.accessTokens;
+    public AuthenticationsImpl getAuthentications() {
+        return this.authentications;
     }
 
     /**
      * Initializes an instance of ContainerRegistry client.
      *
-     * @param endpoint Registry login endpoint.
+     * @param url Registry login URL.
      */
-    ContainerRegistryImpl(String endpoint) {
+    ContainerRegistryImpl(String url) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                url);
     }
 
     /**
      * Initializes an instance of ContainerRegistry client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Registry login endpoint.
+     * @param url Registry login URL.
      */
-    ContainerRegistryImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    ContainerRegistryImpl(HttpPipeline httpPipeline, String url) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url);
     }
 
     /**
@@ -139,16 +115,14 @@ public final class ContainerRegistryImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Registry login endpoint.
+     * @param url Registry login URL.
      */
-    ContainerRegistryImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    ContainerRegistryImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.endpoint = endpoint;
+        this.url = url;
         this.containerRegistries = new ContainerRegistriesImpl(this);
-        this.containerRegistryRepositories = new ContainerRegistryRepositoriesImpl(this);
         this.containerRegistryBlobs = new ContainerRegistryBlobsImpl(this);
-        this.refreshTokens = new RefreshTokensImpl(this);
-        this.accessTokens = new AccessTokensImpl(this);
+        this.authentications = new AuthenticationsImpl(this);
     }
 }

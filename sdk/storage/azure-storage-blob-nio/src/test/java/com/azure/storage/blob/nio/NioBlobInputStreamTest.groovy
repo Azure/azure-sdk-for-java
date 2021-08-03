@@ -5,7 +5,6 @@ package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.BlobStorageException
-import org.apache.groovy.json.internal.IO
 import spock.lang.Unroll
 
 import java.nio.file.ClosedFileSystemException

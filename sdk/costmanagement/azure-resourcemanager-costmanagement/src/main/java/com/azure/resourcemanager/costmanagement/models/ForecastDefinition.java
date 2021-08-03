@@ -36,8 +36,8 @@ public final class ForecastDefinition {
     /*
      * Has definition for data in this forecast.
      */
-    @JsonProperty(value = "dataset")
-    private ForecastDataset dataset;
+    @JsonProperty(value = "dataset", required = true)
+    private QueryDataset dataset;
 
     /*
      * a boolean determining if actualCost will be included
@@ -118,7 +118,7 @@ public final class ForecastDefinition {
      *
      * @return the dataset value.
      */
-    public ForecastDataset dataset() {
+    public QueryDataset dataset() {
         return this.dataset;
     }
 
@@ -128,7 +128,7 @@ public final class ForecastDefinition {
      * @param dataset the dataset value to set.
      * @return the ForecastDefinition object itself.
      */
-    public ForecastDefinition withDataset(ForecastDataset dataset) {
+    public ForecastDefinition withDataset(QueryDataset dataset) {
         this.dataset = dataset;
         return this;
     }
@@ -192,7 +192,11 @@ public final class ForecastDefinition {
         if (timePeriod() != null) {
             timePeriod().validate();
         }
-        if (dataset() != null) {
+        if (dataset() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property dataset in model ForecastDefinition"));
+        } else {
             dataset().validate();
         }
     }

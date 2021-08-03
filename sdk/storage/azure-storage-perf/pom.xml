@@ -27,8 +27,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file-datalake</artifactId>
+      <version>12.7.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file-share</artifactId>
+      <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+    </dependency>
+
+
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>perf-test-core</artifactId>
@@ -52,7 +66,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    com.azure.storage.blob.perf.App
+                    com.azure.storage.App
                   </mainClass>
                 </manifest>
               </archive>

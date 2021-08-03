@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
-import com.azure.resourcemanager.eventgrid.EventGridManager;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerTopicInner;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopic;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicActivationState;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicProvisioningState;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -18,9 +17,10 @@ import java.util.Map;
 public final class PartnerTopicImpl implements PartnerTopic {
     private PartnerTopicInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    PartnerTopicImpl(PartnerTopicInner innerObject, EventGridManager serviceManager) {
+    PartnerTopicImpl(
+        PartnerTopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -50,12 +50,12 @@ public final class PartnerTopicImpl implements PartnerTopic {
         }
     }
 
-    public IdentityInfo identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public IdentityInfo identity() {
+        return this.innerModel().identity();
     }
 
     public String source() {
@@ -82,7 +82,7 @@ public final class PartnerTopicImpl implements PartnerTopic {
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 }

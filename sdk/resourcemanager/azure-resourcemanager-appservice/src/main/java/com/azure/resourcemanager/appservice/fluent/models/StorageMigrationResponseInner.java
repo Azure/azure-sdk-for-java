@@ -34,6 +34,13 @@ public class StorageMigrationResponseInner extends ProxyOnlyResource {
         return this.operationId;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public StorageMigrationResponseInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

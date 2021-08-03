@@ -22,6 +22,12 @@ public class TransformUtils {
             return BlobServiceVersion.V2020_02_10;
         } else if (DataLakeServiceVersion.V2020_04_08.ordinal() == version.ordinal()) {
             return BlobServiceVersion.V2020_04_08;
+        } else if (DataLakeServiceVersion.V2020_06_12.ordinal() == version.ordinal()) {
+            return BlobServiceVersion.V2020_06_12;
+        } else if (DataLakeServiceVersion.V2020_08_04.ordinal() == version.ordinal()) {
+            return BlobServiceVersion.V2020_08_04;
+        } else if (DataLakeServiceVersion.V2020_10_02.ordinal() == version.ordinal()) {
+            return BlobServiceVersion.V2020_10_02;
         }
         return null;
     }

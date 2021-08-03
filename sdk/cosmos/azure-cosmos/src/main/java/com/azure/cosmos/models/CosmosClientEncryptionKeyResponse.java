@@ -11,8 +11,8 @@ import com.azure.cosmos.util.Beta;
 /**
  * The type Cosmos client encryption key response.
  */
-@Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class CosmosClientEncryptionKeyResponse extends CosmosResponse<CosmosClientEncryptionKeyProperties>  {
+@Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public final class CosmosClientEncryptionKeyResponse extends CosmosResponse<CosmosClientEncryptionKeyProperties>  {
     CosmosClientEncryptionKeyResponse(ResourceResponse<ClientEncryptionKey> response) {
         super(response);
         String bodyAsString = response.getBodyAsString();
@@ -29,7 +29,7 @@ public class CosmosClientEncryptionKeyResponse extends CosmosResponse<CosmosClie
      *
      * @return {@link CosmosUserProperties}
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientEncryptionKeyProperties getProperties() {
         return super.getProperties();
     }

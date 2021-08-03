@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.costmanagement.implementation;
 
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.models.QueryResultInner;
 import com.azure.resourcemanager.costmanagement.models.QueryColumn;
 import com.azure.resourcemanager.costmanagement.models.QueryResult;
@@ -15,9 +14,10 @@ import java.util.Map;
 public final class QueryResultImpl implements QueryResult {
     private QueryResultInner innerObject;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    QueryResultImpl(QueryResultInner innerObject, CostManagementManager serviceManager) {
+    QueryResultImpl(
+        QueryResultInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,6 +32,27 @@ public final class QueryResultImpl implements QueryResult {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
+    public String sku() {
+        return this.innerModel().sku();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public String nextLink() {
@@ -56,20 +77,11 @@ public final class QueryResultImpl implements QueryResult {
         }
     }
 
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public QueryResultInner innerModel() {
         return this.innerObject;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 }

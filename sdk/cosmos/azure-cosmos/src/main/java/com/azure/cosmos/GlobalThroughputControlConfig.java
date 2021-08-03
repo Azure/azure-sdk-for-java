@@ -45,7 +45,7 @@ public class GlobalThroughputControlConfig {
      *
      * In short words, it controls how quickly the shared throughput will reload balanced across different clients.
      *
-     * By default, it is 5s.
+     * The allowed min value is 5s. By default, it is 5s.
      *
      * @return The control item renew interval.
      */
@@ -60,7 +60,7 @@ public class GlobalThroughputControlConfig {
      * A client may be offline due to various reasons (being shutdown, network issue... ).
      * This controls how quickly we will detect the client has been offline and hence allow its throughput share to be taken by other clients.
      *
-     * By default, it is 11s.
+     * The allowed min value is 2 * controlItemRenewInterval + 1. By default, it is 11s.
      *
      * @return The control item renew interval.
      */

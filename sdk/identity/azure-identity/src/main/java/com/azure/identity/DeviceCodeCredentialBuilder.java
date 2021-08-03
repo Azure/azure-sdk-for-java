@@ -5,9 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.util.IdentityConstants;
-import com.azure.identity.implementation.util.ValidationUtil;
 
-import java.util.HashMap;
 import java.util.function.Consumer;
 
 /**
@@ -20,7 +18,6 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
         deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
 
     private boolean automaticAuthentication = true;
-    String clientId = IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
 
     /**
      * Sets the consumer to meet the device code challenge. If not specified a default consumer is used which prints
@@ -82,10 +79,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * @return a {@link DeviceCodeCredential} with the current configurations.
      */
     public DeviceCodeCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-                put("challengeConsumer", challengeConsumer);
-            }});
+        String clientId = this.clientId != null ? this.clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
         return new DeviceCodeCredential(clientId, tenantId, challengeConsumer, automaticAuthentication,
                 identityClientOptions);
     }

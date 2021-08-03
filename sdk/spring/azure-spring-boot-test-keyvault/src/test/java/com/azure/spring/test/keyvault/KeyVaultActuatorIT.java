@@ -4,7 +4,7 @@ package com.azure.spring.test.keyvault;
 
 import com.azure.spring.test.AppRunner;
 import com.azure.spring.test.keyvault.app.DummyApp;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;

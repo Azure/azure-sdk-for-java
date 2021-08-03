@@ -19,8 +19,9 @@ public class SendLinkHandler extends LinkHandler {
     private final String linkName;
     private final String entityPath;
     private final AtomicBoolean isFirstFlow = new AtomicBoolean(true);
+    private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final Sinks.Many<Integer> creditProcessor = Sinks.many().unicast().onBackpressureBuffer();
-    private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().directBestEffort();
+    private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().onBackpressureBuffer();
 
     public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(SendLinkHandler.class));
@@ -42,15 +43,15 @@ public class SendLinkHandler extends LinkHandler {
 
     @Override
     public void close() {
-        creditProcessor.emitComplete((signalType, emitResult) -> {
-            logger.warning("connectionId[{}] linkName[{}] signal[{}] result[{}] Unable to complete creditProcessor.",
-                getConnectionId(), linkName, signalType, emitResult);
-            return false;
-        });
+        if (isTerminated.getAndSet(true)) {
+            return;
+        }
+
+        creditProcessor.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
 
         deliveryProcessor.emitComplete((signalType, emitResult) -> {
-            logger.warning("connectionId[{}] linkName[{}] signal[{}] result[{}] Unable to complete deliveryProcessor.",
-                getConnectionId(), linkName, signalType, emitResult);
+            logger.verbose("connectionId[{}] linkName[{}] result[{}] Unable to emit complete on deliverySink.",
+                getConnectionId(), linkName, emitResult);
             return false;
         });
         super.close();
@@ -95,13 +96,13 @@ public class SendLinkHandler extends LinkHandler {
         final Sender sender = event.getSender();
         final int credits = sender.getRemoteCredit();
         creditProcessor.emitNext(credits, (signalType, emitResult) -> {
-            logger.verbose("connectionId[{}] linkName[{}] signal[{}] result[{}] Unable to emit credits [{}].",
-                getConnectionId(), linkName, signalType, emitResult, credits);
+            logger.verbose("connectionId[{}] linkName[{}] result[{}] Unable to emit credits [{}].",
+                getConnectionId(), linkName, emitResult, credits);
             return false;
         });
 
-        logger.verbose("onLinkFlow connectionId[{}], entityPath[{}], linkName[{}], unsettled[{}], credit[{}]",
-            getConnectionId(), entityPath, sender.getName(), sender.getUnsettled(), sender.getCredit());
+        logger.verbose("onLinkFlow connectionId[{}] linkName[{}] unsettled[{}] credit[{}]",
+            getConnectionId(), sender.getName(), sender.getUnsettled(), sender.getCredit());
     }
 
     @Override
@@ -112,15 +113,16 @@ public class SendLinkHandler extends LinkHandler {
             final Sender sender = (Sender) delivery.getLink();
             final String deliveryTag = new String(delivery.getTag(), StandardCharsets.UTF_8);
 
-            logger.verbose("onDelivery connectionId[{}], entityPath[{}], linkName[{}], unsettled[{}], credit[{}],"
-                    + " deliveryState[{}], delivery.isBuffered[{}], delivery.id[{}]",
-                getConnectionId(), entityPath, sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(),
+            logger.verbose("onDelivery connectionId[{}] linkName[{}] unsettled[{}] credit[{}],"
+                    + " deliveryState[{}] delivery.isBuffered[{}] delivery.id[{}]",
+                getConnectionId(), sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(),
                 delivery.getRemoteState(), delivery.isBuffered(), deliveryTag);
 
             deliveryProcessor.emitNext(delivery, (signalType, emitResult) -> {
-                logger.warning("connectionId[{}] linkName[{}] signal[{}] result[{}] Unable to emit delivery [{}].",
-                    getConnectionId(), linkName, signalType, emitResult, deliveryTag);
-                return false;
+                logger.warning("connectionId[{}] linkName[{}] result[{}] Unable to emit delivery [{}].",
+                    getConnectionId(), linkName, emitResult, deliveryTag);
+
+                return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
             });
 
             delivery.settle();

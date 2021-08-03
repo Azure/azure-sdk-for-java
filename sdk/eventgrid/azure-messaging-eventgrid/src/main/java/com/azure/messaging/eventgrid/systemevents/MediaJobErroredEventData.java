@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Job error state event data. */
+/**
+ * Job error state event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobErrored event.
+ */
 @Fluent
 public final class MediaJobErroredEventData extends MediaJobStateChangeEventData {
     /*

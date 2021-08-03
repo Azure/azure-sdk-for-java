@@ -7,18 +7,16 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Emits the entire input as a single token. This tokenizer is implemented using Apache Lucene. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.KeywordTokenizerV2")
-@JsonFlatten
 @Fluent
-public class KeywordTokenizerV2 extends LexicalTokenizer {
+public final class KeywordTokenizerV2 extends LexicalTokenizer {
     /*
      * The maximum token length. Default is 256. Tokens longer than the maximum
      * length are split. The maximum token length that can be used is 300

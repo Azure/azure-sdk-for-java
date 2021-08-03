@@ -12,12 +12,6 @@ import java.util.List;
 @Fluent
 public final class TasksStateTasks {
     /*
-     * The details property.
-     */
-    @JsonProperty(value = "details")
-    private TaskState details;
-
-    /*
      * The completed property.
      */
     @JsonProperty(value = "completed", required = true)
@@ -65,25 +59,11 @@ public final class TasksStateTasks {
     @JsonProperty(value = "entityLinkingTasks")
     private List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks;
 
-    /**
-     * Get the details property: The details property.
-     *
-     * @return the details value.
+    /*
+     * The sentimentAnalysisTasks property.
      */
-    public TaskState getDetails() {
-        return this.details;
-    }
-
-    /**
-     * Set the details property: The details property.
-     *
-     * @param details the details value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setDetails(TaskState details) {
-        this.details = details;
-        return this;
-    }
+    @JsonProperty(value = "sentimentAnalysisTasks")
+    private List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks;
 
     /**
      * Get the completed property: The completed property.
@@ -245,6 +225,27 @@ public final class TasksStateTasks {
      */
     public TasksStateTasks setEntityLinkingTasks(List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks) {
         this.entityLinkingTasks = entityLinkingTasks;
+        return this;
+    }
+
+    /**
+     * Get the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
+     *
+     * @return the sentimentAnalysisTasks value.
+     */
+    public List<TasksStateTasksSentimentAnalysisTasksItem> getSentimentAnalysisTasks() {
+        return this.sentimentAnalysisTasks;
+    }
+
+    /**
+     * Set the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
+     *
+     * @param sentimentAnalysisTasks the sentimentAnalysisTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setSentimentAnalysisTasks(
+            List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks) {
+        this.sentimentAnalysisTasks = sentimentAnalysisTasks;
         return this;
     }
 }

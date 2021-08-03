@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -475,12 +476,13 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         boolean includeFieldElements = true;
         byte[] fileContent = Files.readAllBytes(receipt.toPath());
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            for (RecognizedForm recognizedForm : formRecognizerClient.beginRecognizeReceipts(targetStream, receipt.length(),
-                new RecognizeReceiptsOptions()
-                    .setContentType(FormContentType.IMAGE_JPEG)
-                    .setFieldElementsIncluded(includeFieldElements)
-                    .setLocale(FormRecognizerLocale.EN_US)
-                    .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
+            for (RecognizedForm recognizedForm : formRecognizerClient
+                .beginRecognizeReceipts(targetStream, receipt.length(),
+                    new RecognizeReceiptsOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG)
+                        .setFieldElementsIncluded(includeFieldElements)
+                        .setLocale(FormRecognizerLocale.EN_US)
+                        .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult()) {
                 Map<String, FormField> recognizedFields = recognizedForm.getFields();
                 FormField merchantNameField = recognizedFields.get("MerchantName");
@@ -595,8 +597,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         String businessCardUrl = "{business_card_url}";
         formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl,
             new RecognizeBusinessCardsOptions()
-                .setPollInterval(Duration.ofSeconds(5))
-                .setFieldElementsIncluded(true), Context.NONE).getFinalResult()
+                .setFieldElementsIncluded(true), Context.NONE)
+            .setPollInterval(Duration.ofSeconds(5)).getFinalResult()
             .forEach(recognizedBusinessCard -> {
                 Map<String, FormField> recognizedFields = recognizedBusinessCard.getFields();
                 FormField contactNamesFormField = recognizedFields.get("ContactNames");
@@ -721,9 +723,9 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 businessCard.length(),
                 new RecognizeBusinessCardsOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
-                    .setFieldElementsIncluded(includeFieldElements)
-                    .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
-                                                     .getFinalResult()) {
+                    .setFieldElementsIncluded(includeFieldElements),
+                Context.NONE).setPollInterval(Duration.ofSeconds(5))
+                .getFinalResult()) {
                 Map<String, FormField> recognizedFields = recognizedForm.getFields();
                 FormField contactNamesFormField = recognizedFields.get("ContactNames");
                 if (contactNamesFormField != null) {
@@ -812,8 +814,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerClient.beginRecognizeInvoicesFromUrl(invoiceUrl,
             new RecognizeInvoicesOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
+                .setFieldElementsIncluded(includeFieldElements),
+            Context.NONE).setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -887,9 +889,9 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             invoice.length(),
             new RecognizeInvoicesOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)),
+                .setFieldElementsIncluded(includeFieldElements),
             Context.NONE)
+            .setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -910,5 +912,284 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 }
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeIdentityDocumentsFromUrl(String)}
+     */
+    public void beginRecognizeIdentityDocumentsFromUrl() {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string
+        String licenseDocumentUrl = "licenseDocumentUrl";
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerClient.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl)
+            .getFinalResult()
+            .stream()
+            .map(RecognizedForm::getFields)
+            .forEach(recognizedFields -> {
+                FormField firstNameField = recognizedFields.get("FirstName");
+                if (firstNameField != null) {
+                    if (FieldValueType.STRING == firstNameField.getValue().getValueType()) {
+                        String firstName = firstNameField.getValue().asString();
+                        System.out.printf("First Name: %s, confidence: %.2f%n",
+                            firstName, firstNameField.getConfidence());
+                    }
+                }
+
+                FormField lastNameField = recognizedFields.get("LastName");
+                if (lastNameField != null) {
+                    if (FieldValueType.STRING == lastNameField.getValue().getValueType()) {
+                        String lastName = lastNameField.getValue().asString();
+                        System.out.printf("Last name: %s, confidence: %.2f%n",
+                            lastName, lastNameField.getConfidence());
+                    }
+                }
+
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
+                    }
+                }
+
+                FormField dateOfBirthField = recognizedFields.get("DateOfBirth");
+                if (dateOfBirthField != null) {
+                    if (FieldValueType.DATE == dateOfBirthField.getValue().getValueType()) {
+                        LocalDate dateOfBirth = dateOfBirthField.getValue().asDate();
+                        System.out.printf("Date of Birth: %s, confidence: %.2f%n",
+                            dateOfBirth, dateOfBirthField.getConfidence());
+                    }
+                }
+
+                FormField dateOfExpirationField = recognizedFields.get("DateOfExpiration");
+                if (dateOfExpirationField != null) {
+                    if (FieldValueType.DATE == dateOfExpirationField.getValue().getValueType()) {
+                        LocalDate expirationDate = dateOfExpirationField.getValue().asDate();
+                        System.out.printf("Document date of expiration: %s, confidence: %.2f%n",
+                            expirationDate, dateOfExpirationField.getConfidence());
+                    }
+                }
+
+                FormField documentNumberField = recognizedFields.get("DocumentNumber");
+                if (documentNumberField != null) {
+                    if (FieldValueType.STRING == documentNumberField.getValue().getValueType()) {
+                        String documentNumber = documentNumberField.getValue().asString();
+                        System.out.printf("Document number: %s, confidence: %.2f%n",
+                            documentNumber, documentNumberField.getConfidence());
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string
+    }
+
+    /**
+     * Code snippet for
+     * {@link FormRecognizerAsyncClient#beginRecognizeIdentityDocumentsFromUrl(String, RecognizeIdentityDocumentOptions, Context)}
+     */
+    public void beginRecognizeIdentityDocumentsFromUrlWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context
+        String licenseDocumentUrl = "licenseDocumentUrl";
+        boolean includeFieldElements = true;
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerClient.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl,
+            new RecognizeIdentityDocumentOptions()
+                .setFieldElementsIncluded(includeFieldElements),
+            Context.NONE).setPollInterval(Duration.ofSeconds(5))
+            .getFinalResult()
+            .stream()
+            .map(RecognizedForm::getFields)
+            .forEach(recognizedFields -> {
+                FormField firstNameField = recognizedFields.get("FirstName");
+                if (firstNameField != null) {
+                    if (FieldValueType.STRING == firstNameField.getValue().getValueType()) {
+                        String firstName = firstNameField.getValue().asString();
+                        System.out.printf("First Name: %s, confidence: %.2f%n",
+                            firstName, firstNameField.getConfidence());
+                    }
+                }
+
+                FormField lastNameField = recognizedFields.get("LastName");
+                if (lastNameField != null) {
+                    if (FieldValueType.STRING == lastNameField.getValue().getValueType()) {
+                        String lastName = lastNameField.getValue().asString();
+                        System.out.printf("Last name: %s, confidence: %.2f%n",
+                            lastName, lastNameField.getConfidence());
+                    }
+                }
+
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
+                    }
+                }
+
+                FormField dateOfExpirationField = recognizedFields.get("DateOfExpiration");
+                if (dateOfExpirationField != null) {
+                    if (FieldValueType.DATE == dateOfExpirationField.getValue().getValueType()) {
+                        LocalDate expirationDate = dateOfExpirationField.getValue().asDate();
+                        System.out.printf("Document date of expiration: %s, confidence: %.2f%n",
+                            expirationDate, dateOfExpirationField.getConfidence());
+                    }
+                }
+
+                FormField documentNumberField = recognizedFields.get("DocumentNumber");
+                if (documentNumberField != null) {
+                    if (FieldValueType.STRING == documentNumberField.getValue().getValueType()) {
+                        String documentNumber = documentNumberField.getValue().asString();
+                        System.out.printf("Document number: %s, confidence: %.2f%n",
+                            documentNumber, documentNumberField.getConfidence());
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeIdentityDocuments(InputStream, long)}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void beginRecognizeIdentityDocuments() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long
+        File license = new File("local/file_path/license.jpg");
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(license.toPath()));
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerClient.beginRecognizeIdentityDocuments(inputStream, license.length())
+            .getFinalResult()
+            .stream()
+            .map(RecognizedForm::getFields)
+            .forEach(recognizedFields -> {
+                FormField firstNameField = recognizedFields.get("FirstName");
+                if (firstNameField != null) {
+                    if (FieldValueType.STRING == firstNameField.getValue().getValueType()) {
+                        String firstName = firstNameField.getValue().asString();
+                        System.out.printf("First Name: %s, confidence: %.2f%n",
+                            firstName, firstNameField.getConfidence());
+                    }
+                }
+
+                FormField lastNameField = recognizedFields.get("LastName");
+                if (lastNameField != null) {
+                    if (FieldValueType.STRING == lastNameField.getValue().getValueType()) {
+                        String lastName = lastNameField.getValue().asString();
+                        System.out.printf("Last name: %s, confidence: %.2f%n",
+                            lastName, lastNameField.getConfidence());
+                    }
+                }
+
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
+                    }
+                }
+
+                FormField dateOfExpirationField = recognizedFields.get("DateOfExpiration");
+                if (dateOfExpirationField != null) {
+                    if (FieldValueType.DATE == dateOfExpirationField.getValue().getValueType()) {
+                        LocalDate expirationDate = dateOfExpirationField.getValue().asDate();
+                        System.out.printf("Document date of expiration: %s, confidence: %.2f%n",
+                            expirationDate, dateOfExpirationField.getConfidence());
+                    }
+                }
+
+                FormField documentNumberField = recognizedFields.get("DocumentNumber");
+                if (documentNumberField != null) {
+                    if (FieldValueType.STRING == documentNumberField.getValue().getValueType()) {
+                        String documentNumber = documentNumberField.getValue().asString();
+                        System.out.printf("Document number: %s, confidence: %.2f%n",
+                            documentNumber, documentNumberField.getConfidence());
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long
+    }
+
+    /**
+     * Code snippet for
+     * {@link FormRecognizerClient#beginRecognizeIdentityDocuments(InputStream, long, RecognizeIdentityDocumentOptions, Context)}
+     * with options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void beginRecognizeIdentityDocumentsWithOptions() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context
+        File licenseDocument = new File("local/file_path/license.jpg");
+        boolean includeFieldElements = true;
+        // Utility method to convert input stream to Byte buffer
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(licenseDocument.toPath()));
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerClient.beginRecognizeIdentityDocuments(inputStream,
+            licenseDocument.length(),
+            new RecognizeIdentityDocumentOptions()
+                .setContentType(FormContentType.IMAGE_JPEG)
+                .setFieldElementsIncluded(includeFieldElements),
+            Context.NONE)
+            .setPollInterval(Duration.ofSeconds(5))
+            .getFinalResult()
+            .stream()
+            .map(RecognizedForm::getFields)
+            .forEach(recognizedFields -> {
+                FormField firstNameField = recognizedFields.get("FirstName");
+                if (firstNameField != null) {
+                    if (FieldValueType.STRING == firstNameField.getValue().getValueType()) {
+                        String firstName = firstNameField.getValue().asString();
+                        System.out.printf("First Name: %s, confidence: %.2f%n",
+                            firstName, firstNameField.getConfidence());
+                    }
+                }
+
+                FormField lastNameField = recognizedFields.get("LastName");
+                if (lastNameField != null) {
+                    if (FieldValueType.STRING == lastNameField.getValue().getValueType()) {
+                        String lastName = lastNameField.getValue().asString();
+                        System.out.printf("Last name: %s, confidence: %.2f%n",
+                            lastName, lastNameField.getConfidence());
+                    }
+                }
+
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
+                    }
+                }
+
+                FormField dateOfBirthField = recognizedFields.get("DateOfBirth");
+                if (dateOfBirthField != null) {
+                    if (FieldValueType.DATE == dateOfBirthField.getValue().getValueType()) {
+                        LocalDate dateOfBirth = dateOfBirthField.getValue().asDate();
+                        System.out.printf("Date of Birth: %s, confidence: %.2f%n",
+                            dateOfBirth, dateOfBirthField.getConfidence());
+                    }
+                }
+
+                FormField dateOfExpirationField = recognizedFields.get("DateOfExpiration");
+                if (dateOfExpirationField != null) {
+                    if (FieldValueType.DATE == dateOfExpirationField.getValue().getValueType()) {
+                        LocalDate expirationDate = dateOfExpirationField.getValue().asDate();
+                        System.out.printf("Document date of expiration: %s, confidence: %.2f%n",
+                            expirationDate, dateOfExpirationField.getConfidence());
+                    }
+                }
+
+                FormField documentNumberField = recognizedFields.get("DocumentNumber");
+                if (documentNumberField != null) {
+                    if (FieldValueType.STRING == documentNumberField.getValue().getValueType()) {
+                        String documentNumber = documentNumberField.getValue().asString();
+                        System.out.printf("Document number: %s, confidence: %.2f%n",
+                            documentNumber, documentNumberField.getConfidence());
+                    }
+                }
+            });
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context
     }
 }

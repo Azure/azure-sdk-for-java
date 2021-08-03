@@ -42,6 +42,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.StreamSupport;
 
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
@@ -574,7 +575,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return createMessageBatch().flatMap(messageBatch -> {
-            messages.forEach(message -> messageBatch.tryAddMessage(message));
+            StreamSupport.stream(messages.spliterator(), true)
+                .forEach(message -> messageBatch.tryAddMessage(message));
             return sendInternal(messageBatch, transaction);
         });
     }
@@ -635,32 +637,29 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         logger.info("Sending batch with size[{}].", batch.getCount());
 
-        Context sharedContext = null;
-        final List<org.apache.qpid.proton.message.Message> messages = new ArrayList<>();
-
-        for (int i = 0; i < batch.getMessages().size(); i++) {
-            final ServiceBusMessage event = batch.getMessages().get(i);
+        AtomicReference<Context> sharedContext = new AtomicReference<>(Context.NONE);
+        final List<org.apache.qpid.proton.message.Message> messages = Collections.synchronizedList(new ArrayList<>());
+        batch.getMessages().parallelStream().forEach(serviceBusMessage -> {
             if (isTracingEnabled) {
-                parentContext.set(event.getContext());
-                if (i == 0) {
-                    sharedContext = tracerProvider.getSharedSpanBuilder(SERVICE_BASE_NAME, parentContext.get());
+                parentContext.set(serviceBusMessage.getContext());
+                if (sharedContext.get().equals(Context.NONE)) {
+                    sharedContext.set(tracerProvider.getSharedSpanBuilder(SERVICE_BASE_NAME, parentContext.get()));
                 }
-                tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
+                tracerProvider.addSpanLinks(sharedContext.get().addData(SPAN_CONTEXT_KEY, serviceBusMessage.getContext()));
             }
-            final org.apache.qpid.proton.message.Message message = messageSerializer.serialize(event);
-
+            final org.apache.qpid.proton.message.Message message = messageSerializer.serialize(serviceBusMessage);
             final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
                 ? new MessageAnnotations(new HashMap<>())
                 : message.getMessageAnnotations();
 
             message.setMessageAnnotations(messageAnnotations);
             messages.add(message);
-        }
+        });
 
         if (isTracingEnabled) {
-            final Context finalSharedContext = sharedContext == null
+            final Context finalSharedContext = sharedContext.get().equals(Context.NONE)
                 ? Context.NONE
-                : sharedContext
+                : sharedContext.get()
                     .addData(ENTITY_PATH_KEY, entityName)
                     .addData(HOST_NAME_KEY, connectionProcessor.getFullyQualifiedNamespace())
                     .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
@@ -697,7 +696,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
         }
-        return getSendLink()
+        return withRetry(getSendLink(), retryOptions, "Failed to create send link " + linkName)
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;

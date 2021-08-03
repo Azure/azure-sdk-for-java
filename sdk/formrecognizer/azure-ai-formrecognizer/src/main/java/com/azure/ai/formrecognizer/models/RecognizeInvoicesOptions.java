@@ -5,9 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.Duration;
-
-import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import java.util.List;
 
 /**
  * Options that may be passed when using recognize invoice APIs on Form Recognizer client.
@@ -17,7 +15,7 @@ public final class RecognizeInvoicesOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
     private FormRecognizerLocale locale;
-    private Duration pollInterval = DEFAULT_POLL_INTERVAL;
+    private List<String> pages;
 
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
@@ -35,16 +33,6 @@ public final class RecognizeInvoicesOptions {
      */
     public boolean isFieldElementsIncluded() {
         return includeFieldElements;
-    }
-
-    /**
-     * Get the duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @return the {@code pollInterval} value.
-     */
-    public Duration getPollInterval() {
-        return pollInterval;
     }
 
     /**
@@ -72,19 +60,6 @@ public final class RecognizeInvoicesOptions {
     }
 
     /**
-     * Set the duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @param pollInterval the duration to specify between each poll for the operation status.
-     *
-     * @return the updated {@code RecognizeInvoicesOptions} value.
-     */
-    public RecognizeInvoicesOptions setPollInterval(final Duration pollInterval) {
-        this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
-        return this;
-    }
-
-    /**
      * Get the locale information for the invoice.
      * Supported locales include: en-US.
      *
@@ -103,6 +78,32 @@ public final class RecognizeInvoicesOptions {
      */
     public RecognizeInvoicesOptions setLocale(final FormRecognizerLocale locale) {
         this.locale = locale;
+        return this;
+    }
+
+    /**
+     * Get the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * @return the list of custom page numbers for a multi page document.
+     */
+    public List<String> getPages() {
+        return pages;
+    }
+
+    /**
+     * Set the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * @param pages the custom page numbers value to set.
+     * @return the updated {@code RecognizeInvoicesOptions} value.
+     */
+    public RecognizeInvoicesOptions setPages(List<String> pages) {
+        this.pages = pages;
         return this;
     }
 }

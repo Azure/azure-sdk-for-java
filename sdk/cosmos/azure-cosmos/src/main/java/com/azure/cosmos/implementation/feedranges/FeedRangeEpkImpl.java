@@ -39,6 +39,9 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
     public FeedRangeEpkImpl(final Range<String> range) {
         checkNotNull(range, "Argument 'range' must not be null");
+        if (range.getMin().compareTo(range.getMax()) > 0) {
+            throw new IllegalArgumentException("The provided range is incorrect min is larger than max");
+        }
         this.range = range;
     }
 
@@ -68,7 +71,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
     }
 
     @Override
-    protected Mono<Range<String>> getEffectiveRange(
+    public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {

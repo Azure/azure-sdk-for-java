@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.hdinsight.implementation;
 
-import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.fluent.models.GatewaySettingsInner;
 import com.azure.resourcemanager.hdinsight.models.GatewaySettings;
 
 public final class GatewaySettingsImpl implements GatewaySettings {
     private GatewaySettingsInner innerObject;
 
-    private final HDInsightManager serviceManager;
+    private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    GatewaySettingsImpl(GatewaySettingsInner innerObject, HDInsightManager serviceManager) {
+    GatewaySettingsImpl(
+        GatewaySettingsInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,7 +34,7 @@ public final class GatewaySettingsImpl implements GatewaySettings {
         return this.innerObject;
     }
 
-    private HDInsightManager manager() {
+    private com.azure.resourcemanager.hdinsight.HDInsightManager manager() {
         return this.serviceManager;
     }
 }

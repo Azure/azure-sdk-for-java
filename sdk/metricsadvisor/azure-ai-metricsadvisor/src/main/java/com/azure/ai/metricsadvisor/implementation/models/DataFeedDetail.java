@@ -4,8 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -17,10 +15,10 @@ import java.util.UUID;
 
 /** The DataFeedDetail model. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "dataSourceType",
-    defaultImpl = DataFeedDetail.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "dataSourceType",
+        defaultImpl = DataFeedDetail.class)
 @JsonTypeName("DataFeedDetail")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureApplicationInsights", value = AzureApplicationInsightsDataFeed.class),
@@ -28,9 +26,9 @@ import java.util.UUID;
     @JsonSubTypes.Type(name = "AzureCosmosDB", value = AzureCosmosDBDataFeed.class),
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerDataFeed.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStorageGen2", value = AzureDataLakeStorageGen2DataFeed.class),
+    @JsonSubTypes.Type(name = "AzureEventHubs", value = AzureEventHubsDataFeed.class),
+    @JsonSubTypes.Type(name = "AzureLogAnalytics", value = AzureLogAnalyticsDataFeed.class),
     @JsonSubTypes.Type(name = "AzureTable", value = AzureTableDataFeed.class),
-    @JsonSubTypes.Type(name = "Elasticsearch", value = ElasticsearchDataFeed.class),
-    @JsonSubTypes.Type(name = "HttpRequest", value = HttpRequestDataFeed.class),
     @JsonSubTypes.Type(name = "InfluxDB", value = InfluxDBDataFeed.class),
     @JsonSubTypes.Type(name = "MySql", value = MySqlDataFeed.class),
     @JsonSubTypes.Type(name = "PostgreSql", value = PostgreSqlDataFeed.class),
@@ -131,7 +129,7 @@ public class DataFeedDetail {
      * roll up method
      */
     @JsonProperty(value = "rollUpMethod")
-    private DataFeedDetailRollUpMethod rollUpMethod;
+    private RollUpMethod rollUpMethod;
 
     /*
      * roll up columns
@@ -191,7 +189,7 @@ public class DataFeedDetail {
      * data feed status
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private DataFeedDetailStatus status;
+    private EntityStatus status;
 
     /*
      * data feed created time
@@ -204,6 +202,18 @@ public class DataFeedDetail {
      */
     @JsonProperty(value = "actionLinkTemplate")
     private String actionLinkTemplate;
+
+    /*
+     * authentication type for corresponding data source
+     */
+    @JsonProperty(value = "authenticationType")
+    private AuthenticationTypeEnum authenticationType;
+
+    /*
+     * The credential entity id
+     */
+    @JsonProperty(value = "credentialId")
+    private String credentialId;
 
     /**
      * Get the dataFeedId property: data feed unique id.
@@ -487,7 +497,7 @@ public class DataFeedDetail {
      *
      * @return the rollUpMethod value.
      */
-    public DataFeedDetailRollUpMethod getRollUpMethod() {
+    public RollUpMethod getRollUpMethod() {
         return this.rollUpMethod;
     }
 
@@ -497,7 +507,7 @@ public class DataFeedDetail {
      * @param rollUpMethod the rollUpMethod value to set.
      * @return the DataFeedDetail object itself.
      */
-    public DataFeedDetail setRollUpMethod(DataFeedDetailRollUpMethod rollUpMethod) {
+    public DataFeedDetail setRollUpMethod(RollUpMethod rollUpMethod) {
         this.rollUpMethod = rollUpMethod;
         return this;
     }
@@ -665,7 +675,7 @@ public class DataFeedDetail {
      *
      * @return the status value.
      */
-    public DataFeedDetailStatus getStatus() {
+    public EntityStatus getStatus() {
         return this.status;
     }
 
@@ -695,6 +705,46 @@ public class DataFeedDetail {
      */
     public DataFeedDetail setActionLinkTemplate(String actionLinkTemplate) {
         this.actionLinkTemplate = actionLinkTemplate;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: authentication type for corresponding data source.
+     *
+     * @return the authenticationType value.
+     */
+    public AuthenticationTypeEnum getAuthenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: authentication type for corresponding data source.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the DataFeedDetail object itself.
+     */
+    public DataFeedDetail setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the credentialId property: The credential entity id.
+     *
+     * @return the credentialId value.
+     */
+    public String getCredentialId() {
+        return this.credentialId;
+    }
+
+    /**
+     * Set the credentialId property: The credential entity id.
+     *
+     * @param credentialId the credentialId value to set.
+     * @return the DataFeedDetail object itself.
+     */
+    public DataFeedDetail setCredentialId(String credentialId) {
+        this.credentialId = credentialId;
         return this;
     }
 }

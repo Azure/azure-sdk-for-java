@@ -435,7 +435,7 @@ public final class RoleAssignmentsImpl {
      * @return role Assignment response details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentDetailsList> listRoleAssignmentsWithResponse(
+    public RoleAssignmentsListRoleAssignmentsResponse listRoleAssignmentsWithResponse(
             String roleId, String principalId, String scope, String continuationToken, Context context) {
         return listRoleAssignmentsWithResponseAsync(roleId, principalId, scope, continuationToken, context).block();
     }

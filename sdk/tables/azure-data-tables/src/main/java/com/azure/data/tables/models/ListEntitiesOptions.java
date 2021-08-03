@@ -5,13 +5,15 @@ package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.List;
+
 /**
  * Options to modify the data returned from the {@code listEntities} family of methods.
  */
 @Fluent
 public final class ListEntitiesOptions {
     private Integer top;
-    private String select;
+    private List<String> select;
     private String filter;
 
     /**
@@ -31,26 +33,29 @@ public final class ListEntitiesOptions {
      */
     public ListEntitiesOptions setTop(Integer top) {
         this.top = top;
+
         return this;
     }
 
     /**
-     * Gets the value of the `select` OData query option which limits the properties returned on each entity.
+     * Gets a list of properties to select on each entity.
      *
-     * @return The value of the `select` OData query option.
+     * @return The list of properties to select on each entity.
      */
-    public String getSelect() {
+    public List<String> getSelect() {
         return this.select;
     }
 
     /**
-     * Sets the value of the `select` OData query option which limits the properties returned on each entity.
+     * Sets a list of properties to select on each entity.
      *
-     * @param select The value of the `select` OData query option.
+     * @param select The list of properties to select on each entity.
+     *
      * @return The updated {@code ListEntitiesOptions}.
      */
-    public ListEntitiesOptions setSelect(String select) {
+    public ListEntitiesOptions setSelect(List<String> select) {
         this.select = select;
+
         return this;
     }
 
@@ -69,10 +74,12 @@ public final class ListEntitiesOptions {
      * that do not match the filter expression.
      *
      * @param filter The value of the `filter` OData query option.
+     *
      * @return The updated {@code ListEntitiesOptions}.
      */
     public ListEntitiesOptions setFilter(String filter) {
         this.filter = filter;
+
         return this;
     }
 }

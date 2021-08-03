@@ -18,26 +18,47 @@ The samples project demonstrates the following:
 ```java
 // When no URI is provided for instantiation, the Azure IoT Models Repository global endpoint
 // https://devicemodels.azure.com/ is used and the model dependency resolution
-// configuration is set to TryFromExpanded.
-ModelsRepositoryClientBuilder clientBuilder = new ModelsRepositoryClientBuilder();
-ModelsRepositoryAsyncClient asyncClient = clientBuilder.buildAsyncClient();
-ModelsRepositoryClient syncClient = clientBuilder.buildClient();
+// configuration is set to TRY_FROM_EXPANDED.
+ModelsRepositoryAsyncClient asyncClient = new ModelsRepositoryClientBuilder()
+    .buildAsyncClient();
 
-System.out.println("Initialized the async client pointing to the global endpoint" + asyncClient.getRepositoryUri().toString());
-System.out.println("Initialized the sync client pointing to the global endpoint" + syncClient.getRepositoryUri().toString());
+ModelsRepositoryClient syncClient = new ModelsRepositoryClientBuilder()
+    .buildClient();
+
+System.out.println("Initialized the async client pointing to the global endpoint" + asyncClient.getRepositoryEndpoint());
+System.out.println("Initialized the sync client pointing to the global endpoint" + syncClient.getRepositoryEndpoint());
+```
+
+```java 
+// This form shows specifying a custom URI for the models repository with default client options.
+// The default client options will enable model dependency resolution.
+ModelsRepositoryAsyncClient asyncClient = new ModelsRepositoryClientBuilder()
+    .repositoryEndpoint("https://contoso.com/models")
+    .buildAsyncClient();
+
+ModelsRepositoryClient syncClient = new ModelsRepositoryClientBuilder()
+    .repositoryEndpoint("https://contoso.com/models")
+    .buildClient();
+
+System.out.println("Initialized the async client pointing to the custom endpoint" + asyncClient.getRepositoryEndpoint);
+System.out.println("Initialized the sync client pointing to the custom endpoint" + syncClient.getRepositoryEndpoint);
 ```
 
 ```java
 // The client will also work with a local file-system URI. This example shows initialization
 // with a local URI and disabling model dependency resolution.
-clientBuilder
-    .repositoryEndpoint(LOCAL_DIRECTORY_URI)
-    .modelDependencyResolution(ModelDependencyResolution.DISABLED);
-asyncClient = clientBuilder.buildAsyncClient();
-syncClient = clientBuilder.buildClient();
+ModelsRepositoryAsyncClient asyncClient = new ModelsRepositoryClientBuilder()
+    .repositoryEndpoint(CLIENT_SAMPLES_DIRECTORY_PATH)
+    .modelDependencyResolution(ModelDependencyResolution.DISABLED)
+    .buildAsyncClient();
 
-System.out.println("Initialized the async client pointing to the local file-system: " + asyncClient.getRepositoryUri().toString());
-System.out.println("Initialized the sync client pointing to the local file-system: " + syncClient.getRepositoryUri().toString());
+ModelsRepositoryClient syncClient = new ModelsRepositoryClientBuilder()
+    .repositoryEndpoint(CLIENT_SAMPLES_DIRECTORY_PATH)
+    .modelDependencyResolution(ModelDependencyResolution.DISABLED)
+    .buildClient();
+
+System.out.println("Initialized the async client pointing to the local file-system: " + asyncClient.getRepositoryEndpoint);
+System.out.println("Initialized the sync client pointing to the local file-system: " + syncClient.getRepositoryEndpoint);
 ```
 
 ## Sync vs Async clients
@@ -55,9 +76,9 @@ If you need to override pipeline behavior, such as provide your own `HttpClient`
 It provides an opportunity to override default behavior including:
 
 - Specifying API version
-- Overriding [HttpPipeline](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/HttpPipeline.java).
-- Enabling [HttpLogOptions](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/HttpLogOptions.java).
-- Controlling [retry strategy](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/RetryPolicy.java).
+- Overriding [HttpPipeline](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/HttpPipeline.java).
+- Enabling [HttpLogOptions](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/HttpLogOptions.java).
+- Controlling [retry strategy](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/RetryPolicy.java).
 
 ## Publish models
 
@@ -69,24 +90,20 @@ After publishing, your model(s) will be available for consumption from the globa
 
 ```java
 // Global endpoint client
-ModelsRepositoryClientBuilder clientBuilder = new ModelsRepositoryClientBuilder();
-ModelsRepositoryAsyncClient asyncClient = clientBuilder.buildAsyncClient();
+// Global endpoint client
+ModelsRepositoryAsyncClient asyncClient = new ModelsRepositoryClientBuilder()
+    .buildAsyncClient();
 
 // The output of getModels will include at least the definition for the target dtmi.
 // If the model dependency resolution configuration is not disabled, then models in which the
 // target dtmi depends on will also be included in the returned Map<String, String>.
 String targetDtmi = "dtmi:com:example:TemperatureController;1";
 
-CountDownLatch modelsCountdownLatch = new CountDownLatch(1);
-
 // In this case the above dtmi has 2 model dependencies.
 // dtmi:com:example:Thermostat;1 and dtmi:azure:DeviceManagement:DeviceInformation;1
 asyncClient.getModels(targetDtmi)
     .doOnSuccess(aVoid -> System.out.println("Fetched the model and dependencies for: " + targetDtmi))
-    .doOnTerminate(modelsCountdownLatch::countDown)
     .subscribe(res -> System.out.println(String.format("%s resolved in %s interfaces.", targetDtmi, res.size())));
-
-modelsCountdownLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
 ```
 
 GitHub pull-request workflows are a core aspect of the IoT Models Repository service. To submit models, the user is expected to fork and clone the global [models repository project][modelsrepository_github_repo] then iterate against the local copy. Changes would then be pushed to the fork (ideally in a new branch) and a PR created against the global repository.
@@ -95,26 +112,20 @@ To support testing local changes using this workflow and similar use cases, the 
 
 ```java
 // Local sample repository client
-ModelsRepositoryClientBuilder clientBuilder = new ModelsRepositoryClientBuilder()
-    .repositoryEndpoint(LOCAL_DIRECTORY_URI);
-
-ModelsRepositoryAsyncClient asyncClient = clientBuilder.buildAsyncClient();
+ModelsRepositoryAsyncClient asyncClient = new ModelsRepositoryClientBuilder()
+    .repositoryEndpoint(CLIENT_SAMPLES_DIRECTORY_PATH)
+    .buildAsyncClient();
 
 // The output of getModels will include at least the definition for the target dtmi.
 // If the model dependency resolution configuration is not disabled, then models in which the
 // target dtmi depends on will also be included in the returned Map<String, String>.
 String targetDtmi = "dtmi:com:example:TemperatureController;1";
 
-CountDownLatch modelsCountdownLatch = new CountDownLatch(1);
-
 // In this case the above dtmi has 2 model dependencies.
 // dtmi:com:example:Thermostat;1 and dtmi:azure:DeviceManagement:DeviceInformation;1
 asyncClient.getModels(targetDtmi)
     .doOnSuccess(aVoid -> System.out.println("Fetched the model and dependencies for: " + targetDtmi))
-    .doOnTerminate(modelsCountdownLatch::countDown)
     .subscribe(res -> System.out.println(String.format("%s resolved in %s interfaces.", targetDtmi, res.size())));
-
-modelsCountdownLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
 ```
 
 You are also able to get definitions for multiple root models at a time by leveraging
@@ -122,8 +133,8 @@ the `getModels` overload that supports an `Iterable`.
 
 ```java
 // Global endpoint client
-ModelsRepositoryClientBuilder clientBuilder = new ModelsRepositoryClientBuilder();
-ModelsRepositoryAsyncClient asyncClient = clientBuilder.buildAsyncClient();
+ModelsRepositoryAsyncClient asyncClient = new ModelsRepositoryClientBuilder()
+    .buildAsyncClient();
 
 // When given an Iterable of dtmis, the output of getModels() will include at
 // least the definitions of each dtmi enumerated in the Iterable.
@@ -131,17 +142,12 @@ ModelsRepositoryAsyncClient asyncClient = clientBuilder.buildAsyncClient();
 // enumerated dtmi depends on will also be included in the returned Map<String, String>.
 Iterable<String> dtmis = Arrays.asList("dtmi:com:example:TemperatureController;1", "dtmi:com:example:azuresphere:sampledevice;1");
 
-CountDownLatch modelsCountdownLatch = new CountDownLatch(1);
-
 // In this case the dtmi "dtmi:com:example:TemperatureController;1" has 2 model dependencies
 // and the dtmi "dtmi:com:example:azuresphere:sampledevice;1" has no additional dependencies.
 // The returned Map<String, String> will include 4 models.
 asyncClient.getModels(dtmis)
     .doOnSuccess(aVoid -> System.out.println("Fetched the models and dependencies for: " + String.join(", ", dtmis)))
-    .doOnTerminate(modelsCountdownLatch::countDown)
     .subscribe(res -> System.out.println(String.format("Dtmis %s resolved in %s interfaces.", String.join(", ", dtmis), res.size())));
-
-modelsCountdownLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
 ```
 
 ## DtmiConventions utility functions
@@ -149,6 +155,7 @@ modelsCountdownLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.S
 The IoT Models Repository applies a set of conventions for organizing digital twin models. This package exposes a class
 called `DtmiConventions` which exposes utility functions supporting these conventions. These same functions are used throughout the client.
 
+`isValidDtmi` will ensure that the provided DigitalTwins Model Id (DTMI) has the correct format according to [DTDL specifications][dtdlv2_reference].
 ```java
 // This snippet shows how to validate a given DTMI string is well-formed.
 
@@ -161,38 +168,41 @@ String invalidDtmi = "dtmi:com:example:Thermostat";
 System.out.println(String.format("Dtmi %s is a valid dtmi: %s", invalidDtmi, DtmiConventions.isValidDtmi(invalidDtmi)));
 ```
 
+`getModelUri` allows for constructing the path in which the provided DTMI is supposed to be located at based on a repository URI.
+For instance: If the repository URI is `https://contoso.com/models/` and the DTMI (DigitalTwins Model Id) is `dtmi:com:example:Thermostat;1` then the path in which the file should exist will be `https://constoso.com/models/dtmi/com/example/thermostat-1.json`.
+
+Same pattern is expected while working with the local file system.
+For instance: If the repository URI is `file:///path/to/repository` and the DTMI (DigitalTwins Model Id) is `dtmi:com:example:Thermostat;1` then the path in which the file should exist will be `file:///path/to/repository/dtmi/com/example/thermostat-1.json`.
+
+If the `boolean` parameter to the `getModelUri` method (`expanded`) is `true`, the result of the resolved path will have `.expanded.json` file extension instead of `.json`. This will allow for the `ModelsRepositoryClient` to only load the pre-computed dependency tree instead of the entire dependency tree. If the `.expanded.json` form of the model payload cannot be found, the client will load the full dependency tree as a fall back mechanism. 
+
 ```java
 // This snippet shows obtaining a fully qualified path to a model file.
 
 // Local repository example:
-try {
-    URI localRepositoryUri = new URI("file:///path/to/repository");
-    String fullyQualifiedModelUri = DtmiConventions.getModelUri("dtmi:com:example:Thermostat;1", localRepositoryUri, false).toString();
+URI localRepositoryUri = new URI("file:///path/to/repository");
+String fullyQualifiedModelUri = DtmiConventions.getModelUri("dtmi:com:example:Thermostat;1", localRepositoryUri, false).toString();
 
-    // Prints: file:///path/to/repository/dtmi/com/example/thermostat-1.json
-    System.out.println(fullyQualifiedModelUri);
+// Prints: file:///path/to/repository/dtmi/com/example/thermostat-1.json
+System.out.println(fullyQualifiedModelUri);
 
-    // Remote repository example
-    URI remoteRepositoryUri = new URI("https://contoso.com/models/");
-    fullyQualifiedModelUri = DtmiConventions.getModelUri("dtmi:com:example:Thermostat;1", remoteRepositoryUri, false).toString();
+// Remote repository example with expanded enabled
+URI remoteRepositoryUri = new URI("https://contoso.com/models/");
+fullyQualifiedModelUri = DtmiConventions.getModelUri("dtmi:com:example:Thermostat;1", remoteRepositoryUri, true).toString();
 
-    // Prints: https://constoso.com/models/dtmi/com/example/thermostat-1.json
-    System.out.println(fullyQualifiedModelUri);
-} catch (URISyntaxException ex) {
-    System.out.println("Invalid URI path has been used to instantiate the URI object. Exiting...");
-    return;
-}
+// Prints: https://constoso.com/models/dtmi/com/example/thermostat-1.expanded.json
+System.out.println(fullyQualifiedModelUri);
 ```
 
 <!-- LINKS -->
 [modelsrepository_github_repo]: https://github.com/Azure/iot-plugandplay-models
-[modelsrepository_sample_extension]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/modelsrepository/Azure.IoT.ModelsRepository/samples/ModelsRepositoryClientSamples/ModelsRepositoryClientExtensions.cs
-[modelsrepository_clientoptions]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/modelsrepository/Azure.IoT.ModelsRepository/src/ModelsRepositoryClientOptions.cs
+[modelsrepository_sample_extension]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/modelsrepository/Azure.IoT.ModelsRepository/samples/ModelsRepositoryClientSamples/ModelsRepositoryClientExtensions.cs
+[modelsrepository_clientoptions]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/modelsrepository/Azure.IoT.ModelsRepository/src/ModelsRepositoryClientOptions.cs
 [modelsrepository_msdocs]: https://docs.microsoft.com/azure/iot-pnp/concepts-model-repository
 [modelsrepository_publish_msdocs]: https://docs.microsoft.com/azure/iot-pnp/concepts-model-repository#publish-a-model
 [modelsrepository_iot_endpoint]: https://devicemodels.azure.com/
 [json_ld_reference]: https://json-ld.org
 [dtdlv2_reference]: https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md
-[azure_core_transport]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/core/Azure.Core/samples/Pipeline.md
-[azure_core_diagnostics]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/core/Azure.Core/samples/Diagnostics.md
-[azure_core_configuration]: https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/core/Azure.Core/samples/Configuration.md
+[azure_core_transport]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/Pipeline.md
+[azure_core_diagnostics]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/Diagnostics.md
+[azure_core_configuration]: https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/Configuration.md

@@ -42,6 +42,7 @@ public class ConnectionHandler extends Handler {
     static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
 
     static final int MAX_FRAME_SIZE = 65536;
+    static final int CONNECTION_IDLE_TIMEOUT = 60_000;  // milliseconds
 
     private final Map<String, Object> connectionProperties;
     private final ConnectionOptions connectionOptions;
@@ -113,6 +114,11 @@ public class ConnectionHandler extends Handler {
      * @param transport Transport to add layers to.
      */
     protected void addTransportLayers(Event event, TransportInternal transport) {
+        // default connection idle timeout is 0.
+        // Giving it a idle timeout will enable the client side to know broken connection faster.
+        // Refer to http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#doc-doc-idle-time-out
+        transport.setIdleTimeout(CONNECTION_IDLE_TIMEOUT);
+
         final SslDomain sslDomain = Proton.sslDomain();
         sslDomain.init(SslDomain.Mode.CLIENT);
 
@@ -160,6 +166,11 @@ public class ConnectionHandler extends Handler {
             getConnectionId(), getHostname(), connectionOptions.getFullyQualifiedNamespace());
 
         final Connection connection = event.getConnection();
+        if (connection == null) {
+            logger.warning("connectionId[{}] Underlying connection is null. Should not be possible.");
+            close();
+            return;
+        }
 
         // Set the hostname of the AMQP message broker. This may be different from the actual underlying transport
         // in the case we are using an intermediary to connect to Event Hubs.
@@ -199,7 +210,7 @@ public class ConnectionHandler extends Handler {
             connection.free();
         }
 
-        onNext(connection.getRemoteState());
+        close();
     }
 
     @Override
@@ -290,7 +301,7 @@ public class ConnectionHandler extends Handler {
         final ErrorCondition error = connection.getCondition();
 
         logErrorCondition("onConnectionFinal", connection, error);
-        onNext(connection.getRemoteState());
+        onNext(EndpointState.CLOSED);
 
         // Complete the processors because they no longer have any work to do.
         close();

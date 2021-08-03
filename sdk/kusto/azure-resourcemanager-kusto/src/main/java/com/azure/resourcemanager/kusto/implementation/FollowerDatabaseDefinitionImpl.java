@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.kusto.implementation;
 
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 import com.azure.resourcemanager.kusto.models.FollowerDatabaseDefinition;
 
 public final class FollowerDatabaseDefinitionImpl implements FollowerDatabaseDefinition {
     private FollowerDatabaseDefinitionInner innerObject;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    FollowerDatabaseDefinitionImpl(FollowerDatabaseDefinitionInner innerObject, KustoManager serviceManager) {
+    FollowerDatabaseDefinitionImpl(
+        FollowerDatabaseDefinitionInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,7 +34,7 @@ public final class FollowerDatabaseDefinitionImpl implements FollowerDatabaseDef
         return this.innerObject;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 }
