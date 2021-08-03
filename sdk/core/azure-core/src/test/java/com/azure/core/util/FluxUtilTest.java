@@ -39,9 +39,12 @@ import java.nio.file.StandardOpenOption;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -234,9 +237,7 @@ public class FluxUtilTest {
                 actual.onSubscribe(new Subscription() {
                     @Override
                     public void request(long n) {
-                        for (int i = 0; i < 1024; i++) {
-                            actual.onNext(ByteBuffer.wrap(data).asReadOnlyBuffer());
-                        }
+                        IntStream.range(0, 16).forEach(ignored -> actual.onNext(ByteBuffer.wrap(data)));
 
                         actual.onComplete();
                     }
@@ -247,10 +248,20 @@ public class FluxUtilTest {
                 });
             }
         };
-        Path ignoresRequestFile = Files.createTempFile("ignoresRequestFile" + UUID.randomUUID(), ".txt");
-        ignoresRequestFile.toFile().deleteOnExit();
-        AsynchronousFileChannel ignoresRequestChannel = AsynchronousFileChannel.open(ignoresRequestFile,
-            StandardOpenOption.WRITE);
+        AsynchronousFileChannel ignoresRequestChannel = mock(AsynchronousFileChannel.class);
+        Timer timer = new Timer(true);
+        doAnswer(invocation -> {
+            ByteBuffer stream = invocation.getArgument(0);
+            CompletionHandler<Integer, ByteBuffer> completionHandler = invocation.getArgument(3);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    completionHandler.completed(stream.remaining(), stream.position(stream.limit()));
+                }
+            }, 100);
+
+            return null;
+        }).when(ignoresRequestChannel).write(any(), anyLong(), any(), any());
 
         // CompletionHandler that emits a writing error.
         AsynchronousFileChannel completionHandlerPropagatesError = mock(AsynchronousFileChannel.class);
