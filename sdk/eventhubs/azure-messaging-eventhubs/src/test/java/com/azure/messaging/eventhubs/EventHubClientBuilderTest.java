@@ -160,7 +160,7 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
                 assertTrue(batch.tryAdd(testData));
                 return asyncProducerClient.send(batch);
             });
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             asyncProducerClient.close();

@@ -186,7 +186,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
                 .verify(TIMEOUT);
 
             // Act
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             dispose(producer);
