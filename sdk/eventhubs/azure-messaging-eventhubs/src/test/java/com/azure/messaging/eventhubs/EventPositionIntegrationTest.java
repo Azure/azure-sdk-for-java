@@ -158,7 +158,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
                 .filter(event -> isMatchingEvent(event, testData.getMessageId()))
                 .take(Duration.ofSeconds(3)))
                 .expectComplete()
-                .verify(TIMEOUT);
+                .verify();
         } finally {
             dispose(consumer);
         }
@@ -186,6 +186,8 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
                 .verify(TIMEOUT);
 
             // Act
+        } catch (Exception ex){
+            ex.printStackTrace();
         } finally {
             dispose(producer);
         }
