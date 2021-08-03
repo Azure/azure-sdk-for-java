@@ -165,7 +165,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 dataFeedId.set(createdDataFeed.getId());
 
                 // Act & Assert
-                for(PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions()
+                for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions()
                             .setListDataFeedFilter(new ListDataFeedFilter()
                             .setCreator(createdDataFeed.getCreator())),
                     Context.NONE)
@@ -236,14 +236,14 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
-        int[] pageCount = new int[0];
+        int pageCount = 0;
         for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(
             new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter().setDataFeedStatus(ACTIVE)),
                 Context.NONE)
             .iterableByPage()) {
             dataFeedPagedResponse.getValue().forEach((dataFeed -> assertEquals(ACTIVE, dataFeed.getStatus())));
-            pageCount[0]++;
-            if (pageCount[0] > 4) {
+            pageCount++;
+            if (pageCount > 4) {
                 // Stop after 4 pages since there can be large number of feeds.
                 break;
             }

@@ -233,8 +233,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 .setListDataFeedFilter(new ListDataFeedFilter()
                     .setDataFeedStatus(ACTIVE))).byPage().take(4))
             .thenConsumeWhile(dataFeedPagedResponse -> {
-                dataFeedPagedResponse.getValue().forEach(dataFeed-> ACTIVE.equals(dataFeed.getStatus()));
-            return true;
+                dataFeedPagedResponse.getValue().forEach(dataFeed -> ACTIVE.equals(dataFeed.getStatus()));
+                return true;
             })
             .verifyComplete();
     }
