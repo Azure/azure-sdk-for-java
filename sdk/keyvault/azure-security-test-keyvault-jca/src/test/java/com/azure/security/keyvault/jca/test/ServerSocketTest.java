@@ -249,8 +249,7 @@ public class ServerSocketTest {
         return result;
     }
 
-
-    private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
+    private static final class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
 
         String certificateName;
 
