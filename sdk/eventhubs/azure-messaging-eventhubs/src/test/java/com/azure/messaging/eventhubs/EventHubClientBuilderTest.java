@@ -9,7 +9,9 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -41,6 +43,7 @@ public class EventHubClientBuilderTest {
     private static final String CORRECT_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+    private ClientLogger logger = new ClientLogger(EventHubClientBuilderTest.class);
 
     @Test
     public void missingConnectionString() {
@@ -124,6 +127,8 @@ public class EventHubClientBuilderTest {
                 .buildAsyncConsumerClient();
             clientCreated = true;
         } catch (Exception ex) {
+            logger.error("testProxyOptionsConfiguration: Failed to create client for proxyConfiguration "
+                    + proxyConfiguration);
             errorMessage = ex.getMessage();
         }
         Assertions.assertEquals(expectedClientCreation, clientCreated, errorMessage);
