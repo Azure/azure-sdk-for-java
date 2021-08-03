@@ -80,18 +80,18 @@ public final class PurviewScanningClientBuilder {
     }
 
     /*
-     * Api Version
+     * Service version
      */
-    private String apiVersion;
+    private PurviewScanningServiceVersion serviceVersion;
 
     /**
-     * Sets Api Version.
+     * Sets Service version.
      *
-     * @param apiVersion the apiVersion value.
+     * @param serviceVersion the serviceVersion value.
      * @return the PurviewScanningClientBuilder.
      */
-    public PurviewScanningClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public PurviewScanningClientBuilder serviceVersion(PurviewScanningServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 
@@ -231,8 +231,8 @@ public final class PurviewScanningClientBuilder {
      * @return an instance of PurviewScanningClientImpl.
      */
     private PurviewScanningClientImpl buildInnerClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
+        if (serviceVersion == null) {
+            this.serviceVersion = PurviewScanningServiceVersion.getLatest();
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
@@ -241,7 +241,7 @@ public final class PurviewScanningClientBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         PurviewScanningClientImpl client =
-                new PurviewScanningClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
+                new PurviewScanningClientImpl(pipeline, serializerAdapter, endpoint, serviceVersion.getVersion());
         return client;
     }
 

@@ -11,4 +11,7 @@ low-level-client: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
 title: PurviewScanningClient
+service-name: PurviewScanning
+service-versions:
+  - 2018-12-01-preview
 ```
