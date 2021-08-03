@@ -51,7 +51,7 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
 
     @Override
     protected void whenSendWithException() {
-        when(this.mockClientFactory.getOrCreateSender(anyString())).thenThrow(ServiceBusRuntimeException.class);
+        when(this.mockClientFactory.getOrCreateSender(anyString())).thenThrow(NullPointerException.class);
     }
 
     @Override
