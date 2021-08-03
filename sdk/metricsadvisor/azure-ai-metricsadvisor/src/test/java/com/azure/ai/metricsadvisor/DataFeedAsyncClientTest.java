@@ -119,7 +119,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
     /**
      * Verifies the result of the list data feed method to return only 3 results using
-     * {@link ListDataFeedOptions#setMaxPageSize(int)}.
+     * {@link ListDataFeedOptions#setMaxPageSize(Integer)}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -156,9 +156,13 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
                 // Act & Assert
                 StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
-                    .setListDataFeedFilter(new ListDataFeedFilter()
-                        .setCreator(createdDataFeed.getCreator()))))
-                    .thenConsumeWhile(dataFeed -> createdDataFeed.getCreator().equals(dataFeed.getCreator()))
+                        .setListDataFeedFilter(new ListDataFeedFilter()
+                        .setCreator(createdDataFeed.getCreator()))).byPage().take(4))
+                    .thenConsumeWhile(dataFeedPagedResponse -> {
+                        dataFeedPagedResponse.getValue()
+                            .forEach(dataFeed -> createdDataFeed.getCreator().equals(dataFeed.getCreator()));
+                        return true;
+                    })
                     .verifyComplete();
             }, POSTGRE_SQL_DB);
         } finally {
@@ -227,8 +231,11 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         StepVerifier.create(client.listDataFeeds(
             new ListDataFeedOptions()
                 .setListDataFeedFilter(new ListDataFeedFilter()
-                    .setDataFeedStatus(ACTIVE))))
-            .thenConsumeWhile(dataFeed -> ACTIVE.equals(dataFeed.getStatus()))
+                    .setDataFeedStatus(ACTIVE))).byPage().take(4))
+            .thenConsumeWhile(dataFeedPagedResponse -> {
+                dataFeedPagedResponse.getValue().forEach(dataFeed-> ACTIVE.equals(dataFeed.getStatus()));
+            return true;
+            })
             .verifyComplete();
     }
 
@@ -244,9 +251,12 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
         // Act & Assert
         StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
-            .setListDataFeedFilter(new ListDataFeedFilter()
-                .setDataFeedGranularityType(DAILY))))
-            .thenConsumeWhile(dataFeed -> DAILY.equals(dataFeed.getGranularity().getGranularityType()))
+            .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedGranularityType(DAILY))).byPage().take(4))
+            .thenConsumeWhile(dataFeedPagedResponse -> {
+                dataFeedPagedResponse.getValue()
+                    .forEach(dataFeed -> DAILY.equals(dataFeed.getGranularity().getGranularityType()));
+                return true;
+            })
             .verifyComplete();
     }
 

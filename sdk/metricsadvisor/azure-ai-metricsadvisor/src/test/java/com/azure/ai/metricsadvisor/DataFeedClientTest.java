@@ -155,6 +155,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
+            final int[] pageCount = {0};
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -164,13 +165,21 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 dataFeedId.set(createdDataFeed.getId());
 
                 // Act & Assert
-                client.listDataFeeds(new ListDataFeedOptions()
-                        .setListDataFeedFilter(new ListDataFeedFilter()
+                for(PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions()
+                            .setListDataFeedFilter(new ListDataFeedFilter()
                             .setCreator(createdDataFeed.getCreator())),
                     Context.NONE)
-                    .forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
-
+                    .iterableByPage()) {
+                    List<DataFeed> dataFeedList = dataFeedPagedResponse.getValue();
+                    dataFeedList.forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
+                    pageCount[0]++;
+                    if (pageCount[0] > 4) {
+                        // Stop after 4 pages since there can be large number of feeds.
+                        break;
+                    }
+                }
             }, POSTGRE_SQL_DB);
+
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 client.deleteDataFeed(dataFeedId.get());
@@ -227,10 +236,18 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
-        client.listDataFeeds(
-            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                .setDataFeedStatus(ACTIVE)), Context.NONE)
-            .stream().iterator().forEachRemaining(dataFeed -> assertEquals(ACTIVE, dataFeed.getStatus()));
+        int[] pageCount = new int[0];
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(
+            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter().setDataFeedStatus(ACTIVE)),
+                Context.NONE)
+            .iterableByPage()) {
+            dataFeedPagedResponse.getValue().forEach((dataFeed -> assertEquals(ACTIVE, dataFeed.getStatus())));
+            pageCount[0]++;
+            if (pageCount[0] > 4) {
+                // Stop after 4 pages since there can be large number of feeds.
+                break;
+            }
+        }
     }
 
     /**
@@ -244,11 +261,20 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
-        client.listDataFeeds(
-            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                .setDataFeedGranularityType(DAILY)), Context.NONE)
-            .stream().iterator()
-            .forEachRemaining(dataFeed -> assertEquals(DAILY, dataFeed.getGranularity().getGranularityType()));
+        int[] pageCount = new int[] {0};
+
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(
+                new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
+                    .setDataFeedGranularityType(DAILY)), Context.NONE)
+            .iterableByPage()) {
+            dataFeedPagedResponse.getValue()
+                .forEach(dataFeed -> assertEquals(DAILY, dataFeed.getGranularity().getGranularityType()));
+            pageCount[0]++;
+            if (pageCount[0] > 4) {
+                // Stop after 4 pages since there can be large number of feeds.
+                break;
+            }
+        }
     }
 
     /**
