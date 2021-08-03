@@ -726,8 +726,9 @@ public class EventHubClientBuilder {
     }
 
     private ConnectionOptions getConnectionOptions() {
-        Configuration buildConfiguration = configuration == null ? Configuration.getGlobalConfiguration().clone() :
-                configuration;
+        Configuration buildConfiguration = configuration == null
+                ? Configuration.getGlobalConfiguration().clone()
+                : configuration;
 
         if (credentials == null) {
             final String connectionString = buildConfiguration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
@@ -785,8 +786,6 @@ public class EventHubClientBuilder {
             authentication = proxyOptions.getAuthentication();
         }
 
-        logger.info("getDefaultProxyConfiguration proxy configuration value = "
-                + configuration.get(Configuration.PROPERTY_HTTP_PROXY) + " config instance = " + configuration);
         String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
 
         if (CoreUtils.isNullOrEmpty(proxyAddress)) {
@@ -809,17 +808,8 @@ public class EventHubClientBuilder {
             final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
             return new ProxyOptions(authentication, proxy, username, password);
         } else {
-            logger.info("getProxyOptions proxy configuration value = "
-                    + configuration.get(Configuration.PROPERTY_HTTP_PROXY) + " config instance = " + configuration);
             com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
                 .fromConfiguration(configuration);
-            if (coreProxyOptions == null) {
-                logger.info("coreProxyOptions is null for proxyAddress " + proxyAddress
-                        +  " configuration value = " + configuration.get(Configuration.PROPERTY_HTTP_PROXY));
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "coreProxyOptions is null for proxyAddress " + proxyAddress
-                                +  " configuration value = " + configuration.get(Configuration.PROPERTY_HTTP_PROXY)));
-            }
             Proxy.Type proxyType = coreProxyOptions.getType().toProxyType();
             InetSocketAddress coreProxyAddress = coreProxyOptions.getAddress();
             String username = coreProxyOptions.getUsername();

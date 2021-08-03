@@ -9,7 +9,6 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Assertions;
@@ -43,6 +42,7 @@ public class EventHubClientBuilderTest {
     private static final String CORRECT_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+    public static final String JAVA_NET_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
     private ClientLogger logger = new ClientLogger(EventHubClientBuilderTest.class);
 
     @Test
@@ -116,6 +116,8 @@ public class EventHubClientBuilderTest {
     public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
+        configuration = configuration.put(JAVA_NET_USE_SYSTEM_PROXIES, "true");
+
         boolean clientCreated = false;
         try {
             EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
@@ -126,13 +128,8 @@ public class EventHubClientBuilderTest {
                 .buildAsyncConsumerClient();
             clientCreated = true;
         } catch (Exception ex) {
-            logger.error("testProxyOptionsConfiguration: Failed to create client for proxyConfiguration {}: {}",
-                    proxyConfiguration, ex.getMessage(), ex);
-            ex.printStackTrace();
         }
-        if (!CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_HTTP_PROXY))) {
-            Assertions.assertEquals(expectedClientCreation, clientCreated);
-        }
+        Assertions.assertEquals(expectedClientCreation, clientCreated);
     }
 
     @Test
