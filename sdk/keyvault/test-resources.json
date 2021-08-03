@@ -109,6 +109,22 @@
       "type": "string",
       "defaultValue": "identityForKeyVault"
     },
+    "RSAKeyLessCertificateName": {
+      "type": "string",
+      "defaultValue": "myaliasForRSAKeyLess"
+    },
+    "EC256KeyLessCertificateName": {
+      "type": "string",
+      "defaultValue": "myaliasForEC256KeyLess"
+    },
+    "EC384KeyLessCertificateName": {
+      "type": "string",
+      "defaultValue": "myaliasForEC384KeyLess"
+    },
+    "EC521KeyLessCertificateName": {
+      "type": "string",
+      "defaultValue": "myaliasForEC521KeyLess"
+    },
     "certificateName": {
       "type": "string",
       "defaultValue": "myalias"
@@ -392,12 +408,16 @@
         "forceUpdateTag": "[parameters('utcValue')]",
         "azPowerShellVersion": "5.0",
         "timeout": "PT30M",
-        "arguments": "[format(' -vaultName {0} -certificateName {1} -subjectName {2}', variables('kvName'), parameters('certificateName'), parameters('subjectName'))]",
+        "arguments": "[format(' -vaultName {0} -certificateName {1} -subjectName {2} -RSAKeyLessCertificateName {3} -EC256KeyLessCertificateName {4} -EC384KeyLessCertificateName {5} -EC521KeyLessCertificateName {6}', variables('kvName'), parameters('certificateName'), parameters('subjectName'), parameters('RSAKeyLessCertificateName'), parameters('EC256KeyLessCertificateName'), parameters('EC384KeyLessCertificateName'), parameters('EC521KeyLessCertificateName'))]",
         "scriptContent": "
         param(
     [string] [Parameter(Mandatory=$true)] $vaultName,
     [string] [Parameter(Mandatory=$true)] $certificateName,
-    [string] [Parameter(Mandatory=$true)] $subjectName
+    [string] [Parameter(Mandatory=$true)] $subjectName,
+    [string] [Parameter(Mandatory=$true)] $RSAKeyLessCertificateName,
+    [string] [Parameter(Mandatory=$true)] $EC256KeyLessCertificateName,
+    [string] [Parameter(Mandatory=$true)] $EC384KeyLessCertificateName,
+    [string] [Parameter(Mandatory=$true)] $EC521KeyLessCertificateName
     )
 
     $ErrorActionPreference = 'Stop'
@@ -405,7 +425,23 @@
 
     $policy = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -Verbose
 
+    $policyForKeyLessRSA = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -KeyType RSA -KeyNotExportable true -Verbose
+
+    $policyForKeyLessEC256 = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -KeyType EC -Curve P-256 -KeyNotExportable true -Verbose
+
+    $policyForKeyLessEC384 = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -KeyType EC -Curve P-384 -KeyNotExportable true -Verbose
+
+    $policyForKeyLessEC521 = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -KeyType EC -Curve P-521 -KeyNotExportable true -Verbose
+
     Add-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName -CertificatePolicy $policy -Verbose
+
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $RSAKeyLessCertificateName -CertificatePolicy $policyForKeyLessRSA -Verbose
+
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $EC256KeyLessCertificateName -CertificatePolicy $policyForKeyLessEC256 -Verbose
+
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $EC384KeyLessCertificateName -CertificatePolicy $policyForKeyLessEC384 -Verbose
+
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $EC521KeyLessCertificateName -CertificatePolicy $policyForKeyLessEC521 -Verbose
 
     $newCert = Get-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName
 
@@ -414,9 +450,13 @@
       Write-Host 'Waiting for certificate creation completion...'
       Start-Sleep -Seconds 10
       $operation = Get-AzKeyVaultCertificateOperation -VaultName $vaultName -Name $certificateName
+      $operationRSA = Get-AzKeyVaultCertificateOperation -VaultName $vaultName -Name $RSAKeyLessCertificateName
+      $operationEC256 = Get-AzKeyVaultCertificateOperation -VaultName $vaultName -Name $EC256KeyLessCertificateName
+      $operationEC384 = Get-AzKeyVaultCertificateOperation -VaultName $vaultName -Name $EC384KeyLessCertificateName
+      $operationEC521 = Get-AzKeyVaultCertificateOperation -VaultName $vaultName -Name $EC521KeyLessCertificateName
       $tries++
 
-      if ($operation.Status -eq 'failed') {
+      if (($operation.Status -eq 'failed') -or ($operationRSA.Status -eq 'failed') -or ($operationEC256.Status -eq 'failed') -or ($operationEC384.Status -eq 'failed') -or ($operationEC521.Status -eq 'failed')) {
         throw 'Creating certificate $certificateName in vault $vaultName failed with error $($operation.ErrorMessage)'
       }
 

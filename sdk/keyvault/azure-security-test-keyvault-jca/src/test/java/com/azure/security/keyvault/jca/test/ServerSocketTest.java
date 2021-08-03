@@ -33,6 +33,9 @@ import java.net.Socket;
 import java.security.KeyStore;
 import java.security.Security;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,16 +50,15 @@ public class ServerSocketTest {
 
     private static KeyManagerFactory kmf;
 
-    private static String certificateName;
-
     @BeforeAll
     public static void beforeEach() throws Exception {
+
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         /*
          * Add JCA provider.
          */
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
 
         /**
          *  - Create an Azure Key Vault specific instance of a KeyStore.
@@ -65,7 +67,7 @@ public class ServerSocketTest {
         ks = PropertyConvertorUtils.getKeyVaultKeyStore();
         kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+
     }
 
 
@@ -103,14 +105,19 @@ public class ServerSocketTest {
             .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
             .build();
         testHttpsConnection(8766, sslContext);
-
     }
 
     @Test
     public void testServerSocketWithDefaultTrustManager() throws Exception {
-        serverSocketWithTrustManager(8768);
+        String certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        serverSocketWithTrustManager(8768, getSSlContext(Arrays.asList(certificateName)));
     }
 
+    @Test
+    public void testServerSocketWithKeyLessDefaultTrustManager() throws Exception {
+        List<String> certificateNames = Arrays.asList("myaliasForRSAKeyLess", "myaliasForEC256KeyLess", "myaliasForEC384KeyLess", "myaliasForEC521KeyLess");
+        serverSocketWithTrustManager(8769, getSSlContext(certificateNames));
+    }
 
     /**
      * Test SSLServerSocket with key vault trust manager.
@@ -121,9 +128,35 @@ public class ServerSocketTest {
     public void testServerSocketWithKeyVaultTrustManager() throws Exception {
         KeyVaultTrustManagerFactoryProvider provider = new KeyVaultTrustManagerFactoryProvider();
         Security.addProvider(provider);
-        serverSocketWithTrustManager(8767);
+        String certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        serverSocketWithTrustManager(8767, getSSlContext(Arrays.asList(certificateName)));
     }
 
+    @Test
+    public void testServerSocketWithLeyLessKeyVaultTrustManager() throws Exception {
+        KeyVaultTrustManagerFactoryProvider provider = new KeyVaultTrustManagerFactoryProvider();
+        Security.addProvider(provider);
+        List<String> certificateNames = Arrays.asList("myaliasForRSAKeyLess", "myaliasForEC256KeyLess", "myaliasForEC384KeyLess", "myaliasForEC521KeyLess");
+        serverSocketWithTrustManager(8770, getSSlContext(certificateNames));
+    }
+
+    private List<SSLContext> getSSlContext(List<String> certificateNames) throws Exception {
+        List<SSLContext> result = new ArrayList<>();
+        for (String certificateName : certificateNames) {
+            /*
+             * Setup client sides with different certificate
+             *
+             * - Create an SSL context.
+             * - Set SSL context to trust any certificate.
+             */
+            result.add(SSLContexts
+                  .custom()
+                  .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+                  .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy(certificateName))
+                  .build());
+        }
+        return result;
+    }
 
     private void testHttpsConnection(Integer port, SSLContext sslContext) throws Exception {
         /*
@@ -152,7 +185,7 @@ public class ServerSocketTest {
         assertEquals("Success", result);
     }
 
-    private void serverSocketWithTrustManager(Integer port) throws Exception {
+    private void serverSocketWithTrustManager(Integer port, List<SSLContext> sslContexts) throws Exception {
         /*
          * Setup server side.
          *
@@ -171,28 +204,16 @@ public class ServerSocketTest {
 
         startSocket(serverSocket);
 
-        /*
-         * Setup client side
-         *
-         * - Create an SSL context.
-         * - Set SSL context to trust any certificate.
-         */
-
-        SSLContext sslContext = SSLContexts
-            .custom()
-            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-            .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
-            .build();
-
-        /*
-         * And now execute the test.
-         */
-        String result = sendRequest(sslContext, port);
-
-        /*
-         * And verify all went well.
-         */
-        assertEquals("Success", result);
+        sslContexts.forEach(sslContext -> {
+            /*
+             * And now execute the test.
+             */
+            String result = sendRequest(sslContext, port);
+            /*
+             * And verify all went well.
+             */
+            assertEquals("Success", result);
+        });
     }
 
     private String sendRequest(SSLContext sslContext, Integer port) {
@@ -208,7 +229,6 @@ public class ServerSocketTest {
             RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("https", sslConnectionSocketFactory)
                 .build());
-
 
         String result = null;
 
@@ -231,6 +251,13 @@ public class ServerSocketTest {
 
 
     private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
+
+        String certificateName;
+
+        private ClientPrivateKeyStrategy(String certificateName) {
+            this.certificateName = certificateName;
+        }
+
         @Override
         public String chooseAlias(Map<String, PrivateKeyDetails> map, Socket socket) {
             return certificateName; // It should be your certificate alias used in client-side
