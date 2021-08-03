@@ -189,7 +189,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
             });
             client.send(event, options);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             dispose(client);

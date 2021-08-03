@@ -156,7 +156,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         try {
             client.send(event, options);
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             dispose(client);
