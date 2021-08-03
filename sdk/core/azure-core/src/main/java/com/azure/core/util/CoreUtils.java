@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,9 +17,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.function.BiFunction;
@@ -282,5 +286,27 @@ public final class CoreUtils {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Creates {@link HttpHeaders} from the provided {@link ClientOptions}.
+     * <p>
+     * If {@code clientOptions} is null or {@link ClientOptions#getHeaders()} doesn't return any {@link Header} values
+     * null will be returned.
+     *
+     * @param clientOptions The {@link ClientOptions} used to create the {@link HttpHeaders}.
+     * @return {@link HttpHeaders} containing the {@link Header} values from {@link ClientOptions#getHeaders()} if
+     * {@code clientOptions} isn't null and contains {@link Header} values, otherwise null.
+     */
+    public static HttpHeaders createAddHeadersFromClientOptions(ClientOptions clientOptions) {
+        if (clientOptions == null) {
+            return null;
+        }
+
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        clientOptions.getHeaders().forEach(
+            header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+
+        return httpHeaderList.isEmpty() ? null : new HttpHeaders(httpHeaderList);
     }
 }

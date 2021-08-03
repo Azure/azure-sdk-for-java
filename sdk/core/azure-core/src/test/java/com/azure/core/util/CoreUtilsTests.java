@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -193,6 +198,42 @@ public class CoreUtilsTests {
             Arguments.of(null, logOptionsWithApplicationId, logOptionsApplicationId),
             Arguments.of(null, logOptionsWithoutApplicationId, null),
             Arguments.of(null, null, null)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("createAddHeadersFromClientOptionsSupplier")
+    public void createAddHeadersFromClientOptions(ClientOptions clientOptions, HttpHeaders expected) {
+        HttpHeaders actual = CoreUtils.createAddHeadersFromClientOptions(clientOptions);
+        if (expected == null) {
+            assertNull(actual);
+        } else {
+            assertEquals(expected.toMap(), actual.toMap());
+        }
+    }
+
+    private static Stream<Arguments> createAddHeadersFromClientOptionsSupplier() {
+        List<Header> multipleHeadersList = new ArrayList<>();
+        multipleHeadersList.add(new Header("a", "header"));
+        multipleHeadersList.add(new Header("another", "headerValue"));
+
+        Map<String, String> multipleHeadersMap = new HashMap<>();
+        multipleHeadersMap.put("a", "header");
+        multipleHeadersMap.put("another", "headerValue");
+
+        return Stream.of(
+            // ClientOptions is null, null is returned.
+            Arguments.of(null, null),
+
+            // ClientOptions doesn't contain Header values, null is returned.
+            Arguments.of(new ClientOptions(), null),
+
+            // ClientOptions contains a single header value, a single header HttpHeaders is returned.
+            Arguments.of(new ClientOptions().setHeaders(Collections.singletonList(new Header("a", "header"))),
+                new HttpHeaders(Collections.singletonMap("a", "header"))),
+
+            // ClientOptions contains multiple header values, a multi-header HttpHeaders is returned.
+            Arguments.of(new ClientOptions().setHeaders(multipleHeadersList), new HttpHeaders(multipleHeadersMap))
         );
     }
 }
