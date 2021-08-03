@@ -256,7 +256,9 @@ public class FluxUtilTest {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    completionHandler.completed(stream.remaining(), stream.position(stream.limit()));
+                    int remaining = stream.remaining();
+                    stream.position(stream.limit());
+                    completionHandler.completed(remaining, stream);
                 }
             }, 100);
 
