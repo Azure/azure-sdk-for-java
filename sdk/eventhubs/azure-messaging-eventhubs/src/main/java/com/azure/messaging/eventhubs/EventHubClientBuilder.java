@@ -810,6 +810,9 @@ public class EventHubClientBuilder {
             if (coreProxyOptions == null) {
                 logger.info("coreProxyOptions is null for proxyAddress " + proxyAddress
                         +  " configuration value = " + configuration.get(Configuration.PROPERTY_HTTP_PROXY));
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                        "coreProxyOptions is null for proxyAddress " + proxyAddress
+                                +  " configuration value = " + configuration.get(Configuration.PROPERTY_HTTP_PROXY)));
             }
             Proxy.Type proxyType = coreProxyOptions.getType().toProxyType();
             InetSocketAddress coreProxyAddress = coreProxyOptions.getAddress();
