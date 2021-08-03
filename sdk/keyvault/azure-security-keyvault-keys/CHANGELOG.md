@@ -1,6 +1,6 @@
 # Release History
 
-## 4.4.0-beta.2 (Unreleased)
+## 4.4.0-beta.2 (2021-08-10)
 
 
 ## 4.4.0-beta.1 (2021-07-09)
