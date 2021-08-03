@@ -69,6 +69,7 @@ public class EventHubsExporterIntegrationTest extends AzureMonitorTraceExporterT
         assertTrue(exporterCountDown.await(5, TimeUnit.SECONDS));
     }
 
+    @Disabled
     @Test
     public void processorTest() throws InterruptedException {
         CountDownLatch exporterCountDown = new CountDownLatch(3);
