@@ -11,6 +11,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -59,6 +60,7 @@ public class AppConfigurationExporterIntegrationTest extends AzureMonitorTraceEx
         assertTrue(exporterCountDown.await(10, TimeUnit.SECONDS));
     }
 
+    @Disabled
     @Test
     public void testDisableTracing() throws InterruptedException {
         CountDownLatch appConfigCountDown = new CountDownLatch(1);
