@@ -3,7 +3,6 @@
 
 package com.azure.spring.utils;
 
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import java.io.IOException;
