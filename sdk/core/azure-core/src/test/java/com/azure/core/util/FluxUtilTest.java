@@ -226,17 +226,16 @@ public class FluxUtilTest {
             StandardOpenOption.WRITE);
 
         // Improper Flux<ByteBuffer> implementation that ignores downstream requests.
+        final byte[] data = new byte[4096];
+        new SecureRandom().nextBytes(data);
         Flux<ByteBuffer> ignoresRequestFlux = new Flux<ByteBuffer>() {
             @Override
             public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-                final byte[] data = new byte[16 * 4096];
-                new SecureRandom().nextBytes(data);
-
                 actual.onSubscribe(new Subscription() {
                     @Override
                     public void request(long n) {
-                        for (int i = 0; i < data.length - 4095; i += 4096) {
-                            actual.onNext(ByteBuffer.wrap(data, i, 4096));
+                        for (int i = 0; i < 1024; i++) {
+                            actual.onNext(ByteBuffer.wrap(data).asReadOnlyBuffer());
                         }
 
                         actual.onComplete();
