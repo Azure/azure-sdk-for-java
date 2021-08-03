@@ -6,33 +6,31 @@ import com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessor;
 import com.azure.spring.keyvault.KeyVaultProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.config.ConfigFileApplicationListener;
+import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.azure.spring.utils.PropertyLoader.loadPropertiesFromFile;
+import static com.azure.spring.utils.PropertyLoader.loadPropertiesFromClassPath;
 
 /**
  * Convert legacy properties to the current and set into environment before {@link KeyVaultEnvironmentPostProcessor}.
  */
 public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPropertyEnvironmentPostProcessor {
 
-    public static final int DEFAULT_ORDER = ConfigFileApplicationListener.DEFAULT_ORDER + 1;
-    private static Properties keyvaultPropertySuffixMap;
+    public static final int DEFAULT_ORDER = ConfigDataEnvironmentPostProcessor.ORDER + 1;
     private static final Logger LOGGER = LoggerFactory.getLogger(PreLegacyPropertyEnvironmentPostProcessor.class);
     private static final String KEYVAULT_LEGACY_PREFIX = "azure.keyvault";
     public static final String DELIMITER = ".";
-
-    static {
-        // Load the mapping relationship of Key Vault legacy properties and associated current properties from
-        // classpath, this is used for handling multiple key vault cases.
-        keyvaultPropertySuffixMap = loadPropertiesFromFile("legacy-keyvault-property-suffix-mapping.properties");
-    }
 
     @Override
     public int getOrder() {
@@ -40,32 +38,14 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
     }
 
     @Override
-    protected Properties buildLegacyToCurrentPropertyMap() {
-        Properties legacyToCurrentMap = super.buildLegacyToCurrentPropertyMap();
-        String keyVaultNames = getMultipleKeyVaultNames();
+    protected Properties buildLegacyToCurrentPropertyMap(ConfigurableEnvironment environment) {
+        Properties legacyToCurrentMap = super.buildLegacyToCurrentPropertyMap(environment);
+        String[] keyVaultNames = getMultipleKeyVaultNames(environment);
         if (keyVaultNames != null) {
-            return addMultipleKVPropertyToMap(keyVaultNames, legacyToCurrentMap);
-        }
-        return legacyToCurrentMap;
-    }
-
-    /**
-     * Build a legacy Key Vault property map of multiple key vault use case. When multiple Key Vaults are used, Key
-     * Vault property names are not fixed and varies across user definition.
-     *
-     * @param keyVaultNames A string with all Key Vaults names concatenated by commas.
-     * @param legacyToCurrentMap A {@link Properties} contains a map of all legacy properties and associated current ones.
-     * @return A map contains all possible Key Vault properties names.
-     */
-    protected Properties addMultipleKVPropertyToMap(String keyVaultNames,
-                                                    Properties legacyToCurrentMap) {
-        for (String keyVault : keyVaultNames.split(",")) {
-            keyVault = keyVault.trim();
-            for (Map.Entry<Object, Object> mapping : keyvaultPropertySuffixMap.entrySet()) {
-                String legacy = buildLegacyPropertyName(keyVault, (String) mapping.getKey());
-                String current = buildCurrentPropertyName(keyVault, (String) mapping.getValue());
-                legacyToCurrentMap.put(legacy, current);
-            }
+            // Load the mapping relationship of Key Vault legacy properties and associated current properties from
+            // classpath, this is used for handling multiple key vault cases.
+            Properties keyVaultPropertySuffixMap = loadPropertiesFromClassPath("legacy-keyvault-property-suffix-mapping.properties");
+            addMultipleKVPropertyToMap(keyVaultNames, keyVaultPropertySuffixMap, legacyToCurrentMap);
         }
         return legacyToCurrentMap;
     }
@@ -74,84 +54,89 @@ public class PreLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPro
      * Load all possible Key Vault names from property "spring.cloud.azure.keyvault.order" if existed. Otherwise load
      * from legacy property "azure.keyvault.order".
      *
+     * @param environment The application environment to load property from.
      * @return A string with all Key Vaults names concatenated by commas, or null if no Key Vault names specified.
      */
-    private String getMultipleKeyVaultNames() {
-        if (getPropertyValue(KeyVaultProperties.PREFIX + ".order") != null) {
-            return (String) getPropertyValue(KeyVaultProperties.PREFIX + ".order");
-        } else {
-            return (String) getPropertyValue(KEYVAULT_LEGACY_PREFIX + ".order");
+    private String[] getMultipleKeyVaultNames(ConfigurableEnvironment environment) {
+        String[] kvNames = null;
+        List<String> kvOrderPropertyNames = Arrays.asList(KeyVaultProperties.PREFIX + ".order",
+            KEYVAULT_LEGACY_PREFIX + ".order");
+        for (String kvOrderPropertyName : kvOrderPropertyNames) {
+            String kvNamesString = Binder.get(environment)
+                                         .bind(kvOrderPropertyName, Bindable.of(String.class))
+                                         .orElse(null);
+            if (StringUtils.hasText(kvNamesString)) {
+                kvNames = Arrays.stream(kvNamesString.split(","))
+                                .map(String::trim)
+                                .toArray(size -> new String[size]);
+                break;
+            }
         }
+
+        return kvNames;
     }
 
     /**
-     * For the use case of multiple Key Vaults, create the legacy Key Vault property name for a specific Key Vault.
+     * Build a legacy Key Vault property map of multiple key vault use case. When multiple Key Vaults are used, Key
+     * Vault property names are not fixed and varies across user definition.
      *
-     * @param keyVaultName The name of a Key Vault, which is used as the property name's infix.
-     * @param legacyPropertySuffix Suffix of a legacy Key Vault property name, which is loaded from the keys of
-     *                             legacy-keyvault-property-suffix-mapping.properties
-     * @return A legacy Key Vault property name with a Key Vault name as infix.
+     * @param keyVaultNames A string array contains all Key Vaults names.
+     * @param keyVaultPropertySuffixMap A {@link Properties} contains a map of Key Vault property suffixes from legacy
+     *                                  to current.
+     * @param legacyToCurrentMap A {@link Properties} contains a map of all legacy properties and associated current ones.
      */
-    private String buildLegacyPropertyName(String keyVaultName, String legacyPropertySuffix) {
-        return String.join(DELIMITER, KEYVAULT_LEGACY_PREFIX, keyVaultName, legacyPropertySuffix);
+    protected void addMultipleKVPropertyToMap(String[] keyVaultNames, Properties keyVaultPropertySuffixMap,
+                                              Properties legacyToCurrentMap) {
+        Arrays.stream(keyVaultNames).forEach(keyVault -> {
+            for (Map.Entry<Object, Object> mapping : keyVaultPropertySuffixMap.entrySet()) {
+                String legacy = buildPropertyName(KEYVAULT_LEGACY_PREFIX, keyVault, (String) mapping.getKey());
+                String current = buildPropertyName(KeyVaultProperties.PREFIX, keyVault, (String) mapping.getValue());
+                legacyToCurrentMap.put(legacy, current);
+            }
+        });
     }
 
-    /**
-     * For the use case of multiple Key Vaults, create the current Key Vault property name for a specific Key Vault.
-     *
-     * @param keyVaultName The name of a Key Vault, which is used as the property name's infix.
-     * @param currentPropertySuffix Suffix of a current Key Vault property name, which is loaded from the values of
-     *                             legacy-keyvault-property-suffix-mapping.properties
-     * @return A current Key Vault property name with a Key Vault name as infix.
-     */
-    private String buildCurrentPropertyName(String keyVaultName, String currentPropertySuffix) {
-        return String.join(DELIMITER, KeyVaultProperties.PREFIX, keyVaultName, currentPropertySuffix);
+    private String buildPropertyName(String propertyPrefix, String propertyInfix, String propertySuffix) {
+        return String.join(DELIMITER, propertyPrefix, propertyInfix, propertySuffix);
     }
 
     /**
      * When only legacy properties are detected from all property sources, convert legacy properties to the current,
      * and create a new {@link Properties} to store all of the converted current properties.
+     *
+     * @param environment The application environment to load property from.
      * @param legacyToCurrentMap A {@link Properties} contains a map of all legacy properties and associated current properties.
      * @return A {@link Properties} to store mapped current properties
      */
     @Override
-    protected Properties convertLegacyPropertyToCurrent(Properties legacyToCurrentMap) {
+    protected Properties convertLegacyToCurrent(ConfigurableEnvironment environment, Properties legacyToCurrentMap) {
         Properties properties = new Properties();
         for (Map.Entry<Object, Object> entry : legacyToCurrentMap.entrySet()) {
             String legacyPropertyName = (String) entry.getKey();
-            Object legacyPropertyValue = getPropertyValue(legacyPropertyName);
-            if (legacyPropertyValue == null) {
+            BindResult<Object> legacyPropertyValue = Binder.get(environment)
+                                                           .bind(legacyPropertyName, Bindable.of(Object.class));
+            if (!legacyPropertyValue.isBound()) {
                 continue;
             }
             String currentPropertyName = (String) entry.getValue();
-            Object currentPropertyValue = getPropertyValue(currentPropertyName);
-            if (currentPropertyValue == null) {
-                properties.put(currentPropertyName, legacyPropertyValue);
+            BindResult<Object> currentPropertyValue = Binder.get(environment)
+                                                            .bind(currentPropertyName, Bindable.of(Object.class));
+            if (!currentPropertyValue.isBound()) {
+                properties.put(currentPropertyName, legacyPropertyValue.get());
                 LOGGER.warn(toLogString(legacyPropertyName, currentPropertyName));
-
             }
         }
         return properties;
     }
 
     /**
-     * Get property value from all property sources in the environment.
-     * @param propertyName Name of the property to get value.
-     * @return Property value.
-     */
-    protected Object getPropertyValue(String propertyName) {
-        return Binder.get(environment)
-                     .bind(propertyName, Bindable.of(Object.class))
-                     .orElse(null);
-    }
-
-    /**
      * Add the mapped current properties to application environment, of which the precedence does not count.
      *
+     * @param environment The application environment to load property from.
      * @param properties The converted current properties to be configured.
      */
     @Override
-    protected void setConvertedPropertyToEnvironment(Properties properties) {
+    protected void setConvertedPropertyToEnvironment(ConfigurableEnvironment environment, Properties properties) {
         // This post-processor is called multiple times but sets the properties only once.
         if (!CollectionUtils.isEmpty(properties)) {
             PropertiesPropertySource convertedPropertySource =

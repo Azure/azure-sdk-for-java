@@ -6,10 +6,12 @@ package com.azure.spring.keyvault;
 import com.azure.spring.autoconfigure.unity.AbstractLegacyPropertyEnvironmentPostProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -42,53 +44,49 @@ public class PostLegacyPropertyEnvironmentPostProcessor extends AbstractLegacyPr
      * the current, and create a new {@link Properties} to store the converted current properties of each key vault
      * property source.
      *
+     * @param environment The application environment to load property from.
      * @param legacyToCurrentMap A {@link Properties} contains a map of all legacy properties and associated current properties.
      * @return A {@link Properties} to store mapped current properties
      */
     @Override
-    protected Properties convertLegacyPropertyToCurrent(Properties legacyToCurrentMap) {
-        Properties properties = new Properties();
-        List<KeyVaultPropertySource> propertySourceList = getKeyVaultPropertySourceList();
+    protected Properties convertLegacyToCurrent(ConfigurableEnvironment environment, Properties legacyToCurrentMap) {
+        Properties convertedProperties = new Properties();
+        List<KeyVaultPropertySource> kvSourceList = environment.getPropertySources()
+                                                          .stream()
+                                                          .filter(KeyVaultPropertySource.class::isInstance)
+                                                          .map(KeyVaultPropertySource.class::cast)
+                                                          .collect(Collectors.toList());
         // Reverse traversal to keep the Key Vault property source of higher precedence could override the lower ones.
-        for (int i = propertySourceList.size() - 1; i >= 0; i--) {
-            KeyVaultPropertySource kvSource = propertySourceList.get(i);
-            for (Map.Entry<Object, Object> entry : legacyToCurrentMap.entrySet()) {
-                String legacyPropertyName = (String) entry.getKey();
-                Object legacyPropertyValue = kvSource.getProperty(legacyPropertyName);
-                if (legacyPropertyValue == null) {
-                    continue;
-                }
-                String currentPropertyName = (String) entry.getValue();
-                Object currentPropertyValue = kvSource.getProperty(currentPropertyName);
-                if (currentPropertyValue == null) {
-                    properties.put(currentPropertyName, legacyPropertyValue);
-                    LOGGER.warn(toLogString(legacyPropertyName, currentPropertyName, kvSource.getName()));
-                }
+        Collections.reverse(kvSourceList);
+        kvSourceList.forEach(source -> convertLegacyToCurrentInKvSource(source, legacyToCurrentMap, convertedProperties));
+        return convertedProperties;
+    }
+
+    private void convertLegacyToCurrentInKvSource(KeyVaultPropertySource kvName, Properties legacyToCurrentMap,
+                                                 Properties convertedProperties) {
+        for (Map.Entry<Object, Object> entry : legacyToCurrentMap.entrySet()) {
+            String legacyPropertyName = (String) entry.getKey();
+            Object legacyPropertyValue = kvName.getProperty(legacyPropertyName);
+            if (legacyPropertyValue == null) {
+                continue;
+            }
+            String currentPropertyName = (String) entry.getValue();
+            Object currentPropertyValue = kvName.getProperty(currentPropertyName);
+            if (currentPropertyValue == null) {
+                convertedProperties.put(currentPropertyName, legacyPropertyValue);
+                LOGGER.warn(toLogString(legacyPropertyName, currentPropertyName, kvName.getName()));
             }
         }
-        return properties;
     }
-
-    /**
-     * Store all Key Vault property sources added by {@link KeyVaultEnvironmentPostProcessor} to a {@link List}.
-     *
-     * @return A {@link List} for all all Key Vault property sources.
-     */
-    private List<KeyVaultPropertySource> getKeyVaultPropertySourceList() {
-        return environment.getPropertySources().stream()
-                          .filter(source  -> source instanceof KeyVaultPropertySource)
-                          .map(source -> ((KeyVaultPropertySource) source))
-                          .collect(Collectors.toList());
-    }
-
     /**
      * Add the mapped current properties to application environment, of which the precedence should be higher than that
      * of all of local Key Vault property sources to keep properties in multiple Key Vault sources in order.
      *
+     * @param environment The application environment to load property from.
      * @param properties The converted current properties to be configured.
      */
     @Override
-    protected void setConvertedPropertyToEnvironment(Properties properties) {
+    protected void setConvertedPropertyToEnvironment(ConfigurableEnvironment environment, Properties properties) {
         // This post-processor is called multiple times but sets the properties only once.
         if (!CollectionUtils.isEmpty(properties)) {
             PropertiesPropertySource convertedPropertySource =

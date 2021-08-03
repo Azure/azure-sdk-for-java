@@ -49,9 +49,9 @@ public class PropertyLoader {
      * @throws UncheckedIOException If an I/O error occurs.
      * @return The {@link Properties} Object.
      */
-    public static Properties loadPropertiesFromFile(String file) {
+    public static Properties loadPropertiesFromClassPath(String file) {
         try {
-            return PropertiesLoaderUtils.loadProperties(new ClassPathResource(file));
+            return PropertiesLoaderUtils.loadAllProperties(file);
         } catch (IOException exception) {
             throw new UncheckedIOException("Fail to load " + file, exception);
         }
