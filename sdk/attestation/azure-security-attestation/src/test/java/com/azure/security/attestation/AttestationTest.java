@@ -12,7 +12,6 @@ import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -136,23 +135,6 @@ public class AttestationTest extends AttestationClientTestBase {
 
 
 
-
-    @Test
-    void attestOpenEnclave() {
-    }
-
-    @Test
-    void attestOpenEnclaveWithResponse() {
-    }
-
-    @Test
-    void attestSgxEnclave() {
-    }
-
-    @Test
-    void attestSgxEnclaveWithResponse() {
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclave(HttpClient httpClient, String clientUri) {
@@ -238,45 +220,6 @@ public class AttestationTest extends AttestationClientTestBase {
         verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
     }
 
-
-    private void verifyAttestationResult(String clientUri, AttestationResult result, byte[] runtimeData, boolean expectJson) {
-        assertNotNull(result.getIss());
-
-        // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
-        if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
-            Assertions.assertEquals(clientUri, result.getIss());
-        }
-
-        if (expectJson) {
-            ObjectMapper mapper = new ObjectMapper();
-            assertTrue(result.getRuntimeClaims() instanceof Map);
-            @SuppressWarnings("unchecked")
-            Map<String, Object> runtimeClaims = (Map<String, Object>) result.getRuntimeClaims();
-            @SuppressWarnings("unchecked")
-            Map<String, Object> expectedClaims = assertDoesNotThrow(() -> (Map<String, Object>) mapper.readValue(runtimeData, Object.class));
-            assertObjectEqual(expectedClaims, runtimeClaims);
-        } else if (runtimeData != null) {
-            Assertions.assertArrayEquals(runtimeData, result.getEnclaveHeldData());
-        }
-    }
-
-    void assertObjectEqual(Map<String, Object> expected, Map<String, Object> actual) {
-        expected.forEach((key, o) -> {
-            logger.verbose("Key: " + key);
-            assertTrue(actual.containsKey(key));
-            if (expected.get(key) instanceof Map) {
-                assertTrue(actual.get(key) instanceof Map);
-                @SuppressWarnings("unchecked")
-                Map<String, Object> expectedInner = (Map<String, Object>) expected.get(key);
-                @SuppressWarnings("unchecked")
-                Map<String, Object> actualInner = (Map<String, Object>) actual.get(key);
-                assertObjectEqual(expectedInner, actualInner);
-            } else {
-                assertEquals(o, actual.get(key));
-            }
-        });
-
-    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
@@ -386,10 +329,73 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestOpenEnclaveRequest request = new AttestOpenEnclaveRequest()
             .setReport(decodedOpenEnclaveReport)
             .setRuntimeData(decodedRuntimeData);
-        AttestationResult response = client.attestOpenEnclave(request);
+        AttestationResult result = client.attestOpenEnclave(request);
 
-        verifyAttestationResult(clientUri, response, decodedRuntimeData, false);
+        verifyAttestationResult(clientUri, result, decodedRuntimeData, false);
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveNoRuntimeData(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildAttestationClient();
+
+        byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
+
+        AttestOpenEnclaveRequest request = new AttestOpenEnclaveRequest()
+            .setReport(decodedOpenEnclaveReport);
+
+        AttestationResult result = client.attestOpenEnclave(request);
+        verifyAttestationResult(clientUri, result, null, false);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveRuntimeJson(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildAttestationClient();
+
+        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
+        byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
+
+        AttestOpenEnclaveRequest request = new AttestOpenEnclaveRequest()
+            .setReport(decodedOpenEnclaveReport)
+            .setRuntimeJson(decodedRuntimeData);
+
+        AttestationResult result = client.attestOpenEnclave(request);
+        verifyAttestationResult(clientUri, result, decodedRuntimeData, true);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveDraftPolicy(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildAttestationClient();
+
+        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
+        byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
+
+        AttestOpenEnclaveRequest request = new AttestOpenEnclaveRequest()
+            .setReport(decodedOpenEnclaveReport)
+            .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+            .setRuntimeJson(decodedRuntimeData);
+
+        Response<AttestationResult> response = client.attestOpenEnclaveWithResponse(request, Context.NONE);
+        assertTrue(response instanceof AttestationResponse);
+        AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
+
+        // When a draft policy is specified, the token is unsecured.
+        assertTrue(attestResponse.getToken().getAlgorithm() == "none");
+
+        verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
+    }
+
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
@@ -406,12 +412,118 @@ public class AttestationTest extends AttestationClientTestBase {
             .setRuntimeData(decodedRuntimeData);
 
         StepVerifier.create(client.attestOpenEnclave(request))
-            .assertNext(attestationResult -> {
-                verifyAttestationResult(clientUri, attestationResult, decodedRuntimeData, false);
-            })
+            .assertNext(result -> verifyAttestationResult(clientUri, result, decodedRuntimeData, false))
             .expectComplete()
             .verify();
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveNoRuntimeDataAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+
+        byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
+
+        AttestOpenEnclaveRequest request = new AttestOpenEnclaveRequest()
+            .setReport(decodedOpenEnclaveReport);
+
+        StepVerifier.create(client.attestOpenEnclave(request))
+            .assertNext(result -> verifyAttestationResult(clientUri, result, null, false))
+            .expectComplete()
+            .verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveRuntimeJsonAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+
+        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
+        byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
+
+        AttestOpenEnclaveRequest request = new AttestOpenEnclaveRequest()
+            .setReport(decodedOpenEnclaveReport)
+            .setRuntimeJson(decodedRuntimeData);
+
+        StepVerifier.create(client.attestOpenEnclave(request))
+            .assertNext(result -> verifyAttestationResult(clientUri, result, decodedRuntimeData, true))
+            .expectComplete()
+            .verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveDraftPolicyAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+
+        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
+        byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
+
+        AttestOpenEnclaveRequest request = new AttestOpenEnclaveRequest()
+            .setReport(decodedOpenEnclaveReport)
+            .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+            .setRuntimeJson(decodedRuntimeData);
+
+        StepVerifier.create(client.attestOpenEnclaveWithResponse(request))
+            .assertNext(response -> {
+                assertTrue(response instanceof AttestationResponse);
+                AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
+                verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
+            })
+            .expectComplete()
+            .verify();
+
+    }
+
+
+    private void verifyAttestationResult(String clientUri, AttestationResult result, byte[] runtimeData, boolean expectJson) {
+        assertNotNull(result.getIss());
+
+        // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
+        if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
+            Assertions.assertEquals(clientUri, result.getIss());
+        }
+
+        if (expectJson) {
+            ObjectMapper mapper = new ObjectMapper();
+            assertTrue(result.getRuntimeClaims() instanceof Map);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> runtimeClaims = (Map<String, Object>) result.getRuntimeClaims();
+            @SuppressWarnings("unchecked")
+            Map<String, Object> expectedClaims = assertDoesNotThrow(() -> (Map<String, Object>) mapper.readValue(runtimeData, Object.class));
+            assertObjectEqual(expectedClaims, runtimeClaims);
+        } else if (runtimeData != null) {
+            Assertions.assertArrayEquals(runtimeData, result.getEnclaveHeldData());
+        }
+    }
+
+    void assertObjectEqual(Map<String, Object> expected, Map<String, Object> actual) {
+        expected.forEach((key, o) -> {
+            logger.verbose("Key: " + key);
+            assertTrue(actual.containsKey(key));
+            if (expected.get(key) instanceof Map) {
+                assertTrue(actual.get(key) instanceof Map);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> expectedInner = (Map<String, Object>) expected.get(key);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> actualInner = (Map<String, Object>) actual.get(key);
+                assertObjectEqual(expectedInner, actualInner);
+            } else {
+                assertEquals(o, actual.get(key));
+            }
+        });
+
+    }
+
 
     /**
      * This test cannot be written until the setPolicy APIs are written because it depends on
