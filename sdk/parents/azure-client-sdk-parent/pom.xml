@@ -495,26 +495,6 @@
           </execution>
         </executions>
       </plugin>
-
-      <!-- Checks the sample sources for use of deprecated API's in the test-compile phase. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>default-testCompile</id>
-            <phase>test-compile</phase>
-            <configuration>
-              <showDeprecation>true</showDeprecation>
-              <testIncludes><include>${project.basedir}\src\samples\java</include></testIncludes>
-            </configuration>
-            <goals>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
 
     <pluginManagement>
@@ -524,34 +504,50 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-          <configuration>
-            <showWarnings>true</showWarnings>
-            <failOnWarning>true</failOnWarning>
-            <compilerArgs combine.children="append" combine.self="append">
-              <!-- Turn off annotation processing -->
-              <arg>-proc:none</arg>
+          <executions>
+            <execution>
+              <id>default-compile</id>
+              <configuration>
+                <showWarnings>true</showWarnings>
+                <failOnWarning>true</failOnWarning>
+                <compilerArgs combine.children="append" combine.self="append">
+                  <!-- Turn off annotation processing -->
+                  <arg>-proc:none</arg>
 
-              <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
-              <arg>-Xlint:cast</arg>
-              <arg>-Xlint:classfile</arg>
-              <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
-              <arg>-Xlint:dep-ann</arg>
-              <arg>-Xlint:divzero</arg>
-              <arg>-Xlint:empty</arg>
-              <arg>-Xlint:fallthrough</arg>
-              <arg>-Xlint:finally</arg>
-              <arg>-Xlint:options</arg>
-              <arg>-Xlint:overrides</arg>
-              <arg>-Xlint:path</arg>
-              <!-- <arg>-Xlint:processing</arg> -->
-              <arg>-Xlint:rawtypes</arg>
-              <!-- <arg>-Xlint:serial</arg> -->
-              <arg>-Xlint:static</arg>
-              <arg>-Xlint:try</arg>
-              <arg>-Xlint:unchecked</arg>
-              <arg>-Xlint:varargs</arg>
-            </compilerArgs>
-          </configuration>
+                  <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
+                  <arg>-Xlint:cast</arg>
+                  <arg>-Xlint:classfile</arg>
+                  <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
+                  <arg>-Xlint:dep-ann</arg>
+                  <arg>-Xlint:divzero</arg>
+                  <arg>-Xlint:empty</arg>
+                  <arg>-Xlint:fallthrough</arg>
+                  <arg>-Xlint:finally</arg>
+                  <arg>-Xlint:options</arg>
+                  <arg>-Xlint:overrides</arg>
+                  <arg>-Xlint:path</arg>
+                  <!-- <arg>-Xlint:processing</arg> -->
+                  <arg>-Xlint:rawtypes</arg>
+                  <!-- <arg>-Xlint:serial</arg> -->
+                  <arg>-Xlint:static</arg>
+                  <arg>-Xlint:try</arg>
+                  <arg>-Xlint:unchecked</arg>
+                  <arg>-Xlint:varargs</arg>
+                </compilerArgs>
+              </configuration>
+            </execution>
+            <execution>
+              <id>default-testCompile</id>
+              <configuration>
+                <showDeprecation>true</showDeprecation>
+                <testIncludes>
+                  <include>
+                    ${project.basedir}/src/samples/java
+                  </include>
+                </testIncludes>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
 
         <!-- This plugin scans checkstyle issues in the code -->
