@@ -19,7 +19,7 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 private[spark] object CosmosClientCache extends BasicLoggingTrait {
-  // removing clients form the cache after 15 minutes
+  // removing clients from the cache after 15 minutes
   // The clients won't be disposed - so any still running task can still keep using it
   // but it helps to allow the GC to clean-up the resources if no running task is using the client anymore
   private[this] val unusedClientTtlInMs = 15 * 60 * 1000
@@ -90,7 +90,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         // We saw incidents where even when Spark restarted Executors we haven't been able
         // to recover - most likely due to stale cache state being broadcast
         // Ideally the SDK would always be able to recover from stale cache state
-        // but the main purpose of broadcasting teh cache state is to avoid peeks in metadata
+        // but the main purpose of broadcasting the cache state is to avoid peeks in metadata
         // RU usage when multiple workers/executors are all started at the same time
         // Skipping the broadcast cache state for retries should be safe - because not all executors
         // will be restarted at the same time - and it adds an additional layer of safety.
