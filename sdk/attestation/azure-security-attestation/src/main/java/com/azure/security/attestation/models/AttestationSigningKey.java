@@ -100,8 +100,8 @@ public class AttestationSigningKey {
         Objects.requireNonNull(certificate);
         Objects.requireNonNull(privateKey);
 
-        Signature signer = null;
-        Signature verifier = null;
+        Signature signer;
+        Signature verifier;
         if (privateKey instanceof RSAPrivateKey) {
             signer = Signature.getInstance("SHA256WITHRSA");
             verifier = Signature.getInstance("SHA256WITHRSA");

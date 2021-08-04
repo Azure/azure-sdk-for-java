@@ -23,7 +23,9 @@
    * And `setRunTimeJson` was added to set the `RunTimeData` as JSON.
  * `attestSgxEnclave` and `attestOpenEnclave` return an `AttestationResponse` type instead of
 a `Response` type to get access to the `AttestationToken` returned from the attestation service.
- 
+ * Converted the `AttestationToken` and `AttestationSigner` types to interfaces since there are no scenarios where customers
+will instantiate them directly (`AttestationToken` will be instantiated via the `AttestationPolicyToken` class which will 
+be introduced later.)
 
 ### Bugs Fixed
 * Attestation tests now all pass when run in Live mode.
