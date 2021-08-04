@@ -1,6 +1,6 @@
 # Azure Core Jackson Tests plugin library for Java
 
-Azure Core Jackson Tests is a test package that tests `azure- core` library against multiple versions of Jackson libraries that users might have.
+Azure Core Jackson Tests is a test package that tests `azure-core` library against multiple versions of Jackson libraries that users might have.
 
 ## Getting started
 
