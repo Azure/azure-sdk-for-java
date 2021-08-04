@@ -29,7 +29,12 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. iOS]
  - IDE: [e.g. IntelliJ]
  - Library/Libraries: [e.g. com.azure:azure-core:1.16.0 (groupId:artifactId:version)]
+ - Java version: [e.g. 8] 
 
+If you suspect dependency version mismatch (e.g. you see `NoClassDefFoundError`, `NoSuchMethodError` or similar), please provide
+- Environment: [e.g. Azure Function, Apache Spark, IDE plugin or anything special]
+- Provide dependency tree (`mvn dependency:tree -Dverbose`)
+  
 **Additional context**
 Add any other context about the problem here.
 
