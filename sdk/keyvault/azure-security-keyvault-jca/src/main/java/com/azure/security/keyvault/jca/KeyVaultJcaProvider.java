@@ -121,10 +121,10 @@ public final class KeyVaultJcaProvider extends Provider {
     private String getAlgorithmName(Class<? extends AbstractKeyVaultKeyLessSignature> c) {
         try {
             String algorithmName = c.getDeclaredConstructor().newInstance().getAlgorithmName();
-            LOGGER.info("getAlgorithmName with " + algorithmName);
+            System.out.println("getAlgorithmName with " + algorithmName);
             return algorithmName;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            LOGGER.warn("getAlgorithmName error");
+            System.out.println("getAlgorithmName error");
             return "";
         }
     }

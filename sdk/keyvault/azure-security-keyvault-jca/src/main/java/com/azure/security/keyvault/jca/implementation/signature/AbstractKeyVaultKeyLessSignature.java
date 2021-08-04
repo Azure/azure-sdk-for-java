@@ -79,8 +79,10 @@ public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
     @Override
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
         if (privateKey instanceof KeyVaultPrivateKey) {
+            System.out.println("add sout template for test, which will be delete later, log seems doesn't work  " + ((KeyVaultPrivateKey) privateKey).getKid());
             keyId = ((KeyVaultPrivateKey) privateKey).getKid();
         } else {
+            System.out.println("normal private, don't use key less");
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
         }
     }
