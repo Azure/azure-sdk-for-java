@@ -3,7 +3,7 @@
 package com.azure.spring.aad;
 
 
-import com.azure.spring.autoconfigure.aad.AADTokenClaim;
+import com.azure.spring.aad.implementation.constants.AADTokenClaim;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.jwk.source.JWKSource;

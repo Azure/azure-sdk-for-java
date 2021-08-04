@@ -47,10 +47,10 @@ public class WebExceptionUtility {
 
         // any network failure for which we are certain the request hasn't reached the service endpoint.
         if (webEx instanceof ConnectException ||
-                webEx instanceof UnknownHostException ||
-                webEx instanceof SSLHandshakeException ||
-                webEx instanceof NoRouteToHostException ||
-                webEx instanceof SSLPeerUnverifiedException) {
+            webEx instanceof UnknownHostException ||
+            webEx instanceof SSLHandshakeException ||
+            webEx instanceof NoRouteToHostException ||
+            webEx instanceof SSLPeerUnverifiedException) {
             return true;
         }
 

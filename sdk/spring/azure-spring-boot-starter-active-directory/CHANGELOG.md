@@ -4,6 +4,9 @@
 This release is compatible with Spring Boot 2.5.0 - 2.5.3.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+### New Features
+- Add property `azure.activedirectory.resource-server.principal-claim-name` to configure principal claim name.
+- Add property `azure.activedirectory.resource-server.claim-to-authority-prefix-map` to configure claim to authority prefix map.
 
 
 ## 3.7.0 (2021-07-20)

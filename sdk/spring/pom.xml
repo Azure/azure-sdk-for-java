@@ -169,6 +169,7 @@
         <module>azure-spring-cloud-stream-binder-servicebus-topic</module>
         <module>azure-spring-cloud-stream-binder-test</module>
         <module>azure-spring-cloud-test-eventhubs</module>
+        <module>azure-spring-cloud-test-eventhubs-kafka</module>
         <module>azure-spring-cloud-test-servicebus-binder</module>
         <module>azure-spring-integration-core</module>
         <module>azure-spring-integration-eventhubs</module>
