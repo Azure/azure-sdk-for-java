@@ -40,9 +40,8 @@ import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_S
  * logic, and enables the Azure SDK for Java to optimize operations for best performance.
  * <p>
  * BinaryData in its simplest form can be thought of as a container for content. Often this content is already in-memory
- * as a String, byte array, or an Object that can be serialized into a String or byte[] (for example, if the Object has
- * appropriate annotations for a library such as Jackson). When the BinaryData is about to be sent to an Azure Service,
- * this in-memory content is copied into the network request and sent to the service.
+ * as a String, byte array, or an Object that can be serialized into a String or byte[]. When the BinaryData is about to
+ * be sent to an Azure Service, this in-memory content is copied into the network request and sent to the service.
  * </p>
  * <p>
  * In more performance critical scenarios, where copying data into memory results in increased memory pressure, it is
@@ -266,7 +265,6 @@ public final class BinaryData {
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the JSON serialized object.
-     * @throws NullPointerException If {@code data} is null.
      * @see JsonSerializer
      */
     public static Mono<BinaryData> fromObjectAsync(Object data) {
@@ -327,7 +325,7 @@ public final class BinaryData {
      * determines how {@code null} data is serialized.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link Mono} of {@link BinaryData} representing the serialized object.
-     * @throws NullPointerException If {@code serializer} is null or {@code data} is null.
+     * @throws NullPointerException If {@code serializer} is null.
      * @see ObjectSerializer
      * @see JsonSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
