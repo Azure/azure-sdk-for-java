@@ -26,6 +26,7 @@ import com.azure.resourcemanager.storagecache.fluent.CachesClient;
 import com.azure.resourcemanager.storagecache.fluent.OperationsClient;
 import com.azure.resourcemanager.storagecache.fluent.SkusClient;
 import com.azure.resourcemanager.storagecache.fluent.StorageCacheManagementClient;
+import com.azure.resourcemanager.storagecache.fluent.StorageTargetOperationsClient;
 import com.azure.resourcemanager.storagecache.fluent.StorageTargetsClient;
 import com.azure.resourcemanager.storagecache.fluent.UsageModelsClient;
 import java.io.IOException;
@@ -191,6 +192,18 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         return this.storageTargets;
     }
 
+    /** The StorageTargetOperationsClient object to access its operations. */
+    private final StorageTargetOperationsClient storageTargetOperations;
+
+    /**
+     * Gets the StorageTargetOperationsClient object to access its operations.
+     *
+     * @return the StorageTargetOperationsClient object.
+     */
+    public StorageTargetOperationsClient getStorageTargetOperations() {
+        return this.storageTargetOperations;
+    }
+
     /**
      * Initializes an instance of StorageCacheManagementClient client.
      *
@@ -214,13 +227,14 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2021-05-01";
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.usageModels = new UsageModelsClientImpl(this);
         this.ascOperations = new AscOperationsClientImpl(this);
         this.caches = new CachesClientImpl(this);
         this.storageTargets = new StorageTargetsClientImpl(this);
+        this.storageTargetOperations = new StorageTargetOperationsClientImpl(this);
     }
 
     /**

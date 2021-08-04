@@ -178,6 +178,15 @@ the main ServiceBusClientBuilder. -->
   <!-- suppress the runtime exception in the KeyVaultClient class-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.security.keyvault.jca.implementation.KeyVaultClient.java"/>
+  <!-- suppress the runtime exception in the KeyVaultKeyLessECSignature class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessECSignature.java"/>
+  <!-- suppress the runtime exception in the KeyVaultKeyLessRsaSignature class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsaSignature.java"/>
+  <!-- suppress the runtime exception in the AbstractKeyVaultKeyLessSignature class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature.java"/>
 
   <!-- This class overrides a method that throws, so it cannot be avoided. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
@@ -439,6 +448,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.azure.perf.test.core.HttpPipelineOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.messaging.servicebus.perf.ServiceBusStressOptions.java"/>
 
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
@@ -605,7 +616,7 @@ the main ServiceBusClientBuilder. -->
   <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
   <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
-  
+
   <!-- Third party source code files, retained as is. -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.Aes"/>
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.HashedBlockInputStream"/>

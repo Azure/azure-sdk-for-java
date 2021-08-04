@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/relay/
+      - sdk/relay/ci.mgmt.yml
+      - sdk/relay/mgmt-v2017_04_01/
+    exclude:
+      - sdk/relay/pom.xml
+      - sdk/relay/mgmt-v2017_04_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/relay/
+      - sdk/relay/ci.mgmt.yml
+      - sdk/relay/mgmt-v2017_04_01/
+    exclude:
+      - sdk/relay/pom.xml
+      - sdk/relay/mgmt-v2017_04_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

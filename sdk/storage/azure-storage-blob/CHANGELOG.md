@@ -1,6 +1,9 @@
 # Release History
 
-## 12.14.0-beta.1 (Unreleased)
+## 12.14.0-beta.2 (Unreleased)
+
+
+## 12.14.0-beta.1 (2021-07-28)
 - Fixed a bug where BlobClient.exists would not function correctly on blobs encrypted with CPK.
 - Added support for the 2020-10-02 service version.
 - Added support to list blobs deleted with versioning enabled.

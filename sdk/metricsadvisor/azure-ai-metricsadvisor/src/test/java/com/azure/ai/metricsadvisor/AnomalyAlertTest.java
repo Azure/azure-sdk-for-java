@@ -5,11 +5,11 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -241,7 +241,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
                     = new MetricAlertConfiguration(DETECTION_CONFIGURATION_ID,
                     MetricAnomalyAlertScope.forWholeSeries());
                 final MetricAlertConfiguration metricAnomalyAlertConfiguration2
-                    = new MetricAlertConfiguration("e17f32d4-3ddf-4dc7-84ee-b4130c7e1777",
+                    = new MetricAlertConfiguration(DETECTION_CONFIGURATION_ID,
                     MetricAnomalyAlertScope.forWholeSeries());
 
                 // Act & Assert

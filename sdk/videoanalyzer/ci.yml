@@ -9,6 +9,10 @@ trigger:
   paths:
     include:
       - sdk/videoanalyzer/
+    exclude:
+      - sdk/videoanalyzer/pom.xml
+      - sdk/videoanalyzer/azure-media-videoanalyzer-edge/pom.xml
+      - sdk/videoanalyzer/azure-resourcemanager-videoanalyzer/pom.xml
 
 pr:
   branches:
@@ -20,6 +24,10 @@ pr:
   paths:
     include:
       - sdk/videoanalyzer/
+    exclude:
+      - sdk/videoanalyzer/pom.xml
+      - sdk/videoanalyzer/azure-media-videoanalyzer-edge/pom.xml
+      - sdk/videoanalyzer/azure-resourcemanager-videoanalyzer/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

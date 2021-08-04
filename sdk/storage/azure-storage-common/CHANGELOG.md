@@ -1,7 +1,11 @@
 # Release History
 
-## 12.13.0-beta.1 (Unreleased)
-- Added support for the set immutability policy permission for Account SAS. 
+## 12.13.0-beta.2 (Unreleased)
+
+
+## 12.13.0-beta.1 (2021-07-28)
+- Added support for the 2020-10-02 service version.
+- Added support for the set immutability policy permission for Account SAS.
 - Fixed bug where InputStream to Flux converter could append extra bytes at the end of payload.
 
 ## 12.12.0 (2021-06-09)

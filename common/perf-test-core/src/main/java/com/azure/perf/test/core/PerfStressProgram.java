@@ -57,6 +57,7 @@ public class PerfStressProgram {
             classList.add(Class.forName("com.azure.perf.test.core.NoOpTest"));
             classList.add(Class.forName("com.azure.perf.test.core.ExceptionTest"));
             classList.add(Class.forName("com.azure.perf.test.core.SleepTest"));
+            classList.add(Class.forName("com.azure.perf.test.core.HttpPipelineTest"));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -133,9 +134,19 @@ public class PerfStressProgram {
 
         try {
             tests[0].globalSetupAsync().block();
+
+            boolean startedPlayback = false;
+
             try {
                 Flux.just(tests).flatMap(PerfStressTest::setupAsync).blockLast();
                 setupStatus.dispose();
+
+                if (options.getTestProxy() != null) {
+                    Disposable recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
+                    Flux.just(tests).flatMap(PerfStressTest::recordAndStartPlaybackAsync).blockLast();
+                    startedPlayback = true;
+                    recordStatus.dispose();
+                }
 
                 if (options.getWarmup() > 0) {
                     runTests(tests, options.isSync(), options.getParallel(), options.getWarmup(), "Warmup");
@@ -149,10 +160,18 @@ public class PerfStressProgram {
                     runTests(tests, options.isSync(), options.getParallel(), options.getDuration(), title);
                 }
             } finally {
-                if (!options.isNoCleanup()) {
-                    cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
-
-                    Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
+                try {
+                    if (startedPlayback) {
+                        Disposable playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
+                        Flux.just(tests).flatMap(PerfStressTest::stopPlaybackAsync).blockLast();
+                        playbackStatus.dispose();
+                    }    
+                } finally {
+                    if (!options.isNoCleanup()) {
+                        cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
+    
+                        Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
+                    }    
                 }
             }
         } finally {
