@@ -55,7 +55,7 @@ jobs:
     - task: Maven@3
       displayName: 'Generate BOM Reports'
       inputs:
-        mavenPomFile: /eng/bomgenerator/pom.xml
+        mavenPomFile: eng/bomgenerator/pom.xml
         options: '$(DefaultOptions)'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
