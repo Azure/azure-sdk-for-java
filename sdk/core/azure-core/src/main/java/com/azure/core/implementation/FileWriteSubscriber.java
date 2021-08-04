@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;
@@ -24,6 +25,8 @@ public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
     // while another thread may read isWriting and write to isCompleted.
     private volatile boolean isWriting = false;
     private volatile boolean isCompleted = false;
+
+    private final ClientLogger logger = new ClientLogger(FileWriteSubscriber.class);
 
     private final AsynchronousFileChannel fileChannel;
     private final AtomicLong position;
@@ -95,7 +98,7 @@ public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
     public void onError(Throwable throwable) {
         isWriting = false;
         subscription.cancel();
-        emitter.error(throwable);
+        emitter.error(logger.logThrowableAsError(throwable));
     }
 
     @Override

@@ -398,7 +398,7 @@ public final class FluxUtil {
      * <p>
      * The {@code outFile} is not closed by this call, closing of the {@code outFile} is managed by the caller.
      * <p>
-     * The response {@link Mono} will emit an error if {@code content} or {code outFile} are null. Additionally, an
+     * The response {@link Mono} will emit an error if {@code content} or {@code outFile} are null. Additionally, an
      * error will be emitted if the {@code outFile} wasn't opened with the proper open options, such as {@link
      * StandardOpenOption#WRITE}.
      *
@@ -417,8 +417,8 @@ public final class FluxUtil {
      * <p>
      * The {@code outFile} is not closed by this call, closing of the {@code outFile} is managed by the caller.
      * <p>
-     * The response {@link Mono} will emit an error if {@code content} or {code outFile} are null or {@code position} is
-     * less than 0. Additionally, an error will be emitted if the {@code outFile} wasn't opened with the proper open
+     * The response {@link Mono} will emit an error if {@code content} or {@code outFile} are null or {@code position}
+     * is less than 0. Additionally, an error will be emitted if the {@code outFile} wasn't opened with the proper open
      * options, such as {@link StandardOpenOption#WRITE}.
      *
      * @param content The {@link Flux} of {@link ByteBuffer} content.

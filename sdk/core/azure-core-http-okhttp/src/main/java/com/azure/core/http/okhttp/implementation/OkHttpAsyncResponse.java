@@ -63,7 +63,6 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
                     return Mono.error(ex);
                 }
             })
-            .log()
             .takeUntil(tuple -> tuple.getT1() == -1)
             .filter(tuple -> tuple.getT1() > 0)
             .map(Tuple2::getT2);
