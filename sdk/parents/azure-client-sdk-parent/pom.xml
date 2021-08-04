@@ -497,25 +497,24 @@
         </executions>
       </plugin>
 
-      <!-- Checks the sample sources for use of deprecated API's in the test-compile phase. -->
+      <!-- Checks the sample sources for use of deprecated API's in the compile phase. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <executions>
           <execution>
-            <id>default-testCompile</id>
-            <phase>test-compile</phase>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
             <configuration>
               <showDeprecation>${show.deprecation.warnings}</showDeprecation>
-              <testIncludes>
-                <include>${project.basedir}\src\samples\java</include>
-              </testIncludes>
-              <skip>true</skip>
+              <excludes>
+                <exclude>**/test/*</exclude>
+              </excludes>
             </configuration>
-            <goals>
-              <goal>testCompile</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
