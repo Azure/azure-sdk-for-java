@@ -8,6 +8,8 @@ import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessE
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha512Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha256Signature;
 import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
@@ -21,6 +23,8 @@ import java.util.stream.Stream;
  * The Azure Key Vault security provider.
  */
 public final class KeyVaultJcaProvider extends Provider {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultJcaProvider.class);
 
     /**
      * Stores the name.
@@ -116,8 +120,11 @@ public final class KeyVaultJcaProvider extends Provider {
 
     private String getAlgorithmName(Class<? extends AbstractKeyVaultKeyLessSignature> c) {
         try {
-            return c.getDeclaredConstructor().newInstance().getAlgorithmName();
+            String algorithmName = c.getDeclaredConstructor().newInstance().getAlgorithmName();
+            LOGGER.info("getAlgorithmName with " + algorithmName);
+            return algorithmName;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            LOGGER.warn("getAlgorithmName error");
             return "";
         }
     }

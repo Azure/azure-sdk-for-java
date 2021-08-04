@@ -310,6 +310,7 @@ public class KeyVaultClient {
             // and we can't access private key(which is not exportable), we will use
             // the Azure Key Vault Secrets API to obtain the private key (keyless).
             LOGGER.exiting("KeyVaultClient", "getKey", null);
+            LOGGER.info(alias + " private key is not exportable");
             return new KeyVaultPrivateKey(keyType, certificateBundle.getKid());
         }
         String certificateSecretUri = certificateBundle.getSid();

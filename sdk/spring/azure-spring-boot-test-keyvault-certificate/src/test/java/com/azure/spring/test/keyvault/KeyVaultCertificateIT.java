@@ -11,9 +11,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.PrivateKeyDetails;
 import org.apache.http.ssl.PrivateKeyStrategy;
 import org.apache.http.ssl.SSLContexts;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -22,9 +20,11 @@ import org.springframework.web.client.RestTemplate;
 import javax.net.ssl.SSLContext;
 import java.net.Socket;
 import java.security.KeyStore;
+import java.security.Security;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.azure.spring.test.keyvault.PropertyConvertorUtils.*;
@@ -38,8 +38,8 @@ public class KeyVaultCertificateIT {
 
     private static AppRunner app;
 
-    @BeforeAll
-    public static void setEnvironmentProperty() {
+    @BeforeEach
+    public void setEnvironmentProperty() {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("CERTIFICATE_AZURE_KEYVAULT_URI",
                 "CERTIFICATE_AZURE_KEYVAULT_TENANT_ID",
@@ -121,6 +121,9 @@ public class KeyVaultCertificateIT {
      */
     @Test
     public void testSpringBootWebApplicationWithRSAKeyLess() throws Exception {
+        LOGGER.info("print signature algorithms just for test, which will be delete later");
+        Set<String> signatures = Security.getAlgorithms("Signature");
+        signatures.stream().forEach(System.out::println);
         startSpringBootWebApplication(new HashMap<String, String>() {{ put("server.ssl.key-alias", "myaliasForRSAKeyLess");}});
     }
 
@@ -150,15 +153,17 @@ public class KeyVaultCertificateIT {
 
     private void startSpringBootWebApplication(Map<String, String> additionalProperties) throws Exception {
         Map<String, String> properties = getDefaultMap();
-        properties.putAll(additionalProperties);
+        if (additionalProperties != null) {
+            properties.putAll(additionalProperties);
+        }
         startAppRunner(properties);
         setRestTemplate();
         sendRequest();
     }
 
 
-    @AfterAll
-    public static void destroy() {
+    @AfterEach
+    public void destroy() {
         app.close();
     }
 
