@@ -2,14 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.security.attestation;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
@@ -35,9 +29,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -115,36 +107,6 @@ public class AttestationClientTestBase extends TestBase {
         }
         return builder;
     }
-
-    /**
-     * Retrieves an HTTP pipeline configured on the specified HTTP pipeline.
-     *
-     * Used by getBuilder().
-     * @param httpClient - Client on which to configure the HTTP pipeline.
-     * @return an HttpPipeline object configured for the MAA service on the specified http client.
-     */
-    private HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        TokenCredential credential = null;
-
-        if (!interceptorManager.isPlaybackMode()) {
-            credential = new EnvironmentCredentialBuilder().httpClient(httpClient).build();
-        }
-
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, DATAPLANE_SCOPE));
-        }
-
-        if (getTestMode() == TestMode.RECORD) {
-            policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
-    }
-
 
     /**
      * Verifies an MAA attestation token and returns the set of attestation claims embedded in the token.

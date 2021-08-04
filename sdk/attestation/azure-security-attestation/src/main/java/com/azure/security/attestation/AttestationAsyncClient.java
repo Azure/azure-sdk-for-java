@@ -172,7 +172,7 @@ public final class AttestationAsyncClient {
 
         return new com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest()
             .setDraftPolicyForAttestation(request.getDraftPolicyForAttestation())
-            .setRuntimeData(request.getInitTimeData() != null ? new RuntimeData()
+            .setRuntimeData(request.getRuntimeData() != null ? new RuntimeData()
                 .setData(request.getRuntimeData())
                 .setDataType(DataType.fromString(request.getRunTimeDataType())) : null)
             .setInitTimeData(request.getInitTimeData() != null ? new InitTimeData()

@@ -29,9 +29,17 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
         Object metadataConfig1 = attestationBuilder.buildAttestationClient().getOpenIdMetadata();
         verifyMetadataConfigurationResponse(clientUri, metadataConfig1);
 
-        Response<Object> metadataConfig2 = attestationBuilder.buildAttestationClient().getOpenIdMetadataWithResponse(null);
-        verifyMetadataConfigurationResponse(clientUri, metadataConfig2.getValue());
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void getOpenIdMetadataWithResponse(HttpClient client, String clientUri) {
+        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+
+        Response<Object> metadataConfig = attestationBuilder.buildAttestationClient().getOpenIdMetadataWithResponse(null);
+        verifyMetadataConfigurationResponse(clientUri, metadataConfig.getValue());
+    }
+
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
@@ -44,11 +52,17 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
             .expectComplete()
             .verify();
 
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void getOpenIdMetadataWithResponseAsync(HttpClient client, String clientUri) {
+        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+
         StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadataWithResponse(null))
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse.getValue()))
             .expectComplete()
             .verify();
-
     }
 
     /**

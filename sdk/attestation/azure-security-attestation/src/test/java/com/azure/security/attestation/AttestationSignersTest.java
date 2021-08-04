@@ -3,7 +3,9 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationSigner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,15 +36,40 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
+    void testGetSigningCertificatesWithResponse(HttpClient client, String clientUri) {
+
+        AttestationClient attestationClient = getBuilder(client, clientUri).buildAttestationClient();
+
+        Response<AttestationSigner[]> signers = attestationClient
+            .getAttestationSignersWithResponse(Context.NONE);
+
+        verifySigningCertificatesResponse(clientUri, signers.getValue());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
     void testGetSigningCertificatesAsync(HttpClient client, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationAsyncClient attestationClient = getBuilder(client, clientUri).buildAttestationAsyncClient();
 
-        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getAttestationSigners())
+        StepVerifier.create(attestationClient.getAttestationSigners())
             .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers)))
             .expectComplete()
             .verify();
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testGetSigningCertificatesWithResponseAsync(HttpClient client, String clientUri) {
+
+        AttestationAsyncClient attestationClient = getBuilder(client, clientUri).buildAttestationAsyncClient();
+
+        StepVerifier.create(attestationClient.getAttestationSignersWithResponse())
+            .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers.getValue())))
+            .expectComplete()
+            .verify();
+    }
+
 
     /**
      * Verifies the response to the GetSigningCertificates (/certs) API.
