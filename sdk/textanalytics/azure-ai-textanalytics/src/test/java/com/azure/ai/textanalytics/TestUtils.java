@@ -113,29 +113,27 @@ final class TestUtils {
     static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
 
     static final List<String> SUMMARY_INPUTS = asList(
-        "The government of British Prime Minster Theresa May has been plunged into turmoil with "
-            + "the resignation of two senior Cabinet ministers in a deep split over her Brexit strategy."
-            + "The Foreign Secretary Boris Johnson, quit on Monday, hours after the resignation late on"
-            + "Sunday night of the minister in charge of Brexit negotiations, David Davis.  Their"
-            + "decision to leave the government came three days after May appeared to have agreed a"
-            + "deal with her fractured Cabinet on the UK's post-Brexit relationship with the EU."
-            + "That plan is now in tatters and her political future appears uncertain."
-            + "May appeared in Parliament on Monday afternoon to defend her plan, minutes after"
-            + "Downing Street confirmed the departure of Johnson. May acknowledged the splits in"
-            + "her statement to MPs, saying of the ministers who quit: \"We do not agree about the"
-            + "best way of delivering our shared commitment to honoring the result of the referendum.\""
-            + "The Prime Minister's latest plitical drama began late on Sunday night when Davis quit,"
-            + "declaring he could not support May's Brexit plan.  He said it involved too close a "
-            + "relationship with the EU and gave only an illusion of control being returned to the UK"
-            + "after it left the EU. \"It seems to me we're giving too much away, too easily, and"
-            + "that's a dangerous strategy at this time,\" Davis said in a BBC radio interview Monday"
-            + "morning. Johnson's resignation came Monday afternoon local time, just before the Prime"
-            + " Minister was due to make a scheduled statement in Parliament. \"This afternoon, the Prime"
-            + "Minister accepted the resignation of Boris Johnson as Foreign Secretary,\" a"
-            + "statement from Downing Street said."
+        "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
+            + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI "
+            + "Cognitive Services, I have been working with a team of amazing scientists and engineers to turn this"
+            + " quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship among "
+            + "three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and"
+            + " multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code as"
+            + " illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear, see,"
+            + " and understand humans better. We believe XYZ-code will enable us to fulfill our long-term vision:"
+            + " cross-domain transfer learning, spanning modalities and languages. The goal is to have pretrained"
+            + " models that can jointly learn representations to support a broad range of downstream AI tasks, much"
+            + " in the way humans do today. Over the past five years, we have achieved human performance on benchmarks"
+            + " in conversational speech recognition, machine translation, conversational question answering, machine"
+            + " reading comprehension, and image captioning. These five breakthroughs provided us with strong signals"
+            + " toward our more ambitious aspiration to produce a leap in AI capabilities, achieving multisensory and"
+            + " multilingual learning that is closer in line with how humans learn and understand. I believe the joint"
+            + " XYZ-code is a foundational component of this aspiration, if grounded with external knowledge sources"
+            + " in the downstream AI tasks."
     );
 
-    static final List<String> SENTIMENT_INPUTS = asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
+    static final List<String> SENTIMENT_INPUTS = asList(
+        "The hotel was dark and unclean. The restaurant had amazing gnocchi.",
         "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
 
     static final List<String> CATEGORIZED_ENTITY_INPUTS = asList(
@@ -527,28 +525,34 @@ final class TestUtils {
         return new ExtractKeyPhrasesResultCollection(extractKeyPhraseResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
     }
 
-    static ExtractSummaryResultCollection getExpectedExtractSummaryResultCollection() {
+    static ExtractSummaryResultCollection getExpectedExtractSummaryResultCollection(
+        ExtractSummaryResult extractSummaryResult) {
         final ExtractSummaryResultCollection expectResultCollection = new ExtractSummaryResultCollection(
-            asList(getExpectedExtractSummaryResult()), null, null);
+            asList(extractSummaryResult), null, null);
         return expectResultCollection;
     }
 
-    static ExtractSummaryResult getExpectedExtractSummaryResult() {
+    static ExtractSummaryResult getExpectedExtractSummaryResultSortByOffset() {
         final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
         final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult("0", textDocumentStatistics, null);
 
         final IterableStream<SummarySentence> summarySentences = IterableStream.of(asList(
             getExpectedSummarySentence(
-                "The government of British Prime Minster Theresa May has been plunged into turmoil with the resignation of two senior Cabinet ministers in a deep split over her Brexit strategy.",
-                1, 0, 176),
-            getExpectedSummarySentence("The Foreign Secretary Boris Johnson, quit on Monday, hours after the resignation late onSunday night of the minister in charge of Brexit negotiations, David Davis.",
-                0.9909339592938046, 176, 163),
-            getExpectedSummarySentence("Theirdecision to leave the government came three days after May appeared to have agreed adeal with her fractured Cabinet on the UK's post-Brexit relationship with the EU.",
-                0.8899765592117193, 341, 170)));
+                "At Microsoft, we have been on a quest to advance AI beyond existing"
+                    + " techniques, by taking a more holistic, human-centric approach to learning and understanding.",
+                1.0, 0, 160),
+            getExpectedSummarySentence(
+                "In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human"
+                    + " cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).",
+                0.958, 324, 192),
+            getExpectedSummarySentence(
+                "At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure"
+                    + " 1—a joint representation to create more powerful AI that can speak, hear, see, and understand"
+                    + " humans better.",
+                0.929, 517, 203)
+        ));
 
         SummarySentenceCollection sentences = new SummarySentenceCollection(summarySentences, null);
-
-
         ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, sentences);
         return extractSummaryResult;
     }

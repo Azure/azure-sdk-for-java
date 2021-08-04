@@ -25,6 +25,7 @@ import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskParamet
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTask;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTaskParametersSortBy;
 import com.azure.ai.textanalytics.implementation.models.JobManifestTasks;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhrasesTask;
@@ -279,7 +280,15 @@ class AnalyzeActionsAsyncClient {
                         final ExtractiveSummarizationTask extractiveSummarizationTask =
                             new ExtractiveSummarizationTask();
                         extractiveSummarizationTask.setParameters(
-                            new ExtractiveSummarizationTaskParameters().setModelVersion(action.getModelVersion()));
+                            new ExtractiveSummarizationTaskParameters()
+                                .setModelVersion(action.getModelVersion())
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
+                                .setSentenceCount(action.getMaxSentenceCount())
+                                .setSortBy(action.getSentencesOrderBy() == null ? null
+                                               : ExtractiveSummarizationTaskParametersSortBy.fromString(
+                                                   action.getSentencesOrderBy().toString()))
+                        );
                         return extractiveSummarizationTask;
                     }).collect(Collectors.toList()));
     }

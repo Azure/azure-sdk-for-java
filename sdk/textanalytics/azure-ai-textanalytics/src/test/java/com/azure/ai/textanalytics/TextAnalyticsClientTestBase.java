@@ -40,6 +40,7 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -653,8 +654,30 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    // Extractive Summarization
     @Test
-    abstract void analyzeExtractSummaryAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionSortedByOffset(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionSortedByRankScore(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionWithSentenceCountLessThanMaxCount(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionWithNonDefaultSentenceCount(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -1110,10 +1133,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction()));
     }
 
-    void analyzeExtractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+    void analyzeExtractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
+        Integer maxSentenceCount, SummarySentencesOrder summarySentencesOrder) {
         testRunner.accept(SUMMARY_INPUTS,
             new TextAnalyticsActions()
-                .setExtractSummaryActions(new ExtractSummaryAction()));
+                .setExtractSummaryActions(
+                    new ExtractSummaryAction()
+                        .setMaxSentenceCount(maxSentenceCount)
+                        .setSentencesOrderBy(summarySentencesOrder)));
     }
 
     String getEndpoint() {
@@ -1137,7 +1164,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         } else {
             builder.credential(new AzureKeyCredential(
                 Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")));
-//            builder.credential((new DefaultAzureCredentialBuilder().build()));
         }
         return builder;
     }
@@ -1908,5 +1934,29 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateErrorDocument(TextAnalyticsError expectedError, TextAnalyticsError actualError) {
         assertEquals(expectedError.getErrorCode(), actualError.getErrorCode());
         assertNotNull(actualError.getMessage());
+    }
+
+    static boolean isAscendingOrderByOffSet(List<SummarySentence> summarySentences) {
+        int currMin = Integer.MIN_VALUE;
+        for (SummarySentence summarySentence : summarySentences) {
+            if (summarySentence.getOffset() <= currMin) {
+                return false;
+            } else {
+                currMin = summarySentence.getOffset();
+            }
+        }
+        return true;
+    }
+
+    static boolean isDescendingOrderByRankScore(List<SummarySentence> summarySentences) {
+        double currentMax = Double.MAX_VALUE;
+        for (SummarySentence summarySentence : summarySentences) {
+            if (summarySentence.getRankScore() > currentMax) {
+                return false;
+            } else {
+                currentMax = summarySentence.getRankScore();
+            }
+        }
+        return true;
     }
 }
