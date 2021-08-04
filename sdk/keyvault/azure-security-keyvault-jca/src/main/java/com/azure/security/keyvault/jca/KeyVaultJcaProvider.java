@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsaSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsaForRsSignature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha384Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha512Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha256Signature;
@@ -102,7 +103,8 @@ public final class KeyVaultJcaProvider extends Provider {
                 KeyVaultKeyLessRsaSignature.class,
                 KeyVaultKeyLessEcSha256Signature.class,
                 KeyVaultKeyLessEcSha384Signature.class,
-                KeyVaultKeyLessEcSha512Signature.class)
+                KeyVaultKeyLessEcSha512Signature.class,
+                KeyVaultKeyLessRsaForRsSignature.class)
                 .forEach(c -> putService(
                     new Service(
                         this,
