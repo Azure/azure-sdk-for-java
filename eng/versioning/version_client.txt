@@ -52,7 +52,7 @@ com.azure:azure-analytics-synapse-spark;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-chat;1.0.0;1.1.0-beta.1
-com.azure:azure-communication-callingserver;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-communication-callingserver;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-common;1.0.3;1.1.0-beta.1
 com.azure:azure-communication-sms;1.0.3;1.1.0-beta.1
 com.azure:azure-communication-identity;1.1.1;1.2.0-beta.1
@@ -189,6 +189,7 @@ com.azure.spring:azure-spring-boot-test-parent;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-servicebus-jms;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-servicebus-binder;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-eventhubs;1.0.0;1.0.0
+com.azure.spring:azure-spring-cloud-test-eventhubs-kafka;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-storage;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-appconfiguration-config;1.0.0;1.0.0
 com.azure.resourcemanager:azure-resourcemanager;2.6.0;2.7.0-beta.1

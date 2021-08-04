@@ -16,7 +16,7 @@
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-batch</artifactId>
   <packaging>jar</packaging>
-  <version>10.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
+  <version>10.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
 
   <name>Microsoft Azure Batch SDK Root</name>
   <description>This package contains the root module of Microsoft Azure Batch SDK.</description>
