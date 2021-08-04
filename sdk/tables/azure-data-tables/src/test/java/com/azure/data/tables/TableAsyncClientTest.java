@@ -12,6 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
@@ -28,6 +29,7 @@ import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -53,6 +55,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TableAsyncClientTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+    private static final boolean IS_COSMOS_TEST = System.getenv("AZURE_TABLES_CONNECTION_STRING") != null
+        && System.getenv("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
 
     private TableAsyncClient tableClient;
     private HttpPipelinePolicy recordPolicy;
@@ -154,9 +158,7 @@ public class TableAsyncClientTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(tableClient.createEntityWithResponse(entity))
-            .assertNext(response -> {
-                assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }
@@ -822,14 +824,24 @@ public class TableAsyncClientTest extends TestBase {
             TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
 
         // Act & Assert
-        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
-            .expectErrorMatches(e -> e instanceof TableTransactionFailedException
-                && e.getMessage().contains("An action within the operation failed")
-                && e.getMessage().contains("The failed operation was")
-                && e.getMessage().contains("CreateEntity")
-                && e.getMessage().contains("partitionKey='" + partitionKeyValue)
-                && e.getMessage().contains("rowKey='" + rowKeyValue))
-            .verify();
+        if (IS_COSMOS_TEST) {
+            StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
+                .expectErrorMatches(e -> e instanceof TableServiceException
+                    && e.getMessage().contains("Status code 400")
+                    && e.getMessage().contains("InvalidDuplicateRow")
+                    && e.getMessage().contains("The batch request contains multiple changes with same row key.")
+                    && e.getMessage().contains("An entity can appear only once in a batch request."))
+                .verify();
+        } else {
+            StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
+                .expectErrorMatches(e -> e instanceof TableTransactionFailedException
+                    && e.getMessage().contains("An action within the operation failed")
+                    && e.getMessage().contains("The failed operation was")
+                    && e.getMessage().contains("CreateEntity")
+                    && e.getMessage().contains("partitionKey='" + partitionKeyValue)
+                    && e.getMessage().contains("rowKey='" + rowKeyValue))
+                .verify();
+        }
     }
 
     @Test
@@ -846,14 +858,28 @@ public class TableAsyncClientTest extends TestBase {
             TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue2, rowKeyValue2)));
 
         // Act & Assert
-        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
-            .expectErrorMatches(e -> e instanceof TableTransactionFailedException
-                && e.getMessage().contains("An action within the operation failed")
-                && e.getMessage().contains("The failed operation was")
-                && e.getMessage().contains("CreateEntity")
-                && e.getMessage().contains("partitionKey='" + partitionKeyValue2)
-                && e.getMessage().contains("rowKey='" + rowKeyValue2))
-            .verify();
+        if (IS_COSMOS_TEST) {
+            // For some reason Cosmos names the first entity's keys while Storage does so with the second entity. It is
+            // possible that Cosmos ensures there will be no conflict between a transaction's operations before
+            // executing them and Storage executes them without pre-checking for conflicts.
+            StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
+                .expectErrorMatches(e -> e instanceof TableTransactionFailedException
+                    && e.getMessage().contains("An action within the operation failed")
+                    && e.getMessage().contains("The failed operation was")
+                    && e.getMessage().contains("CreateEntity")
+                    && e.getMessage().contains("partitionKey='" + partitionKeyValue)
+                    && e.getMessage().contains("rowKey='" + rowKeyValue))
+                .verify();
+        } else {
+            StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
+                .expectErrorMatches(e -> e instanceof TableTransactionFailedException
+                    && e.getMessage().contains("An action within the operation failed")
+                    && e.getMessage().contains("The failed operation was")
+                    && e.getMessage().contains("CreateEntity")
+                    && e.getMessage().contains("partitionKey='" + partitionKeyValue2)
+                    && e.getMessage().contains("rowKey='" + rowKeyValue2))
+                .verify();
+        }
     }
 
     @Test
@@ -927,6 +953,8 @@ public class TableAsyncClientTest extends TestBase {
 
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST, "SAS Tokens are not supported for Cosmos endpoints.");
+
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
@@ -972,6 +1000,9 @@ public class TableAsyncClientTest extends TestBase {
 
     @Test
     public void setAndListAccessPolicies() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Setting and listing access policies is not supported on Cosmos endpoints.");
+
         OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         String permissions = "r";
@@ -1010,6 +1041,9 @@ public class TableAsyncClientTest extends TestBase {
 
     @Test
     public void setAndListMultipleAccessPolicies() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Setting and listing access policies is not supported on Cosmos endpoints");
+
         OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         String permissions = "r";

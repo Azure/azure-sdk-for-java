@@ -17,6 +17,7 @@ import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
 import com.azure.data.tables.models.TableTransactionActionResponse;
@@ -27,7 +28,9 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -52,6 +55,8 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class TableClientTest extends TestBase {
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+    private static final boolean IS_COSMOS_TEST = System.getenv("AZURE_TABLES_CONNECTION_STRING") != null
+        && System.getenv("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
 
     private TableClient tableClient;
     private HttpPipelinePolicy recordPolicy;
@@ -791,6 +796,14 @@ public class TableClientTest extends TestBase {
             assertTrue(e.getMessage().contains("rowKey='" + rowKeyValue));
 
             return;
+        } catch (TableServiceException e) {
+            assertTrue(IS_COSMOS_TEST);
+            assertTrue(e.getMessage().contains("Status code 400"));
+            assertTrue(e.getMessage().contains("InvalidDuplicateRow"));
+            assertTrue(e.getMessage().contains("The batch request contains multiple changes with same row key."));
+            assertTrue(e.getMessage().contains("An entity can appear only once in a batch request."));
+
+            return;
         }
 
         // Fail if exception was not thrown.
@@ -814,11 +827,22 @@ public class TableClientTest extends TestBase {
         try {
             tableClient.submitTransactionWithResponse(transactionalBatch, null, null);
         } catch (TableTransactionFailedException e) {
-            assertTrue(e.getMessage().contains("An action within the operation failed"));
-            assertTrue(e.getMessage().contains("The failed operation was"));
-            assertTrue(e.getMessage().contains("CreateEntity"));
-            assertTrue(e.getMessage().contains("partitionKey='" + partitionKeyValue2));
-            assertTrue(e.getMessage().contains("rowKey='" + rowKeyValue2));
+            if (IS_COSMOS_TEST) {
+                // For some reason Cosmos names the first entity's keys while Storage does so with the second entity.
+                // It is possible that Cosmos ensures there will be no conflict between a transaction's operations
+                // before executing them and Storage executes them without pre-checking for conflicts.
+                assertTrue(e.getMessage().contains("An action within the operation failed"));
+                assertTrue(e.getMessage().contains("The failed operation was"));
+                assertTrue(e.getMessage().contains("CreateEntity"));
+                assertTrue(e.getMessage().contains("partitionKey='" + partitionKeyValue));
+                assertTrue(e.getMessage().contains("rowKey='" + rowKeyValue));
+            } else {
+                assertTrue(e.getMessage().contains("An action within the operation failed"));
+                assertTrue(e.getMessage().contains("The failed operation was"));
+                assertTrue(e.getMessage().contains("CreateEntity"));
+                assertTrue(e.getMessage().contains("partitionKey='" + partitionKeyValue2));
+                assertTrue(e.getMessage().contains("rowKey='" + rowKeyValue2));
+            }
 
             return;
         }
@@ -898,6 +922,8 @@ public class TableClientTest extends TestBase {
 
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST, "SAS Tokens are not supported for Cosmos endpoints.");
+
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
@@ -940,6 +966,9 @@ public class TableClientTest extends TestBase {
 
     @Test
     public void setAndListAccessPolicies() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Setting and listing access policies is not supported on Cosmos endpoints.");
+
         OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         String permissions = "r";
@@ -975,6 +1004,9 @@ public class TableClientTest extends TestBase {
 
     @Test
     public void setAndListMultipleAccessPolicies() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Setting and listing access policies is not supported on Cosmos endpoints.");
+
         OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         String permissions = "r";
