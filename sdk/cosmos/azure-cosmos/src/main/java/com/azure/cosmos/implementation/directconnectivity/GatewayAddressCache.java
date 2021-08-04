@@ -192,18 +192,46 @@ public class GatewayAddressCache implements IAddressCache {
         Utils.checkNotNullOrThrow(partitionKeyRangeIdentity, "partitionKeyRangeIdentity", "");
 
         if (forceRefreshPartitionAddresses) {
+            // forceRefreshPartitionAddresses==true indicates we are requesting the latest
+            // Replica addresses from the Gateway
+            // There are a couple of cases (for example when getting 410/0 after a split happened for the parent
+            // partition when just refreshing addresses isn't sufficient (because the Gateway in its cache)
+            // might also not know about the partition split that happened
+            // to recover from this condition the client would need to either trigger a PKRange cache refresh
+            // on the client or force the Gateway CollectionRoutingMap to be refreshed (so that the Gateway gets
+            // aware of the split and latest EPK map.
+            // Due to the fact that forcing the CollectionRoutingMap to be refreshed in Gateway there is additional
+            // load on the ServiceFabric naming service we want to throttle how often we would force the collection
+            // routing map refresh
+            // These are the throttle conditions: We will only enforce collection routing map to be refreshed
+            // - if there has been at least 1 attempt to just refresh replica addresses without forcing collection
+            //   routing map refresh on the physical partition before
+            // - only one request per Container to force collection routing map refresh is allowed every 30 seconds
+            //
+            // The throttling logic is implemented in  `ForcedRefreshMetadata.shouldIncludeCollectionRoutingMapRefresh`
             ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
                 partitionKeyRangeIdentity.getCollectionRid(),
                 (colRid) -> new ForcedRefreshMetadata());
 
             if (request.forceCollectionRoutingMapRefresh) {
-                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(partitionKeyRangeIdentity);
+                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                    partitionKeyRangeIdentity,
+                    true);
             } else if (forcedRefreshMetadata.shouldIncludeCollectionRoutingMapRefresh(partitionKeyRangeIdentity)) {
                 request.forceCollectionRoutingMapRefresh = true;
-                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(partitionKeyRangeIdentity);
+                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                    partitionKeyRangeIdentity,
+                    true);
             } else {
                 forcedRefreshMetadata.signalPartitionAddressOnlyRefresh(partitionKeyRangeIdentity);
             }
+        } else if (request.forceCollectionRoutingMapRefresh) {
+            ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
+                partitionKeyRangeIdentity.getCollectionRid(),
+                (colRid) -> new ForcedRefreshMetadata());
+            forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                partitionKeyRangeIdentity,
+                false);
         }
 
         logger.debug("PartitionKeyRangeIdentity {}, forceRefreshPartitionAddresses {}",
@@ -799,9 +827,16 @@ public class GatewayAddressCache implements IAddressCache {
             lastCollectionRoutingMapRefresh = Instant.now();
         }
 
-        public void signalCollectionRoutingMapRefresh(PartitionKeyRangeIdentity pk) {
+        public void signalCollectionRoutingMapRefresh(
+            PartitionKeyRangeIdentity pk,
+            boolean forcePartitionAddressRefresh) {
+
             Instant nowSnapshot = Instant.now();
-            lastPartitionAddressOnlyRefresh.put(pk, nowSnapshot);
+
+            if (forcePartitionAddressRefresh) {
+                lastPartitionAddressOnlyRefresh.put(pk, nowSnapshot);
+            }
+
             lastCollectionRoutingMapRefresh = nowSnapshot;
         }
 
