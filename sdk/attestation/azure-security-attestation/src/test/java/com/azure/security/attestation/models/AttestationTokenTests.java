@@ -18,6 +18,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -348,7 +349,13 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
 
     KeyPair createKeyPair(String algorithm) throws NoSuchAlgorithmException {
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance(algorithm);
+
+        KeyPairGenerator keyGen;
+        if (algorithm.equals("EC")) {
+            keyGen = KeyPairGenerator.getInstance(algorithm, Security.getProvider("SunEC"));
+        } else {
+            keyGen = KeyPairGenerator.getInstance(algorithm);
+        }
         if (algorithm.equals("RSA")) {
             keyGen.initialize(1024); // Generate a reasonably strong key.
         }
