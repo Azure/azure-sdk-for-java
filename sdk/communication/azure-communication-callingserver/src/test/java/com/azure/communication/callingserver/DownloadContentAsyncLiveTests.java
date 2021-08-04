@@ -105,12 +105,14 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
 
         doAnswer(invocation -> {
+            ByteBuffer stream = invocation.getArgument(0);
             CompletionHandler<Integer, Object> completionHandler = invocation.getArgument(3);
-            completionHandler.completed(439, null);
+            completionHandler.completed(439, stream.position(stream.limit()));
             return null;
         }).doAnswer(invocation -> {
+            ByteBuffer stream = invocation.getArgument(0);
             CompletionHandler<Integer, Object> completionHandler = invocation.getArgument(3);
-            completionHandler.completed(438, null);
+            completionHandler.completed(438, stream.position(stream.limit()));
             return null;
         }).when(channel).write(any(ByteBuffer.class),
             anyLong(),
@@ -144,7 +146,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
             String metadata = new String(stream.array(), StandardCharsets.UTF_8);
             assertTrue(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"));
             CompletionHandler<Integer, Object> completionHandler = invocation.getArgument(3);
-            completionHandler.completed(957, null);
+            completionHandler.completed(957, stream.position(stream.limit()));
             return null;
         }).when(channel).write(any(ByteBuffer.class),
             anyLong(),
