@@ -108,7 +108,7 @@ public class QueryValidationTests extends TestSuiteBase {
             createdDocuments);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
     public void orderByQueryForLargeCollection() {
         CosmosContainerProperties containerProperties = getCollectionDefinition();
         createdDatabase.createContainer(
@@ -338,11 +338,6 @@ public class QueryValidationTests extends TestSuiteBase {
         //Insert some documents
         List<TestObject> testObjects = insertDocuments(itemCount, Arrays.asList("CA", "US"), container);
 
-        List<String> sortedObjects = testObjects.stream()
-                                         .sorted(Comparator.comparing(TestObject::getProp))
-                                         .map(TestObject::getId)
-                                         .collect(Collectors.toList());
-
         String query = "Select * from c";
         String orderByQuery = "select * from c order by c.prop";
 
@@ -352,6 +347,7 @@ public class QueryValidationTests extends TestSuiteBase {
         int preferredPageSize = 15;
         ArrayList<TestObject> resultList = new ArrayList<>();
         ArrayList<TestObject> orderByResultList = new ArrayList<>();
+        ArrayList<TestObject> initialOrderByResultList = new ArrayList<>();
 
         // Query
         FeedResponse<TestObject> jsonNodeFeedResponse = container
@@ -360,6 +356,16 @@ public class QueryValidationTests extends TestSuiteBase {
         assert jsonNodeFeedResponse != null;
         resultList.addAll(jsonNodeFeedResponse.getResults());
         requestContinuation = jsonNodeFeedResponse.getContinuationToken();
+
+        // Initial OrderBy query
+        Flux<FeedResponse<TestObject>> orderByResponseFlux = container
+            .queryItems(orderByQuery, new CosmosQueryRequestOptions(),
+                TestObject.class)
+            .byPage(preferredPageSize);
+
+        for (FeedResponse<TestObject> nodeFeedResponse : orderByResponseFlux.toIterable()) {
+            initialOrderByResultList.addAll(nodeFeedResponse.getResults());
+        }
 
         // Orderby query
         FeedResponse<TestObject> orderByFeedResponse = container
@@ -421,14 +427,15 @@ public class QueryValidationTests extends TestSuiteBase {
             orderByResultList.addAll(nodeFeedResponse.getResults());
         }
 
-        List<String> sourceIds = testObjects.stream().map(obj -> obj.getId()).collect(Collectors.toList());
-        List<String> resultIds = resultList.stream().map(obj -> obj.getId()).collect(Collectors.toList());
-        List<String> orderResultIds = orderByResultList.stream().map(obj -> obj.getId()).collect(Collectors.toList());
+        List<String> sourceIds = testObjects.stream().map(TestObject::getId).collect(Collectors.toList());
+        List<String> resultIds = resultList.stream().map(TestObject::getId).collect(Collectors.toList());
+        List<String> orderResultIds = orderByResultList.stream().map(TestObject::getId).collect(Collectors.toList());
+        List<String> initialOrderedResultIds = initialOrderByResultList.stream().map(TestObject::getId).collect(Collectors.toList());
 
         assertThat(resultIds).containsExactlyInAnyOrderElementsOf(sourceIds)
             .as("Resuming query from continuation token after split validated");
 
-        assertThat(orderResultIds).containsExactlyElementsOf(sortedObjects)
+        assertThat(orderResultIds).containsExactlyElementsOf(initialOrderedResultIds)
             .as("Resuming orderby query from continuation token after split validated");
 
         container.delete().block();
@@ -498,11 +505,10 @@ public class QueryValidationTests extends TestSuiteBase {
     }
 
     private TestObject getDocumentDefinition(String documentId, String partitionKey) {
-        // Doing NUM_DOCUMENTS/2 just to ensure there will be good number of repetetions for int value.
+        // Doing NUM_DOCUMENTS/2 just to ensure there will be good number of repetitions for int value.
         int randInt = random.nextInt(DEFAULT_NUM_DOCUMENTS / 2);
 
-        TestObject doc = new TestObject(documentId, "name" + randInt, randInt, partitionKey);
-        return doc;
+        return new TestObject(documentId, "name" + randInt, randInt, partitionKey);
     }
 
     private <T> List<String> sortTestObjectsAndCollectIds(
