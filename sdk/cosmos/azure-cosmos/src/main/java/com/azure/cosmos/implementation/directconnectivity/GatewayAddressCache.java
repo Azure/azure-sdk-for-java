@@ -214,10 +214,14 @@ public class GatewayAddressCache implements IAddressCache {
                 (colRid) -> new ForcedRefreshMetadata());
 
             if (request.forceCollectionRoutingMapRefresh) {
-                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(partitionKeyRangeIdentity);
+                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                    partitionKeyRangeIdentity,
+                    true);
             } else if (forcedRefreshMetadata.shouldIncludeCollectionRoutingMapRefresh(partitionKeyRangeIdentity)) {
                 request.forceCollectionRoutingMapRefresh = true;
-                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(partitionKeyRangeIdentity);
+                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                    partitionKeyRangeIdentity,
+                    true);
             } else {
                 forcedRefreshMetadata.signalPartitionAddressOnlyRefresh(partitionKeyRangeIdentity);
             }
@@ -225,7 +229,9 @@ public class GatewayAddressCache implements IAddressCache {
             ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
                 partitionKeyRangeIdentity.getCollectionRid(),
                 (colRid) -> new ForcedRefreshMetadata());
-            forcedRefreshMetadata.signalCollectionRoutingMapRefresh(partitionKeyRangeIdentity);
+            forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                partitionKeyRangeIdentity,
+                false);
         }
 
         logger.debug("PartitionKeyRangeIdentity {}, forceRefreshPartitionAddresses {}",
@@ -821,9 +827,16 @@ public class GatewayAddressCache implements IAddressCache {
             lastCollectionRoutingMapRefresh = Instant.now();
         }
 
-        public void signalCollectionRoutingMapRefresh(PartitionKeyRangeIdentity pk) {
+        public void signalCollectionRoutingMapRefresh(
+            PartitionKeyRangeIdentity pk,
+            boolean forcePartitionAddressRefresh) {
+
             Instant nowSnapshot = Instant.now();
-            lastPartitionAddressOnlyRefresh.put(pk, nowSnapshot);
+
+            if (forcePartitionAddressRefresh) {
+                lastPartitionAddressOnlyRefresh.put(pk, nowSnapshot);
+            }
+
             lastCollectionRoutingMapRefresh = nowSnapshot;
         }
 
