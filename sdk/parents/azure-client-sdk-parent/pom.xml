@@ -180,6 +180,7 @@
 
     <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
     <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
+    <show.deprecation.warnings>true</show.deprecation.warnings>
   </properties>
 
   <build>
@@ -506,8 +507,11 @@
             <id>default-testCompile</id>
             <phase>test-compile</phase>
             <configuration>
-              <showDeprecation>true</showDeprecation>
-              <testIncludes><include>${project.basedir}\src\samples\java</include></testIncludes>
+              <showDeprecation>${show.deprecation.warnings}</showDeprecation>
+              <testIncludes>
+                <include>${project.basedir}\src\samples\java</include>
+              </testIncludes>
+              <skip>true</skip>
             </configuration>
             <goals>
               <goal>testCompile</goal>

@@ -266,6 +266,7 @@
           </plugins>
         </configuration>
       </plugin>
+<<<<<<< HEAD
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -302,6 +303,8 @@
           </additionalClasspathElements>
         </configuration>
       </plugin>
+=======
+>>>>>>> b1644029214 (testing property set for core)
     </plugins>
   </build>
 
