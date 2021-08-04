@@ -8,7 +8,17 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/iothub/
+      - sdk/iothub/ci.mgmt.yml
+      - sdk/iothub/mgmt-v2018_04_01/
+      - sdk/iothub/mgmt-v2018_12_01_preview/
+      - sdk/iothub/mgmt-v2019_03_22_preview/
+      - sdk/iothub/mgmt-v2019_07_01_preview/
+    exclude:
+      - sdk/iothub/pom.xml
+      - sdk/iothub/mgmt-v2018_04_01/pom.xml
+      - sdk/iothub/mgmt-v2018_12_01_preview/pom.xml
+      - sdk/iothub/mgmt-v2019_03_22_preview/pom.xml
+      - sdk/iothub/mgmt-v2019_07_01_preview/pom.xml
 
 pr:
   branches:
@@ -19,7 +29,17 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/iothub/
+      - sdk/iothub/ci.mgmt.yml
+      - sdk/iothub/mgmt-v2018_04_01/
+      - sdk/iothub/mgmt-v2018_12_01_preview/
+      - sdk/iothub/mgmt-v2019_03_22_preview/
+      - sdk/iothub/mgmt-v2019_07_01_preview/
+    exclude:
+      - sdk/iothub/pom.xml
+      - sdk/iothub/mgmt-v2018_04_01/pom.xml
+      - sdk/iothub/mgmt-v2018_12_01_preview/pom.xml
+      - sdk/iothub/mgmt-v2019_03_22_preview/pom.xml
+      - sdk/iothub/mgmt-v2019_07_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

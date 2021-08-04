@@ -9,30 +9,75 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.attestation.implementation.AttestationsImpl;
-import com.azure.security.attestation.implementation.models.TpmAttestationRequest;
-import com.azure.security.attestation.implementation.models.TpmAttestationResponse;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
+import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.CloudErrorException;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-
-/** Initializes a new instance of the synchronous AzureAttestationRestClient type. */
+/** Initializes a new instance of the synchronous AttestationClient object. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class AttestationClient {
-    private final AttestationsImpl serviceClient;
+    private final AttestationAsyncClient asyncClient;
 
     /**
      * Initializes an instance of Attestations client.
      *
      * @param serviceClient the service client implementation.
      */
-    AttestationClient(AttestationsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    AttestationClient(AttestationAsyncClient serviceClient) {
+        this.asyncClient = serviceClient;
     }
+
+    /**
+     * Retrieves the OpenId Metadata for this AttestationClient instance.
+     * @return Object containing the OpenId metadata configuration for this instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object getOpenIdMetadata() {
+        return asyncClient.getOpenIdMetadataWithResponse(Context.NONE)
+            .map(Response::getValue).block();
+    }
+
+    /**
+     * Retrieves the OpenId Metadata for this AttestationClient instance.
+     *
+     * @param context - Context for this operation.
+     * @return Object containing the OpenId metadata configuration for this instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> getOpenIdMetadataWithResponse(Context context) {
+        return asyncClient.getOpenIdMetadataWithResponse(context).block();
+    }
+
+    /**
+     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
+     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     * to validate an attestation token returned by the service.
+     *
+     * @return Returns an array of {@link AttestationSigner} objects.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttestationSigner[] getAttestationSigners() {
+        return asyncClient.getAttestationSignersWithResponse(Context.NONE)
+            .map(Response::getValue).block();
+    }
+
+    /**
+     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
+     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     * to validate an attestation token returned by the service.
+     *
+     * @param context Context for the operation.
+     *
+     * @return Returns an array of {@link AttestationSigner} objects.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AttestationSigner[]> getAttestationSignersWithResponse(Context context) {
+        return asyncClient.getAttestationSignersWithResponse(context).block();
+    }
+
+
 
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
@@ -46,7 +91,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationResponse attestOpenEnclave(AttestOpenEnclaveRequest request) {
-        return AttestationResponse.fromGenerated(this.serviceClient.attestOpenEnclave(request.toGenerated()));
+        return asyncClient.attestOpenEnclave(request).block();
     }
 
     /**
@@ -63,8 +108,7 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResponse> attestOpenEnclaveWithResponse(
             AttestOpenEnclaveRequest request, Context context) {
-        Response<com.azure.security.attestation.implementation.models.AttestationResponse> response = this.serviceClient.attestOpenEnclaveWithResponse(request.toGenerated(), context);
-        return Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue()));
+        return asyncClient.attestOpenEnclaveWithResponse(request, context).block();
     }
 
     /**
@@ -79,7 +123,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationResponse attestSgxEnclave(AttestSgxEnclaveRequest request) {
-        return AttestationResponse.fromGenerated(serviceClient.attestSgxEnclave(request.toGenerated()));
+        return asyncClient.attestSgxEnclave(request).block();
     }
 
     /**
@@ -96,8 +140,7 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResponse> attestSgxEnclaveWithResponse(
             AttestSgxEnclaveRequest request, Context context) {
-        Response<com.azure.security.attestation.implementation.models.AttestationResponse> response = this.serviceClient.attestSgxEnclaveWithResponse(request.toGenerated(), context);
-        return Utilities.generateResponseFromModelType(response, AttestationResponse.fromGenerated(response.getValue()));
+        return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }
 
     /**
@@ -112,9 +155,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String attestTpm(String request) {
-        return new String(Objects.requireNonNull(this.serviceClient.attestTpm(
-            new TpmAttestationRequest()
-                .setData(request.getBytes(StandardCharsets.UTF_8))).getData()), StandardCharsets.UTF_8);
+        return asyncClient.attestTpm(request).block();
     }
 
     /**
@@ -130,8 +171,6 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> attestTpmWithResponse(String request, Context context) {
-
-        Response<TpmAttestationResponse> response = this.serviceClient.attestTpmWithResponse(new TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context);
-        return Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8));
+        return asyncClient.attestTpmWithResponse(request, context).block();
     }
 }

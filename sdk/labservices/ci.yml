@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/labservices/
+      - sdk/labservices/ci.yml
+      - sdk/labservices/azure-resourcemanager-labservices/
+    exclude:
+      - sdk/labservices/pom.xml
+      - sdk/labservices/azure-resourcemanager-labservices/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/labservices/
+      - sdk/labservices/ci.yml
+      - sdk/labservices/azure-resourcemanager-labservices/
+    exclude:
+      - sdk/labservices/pom.xml
+      - sdk/labservices/azure-resourcemanager-labservices/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

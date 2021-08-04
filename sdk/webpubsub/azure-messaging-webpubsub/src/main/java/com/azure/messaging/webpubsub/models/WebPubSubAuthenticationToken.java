@@ -4,7 +4,7 @@ package com.azure.messaging.webpubsub.models;
 
 /**
  * A wrapper class for results of the {@code getAuthenticationToken} APIs on
- * {@link com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient} and
+ * {@link com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient} and
  * {@link com.azure.messaging.webpubsub.WebPubSubServiceClient}.
  */
 public final class WebPubSubAuthenticationToken {

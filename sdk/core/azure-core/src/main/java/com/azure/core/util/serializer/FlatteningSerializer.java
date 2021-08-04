@@ -4,6 +4,7 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -56,9 +57,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     private static final long serialVersionUID = -6130180289951110573L;
 
     private static final Pattern CHECK_IF_FLATTEN_PROPERTY_PATTERN = Pattern.compile(".+[^\\\\]\\..+");
-    private static final Pattern SPLIT_FLATTEN_PROPERTY_PATTERN = Pattern.compile("((?<!\\\\))\\.");
+    private static final Pattern UNESCAPED_PERIOD_PATTERN = Pattern.compile("((?<!\\\\))\\.");
 
-    private static final Pattern CREATE_ESCAPED_MAP_PATTERN = Pattern.compile("((?<!\\\\))\\.");
     private static final Pattern CHECK_IF_ESCAPED_MAP_PATTERN = Pattern.compile(".*[^\\\\]\\\\..+");
     private static final Pattern REPLACE_ESCAPED_MAP_PATTERN = Pattern.compile("\\\\.");
 
@@ -171,14 +171,15 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             || value.getClass().isEnum()
             || value instanceof OffsetDateTime
             || value instanceof Duration
-            || value instanceof String) {
+            || value instanceof String
+            || value instanceof ExpandableStringEnum) {
             return;
         }
 
         if (value instanceof Map<?, ?>) {
             for (String key : new HashSet<>(((Map<String, Object>) value).keySet())) {
                 if (key.contains(".")) {
-                    String newKey = CREATE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll("\\\\.");
+                    String newKey = UNESCAPED_PERIOD_PATTERN.matcher(key).replaceAll("\\\\.");
                     Object val = ((Map<String, Object>) value).remove(key);
                     ((Map<String, Object>) value).put(newKey, val);
                 }
@@ -195,11 +196,6 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             for (Object val : ((List<?>) value)) {
                 escapeMapKeys(val, logger);
             }
-            return;
-        }
-
-        int mod = value.getClass().getModifiers();
-        if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
             return;
         }
 
@@ -254,7 +250,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             ObjectNode nodeToUse = node;
             String propertyName = beanProp.getName();
             if (jsonPropertiesWithJsonFlatten.contains(beanProp.getName())) {
-                String[] splitNames = SPLIT_FLATTEN_PROPERTY_PATTERN.split(beanProp.getName());
+                String[] splitNames = UNESCAPED_PERIOD_PATTERN.split(beanProp.getName());
                 propertyName = splitNames[splitNames.length - 1];
 
                 // Find or create the ObjectNodes to use.
@@ -342,8 +338,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
                 if (CHECK_IF_FLATTEN_PROPERTY_PATTERN.matcher(key).matches()) {
                     // Handle flattening properties
-                    //
-                    String[] values = SPLIT_FLATTEN_PROPERTY_PATTERN.split(key);
+                    String[] values = UNESCAPED_PERIOD_PATTERN.split(key);
                     for (int i = 0; i < values.length; ++i) {
                         values[i] = values[i].replace("\\.", ".");
                         if (i == values.length - 1) {
@@ -363,7 +358,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                     outNode = node.get(values[values.length - 1]);
                 } else if (CHECK_IF_ESCAPED_MAP_PATTERN.matcher(key).matches()) {
                     // Handle escaped map key
-                    //
+
                     String originalKey = REPLACE_ESCAPED_MAP_PATTERN.matcher(key).replaceAll(".");
                     resCurrent.remove(key);
                     resCurrent.set(originalKey, outNode);
