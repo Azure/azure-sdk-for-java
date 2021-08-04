@@ -1,2 +1,3 @@
 set "bomPomFileLocation=%~dp0..\..\sdk\boms\azure-spring-cloud-dependencies\pom.xml"
-mvn clean install && mvn exec:java -Dexec.args="-mode=analyze -pomFile=%bomPomFileLocation%" && copy %~dp0report.log azurespringcloudbomreport.log
+set "reportFileLocation=%~dp0report.html"
+mvn clean install && mvn exec:java -Dexec.args="-mode=analyze -pomFile=%bomPomFileLocation% -reportFile=%reportFileLocation%" && copy %~dp0report.html azurespringcloudbomreport.html

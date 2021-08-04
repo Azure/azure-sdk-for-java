@@ -43,6 +43,7 @@ public class Utils {
     public static final String COMMANDLINE_OUTPUTFILE = "outputfile";
     public static final String COMMANDLINE_POMFILE = "pomfile";
     public static final String COMMANDLINE_OVERRIDDEN_INPUTDEPENDENCIES_FILE = "inputdependenciesfile";
+    public static final String COMMANDLINE_REPORTFILE = "reportfile";
     public static final String COMMANDLINE_MODE = "mode";
     public static final String ANALYZE_MODE = "analyze";
     public static final String GENERATE_MODE = "generate";
@@ -62,9 +63,9 @@ public class Utils {
        "junit-jupiter-api"
     ));
 
-    public static final HashSet<String> IGNORE_CONFLICT_LIST = new HashSet<>(Arrays.asList(
+    public static final HashSet<String> IGNORE_CONFLICT_LIST = new HashSet<>(/*Arrays.asList(
         "slf4j-api" // slf4j is compatible across versions.
-    ));
+    )*/);
 
     public static final String POM_TYPE = "pom";
     private static Logger logger = LoggerFactory.getLogger(Utils.class);

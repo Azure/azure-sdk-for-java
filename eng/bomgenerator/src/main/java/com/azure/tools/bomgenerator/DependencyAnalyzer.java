@@ -3,6 +3,7 @@
 
 package com.azure.tools.bomgenerator;
 
+import com.azure.tools.bomgenerator.models.BOMReport;
 import com.azure.tools.bomgenerator.models.BomDependency;
 import com.azure.tools.bomgenerator.models.BomDependencyErrorInfo;
 import com.azure.tools.bomgenerator.models.BomDependencyNoVersion;
@@ -36,7 +37,7 @@ public class DependencyAnalyzer {
     private Set<BomDependency> bomIneligibleDependencies = new HashSet<>();
     private Map<BomDependencyNoVersion, BomDependency> coreDependencyNameToDependency = new HashMap<>();
     private Map<BomDependency, BomDependencyErrorInfo> errorInfo = new HashMap();
-
+    private final BOMReport bomReport;
     private Map<BomDependencyNoVersion, HashMap<String, Collection<BomDependency>>> nameToVersionToChildrenDependencyTree = new TreeMap<>(new Comparator<BomDependencyNoVersion>() {
         @Override
         public int compare(BomDependencyNoVersion o1, BomDependencyNoVersion o2) {
@@ -45,13 +46,14 @@ public class DependencyAnalyzer {
     });
     private static Logger logger = LoggerFactory.getLogger(BomGenerator.class);
 
-    DependencyAnalyzer(Collection<BomDependency> inputDependencies, Collection<BomDependency> externalDependencies) {
+    DependencyAnalyzer(Collection<BomDependency> inputDependencies, Collection<BomDependency> externalDependencies, String reportFileName) {
         if (inputDependencies != null) {
             this.inputDependencies = inputDependencies.stream().collect(Collectors.toMap(Utils::toBomDependencyNoVersion, dependency -> dependency));
         }
         if (externalDependencies != null) {
             this.externalDependencies.addAll(externalDependencies);
         }
+        this.bomReport = new BOMReport(reportFileName);
     }
 
     public Collection<BomDependency> getBomEligibleDependencies() {
@@ -93,11 +95,15 @@ public class DependencyAnalyzer {
                         logger.info("Dropped dependency {}.", key.toString(), expectedDependency);
                     }
 
-                    conflictingDependencies.stream().forEach(conflictingDependency ->
-                        logger.info("\t\tIncludes dependency {}. Expected dependency {}", conflictingDependency.getActualDependency(), conflictingDependency.getExpectedDependency()));
+                    conflictingDependencies.stream().forEach(conflictingDependency -> {
+                        bomReport.insertConflict(expectedDependency, conflictingDependency);
+                        logger.info("\t\tIncludes dependency {}. Expected dependency {}", conflictingDependency.getActualDependency(), conflictingDependency.getExpectedDependency());
+                    });
                 }
             });
         }
+
+        bomReport.generateReport();
     }
 
     private BomDependency getAzureCoreDependencyFromInput() {
