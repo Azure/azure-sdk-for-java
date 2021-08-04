@@ -106,10 +106,6 @@ class BulkWriter(container: CosmosAsyncContainer,
             bulkOptions)
           .asScala
 
-    //scalastyle:off magic.number
-    val maxDelayOn408RequestTimeoutInMs = 1000
-    //scalastyle:on magic.number
-
     bulkOperationResponseFlux.subscribe(
       resp => {
         var isGettingRetried = false
@@ -146,7 +142,9 @@ class BulkWriter(container: CosmosAsyncContainer,
                   if (Exceptions.isTimeout(cosmosException)) {
                     deferredRetryMono
                       .delaySubscription(
-                        Duration(scala.util.Random.nextInt(maxDelayOn408RequestTimeoutInMs), TimeUnit.MILLISECONDS),
+                        Duration(
+                          scala.util.Random.nextInt(BulkWriter.maxDelayOn408RequestTimeoutInMs),
+                          TimeUnit.MILLISECONDS),
                         Schedulers.boundedElastic())
                       .subscribeOn(Schedulers.boundedElastic())
                       .subscribe()
@@ -462,6 +460,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
 private object BulkWriter {
   //scalastyle:off magic.number
+  val maxDelayOn408RequestTimeoutInMs = 5000
   val maxItemOperationsToShowInErrorMessage = 10
 
   // we used to use 15 minutes here - extending it because of several incidents where
