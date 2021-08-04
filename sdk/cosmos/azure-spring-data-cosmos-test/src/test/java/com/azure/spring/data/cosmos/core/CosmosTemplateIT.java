@@ -568,6 +568,19 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testEqualCriteriaWithNestedProperty() {
+        String postalCode = ADDRESSES.get(0).getPostalCode();
+        String subjectWithNestedProperty = "shippingAddresses[0]['postalCode']";
+        Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, subjectWithNestedProperty,
+            Collections.singletonList(postalCode), Part.IgnoreCaseType.NEVER);
+
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(criteria), Person.class,
+            containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
     public void testRunQueryWithSimpleReturnType() {
         Criteria ageBetween = Criteria.getInstance(CriteriaType.BETWEEN, "age", Arrays.asList(AGE - 1, AGE + 1),
                                                    Part.IgnoreCaseType.NEVER);

@@ -32,8 +32,8 @@ public abstract class AbstractQueryGenerator {
     }
 
     private String generateQueryParameter(@NonNull String subject) {
-        // user.name is not valid sql parameter identifier.
-        return subject.replaceAll("\\.", "_") + UUID.randomUUID().toString().replaceAll("-", "_");
+        // user.name, user['name'] or user["first name"] are not valid sql parameter identifiers.
+        return subject.replaceAll("[^a-zA-Z\\d]", "_") + UUID.randomUUID().toString().replaceAll("-", "_");
     }
 
     private String generateUnaryQuery(@NonNull Criteria criteria) {
