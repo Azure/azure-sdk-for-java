@@ -2500,7 +2500,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
-            // We are expecting the top 3 highest rank score ann these score are sorted by offset by default
+            // We are expecting the top 3 highest rank score and these scores are sorted by offset by default
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
