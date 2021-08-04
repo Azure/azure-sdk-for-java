@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureDataLakeAnalyticsLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,243 +17,24 @@ import java.util.Map;
 /** Azure Data Lake Analytics linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataLakeAnalytics")
-@JsonFlatten
 @Fluent
-public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
+public final class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataLakeAnalyticsLinkedService.class);
 
     /*
-     * The Azure Data Lake Analytics account name. Type: string (or Expression
-     * with resultType string).
+     * Azure Data Lake Analytics linked service properties.
      */
-    @JsonProperty(value = "typeProperties.accountName", required = true)
-    private Object accountName;
-
-    /*
-     * The ID of the application used to authenticate against the Azure Data
-     * Lake Analytics account. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.servicePrincipalId")
-    private Object servicePrincipalId;
-
-    /*
-     * The Key of the application used to authenticate against the Azure Data
-     * Lake Analytics account.
-     */
-    @JsonProperty(value = "typeProperties.servicePrincipalKey")
-    private SecretBase servicePrincipalKey;
-
-    /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.tenant", required = true)
-    private Object tenant;
-
-    /*
-     * Data Lake Analytics account subscription ID (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.subscriptionId")
-    private Object subscriptionId;
-
-    /*
-     * Data Lake Analytics account resource group name (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.resourceGroupName")
-    private Object resourceGroupName;
-
-    /*
-     * Azure Data Lake Analytics URI Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.dataLakeAnalyticsUri")
-    private Object dataLakeAnalyticsUri;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureDataLakeAnalyticsLinkedServiceTypeProperties innerTypeProperties =
+        new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
 
     /**
-     * Get the accountName property: The Azure Data Lake Analytics account name. Type: string (or Expression with
-     * resultType string).
+     * Get the innerTypeProperties property: Azure Data Lake Analytics linked service properties.
      *
-     * @return the accountName value.
+     * @return the innerTypeProperties value.
      */
-    public Object accountName() {
-        return this.accountName;
-    }
-
-    /**
-     * Set the accountName property: The Azure Data Lake Analytics account name. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param accountName the accountName value to set.
-     * @return the AzureDataLakeAnalyticsLinkedService object itself.
-     */
-    public AzureDataLakeAnalyticsLinkedService withAccountName(Object accountName) {
-        this.accountName = accountName;
-        return this;
-    }
-
-    /**
-     * Get the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
-     * Analytics account. Type: string (or Expression with resultType string).
-     *
-     * @return the servicePrincipalId value.
-     */
-    public Object servicePrincipalId() {
-        return this.servicePrincipalId;
-    }
-
-    /**
-     * Set the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
-     * Analytics account. Type: string (or Expression with resultType string).
-     *
-     * @param servicePrincipalId the servicePrincipalId value to set.
-     * @return the AzureDataLakeAnalyticsLinkedService object itself.
-     */
-    public AzureDataLakeAnalyticsLinkedService withServicePrincipalId(Object servicePrincipalId) {
-        this.servicePrincipalId = servicePrincipalId;
-        return this;
-    }
-
-    /**
-     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
-     * Analytics account.
-     *
-     * @return the servicePrincipalKey value.
-     */
-    public SecretBase servicePrincipalKey() {
-        return this.servicePrincipalKey;
-    }
-
-    /**
-     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
-     * Analytics account.
-     *
-     * @param servicePrincipalKey the servicePrincipalKey value to set.
-     * @return the AzureDataLakeAnalyticsLinkedService object itself.
-     */
-    public AzureDataLakeAnalyticsLinkedService withServicePrincipalKey(SecretBase servicePrincipalKey) {
-        this.servicePrincipalKey = servicePrincipalKey;
-        return this;
-    }
-
-    /**
-     * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the tenant value.
-     */
-    public Object tenant() {
-        return this.tenant;
-    }
-
-    /**
-     * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param tenant the tenant value to set.
-     * @return the AzureDataLakeAnalyticsLinkedService object itself.
-     */
-    public AzureDataLakeAnalyticsLinkedService withTenant(Object tenant) {
-        this.tenant = tenant;
-        return this;
-    }
-
-    /**
-     * Get the subscriptionId property: Data Lake Analytics account subscription ID (if different from Data Factory
-     * account). Type: string (or Expression with resultType string).
-     *
-     * @return the subscriptionId value.
-     */
-    public Object subscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /**
-     * Set the subscriptionId property: Data Lake Analytics account subscription ID (if different from Data Factory
-     * account). Type: string (or Expression with resultType string).
-     *
-     * @param subscriptionId the subscriptionId value to set.
-     * @return the AzureDataLakeAnalyticsLinkedService object itself.
-     */
-    public AzureDataLakeAnalyticsLinkedService withSubscriptionId(Object subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the resourceGroupName property: Data Lake Analytics account resource group name (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
-     *
-     * @return the resourceGroupName value.
-     */
-    public Object resourceGroupName() {
-        return this.resourceGroupName;
-    }
-
-    /**
-     * Set the resourceGroupName property: Data Lake Analytics account resource group name (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
-     *
-     * @param resourceGroupName the resourceGroupName value to set.
-     * @return the AzureDataLakeAnalyticsLinkedService object itself.
-     */
-    public AzureDataLakeAnalyticsLinkedService withResourceGroupName(Object resourceGroupName) {
-        this.resourceGroupName = resourceGroupName;
-        return this;
-    }
-
-    /**
-     * Get the dataLakeAnalyticsUri property: Azure Data Lake Analytics URI Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the dataLakeAnalyticsUri value.
-     */
-    public Object dataLakeAnalyticsUri() {
-        return this.dataLakeAnalyticsUri;
-    }
-
-    /**
-     * Set the dataLakeAnalyticsUri property: Azure Data Lake Analytics URI Type: string (or Expression with resultType
-     * string).
-     *
-     * @param dataLakeAnalyticsUri the dataLakeAnalyticsUri value to set.
-     * @return the AzureDataLakeAnalyticsLinkedService object itself.
-     */
-    public AzureDataLakeAnalyticsLinkedService withDataLakeAnalyticsUri(Object dataLakeAnalyticsUri) {
-        this.dataLakeAnalyticsUri = dataLakeAnalyticsUri;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AzureDataLakeAnalyticsLinkedService object itself.
-     */
-    public AzureDataLakeAnalyticsLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AzureDataLakeAnalyticsLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -285,6 +66,206 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     }
 
     /**
+     * Get the accountName property: The Azure Data Lake Analytics account name. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the accountName value.
+     */
+    public Object accountName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().accountName();
+    }
+
+    /**
+     * Set the accountName property: The Azure Data Lake Analytics account name. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param accountName the accountName value to set.
+     * @return the AzureDataLakeAnalyticsLinkedService object itself.
+     */
+    public AzureDataLakeAnalyticsLinkedService withAccountName(Object accountName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAccountName(accountName);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
+     * Analytics account. Type: string (or Expression with resultType string).
+     *
+     * @return the servicePrincipalId value.
+     */
+    public Object servicePrincipalId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalId();
+    }
+
+    /**
+     * Set the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
+     * Analytics account. Type: string (or Expression with resultType string).
+     *
+     * @param servicePrincipalId the servicePrincipalId value to set.
+     * @return the AzureDataLakeAnalyticsLinkedService object itself.
+     */
+    public AzureDataLakeAnalyticsLinkedService withServicePrincipalId(Object servicePrincipalId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalId(servicePrincipalId);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
+     * Analytics account.
+     *
+     * @return the servicePrincipalKey value.
+     */
+    public SecretBase servicePrincipalKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalKey();
+    }
+
+    /**
+     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
+     * Analytics account.
+     *
+     * @param servicePrincipalKey the servicePrincipalKey value to set.
+     * @return the AzureDataLakeAnalyticsLinkedService object itself.
+     */
+    public AzureDataLakeAnalyticsLinkedService withServicePrincipalKey(SecretBase servicePrincipalKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalKey(servicePrincipalKey);
+        return this;
+    }
+
+    /**
+     * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the tenant value.
+     */
+    public Object tenant() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tenant();
+    }
+
+    /**
+     * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param tenant the tenant value to set.
+     * @return the AzureDataLakeAnalyticsLinkedService object itself.
+     */
+    public AzureDataLakeAnalyticsLinkedService withTenant(Object tenant) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTenant(tenant);
+        return this;
+    }
+
+    /**
+     * Get the subscriptionId property: Data Lake Analytics account subscription ID (if different from Data Factory
+     * account). Type: string (or Expression with resultType string).
+     *
+     * @return the subscriptionId value.
+     */
+    public Object subscriptionId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().subscriptionId();
+    }
+
+    /**
+     * Set the subscriptionId property: Data Lake Analytics account subscription ID (if different from Data Factory
+     * account). Type: string (or Expression with resultType string).
+     *
+     * @param subscriptionId the subscriptionId value to set.
+     * @return the AzureDataLakeAnalyticsLinkedService object itself.
+     */
+    public AzureDataLakeAnalyticsLinkedService withSubscriptionId(Object subscriptionId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSubscriptionId(subscriptionId);
+        return this;
+    }
+
+    /**
+     * Get the resourceGroupName property: Data Lake Analytics account resource group name (if different from Data
+     * Factory account). Type: string (or Expression with resultType string).
+     *
+     * @return the resourceGroupName value.
+     */
+    public Object resourceGroupName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().resourceGroupName();
+    }
+
+    /**
+     * Set the resourceGroupName property: Data Lake Analytics account resource group name (if different from Data
+     * Factory account). Type: string (or Expression with resultType string).
+     *
+     * @param resourceGroupName the resourceGroupName value to set.
+     * @return the AzureDataLakeAnalyticsLinkedService object itself.
+     */
+    public AzureDataLakeAnalyticsLinkedService withResourceGroupName(Object resourceGroupName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withResourceGroupName(resourceGroupName);
+        return this;
+    }
+
+    /**
+     * Get the dataLakeAnalyticsUri property: Azure Data Lake Analytics URI Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the dataLakeAnalyticsUri value.
+     */
+    public Object dataLakeAnalyticsUri() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().dataLakeAnalyticsUri();
+    }
+
+    /**
+     * Set the dataLakeAnalyticsUri property: Azure Data Lake Analytics URI Type: string (or Expression with resultType
+     * string).
+     *
+     * @param dataLakeAnalyticsUri the dataLakeAnalyticsUri value to set.
+     * @return the AzureDataLakeAnalyticsLinkedService object itself.
+     */
+    public AzureDataLakeAnalyticsLinkedService withDataLakeAnalyticsUri(Object dataLakeAnalyticsUri) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDataLakeAnalyticsUri(dataLakeAnalyticsUri);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AzureDataLakeAnalyticsLinkedService object itself.
+     */
+    public AzureDataLakeAnalyticsLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -292,20 +273,13 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (accountName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property accountName in model AzureDataLakeAnalyticsLinkedService"));
-        }
-        if (servicePrincipalKey() != null) {
-            servicePrincipalKey().validate();
-        }
-        if (tenant() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tenant in model AzureDataLakeAnalyticsLinkedService"));
+                        "Missing required property innerTypeProperties in model AzureDataLakeAnalyticsLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

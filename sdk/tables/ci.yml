@@ -9,6 +9,10 @@ trigger:
   paths:
     include:
       - sdk/tables/
+    exclude:
+      - sdk/tables/pom.xml
+      - sdk/tables/azure-data-tables/pom.xml
+      - sdk/tables/azure-data-tables-perf/pom.xml
 
 pr:
   branches:
@@ -20,6 +24,10 @@ pr:
   paths:
     include:
       - sdk/tables/
+    exclude:
+      - sdk/tables/pom.xml
+      - sdk/tables/azure-data-tables/pom.xml
+      - sdk/tables/azure-data-tables-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

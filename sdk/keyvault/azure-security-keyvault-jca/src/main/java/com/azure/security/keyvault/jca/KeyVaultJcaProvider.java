@@ -3,16 +3,24 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsaSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha384Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha512Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha256Signature;
+import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature;
+
+import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.Provider;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 /**
  * The Azure Key Vault security provider.
  */
-public class KeyVaultJcaProvider extends Provider {
+public final class KeyVaultJcaProvider extends Provider {
 
     /**
      * Stores the name.
@@ -86,7 +94,31 @@ public class KeyVaultJcaProvider extends Provider {
                     null
                 )
             );
+            Stream.of(
+                KeyVaultKeyLessRsaSignature.class,
+                KeyVaultKeyLessEcSha256Signature.class,
+                KeyVaultKeyLessEcSha384Signature.class,
+                KeyVaultKeyLessEcSha512Signature.class)
+                .forEach(c -> putService(
+                    new Service(
+                        this,
+                        "Signature",
+                        getAlgorithmName(c),
+                        c.getName(),
+                        null,
+                        null
+                    )
+                ));
             return null;
         });
+    }
+
+
+    private String getAlgorithmName(Class<? extends AbstractKeyVaultKeyLessSignature> c) {
+        try {
+            return c.getDeclaredConstructor().newInstance().getAlgorithmName();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            return "";
+        }
     }
 }

@@ -1162,8 +1162,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(FAKE_API_KEY));
         } else {
-            builder.credential(new AzureKeyCredential(
-                Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")));
+            builder.credential((new AzureKeyCredential(
+                Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY"))));
         }
         return builder;
     }

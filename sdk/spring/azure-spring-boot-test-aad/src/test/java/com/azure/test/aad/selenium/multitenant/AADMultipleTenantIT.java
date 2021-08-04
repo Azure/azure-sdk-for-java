@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.selenium.multitenant;
 
-import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_2;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_2;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static com.azure.test.aad.selenium.AADITHelper.createDefaultProperties;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

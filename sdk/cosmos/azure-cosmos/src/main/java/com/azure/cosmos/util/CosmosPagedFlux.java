@@ -23,12 +23,12 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TracerProvider;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +63,7 @@ import java.util.function.Function;
 public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosPagedFlux.class);
+    private static final ObjectMapper mapper = new ObjectMapper();
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
 
     private final Consumer<FeedResponse<T>> feedResponseConsumer;
@@ -318,7 +319,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics).getQueryPlanDiagnosticsContext() : null;
         if (queryPlanDiagnosticsContext != null) {
             attributes.put("JSON",
-                Utils.getSimpleObjectMapper().writeValueAsString(queryPlanDiagnosticsContext));
+                mapper.writeValueAsString(queryPlanDiagnosticsContext));
             tracerProvider.addEvent("Query Plan Statistics", attributes,
                 OffsetDateTime.ofInstant(queryPlanDiagnosticsContext.getStartTimeUTC(), ZoneOffset.UTC), parentContext);
         }
@@ -342,7 +343,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             for (ClientSideRequestStatistics.StoreResponseStatistics statistics :
                 clientSideRequestStatistics.getResponseStatisticsList()) {
                 attributes.put("StoreResponse" + counter++,
-                    Utils.getSimpleObjectMapper().writeValueAsString(statistics));
+                    mapper.writeValueAsString(statistics));
             }
 
             //adding Supplemental StoreResponse
@@ -350,13 +351,13 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             for (ClientSideRequestStatistics.StoreResponseStatistics statistics :
                 ClientSideRequestStatistics.getCappedSupplementalResponseStatisticsList(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
                 attributes.put("Supplemental StoreResponse" + counter++,
-                    Utils.getSimpleObjectMapper().writeValueAsString(statistics));
+                    mapper.writeValueAsString(statistics));
             }
 
             //adding retry context
             if (clientSideRequestStatistics.getRetryContext().getRetryStartTime() != null) {
                 attributes.put("Retry Context",
-                    Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRetryContext()));
+                    mapper.writeValueAsString(clientSideRequestStatistics.getRetryContext()));
             }
 
             //adding addressResolutionStatistics
@@ -364,7 +365,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics :
                 clientSideRequestStatistics.getAddressResolutionStatistics().values()) {
                 attributes.put("AddressResolutionStatistics" + counter++,
-                    Utils.getSimpleObjectMapper().writeValueAsString(addressResolutionStatistics));
+                    mapper.writeValueAsString(addressResolutionStatistics));
             }
 
             //adding serializationDiagnosticsContext
@@ -374,28 +375,28 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                     clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList) {
                     attributes = new HashMap<>();
                     attributes.put("SerializationDiagnostics" + counter++,
-                        Utils.getSimpleObjectMapper().writeValueAsString(serializationDiagnostics));
+                        mapper.writeValueAsString(serializationDiagnostics));
                 }
             }
 
             //adding gatewayStatistics
             if(clientSideRequestStatistics.getGatewayStatistics()  != null) {
                 attributes.put("GatewayStatistics",
-                    Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getGatewayStatistics()));
+                    mapper.writeValueAsString(clientSideRequestStatistics.getGatewayStatistics()));
             }
 
             //adding systemInformation
             attributes.put("RegionContacted",
-                Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+                mapper.writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
 
 
             //adding systemInformation
             attributes.put("SystemInformation",
-                Utils.getSimpleObjectMapper().writeValueAsString(ClientSideRequestStatistics.fetchSystemInformation()));
+                mapper.writeValueAsString(ClientSideRequestStatistics.fetchSystemInformation()));
 
             //adding clientCfgs
             attributes.put("ClientCfgs",
-                Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+                mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
 
             if (clientSideRequestStatistics.getResponseStatisticsList() != null && clientSideRequestStatistics.getResponseStatisticsList().size() > 0
                 && clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {

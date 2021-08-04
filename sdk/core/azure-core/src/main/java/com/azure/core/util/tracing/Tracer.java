@@ -48,7 +48,7 @@ public interface Tracer {
     /**
      * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
      */
-    String DIAGNOSTIC_ID_KEY = "diagnostic-id";
+    String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
 
     /**
      * Key for {@link Context} the scope of code where the given Span is in the current Context.
@@ -93,6 +93,29 @@ public interface Tracer {
      * @throws NullPointerException if {@code methodName} or {@code context} is {@code null}.
      */
     Context start(String methodName, Context context);
+
+    /**
+     * Creates a new tracing span.
+     * <p>
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
+     * downstream {@code start()} calls will use the created span as the parent.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Starts a tracing span with provided method name and explicit parent span</p>
+     * {@codesnippet com.azure.core.util.tracing.start#options-context}
+     *
+     * @param methodName Name of the method triggering the span creation.
+     * @param options span creation options.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return The updated {@link Context} object containing the returned span.
+     * @throws NullPointerException if {@code options} or {@code context} is {@code null}.
+     */
+    default Context start(String methodName, StartSpanOptions options, Context context) {
+        // fall back to old API if not overriden.
+        return start(methodName, context);
+    }
 
     /**
      * Creates a new tracing span for AMQP calls.
@@ -272,4 +295,26 @@ public interface Tracer {
                           Context context) {
 
     }
+
+    /**
+     * Makes span current. Implementations may put it on ThreadLocal.
+     * Make sure to always use try-with-resource statement with makeSpanCurrent
+     * @param context Context with span.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Starts a tracing span, makes it current and ends it</p>
+     * {@codesnippet com.azure.core.util.tracing.makeSpanCurrent#context}
+     *
+     * @return Closeable that should be closed in the same thread with try-with-resource statement.
+     */
+    default AutoCloseable makeSpanCurrent(Context context) {
+        return NOOP_CLOSEABLE;
+    }
+
+    AutoCloseable NOOP_CLOSEABLE = new AutoCloseable() {
+        @Override
+        public void close() {
+        }
+    };
 }

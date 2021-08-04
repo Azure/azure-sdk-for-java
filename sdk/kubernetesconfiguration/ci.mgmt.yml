@@ -8,7 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/kubernetesconfiguration/
+      - sdk/kubernetesconfiguration/ci.mgmt.yml
+      - sdk/kubernetesconfiguration/mgmt-v2019_11_01_preview/
+      - sdk/kubernetesconfiguration/mgmt-v2021_03_01/
+    exclude:
+      - sdk/kubernetesconfiguration/pom.xml
+      - sdk/kubernetesconfiguration/mgmt-v2019_11_01_preview/pom.xml
+      - sdk/kubernetesconfiguration/mgmt-v2021_03_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/kubernetesconfiguration/
+      - sdk/kubernetesconfiguration/ci.mgmt.yml
+      - sdk/kubernetesconfiguration/mgmt-v2019_11_01_preview/
+      - sdk/kubernetesconfiguration/mgmt-v2021_03_01/
+    exclude:
+      - sdk/kubernetesconfiguration/pom.xml
+      - sdk/kubernetesconfiguration/mgmt-v2019_11_01_preview/pom.xml
+      - sdk/kubernetesconfiguration/mgmt-v2021_03_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

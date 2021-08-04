@@ -8,6 +8,10 @@ trigger:
   paths:
     include:
       - sdk/purview/
+    exclude:
+      - sdk/purview/pom.xml
+      - sdk/purview/azure-analytics-purview-catalog/pom.xml
+      - sdk/purview/azure-analytics-purview-scanning/pom.xml
 
 pr:
   branches:
@@ -19,6 +23,10 @@ pr:
   paths:
     include:
       - sdk/purview/
+    exclude:
+      - sdk/purview/pom.xml
+      - sdk/purview/azure-analytics-purview-catalog/pom.xml
+      - sdk/purview/azure-analytics-purview-scanning/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

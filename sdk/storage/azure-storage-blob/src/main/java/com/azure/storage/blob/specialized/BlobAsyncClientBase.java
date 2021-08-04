@@ -269,7 +269,7 @@ public class BlobAsyncClientBase {
      * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
      * @return a {@link BlobAsyncClientBase} with the specified {@code encryptionScope}.
      */
-    public BlobAsyncClientBase getEncryptionScopeClient(String encryptionScope) {
+    public BlobAsyncClientBase getEncryptionScopeAsyncClient(String encryptionScope) {
         EncryptionScope finalEncryptionScope = null;
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
@@ -286,7 +286,7 @@ public class BlobAsyncClientBase {
      * pass {@code null} to use no customer provided key.
      * @return a {@link BlobAsyncClientBase} with the specified {@code customerProvidedKey}.
      */
-    public BlobAsyncClientBase getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+    public BlobAsyncClientBase getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
             finalCustomerProvidedKey = new CpkInfo()

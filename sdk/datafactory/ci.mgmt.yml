@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/datafactory/
+      - sdk/datafactory/ci.mgmt.yml
+      - sdk/datafactory/mgmt-v2018_06_01/
+    exclude:
+      - sdk/datafactory/pom.xml
+      - sdk/datafactory/mgmt-v2018_06_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/datafactory/
+      - sdk/datafactory/ci.mgmt.yml
+      - sdk/datafactory/mgmt-v2018_06_01/
+    exclude:
+      - sdk/datafactory/pom.xml
+      - sdk/datafactory/mgmt-v2018_06_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
