@@ -14,7 +14,7 @@ import java.util.Objects;
  * Class to represent a time interval.
  */
 @Immutable
-public class TimeInterval {
+public final class TimeInterval {
     public static final TimeInterval ALL = new TimeInterval(OffsetDateTime.MIN, OffsetDateTime.MAX);
 
     public static final TimeInterval LAST_5_MINUTES = new TimeInterval(Duration.ofMinutes(5));
