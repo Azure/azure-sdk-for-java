@@ -17,6 +17,7 @@ import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static com.azure.spring.integration.core.api.CheckpointMode.MANUAL;
@@ -53,10 +54,10 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
                                                  Message<U> message,
                                                  PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
-        String partitionKey = getPartitionKey(partitionSupplier);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
-        if (StringUtils.hasText(partitionKey)) {
+        if (Objects.nonNull(serviceBusMessage) && !StringUtils.hasText(serviceBusMessage.getPartitionKey())) {
+            String partitionKey = getPartitionKey(partitionSupplier);
             serviceBusMessage.setPartitionKey(partitionKey);
         }
         return this.clientFactory.getOrCreateSender(destination).sendMessage(serviceBusMessage).toFuture();
@@ -71,7 +72,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
             return;
         }
         Assert.state(isValidCheckpointMode(checkpointConfig.getCheckpointMode()),
-                     "Only MANUAL or RECORD checkpoint " + "mode is supported " + "in " + "ServiceBusTemplate");
+            "Only MANUAL or RECORD checkpoint " + "mode is supported " + "in " + "ServiceBusTemplate");
         this.checkpointConfig = checkpointConfig;
         LOGGER.info("ServiceBusTemplate checkpoint config becomes: {}", this.checkpointConfig);
     }

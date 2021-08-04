@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
 import java.util.List;
@@ -145,7 +146,6 @@ public interface StorageTarget {
         interface WithCreate
             extends DefinitionStages.WithJunctions,
                 DefinitionStages.WithTargetType,
-                DefinitionStages.WithProvisioningState,
                 DefinitionStages.WithNfs3,
                 DefinitionStages.WithClfs,
                 DefinitionStages.WithUnknown,
@@ -185,18 +185,6 @@ public interface StorageTarget {
              * @return the next definition stage.
              */
             WithCreate withTargetType(StorageTargetType targetType);
-        }
-        /** The stage of the StorageTarget definition allowing to specify provisioningState. */
-        interface WithProvisioningState {
-            /**
-             * Specifies the provisioningState property: ARM provisioning state, see
-             * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             *
-             * @param provisioningState ARM provisioning state, see
-             *     https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             * @return the next definition stage.
-             */
-            WithCreate withProvisioningState(ProvisioningStateType provisioningState);
         }
         /** The stage of the StorageTarget definition allowing to specify nfs3. */
         interface WithNfs3 {
@@ -249,8 +237,6 @@ public interface StorageTarget {
     /** The template for StorageTarget update. */
     interface Update
         extends UpdateStages.WithJunctions,
-            UpdateStages.WithTargetType,
-            UpdateStages.WithProvisioningState,
             UpdateStages.WithNfs3,
             UpdateStages.WithClfs,
             UpdateStages.WithUnknown,
@@ -282,28 +268,6 @@ public interface StorageTarget {
              * @return the next definition stage.
              */
             Update withJunctions(List<NamespaceJunction> junctions);
-        }
-        /** The stage of the StorageTarget update allowing to specify targetType. */
-        interface WithTargetType {
-            /**
-             * Specifies the targetType property: Type of the Storage Target..
-             *
-             * @param targetType Type of the Storage Target.
-             * @return the next definition stage.
-             */
-            Update withTargetType(StorageTargetType targetType);
-        }
-        /** The stage of the StorageTarget update allowing to specify provisioningState. */
-        interface WithProvisioningState {
-            /**
-             * Specifies the provisioningState property: ARM provisioning state, see
-             * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             *
-             * @param provisioningState ARM provisioning state, see
-             *     https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-             * @return the next definition stage.
-             */
-            Update withProvisioningState(ProvisioningStateType provisioningState);
         }
         /** The stage of the StorageTarget update allowing to specify nfs3. */
         interface WithNfs3 {

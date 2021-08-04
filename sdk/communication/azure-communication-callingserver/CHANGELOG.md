@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+
 ## 1.0.0-beta.3 (2021-07-26)
 ### Features Added
 - Added RedirectPolicy as a new HttpPolicy to redirect requests based on the HttpResponse.

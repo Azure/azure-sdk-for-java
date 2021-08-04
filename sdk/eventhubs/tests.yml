@@ -12,6 +12,6 @@ stages:
         - name: azure-messaging-eventhubs-checkpointstore-blob
           groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 120
       EnvVars:
         AZURE_LOG_LEVEL: 2

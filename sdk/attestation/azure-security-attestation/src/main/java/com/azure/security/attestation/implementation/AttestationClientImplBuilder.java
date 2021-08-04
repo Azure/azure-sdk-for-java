@@ -5,9 +5,11 @@
 package com.azure.security.attestation.implementation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -138,6 +140,22 @@ public final class AttestationClientImplBuilder {
     }
 
     /*
+     * The TokenCredential used for authentication.
+     */
+    private TokenCredential tokenCredential;
+
+    /**
+     * Sets The TokenCredential used for authentication.
+     *
+     * @param tokenCredential the tokenCredential value.
+     * @return the AttestationClientImplBuilder.
+     */
+    public AttestationClientImplBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+    /*
      * The logging configuration for HTTP requests and responses.
      */
     private HttpLogOptions httpLogOptions;
@@ -212,6 +230,9 @@ public final class AttestationClientImplBuilder {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(

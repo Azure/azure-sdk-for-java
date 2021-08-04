@@ -8,9 +8,17 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/loganalytics/
+      - sdk/loganalytics/ci.mgmt.yml
+      - sdk/loganalytics/mgmt-v2015_03_20/
+      - sdk/loganalytics/mgmt-v2019_08_01_preview/
+      - sdk/loganalytics/mgmt-v2020_03_01_preview/
+      - sdk/loganalytics/mgmt-v2020_08_01/
     exclude:
-      - sdk/loganalytics/microsoft-azure-loganalytics
+      - sdk/loganalytics/pom.xml
+      - sdk/loganalytics/mgmt-v2015_03_20/pom.xml
+      - sdk/loganalytics/mgmt-v2019_08_01_preview/pom.xml
+      - sdk/loganalytics/mgmt-v2020_03_01_preview/pom.xml
+      - sdk/loganalytics/mgmt-v2020_08_01/pom.xml
 
 pr:
   branches:
@@ -21,9 +29,17 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/loganalytics/
+      - sdk/loganalytics/ci.mgmt.yml
+      - sdk/loganalytics/mgmt-v2015_03_20/
+      - sdk/loganalytics/mgmt-v2019_08_01_preview/
+      - sdk/loganalytics/mgmt-v2020_03_01_preview/
+      - sdk/loganalytics/mgmt-v2020_08_01/
     exclude:
-      - sdk/loganalytics/microsoft-azure-loganalytics
+      - sdk/loganalytics/pom.xml
+      - sdk/loganalytics/mgmt-v2015_03_20/pom.xml
+      - sdk/loganalytics/mgmt-v2019_08_01_preview/pom.xml
+      - sdk/loganalytics/mgmt-v2020_03_01_preview/pom.xml
+      - sdk/loganalytics/mgmt-v2020_08_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

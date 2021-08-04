@@ -9,15 +9,14 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -34,6 +33,9 @@ public class Utils {
     public static final String COMMANDLINE_INPUTFILE = "inputfile";
     public static final String COMMANDLINE_OUTPUTFILE = "outputfile";
     public static final String COMMANDLINE_POMFILE = "pomfile";
+    public static final String COMMANDLINE_MODE = "mode";
+    public static final String ANALYZE_MODE = "analyze";
+    public static final String GENERATE_MODE = "generate";
     public static final String COMMANDLINE_EXTERNALDEPENDENCIES = "externalDependencies";
     public static final String COMMANDLINE_GROUPID = "groupid";
     public  static final Pattern COMMANDLINE_REGEX = Pattern.compile("-(.*)=(.*)");
@@ -44,15 +46,38 @@ public class Utils {
     public static final String AZURE_PERF_LIBRARY_IDENTIFIER = "-perf";
     public static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
     public static final Pattern STRING_SPLIT_BY_DOT = Pattern.compile("[.]");
+    public static final String PROJECT_VERSION = "project.version";
 
     public static final HashSet<String> RESOLVED_EXCLUSION_LIST = new HashSet<>(Arrays.asList(
        "junit-jupiter-api"
     ));
 
+    public static final HashSet<String> IGNORE_CONFLICT_LIST = new HashSet<>(Arrays.asList(
+        "slf4j-api" // slf4j is compatible across versions.
+    ));
+
     public static final String POM_TYPE = "pom";
     private static Logger logger = LoggerFactory.getLogger(Utils.class);
 
-    public static List<BomDependency> getExternalDependenciesContent(List<Dependency> dependencies) {
+    static void validateNotNullOrEmpty(String argValue, String argName) {
+        if(argValue == null || argValue.isEmpty()) {
+            throw new NullPointerException(String.format("%s can't be null", argName));
+        }
+    }
+
+    static void validateNull(String argValue, String argName) {
+        if(argValue != null) {
+            throw new IllegalArgumentException(String.format("%s should be null", argName));
+        }
+    }
+
+    static void validateValues(String argName, String argValue, String ... expectedValues) {
+        if(Arrays.stream(expectedValues).noneMatch(a -> a.equals(argValue))) {
+            throw new IllegalArgumentException(String.format("%s must match %s", argName, Arrays.toString(expectedValues)));
+        }
+    }
+
+    static List<BomDependency> getExternalDependenciesContent(List<Dependency> dependencies) {
         List<BomDependency> allResolvedDependencies = new ArrayList<>();
 
         for (Dependency dependency : dependencies) {
@@ -66,7 +91,7 @@ public class Utils {
         return allResolvedDependencies;
     }
 
-    public static List<BomDependency> getPomFileContent(Dependency dependency) {
+    static List<BomDependency> getPomFileContent(Dependency dependency) {
             String[] groups = STRING_SPLIT_BY_DOT.split(dependency.getGroupId());
             String url = null;
             if(groups.length == 2) {
@@ -89,18 +114,33 @@ public class Utils {
             return HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream())
                 .thenApply(response -> {
                     if(response.statusCode() == 200) {
-                        return Utils.parsePomFileContent(response.body());
+                        try (InputStreamReader reader = new InputStreamReader(response.body())) {
+                            return Utils.parsePomFileContent(reader);
+                        }
+                        catch (IOException ex) {
+                            logger.error("Failed to read contents for {}", dependency.toString());
+                        }
                     }
 
                     return null;
                 }).join();
     }
 
-    public static BomDependencyNoVersion toBomDependencyNoVersion(BomDependency bomDependency) {
+    static BomDependencyNoVersion toBomDependencyNoVersion(BomDependency bomDependency) {
         return new BomDependencyNoVersion(bomDependency.getGroupId(), bomDependency.getArtifactId());
     }
 
-    private static List<BomDependency> parsePomFileContent(InputStream responseStream) {
+    static List<BomDependency> parsePomFileContent(String fileName) {
+        try (FileReader reader = new FileReader(fileName)) {
+            return parsePomFileContent(reader);
+        } catch (IOException exception) {
+            logger.error("Failed to read the contents of the pom file: {}", fileName);
+        }
+
+        return new ArrayList<>();
+    }
+
+    static List<BomDependency> parsePomFileContent(Reader responseStream) {
         MavenXpp3Reader reader = new MavenXpp3Reader();
         try {
             Model model = reader.read(responseStream);
@@ -111,6 +151,10 @@ public class Utils {
 
                 while(model.getProperties().getProperty(version) != null) {
                     version = getPropertyName(model.getProperties().getProperty(version));
+
+                    if(version.equals(PROJECT_VERSION)) {
+                        version = model.getVersion();
+                    }
                 }
 
                 if(version == null) {

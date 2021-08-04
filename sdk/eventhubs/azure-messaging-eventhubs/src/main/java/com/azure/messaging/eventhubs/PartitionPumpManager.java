@@ -76,6 +76,7 @@ class PartitionPumpManager {
     private final Duration maxWaitTime;
     private final int maxBatchSize;
     private final boolean batchReceiveMode;
+    private final int prefetch;
 
     /**
      * Creates an instance of partition pump manager.
@@ -108,6 +109,10 @@ class PartitionPumpManager {
         this.maxBatchSize = maxBatchSize;
         this.maxWaitTime = maxWaitTime;
         this.batchReceiveMode = batchReceiveMode;
+
+        this.prefetch = eventHubClientBuilder.getPrefetchCount() == null
+            ? EventHubClientBuilder.DEFAULT_PREFETCH_COUNT
+            : eventHubClientBuilder.getPrefetchCount();
     }
 
     /**
@@ -200,7 +205,7 @@ class PartitionPumpManager {
             Scheduler scheduler = Schedulers.newBoundedElastic(schedulerSize,
                 MAXIMUM_QUEUE_SIZE, "partition-pump-" + claimedOwnership.getPartitionId());
             EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
-                .createConsumer(claimedOwnership.getConsumerGroup(), PREFETCH);
+                .createConsumer(claimedOwnership.getConsumerGroup(), prefetch);
             PartitionPump partitionPump = new PartitionPump(claimedOwnership.getPartitionId(), eventHubConsumer,
                 scheduler);
 
@@ -226,7 +231,7 @@ class PartitionPumpManager {
             }
             partitionEventFlux
                 .concatMap(Flux::collectList)
-                .publishOn(scheduler, false, PREFETCH)
+                .publishOn(scheduler, false, prefetch)
                 .subscribe(partitionEventBatch -> {
                     processEvents(partitionContext, partitionProcessor,
                         eventHubConsumer, partitionEventBatch);

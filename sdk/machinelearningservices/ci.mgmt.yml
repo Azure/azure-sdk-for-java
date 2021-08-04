@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/machinelearningservices/
+      - sdk/machinelearningservices/ci.mgmt.yml
+      - sdk/machinelearningservices/mgmt-v2019_05_01/
+    exclude:
+      - sdk/machinelearningservices/pom.xml
+      - sdk/machinelearningservices/mgmt-v2019_05_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/machinelearningservices/
+      - sdk/machinelearningservices/ci.mgmt.yml
+      - sdk/machinelearningservices/mgmt-v2019_05_01/
+    exclude:
+      - sdk/machinelearningservices/pom.xml
+      - sdk/machinelearningservices/mgmt-v2019_05_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
