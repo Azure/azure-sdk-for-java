@@ -372,7 +372,6 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private boolean forceCollectionRoutingMapRefresh;
 
-
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
         // indicating background addressResolution is still inflight
@@ -403,7 +402,7 @@ public class ClientSideRequestStatistics {
             return forceRefresh;
         }
 
-        public boolean isForceCollectionRoutingMapRefresh() { return forceCollectionRoutingMapRefresh;}
+        public boolean isForceCollectionRoutingMapRefresh() { return forceCollectionRoutingMapRefresh; }
     }
 
     public static class GatewayStatistics {
