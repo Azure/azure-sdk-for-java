@@ -262,7 +262,7 @@
         "forceUpdateTag": "[parameters('utcValue')]",
         "azPowerShellVersion": "5.0",
         "timeout": "PT30M",
-        "arguments": "[format(' -vaultName {0} -certificateName {1} -subjectName {2} -RSAKeyLessCertificateName {3} -EC256KeyLessCertificateName {4} -EC384KeyLessCertificateName {5} -EC521KeyLessCertificateName {6}', variables('kvName'), parameters('certificateName'), parameters('subjectName'), parameters('RSAKeyLessCertificateName'), parameters('EC256KeyLessCertificateName'), parameters('EC384KeyLessCertificateName'), parameters('EC521KeyLessCertificateName'))]",
+        "arguments": "[format(' -vaultName {0} -certificateName {1} -subjectName {2} -RSAKeyLessCertificateName {3} -EC256KeyLessCertificateName {4} -EC384KeyLessCertificateName {5} -EC521KeyLessCertificateName {6}', variables('keyVaultName'), parameters('certificateName'), parameters('subjectName'), parameters('RSAKeyLessCertificateName'), parameters('EC256KeyLessCertificateName'), parameters('EC384KeyLessCertificateName'), parameters('EC521KeyLessCertificateName'))]",
         "scriptContent": "
         param(
     [string] [Parameter(Mandatory=$true)] $vaultName,
