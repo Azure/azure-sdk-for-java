@@ -5,6 +5,7 @@ stages:
     parameters:
       ServiceDirectory: identity
       Clouds: 'Public,Canary,UsGov,China'
+      SupportedClouds: 'Public,UsGov'
       Artifacts:
         - name: azure-identity
           groupId: com.azure
