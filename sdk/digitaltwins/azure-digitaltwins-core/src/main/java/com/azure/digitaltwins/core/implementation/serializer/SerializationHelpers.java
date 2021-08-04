@@ -21,8 +21,7 @@ public final class SerializationHelpers {
     public static String serializeContinuationToken(String continuationToken) {
         try {
             return new JacksonAdapter().serialize(continuationToken, SerializerEncoding.JSON);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Invalid continuation token", e);
         }
     }

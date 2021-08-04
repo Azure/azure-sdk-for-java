@@ -25,7 +25,7 @@ public final class AnalyzeSentimentAction {
     }
 
     /**
-     * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
+     * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
@@ -38,7 +38,7 @@ public final class AnalyzeSentimentAction {
     }
 
     /**
-     * Get the value of {@code disableServiceLogs}.
+     * Gets the value of {@code disableServiceLogs}.
      *
      * @return The value of {@code disableServiceLogs}. The default value of this property is 'false'. This means,
      * Text Analytics service logs your input text for 48 hours, solely to allow for troubleshooting issues. Setting
@@ -49,13 +49,13 @@ public final class AnalyzeSentimentAction {
     }
 
     /**
-     * Set the value of {@code disableServiceLogs}.
+     * Sets the value of {@code disableServiceLogs}.
      *
      * @param disableServiceLogs The default value of this property is 'false'. This means, Text Analytics service logs
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return the {@link AnalyzeSentimentAction} object itself.
+     * @return The {@link AnalyzeSentimentAction} object itself.
      */
     public AnalyzeSentimentAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
@@ -63,24 +63,24 @@ public final class AnalyzeSentimentAction {
     }
 
     /**
-     * Get the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
+     * Gets the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
      * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1 and later.
      *
-     * @return the value of {@code includeOpinionMining}.
+     * @return The value of {@code includeOpinionMining}.
      */
     public boolean isIncludeOpinionMining() {
         return includeOpinionMining;
     }
 
     /**
-     * Set the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
+     * Sets the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
      * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1 and later.
      *
      * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      *
-     * @return the {@link AnalyzeSentimentAction} object itself.
+     * @return The {@link AnalyzeSentimentAction} object itself.
      */
     public AnalyzeSentimentAction setIncludeOpinionMining(boolean includeOpinionMining) {
         this.includeOpinionMining = includeOpinionMining;

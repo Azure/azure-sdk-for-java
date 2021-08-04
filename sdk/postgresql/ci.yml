@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/postgresql/
+      - sdk/postgresql/ci.yml
+      - sdk/postgresql/azure-resourcemanager-postgresql/
+    exclude:
+      - sdk/postgresql/pom.xml
+      - sdk/postgresql/azure-resourcemanager-postgresql/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/postgresql/
+      - sdk/postgresql/ci.yml
+      - sdk/postgresql/azure-resourcemanager-postgresql/
+    exclude:
+      - sdk/postgresql/pom.xml
+      - sdk/postgresql/azure-resourcemanager-postgresql/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

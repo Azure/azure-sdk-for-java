@@ -13,6 +13,7 @@
       <outputDirectory>${file.separator}</outputDirectory>
       <includes>
         <include>com/azure/storage/common/test/shared/**/*</include>
+        <include>log4j2.xml</include>
         <include>SpockConfig.groovy</include>
       </includes>
       <useDefaultExcludes>true</useDefaultExcludes>

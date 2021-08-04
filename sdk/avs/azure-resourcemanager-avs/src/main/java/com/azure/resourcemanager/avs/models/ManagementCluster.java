@@ -4,61 +4,14 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** The properties of a default cluster. */
-@Immutable
-public class ManagementCluster extends ClusterUpdateProperties {
+/** The properties of a management cluster. */
+@Fluent
+public final class ManagementCluster extends CommonClusterProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementCluster.class);
-
-    /*
-     * The state of the cluster provisioning
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ClusterProvisioningState provisioningState;
-
-    /*
-     * The identity
-     */
-    @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer clusterId;
-
-    /*
-     * The hosts
-     */
-    @JsonProperty(value = "hosts", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> hosts;
-
-    /**
-     * Get the provisioningState property: The state of the cluster provisioning.
-     *
-     * @return the provisioningState value.
-     */
-    public ClusterProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the clusterId property: The identity.
-     *
-     * @return the clusterId value.
-     */
-    public Integer clusterId() {
-        return this.clusterId;
-    }
-
-    /**
-     * Get the hosts property: The hosts.
-     *
-     * @return the hosts value.
-     */
-    public List<String> hosts() {
-        return this.hosts;
-    }
 
     /** {@inheritDoc} */
     @Override

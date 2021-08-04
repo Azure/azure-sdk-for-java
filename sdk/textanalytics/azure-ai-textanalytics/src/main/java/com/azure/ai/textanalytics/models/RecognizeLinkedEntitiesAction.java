@@ -24,7 +24,7 @@ public final class RecognizeLinkedEntitiesAction {
     }
 
     /**
-     * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
+     * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
@@ -37,7 +37,7 @@ public final class RecognizeLinkedEntitiesAction {
     }
 
     /**
-     * Get the value of {@code disableServiceLogs}.
+     * Gets the value of {@code disableServiceLogs}.
      *
      * @return The value of {@code disableServiceLogs}. The default value of this property is 'false'. This means,
      * Text Analytics service logs your input text for 48 hours, solely to allow for troubleshooting issues. Setting
@@ -48,7 +48,7 @@ public final class RecognizeLinkedEntitiesAction {
     }
 
     /**
-     * Set the value of {@code disableServiceLogs}.
+     * Sets the value of {@code disableServiceLogs}.
      *
      * @param disableServiceLogs The default value of this property is 'false'. This means, Text Analytics service logs
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,

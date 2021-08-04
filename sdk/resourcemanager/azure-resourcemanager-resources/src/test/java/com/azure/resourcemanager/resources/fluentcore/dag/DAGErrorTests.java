@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -118,7 +117,8 @@ public class DAGErrorTests {
                     return Mono.empty();
                 }).blockLast();
 
-        Assertions.assertTrue(Sets.difference(expectedToSee, seen).isEmpty());
+        expectedToSee.removeAll(seen);
+        Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
         Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
         RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
@@ -237,7 +237,8 @@ public class DAGErrorTests {
                     return Mono.empty();
                 }).blockLast();
 
-        Assertions.assertTrue(Sets.difference(expectedToSee, seen).isEmpty());
+        expectedToSee.removeAll(seen);
+        Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
         Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
         RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
@@ -352,7 +353,8 @@ public class DAGErrorTests {
             return Mono.empty();
         }).blockLast();
 
-        Assertions.assertTrue(Sets.difference(expectedToSee, seen).isEmpty());
+        expectedToSee.removeAll(seen);
+        Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
         Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
         RuntimeException compositeException = (RuntimeException) exceptions.get(0);
@@ -468,7 +470,8 @@ public class DAGErrorTests {
             return Mono.empty();
         }).blockLast();
 
-        Assertions.assertTrue(Sets.difference(expectedToSee, seen).isEmpty());
+        expectedToSee.removeAll(seen);
+        Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
         Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
         RuntimeException runtimeException = (RuntimeException) exceptions.get(0);

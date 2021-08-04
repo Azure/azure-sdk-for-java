@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.models.AggregationType;
+import com.azure.resourcemanager.monitor.models.AggregationTypeEnum;
 import com.azure.resourcemanager.monitor.models.DynamicMetricCriteria;
 import com.azure.resourcemanager.monitor.models.DynamicThresholdFailingPeriods;
 import com.azure.resourcemanager.monitor.models.DynamicThresholdOperator;
@@ -68,7 +68,7 @@ class MetricDynamicAlertConditionImpl
         DynamicThresholdOperator condition,
         DynamicThresholdSensitivity alertSensitivity) {
         this.innerModel().withOperator(condition);
-        this.innerModel().withTimeAggregation(AggregationType.fromString(timeAggregation.toString()));
+        this.innerModel().withTimeAggregation(AggregationTypeEnum.fromString(timeAggregation.toString()));
         this.innerModel().withAlertSensitivity(alertSensitivity);
         return this;
     }

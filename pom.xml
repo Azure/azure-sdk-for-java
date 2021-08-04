@@ -355,7 +355,7 @@
                   </group>
                   <group>
                     <title>Azure Web Pub Sub</title>
-                    <package>com.azure.messaging.webpubsub*</package>
+                    <packages>com.azure.messaging.webpubsub*</packages>
                   </group>
                   <group>
                     <title>Azure Mixed Reality Authentication</title>
@@ -716,6 +716,7 @@
         <module>sdk/authorization</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
+        <module>sdk/azurearcdata</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
         <module>sdk/batch</module>
@@ -750,6 +751,7 @@
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
+        <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
         <module>sdk/formrecognizer</module>
@@ -803,6 +805,7 @@
         <module>sdk/resourcemover</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
+        <module>sdk/security</module>
         <module>sdk/servicebus</module>
         <module>sdk/servicefabric</module>
         <module>sdk/signalr</module>

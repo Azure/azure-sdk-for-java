@@ -55,48 +55,48 @@ public final class AnalyzeActionsResult {
     }
 
     /**
-     * Get the {@code recognizeEntitiesActionResults} property: The categorized entities recognition action results
+     * Gets the {@code recognizeEntitiesResults} property: The categorized entities recognition action results
      * property.
      *
-     * @return the recognizeEntitiesActionResults value.
+     * @return The recognizeEntitiesResults value.
      */
     public IterableStream<RecognizeEntitiesActionResult> getRecognizeEntitiesResults() {
         return this.recognizeEntitiesResults;
     }
 
     /**
-     * Get the {@code recognizeLinkedEntitiesActionResults} property: The linked entities recognition action results
+     * Gets the {@code recognizeLinkedEntitiesResults} property: The linked entities recognition action results
      * property.
      *
-     * @return the recognizeLinkedEntitiesActionResults value.
+     * @return The recognizeLinkedEntitiesResults value.
      */
     public IterableStream<RecognizeLinkedEntitiesActionResult> getRecognizeLinkedEntitiesResults() {
         return this.recognizeLinkedEntitiesResults;
     }
 
     /**
-     * Get the {@code recognizePiiEntitiesActionResults} property: The PII entities recognition actions results
+     * Gets the {@code recognizePiiEntitiesResults} property: The PII entities recognition actions results
      * property.
      *
-     * @return the recognizePiiEntitiesActionResults value.
+     * @return The recognizePiiEntitiesResults value.
      */
     public IterableStream<RecognizePiiEntitiesActionResult> getRecognizePiiEntitiesResults() {
         return this.recognizePiiEntitiesResults;
     }
 
     /**
-     * Get the {@code extractKeyPhrasesActionResults} property: The key phrases extraction actions results property.
+     * Gets the {@code extractKeyPhrasesResults} property: The key phrases extraction actions results property.
      *
-     * @return the extractKeyPhrasesActionResults value.
+     * @return The extractKeyPhrasesResults value.
      */
     public IterableStream<ExtractKeyPhrasesActionResult> getExtractKeyPhrasesResults() {
         return this.extractKeyPhrasesResults;
     }
 
     /**
-     * Get the {@code analyzeSentimentActionResults} property: The sentiment analysis actions results property.
+     * Gets the {@code analyzeSentimentResults} property: The sentiment analysis actions results property.
      *
-     * @return the analyzeSentimentActionResults value.
+     * @return The analyzeSentimentResults value.
      */
     public IterableStream<AnalyzeSentimentActionResult> getAnalyzeSentimentResults() {
         return this.analyzeSentimentResults;

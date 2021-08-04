@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//layout/analyze",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e5296eaa-4bd7-4020-a00b-aa4f34a030db",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7f5f2cea-a3f8-4d0e-91ed-d317fa553256",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "208",
-      "x-envoy-upstream-service-time" : "1000",
+      "x-envoy-upstream-service-time" : "1011",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "75b4bce7-071d-4c57-a6c7-ee98b39c005f",
+      "apim-request-id" : "b1dc43f0-5249-4e54-8ce2-63032bbc52b9",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidImageURL\",\"message\":\"Failed to download the image from the submitted URL. The URL may either be invalid or the server hosting the image is experiencing some technical difficulties.\"}}",
-      "Date" : "Tue, 11 May 2021 21:27:42 GMT",
+      "Date" : "Wed, 07 Jul 2021 06:32:34 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

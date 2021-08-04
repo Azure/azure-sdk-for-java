@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/storageimportexport/
+      - sdk/storageimportexport/ci.mgmt.yml
+      - sdk/storageimportexport/mgmt-v2016_11_01/
+    exclude:
+      - sdk/storageimportexport/pom.xml
+      - sdk/storageimportexport/mgmt-v2016_11_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/storageimportexport/
+      - sdk/storageimportexport/ci.mgmt.yml
+      - sdk/storageimportexport/mgmt-v2016_11_01/
+    exclude:
+      - sdk/storageimportexport/pom.xml
+      - sdk/storageimportexport/mgmt-v2016_11_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

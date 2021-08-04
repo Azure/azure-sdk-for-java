@@ -14,12 +14,12 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     /*
      * The boolean indicator to include opinion mining data in the returned result. If this
      * flag is specified, you'll get a {@code opinions} property on SentenceSentiment. It is provided by service
-     * v3.1-preview.1 and later.
+     * v3.1 and later.
      */
     private boolean includeOpinionMining;
 
     /**
-     * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
+     * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
@@ -33,14 +33,14 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     }
 
     /**
-     * Set the value of {@code includeStatistics}. The default value is false by default.
+     * Sets the value of {@code includeStatistics}. The default value is false by default.
      * If set to true, indicates that the service should return document and document batch statistics
      * with the results of the operation.
      *
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return the {@link AnalyzeSentimentOptions} object itself.
+     * @return The {@link AnalyzeSentimentOptions} object itself.
      */
     @Override
     public AnalyzeSentimentOptions setIncludeStatistics(boolean includeStatistics) {
@@ -49,14 +49,14 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     }
 
     /**
-     * Set the value of {@code disableServiceLogs}.
+     * Sets the value of {@code disableServiceLogs}.
      *
      * @param disableServiceLogs The default value of this property is 'false', except for methods like
      * 'beginAnalyzeHealthcareEntities' and 'recognizePiiEntities'. This means, Text Analytics service logs
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return the {@link AnalyzeSentimentOptions} object itself.
+     * @return The {@link AnalyzeSentimentOptions} object itself.
      */
     @Override
     public AnalyzeSentimentOptions setServiceLogsDisabled(boolean disableServiceLogs) {
@@ -65,24 +65,24 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     }
 
     /**
-     * Get the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
+     * Gets the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
      * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1 and later.
      *
-     * @return the value of {@code includeOpinionMining}.
+     * @return The value of {@code includeOpinionMining}.
      */
     public boolean isIncludeOpinionMining() {
         return includeOpinionMining;
     }
 
     /**
-     * Set the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
+     * Sets the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
      * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1 and later.
      *
      * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      *
-     * @return the AnalyzeSentimentOptions object itself.
+     * @return The AnalyzeSentimentOptions object itself.
      */
     public AnalyzeSentimentOptions setIncludeOpinionMining(boolean includeOpinionMining) {
         this.includeOpinionMining = includeOpinionMining;

@@ -99,8 +99,8 @@ public final class MessagesImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<MessagesPeekResponse> peek(
                 @HostParam("url") String url,
-                @QueryParam("peekonly") String peekonly,
                 @PathParam("queueName") String queueName,
+                @QueryParam("peekonly") String peekonly,
                 @QueryParam("numofmessages") Integer numberOfMessages,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -252,8 +252,8 @@ public final class MessagesImpl {
         final String accept = "application/xml";
         return service.peek(
                 this.client.getUrl(),
-                peekonly,
                 queueName,
+                peekonly,
                 numberOfMessages,
                 timeout,
                 this.client.getVersion(),

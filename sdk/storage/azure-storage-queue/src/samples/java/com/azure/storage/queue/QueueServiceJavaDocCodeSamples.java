@@ -12,9 +12,11 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueMessageItem;
+import com.azure.storage.queue.models.QueueRetentionPolicy;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
+
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -295,7 +297,11 @@ public class QueueServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties-duration-context
         QueueServiceProperties properties = client.getProperties();
         properties.getMinuteMetrics().setEnabled(true);
+        properties.getMinuteMetrics().setIncludeApis(true);
+        properties.getMinuteMetrics().setRetentionPolicy(new QueueRetentionPolicy().setDays(7).setEnabled(true));
         properties.getHourMetrics().setEnabled(true);
+        properties.getHourMetrics().setIncludeApis(true);
+        properties.getHourMetrics().setRetentionPolicy(new QueueRetentionPolicy().setDays(7).setEnabled(true));
         Response<Void> response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.printf("Setting Queue service properties completed with status code %d", response.getStatusCode());
@@ -310,7 +316,11 @@ public class QueueServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#QueueServiceProperties
         QueueServiceProperties properties = client.getProperties();
         properties.getMinuteMetrics().setEnabled(true);
+        properties.getMinuteMetrics().setIncludeApis(true);
+        properties.getMinuteMetrics().setRetentionPolicy(new QueueRetentionPolicy().setDays(7).setEnabled(true));
         properties.getHourMetrics().setEnabled(true);
+        properties.getHourMetrics().setIncludeApis(true);
+        properties.getHourMetrics().setRetentionPolicy(new QueueRetentionPolicy().setDays(7).setEnabled(true));
         client.setProperties(properties);
         System.out.println("Setting Queue service properties completed.");
         // END: com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#QueueServiceProperties

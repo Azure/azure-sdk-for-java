@@ -56,7 +56,7 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
     private interface RecoverableServersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMySQL/servers"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
                 + "/{serverName}/recoverableServers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

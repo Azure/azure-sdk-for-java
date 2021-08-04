@@ -22,7 +22,7 @@ public final class RecognizePiiEntitiesActionResult extends TextAnalyticsActionR
     /**
      * Gets the PII entities recognition action result.
      *
-     * @return the PII entities recognition action result.
+     * @return The PII entities recognition action result.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.

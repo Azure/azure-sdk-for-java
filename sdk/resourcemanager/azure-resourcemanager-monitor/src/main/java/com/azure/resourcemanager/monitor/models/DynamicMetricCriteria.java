@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** Criterion for dynamic threshold. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
@@ -129,6 +130,48 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
      */
     public DynamicMetricCriteria withIgnoreDataBefore(OffsetDateTime ignoreDataBefore) {
         this.ignoreDataBefore = ignoreDataBefore;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicMetricCriteria withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicMetricCriteria withMetricName(String metricName) {
+        super.withMetricName(metricName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicMetricCriteria withMetricNamespace(String metricNamespace) {
+        super.withMetricNamespace(metricNamespace);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicMetricCriteria withTimeAggregation(AggregationTypeEnum timeAggregation) {
+        super.withTimeAggregation(timeAggregation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicMetricCriteria withDimensions(List<MetricDimension> dimensions) {
+        super.withDimensions(dimensions);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicMetricCriteria withSkipMetricValidation(Boolean skipMetricValidation) {
+        super.withSkipMetricValidation(skipMetricValidation);
         return this;
     }
 

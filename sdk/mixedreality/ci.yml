@@ -8,7 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mixedreality/
+      - sdk/mixedreality/ci.yml
+      - sdk/mixedreality/azure-mixedreality-authentication/
+      - sdk/mixedreality/azure-resourcemanager-mixedreality/
+    exclude:
+      - sdk/mixedreality/pom.xml
+      - sdk/mixedreality/azure-mixedreality-authentication/pom.xml
+      - sdk/mixedreality/azure-resourcemanager-mixedreality/pom.xml
 
 pr:
   branches:
@@ -19,7 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mixedreality/
+      - sdk/mixedreality/ci.yml
+      - sdk/mixedreality/azure-mixedreality-authentication/
+      - sdk/mixedreality/azure-resourcemanager-mixedreality/
+    exclude:
+      - sdk/mixedreality/pom.xml
+      - sdk/mixedreality/azure-mixedreality-authentication/pom.xml
+      - sdk/mixedreality/azure-resourcemanager-mixedreality/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

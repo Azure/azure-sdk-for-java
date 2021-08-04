@@ -8,7 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/datalakestore/
+      - sdk/datalakestore/ci.mgmt.yml
+      - sdk/datalakestore/mgmt-v2015_10_01_preview/
+      - sdk/datalakestore/mgmt-v2016_11_01/
+    exclude:
+      - sdk/datalakestore/pom.xml
+      - sdk/datalakestore/mgmt-v2015_10_01_preview/pom.xml
+      - sdk/datalakestore/mgmt-v2016_11_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/datalakestore/
+      - sdk/datalakestore/ci.mgmt.yml
+      - sdk/datalakestore/mgmt-v2015_10_01_preview/
+      - sdk/datalakestore/mgmt-v2016_11_01/
+    exclude:
+      - sdk/datalakestore/pom.xml
+      - sdk/datalakestore/mgmt-v2015_10_01_preview/pom.xml
+      - sdk/datalakestore/mgmt-v2016_11_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

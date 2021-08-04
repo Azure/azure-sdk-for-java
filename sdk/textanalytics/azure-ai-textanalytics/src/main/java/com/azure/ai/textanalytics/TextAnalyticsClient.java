@@ -62,7 +62,7 @@ public final class TextAnalyticsClient {
     private final TextAnalyticsAsyncClient client;
 
     /**
-     * Create a {@code TextAnalyticsClient client} that sends requests to the Text Analytics service's endpoint.
+     * Creates a {@code TextAnalyticsClient client} that sends requests to the Text Analytics service's endpoint.
      * Each service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
      *
      * @param client The {@link TextAnalyticsClient} that the client routes its request through.
@@ -72,7 +72,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Get default country hint code.
+     * Gets default country hint code.
      *
      * @return The default country hint code
      */
@@ -81,7 +81,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Get default language when the builder is setup.
+     * Gets default language when the builder is setup.
      *
      * @return The default language
      */

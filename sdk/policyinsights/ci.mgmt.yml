@@ -8,7 +8,15 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/policyinsights/
+      - sdk/policyinsights/ci.mgmt.yml
+      - sdk/policyinsights/mgmt-v2018_04_04/
+      - sdk/policyinsights/mgmt-v2018_07_01_preview/
+      - sdk/policyinsights/mgmt-v2019_10_01/
+    exclude:
+      - sdk/policyinsights/pom.xml
+      - sdk/policyinsights/mgmt-v2018_04_04/pom.xml
+      - sdk/policyinsights/mgmt-v2018_07_01_preview/pom.xml
+      - sdk/policyinsights/mgmt-v2019_10_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +27,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/policyinsights/
+      - sdk/policyinsights/ci.mgmt.yml
+      - sdk/policyinsights/mgmt-v2018_04_04/
+      - sdk/policyinsights/mgmt-v2018_07_01_preview/
+      - sdk/policyinsights/mgmt-v2019_10_01/
+    exclude:
+      - sdk/policyinsights/pom.xml
+      - sdk/policyinsights/mgmt-v2018_04_04/pom.xml
+      - sdk/policyinsights/mgmt-v2018_07_01_preview/pom.xml
+      - sdk/policyinsights/mgmt-v2019_10_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

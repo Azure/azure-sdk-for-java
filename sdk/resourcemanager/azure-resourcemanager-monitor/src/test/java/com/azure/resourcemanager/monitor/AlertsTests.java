@@ -350,7 +350,7 @@ public class AlertsTests extends MonitorManagementTest {
                     .withoutPrimaryPublicIPAddress()
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey())
                     .create();
 
             VirtualMachine vm2 =
@@ -364,7 +364,7 @@ public class AlertsTests extends MonitorManagementTest {
                     .withoutPrimaryPublicIPAddress()
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey())
                     .create();
 
             MetricAlert ma =
@@ -434,6 +434,8 @@ public class AlertsTests extends MonitorManagementTest {
 
     @Test
     public void canCRUDActivityLogAlerts() throws Exception {
+
+        // make sure there exists a VM
 
         try {
             ActionGroup ag =

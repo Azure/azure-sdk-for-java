@@ -79,7 +79,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the operationId property of the {@link AnalyzeActionsOperationDetail}.
      *
-     * @return the operationId property of the {@link AnalyzeActionsOperationDetail}.
+     * @return The operationId property of the {@link AnalyzeActionsOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
@@ -88,7 +88,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the displayName property of the {@link AnalyzeActionsOperationDetail}.
      *
-     * @return the displayName property of the {@link AnalyzeActionsOperationDetail}.
+     * @return The displayName property of the {@link AnalyzeActionsOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;
@@ -97,7 +97,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the failed number of actions.
      *
-     * @return the failed number of actions.
+     * @return The failed number of actions.
      */
     public int getFailedCount() {
         return failedCount;
@@ -106,7 +106,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the in-progress number of actions.
      *
-     * @return the in-progress number of actions.
+     * @return The in-progress number of actions.
      */
     public int getInProgressCount() {
         return inProgressCount;
@@ -115,7 +115,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the successfully completed number of actions.
      *
-     * @return the successfully completed number of actions.
+     * @return The successfully completed number of actions.
      */
     public int getSucceededCount() {
         return succeededCount;
@@ -124,7 +124,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the total number of actions.
      *
-     * @return the total number of actions.
+     * @return The total number of actions.
      */
     public int getTotalCount() {
         return totalCount;
@@ -133,7 +133,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the created time of an action.
      *
-     * @return the created time of an action.
+     * @return The created time of an action.
      */
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -142,7 +142,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the expiration time of an action.
      *
-     * @return the expiration time of an action.
+     * @return The expiration time of an action.
      */
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
@@ -151,7 +151,7 @@ public final class AnalyzeActionsOperationDetail {
     /**
      * Gets the last updated time of an action.
      *
-     * @return the last updated time of an action.
+     * @return The last updated time of an action.
      */
     public OffsetDateTime getLastModifiedAt() {
         return lastModifiedAt;

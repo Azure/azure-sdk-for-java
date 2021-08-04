@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountInner;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountKeysInner;
+import com.azure.resourcemanager.batch.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.batch.models.BatchAccountCreateParameters;
 import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.batch.models.BatchAccountUpdateParameters;
@@ -254,7 +255,8 @@ public interface BatchAccountsClient {
     PagedIterable<BatchAccountInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Synchronizes access keys for the auto-storage account configured for the specified Batch account.
+     * Synchronizes access keys for the auto-storage account configured for the specified Batch account, only if storage
+     * key authentication is being used.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -266,7 +268,8 @@ public interface BatchAccountsClient {
     void synchronizeAutoStorageKeys(String resourceGroupName, String accountName);
 
     /**
-     * Synchronizes access keys for the auto-storage account configured for the specified Batch account.
+     * Synchronizes access keys for the auto-storage account configured for the specified Batch account, only if storage
+     * key authentication is being used.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -281,7 +284,10 @@ public interface BatchAccountsClient {
         String resourceGroupName, String accountName, Context context);
 
     /**
-     * Regenerates the specified account key for the Batch account.
+     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the keys will
+     * fail.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -296,7 +302,10 @@ public interface BatchAccountsClient {
         String resourceGroupName, String accountName, BatchAccountRegenerateKeyParameters parameters);
 
     /**
-     * Regenerates the specified account key for the Batch account.
+     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the keys will
+     * fail.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -312,9 +321,9 @@ public interface BatchAccountsClient {
         String resourceGroupName, String accountName, BatchAccountRegenerateKeyParameters parameters, Context context);
 
     /**
-     * This operation applies only to Batch accounts created with a poolAllocationMode of 'BatchService'. If the Batch
-     * account was created with a poolAllocationMode of 'UserSubscription', clients cannot use access to keys to
-     * authenticate, and must use Azure Active Directory instead. In this case, getting the keys will fail.
+     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys will fail.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -327,9 +336,9 @@ public interface BatchAccountsClient {
     BatchAccountKeysInner getKeys(String resourceGroupName, String accountName);
 
     /**
-     * This operation applies only to Batch accounts created with a poolAllocationMode of 'BatchService'. If the Batch
-     * account was created with a poolAllocationMode of 'UserSubscription', clients cannot use access to keys to
-     * authenticate, and must use Azure Active Directory instead. In this case, getting the keys will fail.
+     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys will fail.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -341,4 +350,41 @@ public interface BatchAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BatchAccountKeysInner> getKeysWithResponse(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Lists the endpoints that a Batch Compute Node under this Batch Account may call as part of Batch service
+     * administration. If you are deploying a Pool inside of a virtual network that you specify, you must make sure your
+     * network allows outbound access to these endpoints. Failure to allow access to these endpoints may cause Batch to
+     * mark the affected nodes as unusable. For more information about creating a pool inside of a virtual network, see
+     * https://docs.microsoft.com/en-us/azure/batch/batch-virtual-network.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String accountName);
+
+    /**
+     * Lists the endpoints that a Batch Compute Node under this Batch Account may call as part of Batch service
+     * administration. If you are deploying a Pool inside of a virtual network that you specify, you must make sure your
+     * network allows outbound access to these endpoints. Failure to allow access to these endpoints may cause Batch to
+     * mark the affected nodes as unusable. For more information about creating a pool inside of a virtual network, see
+     * https://docs.microsoft.com/en-us/azure/batch/batch-virtual-network.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String accountName, Context context);
 }

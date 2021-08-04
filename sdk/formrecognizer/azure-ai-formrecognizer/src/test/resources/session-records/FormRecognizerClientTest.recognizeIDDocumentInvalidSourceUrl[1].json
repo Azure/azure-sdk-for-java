@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/idDocument/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/idDocument/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0b7260c1-828a-4932-b800-8b17f673c6b2",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6ffe397b-f16b-4fd9-aecc-cb5e278c6278",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "144",
-      "x-envoy-upstream-service-time" : "1331",
+      "x-envoy-upstream-service-time" : "202",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "383b7c1e-03ac-457c-ba1f-712893ecc85c",
+      "apim-request-id" : "78166408-f9aa-4308-908d-2ee3f38d760e",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidImageURL\",\"innerError\":{\"requestId\":\"383b7c1e-03ac-457c-ba1f-712893ecc85c\"},\"message\":\"Image URL is badly formatted.\"}}",
-      "Date" : "Tue, 11 May 2021 21:26:42 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidImageURL\",\"innerError\":{\"requestId\":\"78166408-f9aa-4308-908d-2ee3f38d760e\"},\"message\":\"Image URL is badly formatted.\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:44 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

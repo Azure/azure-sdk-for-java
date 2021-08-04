@@ -18,7 +18,7 @@ public final class RecognizePiiEntitiesResultCollection extends IterableStream<R
     private final TextDocumentBatchStatistics statistics;
 
     /**
-     * Create a {@link RecognizePiiEntitiesResultCollection} model that maintains a list of
+     * Creates a {@link RecognizePiiEntitiesResultCollection} model that maintains a list of
      * {@link RecognizePiiEntitiesResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link RecognizePiiEntitiesResult}.
@@ -33,7 +33,7 @@ public final class RecognizePiiEntitiesResultCollection extends IterableStream<R
     }
 
     /**
-     * Get the model version trained in service for the request.
+     * Gets the model version trained in service for the request.
      *
      * @return The model version trained in service for the request.
      */
@@ -42,7 +42,7 @@ public final class RecognizePiiEntitiesResultCollection extends IterableStream<R
     }
 
     /**
-     * Get the batch statistics of response.
+     * Gets the batch statistics of response.
      *
      * @return The batch statistics of response.
      */

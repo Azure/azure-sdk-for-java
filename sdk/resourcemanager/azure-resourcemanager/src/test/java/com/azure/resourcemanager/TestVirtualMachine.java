@@ -11,7 +11,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
-import com.google.common.util.concurrent.SettableFuture;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +20,6 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
         final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
 
         final VirtualMachine[] vms = new VirtualMachine[1];
-        final SettableFuture<VirtualMachine> future = SettableFuture.create();
 
         Mono<VirtualMachine> resourceStream =
             virtualMachines
@@ -38,8 +36,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .createAsync();
 
-        resourceStream.doOnSuccess(vm -> future.set(vm));
-        vms[0] = future.get();
+        vms[0] = resourceStream.block();
 
         Assertions.assertEquals(1, vms[0].dataDisks().size());
         VirtualMachineDataDisk dataDisk = vms[0].dataDisks().values().iterator().next();
