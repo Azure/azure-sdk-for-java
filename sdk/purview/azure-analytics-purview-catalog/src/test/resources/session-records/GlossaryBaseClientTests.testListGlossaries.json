@@ -3,9 +3,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.catalog.purview.azure.com/api/atlas/v2/glossary",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.4; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "4dfd4a87-2256-4c9f-b5be-c3ea85a2c0d4",
-      "Content-Type" : "application/json"
+      "x-ms-client-request-id" : "fbdd057a-ca79-4540-9e92-965960ebd02e"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -16,9 +14,9 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Thu, 06 May 2021 22:32:42 GMT",
+      "Date" : "Wed, 04 Aug 2021 09:14:35 GMT",
       "Access-Control-Allow-Headers" : "authorization,content-type,x-xsrf-header,x-ms-client-request-id,lastmodifiedts",
-      "x-ms-correlation-request-id" : "5177c7b8-d999-4b8f-9b83-ef4801addb5c",
+      "x-ms-correlation-request-id" : "18f3878f-6726-405d-ae6a-fd4f1f5d3ab7",
       "X-Frame-Options" : "DENY",
       "Access-Control-Expose-Headers" : "x-ms-request-id,lastmodifiedts",
       "Strict-Transport-Security" : "max-age=31536000 ; includeSubDomains",
@@ -26,8 +24,8 @@
       "x-xss-protection" : "1; mode=block",
       "Content-Security-Policy" : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data:; connect-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline';font-src 'self' data:",
       "Expires" : "0",
-      "x-ms-request-id" : "4dfd4a87-2256-4c9f-b5be-c3ea85a2c0d4",
-      "Body" : "[{\"guid\":\"bd098bc0-73e8-4692-838e-82b74c957982\",\"qualifiedName\":\"Glossary\",\"name\":\"Glossary\",\"lastModifiedTS\":\"1\",\"terms\":[{\"termGuid\":\"3f366dd7-fe1e-4e2a-8ebd-345b401982c3\",\"relationGuid\":\"62726ef3-cdd4-45fb-aed1-7cb36ddc116c\",\"displayText\":\"TestTerm\"}]}]",
+      "x-ms-request-id" : "fbdd057a-ca79-4540-9e92-965960ebd02e",
+      "Body" : "[{\"guid\":\"62b478b3-a988-4941-8272-28f5728c3c82\",\"qualifiedName\":\"Glossary\",\"name\":\"Glossary\",\"lastModifiedTS\":\"1\",\"terms\":[{\"termGuid\":\"f44cea38-41fd-48ff-be97-6614f96dc076\",\"relationGuid\":\"d4ff7d44-861e-4930-809a-877afff2112e\",\"displayText\":\"term\"}]}]",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
