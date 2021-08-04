@@ -1,19 +1,19 @@
 ## Generate autorest code
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/purview/data-plane/Azure.Analytics.Purview.Scanning/preview/2018-12-01-preview/scanningService.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/purview/data-plane/Azure.Analytics.Purview.Account/preview/2019-11-01-preview/account.json
 java: true
 output-folder: ../
-namespace: com.azure.analytics.purview.scanning
+namespace: com.azure.analytics.purview.Account
 generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 low-level-client: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
-title: PurviewScanningClient
-service-name: PurviewScanning
+title: PurviewAccountClient
+service-name: PurviewAccount
 service-versions:
-  - 2018-12-01-preview
+  - 2019-11-01-preview
 generate-client-as-impl: true
 add-context-parameter: true
 context-client-method-parameter: true
