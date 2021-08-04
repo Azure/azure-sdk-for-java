@@ -5,19 +5,11 @@ package com.azure.security.attestation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.attestation.implementation.models.JsonWebKey;
-import com.azure.security.attestation.implementation.models.JsonWebKeySet;
 import com.azure.security.attestation.models.AttestationResponse;
-import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationToken;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.Base64;
 
 /**
@@ -67,59 +59,5 @@ class Utilities {
     static InputStream base64ToStream(String base64) {
         byte[] decoded = Base64.getDecoder().decode(base64);
         return new ByteArrayInputStream(decoded);
-    }
-
-    /**
-     * Private method to create an AttestationSigner from a JWKS.
-     * @param jwks JWKS to create.
-     * @return Array of {@link AttestationSigner}s created from the JWK.
-     */
-    static AttestationSigner[] attestationSignersFromJwks(JsonWebKeySet jwks) {
-        return jwks
-            .getKeys()
-            .stream()
-            .map(Utilities::attestationSignerFromJwk)
-            .toArray(AttestationSigner[]::new);
-    }
-
-
-    /**
-     * Private method to create an AttestationSigner from a JWK.
-     * @param jwk JWK to create.
-     * @return {@link AttestationSigner} created from the JWK.
-     */
-    static AttestationSigner attestationSignerFromJwk(JsonWebKey jwk) {
-        X509Certificate[] certificates = jwk.getX5C()
-            .stream()
-            .map(Utilities::certificateFromBase64)
-            .toArray(X509Certificate[]::new);
-
-        return new AttestationSigner()
-            .certificates(certificates)
-            .keyId(jwk.getKid());
-    }
-
-    /**
-     * Private method to create an x509 certificate from a Base64 encoded string.
-     * @param base64certificate - Base64 encoded certificate
-     * @return Certificate read from that string.
-     */
-    static X509Certificate certificateFromBase64(String base64certificate) {
-        ClientLogger logger = new ClientLogger(Utilities.class);
-
-        CertificateFactory cf;
-        try {
-            cf = CertificateFactory.getInstance("X.509");
-        } catch (CertificateException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
-        }
-        Certificate cert;
-        try {
-            cert = cf.generateCertificate(Utilities.base64ToStream(base64certificate));
-        } catch (CertificateException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
-        }
-
-        return (X509Certificate) cert;
     }
 }

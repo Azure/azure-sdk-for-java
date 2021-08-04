@@ -4,6 +4,7 @@ package com.azure.security.attestation.models;
 
 import com.azure.security.attestation.AttestationClientTestBase;
 import com.azure.security.attestation.implementation.models.AttestationResult;
+import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -91,8 +92,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate", rsaKey));
 
         AttestationSigningKey signingKey = new AttestationSigningKey()
-            .privateKey(rsaKey.getPrivate())
-            .certificate(cert);
+            .setPrivateKey(rsaKey.getPrivate())
+            .setCertificate(cert);
 
         assertDoesNotThrow(() -> signingKey.verify());
 
@@ -104,8 +105,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate", rsaKey));
 
         AttestationSigningKey signingKey = new AttestationSigningKey()
-            .privateKey(rsaKey.getPrivate())
-            .certificate(cert);
+            .setPrivateKey(rsaKey.getPrivate())
+            .setCertificate(cert);
 
         assertDoesNotThrow(() -> signingKey.verify());
     }
@@ -123,21 +124,21 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
         // Create a signing key with a private key that does not match the certificate.
         AttestationSigningKey signingKey = new AttestationSigningKey()
-            .privateKey(rsaKeyWrongFamily.getPrivate())
-            .certificate(cert);
+            .setPrivateKey(rsaKeyWrongFamily.getPrivate())
+            .setCertificate(cert);
 
         // The wrong key family should result in an InvalidKey exception.
         assertThrows(InvalidKeyException.class, () -> signingKey.verify());
 
         // And make sure that the wrong key also throws a reasonable exception.
-        signingKey.privateKey(rsaKeyWrongKey.getPrivate());
+        signingKey.setPrivateKey(rsaKeyWrongKey.getPrivate());
         assertThrows(IllegalArgumentException.class, () -> signingKey.verify());
     }
 
     @Test
     void testCreateUnsecuredAttestationToken() {
         String sourceObject = "{\"foo\": \"foo\", \"bar\": 10 }";
-        AttestationToken newToken = AttestationToken.createUnsecuredToken(sourceObject);
+        AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(sourceObject);
 
         // Verify that this is an unsecured attestation token.
         assertEquals("none", newToken.getAlgorithm());
@@ -163,7 +164,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setIntegerArray(new int[]{123, 456, 789});
         String objectString = assertDoesNotThrow(() -> mapper.writeValueAsString(testObject));
 
-        AttestationToken newToken = AttestationToken.createUnsecuredToken(objectString);
+        AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
         assertEquals("none", newToken.getAlgorithm());
         TestObject object = newToken.getBody(TestObject.class);
@@ -175,7 +176,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     @Test
     void testCreateUnsecuredEmptyAttestationToken() {
-        AttestationToken newToken = AttestationToken.createUnsecuredToken();
+        AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken();
 
         // Verify that this is an unsecured attestation token.
         assertEquals("none", newToken.getAlgorithm());
@@ -190,13 +191,13 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured", rsaKey));
 
         AttestationSigningKey signingKey = new AttestationSigningKey()
-            .privateKey(rsaKey.getPrivate())
-            .certificate(cert)
-            .allowWeakKey(true);
+            .setPrivateKey(rsaKey.getPrivate())
+            .setCertificate(cert)
+            .setAllowWeakKey(true);
 
         String sourceObject = "{\"foo\": \"foo\", \"bar\": 10 }";
 
-        AttestationToken newToken = AttestationToken.createSecuredToken(sourceObject, signingKey);
+        AttestationToken newToken = AttestationTokenImpl.createSecuredToken(sourceObject, signingKey);
 
         // Verify that this is a secured attestation token.
         assertNotEquals("none", newToken.getAlgorithm());
@@ -219,9 +220,9 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
         AttestationSigningKey signingKey = new AttestationSigningKey()
-            .privateKey(rsaKey.getPrivate())
-            .certificate(cert)
-            .allowWeakKey(true);
+            .setPrivateKey(rsaKey.getPrivate())
+            .setCertificate(cert)
+            .setAllowWeakKey(true);
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -233,7 +234,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
         String objectString = assertDoesNotThrow(() -> mapper.writeValueAsString(testObject));
 
-        AttestationToken newToken = AttestationToken.createSecuredToken(objectString, signingKey);
+        AttestationToken newToken = AttestationTokenImpl.createSecuredToken(objectString, signingKey);
 
         assertNotEquals("none", newToken.getAlgorithm());
         TestObject object = newToken.getBody(TestObject.class);
@@ -248,11 +249,11 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
         AttestationSigningKey signingKey = new AttestationSigningKey()
-            .privateKey(rsaKey.getPrivate())
-            .certificate(cert)
-            .allowWeakKey(true);
+            .setPrivateKey(rsaKey.getPrivate())
+            .setCertificate(cert)
+            .setAllowWeakKey(true);
 
-        AttestationToken newToken = AttestationToken.createSecuredToken(signingKey);
+        AttestationToken newToken = AttestationTokenImpl.createSecuredToken(signingKey);
 
         // This had better be a signed token.
         assertNotEquals("none", newToken.getAlgorithm());
@@ -330,17 +331,19 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             + "u9TXGoYFaJlsnuSl85qdWuDmqxjzMDZ9co36xhimUeCSbvvBkokS2NqWmlrMXTDyhIxQZc7nporYyUx"
             + "z0DESiy9PLZQ8M9zDLGY0sheCvWc4dsSQcq2j6HSh85W7gEGLck5aJaMEyQ9nGsVGSIwJu1Yg";
 
-        AttestationToken token = new AttestationToken(tokenToTest);
+        AttestationToken token = new AttestationTokenImpl(tokenToTest);
 
         assertNotEquals("none", token.getAlgorithm());
         assertEquals("https://jalarryoattestationaad.wus.attest.azure.net/certs", token.getJsonWebKeyUrl().toString());
         assertEquals("rPtBGRWTlPmzs5u35L0QRD9WdymeKPRxteTeTlwN0Ec=", token.getKeyId());
+        assertEquals("JWT", token.getType());
 
         com.azure.security.attestation.implementation.models.AttestationResult attestResult;
 
         attestResult = token.getBody(AttestationResult.class);
         assertEquals("1.0", attestResult.getVersion());
         assertEquals("sgx", attestResult.getVerifierType());
+
     }
 
 

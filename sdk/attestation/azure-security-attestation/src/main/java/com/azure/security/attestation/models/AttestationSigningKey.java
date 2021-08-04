@@ -38,9 +38,17 @@ public class AttestationSigningKey {
      * @param certificate Certificate to sign.
      * @return AttestationSigningKey
      */
-    public AttestationSigningKey certificate(X509Certificate certificate) {
+    public AttestationSigningKey setCertificate(X509Certificate certificate) {
         this.certificate = certificate;
         return this;
+    }
+
+    /**
+     *
+     * @return Returns the X.509 certificate associated with this Signing Key.
+     */
+    public X509Certificate getCertificate() {
+        return this.certificate;
     }
 
     /**
@@ -48,9 +56,17 @@ public class AttestationSigningKey {
      * @param privateKey Private key to sign the certificate.
      * @return AttestationSigningKey.
      */
-    public AttestationSigningKey privateKey(PrivateKey privateKey) {
+    public AttestationSigningKey setPrivateKey(PrivateKey privateKey) {
         this.privateKey = privateKey;
         return this;
+    }
+
+    /**
+     *
+     * @return Returns the private key associated with this signing key.
+     */
+    public PrivateKey getPrivateKey() {
+        return this.privateKey;
     }
 
     /**
@@ -58,9 +74,17 @@ public class AttestationSigningKey {
      * @param allowWeakKey - boolean indicating if weak keys should be allowed (default False).
      * @return Returns the AttestationSigningKey.
      */
-    public AttestationSigningKey allowWeakKey(boolean allowWeakKey) {
+    public AttestationSigningKey setAllowWeakKey(boolean allowWeakKey) {
         this.allowWeakKey = allowWeakKey;
         return this;
+    }
+
+    /**
+     *
+     * @return Returns if a weak key is allowed on this signing key.
+     */
+    public boolean getAllowWeakKey() {
+        return this.allowWeakKey;
     }
 
     /**
@@ -106,7 +130,7 @@ public class AttestationSigningKey {
         }
     }
 
-    boolean allowWeakKey;
-    X509Certificate certificate;
-    PrivateKey privateKey;
+    private boolean allowWeakKey;
+    private X509Certificate certificate;
+    private PrivateKey privateKey;
 }

@@ -14,6 +14,8 @@ import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.implementation.SigningCertificatesImpl;
+import com.azure.security.attestation.implementation.models.AttestationSignerImpl;
+import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.azure.security.attestation.implementation.models.DataType;
 import com.azure.security.attestation.implementation.models.InitTimeData;
 import com.azure.security.attestation.implementation.models.RuntimeData;
@@ -123,7 +125,7 @@ public final class AttestationAsyncClient {
      */
     public Mono<Response<AttestationSigner[]>> getAttestationSignersWithResponse(Context context) {
         return this.signerImpl.getWithResponseAsync(context)
-            .map(response -> Utilities.generateResponseFromModelType(response, Utilities.attestationSignersFromJwks(response.getValue())));
+            .map(response -> Utilities.generateResponseFromModelType(response, AttestationSignerImpl.attestationSignersFromJwks(response.getValue())));
     }
 
     /**
@@ -159,7 +161,7 @@ public final class AttestationAsyncClient {
 
         return this.attestImpl.attestOpenEnclaveWithResponseAsync(openEnclaveRequestToInternal(request), context)
             // Create an AttestationToken from the raw response from the service.
-            .map(response -> Utilities.generateResponseFromModelType(response, new AttestationToken(response.getValue().getToken())))
+            .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             // Extract the AttestationResult from the AttestationToken.
             .map(response -> Utilities.generateAttestationResponseFromModelType(response, response.getValue(), response.getValue().getBody(AttestationResult.class)));
     }
@@ -226,7 +228,7 @@ public final class AttestationAsyncClient {
     public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request, Context context) {
         return this.attestImpl.attestSgxEnclaveWithResponseAsync(sgxEnclaveRequestToInternal(request), context)
             .map(response -> {
-                AttestationToken token = new AttestationToken(response.getValue().getToken());
+                AttestationToken token = new AttestationTokenImpl(response.getValue().getToken());
                 return Utilities.generateAttestationResponseFromModelType(response, token, token.getBody(AttestationResult.class));
             });
     }
