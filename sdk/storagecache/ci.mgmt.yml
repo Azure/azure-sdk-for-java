@@ -8,7 +8,17 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/storagecache/
+      - sdk/storagecache/ci.mgmt.yml
+      - sdk/storagecache/mgmt-v2019_08_01/
+      - sdk/storagecache/mgmt-v2019_11_01/
+      - sdk/storagecache/mgmt-v2020_03_01/
+      - sdk/storagecache/mgmt-v2020_10_01/
+    exclude:
+      - sdk/storagecache/pom.xml
+      - sdk/storagecache/mgmt-v2019_08_01/pom.xml
+      - sdk/storagecache/mgmt-v2019_11_01/pom.xml
+      - sdk/storagecache/mgmt-v2020_03_01/pom.xml
+      - sdk/storagecache/mgmt-v2020_10_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +29,17 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/storagecache/
+      - sdk/storagecache/ci.mgmt.yml
+      - sdk/storagecache/mgmt-v2019_08_01/
+      - sdk/storagecache/mgmt-v2019_11_01/
+      - sdk/storagecache/mgmt-v2020_03_01/
+      - sdk/storagecache/mgmt-v2020_10_01/
+    exclude:
+      - sdk/storagecache/pom.xml
+      - sdk/storagecache/mgmt-v2019_08_01/pom.xml
+      - sdk/storagecache/mgmt-v2019_11_01/pom.xml
+      - sdk/storagecache/mgmt-v2020_03_01/pom.xml
+      - sdk/storagecache/mgmt-v2020_10_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

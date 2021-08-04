@@ -8,7 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/healthcareapis/
+      - sdk/healthcareapis/ci.mgmt.yml
+      - sdk/healthcareapis/mgmt-v2020_03_15/
+      - sdk/healthcareapis/mgmt-v2020_03_30/
+    exclude:
+      - sdk/healthcareapis/pom.xml
+      - sdk/healthcareapis/mgmt-v2020_03_15/pom.xml
+      - sdk/healthcareapis/mgmt-v2020_03_30/pom.xml
 
 pr:
   branches:
@@ -19,7 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/healthcareapis/
+      - sdk/healthcareapis/ci.mgmt.yml
+      - sdk/healthcareapis/mgmt-v2020_03_15/
+      - sdk/healthcareapis/mgmt-v2020_03_30/
+    exclude:
+      - sdk/healthcareapis/pom.xml
+      - sdk/healthcareapis/mgmt-v2020_03_15/pom.xml
+      - sdk/healthcareapis/mgmt-v2020_03_30/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -36,6 +36,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -128,7 +129,7 @@ public final class BulkExecutor<TContext> {
         totalCount = new AtomicInteger(0);
         mainFluxProcessor = UnicastProcessor.<CosmosItemOperation>create().serialize();
         mainSink = mainFluxProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-        groupSinks = new ArrayList<>();
+        groupSinks = new CopyOnWriteArrayList<>();
 
         // The evaluation whether a micro batch should be flushed to the backend happens whenever
         // a new ItemOperation arrives. If the batch size is exceeded or the oldest buffered ItemOperation
@@ -478,6 +479,10 @@ public final class BulkExecutor<TContext> {
     }
 
     private void onFlush() {
-        this.groupSinks.forEach(sink -> sink.next(FlushBuffersItemOperation.singleton()));
+        try {
+            this.groupSinks.forEach(sink -> sink.next(FlushBuffersItemOperation.singleton()));
+        } catch(Throwable t) {
+            logger.error("Callback invocation 'onFlush' failed.", t);
+        }
     }
 }

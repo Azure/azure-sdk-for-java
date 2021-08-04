@@ -6,13 +6,7 @@ package com.azure.tools.bomgenerator;
 import com.azure.tools.bomgenerator.models.BomDependency;
 import com.azure.tools.bomgenerator.models.BomDependencyErrorInfo;
 import com.azure.tools.bomgenerator.models.BomDependencyNoVersion;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystemBase;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
-import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
-import org.jboss.shrinkwrap.resolver.api.maven.PomlessResolveStage;
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 import org.slf4j.Logger;
@@ -30,11 +24,13 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import static com.azure.tools.bomgenerator.Utils.IGNORE_CONFLICT_LIST;
 import static com.azure.tools.bomgenerator.Utils.RESOLVED_EXCLUSION_LIST;
+import static com.azure.tools.bomgenerator.Utils.getResolvedArtifact;
 import static com.azure.tools.bomgenerator.Utils.toBomDependencyNoVersion;
 
 public class DependencyAnalyzer {
-    private Set<BomDependency> inputDependencies = new HashSet<>();
+    private Map<BomDependencyNoVersion, BomDependency> inputDependencies = new HashMap<>();
     private Set<BomDependency> externalDependencies = new HashSet<>();
     private Set<BomDependency> bomEligibleDependencies = new HashSet<>();
     private Set<BomDependency> bomIneligibleDependencies = new HashSet<>();
@@ -51,7 +47,7 @@ public class DependencyAnalyzer {
 
     DependencyAnalyzer(Collection<BomDependency> inputDependencies, Collection<BomDependency> externalDependencies) {
         if (inputDependencies != null) {
-            this.inputDependencies.addAll(inputDependencies);
+            this.inputDependencies = inputDependencies.stream().collect(Collectors.toMap(Utils::toBomDependencyNoVersion, dependency -> dependency));
         }
         if (externalDependencies != null) {
             this.externalDependencies.addAll(externalDependencies);
@@ -65,11 +61,12 @@ public class DependencyAnalyzer {
     public void reduce() {
         analyze();
         generateReport();
-        this.bomEligibleDependencies.retainAll(this.inputDependencies);
+        this.bomEligibleDependencies.retainAll(this.inputDependencies.values());
     }
 
     public boolean validate() {
         analyze();
+        generateReport();
         return nameToVersionToChildrenDependencyTree.values().stream().anyMatch(value -> value.size() > 1);
     }
 
@@ -82,7 +79,7 @@ public class DependencyAnalyzer {
 
     private void generateReport() {
         // From the input assemblies find the ones that have been dropped, along with why?
-        Set<BomDependency> droppedDependencies = inputDependencies.stream().filter(dependency -> bomIneligibleDependencies.contains(dependency)).collect(Collectors.toSet());
+        Set<BomDependency> droppedDependencies = inputDependencies.values().stream().filter(dependency -> bomIneligibleDependencies.contains(dependency)).collect(Collectors.toSet());
         if (droppedDependencies.size() == 0) {
             return;
         }
@@ -104,7 +101,7 @@ public class DependencyAnalyzer {
     }
 
     private BomDependency getAzureCoreDependencyFromInput() {
-        return inputDependencies.stream().filter(dependency -> dependency.getArtifactId().equals("azure-core")).findFirst().get();
+        return inputDependencies.values().stream().filter(dependency -> dependency.getArtifactId().equals("azure-core")).findFirst().get();
     }
 
     private void pickCoreDependencyRoots() {
@@ -131,10 +128,11 @@ public class DependencyAnalyzer {
      *                     : {v3} : {all ancestors that include this binary.}
      */
     private void resolveTree() {
-        for (MavenDependency gaLibrary : inputDependencies) {
+        for (MavenDependency gaLibrary : inputDependencies.values()) {
             try {
 
                 BomDependency parentDependency = new BomDependency(gaLibrary.getGroupId(), gaLibrary.getArtifactId(), gaLibrary.getVersion());
+
                 addDependencyToDependencyTree(parentDependency, null, nameToVersionToChildrenDependencyTree);
 
                 List<BomDependency> dependencies = getDependencies(gaLibrary);
@@ -157,15 +155,7 @@ public class DependencyAnalyzer {
 
     private static List<BomDependency> getDependencies(MavenDependency dependency) {
         try {
-
-            MavenResolvedArtifact mavenResolvedArtifact = null;
-
-            mavenResolvedArtifact = getMavenResolver()
-                .addDependency(dependency)
-                .resolve()
-                .withoutTransitivity()
-                .asSingleResolvedArtifact();
-
+            MavenResolvedArtifact mavenResolvedArtifact = getResolvedArtifact(dependency);
             return Arrays.stream(mavenResolvedArtifact.getDependencies()).map(mavenDependency ->
                 new BomDependency(mavenDependency.getCoordinate().getGroupId(),
                     mavenDependency.getCoordinate().getArtifactId(),
@@ -178,11 +168,11 @@ public class DependencyAnalyzer {
         return new ArrayList<>();
     }
 
-    private static MavenResolverSystemBase<PomEquippedResolveStage, PomlessResolveStage, MavenStrategyStage, MavenFormatStage> getMavenResolver() {
-        return Maven.configureResolver().withMavenCentralRepo(true);
-    }
-
     private static void addDependencyToDependencyTree(BomDependency dependency, BomDependency parentDependency, Map<BomDependencyNoVersion, HashMap<String, Collection<BomDependency>>> dependencyTree) {
+        if (IGNORE_CONFLICT_LIST.contains(dependency.getArtifactId())) {
+            return;
+        }
+
         dependencyTree.computeIfAbsent(new BomDependencyNoVersion(dependency.getGroupId(), dependency.getArtifactId()), key -> new HashMap<>());
 
         var value = dependencyTree.get(dependency).computeIfAbsent(dependency.getVersion(), key -> new ArrayList<>());
@@ -233,8 +223,14 @@ public class DependencyAnalyzer {
                 eligibleVersion = coreDependencyNameToDependency.get(dependencyNoVersion).getVersion();
                 logger.trace(String.format("\tPicking the version used by azure-core - %s:%s", dependencyNoVersion, eligibleVersion));
             } else {
-                eligibleVersion = versionList.get(versionList.size() - 1);
-                logger.trace(String.format("\tPicking the latest version %s:%s", dependencyNoVersion, eligibleVersion));
+                // We check if any of the assemblies were directly added as inputs, if so, we give that preference.
+                if (inputDependencies.containsKey(dependencyNoVersion)) {
+                    eligibleVersion = inputDependencies.get(dependencyNoVersion).getVersion();
+                } else {
+                    eligibleVersion = versionList.get(versionList.size() - 1);
+                }
+
+                logger.trace(String.format("\tPicking the version %s:%s", dependencyNoVersion, eligibleVersion));
             }
 
             BomDependency dependency = new BomDependency(dependencyNoVersion.getGroupId(), dependencyNoVersion.getArtifactId(), eligibleVersion);

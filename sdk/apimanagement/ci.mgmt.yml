@@ -8,7 +8,15 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/apimanagement/
+      - sdk/apimanagement/ci.mgmt.yml
+      - sdk/apimanagement/mgmt-v2018_06_01_preview/
+      - sdk/apimanagement/mgmt-v2019_01_01/
+      - sdk/apimanagement/mgmt-v2019_12_01/
+    exclude:
+      - sdk/apimanagement/pom.xml
+      - sdk/apimanagement/mgmt-v2018_06_01_preview/pom.xml
+      - sdk/apimanagement/mgmt-v2019_01_01/pom.xml
+      - sdk/apimanagement/mgmt-v2019_12_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +27,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/apimanagement/
+      - sdk/apimanagement/ci.mgmt.yml
+      - sdk/apimanagement/mgmt-v2018_06_01_preview/
+      - sdk/apimanagement/mgmt-v2019_01_01/
+      - sdk/apimanagement/mgmt-v2019_12_01/
+    exclude:
+      - sdk/apimanagement/pom.xml
+      - sdk/apimanagement/mgmt-v2018_06_01_preview/pom.xml
+      - sdk/apimanagement/mgmt-v2019_01_01/pom.xml
+      - sdk/apimanagement/mgmt-v2019_12_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

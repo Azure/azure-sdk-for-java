@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for {@link WebPubSubServiceAsyncClient#getAuthenticationToken(GetAuthenticationTokenOptions)
+ * Unit tests for {@link WebPubSubAsyncServiceClient#getAuthenticationToken(GetAuthenticationTokenOptions)
  * getAuthenticationToken} method.
  */
 public class TokenGenerationTest {
@@ -33,7 +33,7 @@ public class TokenGenerationTest {
     public void testTokenGeneration(GetAuthenticationTokenOptions tokenOptions, String connectionString,
                                     String expectedUrlPrefix, String expectedSubject,
                                     List<String> expectedRoles) throws ParseException {
-        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
+        WebPubSubServiceClient client = new WebPubSubClientBuilder()
             .hub("test")
             .connectionString(connectionString)
             .buildClient();
