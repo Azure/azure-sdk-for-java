@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
@@ -17,9 +18,11 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -59,6 +62,8 @@ import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeActionsResultListForMultiplePages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeBatchActionsResult;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeSentimentActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
@@ -70,9 +75,8 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesFo
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractKeyPhrasesActionResult;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultCollection;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultSortByOffset;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeLinkedEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizePiiEntitiesActionResult;
@@ -2487,7 +2491,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeExtractSummaryAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeExtractSummaryRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
@@ -2495,6 +2500,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+            // We are expecting the top 3 highest rank score ann these score are sorted by offset by default
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
@@ -2503,8 +2509,117 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExtractSummaryActionResult(false,
-                        TIME_NOW, getExpectedExtractSummaryResultCollection(), null))))),
+                        TIME_NOW,
+                        getExpectedExtractSummaryResultCollection(getExpectedExtractSummaryResultSortByOffset()),
+                        null))))),
                 result.toStream().collect(Collectors.toList()));
-        });
+        }, null, null);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeExtractSummaryActionSortedByOffset(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeExtractSummaryRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+
+            result.toStream().collect(Collectors.toList()).forEach(
+                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
+                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
+                        documentResult -> assertTrue(isAscendingOrderByOffSet(
+                            documentResult.getSentences().stream().collect(Collectors.toList()))))));
+        }, 4, SummarySentencesOrder.OFFSET);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeExtractSummaryActionSortedByRankScore(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeExtractSummaryRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+            result.toStream().collect(Collectors.toList()).forEach(
+                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
+                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
+                        documentResult -> assertTrue(isDescendingOrderByRankScore(
+                            documentResult.getSentences().stream().collect(Collectors.toList()))))));
+        }, 4, SummarySentencesOrder.RANK);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeExtractSummaryActionWithSentenceCountLessThanMaxCount(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeExtractSummaryRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+
+            result.toStream().collect(Collectors.toList()).forEach(
+                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
+                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
+                        documentResult -> assertTrue(
+                            documentResult.getSentences().stream().collect(Collectors.toList()).size() < 20))));
+        }, 20, null);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeExtractSummaryActionWithNonDefaultSentenceCount(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeExtractSummaryRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+
+            final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
+
+            actionsResults.forEach(
+                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
+                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
+                        documentResult -> assertEquals(
+                            documentResult.getSentences().stream().collect(Collectors.toList()).size(), 5))));
+        }, 5, null);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        // The range of max sentences count is at between 1 and 20.
+        int[] invalidMaxSentenceCounts = {0, 21};
+
+        for (int invalidCount: invalidMaxSentenceCounts) {
+            analyzeExtractSummaryRunner(
+                (documents, tasks) -> {
+                    HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
+                        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                            client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions())
+                                .getSyncPoller();
+                        syncPoller = setPollInterval(syncPoller);
+                        syncPoller.waitForCompletion();
+                        AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+                    });
+                    assertEquals(
+                        TextAnalyticsErrorCode.INVALID_PARAMETER_VALUE,
+                        ((TextAnalyticsError) exception.getValue()).getErrorCode());
+                }, invalidCount, null);
+        }
     }
 }

@@ -12,7 +12,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class ExtractSummaryAction {
     private String modelVersion;
-    private int maxSentenceCount;
+    private Integer maxSentenceCount;
     private SummarySentencesOrder sentencesOrderBy;
     private boolean disableServiceLogs;
 
@@ -65,21 +65,25 @@ public final class ExtractSummaryAction {
 
     /**
      * Gets the maximum extractive summarization sentences number to be returned in the response.
-     *
+     * If 'null' or not specified, a default value of 3 will be used as the maximum sentences number in the service
+     * side.
+     * 
      * @return The maximum extractive summarization sentences number to be returned in the response.
      */
-    public int getMaxSentenceCount() {
+    public Integer getMaxSentenceCount() {
         return this.maxSentenceCount;
     }
 
     /**
-     * Gets the maximum extractive summarization sentences number to be returned in the response.
+     * Sets the maximum extractive summarization sentences number to be returned in the response.
+     * If 'null' or not specified, a default value of 3 will be used as the maximum sentences number in the service
+     * side.
      *
      * @param maxSentenceCount The maximum extractive summarization sentences number to be returned in the response.
      *
      * @return The {@link ExtractSummaryAction} object itself.
      */
-    public ExtractSummaryAction setMaxSentenceCount(int maxSentenceCount) {
+    public ExtractSummaryAction setMaxSentenceCount(Integer maxSentenceCount) {
         this.maxSentenceCount = maxSentenceCount;
         return this;
     }
