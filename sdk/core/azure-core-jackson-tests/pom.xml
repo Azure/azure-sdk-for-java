@@ -10,6 +10,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.azure</groupId>
   <artifactId>azure-core-jackson-tests</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-beta.1</version>
