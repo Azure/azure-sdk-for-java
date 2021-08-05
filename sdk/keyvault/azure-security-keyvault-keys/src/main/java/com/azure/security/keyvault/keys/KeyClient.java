@@ -950,6 +950,7 @@ public final class KeyClient {
      * @param version Version of the key to release.This parameter is optional.
      * @param target The attestation assertion for the target of the key release.
      * @param options Additional options for releasing a key.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The {@link Response HTTP response} for this operation and the {@link ReleaseKeyResult} containing the
      * released key.
