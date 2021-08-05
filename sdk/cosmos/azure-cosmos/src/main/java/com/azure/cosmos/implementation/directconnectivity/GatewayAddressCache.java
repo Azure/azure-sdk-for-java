@@ -61,6 +61,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class GatewayAddressCache implements IAddressCache {
+    private final static Duration minDurationBeforeEnforcingCollectionRoutingMapRefresh = Duration.ofSeconds(30);
+
     private final static Logger logger = LoggerFactory.getLogger(GatewayAddressCache.class);
     private final static String protocolFilterFormat = "%s eq %s";
     private final static int DefaultBatchSize = 50;
@@ -88,6 +90,8 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final ConcurrentHashMap<URI, Set<PartitionKeyRangeIdentity>> serverPartitionAddressToPkRangeIdMap;
     private final boolean tcpConnectionEndpointRediscoveryEnabled;
+
+    private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
 
     public GatewayAddressCache(
             DiagnosticsClientContext clientContext,
@@ -133,6 +137,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         this.serverPartitionAddressToPkRangeIdMap = new ConcurrentHashMap<>();
         this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
+        this.lastForcedRefreshMap = new ConcurrentHashMap<>();
     }
 
     public GatewayAddressCache(
@@ -184,6 +189,49 @@ public class GatewayAddressCache implements IAddressCache {
 
         Utils.checkNotNullOrThrow(request, "request", "");
         Utils.checkNotNullOrThrow(partitionKeyRangeIdentity, "partitionKeyRangeIdentity", "");
+
+        if (forceRefreshPartitionAddresses) {
+            // forceRefreshPartitionAddresses==true indicates we are requesting the latest
+            // Replica addresses from the Gateway
+            // There are a couple of cases (for example when getting 410/0 after a split happened for the parent
+            // partition when just refreshing addresses isn't sufficient (because the Gateway in its cache)
+            // might also not know about the partition split that happened
+            // to recover from this condition the client would need to either trigger a PKRange cache refresh
+            // on the client or force the Gateway CollectionRoutingMap to be refreshed (so that the Gateway gets
+            // aware of the split and latest EPK map.
+            // Due to the fact that forcing the CollectionRoutingMap to be refreshed in Gateway there is additional
+            // load on the ServiceFabric naming service we want to throttle how often we would force the collection
+            // routing map refresh
+            // These are the throttle conditions: We will only enforce collection routing map to be refreshed
+            // - if there has been at least 1 attempt to just refresh replica addresses without forcing collection
+            //   routing map refresh on the physical partition before
+            // - only one request per Container to force collection routing map refresh is allowed every 30 seconds
+            //
+            // The throttling logic is implemented in  `ForcedRefreshMetadata.shouldIncludeCollectionRoutingMapRefresh`
+            ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
+                partitionKeyRangeIdentity.getCollectionRid(),
+                (colRid) -> new ForcedRefreshMetadata());
+
+            if (request.forceCollectionRoutingMapRefresh) {
+                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                    partitionKeyRangeIdentity,
+                    true);
+            } else if (forcedRefreshMetadata.shouldIncludeCollectionRoutingMapRefresh(partitionKeyRangeIdentity)) {
+                request.forceCollectionRoutingMapRefresh = true;
+                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                    partitionKeyRangeIdentity,
+                    true);
+            } else {
+                forcedRefreshMetadata.signalPartitionAddressOnlyRefresh(partitionKeyRangeIdentity);
+            }
+        } else if (request.forceCollectionRoutingMapRefresh) {
+            ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
+                partitionKeyRangeIdentity.getCollectionRid(),
+                (colRid) -> new ForcedRefreshMetadata());
+            forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                partitionKeyRangeIdentity,
+                false);
+        }
 
         logger.info("PartitionKeyRangeIdentity {}, forceRefreshPartitionAddresses {}",
             partitionKeyRangeIdentity,
@@ -346,7 +394,8 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(addressQuery));
-        String identifier = logAddressResolutionStart(request, targetEndpoint);
+        String identifier = logAddressResolutionStart(
+            request, targetEndpoint, forceRefresh, request.forceCollectionRoutingMapRefresh);
 
         HttpHeaders httpHeaders = new HttpHeaders(headers);
 
@@ -581,7 +630,8 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
-        String identifier = logAddressResolutionStart(request, targetEndpoint);
+        String identifier = logAddressResolutionStart(
+            request, targetEndpoint, true, true);
 
         HttpHeaders defaultHttpHeaders = new HttpHeaders(headers);
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
@@ -745,9 +795,17 @@ public class GatewayAddressCache implements IAddressCache {
         return addressInformations.length < ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize;
     }
 
-    private static String logAddressResolutionStart(RxDocumentServiceRequest request, URI targetEndpointUrl) {
+    private static String logAddressResolutionStart(
+        RxDocumentServiceRequest request,
+        URI targetEndpointUrl,
+        boolean forceRefresh,
+        boolean forceCollectionRoutingMapRefresh) {
         if (request.requestContext.cosmosDiagnostics != null) {
-            return BridgeInternal.recordAddressResolutionStart(request.requestContext.cosmosDiagnostics, targetEndpointUrl);
+            return BridgeInternal.recordAddressResolutionStart(
+                request.requestContext.cosmosDiagnostics,
+                targetEndpointUrl,
+                forceRefresh,
+                forceCollectionRoutingMapRefresh);
         }
 
         return null;
@@ -756,6 +814,52 @@ public class GatewayAddressCache implements IAddressCache {
     private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier, String errorMessage) {
         if (request.requestContext.cosmosDiagnostics != null) {
             BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosDiagnostics, identifier, errorMessage);
+        }
+    }
+
+    private static class ForcedRefreshMetadata {
+        private final ConcurrentHashMap<PartitionKeyRangeIdentity, Instant> lastPartitionAddressOnlyRefresh;
+        private Instant lastCollectionRoutingMapRefresh;
+
+        public ForcedRefreshMetadata() {
+            lastPartitionAddressOnlyRefresh = new ConcurrentHashMap<>();
+            lastCollectionRoutingMapRefresh = Instant.now();
+        }
+
+        public void signalCollectionRoutingMapRefresh(
+            PartitionKeyRangeIdentity pk,
+            boolean forcePartitionAddressRefresh) {
+
+            Instant nowSnapshot = Instant.now();
+
+            if (forcePartitionAddressRefresh) {
+                lastPartitionAddressOnlyRefresh.put(pk, nowSnapshot);
+            }
+
+            lastCollectionRoutingMapRefresh = nowSnapshot;
+        }
+
+        public void signalPartitionAddressOnlyRefresh(PartitionKeyRangeIdentity pk) {
+            lastPartitionAddressOnlyRefresh.put(pk, Instant.now());
+        }
+
+        public boolean shouldIncludeCollectionRoutingMapRefresh(PartitionKeyRangeIdentity pk) {
+            Instant lastPartitionAddressRefreshSnapshot = lastPartitionAddressOnlyRefresh.get(pk);
+            Instant lastCollectionRoutingMapRefreshSnapshot = lastCollectionRoutingMapRefresh;
+
+            if (lastPartitionAddressRefreshSnapshot == null ||
+                !lastPartitionAddressRefreshSnapshot.isAfter(lastCollectionRoutingMapRefreshSnapshot)) {
+                // Enforce that at least one refresh attempt is made without
+                // forcing collection routing map refresh as well
+                return false;
+            }
+
+            Duration durationSinceLastForcedCollectionRoutingMapRefresh =
+                Duration.between(lastCollectionRoutingMapRefreshSnapshot, Instant.now());
+            boolean returnValue = durationSinceLastForcedCollectionRoutingMapRefresh
+                .compareTo(minDurationBeforeEnforcingCollectionRoutingMapRefresh) >= 0;
+
+            return returnValue;
         }
     }
 }

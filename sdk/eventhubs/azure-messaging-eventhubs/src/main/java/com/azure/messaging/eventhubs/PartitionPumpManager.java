@@ -59,7 +59,6 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TR
  * </p>
  */
 class PartitionPumpManager {
-    private static final int PREFETCH = EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
     private static final int MAXIMUM_QUEUE_SIZE = 10000;
 
     //TODO (conniey): Add a configurable scheduler size, at the moment we are creating a new elastic scheduler
