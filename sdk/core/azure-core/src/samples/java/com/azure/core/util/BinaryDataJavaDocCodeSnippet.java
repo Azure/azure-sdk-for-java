@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -116,7 +117,7 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void fromFile() {
         // BEGIN: com.azure.core.util.BinaryData.fromFile
-        BinaryData binaryData = BinaryData.fromFile(Path.of("path/to/file"));
+        BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath());
         System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
         // END: com.azure.core.util.BinaryData.fromFile
     }
@@ -126,7 +127,7 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void fromFileWithChunkSize() {
         // BEGIN: com.azure.core.util.BinaryData.fromFile#Path-int
-        BinaryData binaryData = BinaryData.fromFile(Path.of("path/to/file"), 8092);
+        BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath(), 8092);
         System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
         // END: com.azure.core.util.BinaryData.fromFile#Path-int
     }

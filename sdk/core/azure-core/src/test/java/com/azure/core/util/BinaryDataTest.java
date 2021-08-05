@@ -33,6 +33,7 @@ import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -161,7 +162,8 @@ public class BinaryDataTest {
     @Test
     public void createFromLargeStreamAndReadAsFlux() {
         // Arrange
-        final byte[] expected = "A".repeat(STREAM_READ_SIZE * 100).concat("A").getBytes(StandardCharsets.UTF_8);
+        final byte[] expected = String.join("", Collections.nCopies(STREAM_READ_SIZE * 100, "A"))
+                .concat("A").getBytes(StandardCharsets.UTF_8);
 
         // Act
         BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
@@ -170,7 +172,8 @@ public class BinaryDataTest {
         StepVerifier.create(data.toFluxByteBuffer())
                 // the inputstream should be broken down into a series of byte buffers, each of max CHUNK_SIZE
                 // assert first chunk is equal to CHUNK_SIZE and is a string of repeating A's
-                .assertNext(bb -> assertEquals("A".repeat(STREAM_READ_SIZE), StandardCharsets.UTF_8.decode(bb).toString()))
+                .assertNext(bb -> assertEquals(String.join("", Collections.nCopies(STREAM_READ_SIZE, "A")),
+                        StandardCharsets.UTF_8.decode(bb).toString()))
                 // skip 99 chunks
                 .expectNextCount(99)
                 // assert last chunk is just "A"
