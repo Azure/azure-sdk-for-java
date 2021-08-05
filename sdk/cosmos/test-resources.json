@@ -60,7 +60,7 @@
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('accountName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[eastus2]",
       "kind": "GlobalDocumentDB",
       "properties": {
         "publicNetworkAccess": "Enabled",
@@ -86,7 +86,7 @@
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('newAccountName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[eastus2]",
       "kind": "GlobalDocumentDB",
       "properties": {
         "publicNetworkAccess": "Enabled",
