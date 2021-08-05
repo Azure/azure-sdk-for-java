@@ -12,15 +12,36 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 
+import java.util.Objects;
+
 import static com.azure.core.amqp.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
+/**
+ * Base class for AMQP links.
+ *
+ * @see SendLinkHandler
+ * @see ReceiveLinkHandler
+ */
 abstract class LinkHandler extends Handler {
     private final String entityPath;
 
+    /**
+     * Creates an instance with the parameters.
+     *
+     * @param connectionId Identifier for the connection.
+     * @param hostname Hostname of the connection. This could be the DNS hostname or the IP address of the
+     *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
+     *     messages are brokered through an intermediary.
+     * @param entityPath The address within the message broker for this link.
+     * @param logger Logger to use for messages.
+     *
+     * @throws NullPointerException if {@code connectionId}, {@code hostname}, {@code entityPath}, or {@code logger} is
+     * null.
+     */
     LinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
         super(connectionId, hostname, logger);
-        this.entityPath = entityPath;
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
     }
 
     @Override
@@ -88,7 +109,7 @@ abstract class LinkHandler extends Handler {
 
             onError(exception);
         } else {
-            close();
+            super.close();
         }
     }
 }
