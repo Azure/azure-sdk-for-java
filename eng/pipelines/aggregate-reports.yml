@@ -52,6 +52,18 @@ jobs:
         publishJUnitResults: false
         goals: 'verify site:site site:stage'
 
+    - task: Maven@3
+      displayName: 'Generate BOM Reports'
+      inputs:
+        mavenPomFile: eng/bomgenerator/pom.xml
+        options: '$(DefaultOptions)'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'clean package'
+
     - task: PublishTestResults@2
       condition: succeededOrFailed()
       inputs:
@@ -86,6 +98,7 @@ jobs:
 
         Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item eng/bomgenerator/target/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
 
     - publish: $(Build.ArtifactStagingDirectory)
