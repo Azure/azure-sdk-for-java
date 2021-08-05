@@ -4,9 +4,12 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Extendable;
+import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Sender;
 import reactor.core.publisher.Flux;
@@ -15,10 +18,21 @@ import reactor.core.publisher.Sinks;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Handler that receives events from its corresponding {@link Sender}. Handlers must be associated to a {@link Sender}
+ * to receive its events.
+ *
+ * @see BaseHandler#setHandler(Extendable, Handler)
+ * @see Sender
+ */
 public class SendLinkHandler extends LinkHandler {
     private final String linkName;
     private final String entityPath;
-    private final AtomicBoolean isFirstFlow = new AtomicBoolean(true);
+    /**
+     * Indicates whether or not the link has ever been remotely active (ie. the service has acknowledged that we have
+     * opened a send link to the given entityPath.)
+     */
+    private final AtomicBoolean isRemoteActive = new AtomicBoolean();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final Sinks.Many<Integer> creditProcessor = Sinks.many().unicast().onBackpressureBuffer();
     private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().onBackpressureBuffer();
@@ -41,6 +55,11 @@ public class SendLinkHandler extends LinkHandler {
         return deliveryProcessor.asFlux();
     }
 
+    /**
+     * Closes the handler by completing the completing the delivery and link credit fluxes and publishes {@link
+     * EndpointState#CLOSED}. {@link #getEndpointStates()} is completely closed when {@link #onLinkRemoteClose(Event)},
+     * {@link #onLinkRemoteDetach(Event)}, or {@link #onLinkFinal(Event)} is called.
+     */
     @Override
     public void close() {
         if (isTerminated.getAndSet(true)) {
@@ -48,13 +67,13 @@ public class SendLinkHandler extends LinkHandler {
         }
 
         creditProcessor.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
-
         deliveryProcessor.emitComplete((signalType, emitResult) -> {
             logger.verbose("connectionId[{}] linkName[{}] result[{}] Unable to emit complete on deliverySink.",
                 getConnectionId(), linkName, emitResult);
             return false;
         });
-        super.close();
+
+        onNext(EndpointState.CLOSED);
     }
 
     @Override
@@ -77,7 +96,7 @@ public class SendLinkHandler extends LinkHandler {
             logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], remoteTarget[{}]",
                 getConnectionId(), entityPath, link.getName(), link.getRemoteTarget());
 
-            if (isFirstFlow.getAndSet(false)) {
+            if (!isRemoteActive.getAndSet(true)) {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
@@ -89,7 +108,7 @@ public class SendLinkHandler extends LinkHandler {
 
     @Override
     public void onLinkFlow(Event event) {
-        if (isFirstFlow.getAndSet(false)) {
+        if (!isRemoteActive.getAndSet(true)) {
             onNext(EndpointState.ACTIVE);
         }
 
@@ -103,6 +122,20 @@ public class SendLinkHandler extends LinkHandler {
 
         logger.verbose("onLinkFlow connectionId[{}] linkName[{}] unsettled[{}] credit[{}]",
             getConnectionId(), sender.getName(), sender.getUnsettled(), sender.getCredit());
+    }
+
+    @Override
+    public void onLinkLocalClose(Event event) {
+        super.onLinkLocalClose(event);
+
+        // Someone called sender.close() to set the local link state to close. Since the link was never remotely
+        // active, we complete getEndpointStates() ourselves.
+        if (!isRemoteActive.get()) {
+            logger.info("connectionId[{}] linkName[{}] entityPath[{}] Sender link was never active. Closing endpoint "
+                + "states.", getConnectionId(), getLinkName(), entityPath);
+
+            super.close();
+        }
     }
 
     @Override

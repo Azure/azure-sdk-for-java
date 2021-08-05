@@ -7,9 +7,12 @@ import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Extendable;
+import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import reactor.core.publisher.Flux;
@@ -20,9 +23,21 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Handler that receives events from its corresponding {@link Receiver}. Handlers must be associated to a
+ * {@link Receiver} to receive its events.
+ *
+ * @see BaseHandler#setHandler(Extendable, Handler)
+ * @see Receiver
+ */
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
-    private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
+
+    /**
+     * Indicates whether or not the link has ever been remotely active (ie. the service has acknowledged that we have
+     * opened a send link to the given entityPath.)
+     */
+    private final AtomicBoolean isRemoteActive = new AtomicBoolean();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
@@ -42,6 +57,11 @@ public class ReceiveLinkHandler extends LinkHandler {
         return deliveries.asFlux().doOnNext(queuedDeliveries::remove);
     }
 
+    /**
+     * Closes the handler by completing the completing the queued deliveries and deliveries then publishes {@link
+     * EndpointState#CLOSED}. {@link #getEndpointStates()} is completely closed when {@link #onLinkRemoteClose(Event)},
+     * {@link #onLinkRemoteDetach(Event)}, or {@link #onLinkFinal(Event)} is called.
+     */
     @Override
     public void close() {
         if (isTerminated.getAndSet(true)) {
@@ -53,15 +73,14 @@ public class ReceiveLinkHandler extends LinkHandler {
                 getConnectionId(), entityPath, linkName);
             return false;
         });
-
-        super.close();
-
         queuedDeliveries.forEach(delivery -> {
             // abandon the queued deliveries as the receive link handler is closed
             delivery.disposition(new Modified());
             delivery.settle();
         });
         queuedDeliveries.clear();
+
+        onNext(EndpointState.CLOSED);
     }
 
     @Override
@@ -84,7 +103,7 @@ public class ReceiveLinkHandler extends LinkHandler {
             logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], remoteSource[{}]",
                 getConnectionId(), entityPath, link.getName(), link.getRemoteSource());
 
-            if (isFirstResponse.getAndSet(false)) {
+            if (!isRemoteActive.getAndSet(true)) {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
@@ -95,7 +114,7 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void onDelivery(Event event) {
-        if (isFirstResponse.getAndSet(false)) {
+        if (!isRemoteActive.getAndSet(true)) {
             onNext(EndpointState.ACTIVE);
         }
 
@@ -159,6 +178,20 @@ public class ReceiveLinkHandler extends LinkHandler {
                 getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(),
                 condition != null && condition.getCondition() != null ? condition : "N/A",
                 delivery.isPartial(), wasSettled);
+        }
+    }
+
+    @Override
+    public void onLinkLocalClose(Event event) {
+        super.onLinkLocalClose(event);
+
+        // Someone called receiver.close() to set the local link state to close. Since the link was never remotely
+        // active, we complete getEndpointStates() ourselves.
+        if (!isRemoteActive.get()) {
+            logger.info("connectionId[{}] linkName[{}] entityPath[{}] Receiver link was never active. Closing endpoint "
+                + "states.", getConnectionId(), getLinkName(), entityPath);
+
+            super.close();
         }
     }
 
