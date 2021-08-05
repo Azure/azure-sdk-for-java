@@ -515,7 +515,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         "/dbs",
                         new Database(), new HashMap<>());
 
-        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "M");
         boolean forceRefreshPartitionAddresses = false;
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
@@ -563,7 +563,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         "/dbs",
                         new Database(), new HashMap<>());
 
-        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "M");
         boolean forceRefreshPartitionAddresses = false;
 
         // request master partition info to ensure it is cached.
@@ -610,7 +610,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         "/dbs",
                         new Database(), new HashMap<>());
 
-        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "M");
 
         // request master partition info to ensure it is cached.
         AddressInformation[] expectedAddresses = cache.tryGetAddresses(req,
@@ -706,7 +706,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         "/dbs",
                         new Database(), new HashMap<>());
 
-        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "M");
 
         // request master partition info to ensure it is cached.
         AddressInformation[] expectedAddresses = spyCache.tryGetAddresses(req,
@@ -800,7 +800,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         "/dbs",
                         new Database(), new HashMap<>());
 
-        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "M");
 
         // request master partition info to ensure it is cached.
         AddressInformation[] subOptimalAddresses = spyCache.tryGetAddresses(req,

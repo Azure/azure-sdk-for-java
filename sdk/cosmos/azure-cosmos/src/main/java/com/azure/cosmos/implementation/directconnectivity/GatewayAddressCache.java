@@ -191,7 +191,9 @@ public class GatewayAddressCache implements IAddressCache {
         Utils.checkNotNullOrThrow(request, "request", "");
         Utils.checkNotNullOrThrow(partitionKeyRangeIdentity, "partitionKeyRangeIdentity", "");
 
-        if (forceRefreshPartitionAddresses) {
+        // For resolving master resource address, collectionRid is null.
+        // In those cases, we cannot do this optimization.
+        if (forceRefreshPartitionAddresses && partitionKeyRangeIdentity.getCollectionRid() != null) {
             // forceRefreshPartitionAddresses==true indicates we are requesting the latest
             // Replica addresses from the Gateway
             // There are a couple of cases (for example when getting 410/0 after a split happened for the parent
@@ -225,7 +227,7 @@ public class GatewayAddressCache implements IAddressCache {
             } else {
                 forcedRefreshMetadata.signalPartitionAddressOnlyRefresh(partitionKeyRangeIdentity);
             }
-        } else if (request.forceCollectionRoutingMapRefresh) {
+        } else if (request.forceCollectionRoutingMapRefresh && partitionKeyRangeIdentity.getCollectionRid() != null) {
             ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
                 partitionKeyRangeIdentity.getCollectionRid(),
                 (colRid) -> new ForcedRefreshMetadata());
