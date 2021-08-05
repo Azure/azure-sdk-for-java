@@ -150,7 +150,9 @@ public class KeyVaultCertificateIT {
 
     private void startSpringBootWebApplication(Map<String, String> additionalProperties) throws Exception {
         Map<String, String> properties = getDefaultMap();
-        properties.putAll(additionalProperties);
+        if (additionalProperties != null) {
+            properties.putAll(additionalProperties);
+        }
         startAppRunner(properties);
         setRestTemplate();
         sendRequest();
