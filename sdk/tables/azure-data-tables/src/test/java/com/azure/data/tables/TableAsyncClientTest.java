@@ -953,6 +953,10 @@ public class TableAsyncClientTest extends TestBase {
 
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
+        // SAS tokens at the table level have not been working with Cosmos endpoints. Will re-enable once this is fixed.
+        // - vicolina
+        Assumptions.assumeFalse(IS_COSMOS_TEST ,"Skipping Cosmos test.");
+
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
