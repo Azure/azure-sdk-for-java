@@ -4,7 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: storage
-      Clouds: 'Public,Canary,UsGov,China'
+      SupportedClouds: 'Public,Canary,UsGov,China'
       Artifacts:
         - name: azure-storage-common
           groupId: com.azure
