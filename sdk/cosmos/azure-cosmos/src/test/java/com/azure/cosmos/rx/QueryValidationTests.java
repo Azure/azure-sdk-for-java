@@ -331,7 +331,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
         //Create container
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
+        createdDatabase.createContainer(containerProperties).block();
         CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
 
@@ -367,6 +367,10 @@ public class QueryValidationTests extends TestSuiteBase {
             initialOrderByResultList.addAll(nodeFeedResponse.getResults());
         }
 
+        for (TestObject object : initialOrderByResultList) {
+            logger.info("Initial ID : {}", object.getId());
+        }
+
         // Orderby query
         FeedResponse<TestObject> orderByFeedResponse = container
                                                            .queryItems(orderByQuery, new CosmosQueryRequestOptions(),
@@ -374,6 +378,9 @@ public class QueryValidationTests extends TestSuiteBase {
                                                            .byPage(preferredPageSize).blockFirst();
         assert orderByFeedResponse != null;
         orderByResultList.addAll(orderByFeedResponse.getResults());
+        for (TestObject object : orderByResultList) {
+            logger.info("Object ID : {}", object.getId());
+        }
         orderByRequestContinuation = orderByFeedResponse.getContinuationToken();
 
         // Scale up the throughput for a split
@@ -425,6 +432,10 @@ public class QueryValidationTests extends TestSuiteBase {
 
         for (FeedResponse<TestObject> nodeFeedResponse : orderfeedResponseFlux.toIterable()) {
             orderByResultList.addAll(nodeFeedResponse.getResults());
+        }
+
+        for (TestObject object : orderByResultList) {
+            logger.info("Post Split Object ID : {}", object.getId());
         }
 
         List<String> sourceIds = testObjects.stream().map(TestObject::getId).collect(Collectors.toList());
