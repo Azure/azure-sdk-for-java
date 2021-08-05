@@ -111,7 +111,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.10.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.11.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.microsoft.azure:msal4j-persistence-extension:[1.1.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
                 <include>net.java.dev.jna:jna-platform:[5.6.0]</include> <!-- {x-include-update;net.java.dev.jna:jna-platform;external_dependency} -->
                 <include>net.minidev:json-smart:[2.4.7]</include> <!-- {x-include-update;net.minidev:json-smart;external_dependency} -->
