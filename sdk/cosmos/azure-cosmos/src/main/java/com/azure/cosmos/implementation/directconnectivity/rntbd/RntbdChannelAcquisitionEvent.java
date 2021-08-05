@@ -14,6 +14,7 @@ import java.util.List;
 public class RntbdChannelAcquisitionEvent {
     @JsonSerialize(using = ToStringSerializer.class)
     private final Instant timestamp;
+
     private final RntbdChannelAcquisitionEventType eventType;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -31,6 +32,10 @@ public class RntbdChannelAcquisitionEvent {
 
     public List<Object> getDetails() {
         return details;
+    }
+
+    public RntbdChannelAcquisitionEventType getEventType() {
+        return eventType;
     }
 
     public static void addDetails(RntbdChannelAcquisitionEvent event, Object detail) {

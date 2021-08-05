@@ -640,7 +640,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     RntbdChannelAcquisitionTimeline.startNewEvent(
                         channelAcquisitionTimeline,
-                        RntbdChannelAcquisitionEventType.ATTEMPTED_TO_CREATE_NEW_CHANNEL);
+                        RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL);
 
                     final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
 
@@ -743,7 +743,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             } else {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
                     promise.getChannelAcquisitionTimeline(),
-                    RntbdChannelAcquisitionEventType.ADDED_TO_PENDING_QUEUE);
+                    RntbdChannelAcquisitionEventType.ADD_TO_PENDING_QUEUE);
             }
         }
     }
@@ -1118,7 +1118,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             if (promise instanceof ChannelPromiseWithExpiryTime) {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
                     ((ChannelPromiseWithExpiryTime) promise).getChannelAcquisitionTimeline(),
-                    RntbdChannelAcquisitionEventType.ATTEMPTED_TO_CREATE_NEW_CHANNEL_COMPLETE
+                    RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE
                 );
             }
             this.connecting.set(false);
