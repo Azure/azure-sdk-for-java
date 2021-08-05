@@ -36,7 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.share-connection=true",
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.prefetch-count=3",
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.custom-endpoint-address=custom-endpoint-address",
-    "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.send-timeout=10000",
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.checkpoint-interval=5",
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.checkpoint-mode=BATCH",
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.load-balancing-strategy=GREEDY",
@@ -101,7 +100,6 @@ public class EventHubBinderExtendedPropertiesTest {
         assertThat(eventHubConsumerProperties.getCustomEndpointAddress()).isEqualTo("custom-endpoint-address");
         assertThat(eventHubConsumerProperties.getPrefetchCount()).isEqualTo(3);
         assertThat(eventHubConsumerProperties.getPartitionOwnershipExpirationInterval()).isEqualTo(Duration.ofMillis(300));
-        assertThat(eventHubConsumerProperties.getSendTimeout()).isEqualTo(10000);
         assertThat(eventHubConsumerProperties.getLoadBalancingUpdateInterval()).isEqualTo(Duration.ofMillis(10));
         assertThat(eventHubConsumerProperties.getCheckpointMode()).isEqualTo(BATCH);
         assertThat(eventHubConsumerProperties.getLoadBalancingStrategy()).isEqualTo(GREEDY);

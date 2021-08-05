@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.StartPosition;
+import org.springframework.util.ObjectUtils;
 
 import java.time.Duration;
 
@@ -47,8 +48,6 @@ public class EventHubConsumerProperties {
      * Default : 5s
      */
     private Duration checkpointInterval = Duration.ofSeconds(5);
-
-    private long sendTimeout = 10000;
 
     private int prefetchCount = 1;
 
@@ -98,14 +97,6 @@ public class EventHubConsumerProperties {
 
     public void setCheckpointInterval(Duration checkpointInterval) {
         this.checkpointInterval = checkpointInterval;
-    }
-
-    public long getSendTimeout() {
-        return sendTimeout;
-    }
-
-    public void setSendTimeout(long sendTimeout) {
-        this.sendTimeout = sendTimeout;
     }
 
     public int getPrefetchCount() {
@@ -165,6 +156,9 @@ public class EventHubConsumerProperties {
     }
 
     public Duration getPartitionOwnershipExpirationInterval() {
+        if (ObjectUtils.isEmpty(partitionOwnershipExpirationInterval)) {
+            this.partitionOwnershipExpirationInterval = loadBalancingUpdateInterval.multipliedBy(6);
+        }
         return partitionOwnershipExpirationInterval;
     }
 
