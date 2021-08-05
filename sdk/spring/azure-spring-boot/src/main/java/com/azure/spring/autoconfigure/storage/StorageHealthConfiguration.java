@@ -21,7 +21,6 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration
 @ConditionalOnClass({ BlobServiceClientBuilder.class, ShareServiceClientBuilder.class, HealthIndicator.class })
-@PropertySource("classpath:/azure-spring-actuator.properties")
 @AutoConfigureAfter(StorageAutoConfiguration.class)
 public class StorageHealthConfiguration {
 

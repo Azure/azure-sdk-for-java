@@ -17,7 +17,6 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration
 @ConditionalOnClass({ CosmosAsyncClient.class, HealthIndicator.class})
-@PropertySource("classpath:/azure-spring-actuator.properties")
 @AutoConfigureAfter(CosmosAutoConfiguration.class)
 public class CosmosHealthConfiguration {
 
