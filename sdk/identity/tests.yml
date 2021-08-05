@@ -4,8 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: identity
-      Clouds: 'Public,Canary,UsGov,China'
-      SupportedClouds: 'Public,UsGov'
+      SupportedClouds: 'Public,Canary,UsGov,China'
       Artifacts:
         - name: azure-identity
           groupId: com.azure
