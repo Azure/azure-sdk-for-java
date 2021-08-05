@@ -797,10 +797,8 @@ public class TableClientTest extends TestBase {
             return;
         } catch (TableServiceException e) {
             assertTrue(IS_COSMOS_TEST);
-            assertTrue(e.getMessage().contains("Status code 400"));
+            assertEquals(400, e.getResponse().getStatusCode());
             assertTrue(e.getMessage().contains("InvalidDuplicateRow"));
-            assertTrue(e.getMessage().contains("The batch request contains multiple changes with same row key."));
-            assertTrue(e.getMessage().contains("An entity can appear only once in a batch request."));
 
             return;
         }
@@ -921,8 +919,6 @@ public class TableClientTest extends TestBase {
 
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
-        Assumptions.assumeFalse(IS_COSMOS_TEST, "SAS Tokens are not supported for Cosmos endpoints.");
-
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
@@ -954,13 +950,13 @@ public class TableClientTest extends TestBase {
         }
 
         // Create a new client authenticated with the SAS token.
-        final TableClient tableClient = tableClientBuilder.buildClient();
+        final TableClient newTableClient = tableClientBuilder.buildClient();
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue);
         final int expectedStatusCode = 204;
 
-        assertEquals(expectedStatusCode, tableClient.createEntityWithResponse(entity, null, null).getStatusCode());
+        assertEquals(expectedStatusCode, newTableClient.createEntityWithResponse(entity, null, null).getStatusCode());
     }
 
     @Test

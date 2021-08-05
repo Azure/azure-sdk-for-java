@@ -1200,7 +1200,7 @@ public final class TableAsyncClient {
         Context finalContext = context == null ? Context.NONE : context;
 
         if (transactionActions.isEmpty()) {
-            throw logger.logExceptionAsError(
+            return monoError(logger,
                 new IllegalArgumentException("A transaction must contain at least one operation."));
         }
 
