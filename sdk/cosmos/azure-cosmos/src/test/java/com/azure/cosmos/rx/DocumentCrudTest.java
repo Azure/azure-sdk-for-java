@@ -6,7 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -161,29 +160,16 @@ public class DocumentCrudTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        for (int i = 0; i < 10; i++) {
-            new Thread(() -> {
-                container.readItem(docDefinition.getId(),
-                        new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
-                        options, InternalObjectNode.class)
-                    .flatMap(item -> {
-                        CosmosDiagnostics cosmosDiagnostics = item.getDiagnostics();
-                        logger.info("CosmosDiagnostics : {}", cosmosDiagnostics);
-                        return Mono.just(item);
-                    }).block();
-            }).start();
-        }
-        Thread.sleep(10000);
-//        Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(docDefinition.getId(),
-//                                                                          new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
-//                                                                          options, InternalObjectNode.class);
-//
-//        CosmosItemResponseValidator validator =
-//            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-//                .withId(docDefinition.getId())
-//                .build();
-//
-//        this.validateItemSuccess(readObservable, validator);
+        Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(docDefinition.getId(),
+                                                                          new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
+                                                                          options, InternalObjectNode.class);
+
+        CosmosItemResponseValidator validator =
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
+                .withId(docDefinition.getId())
+                .build();
+
+        this.validateItemSuccess(readObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
