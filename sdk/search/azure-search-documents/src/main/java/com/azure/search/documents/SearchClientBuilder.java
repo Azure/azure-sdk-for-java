@@ -138,7 +138,7 @@ public final class SearchClientBuilder {
 
         HttpPipeline pipeline = getHttpPipeline();
         return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer,
-            Utility.buildRestClient(endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
+            Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
     }
 
     /**
@@ -420,9 +420,14 @@ public final class SearchClientBuilder {
         public SearchIndexingBufferedAsyncSender<T> buildAsyncSender() {
             validateIndexNameAndEndpoint();
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
-            return new SearchIndexingBufferedAsyncSender<>(buildRestClient(endpoint, indexName, getHttpPipeline(),
-                getDefaultSerializerAdapter()), jsonSerializer, documentKeyRetriever, autoFlush, autoFlushInterval,
-                initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
+
+            SearchServiceVersion buildVersion = (serviceVersion == null)
+                ? SearchServiceVersion.getLatest()
+                : serviceVersion;
+
+            return new SearchIndexingBufferedAsyncSender<>(buildRestClient(buildVersion, endpoint, indexName,
+                getHttpPipeline(), getDefaultSerializerAdapter()), jsonSerializer, documentKeyRetriever, autoFlush,
+                autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
                 onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
         }
 
