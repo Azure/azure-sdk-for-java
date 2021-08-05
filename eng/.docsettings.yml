@@ -158,6 +158,7 @@ known_content_issues:
   - ['sdk/monitor/azure-monitor-opentelemetry-exporter/swagger/README.md', '#3113' ]
   - ['sdk/monitor/azure-monitor-query/swagger/README.md', '#3113' ]
   - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
+  - ['sdk/purview/azure-analytics-purview-account/swagger/README.md', '#3113']
   - ['sdk/purview/azure-analytics-purview-catalog/swagger/README.md', '#3113']
   - ['sdk/purview/azure-analytics-purview-scanning/swagger/README.md', '#3113']
   - ['sdk/search/azure-search-documents/swagger/README.md', '#3113']
