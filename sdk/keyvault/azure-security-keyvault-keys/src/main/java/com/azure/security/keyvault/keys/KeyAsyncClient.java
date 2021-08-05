@@ -1485,11 +1485,11 @@ public final class KeyAsyncClient {
                                                             ReleaseKeyOptions options, Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty");
+                return monoError(logger, new IllegalArgumentException("'name' cannot be null or empty"));
             }
 
             if (CoreUtils.isNullOrEmpty(target)) {
-                throw new IllegalArgumentException("'target' cannot be null or empty");
+                return monoError(logger, new IllegalArgumentException("'target' cannot be null or empty"));
             }
 
             options = options == null ? new ReleaseKeyOptions() : options;
