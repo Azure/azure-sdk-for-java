@@ -1,6 +1,6 @@
 # Azure Text Analytics client library for Java
 Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, 
-and includes the main functions below:
+and includes the main features below:
 
 - Sentiment Analysis
 - Language Detection
