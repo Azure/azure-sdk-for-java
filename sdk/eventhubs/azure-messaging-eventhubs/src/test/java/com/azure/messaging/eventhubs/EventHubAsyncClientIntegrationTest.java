@@ -172,7 +172,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                         assertTrue(batch.tryAdd(testData));
                         return asyncProducerClient.send(batch);
                     })
-            ).verifyComplete();
+            ).expectSubscription().verifyComplete();
         } finally {
             asyncProducerClient.close();
         }
