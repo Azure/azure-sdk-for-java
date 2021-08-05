@@ -354,7 +354,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
         requestRecord.stage(RntbdRequestRecord.Stage.CHANNEL_ACQUISITION_STARTED);
-        final Future<Channel> connectedChannel = this.channelPool.acquire();
+        final Future<Channel> connectedChannel = this.channelPool.acquire(requestRecord.getChannelAcquisitionContext());
 
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
 
@@ -373,9 +373,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         if (connected.isSuccess()) {
             final Channel channel = (Channel) connected.getNow();
             assert channel != null : "impossible";
-            this.releaseToPool(channel);
             requestRecord.channelTaskQueueLength(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()));
             channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
+            this.releaseToPool(channel);
             return requestRecord;
         }
 

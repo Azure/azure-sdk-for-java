@@ -421,6 +421,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
             System.nanoTime() + this.acquisitionTimeoutInNanos));
     }
 
+    public Future<Channel> acquire(RntbdChannelAcquisitionContext channelAcquisitionContext) {
+        return this.acquire(new ChannelPromiseWithExpiryTime(
+            this.bootstrap.config().group().next().newPromise(),
+            System.nanoTime() + this.acquisitionTimeoutInNanos,
+            channelAcquisitionContext));
+    }
+
     /**
      * Acquire a {@link Channel channel} from the current {@link RntbdClientChannelPool pool}.
      * <p>
@@ -588,12 +595,16 @@ public final class RntbdClientChannelPool implements ChannelPool {
      *
      * @param promise the promise of a {@link Channel channel}.
      *
-     * @see #isChannelServiceable(Channel)
+     * @see #getChannelState(Channel) (Channel)
      * @see AcquireTimeoutTask
      */
     private void acquireChannel(final ChannelPromiseWithExpiryTime promise) {
 
         this.ensureInEventLoop();
+
+        reportIssueUnless(logger, promise != null, this, "Channel promise should not be null");
+        RntbdChannelAcquisitionContext channelAcquisitionContext = promise.getChannelAcquisitionContext();
+        RntbdChannelAcquisitionContext.recordAcquireChannelTime(channelAcquisitionContext);
 
         if (this.isClosed()) {
             promise.setFailure(POOL_CLOSED_ON_ACQUIRE);
@@ -601,7 +612,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         try {
-            Channel candidate = this.pollChannel();
+            Channel candidate = this.pollChannel(channelAcquisitionContext);
 
             if (candidate != null) {
 
@@ -624,6 +635,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     // If our connection attempt fails, notifyChannelConnect will call us again
 
                     final Promise<Channel> anotherPromise = this.newChannelPromiseForToBeEstablishedChannel(promise);
+                    RntbdChannelAcquisitionContext.recordNewChannelStartTime(channelAcquisitionContext);
+
                     final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
 
                     if (future.isDone()) {
@@ -653,9 +666,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         // we accept the risk of reusing the channel even if more than maxPendingRequests are
                         // queued - by picking the channel with the least number of outstanding requests we load
                         // balance reasonably
-                        if (pendingRequestCount < pendingRequestCountMin && isChannelServiceable(channel)) {
-                            pendingRequestCountMin = pendingRequestCount;
-                            candidate = channel;
+                        if (pendingRequestCount < pendingRequestCountMin) {
+                            RntbdChannelState channelState = this.getChannelState(channel);
+                            RntbdChannelAcquisitionContext.recordChannelState(channelAcquisitionContext, channelState);
+
+                            if (channelState == RntbdChannelState.OK) {
+                                pendingRequestCountMin = pendingRequestCount;
+                                candidate = channel;
+                            }
                         }
                     }
                 }
@@ -669,7 +687,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     // we pick the first available channel to avoid the additional cost of load balancing
                     // as long as the load is lower than the load factor threshold above.
-                    if (isChannelServiceable(channel)) {
+                    RntbdChannelState channelState = this.getChannelState(channel);
+                    RntbdChannelAcquisitionContext.recordChannelState(channelAcquisitionContext, channelState);
+
+                    if (channelState == RntbdChannelState.OK) {
                         if (this.availableChannels.remove(channel)) {
                             this.doAcquireChannel(promise, channel);
                             return;
@@ -714,6 +735,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             if (!this.pendingAcquisitions.offer(acquireTask)) {
                 promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
+            } else {
+                RntbdChannelAcquisitionContext.recordPendingAcquisitionTime(promise.getChannelAcquisitionContext());
             }
         }
     }
@@ -874,7 +897,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             for (; ; ) {
                 // will remove from available channels
-                final Channel channel = this.pollChannel();
+                final Channel channel = this.pollChannel(null);
                 if (channel == null) {
                     break;
                 }
@@ -906,22 +929,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
             "expected to be in event loop {}, not thread {}",
             this.executor,
             Thread.currentThread());
-    }
-
-    /**
-     * {@code true} if the given {@link Channel channel} is serviceable; {@code false} otherwise.
-     * <p>
-     * A serviceable channel is one that is open, has an {@link RntbdContext RNTBD context}, and has fewer than {@link
-     * #maxRequestsPerChannel} requests in its pipeline. An inactive channel will not have a {@link RntbdRequestManager
-     * request manager}. Hence, this method first checks that the channel's request manager is non-null.
-     *
-     * @param channel the channel to check.
-     *
-     * @return {@code true} if the given {@link Channel channel} is serviceable; {@code false} otherwise.
-     */
-    private boolean isChannelServiceable(final Channel channel) {
-        final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
-        return manager != null && manager.isServiceable(this.maxRequestsPerChannel) && channel.isOpen();
     }
 
     /**
@@ -967,7 +974,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         listener.acquired();
         anotherPromise.addListener(listener);
 
-        return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos());
+        return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos(), promise.getChannelAcquisitionContext());
     }
 
     private void newTimeout(
@@ -1101,6 +1108,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 promise.tryFailure(future.cause());
             }
         } finally {
+            if (promise instanceof ChannelPromiseWithExpiryTime) {
+                RntbdChannelAcquisitionContext.recordNewChannelCompleteTime(((ChannelPromiseWithExpiryTime) promise).getChannelAcquisitionContext());
+            }
             this.connecting.set(false);
         }
     }
@@ -1157,18 +1167,47 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     /**
+     * Return {@link RntbdChannelState}.
+     * <p>
+     * A serviceable channel is one that is open, has an {@link RntbdContext RNTBD context}, and has fewer than {@link
+     * #maxRequestsPerChannel} requests in its pipeline. An inactive channel will not have a {@link RntbdRequestManager
+     * request manager}. Hence, this method first checks that the channel's request manager is non-null.
+     *
+     * @param channel the channel to check.
+     *
+     * @return {@link RntbdChannelState}.
+     */
+    private RntbdChannelState getChannelState(Channel channel) {
+        checkNotNull(channel, "Channel cannot be null");
+
+        final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
+        if (manager == null) {
+            return RntbdChannelState.NULLREQUESTMANAGER;
+        }
+        if (!channel.isOpen()) {
+            return RntbdChannelState.CLOSED;
+        }
+
+        return manager.getChannelState(this.maxPendingAcquisitions);
+    }
+
+    /**
      * Poll a {@link Channel} out of internal storage to reuse it
      * <p>
      * Maintainers: Implementations of this method must be thread-safe and this type ensures thread safety by calling
      * this method serially on a single-threaded EventExecutor. As a result this method need not (and should not) be
      * synchronized.
      *
+     *
+     * @param channelAcquisitionContext the {@link RntbdChannelAcquisitionContext}.
      * @return a value of {@code null}, if no {@link Channel} is ready to be reused
      *
      * @see #acquire(Promise)
      */
-    private Channel pollChannel() {
+    private Channel pollChannel(RntbdChannelAcquisitionContext channelAcquisitionContext) {
         ensureInEventLoop();
+
+        RntbdChannelAcquisitionContext.startNewPollChannelCycle(channelAcquisitionContext);
 
         final Channel first = this.availableChannels.pollFirst();
 
@@ -1182,7 +1221,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         // Only return channels as servicable here if less than maxPendingRequests
         // are queued on them
-        if (this.isChannelServiceable(first)) {
+        RntbdChannelState channelState = this.getChannelState(first);
+        RntbdChannelAcquisitionContext.recordChannelState(channelAcquisitionContext, channelState);
+
+        if (channelState == RntbdChannelState.OK) {
             return first;
         }
 
@@ -1193,9 +1235,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             if (next.isActive()) {
 
-                // Only return channels as servicable here if less than maxPendingRequests
+                // Only return channels as serviceable here if less than maxPendingRequests
                 // are queued on them
-                if (this.isChannelServiceable(next)) {
+                RntbdChannelState state = this.getChannelState(next);
+                RntbdChannelAcquisitionContext.recordChannelState(channelAcquisitionContext, state);
+
+                if (state == RntbdChannelState.OK) {
                     return next;
                 }
                 this.availableChannels.offer(next);

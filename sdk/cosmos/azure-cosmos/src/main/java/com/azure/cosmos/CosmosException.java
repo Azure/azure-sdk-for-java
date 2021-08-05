@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionContext;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,6 +52,7 @@ public class CosmosException extends AzureException {
 
     private CosmosDiagnostics cosmosDiagnostics;
     private RequestTimeline requestTimeline;
+    private RntbdChannelAcquisitionContext channelAcquisitionContext;
     private CosmosError cosmosError;
     private int rntbdChannelTaskQueueSize;
 
@@ -383,6 +385,14 @@ public class CosmosException extends AzureException {
 
     void setRequestTimeline(RequestTimeline requestTimeline) {
         this.requestTimeline = requestTimeline;
+    }
+
+    RntbdChannelAcquisitionContext getChannelAcquisitionContext() {
+        return this.channelAcquisitionContext;
+    }
+
+    void setChannelAcquisitionContext(RntbdChannelAcquisitionContext channelAcquisitionContext) {
+        this.channelAcquisitionContext = channelAcquisitionContext;
     }
 
     void setResourceAddress(String resourceAddress) {
