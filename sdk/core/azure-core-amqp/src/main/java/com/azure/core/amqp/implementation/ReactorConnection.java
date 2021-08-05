@@ -431,6 +431,7 @@ public class ReactorConnection implements AmqpConnection {
             Flux.fromStream(managementNodes.values().stream()).flatMap(node -> node.closeAsync()));
 
         final Mono<Void> closeReactor = Mono.fromRunnable(() -> {
+            logger.verbose("connectionId[{}] Closing reactor dispatcher.", connectionId);
             final ReactorDispatcher dispatcher = reactorProvider.getReactorDispatcher();
 
             try {
@@ -446,8 +447,17 @@ public class ReactorConnection implements AmqpConnection {
             }
         });
 
-        return Mono.whenDelayError(cbsCloseOperation, managementNodeCloseOperations)
-            .then(closeReactor)
+        return Mono.whenDelayError(
+            cbsCloseOperation.doFinally(signalType ->
+                logger.verbose("connectionId[{}] signalType[{}] Finally closed CBS node.", connectionId, signalType)),
+            managementNodeCloseOperations.doFinally(signalType ->
+                logger.verbose("connectionId[{}] signalType[{}] Finally closed management nodes.", connectionId,
+                    signalType)))
+
+
+            .then(closeReactor.doFinally(signalType ->
+                logger.verbose("connectionId[{}] signalType[{}] Finally closed ReactorDispatcher nodes.", connectionId,
+                    signalType)))
             .then(isClosedMono.asMono());
     }
 
@@ -471,6 +481,7 @@ public class ReactorConnection implements AmqpConnection {
 
         final Mono<Void> closedExecutor = executor != null ? Mono.defer(() ->  {
             synchronized (this) {
+                logger.info("connectionId[{}] Closing executor.", connectionId);
                 return executor.closeAsync();
             }
         }) : Mono.empty();
