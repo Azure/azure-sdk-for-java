@@ -208,22 +208,20 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     var acquisitionAttempt = 0
     val operationContext = OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1)
+    var numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
+    var activeOperationsSnapshot = activeOperations.clone()
     while (!semaphore.tryAcquire(1, TimeUnit.MINUTES)) {
-      acquisitionAttempt += 1
-
-      throwIfCapturedExceptionExists()
-
       if (subscriptionDisposable.isDisposed) {
-        throw new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already");
+        captureIfFirstFailure(
+          new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"));
       }
 
-      val operationsLog = getActiveOperationsLog(activeOperations.clone())
+      throwIfProgressStaled(
+        "Semaphore acquisition",
+        activeOperationsSnapshot,
+        numberOfIntervalsWithIdenticalActiveOperationSnapshots)
 
-      log.logWarning(
-        s"Semaphore acquisition attempt#${acquisitionAttempt} timed out after 1 minute. " +
-          s"Active Tasks: ${activeTasks.get}, " +
-          s"ActiveOperations (first ${BulkWriter.maxItemOperationsToShowInErrorMessage}): ${operationsLog}, " +
-          s"Retrying..., Context: ${operationContext.toString}")
+      activeOperationsSnapshot = activeOperations.clone()
     }
 
     val cnt = totalScheduledMetrics.getAndIncrement()
@@ -292,6 +290,42 @@ class BulkWriter(container: CosmosAsyncContainer,
     sb.toString()
   }
 
+  private[this] def throwIfProgressStaled
+  (
+    operationName: String,
+    activeOperationsSnapshot: mutable.Set[CosmosItemOperation],
+    numberOfIntervalsWithIdenticalActiveOperationSnapshots: AtomicLong
+  ) = {
+
+    val operationsLog = getActiveOperationsLog(activeOperationsSnapshot)
+
+    if (activeOperationsSnapshot.equals(activeOperations)) {
+      numberOfIntervalsWithIdenticalActiveOperationSnapshots.incrementAndGet()
+      log.logWarning(
+        s"${operationName} has been waiting ${numberOfIntervalsWithIdenticalActiveOperationSnapshots} " +
+          s"times for identical set of operations: ${operationsLog} Context: ${operationContext.toString}"
+      )
+    } else {
+      numberOfIntervalsWithIdenticalActiveOperationSnapshots.set(0)
+      log.logInfo(
+        s"${operationName} is waiting for active operations: ${operationsLog} Context: ${operationContext.toString}"
+      )
+    }
+
+    if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get >= BulkWriter.maxAllowedMinutesWithoutAnyProgress) {
+
+      captureIfFirstFailure(
+        new IllegalStateException(
+          s"Stale bulk ingestion identified in ${operationName} - the following active operations have not been " +
+            s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
+            s"${BulkWriter.maxAllowedMinutesWithoutAnyProgress} minutes: $operationsLog"
+        ))
+      cancelWork()
+    }
+
+    throwIfCapturedExceptionExists()
+  }
+
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
@@ -308,7 +342,7 @@ class BulkWriter(container: CosmosAsyncContainer,
           // once we do error handling we should think how to cover the scenario.
           lock.lock()
           try {
-            var numberOfIntervalsWithIdenticalActiveOperationSnapshots = 0
+            var numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
             var activeTasksSnapshot = activeTasks.get()
             while (activeTasksSnapshot > 0 && errorCaptureFirstException.get == null) {
               log.logInfo(
@@ -316,34 +350,11 @@ class BulkWriter(container: CosmosAsyncContainer,
               val activeOperationsSnapshot = activeOperations.clone()
               val awaitCompleted = pendingTasksCompleted.await(1, TimeUnit.MINUTES)
               if (!awaitCompleted) {
-                val operationsLog = getActiveOperationsLog(activeOperationsSnapshot)
-
-                if (activeOperationsSnapshot.equals(activeOperations)) {
-                  numberOfIntervalsWithIdenticalActiveOperationSnapshots += 1
-                  log.logWarning(
-                    s"FlushAndClose has been waiting ${numberOfIntervalsWithIdenticalActiveOperationSnapshots} " +
-                      s"times for identical set of operations: ${operationsLog} Context: ${operationContext.toString}"
-                  )
-                } else {
-                  numberOfIntervalsWithIdenticalActiveOperationSnapshots = 0
-                  log.logInfo(
-                    s"FlushAndClose is waiting for active operations: ${operationsLog} Context: ${operationContext.toString}"
-                  )
-                }
-
-                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots >=
-                    BulkWriter.maxAllowedMinutesWithoutAnyProgress) {
-
-                  captureIfFirstFailure(
-                    new IllegalStateException(
-                      s"Stale bulk ingestion identified - the following active operations have not been completed " +
-                        s"(first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
-                        s"${BulkWriter.maxAllowedMinutesWithoutAnyProgress} minutes: $operationsLog"
-                  ))
-                  cancelWork()
-                }
-
-                throwIfCapturedExceptionExists()
+                throwIfProgressStaled(
+                  "FlushAndClose",
+                  activeOperationsSnapshot,
+                  numberOfIntervalsWithIdenticalActiveOperationSnapshots
+                )
               }
               activeTasksSnapshot = activeTasks.get()
               val semaphoreAvailablePermitsSnapshot = semaphore.availablePermits()
@@ -465,7 +476,7 @@ private object BulkWriter {
 
   // we used to use 15 minutes here - extending it because of several incidents where
   // backend returned 420/3088 (ThrottleDueToSplit) for >= 30 minutes
-  val maxAllowedMinutesWithoutAnyProgress = 240
+  val maxAllowedMinutesWithoutAnyProgress = 30
   //scalastyle:on magic.number
 
   // let's say the spark executor VM has 16 CPU cores.

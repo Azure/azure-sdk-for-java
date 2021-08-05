@@ -10,6 +10,7 @@ import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 
+@Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class BulkExecutionOptions {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
@@ -52,7 +53,16 @@ public final class BulkExecutionOptions {
     }
 
     /**
-     * Returns micro batch size
+     * The maximum batching size for bulk operations. This value determines number of operations executed in one
+     * request. There is an upper limit on both number of operations and sum of size of operations. Any overflow is
+     * internally retried.
+     *
+     * Another instance is: Currently we support a max limit of 200KB, and user select batch size to be 100 and individual
+     * documents are of size 20KB, approximately 90 operations will always be retried. So it's better to choose a batch
+     * size of 10 here if user is aware of there workload. If sizes are totally unknown and user cannot put a number on it
+     * then retries are handled, so no issues as such.
+     *
+     * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
      * @return micro batch size
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -83,7 +93,8 @@ public final class BulkExecutionOptions {
     }
 
     /**
-     * Returns max micro batch concurrency
+     * The maximum concurrency for executing requests for a partition key range.
+     *
      * @return max micro batch concurrency
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -105,7 +116,8 @@ public final class BulkExecutionOptions {
     }
 
     /**
-     * Returns max micro batch interval
+     * The flush interval for bulk operations.
+     *
      * @return max micro batch interval
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -127,7 +139,10 @@ public final class BulkExecutionOptions {
     }
 
     /**
-     * Returns max targeted micro batch retry rate
+     * The maximum acceptable retry rate bandwidth. This value determines how aggressively the actual micro batch size
+     * gets reduced or increased if the number of retries (for example due to 429 - Throttling or because the total
+     * request size exceeds the payload limit) is higher or lower that the targeted range.
+     *
      * @return max targeted micro batch retry rate
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -163,7 +178,10 @@ public final class BulkExecutionOptions {
     }
 
     /**
-     * Returns min targeted micro batch retry rate
+     * The minimum acceptable retry rate bandwidth. This value determines how aggressively the actual micro batch size
+     * gets reduced or increased if the number of retries (for example due to 429 - Throttling or because the total
+     * request size exceeds the payload limit) is higher or lower that the targeted range.
+     *
      * @return min targeted micro batch retry rate
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
