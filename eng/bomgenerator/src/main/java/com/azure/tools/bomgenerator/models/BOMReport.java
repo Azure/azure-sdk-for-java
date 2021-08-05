@@ -19,21 +19,13 @@ import java.util.Map;
 
 public class BOMReport {
     private final StringBuilder sb;
-    Map<BomDependency, List<ConflictingDependency>> dependencyConflicts;
+    private final Map<BomDependency, List<ConflictingDependency>> dependencyConflicts;
     private final String reportFileName;
 
-    public BOMReport(String reportFileName) {
+    public BOMReport(String reportFileName, Map<BomDependency, List<ConflictingDependency>> dependencyConflicts) {
         sb = new StringBuilder();
-        dependencyConflicts = new HashMap<>();
+        this.dependencyConflicts = dependencyConflicts;
         this.reportFileName = reportFileName;
-    }
-
-    public void insertConflict(BomDependency dependencyWithConflict, ConflictingDependency conflictingDependency) {
-        if (!dependencyConflicts.containsKey(dependencyWithConflict)) {
-            dependencyConflicts.put(dependencyWithConflict, new ArrayList<>());
-        }
-
-        dependencyConflicts.get(dependencyWithConflict).add(conflictingDependency);
     }
 
     public void generateReport() {
@@ -98,11 +90,10 @@ public class BOMReport {
         File outFile = new File(reportFileName);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outFile))) {
             writer.write(sb.toString());
+            System.out.println("HTML report written to " + outFile + " (" + OffsetDateTime.now() + ")");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println("HTML report written to " + outFile + " (" + OffsetDateTime.now() + ")");
     }
 
     private void out(String s) {
