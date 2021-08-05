@@ -44,6 +44,7 @@ com.azure:azure-ai-metricsadvisor;1.0.0;1.1.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-textanalytics;5.1.0;5.2.0-beta.1
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-analytics-purview-account;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-purview-catalog;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-scanning;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.3;1.0.0-beta.4
