@@ -26,7 +26,7 @@ public class GlossaryBaseClientTests extends PurviewCatalogClientTestBase {
         BinaryData binaryData = client.listGlossaries(null);
         List<?> glossaries = binaryData.toObject(List.class);
         Assertions.assertEquals(1, glossaries.size());
-        Map<?, ?> map = (Map<?, ?>)glossaries.get(0);
+        Map<?, ?> map = (Map<?, ?>) glossaries.get(0);
         List<?> terms = (List<?>) map.get("terms");
         Assertions.assertEquals(1, terms.size());
     }
