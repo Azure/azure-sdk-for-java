@@ -1,7 +1,16 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.7.0 (2021-08-05)
 
+### Features Added
+
+- Added `AzureMethodSource` which enables creating test permutations using `HttpClient`, `ServiceVersion`, and a generic
+  method source supplier function. ([#20484](https://github.com/Azure/azure-sdk-for-java/pull/20484))
+- Added utility methods to `TestBase` to allow setting playback test polling and setting playback or live test `HttpClient`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.18.0` to `1.19.0`.
 
 ## 1.6.4 (2021-07-01)
 
