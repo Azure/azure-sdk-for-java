@@ -11,7 +11,6 @@ private object ThroughputControlHelper {
                      client: CosmosAsyncClient): CosmosAsyncContainer = {
 
         val container = client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
-        container.openConnectionsAndInitCaches().block()
         val cosmosThroughputControlConfig = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
 
         if (cosmosThroughputControlConfig.isDefined) {
