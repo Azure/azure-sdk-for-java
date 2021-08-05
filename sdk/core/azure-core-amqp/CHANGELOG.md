@@ -2,6 +2,10 @@
 
 ## 2.4.0-beta.1 (Unreleased)
 
+### Bug Fixes
+
+- Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering
+  threads when a send link was remotely closed.
 
 ## 2.3.0 (2021-07-01)
 

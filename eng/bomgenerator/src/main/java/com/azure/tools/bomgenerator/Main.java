@@ -5,13 +5,13 @@ package com.azure.tools.bomgenerator;
 
 import java.util.regex.Matcher;
 import static com.azure.tools.bomgenerator.Utils.ANALYZE_MODE;
+import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OVERRIDDEN_INPUTDEPENDENCIES_FILE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_INPUTFILE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_MODE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OUTPUTFILE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_POMFILE;
 import static com.azure.tools.bomgenerator.Utils.GENERATE_MODE;
 import static com.azure.tools.bomgenerator.Utils.validateNotNullOrEmpty;
-import static com.azure.tools.bomgenerator.Utils.validateNull;
 import static com.azure.tools.bomgenerator.Utils.validateValues;
 
 public class Main {
@@ -34,6 +34,11 @@ public class Main {
                         case COMMANDLINE_INPUTFILE:
                             validateNotNullOrEmpty(argName, argValue);
                             generator.setInputFileName(argValue);
+                            break;
+
+                        case COMMANDLINE_OVERRIDDEN_INPUTDEPENDENCIES_FILE:
+                            validateNotNullOrEmpty(argName, argValue);
+                            generator.setOverriddenInputDependenciesFileName(argValue);
                             break;
 
                         case COMMANDLINE_OUTPUTFILE:
