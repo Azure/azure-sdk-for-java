@@ -21,19 +21,19 @@ public class RntbdChannelAcquisitionContext {
      * Track each time the request being added to pending acquisition queue.
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    private final List<Instant> pendingTimestamps;
+    private final List<Instant> addedToPendingQueueTimestamps;
 
     /**
      * Track each time the request try to acquire channel.
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    private final List<Instant> acquireChannelTimestamps;
+    private final List<Instant> attemptedToAcquireChannelTimestamps;
 
     /**
      * Track each time the request try to establish a new channel.
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    private final List<Pair<Instant, Instant>> newChannelTimestamps;
+    private final List<Pair<Instant, Instant>> attemptedToCreateNewChannelTimestamps;
 
     /**
      * Before establish a new connection to handle a request, we will first try to find an existing "GOOD" connection to handle the request.
@@ -43,37 +43,37 @@ public class RntbdChannelAcquisitionContext {
     private final List<List<RntbdChannelState>> channelStates;
 
     public RntbdChannelAcquisitionContext() {
-        this.pendingTimestamps = new ArrayList<>();
-        this.acquireChannelTimestamps = new ArrayList<>();
+        this.addedToPendingQueueTimestamps = new ArrayList<>();
+        this.attemptedToAcquireChannelTimestamps = new ArrayList<>();
         this.channelStates = new ArrayList<>();
-        this.newChannelTimestamps = new ArrayList<>();
+        this.attemptedToCreateNewChannelTimestamps = new ArrayList<>();
     }
 
-    public List<Instant> getPendingTimestamps() {
-        return this.pendingTimestamps;
+    public List<Instant> getAddedToPendingQueueTimestamps() {
+        return this.addedToPendingQueueTimestamps;
     }
 
-    public List<Instant> getAcquireChannelTimestamps() {
-        return this.acquireChannelTimestamps;
+    public List<Instant> getAttemptedToAcquireChannelTimestamps() {
+        return this.attemptedToAcquireChannelTimestamps;
     }
 
     public List<List<RntbdChannelState>> getChannelStates() {
         return this.channelStates;
     }
 
-    public List<Pair<Instant, Instant>> getNewChannelTimestamps() {
-        return newChannelTimestamps;
+    public List<Pair<Instant, Instant>> getAttemptedToCreateNewChannelTimestamps() {
+        return attemptedToCreateNewChannelTimestamps;
     }
 
     public static void recordAcquireChannelTime(RntbdChannelAcquisitionContext context) {
         if (context != null) {
-            context.getAcquireChannelTimestamps().add(Instant.now());
+            context.getAttemptedToAcquireChannelTimestamps().add(Instant.now());
         }
     }
 
     public static void startNewPollChannelCycle(RntbdChannelAcquisitionContext context) {
         if (context != null) {
-            context.getChannelStates().add(new ArrayList());
+            context.getChannelStates().add(new ArrayList<RntbdChannelState>());
         }
     }
 
@@ -86,22 +86,22 @@ public class RntbdChannelAcquisitionContext {
 
     public static void recordPendingAcquisitionTime(RntbdChannelAcquisitionContext context) {
         if (context != null) {
-            context.getPendingTimestamps().add(Instant.now());
+            context.getAddedToPendingQueueTimestamps().add(Instant.now());
         }
     }
 
     public static void recordNewChannelStartTime(RntbdChannelAcquisitionContext context) {
         if (context != null) {
-            context.getNewChannelTimestamps().add(Pair.of(Instant.now(), null));
+            context.getAttemptedToCreateNewChannelTimestamps().add(Pair.of(Instant.now(), null));
         }
     }
 
     public static void recordNewChannelCompleteTime(RntbdChannelAcquisitionContext context) {
         if (context != null) {
-            Pair<Instant, Instant> lastPair = context.getNewChannelTimestamps().get(context.getNewChannelTimestamps().size()-1);
+            Pair<Instant, Instant> lastPair = context.getAttemptedToCreateNewChannelTimestamps().get(context.getAttemptedToCreateNewChannelTimestamps().size()-1);
             reportIssueUnless(logger, lastPair.getRight() == null, lastPair, "Mismatch new channel timestamp pair");
-            context.getNewChannelTimestamps().remove(lastPair);
-            context.getNewChannelTimestamps().add(Pair.of(lastPair.getLeft(), Instant.now()));
+            context.getAttemptedToCreateNewChannelTimestamps().remove(lastPair);
+            context.getAttemptedToCreateNewChannelTimestamps().add(Pair.of(lastPair.getLeft(), Instant.now()));
         }
     }
 }

@@ -576,9 +576,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return RntbdChannelState.OK;
         }
         if (this.hasRntbdContext()) {
-            return RntbdChannelState.PENDINGLIMIT;
+            return RntbdChannelState.PENDING_LIMIT;
         } else {
-            return RntbdChannelState.CONTEXTNEOGIATIONPENDING;
+            return RntbdChannelState.CONTEXT_NEGOTIATION_PENDING;
         }
     }
 

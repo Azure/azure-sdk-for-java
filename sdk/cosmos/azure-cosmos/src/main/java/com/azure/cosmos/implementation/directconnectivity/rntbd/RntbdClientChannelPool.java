@@ -1182,7 +1182,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
         if (manager == null) {
-            return RntbdChannelState.NULLREQUESTMANAGER;
+            return RntbdChannelState.NULL_REQUEST_MANAGER;
         }
         if (!channel.isOpen()) {
             return RntbdChannelState.CLOSED;

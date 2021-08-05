@@ -4,5 +4,5 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 public enum RntbdChannelState {
-    OK, CLOSED, NULLREQUESTMANAGER, PENDINGLIMIT, CONTEXTNEOGIATIONPENDING
+    OK, CLOSED, NULL_REQUEST_MANAGER, PENDING_LIMIT, CONTEXT_NEGOTIATION_PENDING
 }
