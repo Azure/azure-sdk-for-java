@@ -192,48 +192,50 @@ public class GatewayAddressCache implements IAddressCache {
         Utils.checkNotNullOrThrow(partitionKeyRangeIdentity, "partitionKeyRangeIdentity", "");
 
         // For resolving master resource address, collectionRid is null.
-        // In those cases, we cannot do this optimization.
-        if (forceRefreshPartitionAddresses && partitionKeyRangeIdentity.getCollectionRid() != null) {
-            // forceRefreshPartitionAddresses==true indicates we are requesting the latest
-            // Replica addresses from the Gateway
-            // There are a couple of cases (for example when getting 410/0 after a split happened for the parent
-            // partition when just refreshing addresses isn't sufficient (because the Gateway in its cache)
-            // might also not know about the partition split that happened
-            // to recover from this condition the client would need to either trigger a PKRange cache refresh
-            // on the client or force the Gateway CollectionRoutingMap to be refreshed (so that the Gateway gets
-            // aware of the split and latest EPK map.
-            // Due to the fact that forcing the CollectionRoutingMap to be refreshed in Gateway there is additional
-            // load on the ServiceFabric naming service we want to throttle how often we would force the collection
-            // routing map refresh
-            // These are the throttle conditions: We will only enforce collection routing map to be refreshed
-            // - if there has been at least 1 attempt to just refresh replica addresses without forcing collection
-            //   routing map refresh on the physical partition before
-            // - only one request per Container to force collection routing map refresh is allowed every 30 seconds
-            //
-            // The throttling logic is implemented in  `ForcedRefreshMetadata.shouldIncludeCollectionRoutingMapRefresh`
-            ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
-                partitionKeyRangeIdentity.getCollectionRid(),
-                (colRid) -> new ForcedRefreshMetadata());
+        // In those cases, we cannot do this optimization, hence the check.
+        if (partitionKeyRangeIdentity.getCollectionRid() != null) {
+            if (forceRefreshPartitionAddresses) {
+                // forceRefreshPartitionAddresses==true indicates we are requesting the latest
+                // Replica addresses from the Gateway
+                // There are a couple of cases (for example when getting 410/0 after a split happened for the parent
+                // partition when just refreshing addresses isn't sufficient (because the Gateway in its cache)
+                // might also not know about the partition split that happened
+                // to recover from this condition the client would need to either trigger a PKRange cache refresh
+                // on the client or force the Gateway CollectionRoutingMap to be refreshed (so that the Gateway gets
+                // aware of the split and latest EPK map.
+                // Due to the fact that forcing the CollectionRoutingMap to be refreshed in Gateway there is additional
+                // load on the ServiceFabric naming service we want to throttle how often we would force the collection
+                // routing map refresh
+                // These are the throttle conditions: We will only enforce collection routing map to be refreshed
+                // - if there has been at least 1 attempt to just refresh replica addresses without forcing collection
+                //   routing map refresh on the physical partition before
+                // - only one request per Container to force collection routing map refresh is allowed every 30 seconds
+                //
+                // The throttling logic is implemented in  `ForcedRefreshMetadata.shouldIncludeCollectionRoutingMapRefresh`
+                ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
+                    partitionKeyRangeIdentity.getCollectionRid(),
+                    (colRid) -> new ForcedRefreshMetadata());
 
-            if (request.forceCollectionRoutingMapRefresh) {
+                if (request.forceCollectionRoutingMapRefresh) {
+                    forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                        partitionKeyRangeIdentity,
+                        true);
+                } else if (forcedRefreshMetadata.shouldIncludeCollectionRoutingMapRefresh(partitionKeyRangeIdentity)) {
+                    request.forceCollectionRoutingMapRefresh = true;
+                    forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
+                        partitionKeyRangeIdentity,
+                        true);
+                } else {
+                    forcedRefreshMetadata.signalPartitionAddressOnlyRefresh(partitionKeyRangeIdentity);
+                }
+            } else if (request.forceCollectionRoutingMapRefresh) {
+                ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
+                    partitionKeyRangeIdentity.getCollectionRid(),
+                    (colRid) -> new ForcedRefreshMetadata());
                 forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
                     partitionKeyRangeIdentity,
-                    true);
-            } else if (forcedRefreshMetadata.shouldIncludeCollectionRoutingMapRefresh(partitionKeyRangeIdentity)) {
-                request.forceCollectionRoutingMapRefresh = true;
-                forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
-                    partitionKeyRangeIdentity,
-                    true);
-            } else {
-                forcedRefreshMetadata.signalPartitionAddressOnlyRefresh(partitionKeyRangeIdentity);
+                    false);
             }
-        } else if (request.forceCollectionRoutingMapRefresh && partitionKeyRangeIdentity.getCollectionRid() != null) {
-            ForcedRefreshMetadata forcedRefreshMetadata = this.lastForcedRefreshMap.computeIfAbsent(
-                partitionKeyRangeIdentity.getCollectionRid(),
-                (colRid) -> new ForcedRefreshMetadata());
-            forcedRefreshMetadata.signalCollectionRoutingMapRefresh(
-                partitionKeyRangeIdentity,
-                false);
         }
 
         logger.debug("PartitionKeyRangeIdentity {}, forceRefreshPartitionAddresses {}",
