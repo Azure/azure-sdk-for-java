@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -170,6 +171,8 @@ public class RequestResponseChannel implements AsyncCloseable {
                 onTerminalState("SendLinkHandler");
             }),
 
+            //TODO (conniey): Do we need this if we already close the request response nodes when the
+            // connection.closeWork is executed? It would be preferred to get rid of this circular dependency.
             amqpConnection.getShutdownSignals().next().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", connectionId, linkName);
                 return closeAsync();
@@ -201,8 +204,22 @@ public class RequestResponseChannel implements AsyncCloseable {
 
     @Override
     public Mono<Void> closeAsync() {
+        final Mono<Void> closeOperationWithTimeout = closeMono.asMono()
+            .timeout(retryOptions.getTryTimeout())
+            .onErrorResume(TimeoutException.class, error -> {
+                return Mono.fromRunnable(() -> {
+                    logger.info("connectionId[{}] linkName[{}] Timed out waiting for RequestResponseChannel to complete "
+                            + "closing. Manually closing.",
+                        connectionId, linkName, error);
+
+                    onTerminalState("SendLinkHandler");
+                    onTerminalState("ReceiveLinkHandler");
+                });
+            });
+
         if (isDisposed.getAndSet(true)) {
-            return closeMono.asMono().subscribeOn(Schedulers.boundedElastic());
+            logger.verbose("connectionId[{}] linkName[{}] Channel already closed.", connectionId, linkName);
+            return closeOperationWithTimeout;
         }
 
         logger.verbose("connectionId[{}] linkName[{}] Closing request/response channel.", connectionId, linkName);
@@ -210,6 +227,9 @@ public class RequestResponseChannel implements AsyncCloseable {
         return Mono.fromRunnable(() -> {
             try {
                 provider.getReactorDispatcher().invoke(() -> {
+                    logger.verbose("connectionId[{}] linkName[{}] Closing send link and receive link.",
+                        connectionId, linkName);
+
                     sendLink.close();
                     receiveLink.close();
                 });
@@ -219,7 +239,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 sendLink.close();
                 receiveLink.close();
             }
-        }).publishOn(Schedulers.boundedElastic()).then(closeMono.asMono());
+        }).publishOn(Schedulers.boundedElastic()).then(closeOperationWithTimeout);
     }
 
     public boolean isDisposed() {
@@ -365,6 +385,11 @@ public class RequestResponseChannel implements AsyncCloseable {
     }
 
     private void onTerminalState(String handlerName) {
+        if (pendingDisposes.get() == 0) {
+            logger.verbose("connectionId[{}] linkName[{}]: Already disposed send/receive links.");
+            return;
+        }
+
         final int remaining = pendingDisposes.decrementAndGet();
         logger.verbose("connectionId[{}] linkName[{}]: {} disposed. Remaining: {}",
             connectionId, linkName, handlerName, remaining);
