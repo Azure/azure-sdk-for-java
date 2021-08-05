@@ -10,7 +10,8 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum CertificateServiceVersion implements ServiceVersion {
     V7_0("7.0"),
-    V7_1_PREVIEW("7.1-preview");
+    V7_1("7.1"),
+    V7_2("7.2");
 
     private final String version;
 
@@ -32,6 +33,6 @@ public enum CertificateServiceVersion implements ServiceVersion {
      * @return the latest {@link CertificateServiceVersion}
      */
     public static CertificateServiceVersion getLatest() {
-        return V7_1_PREVIEW;
+        return V7_2;
     }
 }

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
 public class RetryCreateDocumentTest extends TestSuiteBase {
@@ -38,7 +38,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void retryDocumentCreate() throws Exception {
         // create a document to ensure collection is cached
-        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).single().block();
+        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).block();
 
         Document docDefinition = getDocumentDefinition();
 
@@ -58,11 +58,11 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                         HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH));
 
-                return Mono.error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST, new CosmosError() , header));
+                return Mono.error(BridgeInternal.createCosmosException(req.requestContext.resourcePhysicalAddress, HttpConstants.StatusCodes.BADREQUEST, new CosmosError() , header));
             } else {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             }
-        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(any());
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -89,13 +89,12 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                         HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(2));
 
-                return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));
+                return Mono.error(BridgeInternal.createCosmosException(req.requestContext.resourcePhysicalAddress, 1, new CosmosError() , header));
             }
-        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(any());
 
         // create a document to ensure collection is cached
         client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false)
-                .single()
                 .block();
 
         Document docDefinition = getDocumentDefinition();
@@ -111,7 +110,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocument_failImmediatelyOnNonRetriable() throws Exception {
         // create a document to ensure collection is cached
-        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).single().block();
+        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).block();
         AtomicInteger count = new AtomicInteger();
 
         doAnswer((Answer<Mono<RxDocumentServiceResponse>>) invocation -> {
@@ -125,11 +124,11 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                         HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(2));
 
-                return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));
+                return Mono.error(BridgeInternal.createCosmosException(req.requestContext.resourcePhysicalAddress, 1, new CosmosError() , header));
             } else {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             }
-        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(any());
 
         Document docDefinition = getDocumentDefinition();
 

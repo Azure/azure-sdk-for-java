@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the releaseLease operation.
- */
-public final class BlobsReleaseLeaseResponse extends ResponseBase<BlobReleaseLeaseHeaders, Void> {
+/** Contains all response data for the releaseLease operation. */
+public final class BlobsReleaseLeaseResponse extends ResponseBase<BlobsReleaseLeaseHeaders, Void> {
     /**
      * Creates an instance of BlobsReleaseLeaseResponse.
      *
@@ -21,7 +19,8 @@ public final class BlobsReleaseLeaseResponse extends ResponseBase<BlobReleaseLea
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlobsReleaseLeaseResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobReleaseLeaseHeaders headers) {
+    public BlobsReleaseLeaseResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobsReleaseLeaseHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

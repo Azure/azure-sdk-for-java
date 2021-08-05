@@ -25,6 +25,17 @@ public final class PathSasPermission {
 
     private boolean deletePermission;
 
+    private boolean listPermission;
+
+    private boolean movePermission;
+
+    private boolean executePermission;
+
+    private boolean manageOwnershipPermission;
+
+    private boolean manageAccessControlPermission;
+
+
     /**
      * Initializes a {@code PathSasPermission} object with all fields set to false.
      */
@@ -35,15 +46,16 @@ public final class PathSasPermission {
      * Creates a {@code PathSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code PathSasPermission}.
+     * @param permissionString A {@code String} which represents the {@code PathSasPermission}.
      * @return A {@code PathSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, or d.
+     * @throws IllegalArgumentException If {@code permissionString} contains a character other than r, a, c, w, d, l, m, e,
+     * o, or p.
      */
-    public static PathSasPermission parse(String permString) {
+    public static PathSasPermission parse(String permissionString) {
         PathSasPermission permissions = new PathSasPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.readPermission = true;
@@ -60,10 +72,25 @@ public final class PathSasPermission {
                 case 'd':
                     permissions.deletePermission = true;
                     break;
+                case 'l':
+                    permissions.listPermission = true;
+                    break;
+                case 'm':
+                    permissions.movePermission = true;
+                    break;
+                case 'e':
+                    permissions.executePermission = true;
+                    break;
+                case 'o':
+                    permissions.manageOwnershipPermission = true;
+                    break;
+                case 'p':
+                    permissions.manageAccessControlPermission = true;
+                    break;
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                            "Permissions", permissionString, c));
             }
         }
         return permissions;
@@ -160,6 +187,96 @@ public final class PathSasPermission {
     }
 
     /**
+     * @return the list permission status.
+     */
+    public boolean hasListPermission() {
+        return listPermission;
+    }
+
+    /**
+     * Sets the list permission status.
+     *
+     * @param hasListPermission Permission status to set
+     * @return the updated PathSasPermission object.
+     */
+    public PathSasPermission setListPermission(boolean hasListPermission) {
+        this.listPermission = hasListPermission;
+        return this;
+    }
+
+    /**
+     * @return the move permission status.
+     */
+    public boolean hasMovePermission() {
+        return movePermission;
+    }
+
+    /**
+     * Sets the move permission status.
+     *
+     * @param hasMovePermission Permission status to set
+     * @return the updated PathSasPermission object.
+     */
+    public PathSasPermission setMovePermission(boolean hasMovePermission) {
+        this.movePermission = hasMovePermission;
+        return this;
+    }
+
+    /**
+     * @return the execute permission status.
+     */
+    public boolean hasExecutePermission() {
+        return executePermission;
+    }
+
+    /**
+     * Sets the execute permission status.
+     *
+     * @param hasExecutePermission Permission status to set
+     * @return the updated PathSasPermission object.
+     */
+    public PathSasPermission setExecutePermission(boolean hasExecutePermission) {
+        this.executePermission = hasExecutePermission;
+        return this;
+    }
+
+    /**
+     * @return the manage ownership permission status.
+     */
+    public boolean hasManageOwnershipPermission() {
+        return manageOwnershipPermission;
+    }
+
+    /**
+     * Sets the manage ownership permission status.
+     *
+     * @param hasManageOwnershipPermission Permission status to set
+     * @return the updated PathSasPermission object.
+     */
+    public PathSasPermission setManageOwnershipPermission(boolean hasManageOwnershipPermission) {
+        this.manageOwnershipPermission = hasManageOwnershipPermission;
+        return this;
+    }
+
+    /**
+     * @return the manage access control permission status.
+     */
+    public boolean hasManageAccessControlPermission() {
+        return manageAccessControlPermission;
+    }
+
+    /**
+     * Sets the manage access control permission status.
+     *
+     * @param hasManageAccessControlPermission Permission status to set
+     * @return the updated PathSasPermission object.
+     */
+    public PathSasPermission setManageAccessControlPermission(boolean hasManageAccessControlPermission) {
+        this.manageAccessControlPermission = hasManageAccessControlPermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -190,6 +307,26 @@ public final class PathSasPermission {
 
         if (this.deletePermission) {
             builder.append('d');
+        }
+
+        if (this.listPermission) {
+            builder.append('l');
+        }
+
+        if (this.movePermission) {
+            builder.append('m');
+        }
+
+        if (this.executePermission) {
+            builder.append('e');
+        }
+
+        if (this.manageOwnershipPermission) {
+            builder.append('o');
+        }
+
+        if (this.manageAccessControlPermission) {
+            builder.append('p');
         }
 
         return builder.toString();

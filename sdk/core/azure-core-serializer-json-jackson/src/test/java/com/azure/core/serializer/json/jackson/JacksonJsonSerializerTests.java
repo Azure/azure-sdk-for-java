@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -14,13 +15,16 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -35,8 +39,17 @@ public class JacksonJsonSerializerTests {
         .build();
 
     @Test
-    public void deserializeNull() {
-        assertNull(DEFAULT_SERIALIZER.deserialize(null, Person.class));
+    public void deserializeNullInputStreamReturnsNull() {
+        StepVerifier.create(DEFAULT_SERIALIZER
+            .deserializeAsync((InputStream) null, TypeReference.createInstance(Person.class)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deserializeNullByteArrayReturnsNull() {
+        StepVerifier.create(DEFAULT_SERIALIZER
+            .deserializeFromBytesAsync((byte[]) null, TypeReference.createInstance(Person.class)))
+            .verifyComplete();
     }
 
     @Test
@@ -44,7 +57,11 @@ public class JacksonJsonSerializerTests {
         String json = "{\"name\":null,\"age\":50}";
         Person expected = new Person().setAge(50);
 
-        assertEquals(expected, DEFAULT_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), Person.class));
+        InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+
+        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(jsonStream, TypeReference.createInstance(Person.class)))
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     @Test
@@ -52,16 +69,24 @@ public class JacksonJsonSerializerTests {
         String json = "{\"name\":null,\"age\":50}";
         Person expected = new Person().setName("John Doe").setAge(50);
 
-        assertEquals(expected, CUSTOM_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), Person.class));
+        InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+
+        StepVerifier.create(CUSTOM_SERIALIZER.deserializeAsync(jsonStream, TypeReference.createInstance(Person.class)))
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     @Test
     public void deserializeWithDefaultSerializerToObjectNode() {
         String json = "{\"name\":null,\"age\":50}";
 
-        ObjectNode objectNode = DEFAULT_SERIALIZER.deserialize(json.getBytes(StandardCharsets.UTF_8), ObjectNode.class);
-        assertEquals(50, objectNode.get("age").asInt());
-        assertTrue(objectNode.get("name").isNull());
+        InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+
+        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(jsonStream, TypeReference.createInstance(ObjectNode.class)))
+            .assertNext(actual -> {
+                assertEquals(50, actual.get("age").asInt());
+                assertTrue(actual.get("name").isNull());
+            }).verifyComplete();
     }
 
     @Test
@@ -69,7 +94,12 @@ public class JacksonJsonSerializerTests {
         Person person = new Person().setAge(50);
         byte[] expected = "{\"name\":null,\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        assertArrayEquals(expected, DEFAULT_SERIALIZER.serialize(person));
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(DEFAULT_SERIALIZER.serializeAsync(stream, person))
+            .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     @Test
@@ -77,7 +107,12 @@ public class JacksonJsonSerializerTests {
         Person person = new Person().setAge(50);
         byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        assertArrayEquals(expected, CUSTOM_SERIALIZER.serialize(person));
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(CUSTOM_SERIALIZER.serializeAsync(stream, person))
+            .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     private static final class PersonSerializer extends JsonSerializer<Person> {

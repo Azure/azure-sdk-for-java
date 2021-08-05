@@ -1,30 +1,73 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/netapp/
+      - sdk/netapp/ci.mgmt.yml
+      - sdk/netapp/mgmt-v2017_08_15/
+      - sdk/netapp/mgmt-v2019_05_01/
+      - sdk/netapp/mgmt-v2019_06_01/
+      - sdk/netapp/mgmt-v2019_07_01/
+      - sdk/netapp/mgmt-v2019_08_01/
+      - sdk/netapp/mgmt-v2019_10_01/
+      - sdk/netapp/mgmt-v2019_11_01/
+      - sdk/netapp/mgmt-v2020_02_01/
+      - sdk/netapp/mgmt-v2020_06_01/
+      - sdk/netapp/mgmt-v2020_07_01/
+      - sdk/netapp/mgmt-v2020_09_01/
+    exclude:
+      - sdk/netapp/pom.xml
+      - sdk/netapp/mgmt-v2017_08_15/pom.xml
+      - sdk/netapp/mgmt-v2019_05_01/pom.xml
+      - sdk/netapp/mgmt-v2019_06_01/pom.xml
+      - sdk/netapp/mgmt-v2019_07_01/pom.xml
+      - sdk/netapp/mgmt-v2019_08_01/pom.xml
+      - sdk/netapp/mgmt-v2019_10_01/pom.xml
+      - sdk/netapp/mgmt-v2019_11_01/pom.xml
+      - sdk/netapp/mgmt-v2020_02_01/pom.xml
+      - sdk/netapp/mgmt-v2020_06_01/pom.xml
+      - sdk/netapp/mgmt-v2020_07_01/pom.xml
+      - sdk/netapp/mgmt-v2020_09_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/netapp/
+      - sdk/netapp/ci.mgmt.yml
+      - sdk/netapp/mgmt-v2017_08_15/
+      - sdk/netapp/mgmt-v2019_05_01/
+      - sdk/netapp/mgmt-v2019_06_01/
+      - sdk/netapp/mgmt-v2019_07_01/
+      - sdk/netapp/mgmt-v2019_08_01/
+      - sdk/netapp/mgmt-v2019_10_01/
+      - sdk/netapp/mgmt-v2019_11_01/
+      - sdk/netapp/mgmt-v2020_02_01/
+      - sdk/netapp/mgmt-v2020_06_01/
+      - sdk/netapp/mgmt-v2020_07_01/
+      - sdk/netapp/mgmt-v2020_09_01/
+    exclude:
+      - sdk/netapp/pom.xml
+      - sdk/netapp/mgmt-v2017_08_15/pom.xml
+      - sdk/netapp/mgmt-v2019_05_01/pom.xml
+      - sdk/netapp/mgmt-v2019_06_01/pom.xml
+      - sdk/netapp/mgmt-v2019_07_01/pom.xml
+      - sdk/netapp/mgmt-v2019_08_01/pom.xml
+      - sdk/netapp/mgmt-v2019_10_01/pom.xml
+      - sdk/netapp/mgmt-v2019_11_01/pom.xml
+      - sdk/netapp/mgmt-v2020_02_01/pom.xml
+      - sdk/netapp/mgmt-v2020_06_01/pom.xml
+      - sdk/netapp/mgmt-v2020_07_01/pom.xml
+      - sdk/netapp/mgmt-v2020_09_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

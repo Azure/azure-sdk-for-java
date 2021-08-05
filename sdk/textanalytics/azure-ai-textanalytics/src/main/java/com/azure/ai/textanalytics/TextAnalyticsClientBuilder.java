@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.Constants;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -12,7 +13,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -24,13 +27,13 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -69,27 +72,27 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder {
-    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
-    private static final String CONTENT_TYPE_HEADER = "Content-Type";
-    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    private static final String ACCEPT_HEADER = "Accept";
-    private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final String NAME = "name";
+    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+    private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
+    private static final String VERSION = "version";
+
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy();
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+    private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
+    private static final HttpHeaders DEFAULT_HTTP_HEADERS = new HttpHeaders();
 
     private final ClientLogger logger = new ClientLogger(TextAnalyticsClientBuilder.class);
-    private final List<HttpPipelinePolicy> policies;
-    private final HttpHeaders headers;
-    private final String clientName;
-    private final String clientVersion;
 
-    private String defaultCountryHint;
-    private String defaultLanguage;
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
+
+    private ClientOptions clientOptions;
     private Configuration configuration;
     private AzureKeyCredential credential;
+    private String defaultCountryHint;
+    private String defaultLanguage;
     private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -98,21 +101,12 @@ public final class TextAnalyticsClientBuilder {
     private TokenCredential tokenCredential;
     private TextAnalyticsServiceVersion version;
 
-    /**
-     * The constructor with defaults.
-     */
-    public TextAnalyticsClientBuilder() {
-        policies = new ArrayList<>();
-        httpLogOptions = new HttpLogOptions();
-
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+    static {
         Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-
-        headers = new HttpHeaders()
-            .put(ECHO_REQUEST_ID_HEADER, "true")
-            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
-            .put(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
+        CLIENT_NAME = properties.getOrDefault(NAME, "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault(VERSION, "UnknownVersion");
     }
 
     /**
@@ -161,19 +155,26 @@ public final class TextAnalyticsClientBuilder {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
+            // Client options
+            ClientOptions buildClientOptions = this.clientOptions == null ? DEFAULT_CLIENT_OPTIONS : this.clientOptions;
+            // Log options
+            HttpLogOptions buildLogOptions = this.httpLogOptions == null ? DEFAULT_LOG_OPTIONS : this.httpLogOptions;
+            final String applicationId = CoreUtils.getApplicationId(buildClientOptions, buildLogOptions);
+
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-                buildConfiguration));
+            policies.add(new AddHeadersPolicy(DEFAULT_HTTP_HEADERS));
+            policies.add(new AddHeadersFromContextPolicy());
+            policies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
             policies.add(new RequestIdPolicy());
-            policies.add(new AddHeadersPolicy(headers));
 
+            policies.addAll(perCallPolicies);
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
             policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
 
             policies.add(new AddDatePolicy());
+
             // Authentications
             if (tokenCredential != null) {
                 // User token based policy
@@ -186,21 +187,31 @@ public final class TextAnalyticsClientBuilder {
                     new IllegalArgumentException("Missing credential information while building a client."));
             }
 
-            policies.addAll(this.policies);
+            policies.addAll(perRetryPolicies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
 
             policies.add(new HttpLoggingPolicy(httpLogOptions));
 
+            HttpHeaders headers = new HttpHeaders();
+            buildClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+            if (headers.getSize() > 0) {
+                policies.add(new AddHeadersPolicy(headers));
+            }
+
+            policies.add(new HttpLoggingPolicy(buildLogOptions));
+
             pipeline = new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .clientOptions(buildClientOptions)
                 .httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build();
         }
 
         final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
             .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
             .pipeline(pipeline)
-            .build();
+            .buildClient();
 
         return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
     }
@@ -259,7 +270,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param keyCredential {@link AzureKeyCredential} API key credential
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code keyCredential} is {@code null}
+     * @throws NullPointerException If {@code keyCredential} is null
      */
     public TextAnalyticsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.credential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
@@ -271,7 +282,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is {@code null}.
+     * @throws NullPointerException If {@code tokenCredential} is null.
      */
     public TextAnalyticsClientBuilder credential(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
@@ -293,14 +304,41 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
+     * Gets the default Azure Text Analytics headers and query parameters allow list.
+     *
+     * @return The default {@link HttpLogOptions} allow list.
+     */
+    public static HttpLogOptions getDefaultLogOptions() {
+        return Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
+    }
+
+    /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The client options.
+     * @return The updated TextAnalyticsClientBuilder object.
+     */
+    public TextAnalyticsClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is null.
      */
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
+
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
+
         return this;
     }
 

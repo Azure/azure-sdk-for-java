@@ -7,38 +7,24 @@ package com.azure.storage.file.share.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for LeaseStateType.
- */
+/** Defines values for LeaseStateType. */
 public enum LeaseStateType {
-    /**
-     * Enum value available.
-     */
+    /** Enum value available. */
     AVAILABLE("available"),
 
-    /**
-     * Enum value leased.
-     */
+    /** Enum value leased. */
     LEASED("leased"),
 
-    /**
-     * Enum value expired.
-     */
+    /** Enum value expired. */
     EXPIRED("expired"),
 
-    /**
-     * Enum value breaking.
-     */
+    /** Enum value breaking. */
     BREAKING("breaking"),
 
-    /**
-     * Enum value broken.
-     */
+    /** Enum value broken. */
     BROKEN("broken");
 
-    /**
-     * The actual serialized value for a LeaseStateType instance.
-     */
+    /** The actual serialized value for a LeaseStateType instance. */
     private final String value;
 
     LeaseStateType(String value) {

@@ -1,0 +1,81 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/communication/ci.yml
+      - sdk/communication/azure-communication-callingserver/
+      - sdk/communication/azure-communication-chat/
+      - sdk/communication/azure-communication-common/
+      - sdk/communication/azure-communication-identity/
+      - sdk/communication/azure-communication-phonenumbers/
+      - sdk/communication/azure-communication-sms/
+      - sdk/communication/azure-resourcemanager-communication/
+    exclude:
+      - sdk/communication/pom.xml
+      - sdk/communication/azure-communication-callingserver/pom.xml
+      - sdk/communication/azure-communication-chat/pom.xml
+      - sdk/communication/azure-communication-common/pom.xml
+      - sdk/communication/azure-communication-identity/pom.xml
+      - sdk/communication/azure-communication-phonenumbers/pom.xml
+      - sdk/communication/azure-communication-sms/pom.xml
+      - sdk/communication/azure-resourcemanager-communication/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/communication/ci.yml
+      - sdk/communication/azure-communication-callingserver/
+      - sdk/communication/azure-communication-chat/
+      - sdk/communication/azure-communication-common/
+      - sdk/communication/azure-communication-identity/
+      - sdk/communication/azure-communication-phonenumbers/
+      - sdk/communication/azure-communication-sms/
+      - sdk/communication/azure-resourcemanager-communication/
+    exclude:
+      - sdk/communication/pom.xml
+      - sdk/communication/azure-communication-callingserver/pom.xml
+      - sdk/communication/azure-communication-chat/pom.xml
+      - sdk/communication/azure-communication-common/pom.xml
+      - sdk/communication/azure-communication-identity/pom.xml
+      - sdk/communication/azure-communication-phonenumbers/pom.xml
+      - sdk/communication/azure-communication-sms/pom.xml
+      - sdk/communication/azure-resourcemanager-communication/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: communication
+    Artifacts:
+      - name: azure-communication-callingserver
+        groupId: com.azure
+      - name: azure-communication-common
+        groupId: com.azure
+        safeName: azurecommunicationcommon
+      - name: azure-communication-chat
+        groupId: com.azure
+        safeName: azurecommunicationchatclient
+      - name: azure-communication-sms
+        groupId: com.azure
+        safeName: azurecommunicationsms
+      - name: azure-communication-identity
+        groupId: com.azure
+        safeName: azurecommunicationidentity
+      - name: azure-communication-phonenumbers
+        groupId: com.azure
+        safeName: azurecommunicationphonenumbers
+      - name: azure-resourcemanager-communication
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercommunication
+

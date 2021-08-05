@@ -7,33 +7,21 @@ package com.azure.storage.file.share.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for CopyStatusType.
- */
+/** Defines values for CopyStatusType. */
 public enum CopyStatusType {
-    /**
-     * Enum value pending.
-     */
+    /** Enum value pending. */
     PENDING("pending"),
 
-    /**
-     * Enum value success.
-     */
+    /** Enum value success. */
     SUCCESS("success"),
 
-    /**
-     * Enum value aborted.
-     */
+    /** Enum value aborted. */
     ABORTED("aborted"),
 
-    /**
-     * Enum value failed.
-     */
+    /** Enum value failed. */
     FAILED("failed");
 
-    /**
-     * The actual serialized value for a CopyStatusType instance.
-     */
+    /** The actual serialized value for a CopyStatusType instance. */
     private final String value;
 
     CopyStatusType(String value) {

@@ -26,6 +26,7 @@ import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,12 +87,12 @@ public class AsynReadWithMultipleClients<T> {
     void run() throws Exception {
         successMeter = metricsRegistry.meter("#Successful Operations");
         failureMeter = metricsRegistry.meter("#Unsuccessful Operations");
-        latency = metricsRegistry.timer("Latency");
+        latency = metricsRegistry.register("Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
         reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
         AtomicLong count = new AtomicLong(0);
         long i;
         long startTime = System.currentTimeMillis();
-        for (i = 0; shouldContinue(startTime, i); i++) {
+        for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 
             BaseSubscriber<PojoizedJson> baseSubscriber = new BaseSubscriber<PojoizedJson>() {
                 @Override
@@ -181,39 +181,6 @@ public class AsynReadWithMultipleClients<T> {
     protected void onError(Throwable throwable) {
     }
 
-    private PojoizedJson generateDocument(String idString, String dataFieldValue, String partitionKey) {
-        com.azure.cosmos.benchmark.PojoizedJson instance = new com.azure.cosmos.benchmark.PojoizedJson();
-        Map<String, String> properties = instance.getInstance();
-        properties.put("id", idString);
-        properties.put(partitionKey, idString);
-
-        for (int i = 0; i < configuration.getDocumentDataFieldCount(); i++) {
-            properties.put("dataField" + i, dataFieldValue);
-        }
-
-        return instance;
-    }
-
-    private boolean shouldContinue(long startTimeMillis, long iterationCount) {
-
-        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
-        int maxNumberOfOperations = configuration.getNumberOfOperations();
-
-        if (maxDurationTime == null) {
-            return iterationCount < maxNumberOfOperations;
-        }
-
-        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
-            return false;
-        }
-
-        if (maxNumberOfOperations < 0) {
-            return true;
-        }
-
-        return iterationCount < maxNumberOfOperations;
-    }
-
     private void createClients() {
         String csvFile = "clientHostAndKey.txt";
         String line = "";
@@ -227,6 +194,7 @@ public class AsynReadWithMultipleClients<T> {
                     CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
                         .endpoint(endpoint)
                         .key(key)
+                        .preferredRegions(this.configuration.getPreferredRegionsList())
                         .consistencyLevel(configuration.getConsistencyLevel())
                         .connectionSharingAcrossClientsEnabled(true)
                         .contentResponseOnWriteEnabled(Boolean.parseBoolean(configuration.isContentResponseOnWriteEnabled()));
@@ -285,7 +253,10 @@ public class AsynReadWithMultipleClients<T> {
 
                     for (int i = 0; i < this.configuration.getNumberOfPreCreatedDocuments(); i++) {
                         String uuid = UUID.randomUUID().toString();
-                        com.azure.cosmos.benchmark.PojoizedJson newDoc = generateDocument(uuid, dataFieldValue, partitionKey);
+                        PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                            dataFieldValue,
+                            partitionKey,
+                            configuration.getDocumentDataFieldCount());
 
                         Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
                                 com.azure.cosmos.benchmark.PojoizedJson x =

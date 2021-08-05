@@ -34,4 +34,14 @@ class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
         return this.inner().name();
     }
 
+    @Override
+    public String origin() {
+        return this.inner().origin();
+    }
+
+    @Override
+    public Object properties() {
+        return this.inner().properties();
+    }
+
 }

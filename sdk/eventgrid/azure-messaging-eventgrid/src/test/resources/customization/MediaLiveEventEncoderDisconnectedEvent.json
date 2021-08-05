@@ -1,0 +1,18 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}",
+    "subject": "liveEvent/liveevent-ec9d26a8",
+    "eventType": "Microsoft.Media.LiveEventEncoderDisconnected",
+    "eventTime": "2018-10-12T15:52:19.8982128Z",
+    "id": "e4b55140-42d2-4c24-b08e-9aa12f1587fc",
+    "data": {
+      "ingestUrl": "rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59",
+      "streamId": "Mystream1",
+      "encoderIp": "<ip address>",
+      "encoderPort": "3557",
+      "resultCode": "MPE_CLIENT_TERMINATED_SESSION"
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

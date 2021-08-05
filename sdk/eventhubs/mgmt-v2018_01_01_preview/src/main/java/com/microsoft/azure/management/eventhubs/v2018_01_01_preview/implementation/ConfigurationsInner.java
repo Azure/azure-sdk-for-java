@@ -37,7 +37,7 @@ public class ConfigurationsInner {
     /** The Retrofit service to perform REST calls. */
     private ConfigurationsService service;
     /** The service client containing this operation class. */
-    private EventHub2018PreviewManagementClientImpl client;
+    private EventHubManagementClientImpl client;
 
     /**
      * Initializes an instance of ConfigurationsInner.
@@ -45,7 +45,7 @@ public class ConfigurationsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ConfigurationsInner(Retrofit retrofit, EventHub2018PreviewManagementClientImpl client) {
+    public ConfigurationsInner(Retrofit retrofit, EventHubManagementClientImpl client) {
         this.service = retrofit.create(ConfigurationsService.class);
         this.client = client;
     }
@@ -68,7 +68,7 @@ public class ConfigurationsInner {
     /**
      * Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request body unmodified.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -82,7 +82,7 @@ public class ConfigurationsInner {
     /**
      * Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request body unmodified.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -95,7 +95,7 @@ public class ConfigurationsInner {
     /**
      * Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request body unmodified.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClusterQuotaConfigurationPropertiesInner object
@@ -112,7 +112,7 @@ public class ConfigurationsInner {
     /**
      * Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request body unmodified.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClusterQuotaConfigurationPropertiesInner object
@@ -127,13 +127,11 @@ public class ConfigurationsInner {
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2018-01-01-preview";
         final Map<String, String> settings = null;
         ClusterQuotaConfigurationPropertiesInner parameters = new ClusterQuotaConfigurationPropertiesInner();
         parameters.withSettings(null);
-        return service.patch(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+        return service.patch(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterQuotaConfigurationPropertiesInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ClusterQuotaConfigurationPropertiesInner>> call(Response<ResponseBody> response) {
@@ -150,7 +148,7 @@ public class ConfigurationsInner {
     /**
      * Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request body unmodified.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param settings All possible Cluster settings - a collection of key/value paired settings which apply to quotas and configurations imposed on the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -165,7 +163,7 @@ public class ConfigurationsInner {
     /**
      * Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request body unmodified.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param settings All possible Cluster settings - a collection of key/value paired settings which apply to quotas and configurations imposed on the cluster.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -179,7 +177,7 @@ public class ConfigurationsInner {
     /**
      * Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request body unmodified.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param settings All possible Cluster settings - a collection of key/value paired settings which apply to quotas and configurations imposed on the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -197,7 +195,7 @@ public class ConfigurationsInner {
     /**
      * Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request body unmodified.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param settings All possible Cluster settings - a collection of key/value paired settings which apply to quotas and configurations imposed on the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -213,13 +211,11 @@ public class ConfigurationsInner {
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(settings);
+        final String apiVersion = "2018-01-01-preview";
         ClusterQuotaConfigurationPropertiesInner parameters = new ClusterQuotaConfigurationPropertiesInner();
         parameters.withSettings(settings);
-        return service.patch(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+        return service.patch(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterQuotaConfigurationPropertiesInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ClusterQuotaConfigurationPropertiesInner>> call(Response<ResponseBody> response) {
@@ -245,7 +241,7 @@ public class ConfigurationsInner {
     /**
      * Get all Event Hubs Cluster settings - a collection of key/value pairs which represent the quotas and settings imposed on the cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -259,7 +255,7 @@ public class ConfigurationsInner {
     /**
      * Get all Event Hubs Cluster settings - a collection of key/value pairs which represent the quotas and settings imposed on the cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -272,7 +268,7 @@ public class ConfigurationsInner {
     /**
      * Get all Event Hubs Cluster settings - a collection of key/value pairs which represent the quotas and settings imposed on the cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClusterQuotaConfigurationPropertiesInner object
@@ -289,7 +285,7 @@ public class ConfigurationsInner {
     /**
      * Get all Event Hubs Cluster settings - a collection of key/value pairs which represent the quotas and settings imposed on the cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClusterQuotaConfigurationPropertiesInner object
@@ -304,10 +300,8 @@ public class ConfigurationsInner {
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-01-01-preview";
+        return service.get(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterQuotaConfigurationPropertiesInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ClusterQuotaConfigurationPropertiesInner>> call(Response<ResponseBody> response) {

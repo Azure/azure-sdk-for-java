@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolGeoBackupPolicies;
 import rx.Observable;
 import rx.functions.Func1;
+import java.util.List;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.GeoBackupPolicy;
 
 class SqlPoolGeoBackupPoliciesImpl extends WrapperImpl<SqlPoolGeoBackupPoliciesInner> implements SqlPoolGeoBackupPolicies {
@@ -29,6 +30,24 @@ class SqlPoolGeoBackupPoliciesImpl extends WrapperImpl<SqlPoolGeoBackupPoliciesI
 
     private GeoBackupPolicyImpl wrapModel(GeoBackupPolicyInner inner) {
         return  new GeoBackupPolicyImpl(inner, manager());
+    }
+
+    @Override
+    public Observable<GeoBackupPolicy> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        SqlPoolGeoBackupPoliciesInner client = this.inner();
+        return client.listAsync(resourceGroupName, workspaceName, sqlPoolName)
+        .flatMap(new Func1<List<GeoBackupPolicyInner>, Observable<GeoBackupPolicyInner>>() {
+            @Override
+            public Observable<GeoBackupPolicyInner> call(List<GeoBackupPolicyInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<GeoBackupPolicyInner, GeoBackupPolicy>() {
+            @Override
+            public GeoBackupPolicy call(GeoBackupPolicyInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
     @Override

@@ -1,0 +1,72 @@
+# !!! Note: only comment before data will be kept
+# Keys: specification path of spec repository
+# Args:
+  # service: name of service, used for namespace and artifact id
+  # suffix: suffix for sdk automation, usually it is due to premium sdk
+appplatform:
+  suffix: generated
+authorization:
+  suffix: generated
+azure-kusto:
+  service: kusto
+cdn:
+  suffix: generated
+compute:
+  suffix: generated
+containerinstance:
+  suffix: generated
+containerregistry:
+  suffix: generated
+containerservice:
+  suffix: generated
+cosmos-db:
+  service: cosmos
+  suffix: generated
+cost-management:
+  service: costmanagement
+customer-insights:
+  service: customerinsights
+datalake-analytics:
+  service: datalakeanalytics
+datalake-store:
+  service: datalakestore
+dnc:
+  service: delegatednetwork
+dns:
+  suffix: generated
+eventhub:
+  service: eventhubs
+  suffix: generated
+keyvault:
+  suffix: generated
+monitor:
+  suffix: generated
+msi:
+  suffix: generated
+network:
+  suffix: generated
+operationalinsights:
+  service: loganalytics
+postgresql:
+  service: postgresqlflexibleserver
+privatedns:
+  suffix: generated
+redis:
+  suffix: generated
+resources:
+  suffix: generated
+service-map:
+  service: servicemap
+servicebus:
+  suffix: generated
+sql:
+  suffix: generated
+storage:
+  suffix: generated
+trafficmanager:
+  suffix: generated
+vmware:
+  service: avs
+web:
+  service: appservice
+  suffix: generated

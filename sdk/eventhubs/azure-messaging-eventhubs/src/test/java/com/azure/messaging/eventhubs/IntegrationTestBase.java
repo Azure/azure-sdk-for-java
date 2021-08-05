@@ -54,13 +54,14 @@ public abstract class IntegrationTestBase extends TestBase {
     protected static final List<String> EXPECTED_PARTITION_IDS = IntStream.range(0, NUMBER_OF_PARTITIONS)
         .mapToObj(String::valueOf)
         .collect(Collectors.toList());
-    protected static final Duration TIMEOUT = Duration.ofSeconds(45);
+    protected static final Duration TIMEOUT = Duration.ofMinutes(1);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
 
     protected final ClientLogger logger;
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
+    private static final String EVENT_HUB_CONNECTION_STRING_WITH_SAS = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS";
 
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
@@ -122,7 +123,14 @@ public abstract class IntegrationTestBase extends TestBase {
         return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
     }
 
-    protected static String getConnectionString() {
+    static String getConnectionString() {
+        return getConnectionString(false);
+    }
+
+    static String getConnectionString(boolean withSas) {
+        if (withSas) {
+            return System.getenv(EVENT_HUB_CONNECTION_STRING_WITH_SAS);
+        }
         return System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
     }
 
@@ -212,7 +220,11 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(getConnectionString());
+        return new ConnectionStringProperties(getConnectionString(false));
+    }
+
+    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
+        return new ConnectionStringProperties(getConnectionString(withSas));
     }
 
     /**
@@ -281,13 +293,12 @@ public abstract class IntegrationTestBase extends TestBase {
             try {
                 closeable.close();
             } catch (IOException error) {
-                logger.error(String.format("[%s]: %s didn't close properly.", testName,
-                    closeable.getClass().getSimpleName()), error);
+                logger.error("[{}]: {} didn't close properly.", testName, closeable.getClass().getSimpleName(), error);
             }
         }
     }
 
     private void skipIfNotRecordMode() {
-        Assumptions.assumeTrue(getTestMode() == TestMode.RECORD);
+        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK);
     }
 }

@@ -3,29 +3,34 @@
 
 package com.azure.storage.blob.perf;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
-
-import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.StoragePerfStressOptions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.perf.core.BlobTestBase;
 import com.azure.storage.blob.specialized.BlobOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import reactor.core.publisher.Mono;
 
-public class UploadOutputStreamTest extends BlobTestBase<PerfStressOptions> {
+import java.io.IOException;
 
-    private final InputStream inputStream;
+import static com.azure.perf.test.core.TestDataCreationHelper.writeBytesToOutputStream;
 
-    public UploadOutputStreamTest(PerfStressOptions options) {
+public class UploadOutputStreamTest extends BlobTestBase<StoragePerfStressOptions> {
+    public UploadOutputStreamTest(StoragePerfStressOptions options) {
         super(options);
-        this.inputStream = createRandomInputStream(options.getSize());
     }
 
     @Override
     public void run() {
         try {
-            BlobOutputStream blobOutputStream = blockBlobClient.getBlobOutputStream();
-            copyStream(inputStream, blobOutputStream);
+            BlockBlobOutputStreamOptions blockBlobOutputStreamOptions = new BlockBlobOutputStreamOptions()
+                .setParallelTransferOptions(
+                    new ParallelTransferOptions()
+                        .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+                        .setBlockSizeLong(options.getTransferBlockSize())
+                        .setMaxConcurrency(options.getTransferConcurrency())
+                );
+            BlobOutputStream blobOutputStream = blockBlobClient.getBlobOutputStream(blockBlobOutputStreamOptions);
+            writeBytesToOutputStream(blobOutputStream, options.getSize());
             blobOutputStream.close();
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -1,0 +1,46 @@
+trigger: none
+pr: none
+
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20210603.1
+
+variables:
+  BuildToolScripts: $(Pipeline.Workspace)/azure-sdk-build-tools/scripts
+  Artifacts: $(Pipeline.Workspace)/artifacts
+
+pool:
+  vmImage: 'windows-2019'
+
+steps:
+- checkout: self
+  path: azure-sdk-for-java
+
+- checkout: azure-sdk-build-tools
+  path: azure-sdk-build-tools
+
+- task: PowerShell@2
+  displayName: 'Download packages from blob storage'
+  inputs:
+    targetType: filePath
+    filePath: '$(BuildToolScripts)/copy-from-azuresdkpartnerdrops.ps1'
+    arguments: '$(Artifacts) $(BlobPath) $(azuresdkpartnerdrops-access-key)'
+
+- template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
+  parameters:
+    ArtifactDirectory: $(Artifacts)
+
+- publish: $(Artifacts)
+  artifact: packages-signed
+
+- template: tools/gpg/gpg.yml@azure-sdk-build-tools
+- template: /eng/pipelines/templates/steps/java-publishing.yml
+  parameters:
+    ArtifactDirectory: $(Artifacts)
+    Target: MavenCentral
+    BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+    JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+    StageOnly: $(StageOnly)

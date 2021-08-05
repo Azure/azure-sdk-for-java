@@ -7,7 +7,7 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Logging model. */
+/** Azure Analytics Logging settings. */
 @Fluent
 public final class Logging {
     /*

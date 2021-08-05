@@ -7,6 +7,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.slf4j.helpers.FormattingTuple;
@@ -18,11 +19,11 @@ import org.slf4j.helpers.MessageFormatter;
  */
 public final class DefaultLogger extends MarkerIgnoringBase {
     private static final long serialVersionUID = -144261058636441630L;
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     // The template for the log message:
-    // YYYY-MM-DD HH:MM [thread] [level] classpath - message
-    // E.g: 2020-01-09 12:35 [main] [WARN] com.azure.core.DefaultLogger - This is my log message.
+    // YYYY-MM-DD HH:MM:ss.SSS [thread] [level] classpath - message
+    // E.g: 2020-01-09 12:35:14.232 [main] [WARN] com.azure.core.DefaultLogger - This is my log message.
     private static final String WHITESPACE = " ";
     private static final String HYPHEN = " - ";
     private static final String OPEN_BRACKET = " [";
@@ -59,7 +60,9 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         String classPath;
         try {
             classPath = Class.forName(className).getCanonicalName();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | InvalidPathException e) {
+            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
+            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
             classPath = className;
         }
         this.classPath = classPath;

@@ -3,23 +3,28 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AccountProperties;
-import com.azure.ai.formrecognizer.models.CopyAuthorization;
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Code snippet for {@link FormTrainingAsyncClient}
  */
 public class FormTrainingAsyncClientJavaDocCodeSnippets {
-    private FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder().buildAsyncClient();
+    private final FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for {@link FormTrainingAsyncClient} initialization
@@ -52,45 +57,47 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void beginTraining() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean
-        String trainingFilesUrl = "{training-set-SAS-URL}";
+        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         boolean useTrainingLabels = true;
-        formTrainingAsyncClient.beginTraining(trainingFilesUrl, useTrainingLabels).subscribe(
-            recognizePollingOperation -> {
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
-                    System.out.printf("Model Id: %s%n", customFormModel.getModelId());
-                    System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-                    customFormModel.getSubmodels().forEach(customFormSubmodel ->
-                        customFormSubmodel.getFieldMap().forEach((key, customFormModelField) ->
-                            System.out.printf("Form type: %s Field Text: %s Field Accuracy: %s%n",
+        formTrainingAsyncClient.beginTraining(trainingFilesUrl, useTrainingLabels)
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(customFormModel -> {
+                System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+                System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+                customFormModel.getSubmodels()
+                    .forEach(customFormSubmodel -> customFormSubmodel.getFields()
+                        .forEach((key, customFormModelField) ->
+                            System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
                                 key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-                });
             });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean, TrainingFileFilter, Duration)}
+     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean, TrainingOptions)}
      * with options
      */
     public void beginTrainingWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration
-        String trainingFilesUrl = "{training-set-SAS-URL}";
-        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix("Invoice");
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions
+        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setSubfoldersIncluded(true).setPrefix("Invoice");
 
-        formTrainingAsyncClient.beginTraining(trainingFilesUrl, true, trainingFileFilter,
-            Duration.ofSeconds(5)).subscribe(recognizePollingOperation -> {
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
-                    System.out.printf("Model Id: %s%n", customFormModel.getModelId());
-                    System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-                    customFormModel.getSubmodels().forEach(customFormSubmodel ->
-                        customFormSubmodel.getFieldMap().forEach((key, customFormModelField) ->
-                            System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
-                                key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-                });
+        formTrainingAsyncClient.beginTraining(trainingFilesUrl, true,
+            new TrainingOptions()
+                .setTrainingFileFilter(trainingFileFilter)
+                .setPollInterval(Duration.ofSeconds(5)))
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(customFormModel -> {
+                System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+                System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+                customFormModel.getSubmodels().forEach(customFormSubmodel ->
+                    customFormSubmodel.getFields().forEach((key, customFormModelField) ->
+                        System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
+                            key, customFormModelField.getName(), customFormModelField.getAccuracy())));
             });
-        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration
+        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions
     }
 
     /**
@@ -102,10 +109,11 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         formTrainingAsyncClient.getCustomModel(modelId).subscribe(customFormModel -> {
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-            customFormModel.getSubmodels().forEach(customFormSubmodel ->
-                customFormSubmodel.getFieldMap().forEach((key, customFormModelField) ->
-                    System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
-                        key, customFormModelField.getName(), customFormModelField.getAccuracy())));
+            customFormModel.getSubmodels()
+                .forEach(customFormSubmodel -> customFormSubmodel.getFields()
+                    .forEach((key, customFormModelField) ->
+                        System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
+                            key, customFormModelField.getName(), customFormModelField.getAccuracy())));
 
         });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModel#string
@@ -122,10 +130,11 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             CustomFormModel customFormModel = response.getValue();
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-            customFormModel.getSubmodels().forEach(customFormSubmodel ->
-                customFormSubmodel.getFieldMap().forEach((key, customFormModelField) ->
-                    System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
-                        key, customFormModelField.getName(), customFormModelField.getAccuracy())));
+            customFormModel.getSubmodels()
+                .forEach(customFormSubmodel -> customFormSubmodel.getFields()
+                    .forEach((key, customFormModelField) ->
+                        System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
+                            key, customFormModelField.getName(), customFormModelField.getAccuracy())));
         });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModelWithResponse#string
     }
@@ -135,11 +144,13 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void getAccountProperties() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties
-        formTrainingAsyncClient.getAccountProperties().subscribe(accountProperties -> {
-            System.out.printf("Max number of models that can be trained for this account: %s%n",
-                accountProperties.getCustomModelLimit());
-            System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCustomModelCount());
-        });
+        formTrainingAsyncClient.getAccountProperties()
+            .subscribe(accountProperties -> {
+                System.out.printf("Max number of models that can be trained for this account: %d%n",
+                    accountProperties.getCustomModelLimit());
+                System.out.printf("Current count of trained custom models: %d%n",
+                    accountProperties.getCustomModelCount());
+            });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties
     }
 
@@ -148,13 +159,15 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void getAccountPropertiesWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse
-        formTrainingAsyncClient.getAccountPropertiesWithResponse().subscribe(response -> {
-            System.out.printf("Response Status Code: %d.", response.getStatusCode());
-            AccountProperties accountProperties = response.getValue();
-            System.out.printf("Max number of models that can be trained for this account: %s%n",
-                accountProperties.getCustomModelLimit());
-            System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCustomModelCount());
-        });
+        formTrainingAsyncClient.getAccountPropertiesWithResponse()
+            .subscribe(response -> {
+                System.out.printf("Response Status Code: %d.", response.getStatusCode());
+                AccountProperties accountProperties = response.getValue();
+                System.out.printf("Max number of models that can be trained for this account: %d%n",
+                    accountProperties.getCustomModelLimit());
+                System.out.printf("Current count of trained custom models: %d%n",
+                    accountProperties.getCustomModelCount());
+            });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse
     }
 
@@ -164,8 +177,8 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void deleteModel() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModel#string
         String modelId = "{model_id}";
-        formTrainingAsyncClient.deleteModel(modelId).subscribe(val ->
-            System.out.printf("Model Id: %s is deleted%n", modelId));
+        formTrainingAsyncClient.deleteModel(modelId)
+            .subscribe(ignored -> System.out.printf("Model Id: %s is deleted%n", modelId));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModel#string
     }
 
@@ -175,10 +188,11 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModelWithResponse#string
         String modelId = "{model_id}";
-        formTrainingAsyncClient.deleteModelWithResponse(modelId).subscribe(response -> {
-            System.out.printf("Response Status Code: %d.", response.getStatusCode());
-            System.out.printf("Model Id: %s is deleted%n", modelId);
-        });
+        formTrainingAsyncClient.deleteModelWithResponse(modelId)
+            .subscribe(response -> {
+                System.out.printf("Response Status Code: %d.", response.getStatusCode());
+                System.out.printf("Model Id: %s is deleted.%n", modelId);
+            });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModelWithResponse#string
     }
 
@@ -187,12 +201,13 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      */
     public void listCustomModels() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels
-        formTrainingAsyncClient.listCustomModels().subscribe(customModel ->
-            System.out.printf("Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n",
-                customModel.getModelId(),
-                customModel.getStatus(),
-                customModel.getRequestedOn(),
-                customModel.getCompletedOn()));
+        formTrainingAsyncClient.listCustomModels()
+            .subscribe(customModel ->
+                System.out.printf("Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n",
+                    customModel.getModelId(),
+                    customModel.getStatus(),
+                    customModel.getTrainingStartedOn(),
+                    customModel.getTrainingCompletedOn()));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels
     }
 
@@ -205,15 +220,15 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String resourceRegion = "target-resource-region";
         String copyModelId = "copy-model-Id";
         formTrainingAsyncClient.getCopyAuthorization(resourceId, resourceRegion)
-            .subscribe(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization)
-                .subscribe(copyPoller -> copyPoller.getFinalResult().subscribe(customFormModelInfo -> {
-                    System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"
-                            + " transfer completed on: %s.%n",
-                        customFormModelInfo.getModelId(),
-                        customFormModelInfo.getStatus(),
-                        customFormModelInfo.getRequestedOn(),
-                        customFormModelInfo.getCompletedOn());
-                })));
+            .flatMapMany(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization))
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(customFormModelInfo ->
+                System.out.printf("Copied model has model Id: %s, model status: %s, training started on: %s,"
+                    + " training completed on: %s.%n",
+                customFormModelInfo.getModelId(),
+                customFormModelInfo.getStatus(),
+                customFormModelInfo.getTrainingStartedOn(),
+                customFormModelInfo.getTrainingCompletedOn()));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization
     }
 
@@ -226,16 +241,16 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String resourceRegion = "target-resource-region";
         String copyModelId = "copy-model-Id";
         formTrainingAsyncClient.getCopyAuthorization(resourceId, resourceRegion)
-            .subscribe(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization,
-                Duration.ofSeconds(5)).subscribe(copyPoller ->
-                copyPoller.getFinalResult().subscribe(customFormModelInfo -> {
-                    System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"
-                            + "transfer completed on: %s.%n",
-                        customFormModelInfo.getModelId(),
-                        customFormModelInfo.getStatus(),
-                        customFormModelInfo.getRequestedOn(),
-                        customFormModelInfo.getCompletedOn());
-                })));
+            .flatMapMany(copyAuthorization -> formTrainingAsyncClient.beginCopyModel(copyModelId, copyAuthorization,
+                Duration.ofSeconds(5)))
+            .flatMap(AsyncPollResponse::getFinalResult)
+                .subscribe(customFormModelInfo ->
+                    System.out.printf("Copied model has model Id: %s, model status: %s, training started on: %s,"
+                        + "training completed on: %s.%n",
+                    customFormModelInfo.getModelId(),
+                    customFormModelInfo.getStatus(),
+                    customFormModelInfo.getTrainingStartedOn(),
+                    customFormModelInfo.getTrainingCompletedOn()));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization-Duration
     }
 
@@ -278,5 +293,59 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                 copyAuthorization.getValue().getResourceRegion()
             ));
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-string
+    }
+
+    /**
+     * Code snippet for {@link FormTrainingAsyncClient#beginCreateComposedModel(List)}
+     */
+    public void beginCreateComposedModel() {
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list
+        String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
+        String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
+        formTrainingAsyncClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2))
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(customFormModel -> {
+                System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+                System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+                System.out.printf("Is this a composed model: %s%n",
+                    customFormModel.getCustomModelProperties().isComposed());
+                customFormModel.getSubmodels()
+                    .forEach(customFormSubmodel -> customFormSubmodel.getFields()
+                        .forEach((key, customFormModelField) ->
+                            System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
+                                key, customFormModelField.getName(), customFormModelField.getAccuracy())));
+            });
+        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list
+    }
+
+    /**
+     * Code snippet for {@link FormTrainingAsyncClient#beginCreateComposedModel(List, CreateComposedModelOptions)}
+     * with options
+     */
+    public void beginCreateComposedModelWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
+        String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
+        String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
+        formTrainingAsyncClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
+            new CreateComposedModelOptions()
+                .setModelName("my composed model name"))
+            .setPollInterval(Duration.ofSeconds(5))
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(customFormModel -> {
+                System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+                System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+                System.out.printf("Model display name: %s%n", customFormModel.getModelName());
+                System.out.printf("Is this a composed model: %s%n",
+                    customFormModel.getCustomModelProperties().isComposed());
+
+                customFormModel.getSubmodels()
+                    .forEach(customFormSubmodel -> customFormSubmodel.getFields()
+                        .forEach((key, customFormModelField) ->
+                            System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
+                                key, customFormModelField.getName(), customFormModelField.getAccuracy())));
+            });
+        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
     }
 }

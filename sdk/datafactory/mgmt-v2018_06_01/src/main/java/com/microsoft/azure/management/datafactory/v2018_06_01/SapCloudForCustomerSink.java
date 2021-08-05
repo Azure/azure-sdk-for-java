@@ -26,6 +26,15 @@ public class SapCloudForCustomerSink extends CopySink {
     private SapCloudForCustomerSinkWriteBehavior writeBehavior;
 
     /**
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get
+     * a response, not the timeout to read response data. Default value:
+     * 00:05:00. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     */
+    @JsonProperty(value = "httpRequestTimeout")
+    private Object httpRequestTimeout;
+
+    /**
      * Get the write behavior for the operation. Default is 'Insert'. Possible values include: 'Insert', 'Update'.
      *
      * @return the writeBehavior value
@@ -42,6 +51,26 @@ public class SapCloudForCustomerSink extends CopySink {
      */
     public SapCloudForCustomerSink withWriteBehavior(SapCloudForCustomerSinkWriteBehavior writeBehavior) {
         this.writeBehavior = writeBehavior;
+        return this;
+    }
+
+    /**
+     * Get the timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @return the httpRequestTimeout value
+     */
+    public Object httpRequestTimeout() {
+        return this.httpRequestTimeout;
+    }
+
+    /**
+     * Set the timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @param httpRequestTimeout the httpRequestTimeout value to set
+     * @return the SapCloudForCustomerSink object itself.
+     */
+    public SapCloudForCustomerSink withHttpRequestTimeout(Object httpRequestTimeout) {
+        this.httpRequestTimeout = httpRequestTimeout;
         return this;
     }
 

@@ -50,4 +50,20 @@ class SqlPoolSchemasImpl extends WrapperImpl<SqlPoolSchemasInner> implements Sql
         });
     }
 
+    @Override
+    public Observable<SqlPoolSchema> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
+        SqlPoolSchemasInner client = this.inner();
+        return client.getAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName)
+        .flatMap(new Func1<SqlPoolSchemaInner, Observable<SqlPoolSchema>>() {
+            @Override
+            public Observable<SqlPoolSchema> call(SqlPoolSchemaInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SqlPoolSchema)wrapModel(inner));
+                }
+            }
+       });
+    }
+
 }

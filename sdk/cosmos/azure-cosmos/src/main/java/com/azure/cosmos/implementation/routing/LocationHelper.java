@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.guava27.Strings;
 
 import java.net.URI;
 
@@ -40,7 +41,7 @@ public class LocationHelper {
                     serviceEndpoint.getPath(), serviceEndpoint.getQuery(),
                     serviceEndpoint.getFragment());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(Strings.lenientFormat("invalid location [%s] or serviceEndpoint [%s]", location, serviceEndpoint.toString()), e);
         }
     }
 

@@ -15,6 +15,8 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Autoscale;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.AutoscaleConfigurationUpdateParameter;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterCreateParametersExtended;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterDiskEncryptionParameters;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterPatchParameters;
@@ -108,6 +110,14 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters beginResize" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/roles/{roleName}/resize")
         Observable<Response<ResponseBody>> beginResize(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("roleName") String roleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ClusterResizeParameters parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters updateAutoScaleConfiguration" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/roles/{roleName}/autoscale")
+        Observable<Response<ResponseBody>> updateAutoScaleConfiguration(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("roleName") String roleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body AutoscaleConfigurationUpdateParameter parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters beginUpdateAutoScaleConfiguration" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/roles/{roleName}/autoscale")
+        Observable<Response<ResponseBody>> beginUpdateAutoScaleConfiguration(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Path("roleName") String roleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body AutoscaleConfigurationUpdateParameter parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Clusters list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters")
@@ -647,6 +657,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -1166,6 +1177,329 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     }
 
     private ServiceResponse<Void> beginResizeDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void updateAutoScaleConfiguration(String resourceGroupName, String clusterName) {
+        updateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().last().body();
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> updateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName) {
+        return updateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> updateAutoScaleConfigurationWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String roleName = "workernode";
+        final Autoscale autoscale = null;
+        AutoscaleConfigurationUpdateParameter parameters = new AutoscaleConfigurationUpdateParameter();
+        parameters.withAutoscale(null);
+        Observable<Response<ResponseBody>> observable = service.updateAutoScaleConfiguration(this.client.subscriptionId(), resourceGroupName, clusterName, roleName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param autoscale The autoscale configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void updateAutoScaleConfiguration(String resourceGroupName, String clusterName, Autoscale autoscale) {
+        updateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName, autoscale).toBlocking().last().body();
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param autoscale The autoscale configuration.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName, Autoscale autoscale, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName, autoscale), serviceCallback);
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param autoscale The autoscale configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> updateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName, Autoscale autoscale) {
+        return updateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName, autoscale).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param autoscale The autoscale configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> updateAutoScaleConfigurationWithServiceResponseAsync(String resourceGroupName, String clusterName, Autoscale autoscale) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(autoscale);
+        final String roleName = "workernode";
+        AutoscaleConfigurationUpdateParameter parameters = new AutoscaleConfigurationUpdateParameter();
+        parameters.withAutoscale(autoscale);
+        Observable<Response<ResponseBody>> observable = service.updateAutoScaleConfiguration(this.client.subscriptionId(), resourceGroupName, clusterName, roleName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginUpdateAutoScaleConfiguration(String resourceGroupName, String clusterName) {
+        beginUpdateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginUpdateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginUpdateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName) {
+        return beginUpdateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginUpdateAutoScaleConfigurationWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String roleName = "workernode";
+        final Autoscale autoscale = null;
+        AutoscaleConfigurationUpdateParameter parameters = new AutoscaleConfigurationUpdateParameter();
+        parameters.withAutoscale(null);
+        return service.beginUpdateAutoScaleConfiguration(this.client.subscriptionId(), resourceGroupName, clusterName, roleName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginUpdateAutoScaleConfigurationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param autoscale The autoscale configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginUpdateAutoScaleConfiguration(String resourceGroupName, String clusterName, Autoscale autoscale) {
+        beginUpdateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName, autoscale).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param autoscale The autoscale configuration.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginUpdateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName, Autoscale autoscale, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName, autoscale), serviceCallback);
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param autoscale The autoscale configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginUpdateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName, Autoscale autoscale) {
+        return beginUpdateAutoScaleConfigurationWithServiceResponseAsync(resourceGroupName, clusterName, autoscale).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param autoscale The autoscale configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginUpdateAutoScaleConfigurationWithServiceResponseAsync(String resourceGroupName, String clusterName, Autoscale autoscale) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(autoscale);
+        final String roleName = "workernode";
+        AutoscaleConfigurationUpdateParameter parameters = new AutoscaleConfigurationUpdateParameter();
+        parameters.withAutoscale(autoscale);
+        return service.beginUpdateAutoScaleConfiguration(this.client.subscriptionId(), resourceGroupName, clusterName, roleName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginUpdateAutoScaleConfigurationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginUpdateAutoScaleConfigurationDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())

@@ -7,25 +7,31 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.CharFilter;
+import com.azure.search.documents.indexes.models.CorsOptions;
+import com.azure.search.documents.indexes.models.LexicalAnalyzer;
+import com.azure.search.documents.indexes.models.LexicalNormalizer;
+import com.azure.search.documents.indexes.models.ScoringProfile;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
+import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Represents a search index definition, which describes the fields and search
- * behavior of an index.
- */
+/** Represents a search index definition, which describes the fields and search behavior of an index. */
 @Fluent
 public final class SearchIndex {
     /*
      * The name of the index.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The fields of the index.
      */
-    @JsonProperty(value = "fields", required = true)
+    @JsonProperty(value = "fields")
     private List<SearchField> fields;
 
     /*
@@ -52,7 +58,7 @@ public final class SearchIndex {
      * The suggesters for the index.
      */
     @JsonProperty(value = "suggesters")
-    private List<Suggester> suggesters;
+    private List<SearchSuggester> suggesters;
 
     /*
      * The analyzers for the index.
@@ -79,6 +85,12 @@ public final class SearchIndex {
     private List<CharFilter> charFilters;
 
     /*
+     * The normalizers for the index.
+     */
+    @JsonProperty(value = "normalizers")
+    private List<LexicalNormalizer> normalizers;
+
+    /*
      * A description of an encryption key that you create in Azure Key Vault.
      * This key is used to provide an additional level of encryption-at-rest
      * for your data when you want full assurance that no one, not even
@@ -100,7 +112,7 @@ public final class SearchIndex {
      * indexes. If null, the ClassicSimilarity algorithm is used.
      */
     @JsonProperty(value = "similarity")
-    private Similarity similarity;
+    private SimilarityAlgorithm similarity;
 
     /*
      * The ETag of the index.
@@ -169,10 +181,9 @@ public final class SearchIndex {
     }
 
     /**
-     * Get the defaultScoringProfile property: The name of the scoring profile
-     * to use if none is specified in the query. If this property is not set
-     * and no scoring profile is specified in the query, then default scoring
-     * (tf-idf) will be used.
+     * Get the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the query.
+     * If this property is not set and no scoring profile is specified in the query, then default scoring (tf-idf) will
+     * be used.
      *
      * @return the defaultScoringProfile value.
      */
@@ -181,10 +192,9 @@ public final class SearchIndex {
     }
 
     /**
-     * Set the defaultScoringProfile property: The name of the scoring profile
-     * to use if none is specified in the query. If this property is not set
-     * and no scoring profile is specified in the query, then default scoring
-     * (tf-idf) will be used.
+     * Set the defaultScoringProfile property: The name of the scoring profile to use if none is specified in the query.
+     * If this property is not set and no scoring profile is specified in the query, then default scoring (tf-idf) will
+     * be used.
      *
      * @param defaultScoringProfile the defaultScoringProfile value to set.
      * @return the SearchIndex object itself.
@@ -195,8 +205,7 @@ public final class SearchIndex {
     }
 
     /**
-     * Get the corsOptions property: Options to control Cross-Origin Resource
-     * Sharing (CORS) for the index.
+     * Get the corsOptions property: Options to control Cross-Origin Resource Sharing (CORS) for the index.
      *
      * @return the corsOptions value.
      */
@@ -205,8 +214,7 @@ public final class SearchIndex {
     }
 
     /**
-     * Set the corsOptions property: Options to control Cross-Origin Resource
-     * Sharing (CORS) for the index.
+     * Set the corsOptions property: Options to control Cross-Origin Resource Sharing (CORS) for the index.
      *
      * @param corsOptions the corsOptions value to set.
      * @return the SearchIndex object itself.
@@ -221,7 +229,7 @@ public final class SearchIndex {
      *
      * @return the suggesters value.
      */
-    public List<Suggester> getSuggesters() {
+    public List<SearchSuggester> getSuggesters() {
         return this.suggesters;
     }
 
@@ -231,7 +239,7 @@ public final class SearchIndex {
      * @param suggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSuggesters(List<Suggester> suggesters) {
+    public SearchIndex setSuggesters(List<SearchSuggester> suggesters) {
         this.suggesters = suggesters;
         return this;
     }
@@ -317,17 +325,33 @@ public final class SearchIndex {
     }
 
     /**
-     * Get the encryptionKey property: A description of an encryption key that
-     * you create in Azure Key Vault. This key is used to provide an additional
-     * level of encryption-at-rest for your data when you want full assurance
-     * that no one, not even Microsoft, can decrypt your data in Azure
-     * Cognitive Search. Once you have encrypted your data, it will always
-     * remain encrypted. Azure Cognitive Search will ignore attempts to set
-     * this property to null. You can change this property as needed if you
-     * want to rotate your encryption key; Your data will be unaffected.
-     * Encryption with customer-managed keys is not available for free search
-     * services, and is only available for paid services created on or after
-     * January 1, 2019.
+     * Get the normalizers property: The normalizers for the index.
+     *
+     * @return the normalizers value.
+     */
+    public List<LexicalNormalizer> getNormalizers() {
+        return this.normalizers;
+    }
+
+    /**
+     * Set the normalizers property: The normalizers for the index.
+     *
+     * @param normalizers the normalizers value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setNormalizers(List<LexicalNormalizer> normalizers) {
+        this.normalizers = normalizers;
+        return this;
+    }
+
+    /**
+     * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
+     * is used to provide an additional level of encryption-at-rest for your data when you want full assurance that no
+     * one, not even Microsoft, can decrypt your data in Azure Cognitive Search. Once you have encrypted your data, it
+     * will always remain encrypted. Azure Cognitive Search will ignore attempts to set this property to null. You can
+     * change this property as needed if you want to rotate your encryption key; Your data will be unaffected.
+     * Encryption with customer-managed keys is not available for free search services, and is only available for paid
+     * services created on or after January 1, 2019.
      *
      * @return the encryptionKey value.
      */
@@ -336,17 +360,13 @@ public final class SearchIndex {
     }
 
     /**
-     * Set the encryptionKey property: A description of an encryption key that
-     * you create in Azure Key Vault. This key is used to provide an additional
-     * level of encryption-at-rest for your data when you want full assurance
-     * that no one, not even Microsoft, can decrypt your data in Azure
-     * Cognitive Search. Once you have encrypted your data, it will always
-     * remain encrypted. Azure Cognitive Search will ignore attempts to set
-     * this property to null. You can change this property as needed if you
-     * want to rotate your encryption key; Your data will be unaffected.
-     * Encryption with customer-managed keys is not available for free search
-     * services, and is only available for paid services created on or after
-     * January 1, 2019.
+     * Set the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
+     * is used to provide an additional level of encryption-at-rest for your data when you want full assurance that no
+     * one, not even Microsoft, can decrypt your data in Azure Cognitive Search. Once you have encrypted your data, it
+     * will always remain encrypted. Azure Cognitive Search will ignore attempts to set this property to null. You can
+     * change this property as needed if you want to rotate your encryption key; Your data will be unaffected.
+     * Encryption with customer-managed keys is not available for free search services, and is only available for paid
+     * services created on or after January 1, 2019.
      *
      * @param encryptionKey the encryptionKey value to set.
      * @return the SearchIndex object itself.
@@ -357,29 +377,25 @@ public final class SearchIndex {
     }
 
     /**
-     * Get the similarity property: The type of similarity algorithm to be used
-     * when scoring and ranking the documents matching a search query. The
-     * similarity algorithm can only be defined at index creation time and
-     * cannot be modified on existing indexes. If null, the ClassicSimilarity
-     * algorithm is used.
+     * Get the similarity property: The type of similarity algorithm to be used when scoring and ranking the documents
+     * matching a search query. The similarity algorithm can only be defined at index creation time and cannot be
+     * modified on existing indexes. If null, the ClassicSimilarity algorithm is used.
      *
      * @return the similarity value.
      */
-    public Similarity getSimilarity() {
+    public SimilarityAlgorithm getSimilarity() {
         return this.similarity;
     }
 
     /**
-     * Set the similarity property: The type of similarity algorithm to be used
-     * when scoring and ranking the documents matching a search query. The
-     * similarity algorithm can only be defined at index creation time and
-     * cannot be modified on existing indexes. If null, the ClassicSimilarity
-     * algorithm is used.
+     * Set the similarity property: The type of similarity algorithm to be used when scoring and ranking the documents
+     * matching a search query. The similarity algorithm can only be defined at index creation time and cannot be
+     * modified on existing indexes. If null, the ClassicSimilarity algorithm is used.
      *
      * @param similarity the similarity value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSimilarity(Similarity similarity) {
+    public SearchIndex setSimilarity(SimilarityAlgorithm similarity) {
         this.similarity = similarity;
         return this;
     }

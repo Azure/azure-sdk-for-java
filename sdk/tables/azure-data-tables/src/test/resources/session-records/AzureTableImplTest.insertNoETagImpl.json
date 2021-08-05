@@ -1,0 +1,95 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "1c29557d-baac-4a61-b353-bdd80dbde80f",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 21 Apr 2021 19:12:49 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('test1981493b45')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "24ea7cf2-b002-0070-0be2-36e6c9000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "1c29557d-baac-4a61-b353-bdd80dbde80f",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('test1981493b45')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/test1981493b45?timeout=100000",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "00671323-8c23-4ddb-b0c4-40cd552f398a",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 21 Apr 2021 19:12:49 GMT",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"datetime'2021-04-21T19%3A12%3A50.1468302Z'\"",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/test1981493b45(PartitionKey='partitionkey49814b',RowKey='rowkey97486e0b8')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "24ea7cfe-b002-0070-15e2-36e6c9000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "00671323-8c23-4ddb-b0c4-40cd552f398a",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/test1981493b45(PartitionKey='partitionkey49814b',RowKey='rowkey97486e0b8')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables?$format=application/json%3Bodata%3Dminimalmetadata",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "9667b573-eece-444e-a35a-a6437d9a0c02"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "24ea7d04-b002-0070-1be2-36e6c9000000",
+      "Body" : "{\"odata.metadata\":\"https://tablesstoragetests.table.core.windows.net/$metadata#Tables\",\"value\":[{\"TableName\":\"test1981493b45\"}]}",
+      "Date" : "Wed, 21 Apr 2021 19:12:49 GMT",
+      "x-ms-client-request-id" : "9667b573-eece-444e-a35a-a6437d9a0c02",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test1981493b45')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "x-ms-client-request-id" : "ef37f6d0-894a-442a-857b-a921cd958c0c"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "24ea7d0c-b002-0070-23e2-36e6c9000000",
+      "Date" : "Wed, 21 Apr 2021 19:12:49 GMT",
+      "x-ms-client-request-id" : "ef37f6d0-894a-442a-857b-a921cd958c0c"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test1981493b45", "1c29557d-baac-4a61-b353-bdd80dbde80f", "partitionkey49814b", "rowkey97486e0b8", "00671323-8c23-4ddb-b0c4-40cd552f398a", "9667b573-eece-444e-a35a-a6437d9a0c02", "ef37f6d0-894a-442a-857b-a921cd958c0c" ]
+}

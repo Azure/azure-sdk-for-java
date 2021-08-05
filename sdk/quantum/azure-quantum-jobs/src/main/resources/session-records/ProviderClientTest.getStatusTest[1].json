@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.quantum.azure.com/v1.0/subscriptions/677fc922-91d0-4bf6-9b06-4274d319a0fa/resourceGroups/sdk-review-rg/providers/Microsoft.Quantum/workspaces/workspace-ms/providerStatus",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "Server" : "Microsoft-IIS/10.0",
+      "Set-Cookie" : "ARRAffinitySameSite=a80c7c3a42bc29f88c9055a7e2789984b224746994993027ab866c65455cca24;Path=/;HttpOnly;SameSite=None;Secure;Domain=westus.quantum.azure.com",
+      "retry-after" : "0",
+      "Content-Length" : "1140",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"id\":\"Microsoft\",\"currentAvailability\":\"Available\",\"targets\":[{\"id\":\"microsoft.simulatedannealing.fpga\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.simulatedannealing-parameterfree.fpga\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.paralleltempering-parameterfree.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.paralleltempering.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.simulatedannealing-parameterfree.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.simulatedannealing.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.tabu-parameterfree.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.tabu.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.qmc.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null}]}],\"nextLink\":null}",
+      "Date" : "Mon, 01 Feb 2021 19:38:04 GMT",
+      "Request-Context" : "appId=cid-v1:4d6ac272-7369-45c6-9036-63d733c8519f",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "677fc922-91d0-4bf6-9b06-4274d319a0fa", "sdk-review-rg", "workspace-ms" ]
+}

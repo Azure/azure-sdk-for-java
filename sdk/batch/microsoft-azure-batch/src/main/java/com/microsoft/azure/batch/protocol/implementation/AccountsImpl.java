@@ -364,7 +364,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -382,7 +382,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -401,7 +401,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolNodeCounts&gt; object
@@ -417,7 +417,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolNodeCounts&gt; object
@@ -437,7 +437,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolNodeCounts&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
@@ -476,7 +476,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -502,7 +502,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -529,7 +529,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -546,7 +546,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -574,7 +574,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
     ServiceResponseWithHeaders<PageImpl<PoolNodeCounts>, AccountListPoolNodeCountsHeaders> * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -884,7 +884,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -903,7 +903,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -924,7 +924,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -941,7 +941,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -962,7 +962,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -996,7 +996,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation
@@ -1016,7 +1016,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation
@@ -1038,7 +1038,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation
@@ -1056,7 +1056,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation
@@ -1078,7 +1078,7 @@ public class AccountsImpl implements Accounts {
     }
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
     ServiceResponseWithHeaders<PageImpl<PoolNodeCounts>, AccountListPoolNodeCountsHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
     ServiceResponseWithHeaders<PageImpl<PoolNodeCounts>, AccountListPoolNodeCountsHeaders> * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation

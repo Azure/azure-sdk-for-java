@@ -13,7 +13,7 @@ public final class ExtractKeyPhraseResult extends TextAnalyticsResult {
     private final KeyPhrasesCollection keyPhrases;
 
     /**
-     * Create a {@link ExtractKeyPhraseResult} model that describes extracted key phrases result.
+     * Creates a {@link ExtractKeyPhraseResult} model that describes extracted key phrases result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
@@ -27,9 +27,12 @@ public final class ExtractKeyPhraseResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get a {@link KeyPhrasesCollection} contains a list of key phrases and warnings.
+     * Gets a {@link KeyPhrasesCollection} contains a list of key phrases and warnings.
      *
      * @return A {@link KeyPhrasesCollection} contains a list of key phrases and warnings.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public KeyPhrasesCollection getKeyPhrases() {
         throwExceptionIfError();

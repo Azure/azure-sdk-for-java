@@ -88,7 +88,7 @@ public final class PollingState {
             lroResponseBody);
         switch (pollingState.lroResponseStatusCode) {
             case 200:
-                return pollingState.initializeDataFor200StatusCode(lroResponseBody);
+                return pollingState.initializeDataFor200StatusCode(lroResponseHeaders, lroResponseBody);
             case 201:
                 return pollingState.initializeDataFor201StatusCode(lroResponseHeaders, lroResponseBody);
             case 202:
@@ -96,7 +96,7 @@ public final class PollingState {
             case 204:
                 return pollingState.initializeDataFor204StatusCode();
             default:
-                return pollingState.initializeDataForUnknownStatusCode(lroResponseBody);
+                return pollingState.initializeDataForUnknownStatusCode(lroResponseHeaders, lroResponseBody);
         }
     }
 
@@ -289,6 +289,7 @@ public final class PollingState {
                 break;
             case PROVISIONING_STATE_POLL:
                 this.provisioningStateData.update(pollResponseStatusCode,
+                    pollResponseHeaders,
                     pollResponseBody,
                     this.serializerAdapter);
                 break;
@@ -324,6 +325,12 @@ public final class PollingState {
             || ProvisioningState.CANCELED.equalsIgnoreCase(value);
         if (isCompleted && ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
             return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        } else if (isCompleted && ProvisioningState.FAILED.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.FAILED;
+        } else if (isCompleted && ProvisioningState.CANCELED.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.USER_CANCELLED;
+        } else if (ProvisioningState.IN_PROGRESS.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.IN_PROGRESS;
         }
         return LongRunningOperationStatus.fromString(value, isCompleted);
     }
@@ -408,12 +415,20 @@ public final class PollingState {
      * @param lroResponseBody the LRO response body
      * @return updated PollingState
      */
-    private PollingState initializeDataFor200StatusCode(String lroResponseBody) {
+    private PollingState initializeDataFor200StatusCode(HttpHeaders lroResponseHeaders,
+                                                        String lroResponseBody) {
         assertStatusCode(200);
         if (this.isPutOrPatchLro()) {
             String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
             if (value != null && !ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
-                return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
+                final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER, true);
+                if (azAsyncOpUrl == null) {
+                    return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
+                } else {
+                    return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
+                        this.lroOperationUri,
+                        azAsyncOpUrl, null));
+                }
             } else {
                 return this.setData(new SynchronouslySucceededLroData(lroResponseBody));
             }
@@ -432,8 +447,8 @@ public final class PollingState {
     private PollingState initializeDataFor201StatusCode(HttpHeaders lroResponseHeaders,
                                                         String lroResponseBody) {
         assertStatusCode(201);
-        final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER);
-        final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER);
+        final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER, true);
+        final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER, true);
         if (azAsyncOpUrl != null) {
             if (this.isPostOrDeleteLro()) {
                 LOGGER.info("The LRO {}:{}, received StatusCode:201, AzureAsyncOperation:{}. {}",
@@ -441,10 +456,15 @@ public final class PollingState {
                     "<POST|DELETE, 201, AzureAsyncOperation> combination violate ARM guideline, "
                         + "defaulting to async operation based polling.");
             }
-            return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
-                this.lroOperationUri,
-                azAsyncOpUrl,
-                locationUrl));
+            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
+            if (!ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
+                return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
+                    this.lroOperationUri,
+                    azAsyncOpUrl,
+                    locationUrl));
+            } else {
+                return this.setData(new SynchronouslySucceededLroData(lroResponseBody));
+            }
         }
         if (locationUrl != null) {
             LOGGER.info("The LRO {}:{}, received StatusCode:201, Location:{} without AzureAsyncOperation. {}",
@@ -453,7 +473,7 @@ public final class PollingState {
         }
         if (this.isPutOrPatchLro()) {
             String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
-            if (value != null) {
+            if (value != null && !ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
                 return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
             } else {
                 return this.setData(new SynchronouslySucceededLroData(lroResponseBody));
@@ -473,8 +493,8 @@ public final class PollingState {
     private PollingState initializeDataFor202StatusCode(HttpHeaders lroResponseHeaders,
                                                         String lroResponseBody) {
         assertStatusCode(202);
-        final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER);
-        final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER);
+        final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER, true);
+        final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER, true);
         if (azAsyncOpUrl != null) {
             return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
                 this.lroOperationUri,
@@ -485,7 +505,7 @@ public final class PollingState {
             return this.setData(new LocationData(locationUrl));
         }
         return this.setData(new SynchronouslyFailedLroData("Response with status code 202 does not contain "
-            + "an Azure-AsyncOperation or Location header", 202, lroResponseBody));
+            + "an Azure-AsyncOperation or Location header", 202, lroResponseHeaders.toMap(), lroResponseBody));
     }
 
     /**
@@ -503,9 +523,10 @@ public final class PollingState {
      *
      * @return updated PollingState
      */
-    private PollingState initializeDataForUnknownStatusCode(String lroResponseBody) {
+    private PollingState initializeDataForUnknownStatusCode(HttpHeaders lroResponseHeaders, String lroResponseBody) {
         return this.setData(new SynchronouslyFailedLroData("Response StatusCode: " + this.lroResponseStatusCode,
             this.lroResponseStatusCode,
+            lroResponseHeaders.toMap(),
             lroResponseBody));
     }
 
@@ -531,7 +552,15 @@ public final class PollingState {
     private static Duration getRetryAfter(HttpHeaders headers) {
         final String value = headers.getValue("Retry-After");
         if (value != null) {
-            return Duration.ofSeconds(Long.parseLong(value));
+            try {
+                long retryAfterInSeconds = Long.parseLong(value);
+                if (retryAfterInSeconds >= 0) {
+                    return Duration.ofSeconds(retryAfterInSeconds);
+                }
+            } catch (NumberFormatException nfe) {
+                LOGGER.logExceptionAsWarning(
+                    new IllegalArgumentException("Unable to decode '" + value + "' to Long", nfe));
+            }
         }
         return null;
     }

@@ -35,6 +35,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final LocationCache locationCache;
     private final URI defaultEndpoint;
     private final ConnectionPolicy connectionPolicy;
+    private final Duration maxInitializationTime;
     private final DatabaseAccountManagerInternal owner;
     private final AtomicBoolean isRefreshing;
     private final AtomicBoolean refreshInBackground;
@@ -46,6 +47,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public GlobalEndpointManager(DatabaseAccountManagerInternal owner, ConnectionPolicy connectionPolicy, Configs configs)  {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
+        this.maxInitializationTime = Duration.ofSeconds(configs.getGlobalEndpointManagerMaxInitializationTimeInSeconds());
         try {
             this.locationCache = new LocationCache(
                     new ArrayList<>(connectionPolicy.getPreferredRegions() != null ?
@@ -72,7 +74,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     public void init() {
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
-        startRefreshLocationTimerAsync(true).block();
+        startRefreshLocationTimerAsync(true).block(maxInitializationTime);
     }
 
     public UnmodifiableList<URI> getReadEndpoints() {
@@ -167,6 +169,10 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.latestDatabaseAccount;
     }
 
+    public int getPreferredLocationCount() {
+        return this.connectionPolicy.getPreferredRegions() != null ? this.connectionPolicy.getPreferredRegions().size() : 0;
+    }
+
     private Mono<Void> refreshLocationPrivateAsync(DatabaseAccount databaseAccount) {
         return Mono.defer(() -> {
             logger.debug("refreshLocationPrivateAsync() refreshing locations");
@@ -234,7 +240,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
         this.refreshInBackground.set(true);
 
-        return Mono.delay(Duration.ofMillis(delayInMillis))
+        return Mono.delay(Duration.ofMillis(delayInMillis), CosmosSchedulers.COSMOS_PARALLEL)
                 .flatMap(
                         t -> {
                             if (this.isClosed) {

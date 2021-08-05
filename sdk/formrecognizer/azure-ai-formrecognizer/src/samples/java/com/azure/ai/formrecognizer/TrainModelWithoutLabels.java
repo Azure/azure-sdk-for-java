@@ -3,15 +3,25 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
- * Sample to train a model with unlabeled data. See RecognizeCustomFormsAsync to recognize forms with your custom model.
+ * Sample to train a model with unlabeled data.
+ * For instructions on setting up forms for training in an Azure Storage Blob Container, see
+ * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
+ *
+ * For this sample, you can use the training forms found in
+ * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/sample-forms/training">here</a>
+ * to create your own custom models.
+ *
+ * Further, see RecognizeCustomForms.java to recognize forms with your custom built model.
  */
 public class TrainModelWithoutLabels {
 
@@ -22,31 +32,39 @@ public class TrainModelWithoutLabels {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-
         FormTrainingClient client = new FormTrainingClientBuilder()
-            .credential(new AzureKeyCredential("{api_Key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
         // Train custom model
-        String trainingSetSource = "{unlabeled_training_set_SAS_URL}";
-        SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, false);
+        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
+            client.beginTraining(trainingFilesUrl,
+                false,
+                new TrainingOptions()
+                    .setModelName("composed model name"),
+                Context.NONE);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
 
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
-        System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
+        System.out.printf("Model name: %s%n", customFormModel.getModelName());
+        System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
+        System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
         System.out.println("Recognized Fields:");
-        // looping through the sub-models, which contains the fields they were trained on
+        // looping through the subModels, which contains the fields they were trained on
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
-            customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
-                System.out.printf("Field: %s Field Label: %s%n",
+            System.out.printf("Submodel Id: %s%n", customFormSubmodel.getModelId());
+            System.out.printf("The submodel has form type %s%n", customFormSubmodel.getFormType());
+            customFormSubmodel.getFields().forEach((field, customFormModelField) ->
+                System.out.printf("The model found field '%s' with label: %s%n",
                     field, customFormModelField.getLabel()));
         });
         System.out.println();
@@ -54,12 +72,12 @@ public class TrainModelWithoutLabels {
         // Training result information
         customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
             System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
-            System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
-            System.out.printf("Document page count: %s%n", trainingDocumentInfo.getPageCount());
-            if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
+            System.out.printf("Document status: %s%n", trainingDocumentInfo.getStatus());
+            System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
+            if (!trainingDocumentInfo.getErrors().isEmpty()) {
                 System.out.println("Document Errors:");
-                trainingDocumentInfo.getDocumentErrors().forEach(formRecognizerError ->
-                    System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getCode(),
+                trainingDocumentInfo.getErrors().forEach(formRecognizerError ->
+                    System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getErrorCode(),
                         formRecognizerError.getMessage()));
             }
         });

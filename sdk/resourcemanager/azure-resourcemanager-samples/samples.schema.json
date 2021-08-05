@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Sample Repository Generator Tool - Samples Schema",
+  "description": "The schema for the samples.json file that is used by the Sample Repository Generator Tool for Java samples.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "enum": [
+        "./samples.schema.json"
+      ]
+    },
+    "javaSamples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "filePath": {
+            "type": "string",
+            "pattern": "^azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/([a-zA-Z]+)/samples/([a-zA-Z0-9]+).java$",
+            "description": "The path to the sample's Java source code, relative to the local azure-sdk-for-java repository."
+          },
+          "owner": {
+            "enum": [
+              "alvadb",
+              "anuchandy",
+              "anudeepsharma",
+              "daschult",
+              "hovsepm",
+              "jianghaolu",
+              "lenala",
+              "martinsawicki",
+              "milismsft",
+              "selvasingh",
+              "yungezz"
+            ],
+            "description": "The GitHub username of the owner of this sample."
+          },
+          "githubPath": {
+            "type": "string",
+            "pattern": "^Azure-Samples/([a-zA-Z]+-)+java(-[a-zA-Z0-9]+)+$",
+            "description": "The GitHub path to this sample's repository."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The description that will be used in the GitHub sample repository."
+          }
+        },
+        "required": [
+          "filePath",
+          "owner",
+          "githubPath",
+          "description"
+        ]
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "javaSamples"
+  ],
+  "additionalProperties": false
+}

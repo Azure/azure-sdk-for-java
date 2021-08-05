@@ -1,156 +1,131 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20210603.1
+
 parameters:
-  Artifacts: []
-  ServiceDirectory: not-specified
-  TargetDocRepoOwner: 'Azure'
-  TargetDocRepoName: 'azure-docs-sdk-java'
+- name: Artifacts
+  type: object
+  default: []
+- name: AdditionalModules
+  type: object
+  default: []
+- name: ServiceDirectory
+  type: string
+  default: not-specified
+- name: SDKType
+  type: string
+  default: not-specified
+- name: TargetDocRepoOwner
+  type: string
+  default: Azure
+- name: TargetDocRepoName
+  type: string
+  default: azure-docs-sdk-java
 
 stages:
   - stage: Build
     jobs:
-    - template: ../jobs/archetype-sdk-client.yml
+    - template: /eng/pipelines/templates/jobs/ci.yml
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         SDKType: ${{parameters.SDKType}}
-        TestMatrix:
-          Linux - Java 8:
-            OSVmImage: 'ubuntu-18.04'
-            JavaVersion: '1.8'
-            RunTitle: 'Linux on Java 1.8'
-            ProfileFlag: '-Punit'
-          macOS - Java 8:
-            OSVmImage: 'macOS-10.15'
-            JavaVersion: '1.8'
-            RunTitle: 'macOS on Java 1.8'
-            ProfileFlag: '-Punit'
-          Windows - Java 8:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            RunTitle: 'Windows on Java 1.8'
-            ProfileFlag: '-Punit'
-          Linux - Java 11:
-            OSVmImage: 'ubuntu-18.04'
-            JavaVersion: '1.11'
-            RunTitle: 'Linux on Java 1.11'
-            ProfileFlag: '-Punit'
-          macOS - Java 11:
-            OSVmImage: 'macOS-10.15'
-            JavaVersion: '1.11'
-            RunTitle: 'macOS on Java 1.11'
-            ProfileFlag: '-Punit'
-          Windows - Java 11:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.11'
-            RunTitle: 'Windows on Java 1.11'
-            ProfileFlag: '-Punit'
-          Windows From Source - Java 8:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            RunTitle: 'From Source: Windows on Java 1.8'
-            TestFromSource: true
-            ProfileFlag: '-Punit'
-        PreTestSteps:
-          - template: ../steps/install-reporting-tools.yml
+        MatrixConfigs:
+          - Name: Cosmos_ci_test
+            Path: eng/pipelines/templates/stages/platform-matrix.json
+            Selection: sparse
+            NonSparseParameters: Agent
+            GenerateVMJobs: true
+        MatrixFilters:
+          - TestFromSource=^$
+        MatrixReplace:
+          - TestOptions=.*/-Punit
+          - AZURE_TEST.*=.*/
 
-    - template: ../jobs/archetype-sdk-tests.yml
+  - stage: TestEmulator
+    displayName: Test Emulator
+    dependsOn: []
+    jobs:
+    - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
       parameters:
-        TestName: Emulator
-        DisableAzureResourceCreation: true
-        ServiceDirectory: cosmos
-        Artifacts: ${{ parameters.Artifacts }}
-        AdditionalModules: ${{ parameters.AdditionalModules }}
-        Matrix:
-          Tcp_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            ProfileFlag: '-Pemulator'
-            DisplayName: 'Emulator only Integration Tests'
-            PROTOCOLS: '["Tcp"]'
-            DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          Https_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            ProfileFlag: '-Pemulator'
-            DisplayName: 'Emulator only Integration Tests'
-            PROTOCOLS: '["Https"]'
-            DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          Examples_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            ProfileFlag: '-Pexamples'
-            DisplayName: 'Examples Integration Tests'
-            PROTOCOLS: '["Https", "Tcp"]'
-            DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
+        MatrixConfigs:
+          - Name: Cosmos_emulator_integration
+            Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
+            Selection: all
+            GenerateVMJobs: true
+        AdditionalParameters:
+          DisableAzureResourceCreation: true
+          ServiceDirectory: cosmos
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          ACCOUNT_HOST: 'https://localhost:8081/'
+          ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+          SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+          # Increased timeout to 90 because of cosmos emulator taking 25-30 mins to download emulator
+          # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
+          TimeoutInMinutes: 90
+          TestStepMavenInputs:
+            goals: clean verify
+            options: '$(DefaultTestOptions) $(ProfileFlag) $(AdditionalArgs)'
+            mavenOptions: '$(DefaultTestMavenOptions)'
+            mavenAuthenticateFeed: true
+            jdkVersionOption: $(JavaTestVersion)
 
-        TestStepMavenInputs:
-          goals: 'verify'
-          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList)'
-          mavenAuthenticateFeed: true
-          jdkVersionOption: $(JavaVersion)
-
-        PreRunSteps:
-        - template: ../steps/update-version-fix.yml
-
-        - powershell: |
-            Write-Host "Downloading Cosmos Emulator - $(EmulatorMsiUrl)"
-            Invoke-WebRequest "$(EmulatorMsiUrl)" -OutFile "$env:temp\azure-cosmosdb-emulator.msi"
-            Write-Host "Finished Downloading Cosmos Emulator - $env:temp\azure-cosmosdb-emulator.msi"
-            dir "$env:temp"
-          displayName: 'Download Public Cosmos DB Emulator'
-
-        - script: |
-            choco install lessmsi
-            choco upgrade lessmsi
-            mkdir "%TEMP%\Azure Cosmos DB Emulator"
-            lessmsi x "%TEMP%\azure-cosmosdb-emulator.msi" "%TEMP%\Azure Cosmos DB Emulator\"
-          displayName: 'Install Public Cosmos DB Emulator'
-
-        - powershell: |
-            Write-Host "Starting Comsos DB Emulator"
-            Start-Process "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong" -Verb RunAs
-          displayName: 'Run Public Cosmos DB Emulator'
-
-        - powershell: |
-            Import-Module "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
-
-            Do {
-                sleep 5
-                $cosmosStatus = Get-CosmosDbEmulatorStatus
-                Write-Host "Cosmos Status: $cosmosStatus"
-            } While ($cosmosStatus -ne 'Running')
-
-            Write-Host "Done"
-          displayName: 'Check Public Cosmos DB Emulator Status'
-
-        - powershell: |
-            $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-            $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
-            $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
-            Export-PfxCertificate -Cert $cert -FilePath ".\CosmosDbEmulatorCert.pfx" -Password $password | Out-Null
-            $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
-            $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
-            $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
-          displayName: 'Export Cosmos DB Emulator Certificate'
-
-        - powershell: |
-            cd $env:java_home\jre\lib\security
-            cp $env:temp\CosmosDbEmulatorCert.cer .
-            keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
-          displayName: 'Create Java TrustStore'
-
-        # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
-        # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
-        - template: ../steps/install-reporting-tools.yml
+          PreSteps:
+          - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
+            parameters:
+              StartParameters: '/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'
+          - powershell: |
+              $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+              $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
+              $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
+              Export-PfxCertificate -Cert $cert -FilePath ".\CosmosDbEmulatorCert.pfx" -Password $password | Out-Null
+              $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
+              $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
+              $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
+            displayName: 'Export Cosmos DB Emulator Certificate'
+          - powershell: |
+              cd $env:java_home\jre\lib\security
+              cp $env:temp\CosmosDbEmulatorCert.cer .
+              keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
+            displayName: 'Create Java TrustStore'
+          - powershell: |
+              $downloadTarget = Join-Path -Path $env:temp -ChildPath "hadoopsource.zip"
+              $targetDir = "D:\Hadoop"
+              Write-Host "Downloading and extracting Hadoop winutils - https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline"
+              Write-Host "Target: $targetDir"
+              Invoke-WebRequest "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline" -OutFile $downloadTarget
+              if (Test-Path $targetDir) { Remove-Item -Recurse -Force $targetDir }
+              Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
+              Write-Host "Copying binaries to windows sytem32 folder"
+              Copy-Item -Path "D:\Hadoop\bin\*" -Destination "C:\Windows\System32" -Recurse
+              Write-Host "Updating environment variables for Hadoop usage"
+              [System.Environment]::SetEnvironmentVariable("HADOOP_HOME", "D:\Hadoop", [System.EnvironmentVariableTarget]::Machine)
+              $hadoopHome = [System.Environment]::GetEnvironmentVariable("HADOOP_HOME", [System.EnvironmentVariableTarget]::Machine)
+              Write-Host "New HADOOP_HOME environment variable: $hadoopHome"
+              $path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+              Write-Host "Original Path environment variable: $path"
+              $newPath = $path + ";D:\Hadoop\bin"
+              [System.Environment]::SetEnvironmentVariable("Path", $newPath,[System.EnvironmentVariableTarget]::Machine)
+              $updatedPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+              Write-Host "New Path environment variable: $updatedPath"
+            displayName: 'Download and Extract Hadoop winutils and update env variables for Hadoop usage'
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release.yml
       parameters:
-        DependsOn: Build
+        DependsOn:
+          - Build
+          - TestEmulator
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
         TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+        TargetDocRepoName: ${{parameters.TargetDocRepoName}}

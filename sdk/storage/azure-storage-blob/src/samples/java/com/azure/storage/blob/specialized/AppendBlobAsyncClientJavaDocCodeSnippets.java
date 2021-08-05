@@ -3,10 +3,13 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.options.AppendBlobSealOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -70,6 +73,25 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(AppendBlobCreateOptions)}
+     */
+    public void create3() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentType("binary")
+            .setContentLanguage("en-US");
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
+            .setTags(tags).setRequestConditions(requestConditions)).subscribe(response ->
+            System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
+    }
+
+    /**
      * Code snippet for {@link AppendBlobAsyncClient#appendBlock(Flux, long)}
      */
     public void appendBlock() {
@@ -122,5 +144,47 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
             appendBlobRequestConditions, modifiedRequestConditions).subscribe(response ->
             System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobAsyncClient#appendBlockFromUrlWithResponse(String, BlobRange, byte[], AppendBlobRequestConditions, BlobRequestConditions)}
+     */
+    public void appendBlockFromUrlOptionBag() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions
+        AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions()
+            .setAppendPosition(POSITION)
+            .setMaxSize(maxSize);
+
+        BlobRequestConditions modifiedRequestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
+            .setSourceRange(new BlobRange(offset, count))
+            .setDestinationRequestConditions(appendBlobRequestConditions)
+            .setSourceRequestConditions(modifiedRequestConditions)).subscribe(response ->
+            System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobAsyncClient#seal()}
+     */
+    public void seal() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.seal
+        client.seal().subscribe(response -> System.out.println("Sealed AppendBlob"));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.seal
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobAsyncClient#sealWithResponse(AppendBlobSealOptions)}
+     */
+    public void seal2() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions
+        AppendBlobRequestConditions requestConditions = new AppendBlobRequestConditions().setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(requestConditions))
+            .subscribe(response -> System.out.println("Sealed AppendBlob"));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions
     }
 }

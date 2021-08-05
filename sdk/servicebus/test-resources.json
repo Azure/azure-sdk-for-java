@@ -56,10 +56,12 @@
     "namespaceDomainNameSuffix": "servicebus.windows.net",
     "queueName": "queue",
     "queueSessionName": "queue-session",
-    "numberOfInstances": 10,
+    "numberOfInstances": 25,
     "subscriptionName": "subscription",
     "subscriptionSessionName": "subscription-session",
-    "serviceBusDataOwnerRoleId": "090c5cfd-751d-490a-894a-3ce6f1109419",
+    "serviceBusDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419')]",
+    "serviceBusDataReceiverRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/4f6d3b9b-027b-4f4c-9142-0e5a2a2247e0')]",
+    "serviceBusDataSenderRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/69a216fc-b8fb-44d8-bc22-1f3c2cd27a39')]",
     "sharedAccessKeyName": "RootManageSharedAccessKey",
     "topicName": "topic"
   },
@@ -92,16 +94,56 @@
       ]
     },
     {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[guid(concat('dataOwnerRoleId', parameters('baseName')))]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('serviceBusDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[guid(concat('dataReceiverRoleId', parameters('baseName')))]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('serviceBusDataReceiverRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[guid(concat('dataSenderRoleId', parameters('baseName')))]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('serviceBusDataSenderRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
       "type": "Microsoft.ServiceBus/namespaces/topics",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaceName'), '/', variables('topicName'))]",
+      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex())]",
       "properties": {
         "maxSizeInMegabytes": 1024,
         "enablePartitioning": false
       },
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
-      ]
+      ],
+      "copy": {
+        "name": "queueCopy",
+        "count": "[variables('numberOfInstances')]"
+      }
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
@@ -141,9 +183,9 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '/', variables('subscriptionName'), '-', copyIndex())]",
+      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionName'))]",
       "dependsOn": [
-        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'))]"
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
       ],
       "properties": {
         "requiresSession": false,
@@ -158,9 +200,9 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '/', variables('subscriptionSessionName'), '-', copyIndex())]",
+      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionSessionName'))]",
       "dependsOn": [
-        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'))]"
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
       ],
       "properties": {
         "requiresSession": true,
@@ -211,6 +253,26 @@
       "value": "[variables('subscriptionName')]"
     },
     "AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME": {
+      "type": "string",
+      "value": "[variables('subscriptionSessionName')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME": {
+      "type": "string",
+      "value": "[concat(variables('queueName'), '-0')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME": {
+      "type": "string",
+      "value": "[concat(variables('queueSessionName'), '-0')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME": {
+      "type": "string",
+      "value": "[concat(variables('topicName'), '-0')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_SUBSCRIPTION_NAME": {
+      "type": "string",
+      "value": "[concat(variables('subscriptionName'), '-0')]"
+    },
+    "AZURE_SERVICEBUS_SAMPLE_SESSION_SUBSCRIPTION_NAME": {
       "type": "string",
       "value": "[variables('subscriptionSessionName')]"
     }

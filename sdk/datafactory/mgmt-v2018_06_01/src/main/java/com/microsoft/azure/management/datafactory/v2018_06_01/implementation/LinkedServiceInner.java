@@ -19,6 +19,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.AzureBlobStorageLi
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureDataExplorerLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureDataLakeAnalyticsLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureDataLakeStoreLinkedService;
+import com.microsoft.azure.management.datafactory.v2018_06_01.AzureDatabricksDeltaLakeLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureDatabricksLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureFileStorageLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureFunctionLinkedService;
@@ -68,6 +69,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.MagentoLinkedServi
 import com.microsoft.azure.management.datafactory.v2018_06_01.MariaDBLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MarketoLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MicrosoftAccessLinkedService;
+import com.microsoft.azure.management.datafactory.v2018_06_01.MongoDbAtlasLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MongoDbLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MongoDbV2LinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MySqlLinkedService;
@@ -101,7 +103,9 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.SapOpenHubLinkedSe
 import com.microsoft.azure.management.datafactory.v2018_06_01.SapTableLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ServiceNowLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SftpServerLinkedService;
+import com.microsoft.azure.management.datafactory.v2018_06_01.SharePointOnlineListLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ShopifyLinkedService;
+import com.microsoft.azure.management.datafactory.v2018_06_01.SnowflakeLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SparkLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SqlServerLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SquareLinkedService;
@@ -120,6 +124,8 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.ZohoLinkedService;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = LinkedServiceInner.class)
 @JsonTypeName("LinkedService")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
+    @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
     @JsonSubTypes.Type(name = "SapTable", value = SapTableLinkedService.class),
@@ -127,6 +133,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.ZohoLinkedService;
     @JsonSubTypes.Type(name = "OracleServiceCloud", value = OracleServiceCloudLinkedService.class),
     @JsonSubTypes.Type(name = "DynamicsAX", value = DynamicsAXLinkedService.class),
     @JsonSubTypes.Type(name = "Responsys", value = ResponsysLinkedService.class),
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLake", value = AzureDatabricksDeltaLakeLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDatabricks", value = AzureDatabricksLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDataLakeAnalytics", value = AzureDataLakeAnalyticsLinkedService.class),
     @JsonSubTypes.Type(name = "HDInsightOnDemand", value = HDInsightOnDemandLinkedService.class),
@@ -180,6 +187,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.ZohoLinkedService;
     @JsonSubTypes.Type(name = "AzureDataLakeStore", value = AzureDataLakeStoreLinkedService.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApi", value = CosmosDbMongoDbApiLinkedService.class),
     @JsonSubTypes.Type(name = "MongoDbV2", value = MongoDbV2LinkedService.class),
+    @JsonSubTypes.Type(name = "MongoDbAtlas", value = MongoDbAtlasLinkedService.class),
     @JsonSubTypes.Type(name = "MongoDb", value = MongoDbLinkedService.class),
     @JsonSubTypes.Type(name = "Cassandra", value = CassandraLinkedService.class),
     @JsonSubTypes.Type(name = "Web", value = WebLinkedService.class),

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -286,5 +287,26 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // Client must be authenticated via StorageSharedKeyCredential
         String sas = queueServiceAsyncClient.generateAccountSas(sasValues);
         // END: com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link QueueServiceAsyncClient#generateAccountSas(AccountSasSignatureValues, Context)}
+     */
+    public void generateAccountSasWithContext() {
+        QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true).setObject(true);
+        AccountSasService services = new AccountSasService().setQueueAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = queueServiceAsyncClient.generateAccountSas(sasValues, new Context("key", "value"));
+        // END: com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context
     }
 }

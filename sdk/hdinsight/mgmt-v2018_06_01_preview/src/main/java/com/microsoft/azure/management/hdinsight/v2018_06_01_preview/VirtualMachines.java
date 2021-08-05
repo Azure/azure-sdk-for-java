@@ -26,7 +26,7 @@ public interface VirtualMachines extends HasInner<VirtualMachinesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<HostInfoListResult> listHostsAsync(String resourceGroupName, String clusterName);
+    Observable<HostInfo> listHostsAsync(String resourceGroupName, String clusterName);
 
     /**
      * Restarts the specified HDInsight cluster hosts.

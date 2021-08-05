@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class QuorumReaderTest {
@@ -82,7 +83,7 @@ public class QuorumReaderTest {
                 .withSecondary(secondaryReplicaURIs)
                 .build();
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = new DocumentServiceRequestContext();
@@ -108,9 +109,9 @@ public class QuorumReaderTest {
 
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
+        QuorumReader quorumReader = new QuorumReader(mockDiagnosticsClientContext(), configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
-        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
 
         StoreResponseValidator.Builder validatorBuilder = StoreResponseValidator.create()
                 .withBELocalLSN(localLSN)
@@ -157,7 +158,7 @@ public class QuorumReaderTest {
                 .withSecondary(secondaryReplicaURIs)
                 .build();
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = new DocumentServiceRequestContext();
@@ -227,7 +228,7 @@ public class QuorumReaderTest {
 
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
+        QuorumReader quorumReader = new QuorumReader(mockDiagnosticsClientContext(), configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
         int expectedNumberOfReads = 2;
         int expectedNumberOfHeads = 2 * numberOfBarrierRequestTillCatchUp;
@@ -237,7 +238,7 @@ public class QuorumReaderTest {
 
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSN(expectedQuorumLsn)
@@ -304,7 +305,7 @@ public class QuorumReaderTest {
                 .withSecondary(secondaryReplicaURIs)
                 .build();
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = new DocumentServiceRequestContext();
@@ -377,7 +378,7 @@ public class QuorumReaderTest {
 
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
+        QuorumReader quorumReader = new QuorumReader(mockDiagnosticsClientContext(), configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
         int beforeSecondariesRetriesExhausted_expectedNumberOfReads = 2;
         int beforeSecondariesRetriesExhausted_expectedNumberOfHeads = 2 * configs.getMaxNumberOfReadBarrierReadRetries();
@@ -390,7 +391,7 @@ public class QuorumReaderTest {
 
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSN(expectedQuorumLsn)
@@ -464,7 +465,7 @@ public class QuorumReaderTest {
                 .withSecondary(secondaryReplicaURIs)
                 .build();
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = new DocumentServiceRequestContext();
@@ -503,13 +504,13 @@ public class QuorumReaderTest {
 
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
+        QuorumReader quorumReader = new QuorumReader(mockDiagnosticsClientContext(), configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
         double expectedRequestCharge = requestChargePerRead.multiply(BigDecimal.valueOf(1))
                 .add(requestChargePerHead.multiply(BigDecimal.valueOf(0)))
                 .setScale(4, RoundingMode.FLOOR).doubleValue();
 
-        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSN(primaryLSN)
@@ -598,7 +599,7 @@ public class QuorumReaderTest {
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
 
-        QuorumReader quorumReader = new QuorumReader(configs, endpointMock.transportClientWrapper.transportClient,
+        QuorumReader quorumReader = new QuorumReader(mockDiagnosticsClientContext(), configs, endpointMock.transportClientWrapper.transportClient,
                                                      endpointMock.addressSelectorWrapper.addressSelector,
                                                      new StoreReader(endpointMock.transportClientWrapper.transportClient,
                                                                      endpointMock.addressSelectorWrapper.addressSelector,
@@ -606,7 +607,7 @@ public class QuorumReaderTest {
                                                      serviceConfigurator,
                                                      authTokenProvider);
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = new DocumentServiceRequestContext();
@@ -616,7 +617,7 @@ public class QuorumReaderTest {
 
         int replicaCountToRead = 1;
         ReadMode readMode = ReadMode.Strong;
-        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
 
         validateSuccess(storeResponseSingle, storeResponseValidator);
         endpointMock.validate(verification);

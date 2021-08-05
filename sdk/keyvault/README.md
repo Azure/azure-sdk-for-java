@@ -4,19 +4,19 @@
 
 This is the Microsoft Azure Key Vault client library which allows for the consumption of Key Vault services. Azure Key Vault helps safeguard cryptographic keys and secrets used by cloud applications and services. By using Key Vault, you can encrypt keys and secrets (such as authentication keys, storage account keys, data encryption keys, .PFX files, and passwords) using keys protected by hardware security modules (HSMs). For added assurance, you can import or generate keys in HSMs. If you choose to do this, Microsoft processes your keys in FIPS 140-2 Level 2 validated HSMs (hardware and firmware).
 Key Vault streamlines the key management process and enables you to maintain control of keys that access and encrypt your data. Developers can create keys for development and testing in minutes, and then seamlessly migrate them to production keys. Security administrators can grant (and revoke) permission to keys, as needed.
-For more information refer to [What is Key Vault?](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-whatis) or [Getting Started](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-get-started).
+For more information refer to [About Azure Key Vault](https://docs.microsoft.com/azure/key-vault/general/overview).
 
-Documentation for this SDK can be found at [Azure Key Vault Java Documentation](https://docs.microsoft.com/en-us/java/api/overview/azure/keyvault)
+Documentation for this SDK can be found at [Azure Key Vault Java Documentation](https://docs.microsoft.com/java/api/overview/azure/keyvault)
 
 ## Getting started
 
 To get started with a specific library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk/keyvault/azure-security-keyvault-<subcomponent>` directory.
-- [Azure Keyvault Keys README](azure-security-keyvault-keys/README.md)
-- [Azure Keyvault Certificates README](azure-security-keyvault-certificates/README.md)
-- [Azure Keyvault Secrets README](azure-security-keyvault-secrets/README.md)
+- [Azure Keyvault Keys README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
+- [Azure Keyvault Certificates README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+- [Azure Keyvault Secrets README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md)
 
 ## Sample code
-You can find sample code that illustrates key vault usage scenarios [here](https://azure.microsoft.com/en-us/resources/samples/?sort=0&service=key-vault&platform=java).
+You can find sample code that illustrates key vault usage scenarios [here](https://azure.microsoft.com/resources/samples/?sort=0&service=key-vault&platform=java).
 
 <table>
     <tr>
@@ -80,7 +80,7 @@ You can find sample code that illustrates key vault usage scenarios [here](https
     </tr>
 </table>
 
-For more information on using Java with Azure, see [here](https://azure.microsoft.com/en-us/develop/java/)
+For more information on using Java with Azure, see [here](https://azure.microsoft.com/develop/java/)
 
 ## Download
 
@@ -106,13 +106,13 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 Clone the repo, then run `mvn compile` from the root directory.
 
 To run the recorded tests:
-1. If you have not already, you need to install the [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html) package.
+1. If you have not already, you need to install the [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files](https://www.oracle.com/java/technologies/javase-jce8-downloads.html) package.
 2. run `mvn jetty:run` to start a jetty server. This starts a service that will block the terminal so you will likely want to open a second terminal to run the actual tests.
 3. In your second terminal run `mvn test`.
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -132,12 +132,11 @@ If you would like to become an active contributor to this project please follow 
 | [1.0.0](https://github.com/Azure/azure-keyvault-java/tree/v1.0.0)   | Version 1.0.0 release |
 
 # More information
-* [Azure Key Vault Java Documentation](https://docs.microsoft.com/en-us/java/api/overview/azure/keyvault)
-* [What is Key Vault?](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-whatis)
-* [Get started with Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-get-started)
-* [Azure Key Vault General Documentation](https://docs.microsoft.com/en-us/azure/key-vault/)
-* [Azure Key Vault REST API Reference](https://docs.microsoft.com/en-us/rest/api/keyvault/)
-* [Azure Active Directory Documenation](https://docs.microsoft.com/en-us/azure/active-directory/)
+* [Azure Key Vault Java Documentation](https://docs.microsoft.com/java/api/overview/azure/keyvault)
+* [About Azure Key Vault](https://docs.microsoft.com/azure/key-vault/general/overview)
+* [Azure Key Vault General Documentation](https://docs.microsoft.com/azure/key-vault/)
+* [Azure Key Vault REST API Reference](https://docs.microsoft.com/rest/api/keyvault/)
+* [Azure Active Directory Documenation](https://docs.microsoft.com/azure/active-directory/)
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2FREADME.png)

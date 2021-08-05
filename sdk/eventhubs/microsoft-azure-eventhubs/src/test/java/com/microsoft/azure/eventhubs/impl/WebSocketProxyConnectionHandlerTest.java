@@ -4,6 +4,8 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.ProxyConfiguration;
+import com.microsoft.azure.eventhubs.ProxyConfiguration.ProxyAuthenticationType;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,7 +22,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 public class WebSocketProxyConnectionHandlerTest {
@@ -28,6 +30,8 @@ public class WebSocketProxyConnectionHandlerTest {
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
     private static final String USERNAME = "test-user";
     private static final String PASSWORD = "test-password";
+    private static final String CONNECTION_ID = "web-socket-connection-id";
+    private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
     private ProxySelector originalProxySelector;
     private ProxySelector proxySelector;
@@ -61,7 +65,8 @@ public class WebSocketProxyConnectionHandlerTest {
         when(proxySelector.select(argThat(u -> u.getHost().equals(host))))
             .thenReturn(Collections.singletonList(PROXY));
 
-        final WebSocketProxyConnectionHandler handler = new WebSocketProxyConnectionHandler(connection, null);
+        final WebSocketProxyConnectionHandler handler = new WebSocketProxyConnectionHandler(connection, CONNECTION_ID,
+            VERIFY_MODE, null);
 
         // Act and Assert
         Assert.assertEquals(PROXY_ADDRESS.getHostName(), handler.getRemoteHostName());
@@ -81,7 +86,8 @@ public class WebSocketProxyConnectionHandlerTest {
         when(proxySelector.select(argThat(u -> u.getHost().equals(host))))
             .thenReturn(Collections.singletonList(PROXY));
 
-        final WebSocketProxyConnectionHandler handler = new WebSocketProxyConnectionHandler(connection, ProxyConfiguration.SYSTEM_DEFAULTS);
+        final WebSocketProxyConnectionHandler handler = new WebSocketProxyConnectionHandler(connection, CONNECTION_ID,
+            VERIFY_MODE, ProxyConfiguration.SYSTEM_DEFAULTS);
 
         // Act and Assert
         Assert.assertEquals(PROXY_ADDRESS.getHostName(), handler.getRemoteHostName());
@@ -99,20 +105,22 @@ public class WebSocketProxyConnectionHandlerTest {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
-        final ProxyConfiguration configuration = new ProxyConfiguration(ProxyConfiguration.ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
+        final ProxyConfiguration configuration = new ProxyConfiguration(ProxyAuthenticationType.BASIC, newProxy,
+            USERNAME, PASSWORD);
         final String host = "foo.eventhubs.azure.com";
         final AmqpConnection connection = mock(AmqpConnection.class);
 
         when(connection.getHostName()).thenReturn(host);
         when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));
 
-        final WebSocketProxyConnectionHandler handler = new WebSocketProxyConnectionHandler(connection, configuration);
+        final WebSocketProxyConnectionHandler handler = new WebSocketProxyConnectionHandler(connection, CONNECTION_ID,
+            VERIFY_MODE, configuration);
 
         // Act and Assert
         Assert.assertEquals(address.getHostName(), handler.getRemoteHostName());
         Assert.assertEquals(address.getPort(), handler.getRemotePort());
 
-        verifyZeroInteractions(proxySelector);
+        verifyNoInteractions(proxySelector);
     }
 
     @Test

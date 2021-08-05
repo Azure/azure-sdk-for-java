@@ -1,0 +1,17 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}",
+    "subject": "liveEvent/liveevent-ec9d26a8",
+    "eventType": "Microsoft.Media.LiveEventEncoderConnected",
+    "eventTime": "2018-10-12T15:52:04.2013501Z",
+    "id": "3d1f5b26-c466-47e7-927b-900985e0c5d5",
+    "data": {
+      "ingestUrl": "rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59",
+      "streamId": "Mystream1",
+      "encoderIp": "<ip address>",
+      "encoderPort": "3557"
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

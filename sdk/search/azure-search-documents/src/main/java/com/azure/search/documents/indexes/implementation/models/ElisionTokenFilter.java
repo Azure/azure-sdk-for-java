@@ -7,14 +7,15 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Removes elisions. For example, "l'avion" (the plane) will be converted to
- * "avion" (plane). This token filter is implemented using Apache Lucene.
+ * Removes elisions. For example, "l'avion" (the plane) will be converted to "avion" (plane). This token filter is
+ * implemented using Apache Lucene.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.ElisionTokenFilter")
@@ -25,6 +26,16 @@ public final class ElisionTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "articles")
     private List<String> articles;
+
+    /**
+     * Creates an instance of ElisionTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public ElisionTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the articles property: The set of articles to remove.

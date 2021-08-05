@@ -24,8 +24,8 @@ public class HttpRequestTests {
 
     @Test
     public void testClone() throws IOException {
-        final HttpHeaders headers = new HttpHeaders().put("my-header", "my-value")
-            .put("other-header", "other-value");
+        final HttpHeaders headers = new HttpHeaders().set("my-header", "my-value")
+            .set("other-header", "other-value");
 
         final HttpRequest request = new HttpRequest(
                 HttpMethod.PUT,

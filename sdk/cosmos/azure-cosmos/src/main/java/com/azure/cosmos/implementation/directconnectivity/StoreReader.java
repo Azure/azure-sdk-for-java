@@ -95,7 +95,7 @@ public class StoreReader {
         String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
         if (entity.requestContext.cosmosDiagnostics == null) {
-            entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+            entity.requestContext.cosmosDiagnostics = entity.createCosmosDiagnostics();
         }
 
         Mono<ReadReplicaResult> readQuorumResultObs = this.readMultipleReplicasInternalAsync(
@@ -144,7 +144,8 @@ public class StoreReader {
         return storeRespAndURI.getLeft()
                 .flatMap(storeResponse -> {
                             try {
-                                StoreResult storeResult = this.createStoreResult(
+                                StoreResult storeResult = this.createAndRecordStoreResult(
+                                        request,
                                         storeResponse,
                                         null, requiresValidLsn,
                                         readMode != ReadMode.Strong,
@@ -167,11 +168,12 @@ public class StoreReader {
                         }
 
 //                    Exception storeException = readTask.Exception != null ? readTask.Exception.InnerException : null;
-                        StoreResult storeResult = this.createStoreResult(
+                        StoreResult storeResult = this.createAndRecordStoreResult(
+                                request,
                                 null,
                                 storeException, requiresValidLsn,
                                 readMode != ReadMode.Strong,
-                                null);
+                                storeRespAndURI.getRight());
                         if (storeException instanceof TransportException) {
                             BridgeInternal.getFailedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                         }
@@ -245,13 +247,6 @@ public class StoreReader {
             return Mono.error(e);
         }).map(newStoreResults -> {
             for (StoreResult srr : newStoreResults) {
-
-                entity.requestContext.requestChargeTracker.addCharge(srr.requestCharge);
-                try {
-                    BridgeInternal.recordResponse(entity.requestContext.cosmosDiagnostics, entity, srr);
-                } catch (Exception e) {
-                    logger.error("Unexpected failure while recording response", e);
-                }
                 if (srr.isValid) {
 
                     try {
@@ -265,6 +260,10 @@ public class StoreReader {
                     } catch (Exception e) {
                         // TODO: what to do on exception?
                     }
+                }
+
+                if (srr.isThroughputControlRequestRateTooLargeException) {
+                    resultCollector.add(srr);
                 }
 
                 hasGoneException.v = hasGoneException.v || (srr.isGoneException && !srr.isInvalidPartitionException);
@@ -447,7 +446,7 @@ public class StoreReader {
 
         String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         if (entity.requestContext.cosmosDiagnostics == null) {
-            entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+            entity.requestContext.cosmosDiagnostics = entity.createCosmosDiagnostics();
         }
 
         return this.readPrimaryInternalAsync(
@@ -522,11 +521,14 @@ public class StoreReader {
                                 storeResponse -> {
 
                                     try {
-                                        StoreResult storeResult = this.createStoreResult(
-                                                storeResponse != null ? storeResponse : null,
-                                                null, requiresValidLsn,
-                                                true,
-                                                storeResponse != null ? storeResponseObsAndUri.getRight() : null);
+                                        StoreResult storeResult = this.createAndRecordStoreResult(
+                                            entity,
+                                            storeResponse != null ? storeResponse : null,
+                                            null,
+                                            requiresValidLsn,
+                                            true,
+                                            storeResponse != null ? storeResponseObsAndUri.getRight() : null);
+
                                         return Mono.just(storeResult);
                                     } catch (CosmosException e) {
                                         return Mono.error(e);
@@ -551,9 +553,11 @@ public class StoreReader {
             }
 
             try {
-                StoreResult storeResult = this.createStoreResult(
+                StoreResult storeResult = this.createAndRecordStoreResult(
+                        entity,
                         null,
-                        storeTaskException, requiresValidLsn,
+                        storeTaskException,
+                        requiresValidLsn,
                         true,
                         null);
                 return Mono.just(storeResult);
@@ -564,13 +568,6 @@ public class StoreReader {
         });
 
         return storeResultObs.map(storeResult -> {
-            try {
-                BridgeInternal.recordResponse(entity.requestContext.cosmosDiagnostics, entity, storeResult);
-            } catch (Exception e) {
-                logger.error("Unexpected failure while recording response", e);
-            }
-            entity.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
-
             if (storeResult.isGoneException && !storeResult.isInvalidPartitionException) {
                 return new ReadReplicaResult(true, Collections.emptyList());
             }
@@ -656,6 +653,32 @@ public class StoreReader {
         return task;
     }
 
+    StoreResult createAndRecordStoreResult(
+        RxDocumentServiceRequest request,
+        StoreResponse storeResponse,
+        Exception responseException,
+        boolean requiresValidLsn,
+        boolean useLocalLSNBasedHeaders,
+        Uri storePhysicalAddress) {
+
+        StoreResult storeResult = this.createStoreResult(storeResponse, responseException, requiresValidLsn, useLocalLSNBasedHeaders, storePhysicalAddress);
+
+        try {
+            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult);
+            if (request.requestContext.requestChargeTracker != null) {
+                request.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
+            }
+        } catch (Exception e){
+            logger.error("Unexpected failure while recording response", e);
+        }
+
+        if (responseException !=null) {
+            verifyCanContinueOnException(storeResult.getException());
+        }
+
+        return storeResult;
+    }
+
     StoreResult createStoreResult(StoreResponse storeResponse,
                                   Exception responseException,
                                   boolean requiresValidLsn,
@@ -669,6 +692,7 @@ public class StoreReader {
             int currentWriteQuorum = -1;
             long globalCommittedLSN = -1;
             int numberOfReadRegions = -1;
+            Double backendLatencyInMs = null;
             long itemLSN = -1;
             if ((headerValue = storeResponse.getHeaderValue(
                     useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN)) != null) {
@@ -701,6 +725,11 @@ public class StoreReader {
                 itemLSN = Long.parseLong(headerValue);
             }
 
+            headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS);
+            if (!Strings.isNullOrEmpty(headerValue)) {
+                backendLatencyInMs = Double.parseDouble(headerValue);
+            }
+
             long lsn = -1;
             if (useLocalLSNBasedHeaders) {
                 if ((headerValue = storeResponse.getHeaderValue(WFConstants.BackendHeaders.LOCAL_LSN)) != null) {
@@ -731,17 +760,18 @@ public class StoreReader {
                     /* globalCommittedLSN: */ globalCommittedLSN,
                     /* numberOfReadRegions: */ numberOfReadRegions,
                     /* itemLSN: */ itemLSN,
-                    /* getSessionToken: */ sessionToken);
+                    /* getSessionToken: */ sessionToken,
+                    /* backendLatencyInMs */ backendLatencyInMs);
         } else {
             Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
             CosmosException cosmosException = Utils.as(unwrappedResponseExceptions, CosmosException.class);
             if (cosmosException != null) {
-                StoreReader.verifyCanContinueOnException(cosmosException);
                 long quorumAckedLSN = -1;
                 int currentReplicaSetSize = -1;
                 int currentWriteQuorum = -1;
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
+                Double backendLatencyInMs = null;
                 String headerValue = cosmosException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     quorumAckedLSN = Long.parseLong(headerValue);
@@ -770,7 +800,12 @@ public class StoreReader {
 
                 headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
-                    globalCommittedLSN = Integer.parseInt(headerValue);
+                    globalCommittedLSN = Long.parseLong(headerValue);
+                }
+
+                headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS);
+                if (!Strings.isNullOrEmpty(headerValue)) {
+                    backendLatencyInMs = Double.parseDouble(headerValue);
                 }
 
                 long lsn = -1;
@@ -809,7 +844,8 @@ public class StoreReader {
                         /* globalCommittedLSN: */ globalCommittedLSN,
                         /* numberOfReadRegions: */ numberOfReadRegions,
                         /* itemLSN: */ -1,
-                        sessionToken);
+                        /* getSessionToken: */ sessionToken,
+                        /* backendLatencyInMs */ backendLatencyInMs);
             } else {
                 logger.error("Unexpected exception {} received while reading from store.", responseException.getMessage(), responseException);
                 return new StoreResult(
@@ -826,14 +862,15 @@ public class StoreReader {
                         /* globalCommittedLSN: */-1,
                         /* numberOfReadRegions: */ 0,
                         /* itemLSN: */ -1,
-                        /* getSessionToken: */ null);
+                        /* getSessionToken: */ null,
+                        /* backendLatencyInMs */ null);
             }
         }
     }
 
     void startBackgroundAddressRefresh(RxDocumentServiceRequest request) {
         this.addressSelector.resolveAllUriAsync(request, true, true)
-                .publishOn(Schedulers.elastic())
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(
                         r -> {
                         },

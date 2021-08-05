@@ -7,17 +7,16 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Provides the ability to override other stemming filters with custom
- * dictionary-based stemming. Any dictionary-stemmed terms will be marked as
- * keywords so that they will not be stemmed with stemmers down the chain. Must
- * be placed before any stemming filters. This token filter is implemented
- * using Apache Lucene.
+ * Provides the ability to override other stemming filters with custom dictionary-based stemming. Any dictionary-stemmed
+ * terms will be marked as keywords so that they will not be stemmed with stemmers down the chain. Must be placed before
+ * any stemming filters. This token filter is implemented using Apache Lucene.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.StemmerOverrideTokenFilter")
@@ -31,24 +30,26 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
     private List<String> rules;
 
     /**
-     * Get the rules property: A list of stemming rules in the following
-     * format: "word =&gt; stem", for example: "ran =&gt; run".
+     * Creates an instance of StemmerOverrideTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param rules the rules value to set.
+     */
+    @JsonCreator
+    public StemmerOverrideTokenFilter(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "rules", required = true) List<String> rules) {
+        super(name);
+        this.rules = rules;
+    }
+
+    /**
+     * Get the rules property: A list of stemming rules in the following format: "word =&gt; stem", for example: "ran
+     * =&gt; run".
      *
      * @return the rules value.
      */
     public List<String> getRules() {
         return this.rules;
-    }
-
-    /**
-     * Set the rules property: A list of stemming rules in the following
-     * format: "word =&gt; stem", for example: "ran =&gt; run".
-     *
-     * @param rules the rules value to set.
-     * @return the StemmerOverrideTokenFilter object itself.
-     */
-    public StemmerOverrideTokenFilter setRules(List<String> rules) {
-        this.rules = rules;
-        return this;
     }
 }

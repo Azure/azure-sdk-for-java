@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 class SwaggerInterfaceParser {
     private final String host;
     private final String serviceName;
+    private final SerializerAdapter serializer;
     private static final Map<Method, SwaggerMethodParser> METHOD_PARSERS = new ConcurrentHashMap<>();
 
     /**
@@ -40,6 +41,8 @@ class SwaggerInterfaceParser {
      * @throws MissingRequiredAnnotationException When an expected annotation on the interface is not provided.
      */
     SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
+        this.serializer = serializer;
+
         if (!CoreUtils.isNullOrEmpty(host)) {
             this.host = host;
         } else {
@@ -67,12 +70,8 @@ class SwaggerInterfaceParser {
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
     SwaggerMethodParser getMethodParser(Method swaggerMethod) {
-        SwaggerMethodParser result = METHOD_PARSERS.get(swaggerMethod);
-        if (result == null) {
-            result = new SwaggerMethodParser(swaggerMethod, getHost());
-            METHOD_PARSERS.put(swaggerMethod, result);
-        }
-        return result;
+        return METHOD_PARSERS.computeIfAbsent(swaggerMethod, sm ->
+             new SwaggerMethodParser(sm, getHost(), serializer));
     }
 
     /**

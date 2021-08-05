@@ -16,6 +16,9 @@ import java.util.Map;
 import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryIdentity;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryRepoConfiguration;
+import com.microsoft.azure.management.datafactory.v2018_06_01.GlobalParameterSpecification;
+import com.microsoft.azure.management.datafactory.v2018_06_01.EncryptionConfiguration;
+import com.microsoft.azure.management.datafactory.v2018_06_01.PublicNetworkAccess;
 import rx.functions.Func1;
 
 class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, FactoryImpl, DataFactoryManager> implements Factory, Factory.Definition, Factory.Update {
@@ -80,8 +83,18 @@ class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, Facto
     }
 
     @Override
+    public EncryptionConfiguration encryption() {
+        return this.inner().encryption();
+    }
+
+    @Override
     public String eTag() {
         return this.inner().eTag();
+    }
+
+    @Override
+    public Map<String, GlobalParameterSpecification> globalParameters() {
+        return this.inner().globalParameters();
     }
 
     @Override
@@ -92,6 +105,11 @@ class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, Facto
     @Override
     public String provisioningState() {
         return this.inner().provisioningState();
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
     }
 
     @Override
@@ -113,6 +131,24 @@ class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, Facto
     @Override
     public FactoryImpl withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.inner().withAdditionalProperties(additionalProperties);
+        return this;
+    }
+
+    @Override
+    public FactoryImpl withEncryption(EncryptionConfiguration encryption) {
+        this.inner().withEncryption(encryption);
+        return this;
+    }
+
+    @Override
+    public FactoryImpl withGlobalParameters(Map<String, GlobalParameterSpecification> globalParameters) {
+        this.inner().withGlobalParameters(globalParameters);
+        return this;
+    }
+
+    @Override
+    public FactoryImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.inner().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 

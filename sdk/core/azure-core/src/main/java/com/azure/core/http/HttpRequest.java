@@ -12,8 +12,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
- * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod},
- * {@link URL}, {@link HttpHeader} and request body.
+ * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
+ * {@link HttpHeader} and request body.
  */
 public class HttpRequest {
     private final ClientLogger logger = new ClientLogger(HttpRequest.class);
@@ -30,9 +30,7 @@ public class HttpRequest {
      * @param url the target address to send the request to
      */
     public HttpRequest(HttpMethod httpMethod, URL url) {
-        this.httpMethod = httpMethod;
-        this.url = url;
-        this.headers = new HttpHeaders();
+        this(httpMethod, url, new HttpHeaders(), null);
     }
 
     /**
@@ -144,15 +142,15 @@ public class HttpRequest {
     }
 
     /**
-     * Set a request header, replacing any existing value.
-     * A null for {@code value} will remove the header if one with matching name exists.
+     * Set a request header, replacing any existing value. A null for {@code value} will remove the header if one with
+     * matching name exists.
      *
      * @param name the header name
      * @param value the header value
      * @return this HttpRequest
      */
     public HttpRequest setHeader(String name, String value) {
-        headers.put(name, value);
+        headers.set(name, value);
         return this;
     }
 
@@ -167,6 +165,8 @@ public class HttpRequest {
 
     /**
      * Set the request content.
+     * <p>
+     * The Content-Length header will be set based on the given content's length.
      *
      * @param content the request content
      * @return this HttpRequest
@@ -178,21 +178,22 @@ public class HttpRequest {
 
     /**
      * Set the request content.
-     * The Content-Length header will be set based on the given content's length
+     * <p>
+     * The Content-Length header will be set based on the given content's length.
      *
      * @param content the request content
      * @return this HttpRequest
      */
     public HttpRequest setBody(byte[] content) {
-        headers.put("Content-Length", String.valueOf(content.length));
+        setContentLength(content.length);
         return setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
     }
 
     /**
      * Set request content.
-     *
-     * Caller must set the Content-Length header to indicate the length of the content,
-     * or use Transfer-Encoding: chunked.
+     * <p>
+     * Caller must set the Content-Length header to indicate the length of the content, or use Transfer-Encoding:
+     * chunked.
      *
      * @param content the request content
      * @return this HttpRequest
@@ -202,12 +203,16 @@ public class HttpRequest {
         return this;
     }
 
+    private void setContentLength(long contentLength) {
+        headers.set("Content-Length", String.valueOf(contentLength));
+    }
+
     /**
      * Creates a copy of the request.
      *
-     * The main purpose of this is so that this HttpRequest can be changed and the resulting
-     * HttpRequest can be a backup. This means that the cloned HttpHeaders and body must
-     * not be able to change from side effects of this HttpRequest.
+     * The main purpose of this is so that this HttpRequest can be changed and the resulting HttpRequest can be a
+     * backup. This means that the cloned HttpHeaders and body must not be able to change from side effects of this
+     * HttpRequest.
      *
      * @return a new HTTP request instance with cloned instances of all mutable properties.
      */

@@ -18,10 +18,7 @@ public final class ShingleTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        ShingleTokenFilter shingleTokenFilter = new ShingleTokenFilter();
-
-        String name = obj.getName();
-        shingleTokenFilter.setName(name);
+        ShingleTokenFilter shingleTokenFilter = new ShingleTokenFilter(obj.getName());
 
         Integer minShingleSize = obj.getMinShingleSize();
         shingleTokenFilter.setMinShingleSize(minShingleSize);
@@ -52,10 +49,7 @@ public final class ShingleTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter shingleTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter();
-
-        String name = obj.getName();
-        shingleTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.ShingleTokenFilter(obj.getName());
 
         Integer minShingleSize = obj.getMinShingleSize();
         shingleTokenFilter.setMinShingleSize(minShingleSize);
@@ -74,6 +68,7 @@ public final class ShingleTokenFilterConverter {
 
         String tokenSeparator = obj.getTokenSeparator();
         shingleTokenFilter.setTokenSeparator(tokenSeparator);
+
         return shingleTokenFilter;
     }
 

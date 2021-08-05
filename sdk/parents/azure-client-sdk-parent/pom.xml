@@ -107,49 +107,30 @@
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+    <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
   </properties>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <plugins>
+      <!-- This plugin configures the bas requirements for compilation -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <showWarnings>true</showWarnings>
-          <failOnWarning>true</failOnWarning>
-        </configuration>
       </plugin>
 
       <!-- This plugin scans checkstyle issues in the code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
-        <dependencies>
-          <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-          </dependency>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>8.29</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
-          </dependency>
-        </dependencies>
-        <configuration>
-          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
-          <propertyExpansion>samedir=</propertyExpansion>
-          <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <linkXRef>true</linkXRef>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
-        </configuration>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>verify</phase>
@@ -164,39 +145,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <dependencies>
-          <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-          </dependency>
-          <dependency>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs</artifactId>
-            <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
-          </dependency>
-        </dependencies>
-        <configuration>
-          <effort>max</effort>
-          <threshold>Low</threshold>
-          <xmlOutput>true</xmlOutput>
-          <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-          <failOnError>true</failOnError>
-          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
-
-          <!-- Enable this plugin when issues documented are fixed -->
-          <!--          <plugins>-->
-          <!--            <plugin>-->
-          <!--              <groupId>com.h3xstream.findsecbugs</groupId>-->
-          <!--              <artifactId>findsecbugs-plugin</artifactId>-->
-          <!--              <version>1.9.0</version> &lt;!&ndash; {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} &ndash;&gt;-->
-          <!--            </plugin>-->
-          <!--          </plugins>-->
-          <includeTests>false</includeTests>
-          <fork>true</fork>
-        </configuration>
+        <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>verify</phase>
@@ -205,45 +154,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-
-      <!-- This plugin exports spotbugs reports in html form -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xml-maven-plugin</artifactId>
-        <version>1.0</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <transformationSets>
-            <transformationSet>
-              <dir>${project.build.directory}/spotbugs</dir>
-              <includes>
-                <include>spotbugsXml.xml</include>
-              </includes>
-              <outputDir>${project.build.directory}/spotbugs</outputDir>
-              <stylesheet>fancy-hist.xsl</stylesheet>
-              <fileMappers>
-                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-                  <targetExtension>.html</targetExtension>
-                </fileMapper>
-              </fileMappers>
-            </transformationSet>
-          </transformationSets>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs</artifactId>
-            <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
-          </dependency>
-        </dependencies>
       </plugin>
 
       <!-- Configure the jar plugin -->
@@ -267,13 +177,6 @@
             <goals>
               <goal>jar</goal>
             </goals>
-            <configuration>
-              <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
-              <failOnError>true</failOnError>
-              <failOnWarnings>true</failOnWarnings>
-              <doclint>all</doclint>
-              <quiet>true</quiet>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -388,6 +291,29 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${basedir}/README.md</file>
+                  <type>md</type>
+                  <classifier>readme</classifier>
+                </artifact>
+                <artifact>
+                  <file>${basedir}/CHANGELOG.md</file>
+                  <type>md</type>
+                  <classifier>changelog</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- Checks public surface area for breaking changes. -->
@@ -395,60 +321,11 @@
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <analysisConfigurationFiles>
-            <configurationFile>
-              <resource>revapi/revapi.json</resource>
-            </configurationFile>
-          </analysisConfigurationFiles>
-          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-          <checkDependencies>true</checkDependencies>
-          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-          </dependency>
-          <dependency>
-            <groupId>org.revapi</groupId>
-            <artifactId>revapi-java</artifactId>
-            <version>0.20.0</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
-          </dependency>
-        </dependencies>
         <executions>
           <execution>
             <goals>
               <goal>check</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>net.jonathangiles.tools</groupId>
-        <artifactId>whitelistgenerator-maven-plugin</artifactId>
-        <version>1.0.1</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>generateWhitelistReport</id>
-            <phase>package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <configuration>
-              <baseDir>.</baseDir>
-              <reportFile>target/dependency-whitelist.json</reportFile>
-              <ignoredGA>
-                <param>com.azure:azure-cosmos-examples</param>
-                <param>com.azure:azure-cosmos-benchmark</param>
-                <param>com.azure:azure-core-test</param>
-                <param>com.azure:azure-e2e</param>
-                <param>com.azure:azure-storage-perf</param>
-                <param>com.azure:perf-test-core</param>
-              </ignoredGA>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -474,8 +351,10 @@
                 <exclude>*:*:*:*:compile</exclude>
                 <exclude>*:*:*:*:provided</exclude>
               </excludes>
-              <includes>
+              <includes combine.children="append">
                 <include>com.azure:*</include>
+                <include>com.azure.resourcemanager:*</include>
+                <include>com.azure.spring:*</include>
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
@@ -494,11 +373,6 @@
             This rule is used to enforce that all modules depend on the same version of particular dependencies or
             plugins.
             -->
-            <requireSameVersions>
-              <dependencies>
-                <dependency>com.azure.*</dependency>
-              </dependencies>
-            </requireSameVersions>
           </rules>
           <fail>true</fail>
         </configuration>
@@ -515,6 +389,112 @@
 
     <pluginManagement>
       <plugins>
+        <!-- This plugin configures the bas requirements for compilation -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+          <configuration>
+            <showWarnings>true</showWarnings>
+            <failOnWarning>true</failOnWarning>
+            <compilerArgs combine.children="append" combine.self="append">
+              <!-- Turn off annotation processing -->
+              <arg>-proc:none</arg>
+
+              <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
+              <arg>-Xlint:cast</arg>
+              <arg>-Xlint:classfile</arg>
+              <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
+              <arg>-Xlint:dep-ann</arg>
+              <arg>-Xlint:divzero</arg>
+              <arg>-Xlint:empty</arg>
+              <arg>-Xlint:fallthrough</arg>
+              <arg>-Xlint:finally</arg>
+              <arg>-Xlint:options</arg>
+              <arg>-Xlint:overrides</arg>
+              <arg>-Xlint:path</arg>
+              <!-- <arg>-Xlint:processing</arg> -->
+              <arg>-Xlint:rawtypes</arg>
+              <!-- <arg>-Xlint:serial</arg> -->
+              <arg>-Xlint:static</arg>
+              <arg>-Xlint:try</arg>
+              <arg>-Xlint:unchecked</arg>
+              <arg>-Xlint:varargs</arg>
+            </compilerArgs>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin scans checkstyle issues in the code -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>sdk-build-tools</artifactId>
+              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>8.42</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+            </dependency>
+          </dependencies>
+          <configuration>
+            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+            <suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+            <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+            <propertyExpansion>samedir=</propertyExpansion>
+            <encoding>UTF-8</encoding>
+            <consoleOutput>true</consoleOutput>
+            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+            <linkXRef>true</linkXRef>
+            <failsOnError>true</failsOnError>
+            <failOnViolation>true</failOnViolation>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin scans reports spotbugs in the code -->
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>sdk-build-tools</artifactId>
+              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>com.github.spotbugs</groupId>
+              <artifactId>spotbugs</artifactId>
+              <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+            </dependency>
+          </dependencies>
+          <configuration>
+            <effort>max</effort>
+            <threshold>Low</threshold>
+            <xmlOutput>true</xmlOutput>
+            <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+            <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+            <fork>true</fork>
+            <failOnError>true</failOnError>
+            <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+            <includeTests>false</includeTests>
+
+            <!-- Enable this plugin when issues documented are fixed -->
+            <!--          <plugins>-->
+            <!--            <plugin>-->
+            <!--              <groupId>com.h3xstream.findsecbugs</groupId>-->
+            <!--              <artifactId>findsecbugs-plugin</artifactId>-->
+            <!--              <version>1.9.0</version> &lt;!&ndash; {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} &ndash;&gt;-->
+            <!--            </plugin>-->
+            <!--          </plugins>-->
+          </configuration>
+        </plugin>
+
+        <!-- This plugin generates Javadocs -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
@@ -530,132 +510,84 @@
             <excludePackageNames>
               *.impl*:
               *.implementation*:
+              *.samples:
               com.azure.tools.checkstyle*:
               com.azure.core.test*:
               com.azure.endtoend*:
               com.azure.perf*
+              com.azure.storage.internal.avro*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
-              <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/models/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/util/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
-            <groups>
-              <group>
-                <title>Azure Core</title>
-                <packages>
-                  com.azure.core:com.azure.core.annotation:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*:com.azure.core.credential:com.azure.core.cryptography
-                </packages>
-              </group>
-              <group>
-                <title>Azure Core - AMQP</title>
-                <packages>com.azure.core.amqp*</packages>
-              </group>
-              <group>
-                <title>Azure Core - Authentication</title>
-                <packages>com.azure.core.auth*</packages>
-              </group>
-              <group>
-                <title>Azure Core - HTTP - Netty</title>
-                <packages>com.azure.core.http.netty*</packages>
-              </group>
-              <group>
-                <title>Azure Core - HTTP - OkHttp</title>
-                <packages>com.azure.core.http.okhttp*</packages>
-              </group>
-              <group>
-                <title>Azure Core - Management</title>
-                <packages>com.azure.core.management*</packages>
-              </group>
-              <group>
-                <title>Azure Core - Serializer - JSON - Gson</title>
-                <packages>com.azure.core.serializer.json.gson*</packages>
-              </group>
-              <group>
-                <title>Azure Core - Serializer - JSON - Jackson</title>
-                <packages>com.azure.core.serializer.json.jackson*</packages>
-              </group>
-              <group>
-                <title>Azure App Configuration</title>
-                <packages>com.azure.data.appconfiguration*</packages>
-              </group>
-              <group>
-                <title>Azure Cosmos</title>
-                <packages>com.azure.cosmos*</packages>
-              </group>
-              <group>
-                <title>Azure Event Hubs</title>
-                <packages>com.azure.messaging.eventhubs*</packages>
-              </group>
-              <group>
-                <title>Azure Form Recognizer</title>
-                <packages>com.azure.ai.formrecognizer*</packages>
-              </group>
-              <group>
-                <title>Azure Identity</title>
-                <packages>com.azure.identity*</packages>
-              </group>
-              <group>
-                <title>Azure Key Vault</title>
-                <packages>com.azure.security.keyvault*</packages>
-              </group>
-              <group>
-                <title>Azure Search</title>
-                <packages>com.azure.search*</packages>
-              </group>
-              <group>
-                <title>Azure Service Bus</title>
-                <packages>com.azure.messaging.servicebus*</packages>
-              </group>
-              <group>
-                <title>Azure Storage - Common</title>
-                <packages>com.azure.storage.common*</packages>
-              </group>
-              <group>
-                <title>Azure Storage - Blobs</title>
-                <packages>com.azure.storage.blob*</packages>
-              </group>
-              <group>
-                <title>Azure Storage Blob - Batch</title>
-                <packages>com.azure.storage.blob.batch*</packages>
-              </group>
-              <group>
-                <title>Azure Storage Blobs - Cryptography</title>
-                <packages>com.azure.storage.blob.cryptography*</packages>
-              </group>
-              <group>
-                <title>Azure Storage Blobs - NIO</title>
-                <packages>com.azure.storage.blob.nio*</packages>
-              </group>
-              <group>
-                <title>Azure Storage - Files</title>
-                <packages>com.azure.storage.file*</packages>
-              </group>
-              <group>
-                <title>Azure Storage Files - Data Lake</title>
-                <packages>com.azure.storage.file.datalake*</packages>
-              </group>
-              <group>
-                <title>Azure Storage - Queues</title>
-                <packages>com.azure.storage.queue*</packages>
-              </group>
-              <group>
-                <title>Azure Telemetry</title>
-                <title>Azure Telemetry - OpenTelemetry</title>
-                <packages>com.azure.core.tracing*</packages>
-              </group>
-              <group>
-                <title>Azure Text Analytics</title>
-                <packages>com.azure.ai.textanalytics*</packages>
-              </group>
-            </groups>
-            <links>
+            <links combine.children="append">
+              <!-- JDK APIs -->
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
-              <link>https://projectreactor.io/docs/core/release/api/</link>
+
+              <!-- Reactor APIs -->
+              <link>https://projectreactor.io/docs/core/release/api/</link> <!-- TODO (alzimmer): We need to version this. Right now it is always going to point to latest which may be wrong -->
+              <link>https://projectreactor.io/docs/netty/release/api/</link>
+
+              <!-- Jackson APIs -->
+              <link>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</link>
+              <link>https://fasterxml.github.io/jackson-core/javadoc/2.12/</link>
+              <link>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</link>
+
+              <!-- Netty APIs -->
               <link>https://netty.io/4.1/api/</link>
-              <link>http://reactivex.io/RxJava/javadoc/</link>
+
+              <!-- Avro APIs -->
+              <link>https://avro.apache.org/docs/current/api/java/</link>
             </links>
-            <isOffline>false</isOffline>
+            <detectJavaApiLink>false</detectJavaApiLink>
+            <isOffline>true</isOffline>
+            <offlineLinks>
+              <!-- JDK APIs -->
+              <offlineLink>
+                <url>https://docs.oracle.com/javase/8/docs/api/</url>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/java8/</location>
+              </offlineLink>
+
+              <!-- Reactor APIs -->
+              <offlineLink>
+                <url>https://projectreactor.io/docs/core/release/api/</url>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-core/</location>
+              </offlineLink>
+              <offlineLink>
+                <url>https://projectreactor.io/docs/netty/release/api/</url>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-netty/</location>
+              </offlineLink>
+
+              <!-- Jackson APIs -->
+              <offlineLink>
+                <url>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</url>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-annotations/</location>
+              </offlineLink>
+              <offlineLink>
+                <url>https://fasterxml.github.io/jackson-core/javadoc/2.12/</url>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-core/</location>
+              </offlineLink>
+              <offlineLink>
+                <url>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</url>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-databind/</location>
+              </offlineLink>
+
+              <!-- Netty APIs -->
+              <offlineLink>
+                <url>https://netty.io/4.1/api/</url>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/netty/</location>
+              </offlineLink>
+
+              <!-- Avro APIs -->
+              <offlineLink>
+                <url>https://avro.apache.org/docs/current/api/java/</url>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/apache-avro/</location>
+              </offlineLink>
+            </offlineLinks>
             <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
             <docletArtifact>
               <groupId>org.apidesign.javadoc</groupId>
@@ -671,48 +603,11 @@
             <failOnWarnings>true</failOnWarnings>
             <doclint>all</doclint>
             <quiet>true</quiet>
+            <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
           </configuration>
         </plugin>
 
-        <plugin>
-          <groupId>com.github.spotbugs</groupId>
-          <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-          <dependencies>
-            <dependency>
-              <groupId>com.azure</groupId>
-              <artifactId>sdk-build-tools</artifactId>
-              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-            </dependency>
-            <dependency>
-              <groupId>com.github.spotbugs</groupId>
-              <artifactId>spotbugs</artifactId>
-              <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
-            </dependency>
-          </dependencies>
-          <configuration>
-            <effort>max</effort>
-            <threshold>Low</threshold>
-            <xmlOutput>true</xmlOutput>
-            <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-            <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-            <failOnError>true</failOnError>
-            <fork>true</fork>
-            <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
-            <includeTests>false</includeTests>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
-          <configuration>
-            <failsOnError>true</failsOnError>
-            <failOnViolation>true</failOnViolation>
-          </configuration>
-        </plugin>
-
+        <!-- This plugin runs tests -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -722,10 +617,40 @@
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">
               <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
+              <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
           </configuration>
+        </plugin>
+
+        <!-- Checks public surface area for breaking changes. -->
+        <plugin>
+          <groupId>org.revapi</groupId>
+          <artifactId>revapi-maven-plugin</artifactId>
+          <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+          <configuration>
+            <analysisConfigurationFiles>
+              <configurationFile>
+                <resource>revapi/revapi.json</resource>
+              </configurationFile>
+            </analysisConfigurationFiles>
+            <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+            <checkDependencies>true</checkDependencies>
+            <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>sdk-build-tools</artifactId>
+              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-java</artifactId>
+              <version>0.20.0</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -747,19 +672,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
-        <configuration>
-          <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
-          <propertyExpansion>samedir=</propertyExpansion>
-          <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <linkXRef>true</linkXRef>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
-        </configuration>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -767,30 +680,12 @@
               <report>checkstyle</report>
             </reports>
           </reportSet>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>checkstyle-aggregate</report>
-            </reports>
-          </reportSet>
         </reportSets>
       </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <configuration>
-          <effort>max</effort>
-          <threshold>Low</threshold>
-          <xmlOutput>true</xmlOutput>
-          <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-          <failOnError>true</failOnError>
-          <fork>true</fork>
-          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
-          <includeTests>false</includeTests>
-        </configuration>
+        <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -803,47 +698,7 @@
               <report>javadoc</report>
             </reports>
           </reportSet>
-          <reportSet>
-            <id>aggregate</id>
-            <inherited>false</inherited>
-            <reports>
-              <report>aggregate</report>
-            </reports>
-            <configuration>
-              <!-- codesnippets4javadoc does not support scanning sub-directories and doesn't support wildcards for filepaths.
-                  So, path for aggregate reports have to be defined relative to parent pom -->
-              <additionalOptions>-maxLineLength 120
-                -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
-                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
-                -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
-                -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
-                -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
-                -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
-                -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
-                -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-datalake/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
-                -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
-              </additionalOptions>
-              <doclint>all</doclint>
-            </configuration>
-          </reportSet>
         </reportSets>
-        <configuration>
-          <!-- Reporting is run for JDK 11 - https://github.com/Azure/azure-sdk-for-java/blob/master/.azure-pipelines/client.yml#L90
-               Disabling failOnWarnings for reporting for now due to CodeSnippets4Java issue reported for JDK 9+
-               https://github.com/Azure/azure-sdk-for-java/issues/3851 -->
-          <failOnWarnings>false</failOnWarnings>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -869,25 +724,12 @@
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
-          <analysisConfigurationFiles>
-            <configurationFile>
-              <resource>revapi/revapi.json</resource>
-            </configurationFile>
-          </analysisConfigurationFiles>
-          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
           <checkDependencies>false</checkDependencies>
-          <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <reportSets>
           <reportSet>
             <reports>
               <report>report</report>
-            </reports>
-          </reportSet>
-          <reportSet>
-            <inherited>false</inherited>
-            <reports>
-              <report>report-aggregate</report>
             </reports>
           </reportSet>
         </reportSets>
@@ -908,12 +750,6 @@
         <maven.compiler.target>8</maven.compiler.target>
       </properties>
       <build>
-        <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-            <filtering>true</filtering>
-          </resource>
-        </resources>
         <plugins>
           <!-- Don't compile module-info.java, see java 9+ profile -->
           <plugin>
@@ -926,30 +762,6 @@
               <excludes>
                 <exclude>module-info.java</exclude>
               </excludes>
-              <compilerArgs>
-                <!-- Turn off annotation processing -->
-                <arg>-proc:none</arg>
-
-                <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
-                <arg>-Xlint:cast</arg>
-                <arg>-Xlint:classfile</arg>
-                <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
-                <arg>-Xlint:dep-ann</arg>
-                <arg>-Xlint:divzero</arg>
-                <arg>-Xlint:empty</arg>
-                <arg>-Xlint:fallthrough</arg>
-                <arg>-Xlint:finally</arg>
-                <arg>-Xlint:options</arg>
-                <arg>-Xlint:overrides</arg>
-                <arg>-Xlint:path</arg>
-                <!-- <arg>-Xlint:processing</arg> -->
-                <arg>-Xlint:rawtypes</arg>
-                <!-- <arg>-Xlint:serial</arg> -->
-                <arg>-Xlint:static</arg>
-                <arg>-Xlint:try</arg>
-                <arg>-Xlint:unchecked</arg>
-                <arg>-Xlint:varargs</arg>
-              </compilerArgs>
             </configuration>
           </plugin>
           <!-- Avoid errors from module-info -->
@@ -961,7 +773,6 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
-              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -977,7 +788,6 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
-              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -991,12 +801,6 @@
         <jdk>[11,)</jdk>
       </activation>
       <build>
-        <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-            <filtering>true</filtering>
-          </resource>
-        </resources>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -1004,32 +808,9 @@
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <testRelease>11</testRelease>
-              <compilerArgs>
-                <!-- Turn off annotation processing -->
-                <arg>-proc:none</arg>
-
-                <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
-                <arg>-Xlint:cast</arg>
-                <arg>-Xlint:classfile</arg>
-                <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
-                <arg>-Xlint:dep-ann</arg>
-                <arg>-Xlint:divzero</arg>
-                <arg>-Xlint:empty</arg>
-                <arg>-Xlint:fallthrough</arg>
-                <arg>-Xlint:finally</arg>
-                <arg>-Xlint:options</arg>
-                <arg>-Xlint:overrides</arg>
-                <arg>-Xlint:path</arg>
-                <!-- <arg>-Xlint:processing</arg> -->
-                <arg>-Xlint:rawtypes</arg>
-                <!-- <arg>-Xlint:serial</arg> -->
-                <arg>-Xlint:static</arg>
-                <arg>-Xlint:try</arg>
-                <arg>-Xlint:unchecked</arg>
-                <arg>-Xlint:varargs</arg>
+              <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
-                <arg>-Xlint:-requires-transitive-automatic
-                </arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
             </configuration>
             <executions>
@@ -1061,63 +842,6 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <argLine>
-                <!-- KeyVault tests fail without these exports. -->
-                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-
-                <!-- Needed for JUnit offline instrumentation -->
-                --add-reads com.azure.core=ALL-UNNAMED
-                --add-reads com.azure.core.test=ALL-UNNAMED
-                --add-reads com.azure.core.amqp=ALL-UNNAMED
-
-                <!-- JUnit5 and Mockito use reflection to create objects. -->
-                --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
-                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
-                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics.implementation.models=com.azure.core
-                --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
-
-                <!-- Cosmos module need this -->
-                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
-
-                <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
-
-                <!-- Checkpoint store tests fail without this -->
-                --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
-                --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
-
-                <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
-                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
-                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
-              </argLine>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
@@ -1137,7 +861,7 @@
           <name>generate-overview</name>
         </property>
         <file>
-          <exists>../../../eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</exists>
         </file>
       </activation>
       <build>
@@ -1157,7 +881,7 @@
                   <executable>python</executable>
                   <workingDirectory>${project.basedir}</workingDirectory>
                   <arguments>
-                    <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</argument>
                     <argument>--rf</argument>
                     <argument>${project.basedir}/README.md</argument>
                     <argument>--v</argument>
@@ -1174,7 +898,6 @@
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.basedir}/readme_overview.html</overview>
-              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -1193,7 +916,7 @@
           <name>inject-codesnippets</name>
         </property>
         <file>
-          <exists>../../../eng/pipelines/scripts/inject_codesnippets.py</exists>
+          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</exists>
         </file>
       </activation>
       <build>
@@ -1213,114 +936,9 @@
                   <executable>python</executable>
                   <workingDirectory>${project.basedir}</workingDirectory>
                   <arguments>
-                    <argument>../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</argument>
                     <argument>--project-dir</argument>
                     <argument>${project.basedir}</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>changelog</id>
-      <activation>
-        <file>
-          <exists>${basedir}/CHANGELOG.md</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>copy-changelog</id>
-                <phase>package</phase>
-                <configuration>
-                  <target>
-                    <echo>Copying ${project.basedir}/CHANGELOG.md to
-                      ${packageOutputDirectory}/${project.build.finalName}-changelog.md
-                    </echo>
-                    <copy file="${project.basedir}/CHANGELOG.md" tofile="${packageOutputDirectory}/${project.build.finalName}-changelog.md"/>
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>readme</id>
-      <activation>
-        <file>
-          <exists>${basedir}/README.md</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>copy-readme</id>
-                <phase>package</phase>
-                <configuration>
-                  <target>
-                    <echo>Copying ${project.basedir}/README.md to
-                      ${packageOutputDirectory}/${project.build.finalName}-readme.md
-                    </echo>
-                    <copy file="${project.basedir}/README.md" tofile="${packageOutputDirectory}/${project.build.finalName}-readme.md"/>
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <!-- separate profile for windows as the executable on windows is named npx.cmd and npx on other os families -->
-      <id>readme-codesnippet-windows</id>
-      <activation>
-        <property>
-          <name>readme-codesnippet-windows</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>code-snippet-for-readme-windows</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>npx.cmd</executable>
-                  <arguments>
-                    <argument>embedme</argument>
-                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1353,9 +971,10 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>npx</executable>
+                  <executable>python</executable>
                   <arguments>
-                    <argument>embedme</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/scripts/invoke_embedme.py</argument>
+                    <argument>--readme</argument>
                     <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
@@ -1366,44 +985,7 @@
       </build>
     </profile>
 
-    <profile>
-      <!-- separate profile for windows as the executable on windows is named npx.cmd and npx on other os families -->
-      <id>verify-readme-windows</id>
-      <activation>
-        <property>
-          <name>verify-readme-windows</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>verify-readme-codesnippet-windows</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>npx.cmd</executable>
-                  <arguments>
-                    <argument>embedme</argument>
-                    <argument>--verify</argument>
-                    <argument>${project.basedir}/README.md</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Verify that there are no changes to readme file. Build fails if the there's a difference in README
-     after running the embedme tool. -->
+    <!-- Verify that there are no changes to README file. Build fails if the there's a difference in README after running the embedme tool. -->
     <profile>
       <id>verify-readme</id>
       <activation>
@@ -1425,11 +1007,50 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>npx</executable>
+                  <executable>python</executable>
                   <arguments>
-                    <argument>embedme</argument>
-                    <argument>--verify</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/scripts/invoke_embedme.py</argument>
+                    <argument>--readme</argument>
                     <argument>${project.basedir}/README.md</argument>
+                    <argument>--verify</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Verify that the CHANGELOG is formatted correctly. -->
+    <profile>
+      <id>verify-changelog</id>
+      <activation>
+        <property>
+          <name>verify-changelog</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>verify-readme-codesnippet</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>pwsh</executable>
+                  <arguments>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/common/scripts/Verify-Changelog.ps1</argument>
+                    <argument>-ChangeLogLocation</argument>
+                    <argument>${project.basedir}/CHANGELOG.md</argument>
+                    <argument>-VersionString</argument>
+                    <argument>${project.version}</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1452,7 +1073,7 @@
           <plugin>
             <groupId>net.jonathangiles.tools</groupId>
             <artifactId>dependencyChecker-maven-plugin</artifactId>
-            <version>1.0.4</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
+            <version>1.0.6</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
             <inherited>false</inherited>
             <executions>
               <execution>
@@ -1465,6 +1086,31 @@
                   <reporters>html</reporters>
                   <showAll>true</showAll>
                   <dependencyManagement>true</dependencyManagement>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>net.jonathangiles.tools</groupId>
+            <artifactId>whitelistgenerator-maven-plugin</artifactId>
+            <version>1.0.2</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>generateAllowlistReport</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+                <configuration>
+                  <baseDir>.</baseDir>
+                  <reportFile>target/dependency-allowlist.json</reportFile>
+                  <ignoredGA>
+                    <param>com.azure:azure-cosmos-benchmark</param>
+                    <param>com.azure:azure-core-test</param>
+                    <param>com.azure:azure-e2e</param>
+                    <param>com.azure:azure-storage-perf</param>
+                    <param>com.azure:perf-test-core</param>
+                  </ignoredGA>
                 </configuration>
               </execution>
             </executions>
@@ -1489,10 +1135,253 @@
             <configuration>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
-                <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
               </systemPropertyVariables>
             </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-no-azure-test-mode-env</id>
+      <activation>
+        <property>
+          <name>!env.AZURE_TEST_MODE</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-azure-test-mode-playback-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>PLAYBACK</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-no-azure-test-mode-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-azure-test-mode-playback-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>PLAYBACK</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-live-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>LIVE</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-record-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>RECORD</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-live-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>LIVE</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-record-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>RECORD</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>transform-spotbugs</id>
+      <activation>
+        <file>
+          <exists>${packageOutputDirectory}/spotbugs/spotbugsXml.xml</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <!-- This plugin exports spotbugs reports in html form -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <version>1.0.2</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>transform</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <transformationSets>
+                <transformationSet>
+                  <dir>${packageOutputDirectory}/spotbugs</dir>
+                  <includes>
+                    <include>spotbugsXml.xml</include>
+                  </includes>
+                  <outputDir>${packageOutputDirectory}/spotbugs</outputDir>
+                  <stylesheet>fancy-hist.xsl</stylesheet>
+                  <fileMappers>
+                    <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                      <targetExtension>.html</targetExtension>
+                    </fileMapper>
+                  </fileMappers>
+                </transformationSet>
+              </transformationSets>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs</artifactId>
+                <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>

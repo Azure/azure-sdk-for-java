@@ -7,7 +7,7 @@ import reactor.test.StepVerifier
 
 class LeaseAsyncErrorMappingTest extends APISpec {
     private DataLakeFileAsyncClient createPathAsyncClient() {
-        def fac = getServiceAsyncClient(primaryCredential)
+        def fac = getServiceAsyncClient(env.dataLakeAccount)
             .createFileSystem(generateFileSystemName()).block()
             .getFileAsyncClient(generatePathName())
         return fac
@@ -44,7 +44,7 @@ class LeaseAsyncErrorMappingTest extends APISpec {
 
     def "Change Lease"() {
         when:
-        def changeLeaseVerifier = StepVerifier.create(leaseAsyncClient.changeLeaseWithResponse(null, null))
+        def changeLeaseVerifier = StepVerifier.create(leaseAsyncClient.changeLeaseWithResponse("id", null))
         then:
         changeLeaseVerifier.verifyError(DataLakeStorageException)
     }

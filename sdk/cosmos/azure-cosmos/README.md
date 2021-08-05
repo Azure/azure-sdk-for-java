@@ -1,4 +1,4 @@
-﻿# Azure CosmosDB Client Library for Java
+# Azure CosmosDB Client Library for Java
 
 Azure Cosmos DB is Microsoft’s globally distributed, multi-model database service for operational and analytics workloads. It offers multi-mastering feature by automatically scaling throughput, compute, and storage.
 This project provides SDK library in Java for interacting with [SQL API][sql_api_query] of [Azure Cosmos DB Database Service][cosmos_introduction].
@@ -14,7 +14,7 @@ This project provides SDK library in Java for interacting with [SQL API][sql_api
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.0.1-beta.4</version>
+  <version>4.17.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -25,13 +25,13 @@ Refer to [javadocs][api_documentation] for more details on the package
 
 ### Prerequisites
 
-- Java Development Kit 8
-- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator-export-ssl-certificates)
+- [Java Development Kit (JDK) with version 8 or above][jdk]
+- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
 - (Optional) SLF4J is a logging facade.
-- (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
-- (Optional) Maven
+- (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
+- (Optional) [Maven][maven]
 
-SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
+SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
 
 The SDK provides Reactor Core based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/)
 
@@ -39,7 +39,7 @@ The SDK provides Reactor Core based async APIs. You can read more about Reactor 
 
 In order to interact with the Azure CosmosDB service you'll need to create an instance of the Cosmos Client class. To make this possible you will need an url and key of the Azure CosmosDB service.
 
-The SDK provides two clients. 
+The SDK provides two clients.
 1. `CosmosAsyncClient` for operations using asynchronous APIs.
 2. `CosmosClient` for operations using synchronous (blocking) APIs.
 
@@ -61,34 +61,34 @@ CosmosClient cosmosClient = new CosmosClientBuilder()
 
 ## Key Concepts
 
-Azure Cosmos DB Java SDK provides client-side logical representation to access the Azure Cosmos DB SQL API. 
-A Cosmos DB account contains zero or more databases, a database (DB) contains zero or more containers, and a container contains zero or more items. 
-You may read more about databases, containers and items [here](https://docs.microsoft.com/en-us/azure/cosmos-db/databases-containers-items). 
+Azure Cosmos DB Java SDK provides client-side logical representation to access the Azure Cosmos DB SQL API.
+A Cosmos DB account contains zero or more databases, a database (DB) contains zero or more containers, and a container contains zero or more items.
+You may read more about databases, containers and items [here](https://docs.microsoft.com/azure/cosmos-db/databases-containers-items).
 A few important properties defined at the level of the container, among them are provisioned throughput and partition key.
 
-### Global Distribution 
-- Azure Cosmos DB is a globally distributed database service that's designed to provide low latency, elastic scalability of throughput, well-defined semantics for data consistency, and high availability. 
+### Global Distribution
+- Azure Cosmos DB is a globally distributed database service that's designed to provide low latency, elastic scalability of throughput, well-defined semantics for data consistency, and high availability.
 In short, if your application needs guaranteed fast response time anywhere in the world, if it's required to be always online, and needs unlimited and elastic scalability of throughput and storage, you should build your application on Azure Cosmos DB.
-You may read more about global distribution [here](https://docs.microsoft.com/en-us/azure/cosmos-db/distribute-data-globally).
+You may read more about global distribution [here](https://docs.microsoft.com/azure/cosmos-db/distribute-data-globally).
 
 ### Throughput Provisioning
-- Azure Cosmos DB allows you to set provisioned throughput on your databases and containers. 
-There are two types of provisioned throughput, standard (manual) or autoscale. Provisioned throughput can be selected at per-container granularity or per-database granularity, however container-level throughput specification is typically preferred. 
-You may read more about throughput provisioning [here](https://docs.microsoft.com/en-us/azure/cosmos-db/set-throughput).
+- Azure Cosmos DB allows you to set provisioned throughput on your databases and containers.
+There are two types of provisioned throughput, standard (manual) or autoscale. Provisioned throughput can be selected at per-container granularity or per-database granularity, however container-level throughput specification is typically preferred.
+You may read more about throughput provisioning [here](https://docs.microsoft.com/azure/cosmos-db/set-throughput).
 
 ### Request Units (RUs)
-- Azure Cosmos DB supports many APIs, such as SQL, MongoDB, Cassandra, Gremlin, and Table. 
-Each API has its own set of database operations. These operations range from simple point reads and writes to complex queries. 
-Each database operation consumes system resources based on the complexity of the operation. The cost of all database operations is normalized by Azure Cosmos DB and is expressed by Request Units (or RUs, for short). 
+- Azure Cosmos DB supports many APIs, such as SQL, MongoDB, Cassandra, Gremlin, and Table.
+Each API has its own set of database operations. These operations range from simple point reads and writes to complex queries.
+Each database operation consumes system resources based on the complexity of the operation. The cost of all database operations is normalized by Azure Cosmos DB and is expressed by Request Units (or RUs, for short).
 You can think of RUs per second as the currency for throughput. RUs per second is a rate-based currency. It abstracts the system resources such as CPU, IOPS, and memory that are required to perform the database operations supported by Azure Cosmos DB.
-You may read more about request units [here](https://docs.microsoft.com/en-us/azure/cosmos-db/request-units).
+You may read more about request units [here](https://docs.microsoft.com/azure/cosmos-db/request-units).
 
 ### Partitioning
-- As items are inserted into a Cosmos DB container, the database grows horizontally by adding more storage and compute to handle requests. 
-Storage and compute capacity are added in discrete units known as partitions, and you must choose one field in your documents to be the partition key which maps each document to a partition. 
-The way partitions are managed is that each partition is assigned a roughly equal slice out of the range of partition key values; therefore you are advised to choose a partition key which is relatively random or evenly-distributed. 
-Otherwise, some partitions will see substantially more requests (hot partition) while other partitions see substantially fewer requests (cold partition), and this is to be avoided. 
-You may learn more about partitioning [here](https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview).
+- As items are inserted into a Cosmos DB container, the database grows horizontally by adding more storage and compute to handle requests.
+Storage and compute capacity are added in discrete units known as partitions, and you must choose one field in your documents to be the partition key which maps each document to a partition.
+The way partitions are managed is that each partition is assigned a roughly equal slice out of the range of partition key values; therefore you are advised to choose a partition key which is relatively random or evenly-distributed.
+Otherwise, some partitions will see substantially more requests (hot partition) while other partitions see substantially fewer requests (cold partition), and this is to be avoided.
+You may learn more about partitioning [here](https://docs.microsoft.com/azure/cosmos-db/partitioning-overview).
 
 ## Examples
 
@@ -127,7 +127,7 @@ CosmosClient cosmosClient = new CosmosClientBuilder()
 ```
 
 ### Create Database
-Using any one of the clients created in previous example, you can create a database like this: 
+Using any one of the clients created in previous example, you can create a database like this:
 
 ```java
 // Get a reference to the container
@@ -139,7 +139,7 @@ client.createDatabaseIfNotExists(DATABASE_NAME)
 ```
 
 ### Create Container
-Using the above created database, you can chain another operation to it for creating a container like this: 
+Using the above created database, you can chain another operation to it for creating a container like this:
 
 ```java
 client.createDatabaseIfNotExists(DATABASE_NAME)
@@ -153,7 +153,7 @@ client.createDatabaseIfNotExists(DATABASE_NAME)
 ### CRUD operation on Items
 
 ```java
-    
+
 // Create an item
 container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
     .flatMap(response -> {
@@ -179,22 +179,20 @@ container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SE
 // ...
 ```
 
-See the complete code in [`HelloWorldDemo.java`](../azure-cosmos-examples/src/main/java/com/azure/cosmos/examples/HelloWorldDemo.java)
-
 We have a get started sample app available [here][getting_started].
 
 Also, we have more examples [examples project][samples].
 
 ## Troubleshooting
 
-### General 
+### General
 
-Azure Cosmos DB is a fast and flexible distributed database that scales seamlessly with guaranteed latency and throughput. 
-You do not have to make major architecture changes or write complex code to scale your database with Azure Cosmos DB. 
-Scaling up and down is as easy as making a single API call or SDK method call. 
+Azure Cosmos DB is a fast and flexible distributed database that scales seamlessly with guaranteed latency and throughput.
+You do not have to make major architecture changes or write complex code to scale your database with Azure Cosmos DB.
+Scaling up and down is as easy as making a single API call or SDK method call.
 However, because Azure Cosmos DB is accessed via network calls there are client-side optimizations you can make to achieve peak performance when using Azure Cosmos DB Java SDK v4.
 
-- [Performance][perf_guide] guide covers these client-side optimizations.  
+- [Performance][perf_guide] guide covers these client-side optimizations.
 
 - [Troubleshooting guide][troubleshooting] covers common issues, workarounds, diagnostic steps, and tools when you use Azure Cosmos DB Java SDK v4 with Azure Cosmos DB SQL API accounts.
 
@@ -221,12 +219,12 @@ Also add a log4j config.
 ```properties
 # this is a sample log4j configuration
 
-# Set root logger level to DEBUG and its only appender to A1.
+# Set root logger level to INFO and its only appender to A1.
 log4j.rootLogger=INFO, A1
 
-log4j.category.com.azure.cosmos=DEBUG
-#log4j.category.io.netty=INFO
-#log4j.category.io.reactivex=INFO
+log4j.category.com.azure.cosmos=INFO
+#log4j.category.io.netty=OFF
+#log4j.category.io.projectreactor=OFF
 # A1 is set to be a ConsoleAppender.
 log4j.appender.A1=org.apache.log4j.ConsoleAppender
 
@@ -243,23 +241,24 @@ log4j.appender.A1.layout.ConversionPattern=%d %5X{pid} [%t] %-5p %c - %m%n
 
 ## Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a 
-[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights 
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
+[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights
 to use your contribution.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate 
-the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to 
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to
 do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] 
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq]
 or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: src
-[cosmos_introduction]: https://docs.microsoft.com/en-us/azure/cosmos-db/
-[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/4.0.1-beta.3/index.html
-[cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos/src
+[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
+[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
+[cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[slf4j]: http://www.slf4j.org/
 [maven]: https://maven.apache.org/
 [cosmos_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos
 [cosmos_maven_svg]: https://img.shields.io/maven-central/v/com.azure/azure-cosmos.svg
@@ -270,11 +269,11 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
 [samples_readme]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples/blob/master/README.md
-[troubleshooting]: https://docs.microsoft.com/en-us/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
-[perf_guide]: https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
-[sql_api_query]: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query
+[troubleshooting]: https://docs.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
+[perf_guide]: https://docs.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
+[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [getting_started]: https://github.com/Azure-Samples/azure-cosmos-java-getting-started
-[quickstart]: https://docs.microsoft.com/en-us/azure/cosmos-db/create-sql-api-java?tabs=sync
+[quickstart]: https://docs.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 [project_reactor_schedulers]: https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos%2FREADME.png)

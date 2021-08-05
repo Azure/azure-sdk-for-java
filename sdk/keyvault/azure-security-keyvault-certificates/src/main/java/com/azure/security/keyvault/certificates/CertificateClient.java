@@ -88,14 +88,16 @@ public final class CertificateClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return  client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
+        return client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
     }
 
     /**
      * Creates a new certificate. If this is the first version, the certificate resource is created. This operation requires
      * the certificates/create permission.
+     *
+     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to complete on service side.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
@@ -108,7 +110,7 @@ public final class CertificateClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
         return client.beginCreateCertificate(certificateName, policy).getSyncPoller();
     }
@@ -126,11 +128,10 @@ public final class CertificateClient {
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.
      * @return A {@link SyncPoller} to poll on the certificate operation status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return  client.getCertificateOperation(certificateName).getSyncPoller();
+        return client.getCertificateOperation(certificateName).getSyncPoller();
     }
-
     /**
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
@@ -250,7 +251,6 @@ public final class CertificateClient {
         return client.updateCertificatePropertiesWithResponse(properties, context).block();
     }
 
-
     /**
      * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated policy
      * get deleted. If soft-delete is enabled on the key vault then the certificate is placed in the deleted state and requires to be
@@ -261,14 +261,14 @@ public final class CertificateClient {
      * <p>Deletes the certificate in the Azure Key Vault. Prints out the
      * deleted certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#string}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String}
      *
      * @param certificateName The name of the certificate to be deleted.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedCertificate deleted certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
         return client.beginDeleteCertificate(certificateName).getSyncPoller();
     }
@@ -365,14 +365,14 @@ public final class CertificateClient {
      * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * recovered certificate details when a response has been received.</p>
 
-     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#string}
+     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String}
      *
      * @param certificateName The name of the deleted certificate to be recovered.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the certificate vault.
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultCertificateWithPolicy recovered certificate}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
         return client.beginRecoverDeletedCertificate(certificateName).getSyncPoller();
     }
@@ -515,7 +515,6 @@ public final class CertificateClient {
         return listDeletedCertificates(false, Context.NONE);
     }
 
-
     /**
      * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This operation includes
      * deletion-specific information and is applicable for vaults enabled for soft-delete. This operation requires the
@@ -613,6 +612,7 @@ public final class CertificateClient {
      * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificatePolicy certificate policy}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName, Context context) {
         return client.getCertificatePolicyWithResponse(certificateName, context).block();
     }
@@ -863,7 +863,6 @@ public final class CertificateClient {
         return client.updateIssuerWithResponse(issuer, context).block();
     }
 
-
     /**
      * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
@@ -917,7 +916,6 @@ public final class CertificateClient {
     public PagedIterable<CertificateContact> listContacts() {
         return listContacts(Context.NONE);
     }
-
 
     /**
      * Lists the certificate contacts in the key vault. This operation requires the certificates/managecontacts permission.
@@ -1007,6 +1005,7 @@ public final class CertificateClient {
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName, Context context) {
         return client.deleteCertificateOperationWithResponse(certificateName, context).block();
     }
+
     /**
      * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
      *
@@ -1099,6 +1098,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy importCertificate(ImportCertificateOptions importCertificateOptions) {
         return importCertificateWithResponse(importCertificateOptions, Context.NONE).getValue();
     }
@@ -1117,6 +1117,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
         return client.importCertificateWithResponse(importCertificateOptions, context).block();
     }

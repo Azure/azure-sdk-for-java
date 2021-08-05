@@ -47,6 +47,20 @@ public class SqlMISource extends TabularSource {
     private Object produceAdditionalTypes;
 
     /**
+     * The partition mechanism that will be used for Sql read in parallel.
+     * Possible values include: "None", "PhysicalPartitionsOfTable",
+     * "DynamicRange".
+     */
+    @JsonProperty(value = "partitionOption")
+    private Object partitionOption;
+
+    /**
+     * The settings that will be leveraged for Sql source partitioning.
+     */
+    @JsonProperty(value = "partitionSettings")
+    private SqlPartitionSettings partitionSettings;
+
+    /**
      * Get sQL reader query. Type: string (or Expression with resultType string).
      *
      * @return the sqlReaderQuery value
@@ -123,6 +137,46 @@ public class SqlMISource extends TabularSource {
      */
     public SqlMISource withProduceAdditionalTypes(Object produceAdditionalTypes) {
         this.produceAdditionalTypes = produceAdditionalTypes;
+        return this;
+    }
+
+    /**
+     * Get the partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     *
+     * @return the partitionOption value
+     */
+    public Object partitionOption() {
+        return this.partitionOption;
+    }
+
+    /**
+     * Set the partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     *
+     * @param partitionOption the partitionOption value to set
+     * @return the SqlMISource object itself.
+     */
+    public SqlMISource withPartitionOption(Object partitionOption) {
+        this.partitionOption = partitionOption;
+        return this;
+    }
+
+    /**
+     * Get the settings that will be leveraged for Sql source partitioning.
+     *
+     * @return the partitionSettings value
+     */
+    public SqlPartitionSettings partitionSettings() {
+        return this.partitionSettings;
+    }
+
+    /**
+     * Set the settings that will be leveraged for Sql source partitioning.
+     *
+     * @param partitionSettings the partitionSettings value to set
+     * @return the SqlMISource object itself.
+     */
+    public SqlMISource withPartitionSettings(SqlPartitionSettings partitionSettings) {
+        this.partitionSettings = partitionSettings;
         return this;
     }
 

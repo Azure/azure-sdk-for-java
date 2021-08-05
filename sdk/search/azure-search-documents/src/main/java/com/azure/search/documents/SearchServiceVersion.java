@@ -6,10 +6,11 @@ package com.azure.search.documents;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure Search supported by this client library.
+ * The versions of Azure Cognitive Search supported by this client library.
  */
 public enum SearchServiceVersion implements ServiceVersion {
-    V2019_05_06_Preview("2019-05-06-Preview");
+    V2020_06_30("2020-06-30"),
+    V2021_04_30_PREVIEW("2021-04-30-Preview");
 
     private final String version;
 
@@ -26,11 +27,11 @@ public enum SearchServiceVersion implements ServiceVersion {
     }
 
     /**
-     * Gets the latest service version supported by this client library
+     * Gets the latest service version supported by this client library.
      *
-     * @return the latest {@link SearchServiceVersion}
+     * @return The latest version supported by this client library.
      */
     public static SearchServiceVersion getLatest() {
-        return V2019_05_06_Preview;
+        return V2021_04_30_PREVIEW;
     }
 }

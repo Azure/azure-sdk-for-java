@@ -4,11 +4,11 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import java.util.UUID;
-
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     public ListBlobsTest(PerfStressOptions options) {
@@ -25,11 +25,13 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        blobContainerClient.listBlobs().forEach(b -> { });
+        blobContainerClient.listBlobs().forEach(b -> {
+        });
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blobContainerAsyncClient.listBlobs().then();
+        return blobContainerAsyncClient.listBlobs()
+            .then();
     }
 }

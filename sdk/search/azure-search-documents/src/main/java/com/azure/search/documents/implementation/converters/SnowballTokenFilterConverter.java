@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.SnowballTokenFilter;
-import com.azure.search.documents.indexes.models.SnowballTokenFilterLanguage;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter} and
@@ -19,16 +18,8 @@ public final class SnowballTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        SnowballTokenFilter snowballTokenFilter = new SnowballTokenFilter();
 
-        String name = obj.getName();
-        snowballTokenFilter.setName(name);
-
-        if (obj.getLanguage() != null) {
-            SnowballTokenFilterLanguage language = SnowballTokenFilterLanguageConverter.map(obj.getLanguage());
-            snowballTokenFilter.setLanguage(language);
-        }
-        return snowballTokenFilter;
+        return new SnowballTokenFilter(obj.getName(), obj.getLanguage());
     }
 
     /**
@@ -39,18 +30,9 @@ public final class SnowballTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter snowballTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter();
 
-        String name = obj.getName();
-        snowballTokenFilter.setName(name);
-
-        if (obj.getLanguage() != null) {
-            com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage language =
-                SnowballTokenFilterLanguageConverter.map(obj.getLanguage());
-            snowballTokenFilter.setLanguage(language);
-        }
-        return snowballTokenFilter;
+        return new com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter(obj.getName(),
+            obj.getLanguage());
     }
 
     private SnowballTokenFilterConverter() {

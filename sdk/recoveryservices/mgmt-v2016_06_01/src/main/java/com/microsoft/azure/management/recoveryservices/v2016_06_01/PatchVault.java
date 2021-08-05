@@ -27,6 +27,12 @@ public class PatchVault extends PatchTrackedResource {
     private Sku sku;
 
     /**
+     * The identity property.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityData identity;
+
+    /**
      * Get the properties value.
      *
      * @return the properties value
@@ -63,6 +69,26 @@ public class PatchVault extends PatchTrackedResource {
      */
     public PatchVault withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity value.
+     *
+     * @return the identity value
+     */
+    public IdentityData identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity value.
+     *
+     * @param identity the identity value to set
+     * @return the PatchVault object itself.
+     */
+    public PatchVault withIdentity(IdentityData identity) {
+        this.identity = identity;
         return this;
     }
 

@@ -1,0 +1,16 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}",
+    "subject": "transforms/VideoAnalyzerTransform/jobs/job-2ac2fe75-6557-4de5-ab25-5713b74a6901",
+    "eventType": "Microsoft.Media.JobScheduled",
+    "eventTime": "2018-10-12T15:14:11.3028183Z",
+    "id": "9b17dbf0-355d-4fb0-9a73-e76b150858c8",
+    "data": {
+      "previousState": "Queued",
+      "state": "Scheduled",
+      "correlationData": {}
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

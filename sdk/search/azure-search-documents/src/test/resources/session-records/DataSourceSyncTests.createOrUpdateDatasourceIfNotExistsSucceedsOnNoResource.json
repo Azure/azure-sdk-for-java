@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob704449328')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "535b540c-a0fc-471d-902d-2c09747608f2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "438",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "535b540c-a0fc-471d-902d-2c09747608f2",
+      "StatusCode" : "201",
+      "Date" : "Tue, 13 Jul 2021 19:23:16 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D94633AA9BB980\"",
+      "client-request-id" : "535b540c-a0fc-471d-902d-2c09747608f2",
+      "elapsed-time" : "30",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8D94633AA9BB980\\\"\",\"name\":\"azs-java-test-blob704449328\",\"description\":\"Some data source\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"fakecontainer\",\"query\":\"/fakefolder/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":null,\"encryptionKey\":null,\"identity\":null}",
+      "x-ms-client-request-id" : "535b540c-a0fc-471d-902d-2c09747608f2",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://alzimmer-test.search.windows.net/datasources('azs-java-test-blob704449328')?api-version=2021-04-30-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob704449328')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c5b70903-940a-4e38-a9d3-91a9b88c261b"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c5b70903-940a-4e38-a9d3-91a9b88c261b",
+      "elapsed-time" : "17",
+      "Pragma" : "no-cache",
+      "Expires" : "-1",
+      "retry-after" : "0",
+      "request-id" : "c5b70903-940a-4e38-a9d3-91a9b88c261b",
+      "StatusCode" : "204",
+      "x-ms-client-request-id" : "c5b70903-940a-4e38-a9d3-91a9b88c261b",
+      "Date" : "Tue, 13 Jul 2021 19:23:16 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-java-test-blob704449328" ]
+}

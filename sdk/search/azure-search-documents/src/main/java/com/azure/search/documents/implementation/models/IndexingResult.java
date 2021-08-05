@@ -6,13 +6,12 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Status of an indexing operation for a single document.
- */
-@Fluent
+/** Status of an indexing operation for a single document. */
+@Immutable
 public final class IndexingResult {
     /*
      * The key of a document that was in the indexing request.
@@ -45,8 +44,25 @@ public final class IndexingResult {
     private int statusCode;
 
     /**
-     * Get the key property: The key of a document that was in the indexing
-     * request.
+     * Creates an instance of IndexingResult class.
+     *
+     * @param key the key value to set.
+     * @param succeeded the succeeded value to set.
+     * @param statusCode the statusCode value to set.
+     */
+    @JsonCreator
+    public IndexingResult(
+            @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY) String key,
+            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY) boolean succeeded,
+            @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    int statusCode) {
+        this.key = key;
+        this.succeeded = succeeded;
+        this.statusCode = statusCode;
+    }
+
+    /**
+     * Get the key property: The key of a document that was in the indexing request.
      *
      * @return the key value.
      */
@@ -55,9 +71,8 @@ public final class IndexingResult {
     }
 
     /**
-     * Get the errorMessage property: The error message explaining why the
-     * indexing operation failed for the document identified by the key; null
-     * if indexing succeeded.
+     * Get the errorMessage property: The error message explaining why the indexing operation failed for the document
+     * identified by the key; null if indexing succeeded.
      *
      * @return the errorMessage value.
      */
@@ -66,8 +81,8 @@ public final class IndexingResult {
     }
 
     /**
-     * Get the succeeded property: A value indicating whether the indexing
-     * operation succeeded for the document identified by the key.
+     * Get the succeeded property: A value indicating whether the indexing operation succeeded for the document
+     * identified by the key.
      *
      * @return the succeeded value.
      */
@@ -76,11 +91,10 @@ public final class IndexingResult {
     }
 
     /**
-     * Get the statusCode property: The status code of the indexing operation.
-     * Possible values include: 200 for a successful update or delete, 201 for
-     * successful document creation, 400 for a malformed input document, 404
-     * for document not found, 409 for a version conflict, 422 when the index
-     * is temporarily unavailable, or 503 for when the service is too busy.
+     * Get the statusCode property: The status code of the indexing operation. Possible values include: 200 for a
+     * successful update or delete, 201 for successful document creation, 400 for a malformed input document, 404 for
+     * document not found, 409 for a version conflict, 422 when the index is temporarily unavailable, or 503 for when
+     * the service is too busy.
      *
      * @return the statusCode value.
      */

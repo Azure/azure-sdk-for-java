@@ -39,9 +39,17 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolVulnera
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolVulnerabilityAssessmentScans;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolSecurityAlertPolicies;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolVulnerabilityAssessmentRuleBaselines;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ExtendedSqlPoolBlobAuditingPolicies;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.DataMaskingPolicies;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.DataMaskingRules;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolColumns;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolWorkloadGroups;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolWorkloadClassifiers;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.Workspaces;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceAadAdmins;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceSqlAadAdmins;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceManagedIdentitySqlControlSettings;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.RestorableDroppedSqlPools;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimes;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeNodeIpAddressOperations;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeObjectMetadatas;
@@ -53,6 +61,15 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRun
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeStatusOperations;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkResources;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnections;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubs;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnectionsPrivateLinkHubs;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceManagedSqlServerBlobAuditingPolicies;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceManagedSqlServerExtendedBlobAuditingPolicies;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceManagedSqlServerSecurityAlertPolicys;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceManagedSqlServerVulnerabilityAssessments;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceManagedSqlServerUsages;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceManagedSqlServerRecoverableSqlpools;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.Keys;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -83,9 +100,17 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
     private SqlPoolVulnerabilityAssessmentScans sqlPoolVulnerabilityAssessmentScans;
     private SqlPoolSecurityAlertPolicies sqlPoolSecurityAlertPolicies;
     private SqlPoolVulnerabilityAssessmentRuleBaselines sqlPoolVulnerabilityAssessmentRuleBaselines;
+    private ExtendedSqlPoolBlobAuditingPolicies extendedSqlPoolBlobAuditingPolicies;
+    private DataMaskingPolicies dataMaskingPolicies;
+    private DataMaskingRules dataMaskingRules;
+    private SqlPoolColumns sqlPoolColumns;
+    private SqlPoolWorkloadGroups sqlPoolWorkloadGroups;
+    private SqlPoolWorkloadClassifiers sqlPoolWorkloadClassifiers;
     private Workspaces workspaces;
     private WorkspaceAadAdmins workspaceAadAdmins;
+    private WorkspaceSqlAadAdmins workspaceSqlAadAdmins;
     private WorkspaceManagedIdentitySqlControlSettings workspaceManagedIdentitySqlControlSettings;
+    private RestorableDroppedSqlPools restorableDroppedSqlPools;
     private IntegrationRuntimes integrationRuntimes;
     private IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations;
     private IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas;
@@ -97,6 +122,15 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
     private IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations;
     private PrivateLinkResources privateLinkResources;
     private PrivateEndpointConnections privateEndpointConnections;
+    private PrivateLinkHubs privateLinkHubs;
+    private PrivateEndpointConnectionsPrivateLinkHubs privateEndpointConnectionsPrivateLinkHubs;
+    private WorkspaceManagedSqlServerBlobAuditingPolicies workspaceManagedSqlServerBlobAuditingPolicies;
+    private WorkspaceManagedSqlServerExtendedBlobAuditingPolicies workspaceManagedSqlServerExtendedBlobAuditingPolicies;
+    private WorkspaceManagedSqlServerSecurityAlertPolicys workspaceManagedSqlServerSecurityAlertPolicys;
+    private WorkspaceManagedSqlServerVulnerabilityAssessments workspaceManagedSqlServerVulnerabilityAssessments;
+    private WorkspaceManagedSqlServerUsages workspaceManagedSqlServerUsages;
+    private WorkspaceManagedSqlServerRecoverableSqlpools workspaceManagedSqlServerRecoverableSqlpools;
+    private Keys keys;
     /**
     * Get a Configurable instance that can be used to create SynapseManager with optional configuration.
     *
@@ -375,6 +409,66 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
     }
 
     /**
+     * @return Entry point to manage ExtendedSqlPoolBlobAuditingPolicies.
+     */
+    public ExtendedSqlPoolBlobAuditingPolicies extendedSqlPoolBlobAuditingPolicies() {
+        if (this.extendedSqlPoolBlobAuditingPolicies == null) {
+            this.extendedSqlPoolBlobAuditingPolicies = new ExtendedSqlPoolBlobAuditingPoliciesImpl(this);
+        }
+        return this.extendedSqlPoolBlobAuditingPolicies;
+    }
+
+    /**
+     * @return Entry point to manage DataMaskingPolicies.
+     */
+    public DataMaskingPolicies dataMaskingPolicies() {
+        if (this.dataMaskingPolicies == null) {
+            this.dataMaskingPolicies = new DataMaskingPoliciesImpl(this);
+        }
+        return this.dataMaskingPolicies;
+    }
+
+    /**
+     * @return Entry point to manage DataMaskingRules.
+     */
+    public DataMaskingRules dataMaskingRules() {
+        if (this.dataMaskingRules == null) {
+            this.dataMaskingRules = new DataMaskingRulesImpl(this);
+        }
+        return this.dataMaskingRules;
+    }
+
+    /**
+     * @return Entry point to manage SqlPoolColumns.
+     */
+    public SqlPoolColumns sqlPoolColumns() {
+        if (this.sqlPoolColumns == null) {
+            this.sqlPoolColumns = new SqlPoolColumnsImpl(this);
+        }
+        return this.sqlPoolColumns;
+    }
+
+    /**
+     * @return Entry point to manage SqlPoolWorkloadGroups.
+     */
+    public SqlPoolWorkloadGroups sqlPoolWorkloadGroups() {
+        if (this.sqlPoolWorkloadGroups == null) {
+            this.sqlPoolWorkloadGroups = new SqlPoolWorkloadGroupsImpl(this);
+        }
+        return this.sqlPoolWorkloadGroups;
+    }
+
+    /**
+     * @return Entry point to manage SqlPoolWorkloadClassifiers.
+     */
+    public SqlPoolWorkloadClassifiers sqlPoolWorkloadClassifiers() {
+        if (this.sqlPoolWorkloadClassifiers == null) {
+            this.sqlPoolWorkloadClassifiers = new SqlPoolWorkloadClassifiersImpl(this);
+        }
+        return this.sqlPoolWorkloadClassifiers;
+    }
+
+    /**
      * @return Entry point to manage Workspaces.
      */
     public Workspaces workspaces() {
@@ -395,6 +489,16 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
     }
 
     /**
+     * @return Entry point to manage WorkspaceSqlAadAdmins.
+     */
+    public WorkspaceSqlAadAdmins workspaceSqlAadAdmins() {
+        if (this.workspaceSqlAadAdmins == null) {
+            this.workspaceSqlAadAdmins = new WorkspaceSqlAadAdminsImpl(this);
+        }
+        return this.workspaceSqlAadAdmins;
+    }
+
+    /**
      * @return Entry point to manage WorkspaceManagedIdentitySqlControlSettings.
      */
     public WorkspaceManagedIdentitySqlControlSettings workspaceManagedIdentitySqlControlSettings() {
@@ -402,6 +506,16 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
             this.workspaceManagedIdentitySqlControlSettings = new WorkspaceManagedIdentitySqlControlSettingsImpl(this);
         }
         return this.workspaceManagedIdentitySqlControlSettings;
+    }
+
+    /**
+     * @return Entry point to manage RestorableDroppedSqlPools.
+     */
+    public RestorableDroppedSqlPools restorableDroppedSqlPools() {
+        if (this.restorableDroppedSqlPools == null) {
+            this.restorableDroppedSqlPools = new RestorableDroppedSqlPoolsImpl(this);
+        }
+        return this.restorableDroppedSqlPools;
     }
 
     /**
@@ -512,6 +626,96 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
             this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(this);
         }
         return this.privateEndpointConnections;
+    }
+
+    /**
+     * @return Entry point to manage PrivateLinkHubs.
+     */
+    public PrivateLinkHubs privateLinkHubs() {
+        if (this.privateLinkHubs == null) {
+            this.privateLinkHubs = new PrivateLinkHubsImpl(this);
+        }
+        return this.privateLinkHubs;
+    }
+
+    /**
+     * @return Entry point to manage PrivateEndpointConnectionsPrivateLinkHubs.
+     */
+    public PrivateEndpointConnectionsPrivateLinkHubs privateEndpointConnectionsPrivateLinkHubs() {
+        if (this.privateEndpointConnectionsPrivateLinkHubs == null) {
+            this.privateEndpointConnectionsPrivateLinkHubs = new PrivateEndpointConnectionsPrivateLinkHubsImpl(this);
+        }
+        return this.privateEndpointConnectionsPrivateLinkHubs;
+    }
+
+    /**
+     * @return Entry point to manage WorkspaceManagedSqlServerBlobAuditingPolicies.
+     */
+    public WorkspaceManagedSqlServerBlobAuditingPolicies workspaceManagedSqlServerBlobAuditingPolicies() {
+        if (this.workspaceManagedSqlServerBlobAuditingPolicies == null) {
+            this.workspaceManagedSqlServerBlobAuditingPolicies = new WorkspaceManagedSqlServerBlobAuditingPoliciesImpl(this);
+        }
+        return this.workspaceManagedSqlServerBlobAuditingPolicies;
+    }
+
+    /**
+     * @return Entry point to manage WorkspaceManagedSqlServerExtendedBlobAuditingPolicies.
+     */
+    public WorkspaceManagedSqlServerExtendedBlobAuditingPolicies workspaceManagedSqlServerExtendedBlobAuditingPolicies() {
+        if (this.workspaceManagedSqlServerExtendedBlobAuditingPolicies == null) {
+            this.workspaceManagedSqlServerExtendedBlobAuditingPolicies = new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl(this);
+        }
+        return this.workspaceManagedSqlServerExtendedBlobAuditingPolicies;
+    }
+
+    /**
+     * @return Entry point to manage WorkspaceManagedSqlServerSecurityAlertPolicys.
+     */
+    public WorkspaceManagedSqlServerSecurityAlertPolicys workspaceManagedSqlServerSecurityAlertPolicys() {
+        if (this.workspaceManagedSqlServerSecurityAlertPolicys == null) {
+            this.workspaceManagedSqlServerSecurityAlertPolicys = new WorkspaceManagedSqlServerSecurityAlertPolicysImpl(this);
+        }
+        return this.workspaceManagedSqlServerSecurityAlertPolicys;
+    }
+
+    /**
+     * @return Entry point to manage WorkspaceManagedSqlServerVulnerabilityAssessments.
+     */
+    public WorkspaceManagedSqlServerVulnerabilityAssessments workspaceManagedSqlServerVulnerabilityAssessments() {
+        if (this.workspaceManagedSqlServerVulnerabilityAssessments == null) {
+            this.workspaceManagedSqlServerVulnerabilityAssessments = new WorkspaceManagedSqlServerVulnerabilityAssessmentsImpl(this);
+        }
+        return this.workspaceManagedSqlServerVulnerabilityAssessments;
+    }
+
+    /**
+     * @return Entry point to manage WorkspaceManagedSqlServerUsages.
+     */
+    public WorkspaceManagedSqlServerUsages workspaceManagedSqlServerUsages() {
+        if (this.workspaceManagedSqlServerUsages == null) {
+            this.workspaceManagedSqlServerUsages = new WorkspaceManagedSqlServerUsagesImpl(this);
+        }
+        return this.workspaceManagedSqlServerUsages;
+    }
+
+    /**
+     * @return Entry point to manage WorkspaceManagedSqlServerRecoverableSqlpools.
+     */
+    public WorkspaceManagedSqlServerRecoverableSqlpools workspaceManagedSqlServerRecoverableSqlpools() {
+        if (this.workspaceManagedSqlServerRecoverableSqlpools == null) {
+            this.workspaceManagedSqlServerRecoverableSqlpools = new WorkspaceManagedSqlServerRecoverableSqlpoolsImpl(this);
+        }
+        return this.workspaceManagedSqlServerRecoverableSqlpools;
+    }
+
+    /**
+     * @return Entry point to manage Keys.
+     */
+    public Keys keys() {
+        if (this.keys == null) {
+            this.keys = new KeysImpl(this);
+        }
+        return this.keys;
     }
 
     /**

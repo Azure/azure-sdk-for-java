@@ -27,8 +27,8 @@ If applicable, add screenshots to help explain your problem.
 
 **Setup (please complete the following information):**
  - OS: [e.g. iOS]
- - IDE : [e.g. IntelliJ]
- - Version of the Library used
+ - IDE: [e.g. IntelliJ]
+ - Library/Libraries: [e.g. com.azure:azure-core:1.16.0 (groupId:artifactId:version)]
 
 **Additional context**
 Add any other context about the problem here.

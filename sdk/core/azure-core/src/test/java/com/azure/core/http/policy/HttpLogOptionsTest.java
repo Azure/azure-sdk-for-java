@@ -10,18 +10,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HttpLogOptionsTest {
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testMaxApplicationId() {
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-            () -> new HttpLogOptions().setApplicationId("AppId-0123456789012345678912345"));
+        assertThrows(IllegalArgumentException.class, () -> new HttpLogOptions()
+            .setApplicationId("AppId-0123456789012345678912345"));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testApplicationIdContainsSpace() {
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-            () -> new HttpLogOptions().setApplicationId("AppId 78912345"));
+        assertThrows(IllegalArgumentException.class, () -> new HttpLogOptions().setApplicationId("AppId 78912345"));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testSetApplicationId() {
         String expected = "AzCopy/10.0.4-Preview";

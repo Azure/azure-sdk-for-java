@@ -1,29 +1,27 @@
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RetryAnalyzer;
-import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -65,20 +63,9 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         };
     }
 
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        return new CosmosContainerProperties(
-            collectionName,
-            partitionKeyDef);
-    }
-
-    private CosmosItemProperties getDocumentDefinition(String documentId) {
+    private InternalObjectNode getDocumentDefinition(String documentId) {
         final String uuid = UUID.randomUUID().toString();
-        return new CosmosItemProperties(String.format("{ "
+        return new InternalObjectNode(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
                 + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
@@ -169,13 +156,13 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
 
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
-        indexingMode.setIndexingMode(IndexingMode.LAZY);
+        indexingMode.setIndexingMode(IndexingMode.CONSISTENT);
         collectionSettings.setIndexingPolicy(indexingMode);
         Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-            .indexingMode(IndexingMode.LAZY).build();
+            .indexingMode(IndexingMode.CONSISTENT).build();
         validateSuccess(readObservable, validator);
 
         //  sanity check
@@ -191,11 +178,11 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
 
         credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
-        CosmosItemProperties properties = getDocumentDefinition(documentId);
-        Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = container.createItem(properties, new CosmosItemRequestOptions());
+        InternalObjectNode properties = getDocumentDefinition(documentId);
+        Mono<CosmosItemResponse<InternalObjectNode>> createObservable = container.createItem(properties, new CosmosItemRequestOptions());
 
         CosmosItemResponseValidator validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .withId(properties.getId())
                 .build();
         validateItemSuccess(createObservable, validator);
@@ -212,20 +199,20 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
 
         credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
-        CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
+        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")));
-        Mono<CosmosItemResponse<CosmosItemProperties>> readObservable = container.readItem(docDefinition.getId(),
+        Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(docDefinition.getId(),
                                                                                                 new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
                                                                                                 options,
-                                                                                                CosmosItemProperties.class);
+                                                                                                InternalObjectNode.class);
 
         CosmosItemResponseValidator validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .withId(docDefinition.getId())
                 .build();
         validateItemSuccess(readObservable, validator);
@@ -242,7 +229,7 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
 
         credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
-        CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
+        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
 
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
@@ -252,7 +239,7 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
                                                                               new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")), options);
 
         CosmosItemResponseValidator validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .nullResource()
                 .build();
         validateItemSuccess(deleteObservable, validator);
@@ -260,9 +247,9 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         // attempt to read document which was deleted
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
-        Mono<CosmosItemResponse<CosmosItemProperties>> readObservable = container.readItem(documentId,
+        Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(documentId,
                                                                           new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
-                                                                          options, CosmosItemProperties.class);
+                                                                          options, InternalObjectNode.class);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateItemFailure(readObservable, notFoundValidator);
 
@@ -345,11 +332,6 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block();
         client.getDatabase(databaseDefinition.getId());
-    }
-
-    @BeforeMethod(groups = { "simple" }, timeOut = TIMEOUT)
-    public void beforeMethod() throws Exception {
-        Thread.sleep(TIMEOUT / 2);
     }
 
     @AfterMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

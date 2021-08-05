@@ -61,14 +61,24 @@ public class ContentTypeDetectionTest {
     }
 
     /**
-     * Test for TIFF file content type detection for {@link Utility#detectContentType} method.
-     *
+     * Test for little-endian TIFF file content type detection for {@link Utility#detectContentType} method.
+     * File header must begin with: 49, 49, 2a, 0 in hex value, which is 73, 73, 42, 0 in decimal.
      * @throws IOException if an I/O error occurs reading from the stream
      */
     @Test
-    public void tiffContentDetectionTest() throws IOException {
+    public void tiffLittleEndianContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample_files/Test/cell.tif");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
+        assertEquals(ContentType.IMAGE_TIFF, detectContentType(buffer).block());
+    }
+
+    /**
+     * Test for big-endian TIFF content type detection for {@link Utility#detectContentType} method.
+     * No file available. Input must begin with: 4D 4D 00 2A in hex value, which is 77, 77, 0, 42 in decimal
+     */
+    @Test
+    public void tiffBigEndianContentDetectionTest() {
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(new byte[]{0x4D, 0x4D, 0x00, 0x2A}));
         assertEquals(ContentType.IMAGE_TIFF, detectContentType(buffer).block());
     }
 
@@ -82,5 +92,17 @@ public class ContentTypeDetectionTest {
         File sourceFile = new File("src/test/resources/sample_files/Test/docFile.doc");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         assertThrows(RuntimeException.class, () -> detectContentType(buffer).block());
+    }
+
+    /**
+     * Test for BMP file content type detection for {@link Utility#detectContentType} method.
+     *
+     * @throws IOException if an I/O error occurs reading from the stream
+     */
+    @Test
+    public void bmpContentDetectionTest() throws IOException {
+        File sourceFile = new File("src/test/resources/sample_files/Test/sample_bmp.bmp");
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
+        assertEquals(ContentType.IMAGE_BMP, detectContentType(buffer).block());
     }
 }

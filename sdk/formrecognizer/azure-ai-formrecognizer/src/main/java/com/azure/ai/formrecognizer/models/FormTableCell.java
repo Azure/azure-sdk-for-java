@@ -5,33 +5,34 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
- * The FormTableCell model.
+ * Represents a cell contained in a table recognized from the input document.
  */
 @Immutable
-public final class FormTableCell extends FormContent {
+public final class FormTableCell extends FormElement {
 
     /*
      * Row index of the cell.
      */
-    private final Integer rowIndex;
+    private final int rowIndex;
 
     /*
      * Column index of the cell.
      */
-    private final Integer columnIndex;
+    private final int columnIndex;
 
     /*
      * Number of rows spanned by this cell.
      */
-    private final Integer rowSpan;
+    private final int rowSpan;
 
     /*
      * Number of columns spanned by this cell.
      */
-    private final Integer columnSpan;
+    private final int columnSpan;
 
     /*
      * Confidence value.
@@ -39,10 +40,10 @@ public final class FormTableCell extends FormContent {
     private final float confidence;
 
     /*
-     * When includeTextDetails is set to true, a list of references to the text
+     * When includeFieldElements is set to true, a list of references to the
      * elements constituting this table cell.
      */
-    private final List<FormContent> elements;
+    private final List<FormElement> fieldElements;
 
     /*
      * Is the current cell a header cell?
@@ -57,23 +58,23 @@ public final class FormTableCell extends FormContent {
     /**
      * Constructs a FormTableCell object.
      *
-     * @param rowIndex Row index of the cell.
-     * @param columnIndex Column index of the cell.
-     * @param rowSpan Number of rows spanned by this cell.
-     * @param columnSpan Number of columns spanned by this cell.
-     * @param text The recognized text value.
-     * @param boundingBox The bounding box properties of the cell.
-     * @param confidence Confidence value of the recognized text.
-     * @param isHeader Is the current cell a header cell?
-     * @param isFooter Is the current cell a footer cell?
-     * @param pageNumber The 1 based page number of the cell
-     * @param textContent a list of references to the text elements constituting this table cell.
+     * @param rowIndex the row index of the cell.
+     * @param columnIndex the column index of the cell.
+     * @param rowSpan the number of rows spanned by this cell.
+     * @param columnSpan the number of columns spanned by this cell.
+     * @param text the recognized text value.
+     * @param boundingBox the bounding box properties of the cell.
+     * @param confidence the confidence value of the recognized text.
+     * @param isHeader the boolean indicating if the current cell a header cell?
+     * @param isFooter the boolean indicating if the current cell a footer cell?
+     * @param pageNumber the 1 based page number of the cell
+     * @param fieldElements a list of references to the elements constituting this table cell.
      */
-    public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan,
-        final Integer columnSpan, final String text, final BoundingBox boundingBox,
+    public FormTableCell(final int rowIndex, final int columnIndex, final int rowSpan,
+        final int columnSpan, final String text, final FieldBoundingBox boundingBox,
         final float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
-        final List<FormContent> textContent) {
-        super(text, boundingBox, pageNumber, null);
+        final List<FormElement> fieldElements) {
+        super(text, boundingBox, pageNumber);
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
         this.rowSpan = rowSpan;
@@ -81,13 +82,13 @@ public final class FormTableCell extends FormContent {
         this.confidence = confidence;
         this.isHeader = isHeader;
         this.isFooter = isFooter;
-        this.elements = textContent;
+        this.fieldElements = fieldElements == null ? null : Collections.unmodifiableList(fieldElements);
     }
 
     /**
-     * Get the confidence of the text of the cell.
+     * Get the confidence value of the recognized text of the cell.
      *
-     * @return the confidence value.
+     * @return the confidence value of the recognized text of the cell.
      */
     public float getConfidence() {
         return this.confidence;
@@ -97,7 +98,7 @@ public final class FormTableCell extends FormContent {
      * {@inheritDoc}
      */
     @Override
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return super.getPageNumber();
     }
 
@@ -105,7 +106,7 @@ public final class FormTableCell extends FormContent {
      * {@inheritDoc}
      */
     @Override
-    public BoundingBox getBoundingBox() {
+    public FieldBoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
@@ -120,27 +121,27 @@ public final class FormTableCell extends FormContent {
     /**
      * Get the row index of the cell.
      *
-     * @return the rowIndex value.
+     * @return the row index of the cell.
      */
-    public Integer getRowIndex() {
+    public int getRowIndex() {
         return this.rowIndex;
     }
 
     /**
      * Get the column index of the cell.
      *
-     * @return the columnIndex value.
+     * @return the column index of the cell.
      */
-    public Integer getColumnIndex() {
+    public int getColumnIndex() {
         return this.columnIndex;
     }
 
     /**
      * Get the number of rows spanned by this cell.
      *
-     * @return the rowSpan value.
+     * @return the number of rows spanned by this cell.
      */
-    public Integer getRowSpan() {
+    public int getRowSpan() {
         return this.rowSpan;
     }
 
@@ -148,26 +149,26 @@ public final class FormTableCell extends FormContent {
     /**
      * Get the number of columns spanned by this cell.
      *
-     * @return the columnSpan value.
+     * @return the number of columns spanned by this cell.
      */
-    public Integer getColumnSpan() {
+    public int getColumnSpan() {
         return this.columnSpan;
     }
 
     /**
-     * Get the list of references to the text elements constituting this table cell
-     * When includeTextDetails is set to true.
+     * When includeFieldElements is set to true, gets the list of references to the elements
+     * constituting this table cell.
      *
-     * @return the elements value.
+     * @return the unmodifiable list of list of references to the text elements constituting this table cell.
      */
-    public List<FormContent> getElements() {
-        return this.elements;
+    public List<FormElement> getFieldElements() {
+        return this.fieldElements;
     }
 
     /**
      * Get the boolean if the current cell a header cell.
      *
-     * @return the isHeader value.
+     * @return the boolean indicating if the current cell a header cell.
      */
     public boolean isHeader() {
         return this.isHeader;
@@ -176,7 +177,7 @@ public final class FormTableCell extends FormContent {
     /**
      * Get the boolean if the current cell a footer cell.
      *
-     * @return the isFooter value.
+     * @return the boolean indicating if the current cell is a footer cell.
      */
     public boolean isFooter() {
         return this.isFooter;

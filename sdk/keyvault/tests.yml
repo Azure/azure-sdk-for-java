@@ -1,24 +1,47 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      TimeoutInMinutes: 240
-      MaxParallel: 6
       ServiceDirectory: keyvault
+      TimeoutInMinutes: 240
+      SupportedClouds: 'Public,UsGov,China,Canary'
+      CloudConfig:
+        Public:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        Canary:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          Location: 'eastus2euap'
+          # Managed HSM test resources are expensive and provisioning has not been reliable.
+          # Given test coverage of non-canary regions we probably don't need to test in canary.
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+        UsGov:
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+        China:
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+      AdditionalMatrixConfigs:
+        - Name: keyvault_test_matrix_addons
+          Path: sdk/keyvault/platform-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true
       Artifacts:
+        - name: azure-security-keyvault-administration
+          groupId: com.azure
+          safeName: azuresecuritykeyvaultadministration
         - name: azure-security-keyvault-certificates
           groupId: com.azure
           safeName: azuresecuritykeyvaultcertificates
+        - name: azure-security-test-keyvault-jca
+          groupId: com.azure
+          safeName: azuresecuritytestkeyvaultjca
         - name: azure-security-keyvault-keys
           groupId: com.azure
           safeName: azuresecuritykeyvaultkeys
         - name: azure-security-keyvault-secrets
           groupId: com.azure
           safeName: azuresecuritykeyvaultsecrets
-      EnvVars:
-        AZURE_TEST_MODE: RECORD
-        ARM_CLIENTID: $(aad-azure-sdk-test-client-id)
-        ARM_CLIENTKEY: $(aad-azure-sdk-test-client-secret)
-        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-        AZURE_KEYVAULT_ENDPOINT: $(AZURE_KEYVAULT_ENDPOINT)

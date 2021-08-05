@@ -1,0 +1,11 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: mixedreality
+      Location: eastus2
+      Artifacts:
+        - name: azure-mixedreality-authentication
+          groupId: com.azure
+          safeName: azuremixedrealityauthentication

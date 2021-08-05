@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.knowledge.qnamaker.implementation;
 
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.DownloadOptionalParameter;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.TrainOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Knowledgebases;
 import com.google.common.base.Joiner;
@@ -15,12 +17,16 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.CreateKbDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.EnvironmentType;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.ErrorResponseException;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.FeedbackRecordDTO;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.FeedbackRecordsDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.KnowledgebaseDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.KnowledgebasesDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.KnowledgebaseUpdateHeaders;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.Operation;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.QnADocumentsDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.QnADTO;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.QnASearchResultList;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.QueryDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.ReplaceKbDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.UpdateKbOperationDTO;
 import com.microsoft.rest.ServiceCallback;
@@ -40,6 +46,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -100,7 +107,15 @@ public class KnowledgebasesImpl implements Knowledgebases {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Knowledgebases download" })
         @GET("knowledgebases/{kbId}/{environment}/qna")
-        Observable<Response<ResponseBody>> download(@Path("kbId") String kbId, @Path("environment") EnvironmentType environment, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> download(@Path("kbId") String kbId, @Path("environment") EnvironmentType environment, @Query("source") String source, @Query("changedSince") String changedSince, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Knowledgebases generateAnswer" })
+        @POST("knowledgebases/{kbId}/generateAnswer")
+        Observable<Response<ResponseBody>> generateAnswer(@Path("kbId") String kbId, @Body QueryDTO generateAnswerPayload, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Knowledgebases train" })
+        @POST("knowledgebases/{kbId}/train")
+        Observable<Response<ResponseBody>> train(@Path("kbId") String kbId, @Header("accept-language") String acceptLanguage, @Body FeedbackRecordsDTO trainPayload, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -652,18 +667,20 @@ public class KnowledgebasesImpl implements Knowledgebases {
                 .build(response);
     }
 
+
     /**
      * Download the knowledgebase.
      *
      * @param kbId Knowledgebase id.
      * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
+     * @param downloadOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the QnADocumentsDTO object if successful.
      */
-    public QnADocumentsDTO download(String kbId, EnvironmentType environment) {
-        return downloadWithServiceResponseAsync(kbId, environment).toBlocking().single().body();
+    public QnADocumentsDTO download(String kbId, EnvironmentType environment, DownloadOptionalParameter downloadOptionalParameter) {
+        return downloadWithServiceResponseAsync(kbId, environment, downloadOptionalParameter).toBlocking().single().body();
     }
 
     /**
@@ -671,12 +688,13 @@ public class KnowledgebasesImpl implements Knowledgebases {
      *
      * @param kbId Knowledgebase id.
      * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
+     * @param downloadOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<QnADocumentsDTO> downloadAsync(String kbId, EnvironmentType environment, final ServiceCallback<QnADocumentsDTO> serviceCallback) {
-        return ServiceFuture.fromResponse(downloadWithServiceResponseAsync(kbId, environment), serviceCallback);
+    public ServiceFuture<QnADocumentsDTO> downloadAsync(String kbId, EnvironmentType environment, DownloadOptionalParameter downloadOptionalParameter, final ServiceCallback<QnADocumentsDTO> serviceCallback) {
+        return ServiceFuture.fromResponse(downloadWithServiceResponseAsync(kbId, environment, downloadOptionalParameter), serviceCallback);
     }
 
     /**
@@ -684,11 +702,12 @@ public class KnowledgebasesImpl implements Knowledgebases {
      *
      * @param kbId Knowledgebase id.
      * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
+     * @param downloadOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the QnADocumentsDTO object
      */
-    public Observable<QnADocumentsDTO> downloadAsync(String kbId, EnvironmentType environment) {
-        return downloadWithServiceResponseAsync(kbId, environment).map(new Func1<ServiceResponse<QnADocumentsDTO>, QnADocumentsDTO>() {
+    public Observable<QnADocumentsDTO> downloadAsync(String kbId, EnvironmentType environment, DownloadOptionalParameter downloadOptionalParameter) {
+        return downloadWithServiceResponseAsync(kbId, environment, downloadOptionalParameter).map(new Func1<ServiceResponse<QnADocumentsDTO>, QnADocumentsDTO>() {
             @Override
             public QnADocumentsDTO call(ServiceResponse<QnADocumentsDTO> response) {
                 return response.body();
@@ -701,10 +720,37 @@ public class KnowledgebasesImpl implements Knowledgebases {
      *
      * @param kbId Knowledgebase id.
      * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
+     * @param downloadOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the QnADocumentsDTO object
      */
-    public Observable<ServiceResponse<QnADocumentsDTO>> downloadWithServiceResponseAsync(String kbId, EnvironmentType environment) {
+    public Observable<ServiceResponse<QnADocumentsDTO>> downloadWithServiceResponseAsync(String kbId, EnvironmentType environment, DownloadOptionalParameter downloadOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
+        }
+        if (environment == null) {
+            throw new IllegalArgumentException("Parameter environment is required and cannot be null.");
+        }
+        final String source = downloadOptionalParameter != null ? downloadOptionalParameter.source() : null;
+        final String changedSince = downloadOptionalParameter != null ? downloadOptionalParameter.changedSince() : null;
+
+        return downloadWithServiceResponseAsync(kbId, environment, source, changedSince);
+    }
+
+    /**
+     * Download the knowledgebase.
+     *
+     * @param kbId Knowledgebase id.
+     * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
+     * @param source The source property filter to apply.
+     * @param changedSince The last changed status property filter to apply.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QnADocumentsDTO object
+     */
+    public Observable<ServiceResponse<QnADocumentsDTO>> downloadWithServiceResponseAsync(String kbId, EnvironmentType environment, String source, String changedSince) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -715,7 +761,7 @@ public class KnowledgebasesImpl implements Knowledgebases {
             throw new IllegalArgumentException("Parameter environment is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.download(kbId, environment, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.download(kbId, environment, source, changedSince, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<QnADocumentsDTO>>>() {
                 @Override
                 public Observable<ServiceResponse<QnADocumentsDTO>> call(Response<ResponseBody> response) {
@@ -734,6 +780,307 @@ public class KnowledgebasesImpl implements Knowledgebases {
                 .register(200, new TypeToken<QnADocumentsDTO>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public KnowledgebasesDownloadParameters download() {
+        return new KnowledgebasesDownloadParameters(this);
+    }
+
+    /**
+     * Internal class implementing KnowledgebasesDownloadDefinition.
+     */
+    class KnowledgebasesDownloadParameters implements KnowledgebasesDownloadDefinition {
+        private KnowledgebasesImpl parent;
+        private String kbId;
+        private EnvironmentType environment;
+        private String source;
+        private String changedSince;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        KnowledgebasesDownloadParameters(KnowledgebasesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public KnowledgebasesDownloadParameters withKbId(String kbId) {
+            this.kbId = kbId;
+            return this;
+        }
+
+        @Override
+        public KnowledgebasesDownloadParameters withEnvironment(EnvironmentType environment) {
+            this.environment = environment;
+            return this;
+        }
+
+        @Override
+        public KnowledgebasesDownloadParameters withSource(String source) {
+            this.source = source;
+            return this;
+        }
+
+        @Override
+        public KnowledgebasesDownloadParameters withChangedSince(String changedSince) {
+            this.changedSince = changedSince;
+            return this;
+        }
+
+        @Override
+        public QnADocumentsDTO execute() {
+        return downloadWithServiceResponseAsync(kbId, environment, source, changedSince).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<QnADocumentsDTO> executeAsync() {
+            return downloadWithServiceResponseAsync(kbId, environment, source, changedSince).map(new Func1<ServiceResponse<QnADocumentsDTO>, QnADocumentsDTO>() {
+                @Override
+                public QnADocumentsDTO call(ServiceResponse<QnADocumentsDTO> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+    /**
+     * GenerateAnswer call to query knowledgebase (QnA Maker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param generateAnswerPayload Post body of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the QnASearchResultList object if successful.
+     */
+    public QnASearchResultList generateAnswer(String kbId, QueryDTO generateAnswerPayload) {
+        return generateAnswerWithServiceResponseAsync(kbId, generateAnswerPayload).toBlocking().single().body();
+    }
+
+    /**
+     * GenerateAnswer call to query knowledgebase (QnA Maker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param generateAnswerPayload Post body of the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<QnASearchResultList> generateAnswerAsync(String kbId, QueryDTO generateAnswerPayload, final ServiceCallback<QnASearchResultList> serviceCallback) {
+        return ServiceFuture.fromResponse(generateAnswerWithServiceResponseAsync(kbId, generateAnswerPayload), serviceCallback);
+    }
+
+    /**
+     * GenerateAnswer call to query knowledgebase (QnA Maker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param generateAnswerPayload Post body of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QnASearchResultList object
+     */
+    public Observable<QnASearchResultList> generateAnswerAsync(String kbId, QueryDTO generateAnswerPayload) {
+        return generateAnswerWithServiceResponseAsync(kbId, generateAnswerPayload).map(new Func1<ServiceResponse<QnASearchResultList>, QnASearchResultList>() {
+            @Override
+            public QnASearchResultList call(ServiceResponse<QnASearchResultList> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * GenerateAnswer call to query knowledgebase (QnA Maker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param generateAnswerPayload Post body of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QnASearchResultList object
+     */
+    public Observable<ServiceResponse<QnASearchResultList>> generateAnswerWithServiceResponseAsync(String kbId, QueryDTO generateAnswerPayload) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
+        }
+        if (generateAnswerPayload == null) {
+            throw new IllegalArgumentException("Parameter generateAnswerPayload is required and cannot be null.");
+        }
+        Validator.validate(generateAnswerPayload);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.generateAnswer(kbId, generateAnswerPayload, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<QnASearchResultList>>>() {
+                @Override
+                public Observable<ServiceResponse<QnASearchResultList>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<QnASearchResultList> clientResponse = generateAnswerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<QnASearchResultList> generateAnswerDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<QnASearchResultList, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<QnASearchResultList>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+
+    /**
+     * Train call to add suggestions to knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param trainOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void train(String kbId, TrainOptionalParameter trainOptionalParameter) {
+        trainWithServiceResponseAsync(kbId, trainOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Train call to add suggestions to knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param trainOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> trainAsync(String kbId, TrainOptionalParameter trainOptionalParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(trainWithServiceResponseAsync(kbId, trainOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * Train call to add suggestions to knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param trainOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> trainAsync(String kbId, TrainOptionalParameter trainOptionalParameter) {
+        return trainWithServiceResponseAsync(kbId, trainOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Train call to add suggestions to knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param trainOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> trainWithServiceResponseAsync(String kbId, TrainOptionalParameter trainOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
+        }
+        final List<FeedbackRecordDTO> feedbackRecords = trainOptionalParameter != null ? trainOptionalParameter.feedbackRecords() : null;
+
+        return trainWithServiceResponseAsync(kbId, feedbackRecords);
+    }
+
+    /**
+     * Train call to add suggestions to knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param feedbackRecords List of feedback records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> trainWithServiceResponseAsync(String kbId, List<FeedbackRecordDTO> feedbackRecords) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
+        }
+        Validator.validate(feedbackRecords);
+        FeedbackRecordsDTO trainPayload = new FeedbackRecordsDTO();
+        trainPayload.withFeedbackRecords(feedbackRecords);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.train(kbId, this.client.acceptLanguage(), trainPayload, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = trainDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> trainDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    @Override
+    public KnowledgebasesTrainParameters train() {
+        return new KnowledgebasesTrainParameters(this);
+    }
+
+    /**
+     * Internal class implementing KnowledgebasesTrainDefinition.
+     */
+    class KnowledgebasesTrainParameters implements KnowledgebasesTrainDefinition {
+        private KnowledgebasesImpl parent;
+        private String kbId;
+        private List<FeedbackRecordDTO> feedbackRecords;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        KnowledgebasesTrainParameters(KnowledgebasesImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public KnowledgebasesTrainParameters withKbId(String kbId) {
+            this.kbId = kbId;
+            return this;
+        }
+
+        @Override
+        public KnowledgebasesTrainParameters withFeedbackRecords(List<FeedbackRecordDTO> feedbackRecords) {
+            this.feedbackRecords = feedbackRecords;
+            return this;
+        }
+
+        @Override
+        public void execute() {
+        trainWithServiceResponseAsync(kbId, feedbackRecords).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<Void> executeAsync() {
+            return trainWithServiceResponseAsync(kbId, feedbackRecords).map(new Func1<ServiceResponse<Void>, Void>() {
+                @Override
+                public Void call(ServiceResponse<Void> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

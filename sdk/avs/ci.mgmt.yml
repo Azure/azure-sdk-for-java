@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/avs/ci.mgmt.yml
+      - sdk/avs/mgmt-v2019_08_09_preview/
+      - sdk/avs/mgmt-v2020_03_20/
+    exclude:
+      - sdk/avs/pom.xml
+      - sdk/avs/mgmt-v2019_08_09_preview/pom.xml
+      - sdk/avs/mgmt-v2020_03_20/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/avs/ci.mgmt.yml
+      - sdk/avs/mgmt-v2019_08_09_preview/
+      - sdk/avs/mgmt-v2020_03_20/
+    exclude:
+      - sdk/avs/pom.xml
+      - sdk/avs/mgmt-v2019_08_09_preview/pom.xml
+      - sdk/avs/mgmt-v2020_03_20/pom.xml
+
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+    parameters:
+      ServiceDirectory: avs

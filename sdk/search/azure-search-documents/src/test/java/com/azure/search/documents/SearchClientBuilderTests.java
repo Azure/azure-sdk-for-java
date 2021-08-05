@@ -4,23 +4,34 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Header;
 import com.azure.search.documents.indexes.SearchIndexClientBuilderTests;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.security.SecureRandom;
+import java.time.Duration;
+import java.util.Collections;
 
 import static com.azure.search.documents.indexes.SearchIndexClientBuilderTests.request;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
     private final String indexName = "myindex";
-    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2019_05_06_Preview;
+    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2020_06_30;
 
     @Test
     public void buildSyncClientTest() {
@@ -109,11 +120,6 @@ public class SearchClientBuilderTests {
     }
 
     @Test
-    public void nullCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new SearchClientBuilder().credential(null));
-    }
-
-    @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder()
             .credential(new AzureKeyCredential("")));
@@ -134,5 +140,60 @@ public class SearchClientBuilderTests {
             request(searchAsyncClient.getEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void clientOptionsIsPreferredOverLogOptions() {
+        SearchClient searchClient = new SearchClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .indexName("test_builder")
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
+
+        assertThrows(HttpResponseException.class, searchClient::getDocumentCount);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void applicationIdFallsBackToLogOptions() {
+        SearchClient searchClient = new SearchClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .indexName("test_builder")
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
+
+        assertThrows(HttpResponseException.class, searchClient::getDocumentCount);
+    }
+
+    @Test
+    public void clientOptionHeadersAreAddedLast() {
+        SearchClient searchClient = new SearchClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .indexName("test_builder")
+            .clientOptions(new ClientOptions()
+                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
+
+        assertThrows(HttpResponseException.class, searchClient::getDocumentCount);
     }
 }

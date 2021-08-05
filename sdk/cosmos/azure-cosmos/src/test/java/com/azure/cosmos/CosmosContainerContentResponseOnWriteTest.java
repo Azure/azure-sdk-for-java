@@ -11,14 +11,12 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,9 +87,9 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
 
         CosmosContainerResponse replaceResponse = createdDatabase.getContainer(containerProperties.getId())
                                                                    .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                                       new IndexingPolicy().setIndexingMode(IndexingMode.LAZY)));
+                                                                       new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)));
         assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
-            .isEqualTo(IndexingMode.LAZY);
+            .isEqualTo(IndexingMode.CONSISTENT);
 
         CosmosContainerResponse replaceResponse1 = createdDatabase.getContainer(containerProperties.getId())
                                                                     .replace(containerResponse.getProperties().setIndexingPolicy(
@@ -100,17 +98,6 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
         assertThat(replaceResponse1.getProperties().getIndexingPolicy().getIndexingMode())
             .isEqualTo(IndexingMode.CONSISTENT);
 
-    }
-
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        return new CosmosContainerProperties(
-            collectionName,
-            partitionKeyDef);
     }
 
     private void validateContainerResponse(CosmosContainerProperties containerProperties,

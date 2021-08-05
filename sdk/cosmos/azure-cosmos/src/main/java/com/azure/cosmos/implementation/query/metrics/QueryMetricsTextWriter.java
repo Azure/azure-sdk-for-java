@@ -55,16 +55,16 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private static final String SCHEDULING_METRICS = "Scheduling Metrics";
 
     // Constants for Partition Execution Timeline Table
-    private static final String START_TIME_HEADER = "Start Time (UTC)";
-    private static final String END_TIME_HEADER = "End Time (UTC)";
-    private static final String DURATION_HEADER = "Duration (ms)";
-    private static final String PARTITION_KEY_RANGE_ID_HEADER = "Partition Id";
+    public static final String START_TIME_HEADER = "Start Time (UTC)";
+    public static final String END_TIME_HEADER = "End Time (UTC)";
+    public static final String DURATION_HEADER = "Duration (ms)";
+    private static final String PARTITION_KEY_RANGE_HEADER = "Partition Key Range";
     private static final String NUMBER_OF_DOCUMENTS_HEADER = "NUMBER of Documents";
     private static final String RETRY_COUNT_HEADER = "Retry Count";
     private static final String ACTIVITY_ID_HEADER = "Activity Id";
 
     // Constants for Scheduling Metrics Table
-    private static final String PARTITION_ID_HEADER = "Partition Id";
+    private static final String PARTITION_RANGE_HEADER = "Partition Range";
     private static final String RESPONSE_TIME_HEADER = "Response Time (ms)";
     private static final String RUN_TIME_HEADER = "Run Time (ms)";
     private static final String WAIT_TIME_HEADER = "Wait Time (ms)";
@@ -78,14 +78,14 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
         = Math.max(MAX_DATE_TIME_STRING_LENGTH, START_TIME_HEADER.length());
     private static final int END_TIME_HEADER_LENGTH = Math.max(MAX_DATE_TIME_STRING_LENGTH, END_TIME_HEADER.length());
     private static final int DURATION_HEADER_LENGTH = DURATION_HEADER.length();
-    private static final int PARTITION_KEY_RANGE_ID_HEADER_LENGTH = PARTITION_KEY_RANGE_ID_HEADER.length();
+    private static final int PARTITION_KEY_RANGE_ID_HEADER_LENGTH = PARTITION_KEY_RANGE_HEADER.length();
     private static final int NUMBER_OF_DOCUMENTS_HEADER_LENGTH = NUMBER_OF_DOCUMENTS_HEADER.length();
     private static final int RETRY_COUNT_HEADER_LENGTH = RETRY_COUNT_HEADER.length();
     private static final int ACTIVITY_ID_HEADER_LENGTH = UUID.randomUUID().toString().length();
 
     private static final TextTable.Column[] PARTITION_EXECUTION_TIMELINE_COLUMNS = new TextTable.Column[]
             {
-                    new TextTable.Column(PARTITION_KEY_RANGE_ID_HEADER, PARTITION_KEY_RANGE_ID_HEADER_LENGTH),
+                    new TextTable.Column(PARTITION_KEY_RANGE_HEADER, PARTITION_KEY_RANGE_ID_HEADER_LENGTH),
                     new TextTable.Column(ACTIVITY_ID_HEADER, ACTIVITY_ID_HEADER_LENGTH),
                     new TextTable.Column(START_TIME_HEADER, START_TIME_HEADER_LENGTH),
                     new TextTable.Column(END_TIME_HEADER, END_TIME_HEADER_LENGTH),
@@ -100,7 +100,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     // Static  for Scheduling Metrics Table
     //private static readonly int MaxTimeSpanStringLength = Math.Max(TimeSpan.MaxValue.TotalMilliseconds.ToString
     // ("G17").Length, TurnaroundTimeHeader.Length);
-    private static final int PARTITION_ID_HEADER_LENGTH = PARTITION_ID_HEADER.length();
+    private static final int PARTITION_ID_HEADER_LENGTH = PARTITION_RANGE_HEADER.length();
     private static final int RESPONSE_TIME_HEADER_LENGTH = RESPONSE_TIME_HEADER.length();
     private static final int RUN_TIME_HEADER_LENGTH = RUN_TIME_HEADER.length();
     private static final int WAIT_TIME_HEADER_LENGTH = WAIT_TIME_HEADER.length();
@@ -109,7 +109,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
 
     private static final TextTable.Column[] SCHEDULING_METRICS_COLUMNS = new TextTable.Column[]
             {
-                    new TextTable.Column(PARTITION_ID_HEADER, PARTITION_ID_HEADER_LENGTH),
+                    new TextTable.Column(PARTITION_RANGE_HEADER, PARTITION_ID_HEADER_LENGTH),
                     new TextTable.Column(RESPONSE_TIME_HEADER, RESPONSE_TIME_HEADER_LENGTH),
                     new TextTable.Column(RUN_TIME_HEADER, RUN_TIME_HEADER_LENGTH),
                     new TextTable.Column(WAIT_TIME_HEADER, WAIT_TIME_HEADER_LENGTH),
@@ -135,7 +135,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private long lastTurnaroundTime;
     private long lastNumberOfPreemptions;
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+    public static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("HH:mm:ss:SSSS").withZone(ZoneOffset.UTC);
 
     public QueryMetricsTextWriter(StringBuilder stringBuilder) {

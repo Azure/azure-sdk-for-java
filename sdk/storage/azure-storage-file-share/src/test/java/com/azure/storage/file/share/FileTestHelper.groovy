@@ -4,8 +4,11 @@
 package com.azure.storage.file.share
 
 import com.azure.core.http.rest.Response
+import com.azure.core.util.CoreUtils
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.file.share.models.ClearRange
+import com.azure.storage.file.share.models.FileRange
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
@@ -14,14 +17,20 @@ import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareStorageException
 
+import java.nio.ByteBuffer
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 class FileTestHelper {
     private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
 
-    static boolean assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
-        return expectedStatusCode == response.getStatusCode()
+    static boolean assertResponseStatusCode(Response<?> response, int... expectedStatusCode) {
+        boolean result = false
+        for (int statusCode : expectedStatusCode) {
+            result |= statusCode == response.getStatusCode()
+        }
+        return result
     }
 
     static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, ShareErrorCode errMessage) {
@@ -85,7 +94,14 @@ class FileTestHelper {
         }
     }
 
-    static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual, boolean includeMetadata, boolean includeSnapshot) {
+    static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual,
+                                        boolean includeMetadata, boolean includeSnapshot) {
+        return assertSharesAreEqual(expected, actual, includeMetadata, includeSnapshot, false)
+    }
+
+    static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual,
+                                        boolean includeMetadata, boolean includeSnapshot,
+                                        boolean includeDeleted) {
         if (expected == null) {
             return actual == null
         } else {
@@ -103,6 +119,10 @@ class FileTestHelper {
             if (expected.getProperties() == null) {
                 return actual.getProperties() == null
             } else {
+                if (includeDeleted &&
+                    (expected.getProperties().getDeletedTime() == null ^ actual.getProperties().getDeletedTime() == null)) {
+                    return false;
+                }
                 return Objects.equals(expected.getProperties().getQuota(), actual.getProperties().getQuota())
             }
         }
@@ -135,14 +155,12 @@ class FileTestHelper {
         return randomFile.getPath()
     }
 
-    static void deleteFilesIfExists(String folder) {
+    static void deleteFileIfExists(String folder, String fileName) {
         // Clean up all temporary generated files
         def dir = new File(folder)
         if (dir.isDirectory()) {
-            File[] children = dir.listFiles()
-            for (int i = 0; i < children.length; i++) {
-                Files.delete(children[i].toPath())
-            }
+            def filePath = dir.toPath().resolve(fileName)
+            Files.deleteIfExists((filePath))
         }
     }
 
@@ -167,6 +185,10 @@ class FileTestHelper {
         return file
     }
 
+    static ByteBuffer getRandomByteBuffer(int length) {
+        return ByteBuffer.wrap(getRandomBuffer(length))
+    }
+
     // TODO : Move this into a common package test class?
     static byte[] getRandomBuffer(int length) {
         final Random randGenerator = new Random()
@@ -177,23 +199,28 @@ class FileTestHelper {
 
     static compareFiles(File file1, File file2, long offset, long count) {
         def pos = 0L
-        def readBuffer = 8 * Constants.KB
+        def defaultBufferSize = 128 * Constants.KB
         def stream1 = new FileInputStream(file1)
         stream1.skip(offset)
         def stream2 = new FileInputStream(file2)
 
         try {
+            // If the amount we are going to read is smaller than the default buffer size use that instead.
+            def bufferSize = (int) Math.min(defaultBufferSize, count)
+
             while (pos < count) {
-                def bufferSize = (int) Math.min(readBuffer, count - pos)
-                def buffer1 = new byte[bufferSize]
-                def buffer2 = new byte[bufferSize]
+                // Number of bytes we expect to read.
+                def expectedReadCount = (int) Math.min(bufferSize, count - pos)
+                def buffer1 = new byte[expectedReadCount]
+                def buffer2 = new byte[expectedReadCount]
 
                 def readCount1 = stream1.read(buffer1)
                 def readCount2 = stream2.read(buffer2)
 
-                assert readCount1 == readCount2 && buffer1 == buffer2
+                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
+                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
 
-                pos += bufferSize
+                pos += expectedReadCount
             }
 
             def verificationRead = stream2.read()
@@ -202,5 +229,33 @@ class FileTestHelper {
             stream1.close()
             stream2.close()
         }
+    }
+
+    static def createFileRanges(long ... offsets) {
+        def fileRanges = [] as List<FileRange>
+
+        if (CoreUtils.isNullOrEmpty(offsets)) {
+            return fileRanges
+        }
+
+        for (def i = 0; i < offsets.length / 2; i++) {
+            fileRanges.add(new FileRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]))
+        }
+
+        return fileRanges
+    }
+
+    static def createClearRanges(long ... offsets) {
+        def clearRanges = [] as List<ClearRange>
+
+        if (CoreUtils.isNullOrEmpty(offsets)) {
+            return clearRanges
+        }
+
+        for (def i = 0; i < offsets.length / 2; i++) {
+            clearRanges.add(new ClearRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]))
+        }
+
+        return clearRanges
     }
 }

@@ -47,6 +47,7 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * @param <S> The mapped type.
      * @return A PagedIterable of type S.
      */
+    @SuppressWarnings("deprecation")
     public <S> PagedIterable<S> mapPage(Function<T, S> mapper) {
         return new PagedIterable<>(pagedFlux.mapPage(mapper));
     }

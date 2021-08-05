@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.search.documents.implementation.converters.EdgeNGramTokenFilterHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -34,10 +35,29 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
     @JsonProperty(value = "side")
     private EdgeNGramTokenFilterSide side;
 
+    static {
+        EdgeNGramTokenFilterHelper.setAccessor(new EdgeNGramTokenFilterHelper.EdgeNGramTokenFilterAccessor() {
+            @Override
+            public void setODataType(EdgeNGramTokenFilter tokenFilter, String odataType) {
+                tokenFilter.setODataType(odataType);
+            }
+
+            @Override
+            public String getODataType(EdgeNGramTokenFilter tokenFilter) {
+                return tokenFilter.getODataType();
+            }
+        });
+    }
+
     /**
-     * Constructor for {@link EdgeNGramTokenFilter}.
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
      */
-    public EdgeNGramTokenFilter() {
+    public EdgeNGramTokenFilter(String name) {
+        super(name);
         odataType = V2_ODATA_TYPE;
     }
 
@@ -105,5 +125,25 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
     public EdgeNGramTokenFilter setSide(EdgeNGramTokenFilterSide side) {
         this.side = side;
         return this;
+    }
+
+    /**
+     * The private setter to set the odataType property
+     * via {@link EdgeNGramTokenFilterHelper.EdgeNGramTokenFilterAccessor}.
+     *
+     * @param odataType The OData type.
+     */
+    private void setODataType(String odataType) {
+        this.odataType = odataType;
+    }
+
+    /**
+     * The private getter to get the odataType property
+     * via {@link EdgeNGramTokenFilterHelper.EdgeNGramTokenFilterAccessor}.
+     *
+     * @return The OData type.
+     */
+    private String getODataType() {
+        return this.odataType;
     }
 }

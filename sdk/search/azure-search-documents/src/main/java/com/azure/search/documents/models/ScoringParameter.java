@@ -3,8 +3,10 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.implementation.util.Utility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -65,9 +67,16 @@ public final class ScoringParameter {
      *
      * @param name Name of the scoring parameter.
      * @param value Value of the scoring parameter.
+     * @throws NullPointerException If {@code value} is null.
      */
     public ScoringParameter(String name, GeoPoint value) {
         this(name, toLonLatStrings(value));
+    }
+
+    private static List<String> toLonLatStrings(GeoPoint point) {
+        Objects.requireNonNull(point);
+        return Arrays.asList(Utility.formatCoordinate(point.getCoordinates().getLongitude()),
+            Utility.formatCoordinate(point.getCoordinates().getLatitude()));
     }
 
     /**
@@ -86,11 +95,6 @@ public final class ScoringParameter {
      */
     public List<String> getValues() {
         return new ArrayList<>(values);
-    }
-
-    private static List<String> toLonLatStrings(GeoPoint point) {
-        Objects.requireNonNull(point);
-        return Arrays.asList(String.valueOf(point.getLongitude()), String.valueOf(point.getLatitude()));
     }
 
     /**

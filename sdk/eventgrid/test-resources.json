@@ -1,0 +1,93 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "String"
+    }
+  },
+  "variables": {
+    "apiVersion": "2020-06-01",
+    "eventGridTopicName": "[concat(parameters('baseName'), 'topic')]",
+    "cloudeventTopicName": "[concat(parameters('baseName'), 'cloudevent-topic')]",
+    "customeventTopicName": "[concat(parameters('baseName'), 'customevent-topic')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.EventGrid/topics",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('eventGridTopicName')]",
+      "location": "[resourceGroup().location]"
+    },
+    {
+      "type": "Microsoft.EventGrid/topics",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('cloudeventTopicName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "inputSchema": "CloudEventSchemaV1_0"
+      }
+    },
+    {
+      "type": "Microsoft.EventGrid/topics",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('customeventTopicName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "inputSchema": "CustomEventSchema",
+        "inputSchemaMapping": {
+          "inputSchemaMappingType": "Json",
+          "properties": {
+            "dataVersion": {
+              "defaultValue": "default",
+              "sourceField": "dataVersion"
+            },
+            "eventTime": {
+              "sourceField": "time"
+            },
+            "eventType": {
+              "defaultValue": "default",
+              "sourceField": "type"
+            },
+            "id": {
+              "sourceField": "id"
+            },
+            "subject": {
+              "defaultValue": "default",
+              "sourceField": "subject"
+            },
+            "topic": {
+              "sourceField": "topic"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "AZURE_EVENTGRID_EVENT_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(variables('eventGridTopicName')).endpoint]"
+    },
+    "AZURE_EVENTGRID_EVENT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('eventGridTopicName')), variables('apiVersion')).key1]"
+    },
+    "AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(variables('cloudeventTopicName')).endpoint]"
+    },
+    "AZURE_EVENTGRID_CLOUDEVENT_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('cloudeventTopicName')), variables('apiVersion')).key1]"
+    },
+    "AZURE_EVENTGRID_CUSTOM_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(variables('customeventTopicName')).endpoint]"
+    },
+    "AZURE_EVENTGRID_CUSTOM_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('customeventTopicName')), variables('apiVersion')).key1]"
+    }
+  }
+}

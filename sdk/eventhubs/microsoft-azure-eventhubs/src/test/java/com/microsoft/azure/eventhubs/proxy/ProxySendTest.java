@@ -6,10 +6,11 @@ package com.microsoft.azure.eventhubs.proxy;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.TransportType;
+import com.microsoft.azure.eventhubs.impl.SendTest;
 import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.sendrecv.SendTest;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -28,15 +29,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 public class ProxySendTest extends SasTokenTestBase {
+    private static final int PROXY_PORT = 8899;
 
-    private static int proxyPort = 8899;
     private static ProxyServer proxyServer;
     private static SendTest sendTest;
     private static ProxySelector defaultProxySelector;
 
     @BeforeClass
     public static void initialize() throws Exception {
-        proxyServer = ProxyServer.create("localhost", proxyPort);
+        proxyServer = ProxyServer.create("localhost", PROXY_PORT);
         proxyServer.start(t -> {
         });
 
@@ -45,7 +46,7 @@ public class ProxySendTest extends SasTokenTestBase {
             @Override
             public List<Proxy> select(URI uri) {
                 LinkedList<Proxy> proxies = new LinkedList<>();
-                proxies.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", proxyPort)));
+                proxies.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", PROXY_PORT)));
                 return proxies;
             }
 
@@ -63,7 +64,8 @@ public class ProxySendTest extends SasTokenTestBase {
 
         ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         connectionString.setTransportType(TransportType.AMQP_WEB_SOCKETS);
-        SendTest.initializeEventHub(connectionString);
+
+        SendTest.initializeEventHub(connectionString, SslDomain.VerifyMode.VERIFY_PEER_NAME);
     }
 
     @AfterClass

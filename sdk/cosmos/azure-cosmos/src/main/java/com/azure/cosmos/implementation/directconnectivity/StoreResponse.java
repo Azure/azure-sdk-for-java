@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,13 @@ public class StoreResponse {
     final private byte[] content;
 
     private CosmosDiagnostics cosmosDiagnostics;
+    private int pendingRequestQueueSize;
+    private int requestPayloadLength;
     private RequestTimeline requestTimeline;
+    private int rntbdChannelTaskQueueSize;
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
+    private int rntbdRequestLength;
+    private int rntbdResponseLength;
 
     public StoreResponse(
             int status,
@@ -59,8 +66,52 @@ public class StoreResponse {
         return responseHeaderValues;
     }
 
+    public int getRntbdChannelTaskQueueSize() {
+        return rntbdChannelTaskQueueSize;
+    }
+
+    public void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
+        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
+    }
+
+    public int getPendingRequestQueueSize() {
+        return this.pendingRequestQueueSize;
+    }
+
+    public void setRntbdPendingRequestSize(int pendingRequestQueueSize) {
+        this.pendingRequestQueueSize = pendingRequestQueueSize;
+    }
+
+    public void setRntbdRequestLength(int rntbdRequestLength) {
+        this.rntbdRequestLength = rntbdRequestLength;
+    }
+
+    public void setRntbdResponseLength(int rntbdResponseLength) {
+        this.rntbdResponseLength = rntbdResponseLength;
+    }
+
+    public int getRntbdRequestLength() {
+        return rntbdRequestLength;
+    }
+
+    public int getRntbdResponseLength() {
+        return rntbdResponseLength;
+    }
+
+    public int getRequestPayloadLength() {
+        return requestPayloadLength;
+    }
+
+    public void setRequestPayloadLength(int requestPayloadLength) {
+        this.requestPayloadLength = requestPayloadLength;
+    }
+
     public byte[] getResponseBody() {
         return this.content;
+    }
+
+    public int getResponseBodyLength() {
+        return (this.content != null) ? this.content.length : 0;
     }
 
     public long getLSN() {
@@ -98,6 +149,14 @@ public class StoreResponse {
         return cosmosDiagnostics;
     }
 
+    public double getRequestCharge() {
+        String value = this.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (StringUtils.isEmpty(value)) {
+            return 0;
+        }
+        return Double.parseDouble(value);
+    }
+
     StoreResponse setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         this.cosmosDiagnostics = cosmosDiagnostics;
         return this;
@@ -109,6 +168,14 @@ public class StoreResponse {
 
     RequestTimeline getRequestTimeline() {
         return this.requestTimeline;
+    }
+
+    void setEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
+        this.rntbdEndpointStatistics = rntbdEndpointStatistics;
+    }
+
+    RntbdEndpointStatistics getEndpointStsts() {
+        return this.rntbdEndpointStatistics;
     }
 
     int getSubStatusCode() {

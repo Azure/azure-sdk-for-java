@@ -1,13 +1,29 @@
 package com.azure.storage.file.datalake
 
+import com.azure.core.http.HttpMethod
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-
+import com.azure.storage.common.Utility
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
+import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
+import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
+import com.azure.storage.file.datalake.sas.PathSasPermission
+import reactor.core.publisher.Mono
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
+
+import java.util.function.Consumer
+import java.util.stream.Collectors
 
 class DirectoryAPITest extends APISpec {
     DataLakeDirectoryClient dc
@@ -19,6 +35,11 @@ class DirectoryAPITest extends APISpec {
         .setOther(new RolePermissions().setReadPermission(true))
 
     List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
+    List<PathAccessControlEntry> executeOnlyAccessControlEntries = PathAccessControlEntry.parseList("user::--x,group::--x,other::--x")
+    List<PathRemoveAccessControlEntry> removeAccessControlEntries = PathRemoveAccessControlEntry.parseList("mask," +
+        "default:user,default:group," +
+        "user:ec3595d6-2c17-4696-8caa-7e139758d24a,group:ec3595d6-2c17-4696-8caa-7e139758d24a," +
+        "default:user:ec3595d6-2c17-4696-8caa-7e139758d24a,default:group:ec3595d6-2c17-4696-8caa-7e139758d24a")
 
     String group = null
     String owner = null
@@ -434,6 +455,1270 @@ class DirectoryAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Set ACL recursive min"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        when:
+        def result = dc.setAccessControlRecursive(pathAccessControlEntries)
+
+        then:
+        result.getCounters().getChangedDirectoriesCount() == 3 // Including the top level
+        result.getCounters().getChangedFilesCount() == 4
+        result.getCounters().getFailedChangesCount() == 0
+        result.getContinuationToken() == null
+        result.getBatchFailures() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Set ACL recursive batches"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2)
+
+        when:
+        def result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        result.getCounters().getChangedDirectoriesCount() == 3 // Including the top level
+        result.getCounters().getChangedFilesCount() == 4
+        result.getCounters().getFailedChangesCount() == 0
+        result.getContinuationToken() == null
+        result.getBatchFailures() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Set ACL recursive batches resume"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2).setMaxBatches(1)
+
+        when:
+        def result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        and:
+        options.setMaxBatches(null).setContinuationToken(result.getContinuationToken())
+        def result2 = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        (result.getCounters().getChangedDirectoriesCount() + result2.getCounters().getChangedDirectoriesCount()) == 3 // Including the top level
+        (result.getCounters().getChangedFilesCount() + result2.getCounters().getChangedFilesCount()) == 4
+        (result.getCounters().getFailedChangesCount() + result2.getCounters().getFailedChangesCount()) == 0
+        result2.getContinuationToken() == null
+        result.getBatchFailures() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Set ACL recursive batches progress"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2).setProgressHandler(progress)
+
+        when:
+        def result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        result.getCounters().getChangedDirectoriesCount() == 3
+        result.getCounters().getChangedFilesCount() == 4
+        result.getCounters().getFailedChangesCount() == 0
+        result.getContinuationToken() == null
+        result.getBatchFailures() == null
+        progress.batchCounters.size() == 4
+        (progress.batchCounters[0].getChangedFilesCount() + progress.batchCounters[0].getChangedDirectoriesCount()) == 2
+        (progress.batchCounters[1].getChangedFilesCount() + progress.batchCounters[1].getChangedDirectoriesCount()) == 2
+        (progress.batchCounters[2].getChangedFilesCount() + progress.batchCounters[2].getChangedDirectoriesCount()) == 2
+        (progress.batchCounters[3].getChangedFilesCount() + progress.batchCounters[3].getChangedDirectoriesCount()) == 1
+        progress.cumulativeCounters.size() == 4
+        (progress.cumulativeCounters[0].getChangedFilesCount() + progress.cumulativeCounters[0].getChangedDirectoriesCount()) == 2
+        (progress.cumulativeCounters[1].getChangedFilesCount() + progress.cumulativeCounters[1].getChangedDirectoriesCount()) == 4
+        (progress.cumulativeCounters[2].getChangedFilesCount() + progress.cumulativeCounters[2].getChangedDirectoriesCount()) == 6
+        (progress.cumulativeCounters[3].getChangedFilesCount() + progress.cumulativeCounters[3].getChangedDirectoriesCount()) == 7
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Set ACL recursive batches follow token"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2).setMaxBatches(2)
+
+        when:
+        String continuation = "null"
+        def failedChanges = 0
+        def directoriesChanged = 0
+        def filesChanged = 0
+        def iterations = 0
+        while(continuation != null && continuation != "" && iterations < 10) {
+            if (iterations == 0) {
+                continuation = null // do while not supported in Groovy
+            }
+            options.setContinuationToken(continuation)
+            def result = dc.setAccessControlRecursiveWithResponse(options, null, null)
+            failedChanges += result.getValue().getCounters().getFailedChangesCount()
+            directoriesChanged += result.getValue().getCounters().getChangedDirectoriesCount()
+            filesChanged += result.getValue().getCounters().getChangedFilesCount()
+            iterations++
+            continuation = result.getValue().getContinuationToken()
+        }
+
+        then:
+        failedChanges == 0
+        directoriesChanged == 3
+        filesChanged == 4
+        iterations == 2
+    }
+
+    def getSasDirectoryClient(DataLakeDirectoryClient directoryClient, String owner) {
+        def key = getOAuthServiceClient().getUserDelegationKey(null, namer.getUtcNow().plusHours(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+        def sas = directoryClient.generateUserDelegationSas(new DataLakeServiceSasSignatureValues(namer.getUtcNow().plusHours(1), PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), key)
+        return getDirectoryClient(sas, directoryClient.getDirectoryUrl(), directoryClient.getDirectoryPath())
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Set ACL recursive progress with failure"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create file4 without assigning subowner permissions
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        when:
+        def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
+            new PathSetAccessControlRecursiveOptions(pathAccessControlEntries).setProgressHandler(progress), null, null)
+
+        then:
+        result.getValue().getCounters().getFailedChangesCount() == 1
+        progress.failures.size() == 1
+        progress.batchCounters.findIndexOf {counter -> counter.getFailedChangesCount() > 0} >= 0
+        progress.cumulativeCounters.findIndexOf {counter -> counter.getFailedChangesCount() > 0} >= 0
+        progress.failures[0].getName().contains(file4.getObjectName())
+        !progress.failures[0].isDirectory()
+        progress.failures[0].getErrorMessage()
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Set ACL recursive continue on failure"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        when:
+        def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
+            new PathSetAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
+
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
+        then:
+        result.getValue().getCounters().getChangedDirectoriesCount() == 3
+        result.getValue().getCounters().getChangedFilesCount() == 3
+        result.getValue().getCounters().getFailedChangesCount() == 4
+        result.getValue().getContinuationToken() == null
+        batchFailures.size() == 4
+        batchFailures.contains(file4.getObjectPath())
+        batchFailures.contains(file5.getObjectPath())
+        batchFailures.contains(file6.getObjectPath())
+        batchFailures.contains(subdir3.getObjectPath())
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Set ACL recursive continue on failure batch failures"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        when:
+        def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
+            new PathSetAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true).setBatchSize(2).setProgressHandler(progress), null, null)
+
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
+        then:
+        result.getValue().getCounters().getChangedDirectoriesCount() == 3
+        result.getValue().getCounters().getChangedFilesCount() == 3
+        result.getValue().getCounters().getFailedChangesCount() == 4
+        batchFailures.size() == progress.firstFailures.size()
+        for (def f : progress.firstFailures) {
+            assert batchFailures.contains(f.getName())
+        }
+        result.getValue().getContinuationToken() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Set ACL recursive continue on failure batches resume"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create more files as app
+        def file7 = subdir1.createFile(generatePathName())
+        def file8 = subdir1.createFile(generatePathName())
+        def subdir4 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file9 = subdir4.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        file7.setPermissions(pathPermissions, null, subowner)
+        file8.setPermissions(pathPermissions, null, subowner)
+        subdir4.setPermissions(pathPermissions, null, subowner)
+        file9.setPermissions(pathPermissions, null, subowner)
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
+
+        when:
+        def intermediateResult = subOwnerDirClient.setAccessControlRecursiveWithResponse(options, null, null)
+
+        then:
+        intermediateResult.getValue().getContinuationToken() != null
+
+        when:
+        options.setMaxBatches(null).setContinuationToken(intermediateResult.getValue().getContinuationToken())
+        def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(options, null, null)
+
+        then:
+        (result.getValue().getCounters().getChangedDirectoriesCount() + intermediateResult.getValue().getCounters().getChangedDirectoriesCount()) == 4
+        (result.getValue().getCounters().getChangedFilesCount() + intermediateResult.getValue().getCounters().getChangedFilesCount()) == 6
+        (result.getValue().getCounters().getFailedChangesCount() + intermediateResult.getValue().getCounters().getFailedChangesCount()) == 4
+        result.getValue().getContinuationToken() == null
+    }
+
+    def "Set ACL recursive error"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+
+        String topDirName = generatePathName()
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+
+        when:
+        topDirOauthClient.setAccessControlRecursiveWithResponse(
+            new PathSetAccessControlRecursiveOptions(pathAccessControlEntries), null, null)
+
+        then:
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == DataLakeStorageException.class
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    @Unroll
+    def "Set ACL recursive error middle of batches"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2)
+
+        // Mock a policy that will return an error on the call with the continuation token
+        HttpPipelinePolicy mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
+        }
+
+        dc = getDirectoryClient(env.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+
+        when:
+        def result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == error.class
+
+        where:
+        error                                                                                                                               || _
+        new IllegalArgumentException()                                                                                                      || _
+        new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Update ACL recursive"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        when:
+        def result = dc.updateAccessControlRecursive(pathAccessControlEntries)
+
+        then:
+        result.getCounters().getChangedDirectoriesCount() == 3
+        result.getCounters().getChangedFilesCount() == 4
+        result.getCounters().getFailedChangesCount() == 0
+        result.getBatchFailures() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Update ACL recursive batches"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2)
+
+        when:
+        def result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        result.getCounters().getChangedDirectoriesCount() == 3 // Including the top level
+        result.getCounters().getChangedFilesCount() == 4
+        result.getCounters().getFailedChangesCount() == 0
+        result.getContinuationToken() == null
+        result.getBatchFailures() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Update ACL recursive batches resume"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2).setMaxBatches(1)
+
+        when:
+        def result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        and:
+        options.setMaxBatches(null).setContinuationToken(result.getContinuationToken())
+        def result2 = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        (result.getCounters().getChangedDirectoriesCount() + result2.getCounters().getChangedDirectoriesCount()) == 3 // Including the top level
+        (result.getCounters().getChangedFilesCount() + result2.getCounters().getChangedFilesCount()) == 4
+        (result.getCounters().getFailedChangesCount() + result2.getCounters().getFailedChangesCount()) == 0
+        result2.getContinuationToken() == null
+        result.getBatchFailures() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Update ACL recursive batches progress"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2).setProgressHandler(progress)
+
+        when:
+        def result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        result.getCounters().getChangedDirectoriesCount() == 3
+        result.getCounters().getChangedFilesCount() == 4
+        result.getCounters().getFailedChangesCount() == 0
+        result.getContinuationToken() == null
+        result.getBatchFailures() == null
+        progress.batchCounters.size() == 4
+        (progress.batchCounters[0].getChangedFilesCount() + progress.batchCounters[0].getChangedDirectoriesCount()) == 2
+        (progress.batchCounters[1].getChangedFilesCount() + progress.batchCounters[1].getChangedDirectoriesCount()) == 2
+        (progress.batchCounters[2].getChangedFilesCount() + progress.batchCounters[2].getChangedDirectoriesCount()) == 2
+        (progress.batchCounters[3].getChangedFilesCount() + progress.batchCounters[3].getChangedDirectoriesCount()) == 1
+        progress.cumulativeCounters.size() == 4
+        (progress.cumulativeCounters[0].getChangedFilesCount() + progress.cumulativeCounters[0].getChangedDirectoriesCount()) == 2
+        (progress.cumulativeCounters[1].getChangedFilesCount() + progress.cumulativeCounters[1].getChangedDirectoriesCount()) == 4
+        (progress.cumulativeCounters[2].getChangedFilesCount() + progress.cumulativeCounters[2].getChangedDirectoriesCount()) == 6
+        (progress.cumulativeCounters[3].getChangedFilesCount() + progress.cumulativeCounters[3].getChangedDirectoriesCount()) == 7
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Update ACL recursive batches follow token"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2).setMaxBatches(2)
+
+        when:
+        String continuation = "null"
+        def failedChanges = 0
+        def directoriesChanged = 0
+        def filesChanged = 0
+        def iterations = 0
+        while(continuation != null && continuation != "" && iterations < 10) {
+            if (iterations == 0) {
+                continuation = null // do while not supported in Groovy
+            }
+            options.setContinuationToken(continuation)
+            def result = dc.updateAccessControlRecursiveWithResponse(options, null, null)
+            failedChanges += result.getValue().getCounters().getFailedChangesCount()
+            directoriesChanged += result.getValue().getCounters().getChangedDirectoriesCount()
+            filesChanged += result.getValue().getCounters().getChangedFilesCount()
+            iterations++
+            continuation = result.getValue().getContinuationToken()
+        }
+
+        then:
+        failedChanges == 0
+        directoriesChanged == 3
+        filesChanged == 4
+        iterations == 2
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Update ACL recursive progress with failure"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create file4 as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        when:
+        def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
+            new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setProgressHandler(progress), null, null)
+
+        then:
+        result.getValue().getCounters().getFailedChangesCount() == 1
+        progress.failures.size() == 1
+        progress.batchCounters.findIndexOf {counter -> counter.getFailedChangesCount() > 0} >= 0
+        progress.cumulativeCounters.findIndexOf {counter -> counter.getFailedChangesCount() > 0} >= 0
+        progress.failures[0].getName().contains(file4.getObjectName())
+        !progress.failures[0].isDirectory()
+        progress.failures[0].getErrorMessage()
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Update ACL recursive continue on failure"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        when:
+        def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
+            new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
+
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
+        then:
+        result.getValue().getCounters().getChangedDirectoriesCount() == 3
+        result.getValue().getCounters().getChangedFilesCount() == 3
+        result.getValue().getCounters().getFailedChangesCount() == 4
+        result.getValue().getContinuationToken() == null
+        batchFailures.size() == 4
+        batchFailures.contains(file4.getObjectPath())
+        batchFailures.contains(file5.getObjectPath())
+        batchFailures.contains(file6.getObjectPath())
+        batchFailures.contains(subdir3.getObjectPath())
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Update ACL recursive continue on failure batch failures"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        when:
+        def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
+            new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true).setBatchSize(2).setProgressHandler(progress), null, null)
+
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
+        then:
+        result.getValue().getCounters().getChangedDirectoriesCount() == 3
+        result.getValue().getCounters().getChangedFilesCount() == 3
+        result.getValue().getCounters().getFailedChangesCount() == 4
+        batchFailures.size() == progress.firstFailures.size()
+        for (def f : progress.firstFailures) {
+            assert batchFailures.contains(f.getName())
+        }
+        result.getValue().getContinuationToken() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Update ACL recursive continue on failure batches resume"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create more files as app
+        def file7 = subdir1.createFile(generatePathName())
+        def file8 = subdir1.createFile(generatePathName())
+        def subdir4 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file9 = subdir4.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        file7.setPermissions(pathPermissions, null, subowner)
+        file8.setPermissions(pathPermissions, null, subowner)
+        subdir4.setPermissions(pathPermissions, null, subowner)
+        file9.setPermissions(pathPermissions, null, subowner)
+
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        when:
+        def intermediateResult = subOwnerDirClient.updateAccessControlRecursiveWithResponse(options, null, null)
+
+        then:
+        intermediateResult.getValue().getContinuationToken() != null
+
+        when:
+        options.setMaxBatches(null).setContinuationToken(intermediateResult.getValue().getContinuationToken())
+        def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(options, null, null)
+
+        then:
+        (result.getValue().getCounters().getChangedDirectoriesCount() + intermediateResult.getValue().getCounters().getChangedDirectoriesCount()) == 4
+        (result.getValue().getCounters().getChangedFilesCount() + intermediateResult.getValue().getCounters().getChangedFilesCount()) == 6
+        (result.getValue().getCounters().getFailedChangesCount() + intermediateResult.getValue().getCounters().getFailedChangesCount()) == 4
+        result.getValue().getContinuationToken() == null
+    }
+
+    def "Update ACL recursive error"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+
+        String topDirName = generatePathName()
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+
+        when:
+        topDirOauthClient.updateAccessControlRecursiveWithResponse(
+            new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries), null, null)
+
+        then:
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == DataLakeStorageException.class
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    @Unroll
+    def "Update ACL recursive error middle of batches"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2)
+
+        // Mock a policy that will return an error on the call with the continuation token
+        HttpPipelinePolicy mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
+        }
+
+        dc = getDirectoryClient(env.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+
+        when:
+        def result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == error.class
+
+        where:
+        error                                                                                                                               || _
+        new IllegalArgumentException()                                                                                                      || _
+        new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Remove ACL recursive"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        when:
+        def result = dc.removeAccessControlRecursive(removeAccessControlEntries)
+
+        then:
+        result.getCounters().getChangedDirectoriesCount() == 3
+        result.getCounters().getChangedFilesCount() == 4
+        result.getCounters().getFailedChangesCount() == 0
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Remove ACL recursive batches"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+            .setBatchSize(2)
+
+        when:
+        def result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        result.getCounters().getChangedDirectoriesCount() == 3 // Including the top level
+        result.getCounters().getChangedFilesCount() == 4
+        result.getCounters().getFailedChangesCount() == 0
+        result.getContinuationToken() == null
+        result.getBatchFailures() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Remove ACL recursive batches resume"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+            .setBatchSize(2).setMaxBatches(1)
+
+        when:
+        def result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        and:
+        options.setMaxBatches(null).setContinuationToken(result.getContinuationToken())
+        def result2 = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        (result.getCounters().getChangedDirectoriesCount() + result2.getCounters().getChangedDirectoriesCount()) == 3 // Including the top level
+        (result.getCounters().getChangedFilesCount() + result2.getCounters().getChangedFilesCount()) == 4
+        (result.getCounters().getFailedChangesCount() + result2.getCounters().getFailedChangesCount()) == 0
+        result2.getContinuationToken() == null
+        result.getBatchFailures() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Remove ACL recursive batches progress"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+            .setBatchSize(2).setProgressHandler(progress)
+
+        when:
+        def result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        result.getCounters().getChangedDirectoriesCount() == 3
+        result.getCounters().getChangedFilesCount() == 4
+        result.getCounters().getFailedChangesCount() == 0
+        result.getContinuationToken() == null
+        result.getBatchFailures() == null
+        progress.batchCounters.size() == 4
+        (progress.batchCounters[0].getChangedFilesCount() + progress.batchCounters[0].getChangedDirectoriesCount()) == 2
+        (progress.batchCounters[1].getChangedFilesCount() + progress.batchCounters[1].getChangedDirectoriesCount()) == 2
+        (progress.batchCounters[2].getChangedFilesCount() + progress.batchCounters[2].getChangedDirectoriesCount()) == 2
+        (progress.batchCounters[3].getChangedFilesCount() + progress.batchCounters[3].getChangedDirectoriesCount()) == 1
+        progress.cumulativeCounters.size() == 4
+        (progress.cumulativeCounters[0].getChangedFilesCount() + progress.cumulativeCounters[0].getChangedDirectoriesCount()) == 2
+        (progress.cumulativeCounters[1].getChangedFilesCount() + progress.cumulativeCounters[1].getChangedDirectoriesCount()) == 4
+        (progress.cumulativeCounters[2].getChangedFilesCount() + progress.cumulativeCounters[2].getChangedDirectoriesCount()) == 6
+        (progress.cumulativeCounters[3].getChangedFilesCount() + progress.cumulativeCounters[3].getChangedDirectoriesCount()) == 7
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Remove ACL recursive batches follow token"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+            .setBatchSize(2).setMaxBatches(2)
+
+        when:
+        String continuation = "null"
+        def failedChanges = 0
+        def directoriesChanged = 0
+        def filesChanged = 0
+        def iterations = 0
+        while(continuation != null && continuation != "" && iterations < 10) {
+            if (iterations == 0) {
+                continuation = null // do while not supported in Groovy
+            }
+            options.setContinuationToken(continuation)
+            def result = dc.removeAccessControlRecursiveWithResponse(options, null, null)
+            failedChanges += result.getValue().getCounters().getFailedChangesCount()
+            directoriesChanged += result.getValue().getCounters().getChangedDirectoriesCount()
+            filesChanged += result.getValue().getCounters().getChangedFilesCount()
+            iterations++
+            continuation = result.getValue().getContinuationToken()
+        }
+
+        then:
+        failedChanges == 0
+        directoriesChanged == 3
+        filesChanged == 4
+        iterations == 2
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Remove ACL recursive progress with failure"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create file4 as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        when:
+        def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
+            new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setProgressHandler(progress), null, null)
+
+        then:
+        result.getValue().getCounters().getFailedChangesCount() == 1
+        progress.failures.size() == 1
+        progress.batchCounters.findIndexOf {counter -> counter.getFailedChangesCount() > 0} >= 0
+        progress.cumulativeCounters.findIndexOf {counter -> counter.getFailedChangesCount() > 0} >= 0
+        progress.failures[0].getName().contains(file4.getObjectName())
+        !progress.failures[0].isDirectory()
+        progress.failures[0].getErrorMessage()
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Remove ACL recursive continue on failure"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        when:
+        def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
+            new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setContinueOnFailure(true), null, null)
+
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
+        then:
+        result.getValue().getCounters().getChangedDirectoriesCount() == 3
+        result.getValue().getCounters().getChangedFilesCount() == 3
+        result.getValue().getCounters().getFailedChangesCount() == 4
+        result.getValue().getContinuationToken() == null
+        batchFailures.size() == 4
+        batchFailures.contains(file4.getObjectPath())
+        batchFailures.contains(file5.getObjectPath())
+        batchFailures.contains(file6.getObjectPath())
+        batchFailures.contains(subdir3.getObjectPath())
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Remove ACL recursive continue on failure batch failures"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        when:
+        def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
+            new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setContinueOnFailure(true).setBatchSize(2).setProgressHandler(progress), null, null)
+
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
+        then:
+        result.getValue().getCounters().getChangedDirectoriesCount() == 3
+        result.getValue().getCounters().getChangedFilesCount() == 3
+        result.getValue().getCounters().getFailedChangesCount() == 4
+        batchFailures.size() == progress.firstFailures.size()
+        for (def f : progress.firstFailures) {
+            assert batchFailures.contains(f.getName())
+        }
+        result.getValue().getContinuationToken() == null
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "Remove ACL recursive continue on failure batches resume"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = namer.getRandomUuid()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create more files as app
+        def file7 = subdir1.createFile(generatePathName())
+        def file8 = subdir1.createFile(generatePathName())
+        def subdir4 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file9 = subdir4.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        file7.setPermissions(pathPermissions, null, subowner)
+        file8.setPermissions(pathPermissions, null, subowner)
+        subdir4.setPermissions(pathPermissions, null, subowner)
+        file9.setPermissions(pathPermissions, null, subowner)
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+            .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
+
+        when:
+        def intermediateResult = subOwnerDirClient.removeAccessControlRecursiveWithResponse(options, null, null)
+
+        then:
+        intermediateResult.getValue().getContinuationToken() != null
+
+        when:
+        options.setMaxBatches(null).setContinuationToken(intermediateResult.getValue().getContinuationToken())
+        def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(options, null, null)
+
+        then:
+        (result.getValue().getCounters().getChangedDirectoriesCount() + intermediateResult.getValue().getCounters().getChangedDirectoriesCount()) == 4
+        (result.getValue().getCounters().getChangedFilesCount() + intermediateResult.getValue().getCounters().getChangedFilesCount()) == 6
+        (result.getValue().getCounters().getFailedChangesCount() + intermediateResult.getValue().getCounters().getFailedChangesCount()) == 4
+        result.getValue().getContinuationToken() == null
+    }
+
+    def "Remove ACL recursive error"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+
+        String topDirName = generatePathName()
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+
+        when:
+        topDirOauthClient.removeAccessControlRecursiveWithResponse(
+            new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries), null, null)
+
+        then:
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == DataLakeStorageException.class
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    @Unroll
+    def "Remove ACL recursive error middle of batches"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+            .setBatchSize(2)
+
+        // Mock a policy that will return an error on the call with the continuation token
+        HttpPipelinePolicy mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
+        }
+
+        dc = getDirectoryClient(env.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+
+        when:
+        def result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == error.class
+
+        where:
+        error                                                                                                                               || _
+        new IllegalArgumentException()                                                                                                      || _
+        new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
+    }
+
+    def setupStandardRecursiveAclTest() {
+        def subdir1 = dc.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = dc.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+        def file4 = dc.createFile(generatePathName())
+    }
+
+    static class InMemoryAccessControlRecursiveChangeProgress implements Consumer<Response<AccessControlChanges>> {
+
+        List<AccessControlChangeFailure> failures = new ArrayList<>()
+        List<AccessControlChangeCounters> batchCounters = new ArrayList<>()
+        List<AccessControlChangeCounters> cumulativeCounters = new ArrayList<>()
+
+        List<AccessControlChangeFailure> firstFailures = new ArrayList<>()
+        boolean firstFailure = false
+
+        @Override
+        void accept(Response<AccessControlChanges> response) {
+            if (!firstFailure && response.getValue().getBatchFailures().size() > 0) {
+                firstFailures.addAll(response.getValue().getBatchFailures())
+                firstFailure = true
+            }
+            failures.addAll(response.getValue().getBatchFailures())
+            batchCounters.addAll(response.getValue().getBatchCounters())
+            cumulativeCounters.addAll(response.getValue().getAggregateCounters())
+        }
+    }
+
+    // set recursive acl error, with response
+    // Test null or empty lists
+
     def "Get access control min"() {
         when:
         PathAccessControl pac = dc.getAccessControl()
@@ -772,7 +2057,8 @@ class DirectoryAPITest extends APISpec {
         dc.getProperties()
 
         then:
-        thrown(DataLakeStorageException)
+        def ex = thrown(DataLakeStorageException)
+        ex.getMessage().contains("BlobNotFound")
     }
 
     def "Set HTTP headers null"() {
@@ -1623,5 +2909,202 @@ class DirectoryAPITest extends APISpec {
 
         then:
         notThrown(DataLakeStorageException)
+    }
+
+    @IgnoreIf( { getEnv().serviceVersion != null } )
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def directoryClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), dc.getObjectPath(), getPerCallVersionPolicy())
+
+        when: "blob endpoint"
+        def response = directoryClient.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+
+        when: "dfs endpoint"
+        response = directoryClient.getAccessControlWithResponse(false, null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
+
+    def setupDirectoryForListing(DataLakeDirectoryClient client) {
+        // Create 3 subdirs
+        def foo = client.createSubdirectory("foo")
+        def bar = client.createSubdirectory("bar")
+        def baz = client.createSubdirectory("baz")
+
+        // Create subdirs for foo
+        foo.createSubdirectory("foo")
+        foo.createSubdirectory("bar")
+
+        // Creat subdirs for baz
+        baz.createSubdirectory("foo").createSubdirectory("bar")
+        baz.createSubdirectory("bar/foo")
+    }
+
+    def "List paths"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        when:
+        def response = dir.listPaths().iterator()
+
+        then:
+        response.next().getName() == dirName + "/bar"
+        response.next().getName() == dirName + "/baz"
+        response.next().getName() == dirName + "/foo"
+        !response.hasNext()
+    }
+
+    def "List paths recursive"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        when:
+        def response = dir.listPaths(true, false, null, null).iterator()
+
+        then:
+        response.next().getName() == dirName + "/bar"
+        response.next().getName() == dirName + "/baz"
+        response.next().getName() == dirName + "/baz/bar"
+        response.next().getName() == dirName + "/baz/bar/foo"
+        response.next().getName() == dirName + "/baz/foo"
+        response.next().getName() == dirName + "/baz/foo/bar"
+        response.next().getName() == dirName + "/foo"
+        response.next().getName() == dirName + "/foo/bar"
+        response.next().getName() == dirName + "/foo/foo"
+        !response.hasNext()
+    }
+
+    def "List paths upn"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        when:
+        def response = dir.listPaths(false, true, null, null).iterator()
+
+        then:
+        def first = response.next()
+        first.getName() == dirName + "/bar"
+        first.getGroup()
+        first.getOwner()
+        response.next().getName() == dirName + "/baz"
+        response.next().getName() == dirName + "/foo"
+        !response.hasNext()
+    }
+
+    def "List paths max results"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        when:
+        def response = dir.listPaths(false, false, 2, null).iterableByPage().iterator().next()
+
+        then:
+        response.getValue().get(0).getName() == dirName + "/bar"
+        response.getValue().get(1).getName() == dirName + "/baz"
+        response.getValue().size() == 2
+    }
+
+    def "List paths max results by page"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        expect:
+        for (def page : dir.listPaths(false, false, null, null).iterableByPage(2)) {
+            assert page.getValue().size() <= 2
+        }
+    }
+
+    def "List paths error"() {
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+
+        when:
+        def response = dir.listPaths().iterator()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    @Unroll
+    def "Get file and subdirectory client"() {
+        setup:
+        def dirName = generatePathName()
+        def subPath = generatePathName()
+        dc = fsc.getDirectoryClient(resourcePrefix +  dirName)
+
+        when:
+        def fileClient = dc.getFileClient(subResourcePrefix + subPath)
+
+        then:
+        notThrown(IllegalArgumentException)
+        fileClient.getFilePath() == Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath
+
+        when:
+        def subDirectoryClient = dc.getSubdirectoryClient(subResourcePrefix + subPath)
+
+        then:
+        notThrown(IllegalArgumentException)
+        subDirectoryClient.getDirectoryPath() == Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath
+
+        where:
+        resourcePrefix          | subResourcePrefix         || _
+        ""                      | ""                        || _
+        Utility.urlEncode("%")  | ""                        || _ // Resource has special character
+        ""                      | Utility.urlEncode("%")    || _ // Sub resource has special character
+        Utility.urlEncode("%")  | Utility.urlEncode("%")    || _
+    }
+
+    def "File in root directory rename"() {
+        setup:
+        def oldName = generatePathName()
+        def renamedName = generatePathName()
+        dc = fsc.getRootDirectoryClient()
+        // Create file in root directory
+        def file = dc.createFile(oldName)
+
+        when:
+        def renamedFile = file.rename(null, renamedName)
+
+        then:
+        renamedFile.getObjectPath() == renamedName
+        renamedFile.getProperties().getETag() == renamedFile.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
+    }
+
+    def "Directory in root directory rename"() {
+        setup:
+        def oldName = generatePathName()
+        def renamedName = generatePathName()
+        dc = fsc.getRootDirectoryClient()
+        // Create dir in root directory
+        def dir = dc.createSubdirectory(oldName)
+
+        when:
+        def renamedDir = dir.rename(null, renamedName)
+
+        then:
+        renamedDir.getObjectPath() == renamedName
+        renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
     }
 }

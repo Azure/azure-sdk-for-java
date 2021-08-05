@@ -8,20 +8,17 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.ProcessKind;
-import reactor.core.publisher.Signal;
 
 import java.nio.BufferOverflowException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMessageSpan;
 
 /**
  * A class for aggregating {@link ServiceBusMessage messages} into a single, size-limited, batch. It is treated as a
@@ -35,45 +32,49 @@ public final class ServiceBusMessageBatch {
     private final MessageSerializer serializer;
     private final List<ServiceBusMessage> serviceBusMessageList;
     private final byte[] eventBytes;
-    private int sizeInBytes;
+    private final AtomicInteger sizeInBytes;
     private final TracerProvider tracerProvider;
+    private final String entityPath;
+    private final String hostname;
 
     ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider, TracerProvider tracerProvider,
-        MessageSerializer serializer) {
+        MessageSerializer serializer, String entityPath, String hostname) {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
-        this.serviceBusMessageList = new LinkedList<>();
-        this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
+        this.serviceBusMessageList = Collections.synchronizedList(new LinkedList<>());
+        this.sizeInBytes = new AtomicInteger((maxMessageSize / 65536) * 1024); // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
         this.tracerProvider = tracerProvider;
+        this.entityPath = entityPath;
+        this.hostname = hostname;
     }
 
     /**
-     * Gets the number of {@link ServiceBusMessage events} in the batch.
+     * Gets the number of {@link ServiceBusMessage messages} in the batch.
      *
-     * @return The number of {@link ServiceBusMessage events} in the batch.
+     * @return The number of {@link ServiceBusMessage messages} in the batch.
      */
     public int getCount() {
         return serviceBusMessageList.size();
     }
 
     /**
-     * Gets the maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
+     * Gets the maximum size, in bytes, of the {@link ServiceBusMessageBatch batch}.
      *
-     * @return The maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
+     * @return The maximum size, in bytes, of the {@link ServiceBusMessageBatch batch}.
      */
     public int getMaxSizeInBytes() {
         return maxMessageSize;
     }
 
     /**
-     * Gets the size of the {@link ServiceBusMessageBatch} in bytes.
+     * Gets the size of the {@link ServiceBusMessageBatch batch} in bytes.
      *
-     * @return the size of the {@link ServiceBusMessageBatch} in bytes.
+     * @return The size of the {@link ServiceBusMessageBatch batch} in bytes.
      */
     public int getSizeInBytes() {
-        return this.sizeInBytes;
+        return this.sizeInBytes.get();
     }
 
     /**
@@ -84,33 +85,35 @@ public final class ServiceBusMessageBatch {
      * @return {@code true} if the message could be added to the batch; {@code false} if the event was too large to fit
      *     in the batch.
      *
-     * @throws IllegalArgumentException if {@code message} is {@code null}.
+     * @throws NullPointerException if {@code message} is {@code null}.
      * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
      *     ServiceBusMessageBatch}.
      */
-    public boolean tryAdd(final ServiceBusMessage serviceBusMessage) {
+    public boolean tryAddMessage(final ServiceBusMessage serviceBusMessage) {
         if (serviceBusMessage == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("message cannot be null"));
+            throw logger.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
         }
         ServiceBusMessage serviceBusMessageUpdated =
-            tracerProvider.isEnabled() ? traceMessageSpan(serviceBusMessage) : serviceBusMessage;
+            tracerProvider.isEnabled()
+                ? traceMessageSpan(serviceBusMessage, serviceBusMessage.getContext(), hostname, entityPath,
+                tracerProvider)
+                : serviceBusMessage;
 
-        final int size;
+        final AtomicInteger size = new AtomicInteger();
         try {
-            size = getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty());
+            size.set(getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty()));
         } catch (BufferOverflowException exception) {
-            throw logger.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                    maxMessageSize / 1024),
-                contextProvider.getErrorContext()));
+            final RuntimeException ex = new ServiceBusException(
+                    new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                        String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
+                            maxMessageSize / 1024), contextProvider.getErrorContext()), ServiceBusErrorSource.SEND);
+
+            throw logger.logExceptionAsWarning(ex);
         }
 
-        synchronized (lock) {
-            if (this.sizeInBytes + size > this.maxMessageSize) {
-                return false;
-            }
-
-            this.sizeInBytes += size;
+        if (this.sizeInBytes.addAndGet(size.get()) > this.maxMessageSize) {
+            this.sizeInBytes.addAndGet(-1 * size.get());
+            return false;
         }
 
         this.serviceBusMessageList.add(serviceBusMessageUpdated);
@@ -124,33 +127,6 @@ public final class ServiceBusMessageBatch {
      */
     List<ServiceBusMessage> getMessages() {
         return serviceBusMessageList;
-    }
-
-    /**
-     * Method to start and end a "Azure.EventHubs.message" span and add the "DiagnosticId" as a property of the
-     * message.
-     *
-     * @param serviceBusMessage The Message to add tracing span for.
-     *
-     * @return the updated Message data object.
-     */
-    private ServiceBusMessage traceMessageSpan(ServiceBusMessage serviceBusMessage) {
-        Optional<Object> eventContextData = serviceBusMessage.getContext().getData(SPAN_CONTEXT_KEY);
-        if (eventContextData.isPresent()) {
-            // if message has context (in case of retries), don't start a message span or add a new context
-            return serviceBusMessage;
-        } else {
-            // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context eventSpanContext = tracerProvider.startSpan(serviceBusMessage.getContext(), ProcessKind.MESSAGE);
-            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
-            if (eventDiagnosticIdOptional.isPresent()) {
-                serviceBusMessage.getProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
-                tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                serviceBusMessage.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
-            }
-        }
-
-        return serviceBusMessage;
     }
 
     private int getSize(final ServiceBusMessage serviceBusMessage, final boolean isFirst) {

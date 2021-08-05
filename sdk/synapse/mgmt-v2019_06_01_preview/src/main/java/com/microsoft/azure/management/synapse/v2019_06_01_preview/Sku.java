@@ -28,6 +28,14 @@ public class Sku {
     private String name;
 
     /**
+     * If the SKU supports scale out/in then the capacity integer should be
+     * included. If scale out/in is not possible for the resource this may be
+     * omitted.
+     */
+    @JsonProperty(value = "capacity")
+    private Integer capacity;
+
+    /**
      * Get the service tier.
      *
      * @return the tier value
@@ -64,6 +72,26 @@ public class Sku {
      */
     public Sku withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get if the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+     *
+     * @return the capacity value
+     */
+    public Integer capacity() {
+        return this.capacity;
+    }
+
+    /**
+     * Set if the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+     *
+     * @param capacity the capacity value to set
+     * @return the Sku object itself.
+     */
+    public Sku withCapacity(Integer capacity) {
+        this.capacity = capacity;
         return this;
     }
 

@@ -1,4 +1,4 @@
-﻿## Azure Batch Libraries for Java
+## Azure Batch Libraries for Java
 
 This README is based on the latest released version Azure Batch SDK (7.0.0). If you are looking for other releases, see the [More Information](#more-information) section below.
 
@@ -9,7 +9,7 @@ The Azure Batch Libraries for Java is a higher-level, object-oriented API for in
 
 **Azure Batch Authentication**
 
-You need to create a Batch account through the [Azure portal](https://portal.azure.com) or Azure cli. 
+You need to create a Batch account through the [Azure portal](https://portal.azure.com) or Azure cli.
 
 * Use the account name, key, and URL to create a `BatchSharedKeyCredentials` instance for authentication with the Azure Batch service.
 The `BatchClient` class is the simplest entry point for creating and interacting with Azure Batch objects.
@@ -19,7 +19,7 @@ BatchSharedKeyCredentials cred = new BatchSharedKeyCredentials(batchUri, batchAc
 BatchClient client = BatchClient.open(cred);
 ```
 
-* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://docs.microsoft.com/en-us/azure/batch/batch-aad-auth) for detail.
+* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://docs.microsoft.com/azure/batch/batch-aad-auth) for detail.
 
 ```java
 BatchApplicationTokenCredentials cred = new BatchApplicationTokenCredentials(batchEndpoint, clientId, applicationSecret, applicationDomain, null, null);
@@ -62,7 +62,7 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-batch</artifactId>
-    <version>8.0.0</version>
+    <version>8.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -71,16 +71,16 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 
 - A Java Developer Kit (JDK), v 1.7 or later
 - Maven
-- Azure Service Principal - see [how to create authentication info](./AUTH.md).
+- Azure Service Principal - see [how to create authentication info](https://docs.microsoft.com/azure/batch/batch-aad-auth#use-a-service-principal).
 
 
 ## Help
 
-If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java) or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 # Contribute Code
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -95,20 +95,48 @@ maven build
 ```
 
 # Test Code
-To run tests, set the following environment variables:
-* AZURE_BATCH_ENDPOINT
-* CLIENT_ID
-* APPLICATION_SECRET
-* AZURE_BATCH_ACCOUNT
-* AZURE_BATCH_ACCESS_KEY
-* STORAGE_ACCOUNT_NAME
-* STORAGE_ACCOUNT_KEY
-Then run any test in src/test/java directory.
+
+All tests are run from the `sdk/batch` directory. They can be run either on the command line or from a Java IDE, such as Eclipse.
+
+## Step 1: Run tests in Record mode
+
+1. Deploy test resources in Azure and set the following environment variables:
+
+    * APPLICATION_SECRET
+    * AZURE_BATCH_ACCESS_KEY
+    * AZURE_BATCH_ACCOUNT
+    * AZURE_BATCH_ENDPOINT
+    * AZURE_BATCH_REGION
+    * AZURE_VNET
+    * AZURE_VNET_ADDRESS_SPACE
+    * AZURE_VNET_RESOURCE_GROUP
+    * AZURE_VNET_SUBNET
+    * AZURE_VNET_SUBNET_ADDRESS_SPACE
+    * CLIENT_ID
+    * STORAGE_ACCOUNT_KEY
+    * STORAGE_ACCOUNT_NAME
+    * SUBSCRIPTION_ID
+
+1. Set `AZURE_TEST_MODE` to `Record`
+1. Run the tests in `src/test/java`
+    1. From the command-line, run `mvn test` (can also supply `-DAZURE_TEST_MODE=Record` instead of setting environment variable)
+1. Test recordings will be created in `microsoft-azure-batch/target/test-classes/session-records`
+1. Copy these recordings to `microsoft-azure-batch/src/test/resources/test-recordings`
+
+## Step 2: Run tests in Playback mode
+
+1. Set `AZURE_TEST_MODE` to `Playback`
+1. Run the Jetty test server
+    1. CLI: `mvn jetty:start`
+    1. Eclipse: Install Jetty plugin for Eclipse from marketplace and create two run configurations (one for 11080 and one for 11081)
+1. Run the tests
+    1. CLI: `mvn test -DAZURE_TEST_MODE=Playback`
 
 # More Information
-* [Javadoc](https://docs.microsoft.com/en-us/java/api/overview/azure/batch?view=azure-java-stable)
-* [http://azure.com/java](http://azure.com/java)
-* If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
+
+* [Javadoc](https://docs.microsoft.com/java/api/overview/azure/batch?view=azure-java-stable)
+* [https://azure.com/java](https://azure.com/java)
+* If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 
 ---
 

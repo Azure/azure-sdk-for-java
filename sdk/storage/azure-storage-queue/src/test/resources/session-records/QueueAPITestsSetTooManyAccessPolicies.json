@@ -1,46 +1,46 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestssettoomanyaccesspolicies53707526f81f3d",
+    "Uri" : "https://REDACTED.queue.core.windows.net/98a41dd798a41dd7ae5745834b0a95f689cf461183",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e1b614fa-4992-4de1-89b8-ab5a9207b603"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7fd7a9df-b5e9-4016-81be-a512932d9577"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d25b8235-f003-0012-0c71-e0e9eb000000",
-      "Date" : "Tue, 11 Feb 2020 00:24:37 GMT",
-      "x-ms-client-request-id" : "e1b614fa-4992-4de1-89b8-ab5a9207b603"
+      "x-ms-request-id" : "66d7cf38-0003-0074-7709-41c2d1000000",
+      "x-ms-client-request-id" : "7fd7a9df-b5e9-4016-81be-a512932d9577",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestssettoomanyaccesspolicies53707526f81f3d?comp=acl",
+    "Uri" : "https://REDACTED.queue.core.windows.net/98a41dd798a41dd7ae5745834b0a95f689cf461183?comp=acl",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "ae343227-36a4-42c3-8f9b-4e83cb5d4adc",
-      "Content-Type" : "application/xml; charset=utf-8"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f4518c7c-585c-43bc-8ad9-a867195e831c",
+      "Content-Type" : "application/xml"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "294",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidXmlDocument",
       "retry-after" : "0",
-      "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "d25b8237-f003-0012-0d71-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:d25b8237-f003-0012-0d71-e0e9eb000000\nTime:2020-02-11T00:24:38.1653193Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:37 GMT",
-      "x-ms-client-request-id" : "ae343227-36a4-42c3-8f9b-4e83cb5d4adc",
+      "x-ms-request-id" : "b7beabf0-a003-0052-1809-418ac9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:b7beabf0-a003-0052-1809-418ac9000000\nTime:2021-05-04T17:18:38.8599457Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "x-ms-client-request-id" : "f4518c7c-585c-43bc-8ad9-a867195e831c",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestssettoomanyaccesspolicies53707526f81f3d" ]
+  "variables" : [ "98a41dd798a41dd7ae5745834b0a95f689cf461183" ]
 }

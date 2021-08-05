@@ -18,7 +18,7 @@ public enum ComputeNodeFillType {
     /** Tasks should be assigned evenly across all Compute Nodes in the Pool. */
     SPREAD("spread"),
 
-    /** As many Tasks as possible (maxTasksPerNode) should be assigned to each Compute Node in the Pool before any Tasks are assigned to the next Compute Node in the Pool. */
+    /** As many Tasks as possible (taskSlotsPerNode) should be assigned to each Compute Node in the Pool before any Tasks are assigned to the next Compute Node in the Pool. */
     PACK("pack");
 
     /** The actual serialized value for a ComputeNodeFillType instance. */

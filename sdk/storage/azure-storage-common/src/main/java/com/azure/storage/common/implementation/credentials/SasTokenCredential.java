@@ -9,7 +9,9 @@ import java.util.Map;
 
 /**
  * Holds a SAS token used for authenticating requests.
+ * @deprecated Use {@link com.azure.core.credential.AzureSasCredential} instead.
  */
+@Deprecated
 public final class SasTokenCredential {
     private static final String SIGNATURE = "sig";
 

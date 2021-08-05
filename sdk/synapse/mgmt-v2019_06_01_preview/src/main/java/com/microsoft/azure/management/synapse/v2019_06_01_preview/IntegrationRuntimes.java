@@ -23,7 +23,7 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
      * Upgrade an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -35,7 +35,7 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
      * Start an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -47,7 +47,7 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
      * Stop an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -55,11 +55,33 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
     Completable stopAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
+     * Enable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable enableInteractiveQueryAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
+
+    /**
+     * Disable interactive query in integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable disableInteractiveQueryAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName);
+
+    /**
      * Get integration runtime.
      * Get an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -71,7 +93,7 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
      * List all integration runtimes.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -82,7 +104,7 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
      * Delete an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

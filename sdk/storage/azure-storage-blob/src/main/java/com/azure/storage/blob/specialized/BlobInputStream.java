@@ -3,14 +3,11 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageInputStream;
-import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -32,20 +29,7 @@ public final class BlobInputStream extends StorageInputStream {
     /**
      * Holds the {@link BlobProperties} object that represents the blob's properties.
      */
-    private BlobProperties properties;
-
-    /**
-     * Initializes a new instance of the BlobInputStream class.
-     *
-     * @param blobClient A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
-     * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
-     * blob.
-     * @throws BlobStorageException An exception representing any error which occurred during the operation.
-     */
-    BlobInputStream(final BlobAsyncClient blobClient, final BlobRequestConditions accessCondition)
-        throws BlobStorageException {
-        this(blobClient, 0, null, accessCondition);
-    }
+    private final BlobProperties properties;
 
     /**
      * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
@@ -55,19 +39,19 @@ public final class BlobInputStream extends StorageInputStream {
      * with.
      * @param blobRangeOffset The offset of blob data to begin stream.
      * @param blobRangeLength How much data the stream should return after blobRangeOffset.
+     * @param chunkSize The size of the chunk to download.
      * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
      * blob.
      * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
-    BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength,
-                    final BlobRequestConditions accessCondition)
+    BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
+        final BlobRequestConditions accessCondition, final BlobProperties blobProperties)
         throws BlobStorageException {
-        super(blobRangeOffset, blobRangeLength, 4 * Constants.MB,
-            blobClient.getProperties().block().getBlobSize());
+        super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize());
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
-        this.properties = null;
+        this.properties = blobProperties;
     }
 
     /**
@@ -80,16 +64,9 @@ public final class BlobInputStream extends StorageInputStream {
     @Override
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) throws IOException {
         try {
-            ByteBuffer currentBuffer = this.blobClient.downloadWithResponse(new BlobRange(offset,
-                (long) readLength), null, this.accessCondition, false)
-                .flatMap(response -> {
-                    // Only populate properties if it has not been populated yet, this is ok since we etag lock on the
-                    // blob while downloading, so it is guaranteed to be the same.
-                    if (this.properties == null) {
-                        this.properties = buildBlobProperties(response.getDeserializedHeaders());
-                    }
-                    return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap);
-                })
+            ByteBuffer currentBuffer = this.blobClient.downloadWithResponse(
+                new BlobRange(offset, (long) readLength), null, this.accessCondition, false)
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
                 .block();
 
             this.bufferSize = readLength;
@@ -98,36 +75,17 @@ public final class BlobInputStream extends StorageInputStream {
         } catch (final BlobStorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
+
             throw this.lastError;
         }
     }
 
-    private static BlobProperties buildBlobProperties(BlobDownloadHeaders hd) {
-        if (hd == null) {
-            return null;
-        }
-        return new BlobProperties(null, hd.getLastModified(), hd.getETag(),
-            hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(), null,
-            hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(), hd.getCacheControl(),
-            hd.getBlobSequenceNumber(), hd.getBlobType(), hd.getLeaseStatus(), hd.getLeaseState(),
-            hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(), hd.getCopySource(), hd.getCopyProgress(),
-            hd.getCopyCompletionTime(), hd.getCopyStatusDescription(), hd.isServerEncrypted(),
-            null, null, null, null, null, hd.getEncryptionKeySha256(), null, hd.getMetadata(),
-            hd.getBlobCommittedBlockCount());
-    }
-
     /**
-     * Gets the blob properties.
-     * <p>
-     * If no data has been read from the stream, a network call is made to get properties. Otherwise, the blob
-     * properties obtained from the download are stored.
+     * Gets the blob properties as fetched upon download.
      *
      * @return {@link BlobProperties}
      */
     public BlobProperties getProperties() {
-        if (this.properties == null) {
-            this.properties = blobClient.getPropertiesWithResponse(accessCondition).block().getValue();
-        }
         return this.properties;
     }
 

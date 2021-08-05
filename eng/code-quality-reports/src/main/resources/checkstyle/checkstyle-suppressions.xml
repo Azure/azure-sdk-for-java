@@ -1,145 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suppressions PUBLIC
-  "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
-  "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-  <!-- AutoRest generates 'final' on interfaces. Remove this suppression when:
-  https://github.com/Azure/autorest-clientruntime-for-java/issues/589 is fixed. -->
-  <suppress checks="RedundantModifier"
-            files="batch[/\\]microsoft-azure-batch[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
-  <suppress checks="RedundantModifier"
-            files="keyvault[/\\]microsoft-azure-.*[/\\].*[/\\](IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
-
-  <!-- AutoRest generates with unused imports. Remove this suppression when:
-  https://github.com/Azure/autorest.java/issues/330 is fixed. -->
-  <suppress checks="UnusedImports" files="batch[/\\]microsoft-azure-batch[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
-
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
-
+  <suppress checks="Javadoc" files="src[/\\]test-shared[/\\]java[/\\].*.java"/>
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
-  <suppress checks="Javadoc" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
   <suppress checks="Header" files=".*package-info.java"/>
+
+  <!-- Suppress all checkstyle rules for Track 1/management libraries. -->
+  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
   <!-- ignore missing javadoc in samples -->
   <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>
   <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>
   <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
 
-  <!-- Files licensed with alternate license in the header -->
-  <suppress checks="Header" files=".*AesKwBCProviderTest.java"/>
-  <suppress checks="Header" files=".*AesKwTest.java"/>
-  <suppress checks="Header" files=".*SymmetricKeyBCProviderTest.java"/>
-  <suppress checks="Header" files=".*SymmetricKeyTest.java"/>
-  <suppress checks="Header" files=".*CachingKeyResolverTest.java"/>
-  <suppress checks="Header" files=".*KeyVaultKeyResolverBCProviderTest.java"/>
-  <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
+  <!-- Code was taken from Netty and uses its license instead of our usual one. -->
   <suppress checks="Header" files="com.azure.core.http.netty.implementation.HttpProxyHandler"/>
-  <suppress checks="Header" files="eventgrid[/\\](models|implementation)[/\\].*\.java"/>
 
-  <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*CryptographyAsyncClient.java"/>
-
-  <!-- Public API already released with incorrect upper-case naming pattern -->
-  <suppress checks="MethodName" files="AsymmetricEncryptionAlgorithm.java"/>
-  <suppress checks="MethodName" files="ISessionHandler.java"/>
-  <suppress checks="MethodName" files="KeyWrapAlgorithm.java"/>
-  <suppress checks="MethodName" files="SignatureEncoding.java"/>
-  <suppress checks="MethodName" files="SymmetricEncryptionAlgorithm.java"/>
-  <suppress checks="MethodName" files="RsaSignature.java"/>
+  <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
+  <suppress checks="Header" files="com.azure.core.implementation.OptionModule"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionPropertiesModifier"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionBeanPropertyWriter"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionTypeModifier"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionSerializerProvider"/>
+  <suppress checks="Header" files="com.azure.core.implementation.OptionSerializer"/>
 
   <!-- empty Enum Singleton Pattern -->
   <suppress checks="NoWhitespaceBefore" files="Messages.java"/>
 
-  <!-- Public API already released with incorrect constant variable naming -->
-  <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
-  <suppress checks="ConstantName" files="AmqpErrorCode.java"/>
-  <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
-  <suppress checks="ConstantName" files="ConnectionStringBuilder.java"/>
-  <suppress checks="ConstantName" files="JobSchedulingErrorCodes.java"/>
-  <suppress checks="ConstantName" files="MessagingFactory.java"/>
-  <suppress checks="ConstantName" files="PartitionManagerOptions.java"/>
-  <suppress checks="ConstantName" files="PoolResizeErrorCodes.java"/>
-  <suppress checks="ConstantName" files="RsaKey.java"/>
-  <suppress checks="ConstantName" files="SymmetricKey.java"/>
-  <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
-
-  <!-- Public API already released with incorrect static variable naming -->
-  <suppress checks="StaticVariableName" files="EventHubClientImpl.java"/>
-  <suppress checks="StaticVariableName" files="ManagementClientConstants.java"/>
-  <suppress checks="StaticVariableName" files="TransactionContext.java"/>
-
-  <!-- Public API already released with visibility modifier -->
-  <suppress checks="VisibilityModifier" files="BatchOptions.java"/>
-  <suppress checks="VisibilityModifier" files="EventHubClientImpl.java"/>
-  <suppress checks="VisibilityModifier" files="ManagementClientConstants.java"/>
-  <suppress checks="VisibilityModifier" files="TransactionContext.java"/>
-
-  <!-- Public API already released without final modifier -->
-  <suppress checks="FinalClass" files="BatchClient.java"/>
-  <suppress checks="FinalClass" files="CoreMessageReceiver.java"/>
-  <suppress checks="FinalClass" files="CoreMessageSender.java"/>
-  <suppress checks="FinalClass" files="DetailLevel.java"/>
-  <suppress checks="FinalClass" files="MessagingFactory.java"/>
-  <suppress checks="FinalClass" files="MessageBody.java"/>
-  <suppress checks="FinalClass" files="RequestResponseLink.java"/>
-  <suppress checks="FinalClass" files="Util.java"/>
-
   <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
   <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
-  <!-- All auto generated files need to exclude from checkstyle -->
-  <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
-
-  <!-- The constant name is public static. -->
-  <suppress checks="ConstantNames" files=".*[/\\]azure[/\\]storage[/\\].*LoggingOptions.java"/>
-
-  <!-- Custom checkstyle rules only check track 2 libraries -->
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
-
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CredentialBuilderBase.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CreateKeyOptions.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
-            files=".*LocalKeyCryptographyClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*SearchIndexClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
-            files=".*SearchServiceClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*DeviceCodeCredentialBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*InteractiveBrowserCredentialBuilder.java"/>
+
+  <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue"/>
+
+  <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
+
+  <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5021 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*\BlobOutputStream.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.storage.blob.specialized.BlobOutputStream.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under test package -->
   <suppress
-    checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
-    files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+      checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|HttpPipelinePolicyCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
+      files=".*[/\\]src[/\\]test(-shared)?[/\\]java[/\\].*\.java"/>
 
   <!-- Do not worry about leaking implementation API out of azure-core-test -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.core.test.*"/>
 
   <!-- Don't apply custom Checkstyle rules to files under implementation package -->
   <suppress
-    checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck)"
-    files=".*[/\\]implementation[/\\].*\.java"/>
+      checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck)"
+      files=".*[/\\]implementation[/\\].*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
   <suppress
-    checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck)"
-    files=".*[/\\]samples[/\\].*\.java"/>
+      checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)"
+      files=".*[/\\]samples[/\\].*\.java"/>
 
-  <!-- Don't check for JavaDocPackage in samples or tests -->
+  <!-- Don't check for JavaDocPackage in samples or tests-->
   <suppress checks="JavadocPackage" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for samples and tests -->
+  <!-- Suppress LineLength for samples and tests-->
   <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for Keyvault on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5335 -->
-  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]security[/\\]keyvault[/\\]"/>
+  <!-- To allow using sysout rather than logger in samples -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files=".*[/\\]samples[/\\].*\.java"/>
 
-  <!-- Suppress LineLength for Track 1 libraries. -->
-  <suppress checks="LineLength" files=".*[/\\]com[/\\]microsoft[/\\]"/>
+  <!-- All fields are not set in constructors. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="Receipt.java"/>
 
   <!-- Suppress LineLength for i18n message properties -->
   <suppress checks="LineLength" files="messages.properties"/>
@@ -147,8 +92,18 @@
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
 
+  <!-- Suppress the check on any implementation code and codegen classes -->
+  <suppress checks="LineLength" files=".*[/\\]storage[/\\].*implementation[/\\].*"/>
+  <suppress checks="LineLength" files="com.azure.storage.blob.models.BlobErrorCode.java"/>
+  <suppress checks="LineLength" files="com.azure.storage.file.share.models.ShareErrorCode.java"/>
+  <suppress checks="LineLength" files="com.azure.storage.queue.models.QueueErrorCode.java"/>
+
+  <!-- Suppress datalake for now as it is new development -->
+  <suppress checks="LineLength" files=".*[/\\]storage[/\\]file[/\\]datalake[/\\]models[/\\].*"/>
+
   <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]opentelemetry[/\\]exporter[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
@@ -160,13 +115,31 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*LocalCryptographyClientBuilder.java"/>
 
   <!-- Suppress warnings for ServiceBusReceiverClientBuilder and ServiceBusSenderClientBuilder. They are created from
-  the main ServiceBusClientBuilder. -->
+the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="ServiceBusClientBuilder.java"/>
+
+  <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*CryptographyAsyncClient.java"/>
+
+  <!-- Suppress method name "acceptNextSession" and "acceptSession" for ServiceBusSessionReceiverAsyncClient and ServiceBusSessionReceiverClient-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiverAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiverClient.java"/>
 
   <!-- Some classes are named *Builder but are not @ServiceClientBuilder -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder"/>
+
+  <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.storage.blob.BlobAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.storage.blob.BlobClient.java"/>
+  <!-- Suppress client mutability check since LeaseClients need to update a changing lease ID -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.storage.blob.specialized.BlobLeaseAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.java"/>
 
   <!-- Any code in any package, it should never be a 'throw' keyword in the client library codebase except for in the client logger -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
@@ -190,13 +163,54 @@
   <!-- Suppress IO exception in the NIO package because they are required by the interface -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.nio/*"/>
 
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.azure.storage.blob.batch.BlobBatchOperationResponse.java"
+            lines="110"/>
+  <!-- Throws a non-runtime exception -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.core.http.netty.implementation.HttpProxyHandler.java"/>
+  <!-- InvalidKeyException is not a runtime exception, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5178 -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.keys.cryptography.AesCbcPad.java"/>
+
+  <!-- suppress the runtime exception in the KeyVaultClient class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.KeyVaultClient.java"/>
+  <!-- suppress the runtime exception in the KeyVaultKeyLessECSignature class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessECSignature.java"/>
+  <!-- suppress the runtime exception in the KeyVaultKeyLessRsaSignature class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsaSignature.java"/>
+  <!-- suppress the runtime exception in the AbstractKeyVaultKeyLessSignature class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature.java"/>
+
+  <!-- This class overrides a method that throws, so it cannot be avoided. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
+
+  <!-- Nested blocks are still readable in the switch statements in Avro. -->
+  <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
+  <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroType.java"/>
+
+  <!-- The constant name is public static. -->
+  <suppress checks="ConstantNames" files=".*[/\\]azure[/\\]storage[/\\].*LoggingOptions.java"/>
+
   <!-- Suppress external dependency Checkstyle on Netty and OkHttp HttpClient packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter"/>
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.serializer.avro.apache.ApacheAvroSerializerBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.serializer.avro.jackson.JacksonAvroSerializerBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.serializer.json.gson.GsonJsonSerializerBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -217,6 +231,8 @@
             files="com.azure.core.http.rest.SwaggerMethodParser"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
             files="com.azure.core.util.serializer.UnixTimeSerializer"/> <!-- FIXME this is a bug in the checkstyle rule - the class itself is non-public, so it doesn't matter that the method returns an implementation type -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"
+            files="com.azure.core.util.serializer.UnixTimeDeserializer"/> <!-- FIXME, same reason as above -->
 
   <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
@@ -226,128 +242,80 @@
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
             files="com.azure.security.keyvault.keys.KeyClient.java"/>
 
-  <!-- CodeSnippet Suppression for now, which need code owner's attention -->
-  <suppress checks="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck"
-            files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
-
   <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="DefaultLogger.java"/>
 
-  <!-- Use the logger in Utility static method. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.ProxyOptions.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
-
-  <!-- Azure Core Test -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
-  <!-- Class has static methods which using static logger instance, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5137-->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="CertificateUtil.java"/>
   <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
 
-  <!-- Report AMQP retry attempts in static withRetry method. -->
+  <!-- AMQP logger name set in lambda function to specify the function name -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.core.amqp.implementation.RetryUtil.java"/>
-
-  <!-- The Identity Azure Platform End to tend Test.-->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.endtoend.identity.IdentityTest.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.endtoend.identity.WebJobsIdentityTest.java"/>
+            files="com.azure.core.amqp.implementation.ReactorConnection.java"/>
 
   <!-- Accesses Windows native credential api, doesn't follow java style.-->
   <suppress checks="MethodName|MemberName|VisibilityModifier|TypeName"
             files="com.azure.identity.implementation.WindowsCredentialApi.java"/>
 
-  <!-- Use the logger in a Utility static method. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.Transforms.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.training.CustomModelTransforms.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
+  <!-- Need to write to stdout as the default SDK behavior here.-->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.identity.DeviceCodeCredentialBuilder.java"/>
 
-    <!-- Common vocabulary error for LRO methods starting with begin* https://github.com/Azure/azure-sdk-for-java/issues/10147 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerAsyncClient.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerClient.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingClient.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.java" />
+  <!-- Not newing ClientLogger  -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.logging.ClientLogger.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.implementation.logging.DefaultLogger.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
 
-  <!-- Throws a non-runtime exception -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.core.http.netty.implementation.HttpProxyHandler.java"/>
-
-  <!-- Event Hubs uses AMQP, which does not contain an HTTP response. Returning PagedResponse and Response does not apply. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.messaging.eventhubs.EventHubClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.messaging.eventhubs.EventHubAsyncClient.java"/>
-
-  <!-- Public API already exposed: Common vocabulary errors, refer to Java Spec: https://azure.github.io/azure-sdk/java_introduction.html,
-  issue link: https://github.com/Azure/azure-sdk-for-java/issues/5145 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.security.keyvault.secrets.SecretAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.security.keyvault.keys.KeyAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.security.keyvault.certificates.CertificateAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.security.keyvault.certificates.CertificateClient.java"/>
-
-  <!-- InvalidKeyException is not a runtime exception, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5178 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
-
-  <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.identity.implementation.msalextensions.CacheLock"/>
-
-  <!-- Suppress the check on any implementation code and codegen classes -->
-  <suppress checks="LineLength" files=".*[/\\]storage[/\\].*implementation[/\\].*"/>
-  <suppress checks="LineLength" files="com.azure.storage.blob.models.BlobErrorCode.java"/>
-  <suppress checks="LineLength" files="com.azure.storage.file.share.models.ShareErrorCode.java"/>
-  <suppress checks="LineLength" files="com.azure.storage.queue.models.QueueErrorCode.java"/>
-
-  <!-- Suppress datalake for now as it is new development -->
-  <suppress checks="LineLength" files=".*[/\\]storage[/\\]file[/\\]datalake[/\\]models[/\\].*"/>
-
-  <!-- Suppress CRUD operation names as they won't feel fluent -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.blob.specialized.BlobLeaseClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.blob.specialized.BlobLeaseAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.blob.batch.BlobBatchClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.blob.batch.BlobBatchAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.data.appconfiguration.ConfigurationClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.file.share.specialized.ShareLeaseClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.java"/>
-
-  <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.blob.BlobAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.blob.BlobClient.java"/>
+  <!-- TODO: Synapse access control API does not support PagedResponse and Response. -->
+  <!-- Checkstyle suppression's for naming issues reported in the Synapse artifacts related clients-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.analytics.synapse.accesscontrol.RoleAssignmentsAsyncClient"/>
+  <!-- Suppress the check on synapse code-gen classes -->
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.managedprivateendpoints.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.managedprivateendpoints.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.monitoring.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.monitoring.implementation..*Impl" />
+  <!-- empty class Pattern in Synapse artifacts -->
+  <suppress checks="WhitespaceAround" files=".*[/\\]synapse[/\\]azure-analytics-synapse-artifacts[/\\].*"/>
+  <!-- Suppress the long package name in Synapse managed private endpoints -->
+  <suppress checks="PackageName" files="com.azure.analytics.synapse.managedprivateendpoints.*" />
+  <!-- Suppress the long line in endpoint path -->
+  <suppress checks="LineLength" files="com.azure.analytics.synapse.managedprivateendpoints.implementation.ManagedPrivateEndpointsImpl.java"/>
+  <!-- Suppress the check on synapse artifacts code-gen classes for return type specification -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.analytics.synapse.artifacts.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.analytics.synapse.managedprivateendpoints.ManagedPrivateEndpointsAsyncClient.java"/>
 
   <!-- Checkstyle rules should not check files in generated-test-sources -->
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]generated-test-sources[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\](generated-test-sources|generatedtestsources)[/\\]"/>
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy.java"/>
+
+
+  <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
+
+  <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
+
+  <!-- The KeyVault JCA library has to be as lightweight as possible and thus, does not use Azure Core or its loggers. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.security.keyvault.jca.*"/>
+
+  <!-- This class overrides a method that throws, so it cannot be avoided. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 
   <!-- Empty while loop waiting for Reactor stream completion -->
   <suppress checks="EmptyBlock" files="com.azure.storage.blob.batch.BlobBatch.java"/>
@@ -365,61 +333,81 @@
   <suppress checks="."
             files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]converters[/\\]"/>
   <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\](DocumentsImpl|SearchIndexRestClientBuilder|SearchIndexRestClientImpl)"/>
-  <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]indexes[/\\]implementation[/\\](DataSourcesImpl|IndexersImpl|IndexesImpl|SkillsetsImpl|SynonymMapsImpl|SearchServiceRestClientBuilder|SearchServiceRestClientImpl)"/>
-  <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult|ComplexField|SearchableField|SimpleField|SearchFieldBase|IndexBatchException|ScoringParameter)).*)"/>
-  <suppress checks="GoodLoggingCheck" files="com.azure.search.documents.implementation.util.PrivateFieldAccessHelper.java"/>
+            files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(IndexBatch|ValueFacetResult|RangeFacetResult|SearchableField|SimpleField|IndexBatchException|ScoringParameter)).*)"/>
 
-  <!-- Removed this rule after the issue gets fixed: https://github.com/Azure/azure-sdk-for-java/issues/11651-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchAsyncClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexAsyncClient.java"/>
-<!--  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchAsyncClient.java"/>-->
+  <suppress checks="."
+            files=".*[/\\]azure-quantum-jobs[/\\]src[/\\]main[/\\]java[/\\]"/>
 
-  <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
+<suppress checks="."
+            files=".*[/\\]webpubsub[/\\]implementation[/\\]"/>
+<suppress checks="."
+            files=".*[/\\]monitor[/\\]implementation[/\\]"/>
 
   <!-- Suppress ConfigurationCredentialsPolicy for HttpPipelinePolicyCheck.
    This suppression need to be deleted after AzConfig using AAD credential.
    Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/5131 -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.data.appconfiguration.implementation.SyncTokenPolicy.java"/>
 
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]test[/\\].*"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]samples[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]storage[/\\].*samples[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files=".*[/\\]implementation[/\\].*"/>
 
-  <!-- Suppress the check on code-gen classes -->
-  <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder"/>
-  <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl"/>
-  <suppress checks="." files="com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService"/>
+  <!-- FIXME temp -->
+  <suppress checks="ServiceClient" files="com.azure.messaging.webpubsub.*"/>
 
   <!-- Suppress the check on code-gen classes -->
-  <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
-  <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl"/>
-  <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.models"/>
-  <suppress checks="LineLength" files="com.azure.ai.formrecognizer.Transforms.java"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.query..*.implementation.*"/>
+  <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.RoleAssignmentsImpl"/>
+  <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.RoleDefinitionsImpl"/>
+  <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl"/>
+  <!-- Checkstyle suppressions for the auto generated Chat Client Implementation -->
+  <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
+  <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.communication.common.implementation.HmacAuthenticationPolicy.java"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.identity.CommunicationIdentityClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.identity.CommunicationIdentityAsyncClient.java"/>
 
-  <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
+  <!-- Suppress the check on synapse code-gen classes -->
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.managedprivateendpoints.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.managedprivateendpoints.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.monitoring.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.monitoring.implementation..*Impl" />
 
-  <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
-            files="com.azure.core.management.implementation.polling.PollOperation.java"/>
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
-            files="com.azure.core.management.implementation.polling.PollingState.java"/>
+  <!-- empty class Pattern in Synapse artifacts -->
+  <suppress checks="WhitespaceAround" files=".*[/\\]synapse[/\\]azure-analytics-synapse-artifacts[/\\].*"/>
+
+  <!-- Checkstyle suppressions for naming issues reported in the Synapse artifacts related clients-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]synapse[/\\].*"/>
+
+  <!-- Suppress the long package name in Synapse managed private endpoints -->
+  <suppress checks="PackageName" files="com.azure.analytics.synapse.managedprivateendpoints.*" />
+
+  <!-- Suppress the long line in endpoint path -->
+  <suppress checks="LineLength" files="com.azure.analytics.synapse.managedprivateendpoints.implementation.ManagedPrivateEndpointsImpl.java"/>
 
   <!-- Cosmos sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-encryption[/\\]src[/\\]test[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]examples[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]implementation[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*"
             files=".*[/\\]azure-cosmos[/\\]((?!(BridgeInternal|CosmosBridgeInternal|CommonsBridgeInternal)).*)"/>
+  <suppress checks="[a-zA-Z0-9]*"
+            files=".*[/\\]azure-cosmos-encryption[/\\]((?!(EncryptionBridgeInternal)).*)"/>
+
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]rx[/\\]examples[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-benchmark[/\\]"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
@@ -433,19 +421,23 @@
   <suppress checks="javadoc" files="com.azure.cosmos.CompositePathSortOrder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.cosmos.PartitionKey"/>
   <suppress
-    checks="com.azure.tools.checkstyle.checks.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|NoImplInPublicAPI)"
-    files="com.azure.cosmos.ClientSideRequestStatistics"/>
+      checks="com.azure.tools.checkstyle.checks.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|NoImplInPublicAPI)"
+      files="com.azure.cosmos.ClientSideRequestStatistics"/>
   <suppress checks="IllegalImport"
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"
+/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
-  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
-  <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
-  <suppress checks="GoodLogging" files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
+  <suppress checks="Javadoc" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFields" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]azure-\w+-perf|perf-test-core[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]azure-\w+-perf|perf-test-core[/\\].*\.java"/>
+  <!-- Azure Search test models -->
+  <suppress checks="StaticVariableName|VisibilityModifier"
+            files="com.azure.search.perf.*.java|com.azure.messaging.servicebus.perf.*.java"/>
 
   <!-- Internal smoke test classes in Java perf framework need the public modifier -->
   <suppress checks="RedundantModifier" files="com.azure.perf.test.core.NoOpTest.java"/>
@@ -455,8 +447,183 @@
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.azure.perf.test.core.HttpPipelineOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.azure.messaging.servicebus.perf.ServiceBusStressOptions.java"/>
 
-  <!-- Checkstyle suppressions for azure-test-watch package -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.testing.AzureTestWatcher.java"/>
+  <!-- Nested blocks are still readable in the switch statements in Avro. -->
+  <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
+  <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroType.java"/>
+
+  <!-- Checkstyle suppressions for resource manager package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy.java"/>
+
+  <!-- Checkstyle suppression for Event Hubs client APIs that use Flux instead of PagedFlux for methods that return a collection -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubConsumerClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubConsumerAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubProducerClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.EventHubProducerAsyncClient.java"/>
+
+  <!-- ### begin: Spring related suppression -->
+  <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->
+  <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->
+  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+
+  <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+
+  <!-- Package Name: B2C is the product name -->
+  <suppress checks="PackageName" files="com.azure.spring.b2c.*|com.azure.spring.autoconfigure.b2c.*"/>
+
+  <!-- MissingJavadocMethod: Temporarily skip -->
+  <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+  <!-- MissingJavadocMethod: gremlin is not shipping now -->
+  <suppress checks="MissingJavadocType" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]gremlin.*"/>
+  <!-- MissingJavadocMethod: internal packages -->
+  <suppress checks="MissingJavadocType|JavadocThrowsChecks|EnforceFinalFields" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]integration[/\\]test.*"/>
+
+  <!--BlacklistedWordsCheck: URL is the name -->
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.storage.resource.BlobStorageResource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.storage.resource.FileStorageResource.java"/>
+
+  <!--BlacklistedWordsCheck: B2C is the product name -->
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"/>
+
+  <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.aad.UserGroups"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.jms.ConnectionStringResolver"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueAutoConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.storage.AzureStorageAutoConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicAutoConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.messaging.container.AbstractListenerContainer.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.servicebus.stream.binder.config.ServiceBusTopicBinderConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.servicebus.stream.binder.config.ServiceBusQueueBinderConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration.java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.gremlin.conversion.source.AbstractGremlinSource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
+
+  <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
+
+  <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+
+  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
+  <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
+  <suppress checks="PackageName" files="com.azure.spring.data.cosmos.multidatasource.*\.java"/>
+  <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
+
+  <!-- Checkstyle suppressions for com.microsoft.azure.spring package,
+  if you change the package name to com.azure.spring, please remove the configuration here. -->
+  <suppress checks="ConstantName|VisibilityModifier" files="src[/\\]test[/\\]java[/\\]com[/\\]microsoft[/\\]azure[/\\]spring[/\\]cloud[/\\]config|properties.*.java"/>
+
+  <!-- ### end: Spring related suppression -->
+
+  <!-- False positive as the methods are implemented in an anonymous class that is not exposed publicly. EntityHelper's
+    accessor classes are not visible. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.QueueProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.RuleProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.SubscriptionProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.administration.models.TopicProperties.java"/>
+
+  <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
+  <!-- Suppress DigitalTwins for now -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]implementation[/\\]"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]DigitalTwinsClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]DigitalTwinsAsyncClient.java"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-ai-anomalydetector[/\\]src[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-iot-deviceupdate[/\\]src[/\\]"/>
+
+  <!-- Don't enforce non-static ClientLogger instances in com.azure.core.util.Option types-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.azure.core.implementation.Option.java"/>
+
+  <!-- Suppress checks in azure-core-experimental -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
+
+  <!-- Suppress non-conforming service builder and service clients -->
+  <!-- The clients don't end with 'Client' but instead with 'Sender' -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
+            files="com.azure.search.documents.SearchClientBuilder"
+            lines="376,408,420"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.search.documents.SearchIndexingBufferedAsyncSender"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.search.documents.SearchIndexingBufferedSender"/>
+
+  <!-- Suppress checks on AutoRest generated Attestation service code -->
+  <suppress checks="ThrowFromClientLogger"
+            files="com.azure.security.attestation.models.JsonWebKey.java"/>
+  <suppress checks="WhitespaceAround|ThrowFromClientLogger"
+            files="com.azure.security.attestation.implementation.models.*\.java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.core.test.AzureTestWatcher.java"/>
+
+  <!-- This policy is purely an implementation detail and should not be used by customers -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.data.tables.implementation.CosmosPatchTransformPolicy"/>
+
+  <!-- Suppress checks on AutoRest generated Text Analytics service code -->
+  <suppress checks="WhitespaceAround"
+            files="com.azure.ai.textanalytics.implementation.models.TasksStateTasksDetails"/>
+
+  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Form Recognizer -->
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.formrecognizer.training.models.(TrainingDocumentInfo|CustomFormSubmodel|CustomFormModelProperties|CustomFormModelInfo|CustomFormModel).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.formrecognizer.models.(TextAppearance|RecognizedForm|FormTable|FormSelectionMark|FormPage|FormLine).java"/>
+
+  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Text Analytics -->
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.textanalytics.(models|util).*\.java"/>
+
+  <!-- Suppress checks on AutoRest generated Video Analyzer code -->
+  <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.CertificateSource"/>
+  <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.CredentialsBase"/>
+  <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.ImageFormatBmp"/>
+  <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.ImageFormatPng"/>
+  <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.ImageFormatProperties"/>
+  <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.SpatialAnalysisOperationBase"/>
+
+  <!-- Suppress checks on sample for Video Analyzer -->
+  <suppress checks="AvoidStarImport" files="com.azure.media.videoanalyzer.edge.LvaInvokeModuleSample"/>
+
+  <!-- Event Hubs perf tests should not be using ClientLogger when outputting results. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.messaging.eventhubs.perf[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.messaging.eventhubs.perf[/\\].*\.java"/>
+
+  <!-- Event Hubs perf test for Track 1, which uses its own TransportType class. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.messaging.eventhubs.perf.EventHubsOptions.java"/>
+
+  <!-- Fields are set via reflection using JCommander. Setting them to final fields will break it. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.azure.messaging.eventhubs.perf[/\\].*Options\.java"/>
+
+  <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
+  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
+
+  <!-- Third party source code files, retained as is. -->
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.Aes"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.HashedBlockInputStream"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.LittleEndianDataInputStream"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.Salsa20"/>
+
+  <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 </suppressions>

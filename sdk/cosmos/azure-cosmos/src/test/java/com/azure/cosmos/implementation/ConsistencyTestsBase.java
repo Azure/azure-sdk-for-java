@@ -75,7 +75,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentDefinition, "mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
-        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
+        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
         long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
@@ -90,7 +90,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentDefinition, "mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
-        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
+        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
         long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
@@ -287,7 +287,6 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             if (resourceToWorkWith instanceof Document) {
                 updatedResource = this.writeClient.upsertDocument(createdCollection.getSelfLink(), writeResource,
                                                                   null, false)
-                        .single()
                         .block()
                         .getResource();
             }
@@ -321,7 +320,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             Thread.sleep(1000);
             Resource updatedResource = null;
             if (resourceToWorkWith instanceof Document) {
-                updatedResource = this.writeClient.upsertDocument(createdCollection.getSelfLink(), writeResource, null, false).single().block().getResource();
+                updatedResource = this.writeClient.upsertDocument(createdCollection.getSelfLink(), writeResource, null, false).block().getResource();
             }
             assertThat(updatedResource.getTimestamp().isAfter(sourceTimestamp)).isTrue();
             writeResource = updatedResource;

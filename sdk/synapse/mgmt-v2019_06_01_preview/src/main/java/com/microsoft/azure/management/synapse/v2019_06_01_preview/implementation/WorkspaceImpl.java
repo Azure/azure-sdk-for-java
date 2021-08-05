@@ -16,6 +16,11 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.DataLakeStorag
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.VirtualNetworkProfile;
 import java.util.Map;
 import java.util.List;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.EncryptionDetails;
+import java.util.UUID;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedVirtualNetworkSettings;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceRepositoryConfiguration;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PurviewConfiguration;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentity;
 import java.util.ArrayList;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnection;
@@ -82,6 +87,16 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public EncryptionDetails encryption() {
+        return this.inner().encryption();
+    }
+
+    @Override
+    public Map<String, Object> extraProperties() {
+        return this.inner().extraProperties();
+    }
+
+    @Override
     public ManagedIdentity identity() {
         return this.inner().identity();
     }
@@ -94,6 +109,11 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     @Override
     public String managedVirtualNetwork() {
         return this.inner().managedVirtualNetwork();
+    }
+
+    @Override
+    public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
+        return this.inner().managedVirtualNetworkSettings();
     }
 
     @Override
@@ -113,6 +133,11 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public PurviewConfiguration purviewConfiguration() {
+        return this.inner().purviewConfiguration();
+    }
+
+    @Override
     public String sqlAdministratorLogin() {
         return this.inner().sqlAdministratorLogin();
     }
@@ -128,6 +153,16 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration() {
+        return this.inner().workspaceRepositoryConfiguration();
+    }
+
+    @Override
+    public UUID workspaceUID() {
+        return this.inner().workspaceUID();
+    }
+
+    @Override
     public WorkspaceImpl withConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
         this.inner().withConnectivityEndpoints(connectivityEndpoints);
         return this;
@@ -136,6 +171,12 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     @Override
     public WorkspaceImpl withDefaultDataLakeStorage(DataLakeStorageAccountDetails defaultDataLakeStorage) {
         this.inner().withDefaultDataLakeStorage(defaultDataLakeStorage);
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withManagedResourceGroupName(String managedResourceGroupName) {
+        this.inner().withManagedResourceGroupName(managedResourceGroupName);
         return this;
     }
 
@@ -164,6 +205,16 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public WorkspaceImpl withEncryption(EncryptionDetails encryption) {
+        if (isInCreateMode()) {
+            this.inner().withEncryption(encryption);
+        } else {
+            this.updateParameter.withEncryption(encryption);
+        }
+        return this;
+    }
+
+    @Override
     public WorkspaceImpl withIdentity(ManagedIdentity identity) {
         if (isInCreateMode()) {
             this.inner().withIdentity(identity);
@@ -174,11 +225,41 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public WorkspaceImpl withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        if (isInCreateMode()) {
+            this.inner().withManagedVirtualNetworkSettings(managedVirtualNetworkSettings);
+        } else {
+            this.updateParameter.withManagedVirtualNetworkSettings(managedVirtualNetworkSettings);
+        }
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
+        if (isInCreateMode()) {
+            this.inner().withPurviewConfiguration(purviewConfiguration);
+        } else {
+            this.updateParameter.withPurviewConfiguration(purviewConfiguration);
+        }
+        return this;
+    }
+
+    @Override
     public WorkspaceImpl withSqlAdministratorLoginPassword(String sqlAdministratorLoginPassword) {
         if (isInCreateMode()) {
             this.inner().withSqlAdministratorLoginPassword(sqlAdministratorLoginPassword);
         } else {
             this.updateParameter.withSqlAdministratorLoginPassword(sqlAdministratorLoginPassword);
+        }
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+        if (isInCreateMode()) {
+            this.inner().withWorkspaceRepositoryConfiguration(workspaceRepositoryConfiguration);
+        } else {
+            this.updateParameter.withWorkspaceRepositoryConfiguration(workspaceRepositoryConfiguration);
         }
         return this;
     }

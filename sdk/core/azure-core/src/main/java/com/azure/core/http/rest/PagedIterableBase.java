@@ -35,6 +35,7 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends Continuabl
      *
      * @param pagedFluxBase to use as iterable
      */
+    @SuppressWarnings("deprecation")
     public PagedIterableBase(PagedFluxBase<T, P> pagedFluxBase) {
         super(pagedFluxBase);
     }

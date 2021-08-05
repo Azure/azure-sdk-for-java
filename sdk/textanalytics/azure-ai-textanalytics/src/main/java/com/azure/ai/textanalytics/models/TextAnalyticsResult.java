@@ -47,6 +47,9 @@ public class TextAnalyticsResult {
      * Get the statistics of the text document.
      *
      * @return The {@link TextDocumentStatistics} statistics of the text document.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public TextDocumentStatistics getStatistics() {
         throwExceptionIfError();

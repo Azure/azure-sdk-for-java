@@ -25,7 +25,7 @@ public class AddDatePolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return Mono.defer(() -> {
-            context.getHttpRequest().getHeaders().put("Date", format.format(OffsetDateTime.now()));
+            context.getHttpRequest().getHeaders().set("Date", format.format(OffsetDateTime.now()));
             return next.process();
         });
     }

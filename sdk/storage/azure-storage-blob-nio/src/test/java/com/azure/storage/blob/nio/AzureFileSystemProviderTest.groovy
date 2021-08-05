@@ -3,20 +3,44 @@
 
 package com.azure.storage.blob.nio
 
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.LiveOnly
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
+import java.nio.file.AccessDeniedException
+import java.nio.file.AccessMode
+import java.nio.file.ClosedFileSystemException
 import java.nio.file.DirectoryNotEmptyException
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.FileSystem
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
+import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
+import java.nio.file.attribute.BasicFileAttributeView
+import java.nio.file.attribute.BasicFileAttributes
+import java.nio.file.attribute.DosFileAttributeView
+import java.nio.file.attribute.DosFileAttributes
 import java.nio.file.attribute.FileAttribute
 import java.security.MessageDigest
 
@@ -37,16 +61,16 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CreateFileSystem"() {
         setup:
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        def uri = getAccountUri()
+        def uri = getFileSystemUri()
 
         when:
         provider.newFileSystem(uri, config)
 
         then:
         provider.getFileSystem(uri).isOpen()
-        ((AzureFileSystem) provider.getFileSystem(uri)).getFileSystemName() == getAccountName(PRIMARY_STORAGE)
+        ((AzureFileSystem) provider.getFileSystem(uri)).getFileSystemUrl() == primaryBlobServiceClient.getAccountUrl()
     }
 
     @Unroll
@@ -68,11 +92,11 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem duplicate"() {
         setup:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
-        provider.newFileSystem(getAccountUri(), config)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+        provider.newFileSystem(getFileSystemUri(), config)
 
         when:
-        provider.newFileSystem(getAccountUri(), config)
+        provider.newFileSystem(getFileSystemUri(), config)
 
         then:
         thrown(FileSystemAlreadyExistsException)
@@ -81,16 +105,17 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem initial check fail"() {
         when:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        def badKey = getAccountKey(PRIMARY_STORAGE).getBytes()
+        def badKey = env.primaryAccount.key.getBytes()
         badKey[0]++
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = new String(badKey)
-        provider.newFileSystem(getAccountUri(), config)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] =
+            new StorageSharedKeyCredential(env.primaryAccount.name, new String(badKey))
+        provider.newFileSystem(getFileSystemUri(), config)
 
         then:
         thrown(IOException)
 
         when:
-        provider.getFileSystem(getAccountUri())
+        provider.getFileSystem(getFileSystemUri())
 
         then:
         thrown(FileSystemNotFoundException)
@@ -98,7 +123,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "GetFileSystem not found"() {
         when:
-        provider.getFileSystem(getAccountUri())
+        provider.getFileSystem(getFileSystemUri())
 
         then:
         thrown(FileSystemNotFoundException)
@@ -304,6 +329,19 @@ class AzureFileSystemProviderTest extends APISpec {
         props.getCacheControl() == "myControl"
     }
 
+    def "Create dir fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        fs.provider().createDirectory(path)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
     @Unroll
     def "Copy source"() {
         setup:
@@ -329,7 +367,7 @@ class AzureFileSystemProviderTest extends APISpec {
                     .getAppendBlobClient()
             }
         } else { // source is file
-            sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+            sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
         }
 
         when:
@@ -347,7 +385,7 @@ class AzureFileSystemProviderTest extends APISpec {
         if (!sourceIsDir) {
             def outStream = new ByteArrayOutputStream()
             destinationClient.download(outStream)
-            assert ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+            assert ByteBuffer.wrap(outStream.toByteArray()) == data.defaultData
         } else {
             // Check that the destination directory is concrete.
             assert destinationClient.exists()
@@ -375,7 +413,7 @@ class AzureFileSystemProviderTest extends APISpec {
         basicSetupForCopyTest(fs)
 
         // Create resources as necessary
-        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
         if (destinationExists) {
             if (destinationIsDir) {
                 fs.provider().createDirectory(destPath)
@@ -392,7 +430,7 @@ class AzureFileSystemProviderTest extends APISpec {
         sourceClient.exists()
         def outStream = new ByteArrayOutputStream()
         destinationClient.download(outStream)
-        assert ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+        assert ByteBuffer.wrap(outStream.toByteArray()) == data.defaultData
 
         where:
         destinationExists | destinationIsDir
@@ -416,7 +454,7 @@ class AzureFileSystemProviderTest extends APISpec {
             fs.provider().createDirectory(destPath)
         }
         destChildClient = ((AzurePath) destPath.resolve(generateBlobName())).toBlobClient()
-        destChildClient.upload(defaultInputStream.get(), defaultDataSize)
+        destChildClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES,
@@ -445,7 +483,7 @@ class AzureFileSystemProviderTest extends APISpec {
         if (destinationIsDir) {
             fs.provider().createDirectory(destPath)
         } else {
-            destinationClient.upload(defaultInputStream.get(), defaultDataSize)
+            destinationClient.upload(data.defaultInputStream, data.defaultDataSize)
         }
 
         when:
@@ -458,7 +496,7 @@ class AzureFileSystemProviderTest extends APISpec {
         } else {
             def outStream = new ByteArrayOutputStream()
             destinationClient.download(outStream)
-            assert ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+            assert ByteBuffer.wrap(outStream.toByteArray()) == data.defaultData
         }
 
         where:
@@ -506,7 +544,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def destParentClient = ((AzurePath) destPath.getParent()).toBlobClient()
 
         // Create resources as necessary
-        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
         putDirectoryBlob(destParentClient.getBlockBlobClient())
 
         when:
@@ -515,7 +553,7 @@ class AzureFileSystemProviderTest extends APISpec {
         then:
         def outStream = new ByteArrayOutputStream()
         destinationClient.download(outStream)
-        ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+        ByteBuffer.wrap(outStream.toByteArray()) == data.defaultData
 
         where:
         sourceDepth | destDepth
@@ -612,7 +650,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def destinationClient = destPath.toBlobClient()
 
         // Create resources as necessary
-        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
@@ -620,6 +658,32 @@ class AzureFileSystemProviderTest extends APISpec {
         then:
         sourceClient.exists()
         destinationClient.exists()
+    }
+
+    @Unroll
+    def "Copy closed fs"() {
+        setup:
+        def fs = createFS(config)
+        basicSetupForCopyTest(fs)
+        def fsDest = createFS(config)
+        def destPath = fsDest.getPath(getDefaultDir(fsDest), generateBlobName())
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        if (sourceClosed) {
+            fs.close()
+        } else {
+            fsDest.close()
+        }
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        thrown(ClosedFileSystemException)
+
+        where:
+        sourceClosed | _
+        true         | _
+        false        | _
     }
 
     @Unroll
@@ -633,7 +697,7 @@ class AzureFileSystemProviderTest extends APISpec {
         if (isDir) {
             putDirectoryBlob(blobClient)
         } else {
-            blobClient.upload(defaultInputStream.get(), defaultDataSize)
+            blobClient.upload(data.defaultInputStream, data.defaultDataSize)
         }
 
         when:
@@ -657,7 +721,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def blobClient = path.toBlobClient().getBlockBlobClient()
         def childClient = ((AzurePath) path.resolve(generateBlobName())).toBlobClient()
 
-        childClient.upload(defaultInputStream.get(), defaultDataSize)
+        childClient.upload(data.defaultInputStream, data.defaultDataSize)
         if (!virtual) {
             putDirectoryBlob(blobClient)
         }
@@ -693,13 +757,30 @@ class AzureFileSystemProviderTest extends APISpec {
         def path = ((AzurePath) fs.getPath(generateBlobName()))
         def client = path.toBlobClient()
 
-        client.upload(defaultInputStream.get(), defaultDataSize)
+        client.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         fs.provider().delete(path)
 
         then:
         !client.exists()
+    }
+
+    def "Delete closed fs"() {
+        setup:
+        def fs = createFS(config)
+
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        putDirectoryBlob(blobClient)
+
+        when:
+        fs.close()
+        fs.provider().delete(path)
+
+        then:
+        thrown(ClosedFileSystemException)
     }
 
     def "DirectoryStream"() {
@@ -729,6 +810,30 @@ class AzureFileSystemProviderTest extends APISpec {
 
         then:
         thrown(IOException)
+    }
+
+    def "DirectoryStream closed fs"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(getDefaultDir(fs))
+
+        when:
+        fs.close()
+        fs.provider().newDirectoryStream(path, null)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    def "InputStream default"() {
+        setup:
+        def fs = createFS(config)
+        sourcePath = (AzurePath) fs.getPath(generateBlobName())
+        sourceClient = sourcePath.toBlobClient()
+        sourceClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        expect:
+        compareInputStreams(fs.provider().newInputStream(sourcePath), data.defaultInputStream, data.defaultDataSize)
     }
 
     @Unroll
@@ -791,6 +896,1051 @@ class AzureFileSystemProviderTest extends APISpec {
 
         then:
         thrown(IOException)
+    }
+
+    def "InputStream fs closed"() {
+        setup:
+        def fs = createFS(config)
+
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().newInputStream(path)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    def "OutputStream options default"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
+
+        when:
+        // Defaults should allow us to create a new file.
+        nioStream.write(data.defaultBytes)
+        nioStream.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        // Defaults should allow us to open to an existing file and overwrite the destination.
+        def randomData = getRandomByteArray(100)
+        nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
+        nioStream.write(randomData)
+        nioStream.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), new ByteArrayInputStream(randomData), 100)
+    }
+
+    def "OutputStream options create"() {
+        // Create works both on creating new and opening existing. We test these scenarios above.
+        // Here we assert that we cannot create without this option (i.e. you are only allowed to overwrite, not create)
+        setup:
+        def fs = createFS(config)
+
+        when:
+        // Explicitly exclude a create option.
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "OutputStream options create new"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        // Succeed in creating a new file
+        def nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()), StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
+        nioStream.write(data.defaultBytes)
+        nioStream.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        // Fail in overwriting an existing
+        fs.provider().newOutputStream(fs.getPath(bc.getBlobName()), StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "OutputStream options missing required"() {
+        setup:
+        def fs = createFS(config)
+
+        when: "Missing WRITE"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when: "Missing TRUNCATE_EXISTING and CREATE_NEW"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when: "Missing only TRUNCATE_EXISTING"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.CREATE_NEW)
+
+        then:
+        notThrown(IllegalArgumentException)
+
+        when: "Missing only CREATE_NEW"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)
+
+        then:
+        notThrown(IllegalArgumentException)
+    }
+
+    @Unroll
+    def "OutputStream options invalid"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), option,
+            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        option                             | _
+        StandardOpenOption.APPEND          | _
+        StandardOpenOption.DELETE_ON_CLOSE | _
+        StandardOpenOption.DSYNC           | _
+        StandardOpenOption.READ            | _
+        StandardOpenOption.SPARSE          | _
+        StandardOpenOption.SYNC            | _
+    }
+
+    @Unroll
+    @LiveOnly
+    // Because we upload in blocks
+    def "OutputStream file system config"() {
+        setup:
+        def blockSize = 50L
+        def putBlobThreshold = 100L
+        config[AzureFileSystem.AZURE_STORAGE_UPLOAD_BLOCK_SIZE] = blockSize
+        config[AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD] = putBlobThreshold
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
+
+        def data = getRandomByteArray(dataSize)
+
+        when:
+        nioStream.write(data)
+        nioStream.close()
+
+        then:
+        bc.listBlocks().getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSize || blockCount
+        60       || 0
+        150      || 3
+    }
+
+    def "OutputStream open directory fail"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        putDirectoryBlob(bc)
+
+        when:
+        fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
+
+        then:
+        thrown(IOException)
+    }
+
+    def "OutputStream closed fs"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        fs.provider().newOutputStream(path)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    def "ByteChannel default"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        Files.createFile(path)
+
+        when:
+        def channel = fs.provider().newByteChannel(path, null)
+        channel.read(ByteBuffer.allocate(1))
+
+        then:
+        // This indicates the channel is open in read mode, which is the default
+        notThrown(Exception)
+    }
+
+    @Unroll
+    def "ByteChannel options fail"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        // Options are validated before path is validated.
+        fs.provider().newByteChannel(fs.getPath("foo"), new HashSet<>(Arrays.asList(option)))
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        option                             | _
+        StandardOpenOption.APPEND          | _
+        StandardOpenOption.DELETE_ON_CLOSE | _
+        StandardOpenOption.DSYNC           | _
+        StandardOpenOption.SPARSE          | _
+        StandardOpenOption.SYNC            | _
+    }
+
+    def "ByteChannel read non file fail root"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newByteChannel(fs.getPath(getDefaultDir(fs)), null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "ByteChannel read file fail dir"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        putDirectoryBlob(bc)
+
+        when:
+        fs.provider().newByteChannel(fs.getPath(bc.getBlobName()), null)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel read non file fail no file"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newByteChannel(fs.getPath("foo"), null)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel fs closed"() {
+        setup:
+        def fs = createFS(config)
+
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().newByteChannel(path, null)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    def "ByteChannel options create"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        // There are no default options for write as read is the default for channel. We must specify all required.
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)))
+
+        when:
+        // Create should allow us to create a new file.
+        nioChannel.write(data.defaultData.duplicate())
+        nioChannel.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        // Explicitly exclude a create option.
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel options create new"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        // Succeed in creating a new file
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)))
+        nioChannel.write(data.defaultData.duplicate())
+        nioChannel.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        // Fail in overwriting an existing file
+        fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)))
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel file attributes"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def contentMd5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
+        FileAttribute<?>[] attributes = [new TestFileAttribute<String>("fizz", "buzz"),
+                                         new TestFileAttribute<String>("foo", "bar"),
+                                         new TestFileAttribute<String>("Content-Type", "myType"),
+                                         new TestFileAttribute<String>("Content-Disposition", "myDisposition"),
+                                         new TestFileAttribute<String>("Content-Language", "myLanguage"),
+                                         new TestFileAttribute<String>("Content-Encoding", "myEncoding"),
+                                         new TestFileAttribute<String>("Cache-Control", "myControl"),
+                                         new TestFileAttribute<byte[]>("Content-MD5", contentMd5)]
+
+        when:
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)), attributes)
+        nioChannel.write(data.defaultData)
+        nioChannel.close()
+        def props = bc.getProperties()
+
+        then:
+        compareInputStreams(bc.openInputStream(), data.defaultInputStream, data.defaultDataSize)
+        props.getMetadata()["fizz"] == "buzz"
+        props.getMetadata()["foo"] == "bar"
+        !props.getMetadata().containsKey("Content-Type")
+        !props.getMetadata().containsKey("Content-Disposition")
+        !props.getMetadata().containsKey("Content-Language")
+        !props.getMetadata().containsKey("Content-Encoding")
+        !props.getMetadata().containsKey("Content-MD5")
+        !props.getMetadata().containsKey("Cache-Control")
+        props.getContentType() == "myType"
+        props.getContentDisposition() == "myDisposition"
+        props.getContentLanguage() == "myLanguage"
+        props.getContentEncoding() == "myEncoding"
+        props.getContentMd5() == contentMd5
+        props.getCacheControl() == "myControl"
+    }
+
+    @Unroll
+    def "ByteChannel file attr null empty"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def data = data.defaultData.duplicate()
+
+        when:
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)), attributes)
+        nioChannel.write(data)
+        nioChannel.close()
+
+        then:
+        notThrown(Exception)
+
+        where:
+        attributes             | _
+        null                   | _
+        new FileAttribute<>[0] | _
+    }
+
+    def "ByteChannel write options missing required"() {
+        setup:
+        def fs = createFS(config)
+
+        when: "Missing WRITE"
+        fs.provider().newByteChannel(fs.getPath(generateBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.TRUNCATE_EXISTING)))
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        when: "Missing TRUNCATE_EXISTING and CREATE_NEW"
+        fs.provider().newByteChannel(fs.getPath(generateBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE)))
+        // Ensure create alone is insufficient
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when: "Missing only TRUNCATE_EXISTING"
+        fs.provider().newByteChannel(fs.getPath(generateBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
+                StandardOpenOption.CREATE_NEW)))
+
+        then:
+        notThrown(IllegalArgumentException)
+
+        when: "Missing only CREATE_NEW"
+        fs.provider().newByteChannel(fs.getPath(generateBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)))
+
+        then:
+        notThrown(IllegalArgumentException)
+    }
+
+    @Unroll
+    def "ByteChannel options invalid"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), option,
+            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        option                             | _
+        StandardOpenOption.APPEND          | _
+        StandardOpenOption.DELETE_ON_CLOSE | _
+        StandardOpenOption.DSYNC           | _
+        StandardOpenOption.READ            | _
+        StandardOpenOption.SPARSE          | _
+        StandardOpenOption.SYNC            | _
+    }
+
+    @Unroll
+    @LiveOnly
+    // Because we upload in blocks
+    def "ByteChannel file system config"() {
+        setup:
+        def blockSize = 50L
+        def putBlobThreshold = 100L
+        config[AzureFileSystem.AZURE_STORAGE_UPLOAD_BLOCK_SIZE] = blockSize
+        config[AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD] = putBlobThreshold
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING)))
+
+        def data = getRandomData(dataSize)
+
+        when:
+        nioChannel.write(data)
+        nioChannel.close()
+
+        then:
+        bc.listBlocks().getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSize || blockCount
+        60       || 0
+        150      || 3
+    }
+
+    def "ByteChannel open directory fail"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        putDirectoryBlob(bc)
+
+        when:
+        fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)))
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel closed fs"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        fs.provider().newByteChannel(path, null)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    def "CheckAccess"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.provider().checkAccess(path)
+
+        then:
+        notThrown(Exception)
+    }
+
+    def "CheckAccess root"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(getDefaultDir(fs))
+
+        when:
+        fs.provider().checkAccess(path)
+
+        then:
+        notThrown(Exception)
+    }
+
+    @Unroll
+    def "CheckAccess AccessDenied"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.provider().checkAccess(path, mode)
+
+        then:
+        thrown(AccessDeniedException)
+
+        where:
+        mode               | _
+        AccessMode.READ    | _
+        AccessMode.WRITE   | _
+        AccessMode.EXECUTE | _
+    }
+
+    def "CheckAccess IOException"() {
+        setup:
+        config = initializeConfigMap(new CheckAccessIoExceptionPolicy())
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.provider().checkAccess(path)
+
+        then:
+        def e = thrown(IOException)
+        !(e instanceof NoSuchFileException)
+    }
+
+    class CheckAccessIoExceptionPolicy implements HttpPipelinePolicy {
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            HttpRequest request = httpPipelineCallContext.getHttpRequest()
+            // GetProperties call to blob
+            if (request.getUrl().getPath().split("/").size() == 3 && request.getHttpMethod() == (HttpMethod.HEAD)) {
+                return Mono.just(new checkAccessIoExceptionResponse(request))
+            } else {
+                return httpPipelineNextPolicy.process()
+            }
+        }
+    }
+
+    class checkAccessIoExceptionResponse extends HttpResponse {
+        protected checkAccessIoExceptionResponse(HttpRequest request) {
+            super(request)
+        }
+
+        @Override
+        int getStatusCode() {
+            return 403
+        }
+
+        @Override
+        String getHeaderValue(String s) {
+            return request.getHeaders().getValue(s)
+        }
+
+        @Override
+        HttpHeaders getHeaders() {
+            HttpHeaders headers = new HttpHeaders();
+            headers.put("x-ms-error-code", BlobErrorCode.AUTHORIZATION_FAILURE.toString())
+            return headers
+        }
+
+        @Override
+        Flux<ByteBuffer> getBody() {
+            return Flux.just(ByteBuffer.allocate(0))
+        }
+
+        @Override
+        Mono<byte[]> getBodyAsByteArray() {
+            return Mono.just(new byte[0])
+        }
+
+        @Override
+        Mono<String> getBodyAsString() {
+            return Mono.just("")
+        }
+
+        @Override
+        Mono<String> getBodyAsString(Charset charset) {
+            return Mono.just("")
+        }
+    }
+
+    def "CheckAccess no file"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.provider().checkAccess(path)
+
+        then:
+        thrown(NoSuchFileException)
+    }
+
+    def "CheckAccess fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.close()
+        fs.provider().checkAccess(path)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    @Unroll
+    def "GetAttributeView"() {
+        setup:
+        def fs = createFS(config)
+
+        expect:
+        // No path validation is expected for getting the view
+        fs.provider().getFileAttributeView(fs.getPath("path"), type).class == expected
+
+        where:
+        type                              || expected
+        BasicFileAttributeView.class      || AzureBasicFileAttributeView.class
+        AzureBasicFileAttributeView.class || AzureBasicFileAttributeView.class
+        AzureBlobFileAttributeView.class  || AzureBlobFileAttributeView.class
+    }
+
+    def "GetAttributeView fail"() {
+        setup:
+        def fs = createFS(config)
+
+        expect:
+        // No path validation is expected for getting the view
+        fs.provider().getFileAttributeView(fs.getPath("path"), DosFileAttributeView.class) == null
+    }
+
+    @Unroll
+    def "ReadAttributes"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        expect:
+        fs.provider().readAttributes(path, type).class == expected
+
+        where:
+        type                           || expected
+        BasicFileAttributes.class      || AzureBasicFileAttributes.class
+        AzureBasicFileAttributes.class || AzureBasicFileAttributes.class
+        AzureBlobFileAttributes.class  || AzureBlobFileAttributes.class
+    }
+
+    def "ReadAttributes directory"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        putDirectoryBlob(new AzureResource(path).getBlobClient().getBlockBlobClient())
+
+        when:
+        fs.provider().readAttributes(path, BasicFileAttributes.class)
+
+        then:
+        notThrown(IOException)
+    }
+
+    def "ReadAttributes unsupported"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().readAttributes(fs.getPath("path"), DosFileAttributes.class)
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
+    def "ReadAttributes IOException"() {
+        setup:
+        def fs = createFS(config)
+
+        when: "Path does not exist"
+        // Covers virtual directory, too
+        fs.provider().readAttributes(fs.getPath("path"), BasicFileAttributes.class)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ReadAttributes fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().readAttributes(path, AzureBasicFileAttributes.class)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    @Unroll
+    def "ReadAttributes str parsing"() {
+        /*
+        This test checks that we correctly parse the attribute string and that all the requested attributes are
+        represented in the return value. We can also just test a subset of attributes for parsing logic.
+         */
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        def result = fs.provider().readAttributes(path, attrStr)
+
+        then:
+        for (String attr : attrList) {
+            assert result.keySet().contains(attr)
+        }
+        result.keySet().size() == attrList.size()
+
+        where:
+        attrStr                                          || attrList
+        "*"                                              || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
+        "basic:*"                                        || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
+        "azureBasic:*"                                   || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
+        "azureBlob:*"                                    || ["lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders", "blobType", "copyId", "copyStatus", "copySource", "copyProgress", "copyCompletionTime", "copyStatusDescription", "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus", "accessTierChangeTime", "metadata", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
+        "lastModifiedTime,creationTime"                  || ["lastModifiedTime", "creationTime"]
+        "basic:isRegularFile,isDirectory"                || ["isRegularFile", "isDirectory"]
+        "azureBasic:size"                                || ["size"]
+        "azureBlob:eTag,blobHttpHeaders,blobType,copyId" || ["eTag", "blobHttpHeaders", "blobType", "copyId"]
+    }
+
+    def "ReadAttributes str suppliers"() {
+        // This test checks that for each requested attribute, we call the correct supplier and that the supplier maps to the correct property
+    }
+
+    def "ReadAttributes str directory"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        putDirectoryBlob(new AzureResource(path).getBlobClient().getBlockBlobClient())
+
+        when:
+        fs.provider().readAttributes(path, "creationTime")
+
+        then:
+        notThrown(IOException)
+    }
+
+    @Unroll
+    def "ReadAttributes str IA"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.provider().readAttributes(path, attrStr)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        attrStr              | _
+        "azureBlob:size:foo" | _ // Invalid format
+        ""                   | _ // empty
+        "azureBasic:foo"     | _ // Invalid property
+    }
+
+    def "ReadAttributes str invalid view"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.provider().readAttributes(path, "foo:size")
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
+    def "ReadAttributes str IOException"() {
+        setup:
+        def fs = createFS(config)
+
+        when: "Path does not exist"
+        // Covers virtual directory, too
+        fs.provider().readAttributes(fs.getPath("path"), "basic:creationTime")
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ReadAttributes str closed fs"() {
+        setup:
+        def fs = createFS(config)
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().readAttributes(path, "basic:*")
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    @Unroll
+    def "SetAttributes headers"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        when:
+        fs.provider().setAttribute(path, "azureBlob:blobHttpHeaders", headers)
+        headers = fs.provider().readAttributes(path, AzureBlobFileAttributes.class).blobHttpHeaders()
+
+        then:
+        headers.getCacheControl() == cacheControl
+        headers.getContentDisposition() == contentDisposition
+        headers.getContentEncoding() == contentEncoding
+        headers.getContentLanguage() == contentLanguage
+        headers.getContentMd5() == contentMD5
+        headers.getContentType() == contentType
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
+        null         | null               | null            | null            | null                                                                                          | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
+    }
+
+    @Unroll
+    def "SetAttributes metadata"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        fs.provider().setAttribute(path, "azureBlob:metadata", metadata)
+        def returnedMetadata = fs.provider().readAttributes(path, AzureBlobFileAttributes.class).metadata()
+
+        then:
+        metadata == returnedMetadata
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 200
+        "foo" | "bar"  | "fizz" | "buzz" || 200
+        "i0"  | "a"    | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
+    }
+
+    @Unroll
+    def "SetAttributes tier"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.provider().setAttribute(path, "azureBlob:tier", tier)
+
+        then:
+        fs.provider().readAttributes(path, AzureBlobFileAttributes.class).accessTier() == tier
+
+        where:
+        tier            | _
+        AccessTier.HOT  | _
+        AccessTier.COOL | _
+        /*
+        We don't test archive because it takes a while to take effect, and testing these two demonstrates that the tier
+        is successfully being passed to the underlying client.
+         */
+    }
+
+    @Unroll
+    def "SetAttributes directory"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        putDirectoryBlob(new AzureResource(path).getBlobClient().getBlockBlobClient())
+
+        when:
+        fs.provider().setAttribute(path, "azureBlob:tier", AccessTier.COOL)
+
+        then:
+        notThrown(IOException)
+    }
+
+    @Unroll
+    def "SetAttributes IA"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.provider().setAttribute(path, attrStr, "Foo")
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        attrStr                  | _
+        "azureBlob:metadata:foo" | _ // Invalid format
+        ""                       | _ // empty
+        "azureBasic:foo"         | _ // Invalid property
+    }
+
+    def "SetAttributes invalid view"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.provider().setAttribute(path, "foo:size", "foo")
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
+    def "SetAttributes IOException"() {
+        setup:
+        def fs = createFS(config)
+
+        when: "Path does not exist"
+        // Covers virtual directory, too
+        fs.provider().setAttribute(fs.getPath("path"), "azureBlob:metadata", Collections.emptyMap())
+
+        then:
+        thrown(IOException)
+    }
+
+    def "SetAttributes fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().setAttribute(path, "azureBlob:blobHttpHeaders", new BlobHttpHeaders())
+
+        then:
+        thrown(ClosedFileSystemException)
     }
 
     def basicSetupForCopyTest(FileSystem fs) {

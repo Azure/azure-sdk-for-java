@@ -4,15 +4,16 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.util.AsyncCloseable;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 /**
  * Represents an AMQP receive link.
  */
-public interface ServiceBusReceiveLink extends AmqpReceiveLink {
+public interface ServiceBusReceiveLink extends AmqpReceiveLink, AsyncCloseable {
     /**
      * Gets the session id associated with the link.
      *
@@ -21,11 +22,11 @@ public interface ServiceBusReceiveLink extends AmqpReceiveLink {
     Mono<String> getSessionId();
 
     /**
-     * Gets the {@link Instant} the session is locked until.
+     * Gets the {@link OffsetDateTime} the session is locked until.
      *
-     * @return The {@link Instant} the session is locked until or an empty Mono if this is not a session link.
+     * @return The {@link OffsetDateTime} the session is locked until or an empty Mono if this is not a session link.
      */
-    Mono<Instant> getSessionLockedUntil();
+    Mono<OffsetDateTime> getSessionLockedUntil();
 
     /**
      * Updates the disposition status of a message with corresponding lock token.

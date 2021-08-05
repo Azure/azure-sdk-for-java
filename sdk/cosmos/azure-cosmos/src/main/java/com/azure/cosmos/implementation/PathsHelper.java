@@ -98,6 +98,8 @@ public class PathsHelper {
             return resourceFullName + "/" + Paths.PARTITION_KEY_RANGES_PATH_SEGMENT;
         } else if (resourceType == ResourceType.Schema) {
             resourcePath = resourceFullName + "/" + Paths.SCHEMAS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.ClientEncryptionKey) {
+            resourcePath = resourceFullName + "/" + Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT;
         } else {
             String errorMessage = String.format(RMResources.UnknownResourceType, resourceType.toString());
             assert false : errorMessage;
@@ -271,6 +273,10 @@ public class PathsHelper {
             return Paths.DATABASE_ACCOUNT_PATH_SEGMENT;
         } else if (resourceType == ResourceType.DatabaseAccount) {
             return Paths.DATABASE_ACCOUNT_PATH_SEGMENT + "/" + ownerOrResourceId;
+        } else if (resourceType == ResourceType.ClientEncryptionKey) {
+            ResourceId clientEncryptionKeyId = ResourceId.parse(ownerOrResourceId);
+            return Paths.DATABASES_PATH_SEGMENT + "/" + clientEncryptionKeyId.getDatabaseId().toString() + "/" +
+                Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT + "/" + clientEncryptionKeyId.getClientEncryptionKeyId().toString();
         }
 
         String errorMessage = "invalid resource type";
@@ -415,8 +421,7 @@ public class PathsHelper {
             // even number, assume it is individual resource
             if (isResourceType(segments[segments.length - 2])) {
                 pathInfo.resourcePath = segments[segments.length - 2];
-                pathInfo.resourceIdOrFullName = StringEscapeUtils.unescapeJava(StringUtils.removeEnd(
-                        StringUtils.removeStart(resourceUrl, Paths.ROOT), Paths.ROOT));
+                pathInfo.resourceIdOrFullName = unescapeJavaAndTrim(resourceUrl);
                 return true;
             }
         } else {
@@ -425,8 +430,7 @@ public class PathsHelper {
                     pathInfo.isFeed = true;
                     pathInfo.resourcePath = segments[segments.length - 1];
                     String resourceIdOrFullName = resourceUrl.substring(0, StringUtils.removeEnd(resourceUrl,Paths.ROOT).lastIndexOf(Paths.ROOT));
-                    pathInfo.resourceIdOrFullName = StringEscapeUtils.unescapeJava(StringUtils.removeEnd(
-                            StringUtils.removeStart(resourceIdOrFullName, Paths.ROOT), Paths.ROOT));
+                    pathInfo.resourceIdOrFullName = unescapeJavaAndTrim(resourceIdOrFullName);
                     return true;
                 }
         }
@@ -441,22 +445,59 @@ public class PathsHelper {
         if (segments.length % 2 == 0) {
             // even number, assume it is individual resource
             if (isResourceType(segments[segments.length - 2])) {
-                return new PathInfo(false, segments[segments.length - 2],
-                        StringEscapeUtils.unescapeJava(StringUtils.strip(resourceUrl, Paths.ROOT)), true);
+                return new PathInfo(false,
+                                    segments[segments.length - 2],
+                                    unescapeJavaAndTrim(resourceUrl),
+                         true);
             }
         } else {
             // odd number, assume it is feed request
             if (isResourceType(segments[segments.length - 1])) {
-                return new PathInfo(true, segments[segments.length - 1],
-                        StringEscapeUtils.unescapeJava(StringUtils.strip(
-                                resourceUrl.substring(0,
-                                        StringUtils.removeEnd(resourceUrl, Paths.ROOT).lastIndexOf(Paths.ROOT)),
-                                Paths.ROOT)),
-                        true);
+                return new PathInfo(true,
+                                    segments[segments.length - 1],
+                                    unescapeJavaAndTrim(
+                                        resourceUrl.substring(0,
+                                                StringUtils.removeEnd(resourceUrl, Paths.ROOT).lastIndexOf(Paths.ROOT))),
+                         true);
             }
         }
 
         return null;
+    }
+
+    public static String unescapeJavaAndTrim(String resourceUrl) {
+        if (resourceUrl == null) {
+            return null;
+        }
+
+        int startInclusiveIndex = 0;
+
+        while (startInclusiveIndex < resourceUrl.length() && resourceUrl.charAt(startInclusiveIndex) == Paths.ROOT_CHAR) {
+            startInclusiveIndex++;
+        }
+
+        if (startInclusiveIndex == resourceUrl.length()) {
+            return "";
+        }
+
+        int endExclusiveIndex = resourceUrl.length();
+        while (endExclusiveIndex > startInclusiveIndex && resourceUrl.charAt(endExclusiveIndex - 1) == Paths.ROOT_CHAR) {
+            endExclusiveIndex--;
+        }
+
+        for (int startLoopIndex = startInclusiveIndex; startLoopIndex < endExclusiveIndex; startLoopIndex++) {
+            if (resourceUrl.charAt(startLoopIndex)== Paths.ESCAPE_CHAR) {
+                // Found an escape character lets run the StringEscapeUtils.unescapeJava
+                return StringEscapeUtils.unescapeJava(StringUtils.strip(resourceUrl, Paths.ROOT));
+            }
+        }
+
+        // No escape character found
+        if (startInclusiveIndex == 0 && endExclusiveIndex == resourceUrl.length()) {
+            return resourceUrl;
+        }
+
+        return resourceUrl.substring(startInclusiveIndex, endExclusiveIndex);
     }
 
     private static boolean isResourceType(String resourcePathSegment) {
@@ -482,6 +523,7 @@ public class PathsHelper {
             case Paths.TOPOLOGY_PATH_SEGMENT:
             case Paths.PARTITION_KEY_RANGES_PATH_SEGMENT:
             case Paths.SCHEMAS_PATH_SEGMENT:
+            case Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT:
                 return true;
             default:
                 return false;
@@ -711,6 +753,8 @@ public class PathsHelper {
             if (resourceType == ResourceType.Permission) {
                 segments.add(Paths.PERMISSIONS_PATH_SEGMENT);
             }
+        } else if (resourceType == ResourceType.ClientEncryptionKey) {
+            segments.add(Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT);
         } else if (resourceType == ResourceType.DocumentCollection ||
                     resourceType == ResourceType.StoredProcedure ||
                     resourceType == ResourceType.UserDefinedFunction ||
@@ -767,7 +811,9 @@ public class PathsHelper {
             return PathsHelper.validateUserId(resourceId);
         } else if (resourceType == ResourceType.Attachment) {
             return PathsHelper.validateAttachmentId(resourceId);
-        } else {
+        } else if (resourceType == ResourceType.ClientEncryptionKey) {
+            return PathsHelper.validateClientEncryptionKeyId(resourceId);
+        }else {
             logger.error(String.format("ValidateResourceId not implemented for Type %s in ResourceRequestHandler", resourceType.toString()));
             return false;
         }
@@ -823,6 +869,10 @@ public class PathsHelper {
         return pair.getLeft() && pair.getRight().getUser() != 0;
     }
 
+    public static boolean validateClientEncryptionKeyId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getClientEncryptionKey() != 0;
+    }
 
     public static boolean isPublicResource(Resource resourceType) {
         if (resourceType instanceof Database ||

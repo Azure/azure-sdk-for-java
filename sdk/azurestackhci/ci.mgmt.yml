@@ -1,0 +1,35 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/azurestackhci/ci.mgmt.yml
+      - sdk/azurestackhci/mgmt-v2020_10_01/
+    exclude:
+      - sdk/azurestackhci/pom.xml
+      - sdk/azurestackhci/mgmt-v2020_10_01/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/azurestackhci/ci.mgmt.yml
+      - sdk/azurestackhci/mgmt-v2020_10_01/
+    exclude:
+      - sdk/azurestackhci/pom.xml
+      - sdk/azurestackhci/mgmt-v2020_10_01/pom.xml
+
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+    parameters:
+      ServiceDirectory: azurestackhci

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -23,7 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -165,10 +166,10 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final HttpResponseDecoder RESPONSE_DECODER = new HttpResponseDecoder(SERIALIZER_ADAPTER);
     //
     private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUrl());
-    private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().put("hello", "world");
+    private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set("hello", "world");
     private static final HttpHeaders RESPONSE_CUSTOM_HEADERS = new HttpHeaders()
-            .put("hello", "world")          // General header
-            .put("customHdr", "customVal"); // Custom header
+            .set("hello", "world")          // General header
+            .set("customHdr", "customVal"); // Custom header
     private static final int RESPONSE_STATUS_CODE = 200;
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
@@ -254,8 +255,10 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
     private static byte[] asJsonByteArray(Object object) {
         try {
-            String content = SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON);
-            return content.getBytes(StandardCharsets.UTF_8);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON, stream);
+
+            return stream.toByteArray();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -272,7 +275,17 @@ class ResponseConstructorsCacheBenchMarkTestData {
               Mono<HttpResponse> httpResponse,
               Object bodyAsObject) {
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
-            this.decodedResponse = decoder.decode(httpResponse, () -> returnType).block();
+            this.decodedResponse = decoder.decode(httpResponse, new HttpResponseDecodeData() {
+                @Override
+                public Type getReturnType() {
+                    return returnType;
+                }
+
+                @Override
+                public boolean isExpectedResponseStatusCode(int statusCode) {
+                    return false;
+                }
+            }).block();
             this.bodyAsObject = bodyAsObject;
         }
 

@@ -28,10 +28,12 @@ public final class BufferedHttpResponse extends HttpResponse {
     public BufferedHttpResponse(HttpResponse innerHttpResponse) {
         super(innerHttpResponse.getRequest());
         this.innerHttpResponse = innerHttpResponse;
-        this.cachedBody = FluxUtil.collectBytesInByteBufferStream(innerHttpResponse.getBody())
+        this.cachedBody = FluxUtil.collectBytesFromNetworkResponse(innerHttpResponse.getBody(),
+            innerHttpResponse.getHeaders())
             .map(ByteBuffer::wrap)
             .flux()
-            .cache();
+            .cache()
+            .map(ByteBuffer::duplicate);
     }
 
     @Override
@@ -67,8 +69,7 @@ public final class BufferedHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return getBodyAsByteArray()
-                .map(bytes -> bytes == null ? null : new String(bytes, charset));
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }
 
     @Override

@@ -26,10 +26,10 @@ public class TeradataSource extends TabularSource {
 
     /**
      * The partition mechanism that will be used for teradata read in parallel.
-     * Possible values include: 'None', 'Hash', 'DynamicRange'.
+     * Possible values include: "None", "Hash", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
-    private TeradataPartitionOption partitionOption;
+    private Object partitionOption;
 
     /**
      * The settings that will be leveraged for teradata source partitioning.
@@ -58,21 +58,21 @@ public class TeradataSource extends TabularSource {
     }
 
     /**
-     * Get the partition mechanism that will be used for teradata read in parallel. Possible values include: 'None', 'Hash', 'DynamicRange'.
+     * Get the partition mechanism that will be used for teradata read in parallel. Possible values include: "None", "Hash", "DynamicRange".
      *
      * @return the partitionOption value
      */
-    public TeradataPartitionOption partitionOption() {
+    public Object partitionOption() {
         return this.partitionOption;
     }
 
     /**
-     * Set the partition mechanism that will be used for teradata read in parallel. Possible values include: 'None', 'Hash', 'DynamicRange'.
+     * Set the partition mechanism that will be used for teradata read in parallel. Possible values include: "None", "Hash", "DynamicRange".
      *
      * @param partitionOption the partitionOption value to set
      * @return the TeradataSource object itself.
      */
-    public TeradataSource withPartitionOption(TeradataPartitionOption partitionOption) {
+    public TeradataSource withPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
     }

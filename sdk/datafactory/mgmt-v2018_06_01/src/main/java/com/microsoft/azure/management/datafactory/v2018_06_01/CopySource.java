@@ -20,12 +20,16 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = CopySource.class)
 @JsonTypeName("CopySource")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "SharePointOnlineListSource", value = SharePointOnlineListSource.class),
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeSource", value = AzureDatabricksDeltaLakeSource.class),
+    @JsonSubTypes.Type(name = "SnowflakeSource", value = SnowflakeSource.class),
     @JsonSubTypes.Type(name = "HttpSource", value = HttpSource.class),
     @JsonSubTypes.Type(name = "AzureBlobFSSource", value = AzureBlobFSSource.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreSource", value = AzureDataLakeStoreSource.class),
     @JsonSubTypes.Type(name = "Office365Source", value = Office365Source.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSource", value = CosmosDbMongoDbApiSource.class),
     @JsonSubTypes.Type(name = "MongoDbV2Source", value = MongoDbV2Source.class),
+    @JsonSubTypes.Type(name = "MongoDbAtlasSource", value = MongoDbAtlasSource.class),
     @JsonSubTypes.Type(name = "MongoDbSource", value = MongoDbSource.class),
     @JsonSubTypes.Type(name = "WebSource", value = WebSource.class),
     @JsonSubTypes.Type(name = "OracleSource", value = OracleSource.class),
@@ -46,9 +50,11 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "TabularSource", value = TabularSource.class),
     @JsonSubTypes.Type(name = "BinarySource", value = BinarySource.class),
     @JsonSubTypes.Type(name = "OrcSource", value = OrcSource.class),
+    @JsonSubTypes.Type(name = "XmlSource", value = XmlSource.class),
     @JsonSubTypes.Type(name = "JsonSource", value = JsonSource.class),
     @JsonSubTypes.Type(name = "DelimitedTextSource", value = DelimitedTextSource.class),
     @JsonSubTypes.Type(name = "ParquetSource", value = ParquetSource.class),
+    @JsonSubTypes.Type(name = "ExcelSource", value = ExcelSource.class),
     @JsonSubTypes.Type(name = "AvroSource", value = AvroSource.class)
 })
 public class CopySource {

@@ -34,7 +34,9 @@ public class ReplicatedResourceClientUtils {
                 resourceType == ResourceType.Topology ||
                 resourceType == ResourceType.DatabaseAccount ||
                 resourceType == ResourceType.PartitionKeyRange ||
-                resourceType == ResourceType.DocumentCollection) {
+                resourceType == ResourceType.DocumentCollection ||
+                resourceType == ResourceType.Trigger ||
+                resourceType == ResourceType.UserDefinedFunction) {
             return true;
         }
 

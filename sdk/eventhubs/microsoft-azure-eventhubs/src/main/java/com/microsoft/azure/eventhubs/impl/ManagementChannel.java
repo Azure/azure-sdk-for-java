@@ -23,16 +23,19 @@ final class ManagementChannel {
     ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection, final String clientId, final ScheduledExecutorService executor) {
 
         final RequestResponseCloser closer = new RequestResponseCloser();
+        final String sessionName = "mgmt-session";
         this.innerChannel = new FaultTolerantObject<>(
                 new RequestResponseOpener(
                         sessionProvider,
                         clientId,
-                        "mgmt-session",
+                        sessionName,
                         "mgmt",
                         ClientConstants.MANAGEMENT_ADDRESS,
                         connection,
                         executor),
-                closer);
+                closer,
+                clientId,
+                sessionName);
         closer.setInnerChannel(this.innerChannel);
     }
 

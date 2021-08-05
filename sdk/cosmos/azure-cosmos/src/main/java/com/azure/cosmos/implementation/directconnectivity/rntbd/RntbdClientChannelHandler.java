@@ -12,6 +12,7 @@ import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
@@ -93,12 +94,12 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     @Override
     protected void initChannel(final Channel channel) {
 
-        checkNotNull(channel);
+        checkNotNull(channel, "expected non-null channel");
 
-        final RntbdRequestManager requestManager = new RntbdRequestManager(this.healthChecker, this.config.maxRequestsPerChannel());
-        final long readerIdleTime = this.config.receiveHangDetectionTimeInNanos();
-        final long writerIdleTime = this.config.sendHangDetectionTimeInNanos();
-        final long allIdleTime = this.config.idleConnectionTimeoutInNanos();
+        final RntbdRequestManager requestManager = new RntbdRequestManager(
+            this.healthChecker,
+            this.config.maxRequestsPerChannel());
+        final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(
@@ -113,9 +114,14 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         }
 
         pipeline.addFirst(
-            this.config.sslContext().newHandler(channel.alloc()),
-            new IdleStateHandler(readerIdleTime, writerIdleTime, allIdleTime, TimeUnit.NANOSECONDS)
-        );
+            // TODO (DANOBLE) Log an issue with netty
+            // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
+            new SslHandler(this.config.sslContext().newEngine(channel.alloc())),
+            new IdleStateHandler(
+                idleConnectionTimerResolutionInNanos,
+                idleConnectionTimerResolutionInNanos,
+                0,
+                TimeUnit.NANOSECONDS));
 
         channel.attr(REQUEST_MANAGER).set(requestManager);
     }

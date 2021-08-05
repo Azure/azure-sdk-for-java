@@ -25,7 +25,17 @@ public final class BlobContainerSasPermission {
 
     private boolean deletePermission;
 
+    private boolean deleteVersionPermission;
+
     private boolean listPermission;
+
+    private boolean tagsPermission;
+
+    private boolean movePermission;
+
+    private boolean executePermission;
+
+    private boolean immutabilityPolicyPermission;
 
     /**
      * Initializes an {@code BlobContainerSasPermission} object with all fields set to false.
@@ -37,15 +47,16 @@ public final class BlobContainerSasPermission {
      * Creates an {@code BlobContainerSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code BlobContainerSasPermission}.
+     * @param permissionString A {@code String} which represents the {@code BlobContainerSasPermission}.
      * @return A {@code BlobContainerSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, or l.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x, l, t or
+     * i.
      */
-    public static BlobContainerSasPermission parse(String permString) {
+    public static BlobContainerSasPermission parse(String permissionString) {
         BlobContainerSasPermission permissions = new BlobContainerSasPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.readPermission = true;
@@ -62,13 +73,28 @@ public final class BlobContainerSasPermission {
                 case 'd':
                     permissions.deletePermission = true;
                     break;
+                case 'x':
+                    permissions.deleteVersionPermission = true;
+                    break;
                 case 'l':
                     permissions.listPermission = true;
+                    break;
+                case 't':
+                    permissions.tagsPermission = true;
+                    break;
+                case 'm':
+                    permissions.movePermission = true;
+                    break;
+                case 'e':
+                    permissions.executePermission = true;
+                    break;
+                case 'i':
+                    permissions.immutabilityPolicyPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                            "Permissions", permissionString, c));
             }
         }
         return permissions;
@@ -165,6 +191,24 @@ public final class BlobContainerSasPermission {
     }
 
     /**
+     * @return the delete version permission status
+     */
+    public boolean hasDeleteVersionPermission() {
+        return deleteVersionPermission;
+    }
+
+    /**
+     * Sets the delete version permission status.
+     *
+     * @param hasDeleteVersionPermission Permission status to set
+     * @return the updated BlobContainerSasPermission object
+     */
+    public BlobContainerSasPermission setDeleteVersionPermission(boolean hasDeleteVersionPermission) {
+        this.deleteVersionPermission = hasDeleteVersionPermission;
+        return this;
+    }
+
+    /**
      * @return the list permission status
      */
     public boolean hasListPermission() {
@@ -179,6 +223,78 @@ public final class BlobContainerSasPermission {
      */
     public BlobContainerSasPermission setListPermission(boolean hasListPermission) {
         this.listPermission = hasListPermission;
+        return this;
+    }
+
+    /**
+     * @return the tags permission status.
+     */
+    public boolean hasTagsPermission() {
+        return tagsPermission;
+    }
+
+    /**
+     * Sets the tags permission status.
+     *
+     * @param tagsPermission Permission status to set
+     * @return the updated BlobContainerSasPermission object.
+     */
+    public BlobContainerSasPermission setTagsPermission(boolean tagsPermission) {
+        this.tagsPermission = tagsPermission;
+        return this;
+    }
+
+    /**
+     * @return the move permission status.
+     */
+    public boolean hasMovePermission() {
+        return movePermission;
+    }
+
+    /**
+     * Sets the move permission status.
+     *
+     * @param hasMovePermission Permission status to set
+     * @return the updated BlobContainerSasPermission object.
+     */
+    public BlobContainerSasPermission setMovePermission(boolean hasMovePermission) {
+        this.movePermission = hasMovePermission;
+        return this;
+    }
+
+    /**
+     * @return the execute permission status.
+     */
+    public boolean hasExecutePermission() {
+        return executePermission;
+    }
+
+    /**
+     * Sets the execute permission status.
+     *
+     * @param hasExecutePermission Permission status to set
+     * @return the updated BlobContainerSasPermission object.
+     */
+    public BlobContainerSasPermission setExecutePermission(boolean hasExecutePermission) {
+        this.executePermission = hasExecutePermission;
+        return this;
+    }
+
+    /**
+     * @return the set immutability policy permission status.
+     */
+    public boolean hasImmutabilityPolicyPermission() {
+        return immutabilityPolicyPermission;
+    }
+
+    /**
+     * Sets the set immutability policy permission status.
+     *
+     * @param immutabilityPolicyPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobContainerSasPermission setImmutabilityPolicyPermission(boolean immutabilityPolicyPermission) {
+        this.immutabilityPolicyPermission = immutabilityPolicyPermission;
         return this;
     }
 
@@ -214,8 +330,28 @@ public final class BlobContainerSasPermission {
             builder.append('d');
         }
 
+        if (this.deleteVersionPermission) {
+            builder.append('x');
+        }
+
         if (this.listPermission) {
             builder.append('l');
+        }
+
+        if (this.tagsPermission) {
+            builder.append('t');
+        }
+
+        if (this.movePermission) {
+            builder.append('m');
+        }
+
+        if (this.executePermission) {
+            builder.append('e');
+        }
+
+        if (this.immutabilityPolicyPermission) {
+            builder.append('i');
         }
 
         return builder.toString();

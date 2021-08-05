@@ -10,6 +10,8 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.TestMode;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.models.NetworkCallError;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
@@ -24,10 +26,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.function.Function;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -47,8 +51,11 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final String BODY = "Body";
     private static final String SIG = "sig";
 
+    private static final TestMode TEST_MODE = TestingHelpers.getTestMode();
+
     private final ClientLogger logger = new ClientLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
+    private final RecordingRedactor redactor;
 
     /**
      * Creates a policy that records network calls into {@code recordedData}.
@@ -56,12 +63,28 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
      * @param recordedData The record to persist network calls into.
      */
     public RecordNetworkCallPolicy(RecordedData recordedData) {
-        Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
+        this(recordedData, Collections.emptyList());
+    }
+
+    /**
+     * Creates a policy that records network calls into {@code recordedData} by redacting sensitive information by
+     * applying the provided redactor functions.
+     * @param recordedData The record to persist network calls into.
+     * @param redactors The custom redactor functions to apply to redact sensitive information from recorded data.
+     */
+    public RecordNetworkCallPolicy(RecordedData recordedData, List<Function<String, String>> redactors) {
         this.recordedData = recordedData;
+        redactor = new RecordingRedactor(redactors);
+
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        // If TEST_MODE isn't RECORD do not record.
+        if (TEST_MODE != TestMode.RECORD) {
+            return next.process();
+        }
+
         final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
         Map<String, String> headers = new HashMap<>();
 
@@ -90,7 +113,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             }).flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                return extractResponseData(bufferedResponse).map(responseData -> {
+                return extractResponseData(bufferedResponse, redactor, logger).map(responseData -> {
                     networkCallRecord.setResponse(responseData);
                     String body = responseData.get(BODY);
 
@@ -107,14 +130,14 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             });
     }
 
-    private void redactedAccountName(UrlBuilder urlBuilder) {
+    private static void redactedAccountName(UrlBuilder urlBuilder) {
         String[] hostParts = urlBuilder.getHost().split("\\.");
         hostParts[0] = "REDACTED";
 
         urlBuilder.setHost(String.join(".", hostParts));
     }
 
-    private void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,
+    private static void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,
         String... headerNames) {
         for (String headerName : headerNames) {
             if (requestHeaders.getValue(headerName) != null) {
@@ -123,7 +146,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private Mono<Map<String, String>> extractResponseData(final HttpResponse response) {
+    private static Mono<Map<String, String>> extractResponseData(final HttpResponse response,
+        final RecordingRedactor redactor, final ClientLogger logger) {
         final Map<String, String> responseData = new HashMap<>();
         responseData.put(STATUS_CODE, Integer.toString(response.getStatusCode()));
 
@@ -165,12 +189,12 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     return responseData;
                 }
 
-                responseData.put(BODY, Arrays.toString(bytes));
+                responseData.put(BODY, Base64.getEncoder().encodeToString(bytes));
                 return responseData;
             });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
             return response.getBodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
-                responseData.put(BODY, new RecordingRedactor().redact(content));
+                responseData.put(BODY, redactor.redact(content));
                 return responseData;
             });
         } else {
@@ -193,7 +217,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                             bytesRead = gis.read(buffer, position, buffer.length);
                         }
 
-                        content = new String(output.toByteArray(), StandardCharsets.UTF_8);
+                        content = output.toString("UTF-8");
                     } catch (IOException e) {
                         throw logger.logExceptionAsWarning(Exceptions.propagate(e));
                     }

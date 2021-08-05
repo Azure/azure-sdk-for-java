@@ -38,7 +38,7 @@ public class HttpConstants {
         public static final String USER_AGENT = "User-Agent";
         public static final String IF_MODIFIED_SINCE = "If-Modified-Since";
         public static final String IF_MATCH = "If-Match";
-        public static final String IF_NONE_MATCH = "If-NONE-Match";
+        public static final String IF_NONE_MATCH = "If-None-Match";
         public static final String CONTENT_LENGTH = "Content-Length";
         public static final String ACCEPT_ENCODING = "Accept-Encoding";
         public static final String KEEP_ALIVE = "Keep-Alive";
@@ -83,6 +83,7 @@ public class HttpConstants {
         public static final String IS_QUERY_PLAN_REQUEST = "x-ms-cosmos-is-query-plan-request";
         public static final String SUPPORTED_QUERY_FEATURES = "x-ms-cosmos-supported-query-features";
         public static final String QUERY_VERSION = "x-ms-cosmos-query-version";
+        public static final String CORRELATED_ACTIVITY_ID = "x-ms-cosmos-correlated-activityid";
 
         // Our custom DocDB headers
         public static final String CONTINUATION = "x-ms-continuation";
@@ -249,23 +250,43 @@ public class HttpConstants {
         public static final String API_TYPE = "x-ms-cosmos-apitype";
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
 
+        // Batch operations
+        public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
+        public static final String IS_BATCH_ORDERED = "x-ms-cosmos-batch-ordered";
+        public static final String IS_BATCH_REQUEST = "x-ms-cosmos-is-batch-request";
+        public static final String SHOULD_BATCH_CONTINUE_ON_ERROR = "x-ms-cosmos-batch-continue-on-error";
+
+        // Client telemetry header
+        public static final String DATABASE_ACCOUNT_NAME = "x-ms-databaseaccount-name";
+        public static final String ENVIRONMENT_NAME = "x-ms-environment-name";
+
+        // Backend request duration header
+        public static final String BACKEND_REQUEST_DURATION_MILLISECONDS = "x-ms-request-duration-ms";
+
+        // Dedicated Gateway Headers
+        public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
     }
 
     public static class A_IMHeaderValues {
         public static final String INCREMENTAL_FEED = "Incremental Feed";
+        public static final String FullFidelityFeed = "Full-Fidelity Feed";
     }
 
     public static class Versions {
-        public static final String CURRENT_VERSION = "2018-12-31";
+        public static final String CURRENT_VERSION = "2020-07-15";
         public static final String QUERY_VERSION = "1.0";
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
         public static final String SDK_VERSION = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
-        public static final String SDK_NAME = "cosmosdb-java-sdk";
+        public static final String SDK_NAME = "cosmos";
     }
 
     public static class StatusCodes {
+        public static final int OK = 200;
         public static final int NOT_MODIFIED = 304;
+        // Success
+        public static final int MINIMUM_SUCCESS_STATUSCODE = 200;
+        public static final int MAXIMUM_SUCCESS_STATUSCODE = 299;
         // Client error
         public static final int MINIMUM_STATUSCODE_AS_ERROR_GATEWAY = 400;
         public static final int BADREQUEST = 400;
@@ -306,10 +327,27 @@ public class HttpConstants {
 
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
+        public static final int OWNER_RESOURCE_NOT_EXISTS = 1003;
+
+        // Client generated gateway network error substatus
+        public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
+
+        // Client generated gateway network error on ReadTimeoutException
+        public static final int GATEWAY_ENDPOINT_READ_TIMEOUT = 10002;
+
+        // Client generated request rate too large exception
+        public static final int THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE = 10003;
+
+        // Client generated offer not configured exception
+        public static final int OFFER_NOT_CONFIGURED = 10004;
+
+        // Client generated request rate too large exception
+        public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
     }
 
     public static class HeaderValues {
         public static final String NO_CACHE = "no-cache";
         public static final String PREFER_RETURN_MINIMAL = "return=minimal";
+        public static final String IF_NONE_MATCH_ALL = "*";
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,11 +20,8 @@ import reactor.core.publisher.Mono;
 import java.net.URISyntaxException;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.Flow;
 
 import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
@@ -38,37 +36,44 @@ class JdkAsyncHttpClient implements HttpClient {
 
     private final java.net.http.HttpClient jdkHttpClient;
 
-    // These headers are restricted by default in native JDK12 HttpClient.
-    // These headers can be whitelisted by setting jdk.httpclient.allowRestrictedHeaders
-    // property in the network properties file: 'JAVA_HOME/conf/net.properties'
-    // e.g white listing 'host' header.
-    //
-    // jdk.httpclient.allowRestrictedHeaders=host
-    //
-    private static final Set<String> JDK12_RESTRICTED_HEADERS;
-    static {
-        TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        treeSet.addAll(Set.of("connection",
-            "content-length",
-            "expect",
-            "host",
-            "upgrade"));
-        JDK12_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
-    }
+    private final Set<String> restrictedHeaders;
 
-    JdkAsyncHttpClient(java.net.http.HttpClient httpClient) {
+    JdkAsyncHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders) {
         this.jdkHttpClient = httpClient;
         int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
-            logger.error("JdkAsyncHttpClient is not supported in Java version 11 and below.");
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("JdkAsyncHttpClient is not supported in Java version 11 and below."));
         }
+
+        this.restrictedHeaders = restrictedHeaders;
+        logger.verbose("Effective restricted headers: {}", restrictedHeaders);
     }
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
+        return send(request, Context.NONE);
+    }
+
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+
         return toJdkHttpRequest(request)
             .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofPublisher()))
-                .map(innerResponse -> new JdkHttpResponse(request, innerResponse)));
+                .flatMap(innerResponse -> {
+                    if (eagerlyReadResponse) {
+                        int statusCode = innerResponse.statusCode();
+                        HttpHeaders headers = fromJdkHttpHeaders(innerResponse.headers());
+
+                        return FluxUtil.collectBytesFromNetworkResponse(JdkFlowAdapter
+                            .flowPublisherToFlux(innerResponse.body())
+                            .flatMapSequential(Flux::fromIterable), headers)
+                            .map(bytes -> new BufferedJdkHttpResponse(request, statusCode, headers, bytes));
+                    } else {
+                        return Mono.just(new JdkHttpResponse(request, innerResponse));
+                    }
+                }));
     }
 
     /**
@@ -89,12 +94,14 @@ class JdkAsyncHttpClient implements HttpClient {
             if (headers != null) {
                 for (HttpHeader header : headers) {
                     final String headerName = header.getName();
-                    if (!JDK12_RESTRICTED_HEADERS.contains(headerName)) {
+                    if (!restrictedHeaders.contains(headerName)) {
                         final String headerValue = header.getValue();
                         builder.setHeader(headerName, headerValue);
                     } else {
-                        logger.error("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
-                            + "and above (unless it is whitelisted in JAVA_HOME/conf/net.properties).");
+                        logger.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
+                            + "and above. This header can be added to allow list in JAVA_HOME/conf/net.properties "
+                            + "or in System.setProperty() or in Configuration. Use the key 'jdk.httpclient"
+                            + ".allowRestrictedHeaders' and a comma separated list of header names.");
                     }
                 }
             }
@@ -140,6 +147,9 @@ class JdkAsyncHttpClient implements HttpClient {
      * @return the java major version
      */
     private int getJavaVersion() {
+        // java.version format:
+        // 8 and lower: 1.7, 1.8.0
+        // 9 and above: 12, 14.1.1
         String version = System.getProperty("java.version");
         if (CoreUtils.isNullOrEmpty(version)) {
             throw logger.logExceptionAsError(new RuntimeException("Can't find 'java.version' system property."));
@@ -155,8 +165,9 @@ class JdkAsyncHttpClient implements HttpClient {
             }
         } else {
             int idx = version.indexOf(".");
+
             if (idx == -1) {
-                throw logger.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version));
+                return Integer.parseInt(version);
             }
             try {
                 return Integer.parseInt(version.substring(0, idx));
@@ -166,88 +177,24 @@ class JdkAsyncHttpClient implements HttpClient {
         }
     }
 
-    private static class JdkHttpResponse extends HttpResponse {
-        private final int statusCode;
-        private final HttpHeaders headers;
-        private final Flux<ByteBuffer> contentFlux;
-        private volatile boolean disposed = false;
+    /**
+     * Converts the given JDK Http headers to azure-core Http header.
+     *
+     * @param headers the JDK Http headers
+     * @return the azure-core Http headers
+     */
+    static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
+        final HttpHeaders httpHeaders = new HttpHeaders();
 
-        protected JdkHttpResponse(final HttpRequest request,
-                                  java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> innerResponse) {
-            super(request);
-            this.statusCode = innerResponse.statusCode();
-            this.headers = fromJdkHttpHeaders(innerResponse.headers());
-            this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(innerResponse.body())
-                .flatMapSequential(Flux::fromIterable);
-        }
-
-        @Override
-        public int getStatusCode() {
-            return this.statusCode;
-        }
-
-        @Override
-        public String getHeaderValue(String name) {
-            return this.headers.getValue(name);
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return this.headers;
-        }
-
-        @Override
-        public Flux<ByteBuffer> getBody() {
-            return this.contentFlux
-                .doFinally(signalType -> disposed = true);
-        }
-
-        @Override
-        public Mono<byte[]> getBodyAsByteArray() {
-            return FluxUtil.collectBytesInByteBufferStream(getBody())
-                .flatMap(bytes -> bytes.length == 0 ? Mono.empty() : Mono.just(bytes));
-        }
-
-        @Override
-        public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray().map(bytes ->
-                CoreUtils.bomAwareToString(bytes, headers.getValue("Content-Type")));
-        }
-
-        @Override
-        public Mono<String> getBodyAsString(Charset charset) {
-            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
-        }
-
-        @Override
-        public void close() {
-            if (!this.disposed) {
-                this.disposed = true;
-                this.contentFlux
-                    .subscribe()
-                    .dispose();
+        for (final String key : headers.map().keySet()) {
+            final List<String> values = headers.allValues(key);
+            if (CoreUtils.isNullOrEmpty(values)) {
+                continue;
             }
+
+            httpHeaders.set(key, values);
         }
 
-        /**
-         * Converts the given JDK Http headers to azure-core Http header.
-         *
-         * @param headers the JDK Http headers
-         * @return the azure-core Http headers
-         */
-        private static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
-            final HttpHeaders httpHeaders = new HttpHeaders();
-            for (final String key : headers.map().keySet()) {
-                final List<String> values = headers.allValues(key);
-                if (CoreUtils.isNullOrEmpty(values)) {
-                    continue;
-                } else if (values.size() == 1) {
-                    httpHeaders.put(key, values.get(0));
-                } else {
-                    httpHeaders.put(key, String.join(",", values));
-                }
-            }
-            return httpHeaders;
-        }
+        return httpHeaders;
     }
 }

@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -35,6 +37,7 @@ import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+@DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkAsyncHttpClientTests {
 
     private static final String SHORT_BODY = "hi there";
@@ -171,7 +174,7 @@ public class JdkAsyncHttpClientTests {
                     socket.close();
                     return 1;
                 })
-                    .subscribeOn(Schedulers.elastic())
+                    .subscribeOn(Schedulers.boundedElastic())
                     .subscribe();
                 //
                 latch.await();
@@ -202,7 +205,7 @@ public class JdkAsyncHttpClientTests {
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
                 .parallel(10)
-                .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .runOn(Schedulers.boundedElastic())
                 .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                     MessageDigest md = md5Digest();
                     return response.getBody()
@@ -218,8 +221,7 @@ public class JdkAsyncHttpClientTests {
                 // Thread.currentThread().getName()))
                 .map(nbb -> (long) nbb.bb.limit())
                 .reduce(Long::sum)
-                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
+                .subscribeOn(Schedulers.boundedElastic());
 
         StepVerifier.create(numBytesMono)
 //              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)

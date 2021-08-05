@@ -1,0 +1,11 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: remoterendering
+      Location: eastus2
+      Artifacts:
+        - name: azure-mixedreality-remoterendering
+          groupId: com.azure
+          safeName: azuremixedrealityremoterendering

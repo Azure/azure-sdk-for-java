@@ -4,11 +4,12 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
+import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ReadResult model. */
+/** Text extracted from a page in the input document. */
 @Fluent
 public final class ReadResult {
     /*
@@ -44,12 +45,6 @@ public final class ReadResult {
     private LengthUnit unit;
 
     /*
-     * The detected language on the page overall.
-     */
-    @JsonProperty(value = "language")
-    private Language language;
-
-    /*
      * When includeTextDetails is set to true, a list of recognized text lines.
      * The maximum number of lines returned is 300 per page. The lines are
      * sorted top to bottom, left to right, although in certain cases proximity
@@ -60,6 +55,12 @@ public final class ReadResult {
      */
     @JsonProperty(value = "lines")
     private List<TextLine> lines;
+
+    /*
+     * List of selection marks extracted from the page.
+     */
+    @JsonProperty(value = "selectionMarks")
+    private List<SelectionMark> selectionMarks;
 
     /**
      * Get the page property: The 1-based page number in the input document.
@@ -166,26 +167,6 @@ public final class ReadResult {
     }
 
     /**
-     * Get the language property: The detected language on the page overall.
-     *
-     * @return the language value.
-     */
-    public Language getLanguage() {
-        return this.language;
-    }
-
-    /**
-     * Set the language property: The detected language on the page overall.
-     *
-     * @param language the language value to set.
-     * @return the ReadResult object itself.
-     */
-    public ReadResult setLanguage(Language language) {
-        this.language = language;
-        return this;
-    }
-
-    /**
      * Get the lines property: When includeTextDetails is set to true, a list of recognized text lines. The maximum
      * number of lines returned is 300 per page. The lines are sorted top to bottom, left to right, although in certain
      * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change
@@ -210,6 +191,26 @@ public final class ReadResult {
      */
     public ReadResult setLines(List<TextLine> lines) {
         this.lines = lines;
+        return this;
+    }
+
+    /**
+     * Get the selectionMarks property: List of selection marks extracted from the page.
+     *
+     * @return the selectionMarks value.
+     */
+    public List<SelectionMark> getSelectionMarks() {
+        return this.selectionMarks;
+    }
+
+    /**
+     * Set the selectionMarks property: List of selection marks extracted from the page.
+     *
+     * @param selectionMarks the selectionMarks value to set.
+     * @return the ReadResult object itself.
+     */
+    public ReadResult setSelectionMarks(List<SelectionMark> selectionMarks) {
+        this.selectionMarks = selectionMarks;
         return this;
     }
 }

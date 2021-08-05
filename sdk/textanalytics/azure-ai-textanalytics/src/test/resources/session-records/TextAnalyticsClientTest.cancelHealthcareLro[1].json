@@ -1,0 +1,83 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/entities/health/jobs?stringIndexType=Utf16CodeUnit&loggingOptOut=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1260f691-9f05-4754-9312-ca8ce446cb6d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "281",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://cognitiveusw2dev.azure-api.net/text/analytics/v3.1/entities/health/jobs/f0edeb94-95b5-49ed-ac6e-36931fc1803f",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "84c698f7-e3f0-4987-9add-392809b34a79",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Mon, 14 Jun 2021 20:40:28 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/entities/health/jobs/f0edeb94-95b5-49ed-ac6e-36931fc1803f",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6bd7ab31-9e18-49e4-a10c-28081bdd50b8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "13",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://cognitiveusw2dev.azure-api.net/text/analytics/v3.1/entities/health/jobs/f0edeb94-95b5-49ed-ac6e-36931fc1803f",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "bd9c4248-3ffe-4dcc-8fb3-5e41d83b5fc0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Mon, 14 Jun 2021 20:40:28 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/entities/health/jobs/f0edeb94-95b5-49ed-ac6e-36931fc1803f?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8910c5a4-2221-4507-8bb2-1b31fcaca461"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a7d19566-7736-4d1e-aafa-07ddd209420d",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"f0edeb94-95b5-49ed-ac6e-36931fc1803f\",\"lastUpdateDateTime\":\"2021-06-14T20:40:28Z\",\"createdDateTime\":\"2021-06-14T20:40:28Z\",\"expirationDateTime\":\"2021-06-15T20:40:28Z\",\"status\":\"cancelled\",\"errors\":[]}",
+      "Date" : "Mon, 14 Jun 2021 20:40:34 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1/entities/health/jobs/f0edeb94-95b5-49ed-ac6e-36931fc1803f?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a48b4466-f7d6-45e8-a8d0-538c6120c834"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "5",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "af718213-2c9f-4ec1-be92-48dfedec0659",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"f0edeb94-95b5-49ed-ac6e-36931fc1803f\",\"lastUpdateDateTime\":\"2021-06-14T20:40:28Z\",\"createdDateTime\":\"2021-06-14T20:40:28Z\",\"expirationDateTime\":\"2021-06-15T20:40:28Z\",\"status\":\"cancelled\",\"errors\":[]}",
+      "Date" : "Mon, 14 Jun 2021 20:40:34 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

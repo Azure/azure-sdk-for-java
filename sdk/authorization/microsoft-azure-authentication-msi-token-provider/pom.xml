@@ -53,7 +53,7 @@
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
           <scope>test</scope>
-          <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+          <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       </dependency>
   </dependencies>
   <build>

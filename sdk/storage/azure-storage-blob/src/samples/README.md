@@ -48,17 +48,17 @@ For more extensive documentation on Azure Storage blob, see the [API reference d
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[BLOB_SDK_README]: ../../README.md
-[SDK_README_CONTRIBUTING]:../../README.md#contributing
-[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
-[SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
-[samples_basic]: java/com/azure/storage/blob/BasicExample.java
-[samples_file_transfer]: java/com/azure/storage/blob/FileTransferExample.java
-[samples_storage_error]: java/com/azure/storage/blob/StorageErrorHandlingExample.java
-[samples_list_containers]: java/com/azure/storage/blob/ListContainersExample.java
-[samples_metadata]: java/com/azure/storage/blob/SetMetadataAndHTTPHeadersExample.java
-[samples_identity]: java/com/azure/storage/blob/AzureIdentityExample.java
-[storageblob_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api
+[BLOB_SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/README.md
+[SDK_README_CONTRIBUTING]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/README.md#contributing
+[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/README.md#getting-started
+[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/README.md#key-concepts
+[samples_basic]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/BasicExample.java
+[samples_file_transfer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/FileTransferExample.java
+[samples_storage_error]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/StorageErrorHandlingExample.java
+[samples_list_containers]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/ListContainersExample.java
+[samples_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/SetMetadataAndHTTPHeadersExample.java
+[samples_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/AzureIdentityExample.java
+[storageblob_rest]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fsrc%2Fsamples%2FREADME.png)

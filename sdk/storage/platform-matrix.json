@@ -1,0 +1,29 @@
+{
+  "matrix": {
+    "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json"
+  },
+  "exclude": [
+    { "OSVmImage": "macOS-10.15" }
+  ],
+  "include": [
+    {
+      "Agent": { "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" } },
+      "JavaTestVersion": "1.8",
+      "AZURE_TEST_HTTP_CLIENTS": "netty"
+    },
+    {
+      "Agent": { "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" } },
+      "JavaTestVersion": "1.11",
+      "AZURE_TEST_HTTP_CLIENTS": "okhttp"
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      },
+      "JavaTestVersion": ["1.8", "1.11"],
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "StorageRunStressScenarios" : "true",
+      "AdditionalOptions": "-DskipTests"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# Common classes, utilities and regular expression strings used by the 
+# Common classes, utilities and regular expression strings used by the
 # versioning python scripts.
 
 from enum import Enum
@@ -9,7 +9,7 @@ import re
 from subprocess import check_call, CalledProcessError
 
 include_update_marker = re.compile(r'\{x-include-update;([^;]+);([^}]+)\}')
-version_update_start_marker = re.compile(r'\{x-version-update-start;([^;]+);([^}]+)\}')	
+version_update_start_marker = re.compile(r'\{x-version-update-start;([^;]+);([^}]+)\}')
 version_update_end_marker = re.compile(r'\{x-version-update-end\}')
 version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
 
@@ -40,6 +40,9 @@ prerelease_version_regex_with_name = r'^beta\.(?P<revision>0|[1-9]\d*)$'
 # This is special for track 1, data track, which can be <major>.<minor>.<version>-beta with no ".X"
 prerelease_data_version_regex = r'^beta$'
 
+# Allow list prefix remover
+allowlist_exception_identifier_remover_regex = re.compile(r'^(?:.+_)(?=.+:)(.*)$')
+
 class UpdateType(Enum):
     external_dependency = 'external_dependency'
     library = 'library'
@@ -55,7 +58,7 @@ class BuildType(Enum):
     data = 'data'
     management = 'management'
     none = 'none' # in the case where only external dependencies is being updated
-    
+
     # defining string is necessary to get ArgumentParser's help output to produce
     # human readable values of BuildType
     def __str__(self):
@@ -66,7 +69,7 @@ class CodeModule:
         # For library versions there will be up to 3 items resulting from the split
         # which will be module name, dependency version and current version. For
         # external dependency versions there should only be 2 items resulting from
-        # the split which will be module name and external dependency version. 
+        # the split which will be module name and external dependency version.
         items = module_str.split(';')
 
         self.name = items[0]
@@ -86,7 +89,7 @@ class CodeModule:
             self.dependency = items[1]
             self.current = items[2].strip()
             self.update_type = UpdateType.library
-        else: 
+        else:
             raise ValueError('unable to parse module string: ' + module_str)
 
     # overridden string primarily used for error reporting
@@ -98,7 +101,7 @@ class CodeModule:
             return self.name + ': Dependency version=' + self.dependency + ': Current version=' + self.current
         except AttributeError:
             return self.name + ': Dependency version=' + self.dependency
-    
+
     # return the CodeModule string formatted for a version file
     def string_for_version_file(self):
         try:
@@ -106,23 +109,24 @@ class CodeModule:
         except AttributeError:
             return self.name + ';' + self.dependency + '\n'
 
-    # return the CodeModule string formatted for a whitelist include entry
-    # note: for whitelist includes the version needs to be braces in order for
+    # return the CodeModule string formatted for a allowlist include entry
+    # note: for allowlist includes the version needs to be braces in order for
     # the version to be an explicit version. Without the braces a version
-    # would be treated as that version and above. For example: 
+    # would be treated as that version and above. For example:
     # <groupId>:<artifactId>:1.2 would be treated as 1.2 and above or equivalent to [1.2,)
-    def string_for_whitelist_include(self):
+    def string_for_allowlist_include(self):
         if hasattr(self, 'external_dependency'):
             temp = self.name
             # This is necessary to deal with the fact that external_dependencies can have
-            # '_' in them if they're an external dependency exception. Since the whitelist
+            # '_' in them if they're an external dependency exception. Since the allowlist
             # name needs to be the actual dependency, take everything after the _ which is
             # the actual name
-            if '_' in temp:
-                temp = temp.split('_')[1]
+            match = allowlist_exception_identifier_remover_regex.match(temp)
+            if match:
+                temp = match.group(1)
             return temp + ':[' + self.external_dependency + ']'
         else:
-            raise ValueError('string_for_whitelist_include called on non-external_dependency: ' + self.name)
+            raise ValueError('string_for_allowlist_include called on non-external_dependency: ' + self.name)
 
 def run_check_call(
     command_array,

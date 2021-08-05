@@ -7,13 +7,15 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.RegexFlags;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Tokenizer that uses regex pattern matching to construct distinct tokens.
- * This tokenizer is implemented using Apache Lucene.
+ * Tokenizer that uses regex pattern matching to construct distinct tokens. This tokenizer is implemented using Apache
+ * Lucene.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternTokenizer")
@@ -27,9 +29,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
     private String pattern;
 
     /*
-     * Regular expression flags. Possible values include: 'CanonEq',
-     * 'CaseInsensitive', 'Comments', 'DotAll', 'Literal', 'Multiline',
-     * 'UnicodeCase', 'UnixLines'
+     * Regular expression flags.
      */
     @JsonProperty(value = "flags")
     private RegexFlags flags;
@@ -44,9 +44,18 @@ public final class PatternTokenizer extends LexicalTokenizer {
     private Integer group;
 
     /**
-     * Get the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more non-word
-     * characters.
+     * Creates an instance of PatternTokenizer class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public PatternTokenizer(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
+
+    /**
+     * Get the pattern property: A regular expression pattern to match token separators. Default is an expression that
+     * matches one or more non-word characters.
      *
      * @return the pattern value.
      */
@@ -55,9 +64,8 @@ public final class PatternTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more non-word
-     * characters.
+     * Set the pattern property: A regular expression pattern to match token separators. Default is an expression that
+     * matches one or more non-word characters.
      *
      * @param pattern the pattern value to set.
      * @return the PatternTokenizer object itself.
@@ -68,9 +76,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Get the flags property: Regular expression flags. Possible values
-     * include: 'CanonEq', 'CaseInsensitive', 'Comments', 'DotAll', 'Literal',
-     * 'Multiline', 'UnicodeCase', 'UnixLines'.
+     * Get the flags property: Regular expression flags.
      *
      * @return the flags value.
      */
@@ -79,9 +85,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the flags property: Regular expression flags. Possible values
-     * include: 'CanonEq', 'CaseInsensitive', 'Comments', 'DotAll', 'Literal',
-     * 'Multiline', 'UnicodeCase', 'UnixLines'.
+     * Set the flags property: Regular expression flags.
      *
      * @param flags the flags value to set.
      * @return the PatternTokenizer object itself.
@@ -92,10 +96,9 @@ public final class PatternTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Get the group property: The zero-based ordinal of the matching group in
-     * the regular expression pattern to extract into tokens. Use -1 if you
-     * want to use the entire pattern to split the input into tokens,
-     * irrespective of matching groups. Default is -1.
+     * Get the group property: The zero-based ordinal of the matching group in the regular expression pattern to extract
+     * into tokens. Use -1 if you want to use the entire pattern to split the input into tokens, irrespective of
+     * matching groups. Default is -1.
      *
      * @return the group value.
      */
@@ -104,10 +107,9 @@ public final class PatternTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the group property: The zero-based ordinal of the matching group in
-     * the regular expression pattern to extract into tokens. Use -1 if you
-     * want to use the entire pattern to split the input into tokens,
-     * irrespective of matching groups. Default is -1.
+     * Set the group property: The zero-based ordinal of the matching group in the regular expression pattern to extract
+     * into tokens. Use -1 if you want to use the entire pattern to split the input into tokens, irrespective of
+     * matching groups. Default is -1.
      *
      * @param group the group value to set.
      * @return the PatternTokenizer object itself.

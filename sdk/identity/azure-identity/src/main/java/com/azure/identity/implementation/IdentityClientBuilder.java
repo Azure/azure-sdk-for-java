@@ -3,6 +3,10 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.identity.SharedTokenCacheCredential;
+
+import java.io.InputStream;
+
 /**
  * Fluent client builder for instantiating an {@link IdentityClient}.
  *
@@ -14,7 +18,9 @@ public final class IdentityClientBuilder {
     private String clientId;
     private String clientSecret;
     private String certificatePath;
+    private InputStream certificate;
     private String certificatePassword;
+    private boolean sharedTokenCacheCred;
 
     /**
      * Sets the tenant ID for the client.
@@ -60,6 +66,17 @@ public final class IdentityClientBuilder {
     /**
      * Sets the client certificate for the client.
      *
+     * @param certificate the PEM/PFX certificate
+     * @return the IdentityClientBuilder itself
+     */
+    public IdentityClientBuilder certificate(InputStream certificate) {
+        this.certificate = certificate;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for the client.
+     *
      * @param certificatePassword the password protecting the PFX file
      * @return the IdentityClientBuilder itself
      */
@@ -67,7 +84,6 @@ public final class IdentityClientBuilder {
         this.certificatePassword = certificatePassword;
         return this;
     }
-
 
     /**
      * Sets the options for the client.
@@ -80,10 +96,21 @@ public final class IdentityClientBuilder {
     }
 
     /**
+     * Indicate whether the credential is {@link SharedTokenCacheCredential} or not.
+     *
+     * @param isSharedTokenCacheCred the shared token cache credential status.
+     * @return the updated IdentityClientBuilder.
+     */
+    public IdentityClientBuilder sharedTokenCacheCredential(boolean isSharedTokenCacheCred) {
+        this.sharedTokenCacheCred = isSharedTokenCacheCred;
+        return this;
+    }
+
+    /**
      * @return a {@link IdentityClient} with the current configurations.
      */
     public IdentityClient build() {
-        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath,
-            certificatePassword, identityClientOptions);
+        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, certificate,
+            certificatePassword, sharedTokenCacheCred, identityClientOptions);
     }
 }

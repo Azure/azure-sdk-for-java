@@ -7,28 +7,24 @@ package com.azure.storage.blob.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for AccountKind.
- */
+/** Defines values for AccountKind. */
 public enum AccountKind {
-    /**
-     * Enum value Storage.
-     */
+    /** Enum value Storage. */
     STORAGE("Storage"),
 
-    /**
-     * Enum value BlobStorage.
-     */
+    /** Enum value BlobStorage. */
     BLOB_STORAGE("BlobStorage"),
 
-    /**
-     * Enum value StorageV2.
-     */
-    STORAGE_V2("StorageV2");
+    /** Enum value StorageV2. */
+    STORAGE_V2("StorageV2"),
 
-    /**
-     * The actual serialized value for a AccountKind instance.
-     */
+    /** Enum value FileStorage. */
+    FILE_STORAGE("FileStorage"),
+
+    /** Enum value BlockBlobStorage. */
+    BLOCK_BLOB_STORAGE("BlockBlobStorage");
+
+    /** The actual serialized value for a AccountKind instance. */
     private final String value;
 
     AccountKind(String value) {

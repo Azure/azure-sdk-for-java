@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/anomalydetector/v1.1-preview//timeseries/entire/detect",
+    "Headers" : {
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "42",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.AnomalyDetector.DataPoints=1",
+      "model-id" : "40",
+      "apim-request-id" : "cdd837b4-a412-4749-868a-889304787fd5",
+      "retry-after" : "0",
+      "Content-Length" : "1702",
+      "StatusCode" : "200",
+      "Body" : "{\"expectedValues\":[855.0000000000005,855.0000000000003,855.0000000000003,855.0000000000002,855.0000000000001,855.0,855.0,854.9999999999998,854.9999999999999,855.0,854.9999999999999,855.0,854.9999999999999,855.0,855.0,855.0,855.0000000000001,855.0000000000002,855.0,855.0000000000002,855.0000000000002,855.0000000000002,855.0000000000002,855.0000000000002],\"isAnomaly\":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],\"isNegativeAnomaly\":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],\"isPositiveAnomaly\":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],\"lowerMargins\":[4.547473508864641e-13,3.410605131648481e-13,3.410605131648481e-13,2.2737367544323206e-13,1.1368683772161603e-13,0.0,0.0,-2.2737367544323206e-13,-1.1368683772161603e-13,0.0,-1.1368683772161603e-13,0.0,-1.1368683772161603e-13,0.0,0.0,0.0,1.1368683772161603e-13,2.2737367544323206e-13,0.0,2.2737367544323206e-13,2.2737367544323206e-13,2.2737367544323206e-13,2.2737367544323206e-13,2.2737367544323206e-13],\"period\":0,\"upperMargins\":[-4.547473508864641e-13,-3.410605131648481e-13,-3.410605131648481e-13,-2.2737367544323206e-13,-1.1368683772161603e-13,0.0,0.0,2.2737367544323206e-13,1.1368683772161603e-13,0.0,1.1368683772161603e-13,0.0,1.1368683772161603e-13,0.0,0.0,0.0,-1.1368683772161603e-13,-2.2737367544323206e-13,0.0,-2.2737367544323206e-13,-2.2737367544323206e-13,-2.2737367544323206e-13,-2.2737367544323206e-13,-2.2737367544323206e-13]}\n",
+      "Date" : "Thu, 27 Aug 2020 22:37:27 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

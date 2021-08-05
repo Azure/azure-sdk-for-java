@@ -3,18 +3,14 @@
 
 package com.azure.core.amqp.implementation;
 
+import java.time.Duration;
+
 public final class ClientConstants {
     public static final String NOT_APPLICABLE = "n/a";
     public static final String PLATFORM_INFO = getOSInformation();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
-
-    /**
-     * Gets the USER AGENT string as defined in:
-     * $/core/azure-core/src/main/java/com/azure/core/http/policy/UserAgentPolicy.java
-     * TODO (conniey): Extract logic from UserAgentPolicy into something we can use here.
-     */
-    public static final String USER_AGENT_TEMPLATE =
-        "%s/%s " + System.getProperty("java.version") + ";" + PLATFORM_INFO;
+    // Base sleep wait time.
+    public static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.

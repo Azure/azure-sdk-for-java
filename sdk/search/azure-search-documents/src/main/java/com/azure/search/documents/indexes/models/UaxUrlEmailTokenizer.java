@@ -25,6 +25,17 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
     private Integer maxTokenLength;
 
     /**
+     * Constructor of {@link UaxUrlEmailTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public UaxUrlEmailTokenizer(String name) {
+        super(name);
+    }
+
+    /**
      * Get the maxTokenLength property: The maximum token length. Default is
      * 255. Tokens longer than the maximum length are split. The maximum token
      * length that can be used is 300 characters.

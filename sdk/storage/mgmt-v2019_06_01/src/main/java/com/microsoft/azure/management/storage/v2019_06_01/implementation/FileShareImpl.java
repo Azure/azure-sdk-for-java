@@ -145,7 +145,7 @@ class FileShareImpl extends CreatableUpdatableImpl<FileShare, FileShareInner, Fi
     }
 
     @Override
-    public Integer shareUsageBytes() {
+    public Long shareUsageBytes() {
         return this.inner().shareUsageBytes();
     }
 

@@ -328,6 +328,32 @@ public class DataFactoryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ManagedVirtualNetworksInner object to access its operations.
+     */
+    private ManagedVirtualNetworksInner managedVirtualNetworks;
+
+    /**
+     * Gets the ManagedVirtualNetworksInner object to access its operations.
+     * @return the ManagedVirtualNetworksInner object.
+     */
+    public ManagedVirtualNetworksInner managedVirtualNetworks() {
+        return this.managedVirtualNetworks;
+    }
+
+    /**
+     * The ManagedPrivateEndpointsInner object to access its operations.
+     */
+    private ManagedPrivateEndpointsInner managedPrivateEndpoints;
+
+    /**
+     * Gets the ManagedPrivateEndpointsInner object to access its operations.
+     * @return the ManagedPrivateEndpointsInner object.
+     */
+    public ManagedPrivateEndpointsInner managedPrivateEndpoints() {
+        return this.managedPrivateEndpoints;
+    }
+
+    /**
      * Initializes an instance of DataFactoryManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -377,6 +403,8 @@ public class DataFactoryManagementClientImpl extends AzureServiceClient {
         this.triggerRuns = new TriggerRunsInner(restClient().retrofit(), this);
         this.dataFlows = new DataFlowsInner(restClient().retrofit(), this);
         this.dataFlowDebugSessions = new DataFlowDebugSessionsInner(restClient().retrofit(), this);
+        this.managedVirtualNetworks = new ManagedVirtualNetworksInner(restClient().retrofit(), this);
+        this.managedPrivateEndpoints = new ManagedPrivateEndpointsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

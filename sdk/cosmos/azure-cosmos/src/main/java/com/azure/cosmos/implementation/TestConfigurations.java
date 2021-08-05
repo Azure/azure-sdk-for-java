@@ -32,6 +32,9 @@ public final class TestConfigurations {
     private static Logger logger = LoggerFactory.getLogger(TestConfigurations.class);
     private static Properties properties = loadProperties();
 
+    private final static String COSMOS_EMULATOR_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+    private final static String COSMOS_EMULATOR_HOST = "https://localhost:8081/";
+
     // REPLACE MASTER_KEY and HOST with values from your Azure Cosmos DB account.
     // The default values are credentials of the local emulator, which are not used in any production environment.
     // <!--[SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine")]-->
@@ -39,19 +42,19 @@ public final class TestConfigurations {
         properties.getProperty("ACCOUNT_KEY",
                     StringUtils.defaultString(Strings.emptyToNull(
                             System.getenv().get("ACCOUNT_KEY")),
-                            "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="));
+                            COSMOS_EMULATOR_KEY));
 
     public final static String SECONDARY_MASTER_KEY =
         properties.getProperty("SECONDARY_ACCOUNT_KEY",
             StringUtils.defaultString(Strings.emptyToNull(
                 System.getenv().get("SECONDARY_ACCOUNT_KEY")),
-                "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="));
+                COSMOS_EMULATOR_KEY));
 
     public final static String HOST =
         properties.getProperty("ACCOUNT_HOST",
                     StringUtils.defaultString(Strings.emptyToNull(
                             System.getenv().get("ACCOUNT_HOST")),
-                            "https://localhost:443/"));
+                            COSMOS_EMULATOR_HOST));
 
     public final static String CONSISTENCY =
         properties.getProperty("ACCOUNT_CONSISTENCY",

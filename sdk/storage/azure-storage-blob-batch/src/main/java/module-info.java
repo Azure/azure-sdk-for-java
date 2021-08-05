@@ -5,4 +5,5 @@ module com.azure.storage.blob.batch {
     requires transitive com.azure.storage.blob;
 
     exports com.azure.storage.blob.batch;
+    exports com.azure.storage.blob.batch.options;
 }

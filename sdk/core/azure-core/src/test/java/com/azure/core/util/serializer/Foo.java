@@ -19,13 +19,13 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
 @JsonTypeName("foo")
 @JsonSubTypes({
-        @JsonSubTypes.Type(name = "foochild", value = FooChild.class)
+    @JsonSubTypes.Type(name = "foochild", value = FooChild.class)
 })
 public class Foo {
     @JsonProperty(value = "properties.bar")
     private String bar;
     @JsonProperty(value = "properties.props.baz")
-    private List<String>  baz;
+    private List<String> baz;
     @JsonProperty(value = "properties.props.q.qux")
     private Map<String, String> qux;
     @JsonProperty(value = "properties.more\\.props")

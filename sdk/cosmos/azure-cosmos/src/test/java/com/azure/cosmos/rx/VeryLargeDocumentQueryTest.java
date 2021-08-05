@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import org.apache.commons.lang3.StringUtils;
@@ -50,8 +50,8 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
-            options, CosmosItemProperties.class);
+        CosmosPagedFlux<InternalObjectNode> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
+            options, InternalObjectNode.class);
 
         AtomicInteger totalCount = new AtomicInteger();
         StepVerifier.create(feedResponseFlux.byPage().subscribeOn(Schedulers.single()))
@@ -65,13 +65,13 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
     }
 
     private void createLargeDocument() {
-        CosmosItemProperties docDefinition = getDocumentDefinition();
+        InternalObjectNode docDefinition = getDocumentDefinition();
 
         //Keep size as ~ 1.999MB to account for size of other props
         int size = (int) (ONE_MB * 1.999);
         BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
 
-        Mono<CosmosItemResponse<CosmosItemProperties>> createObservable =
+        Mono<CosmosItemResponse<InternalObjectNode>> createObservable =
             createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
         StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
@@ -92,9 +92,9 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    private static CosmosItemProperties getDocumentDefinition() {
+    private static InternalObjectNode getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
-        CosmosItemProperties doc = new CosmosItemProperties(String.format("{ "
+        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
                 + "}"

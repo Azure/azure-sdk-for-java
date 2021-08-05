@@ -50,4 +50,20 @@ class SqlPoolTablesImpl extends WrapperImpl<SqlPoolTablesInner> implements SqlPo
         });
     }
 
+    @Override
+    public Observable<SqlPoolTable> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName) {
+        SqlPoolTablesInner client = this.inner();
+        return client.getAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName)
+        .flatMap(new Func1<SqlPoolTableInner, Observable<SqlPoolTable>>() {
+            @Override
+            public Observable<SqlPoolTable> call(SqlPoolTableInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SqlPoolTable)wrapModel(inner));
+                }
+            }
+       });
+    }
+
 }

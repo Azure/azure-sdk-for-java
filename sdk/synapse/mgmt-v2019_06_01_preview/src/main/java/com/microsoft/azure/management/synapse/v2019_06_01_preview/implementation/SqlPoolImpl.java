@@ -140,7 +140,7 @@ class SqlPoolImpl extends CreatableUpdatableImpl<SqlPool, SqlPoolInner, SqlPoolI
     }
 
     @Override
-    public DateTime restorePointInTime() {
+    public String restorePointInTime() {
         return this.inner().restorePointInTime();
     }
 
@@ -247,7 +247,7 @@ class SqlPoolImpl extends CreatableUpdatableImpl<SqlPool, SqlPoolInner, SqlPoolI
     }
 
     @Override
-    public SqlPoolImpl withRestorePointInTime(DateTime restorePointInTime) {
+    public SqlPoolImpl withRestorePointInTime(String restorePointInTime) {
         if (isInCreateMode()) {
             this.inner().withRestorePointInTime(restorePointInTime);
         } else {

@@ -9,23 +9,38 @@
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ReplicationLink;
-import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ReplicationRole;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ReplicationState;
 import org.joda.time.DateTime;
 
-class ReplicationLinkImpl extends WrapperImpl<ReplicationLinkInner> implements ReplicationLink {
+class ReplicationLinkImpl extends IndexableRefreshableWrapperImpl<ReplicationLink, ReplicationLinkInner> implements ReplicationLink {
     private final SynapseManager manager;
+    private String resourceGroupName;
+    private String workspaceName;
+    private String sqlPoolName;
+    private String linkId;
 
     ReplicationLinkImpl(ReplicationLinkInner inner,  SynapseManager manager) {
-        super(inner);
+        super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.workspaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "workspaces");
+        this.sqlPoolName = IdParsingUtils.getValueFromIdByName(inner.id(), "sqlPools");
+        this.linkId = IdParsingUtils.getValueFromIdByName(inner.id(), "replicationLinks");
     }
 
     @Override
     public SynapseManager manager() {
         return this.manager;
+    }
+
+    @Override
+    protected Observable<ReplicationLinkInner> getInnerAsync() {
+        SqlPoolReplicationLinksInner client = this.manager().inner().sqlPoolReplicationLinks();
+        return client.getByNameAsync(this.resourceGroupName, this.workspaceName, this.sqlPoolName, this.linkId);
     }
 
 

@@ -8,19 +8,116 @@
   <artifactId>azure-storage-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-<!--   <module>microsoft-azure-storage-blob</module>-->
-    <!-- NOTE: Commenting out because these should now be binary composed.
-    -->
-    <module>azure-storage-common</module>
-    <module>azure-storage-blob</module>
-    <module>azure-storage-blob-batch</module>
-    <module>azure-storage-blob-cryptography</module>
-    <module>azure-storage-blob-nio</module>
-    <module>azure-storage-file-share</module>
-    <module>azure-storage-file-datalake</module>
-    <module>azure-storage-perf</module>
-    <module>azure-storage-queue</module>
-    <module>microsoft-azure-storage-blob</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>coverage</id>
+      <modules>
+        <module>azure-storage-common</module>
+        <module>azure-storage-blob</module>
+        <module>azure-storage-blob-batch</module>
+        <module>azure-storage-blob-changefeed</module>
+        <module>azure-storage-blob-cryptography</module>
+        <module>azure-storage-blob-nio</module>
+        <module>azure-storage-file-share</module>
+        <module>azure-storage-file-datalake</module>
+        <module>azure-storage-internal-avro</module>
+        <module>azure-storage-queue</module>
+      </modules>
+      <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-common</artifactId>
+          <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob</artifactId>
+          <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob-batch</artifactId>
+          <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob-changefeed</artifactId>
+          <version>12.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob-cryptography</artifactId>
+          <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob-nio</artifactId>
+          <version>12.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-file-share</artifactId>
+          <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-file-datalake</artifactId>
+          <version>12.7.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-internal-avro</artifactId>
+          <version>12.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-queue</artifactId>
+          <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>report-aggregate</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>report-aggregate</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-storage-common</module>
+        <module>azure-storage-blob</module>
+        <module>azure-storage-blob-batch</module>
+        <module>azure-storage-blob-changefeed</module>
+        <module>azure-storage-blob-cryptography</module>
+        <module>azure-storage-blob-nio</module>
+        <module>azure-storage-file-share</module>
+        <module>azure-storage-file-datalake</module>
+        <module>azure-storage-internal-avro</module>
+        <module>azure-storage-queue</module>
+        <module>azure-storage-perf</module>
+        <module>microsoft-azure-storage-blob</module>
+        <module>microsoft-azure-storage-perf</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

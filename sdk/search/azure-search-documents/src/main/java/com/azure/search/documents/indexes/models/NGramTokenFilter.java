@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.converters.NGramTokenFilterHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class NGramTokenFilter extends TokenFilter {
-    private final String odataType;
+    private String odataType;
 
     /*
      * The minimum n-gram length. Default is 1. Must be less than the value of
@@ -27,10 +28,29 @@ public final class NGramTokenFilter extends TokenFilter {
     @JsonProperty(value = "maxGram")
     private Integer maxGram;
 
+    static {
+        NGramTokenFilterHelper.setAccessor(new NGramTokenFilterHelper.NGramTokenFilterAccessor() {
+            @Override
+            public void setODataType(NGramTokenFilter tokenFilter, String odataType) {
+                tokenFilter.setODataType(odataType);
+            }
+
+            @Override
+            public String getODataType(NGramTokenFilter tokenFilter) {
+                return tokenFilter.getODataType();
+            }
+        });
+    }
+
     /**
-     * Constructor for {@link NGramTokenFilter}.
+     * Constructor of {@link NGramTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
      */
-    public NGramTokenFilter() {
+    public NGramTokenFilter(String name) {
+        super(name);
         odataType = "#Microsoft.Azure.Search.KeywordTokenizerV2";
     }
 
@@ -74,5 +94,25 @@ public final class NGramTokenFilter extends TokenFilter {
     public NGramTokenFilter setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
+    }
+
+    /**
+     * The private setter to set the odataType property
+     * via {@link NGramTokenFilterHelper.NGramTokenFilterAccessor}.
+     *
+     * @param odataType The OData type.
+     */
+    private void setODataType(String odataType) {
+        this.odataType = odataType;
+    }
+
+    /**
+     * The private getter to get the odataType property
+     * via {@link NGramTokenFilterHelper.NGramTokenFilterAccessor}.
+     *
+     * @return The OData type.
+     */
+    private String getODataType() {
+        return this.odataType;
     }
 }

@@ -120,6 +120,14 @@ public class ComputeNode {
     private Integer runningTasksCount;
 
     /**
+     * The total number of scheduling slots used by currently running Job Tasks
+     * on the Compute Node. This includes Job Manager Tasks and normal Tasks,
+     * but not Job Preparation, Job Release or Start Tasks.
+     */
+    @JsonProperty(value = "runningTaskSlotsCount")
+    private Integer runningTaskSlotsCount;
+
+    /**
      * The total number of Job Tasks which completed successfully (with
      * exitCode 0) on the Compute Node. This includes Job Manager Tasks and
      * normal Tasks, but not Job Preparation, Job Release or Start Tasks.
@@ -188,6 +196,12 @@ public class ComputeNode {
      */
     @JsonProperty(value = "nodeAgentInfo")
     private NodeAgentInformation nodeAgentInfo;
+
+    /**
+     * Info about the current state of the virtual machine.
+     */
+    @JsonProperty(value = "virtualMachineInfo")
+    private VirtualMachineInfo virtualMachineInfo;
 
     /**
      * Get every Compute Node that is added to a Pool is assigned a unique ID. Whenever a Compute Node is removed from a Pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new Compute Nodes.
@@ -430,6 +444,26 @@ public class ComputeNode {
     }
 
     /**
+     * Get the runningTaskSlotsCount value.
+     *
+     * @return the runningTaskSlotsCount value
+     */
+    public Integer runningTaskSlotsCount() {
+        return this.runningTaskSlotsCount;
+    }
+
+    /**
+     * Set the runningTaskSlotsCount value.
+     *
+     * @param runningTaskSlotsCount the runningTaskSlotsCount value to set
+     * @return the ComputeNode object itself.
+     */
+    public ComputeNode withRunningTaskSlotsCount(Integer runningTaskSlotsCount) {
+        this.runningTaskSlotsCount = runningTaskSlotsCount;
+        return this;
+    }
+
+    /**
      * Get the totalTasksSucceeded value.
      *
      * @return the totalTasksSucceeded value
@@ -606,6 +640,26 @@ public class ComputeNode {
      */
     public ComputeNode withNodeAgentInfo(NodeAgentInformation nodeAgentInfo) {
         this.nodeAgentInfo = nodeAgentInfo;
+        return this;
+    }
+
+    /**
+     * Get the virtualMachineInfo value.
+     *
+     * @return the virtualMachineInfo value
+     */
+    public VirtualMachineInfo virtualMachineInfo() {
+        return this.virtualMachineInfo;
+    }
+
+    /**
+     * Set the virtualMachineInfo value.
+     *
+     * @param virtualMachineInfo the virtualMachineInfo value to set
+     * @return the ComputeNode object itself.
+     */
+    public ComputeNode withVirtualMachineInfo(VirtualMachineInfo virtualMachineInfo) {
+        this.virtualMachineInfo = virtualMachineInfo;
         return this;
     }
 

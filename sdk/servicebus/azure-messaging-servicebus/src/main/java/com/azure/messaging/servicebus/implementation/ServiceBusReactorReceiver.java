@@ -3,16 +3,18 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -22,6 +24,7 @@ import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
@@ -31,10 +34,13 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +71,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     /**
      * Indicates whether the message has already been settled from the sender side. This is the case when {@link
-     * ReceiveMode#RECEIVE_AND_DELETE} is used.
+     * ServiceBusReceiveMode#RECEIVE_AND_DELETE} is used.
      */
     private final boolean isSettled;
     private final Duration timeout;
@@ -73,11 +79,13 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final ReceiveLinkHandler handler;
     private final ReactorProvider provider;
     private final Mono<String> sessionIdMono;
-    private final Mono<Instant> sessionLockedUntil;
+    private final Mono<OffsetDateTime> sessionLockedUntil;
 
-    public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
-        super(entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher());
+    public ServiceBusReactorReceiver(AmqpConnection connection, String entityPath, Receiver receiver,
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorProvider provider, Duration timeout,
+        AmqpRetryPolicy retryPolicy) {
+        super(connection, entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher(),
+            retryPolicy.getRetryOptions());
         this.receiver = receiver;
         this.handler = handler;
         this.provider = provider;
@@ -107,11 +115,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 if (receiver.getRemoteProperties() != null
                     && receiver.getRemoteProperties().containsKey(LOCKED_UNTIL_UTC)) {
                     final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
-                    return MessageUtils.convertDotNetTicksToInstant(ticks);
+                    return MessageUtils.convertDotNetTicksToOffsetDateTime(ticks);
                 } else {
                     logger.info("entityPath[{}], linkName[{}]. Locked until not set.", entityPath, getLinkName());
 
-                    return Instant.EPOCH;
+                    return Instant.EPOCH.atOffset(ZoneOffset.UTC);
                 }
             })
             .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
@@ -128,7 +136,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     public Flux<Message> receive() {
         // Remove empty update disposition messages. The deliveries themselves are ACKs with no message.
-        return super.receive().filter(message -> message != EMPTY_MESSAGE);
+        return super.receive()
+            .filter(message -> message != EMPTY_MESSAGE)
+            .publishOn(Schedulers.boundedElastic());
     }
 
     @Override
@@ -137,18 +147,19 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     @Override
-    public Mono<Instant> getSessionLockedUntil() {
+    public Mono<OffsetDateTime> getSessionLockedUntil() {
         return sessionLockedUntil;
     }
 
     @Override
-    public void dispose() {
+    public Mono<Void> closeAsync() {
         if (isDisposed.getAndSet(true)) {
-            return;
+            return super.closeAsync();
         }
 
         cleanupWorkItems();
 
+        final Mono<Void> disposeMono;
         if (!pendingUpdates.isEmpty()) {
             final List<Mono<Void>> pending = new ArrayList<>();
             final StringJoiner builder = new StringJoiner(", ");
@@ -167,14 +178,15 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             }
 
             logger.info("Waiting for pending updates to complete. Locks: {}", builder.toString());
-            try {
-                Mono.when(pending).block(timeout);
-            } catch (IllegalStateException ignored) {
-            }
+            disposeMono = Mono.when(pending);
+        } else {
+            disposeMono = Mono.empty();
         }
 
-        subscription.dispose();
-        super.dispose();
+        return disposeMono.onErrorResume(error -> {
+            logger.info("There was an exception while disposing of all links.", error);
+            return Mono.empty();
+        }).doFinally(signal -> subscription.dispose()).then(super.closeAsync());
     }
 
     @Override
@@ -227,7 +239,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
 
         final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
-        final Mono<Void> result = Mono.create(sink -> {
+        final Mono<Void> result = Mono.<Void>create(sink -> {
             workItem.start(sink);
             try {
                 provider.getReactorDispatcher().invoke(() -> {
@@ -238,7 +250,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 sink.error(new AmqpException(false, "updateDisposition failed while dispatching to Reactor.",
                     error, handler.getErrorContext(receiver)));
             }
-        });
+        }).cache();  // cache because closeAsync use `when` to subscribe this Mono again.
 
         workItem.setMono(result);
 
@@ -252,7 +264,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private void updateOutcome(String lockToken, Delivery delivery) {
         final DeliveryState remoteState = delivery.getRemoteState();
 
-        logger.info("entityPath[{}], linkName[{}], deliveryTag[{}], state[{}]. Received update disposition delivery.",
+        logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}], state[{}] Received update disposition delivery.",
             getEntityPath(), getLinkName(), lockToken, remoteState);
 
         final Outcome remoteOutcome;
@@ -289,8 +301,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         switch (remoteState.getType()) {
             case Rejected:
                 final Rejected rejected = (Rejected) remoteOutcome;
-                final Throwable exception = MessageUtils.toException(rejected.getError(),
-                    handler.getErrorContext(receiver));
+                final ErrorCondition errorCondition = rejected.getError();
+                final Throwable exception = ExceptionUtil.toException(errorCondition.getCondition().toString(),
+                    errorCondition.getDescription(), handler.getErrorContext(receiver));
 
                 final Duration retry = retryPolicy.calculateRetryDelay(exception, workItem.incrementRetry());
                 if (retry == null) {
@@ -312,7 +325,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
                 break;
             case Released:
-                final Throwable cancelled = MessageUtils.toException(ServiceBusErrorCondition.OPERATION_CANCELLED,
+                final Throwable cancelled = new AmqpException(false, AmqpErrorCondition.OPERATION_CANCELLED,
                     "AMQP layer unexpectedly aborted or disconnected.", handler.getErrorContext(receiver));
 
                 logger.info("deliveryTag[{}], state[{}]. Completing pending updateState operation with exception.",

@@ -28,9 +28,9 @@ class IntegrationRuntimeMonitoringDatasImpl extends WrapperImpl<IntegrationRunti
     }
 
     @Override
-    public Observable<IntegrationRuntimeMonitoringData> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    public Observable<IntegrationRuntimeMonitoringData> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         IntegrationRuntimeMonitoringDatasInner client = this.inner();
-        return client.getAsync(resourceGroupName, workspaceName, integrationRuntimeName)
+        return client.listAsync(resourceGroupName, workspaceName, integrationRuntimeName)
         .map(new Func1<IntegrationRuntimeMonitoringDataInner, IntegrationRuntimeMonitoringData>() {
             @Override
             public IntegrationRuntimeMonitoringData call(IntegrationRuntimeMonitoringDataInner inner) {

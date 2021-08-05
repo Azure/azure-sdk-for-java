@@ -13,12 +13,12 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -51,13 +51,17 @@ public final class BlobBatchAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobBatchAsyncClient.class);
 
     private final AzureBlobStorageImpl client;
+    private final boolean containerScoped;
+    private final BlobServiceVersion serviceVersion;
 
-    BlobBatchAsyncClient(String accountUrl, HttpPipeline pipeline, BlobServiceVersion version) {
-        this.client = new AzureBlobStorageBuilder()
-            .url(accountUrl)
+    BlobBatchAsyncClient(String clientUrl, HttpPipeline pipeline, BlobServiceVersion version, boolean containerScoped) {
+        this.serviceVersion = version;
+        this.client = new AzureBlobStorageImplBuilder()
+            .url(clientUrl)
             .pipeline(pipeline)
             .version(version.getVersion())
-            .build();
+            .buildClient();
+        this.containerScoped = containerScoped;
     }
 
     /**
@@ -66,7 +70,7 @@ public final class BlobBatchAsyncClient {
      * @return a new {@link BlobBatch} instance.
      */
     public BlobBatch getBlobBatch() {
-        return new BlobBatch(client.getUrl(), client.getHttpPipeline());
+        return new BlobBatch(client.getUrl(), client.getHttpPipeline(), serviceVersion);
     }
 
     /**
@@ -121,12 +125,18 @@ public final class BlobBatchAsyncClient {
     }
 
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
         return batch.prepareBlobBatchSubmission()
-            .flatMap(batchOperationInfo -> client.services()
-                .submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
-                    batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
-                    context == null ? Context.NONE.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)
-                    : context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .flatMap(batchOperationInfo -> containerScoped
+                ? client.getContainers().submitBatchWithResponseAsync(null,
+                batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
+                Flux.fromIterable(batchOperationInfo.getBody()), null, null,
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .flatMap(response ->
+                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger))
+                : client.getServices().submitBatchWithResponseAsync(batchOperationInfo.getContentLength(),
+                batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null, null,
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .flatMap(response ->
                     BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));
     }
@@ -185,7 +195,6 @@ public final class BlobBatchAsyncClient {
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
-        //return batchingHelper(blobUrls, (batch, blobUrl) -> batch.setTier(blobUrl, accessTier));
     }
 
     PagedFlux<Response<Void>> setBlobsAccessTierWithTimeout(List<String> blobUrls, AccessTier accessTier,

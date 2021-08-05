@@ -7,14 +7,12 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Generates n-grams of the given size(s). This token filter is implemented
- * using Apache Lucene.
- */
+/** Generates n-grams of the given size(s). This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.NGramTokenFilter")
 @Fluent
@@ -33,8 +31,17 @@ public final class NGramTokenFilter extends TokenFilter {
     private Integer maxGram;
 
     /**
-     * Get the minGram property: The minimum n-gram length. Default is 1. Must
-     * be less than the value of maxGram.
+     * Creates an instance of NGramTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public NGramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
+
+    /**
+     * Get the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      *
      * @return the minGram value.
      */
@@ -43,8 +50,7 @@ public final class NGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the minGram property: The minimum n-gram length. Default is 1. Must
-     * be less than the value of maxGram.
+     * Set the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      *
      * @param minGram the minGram value to set.
      * @return the NGramTokenFilter object itself.

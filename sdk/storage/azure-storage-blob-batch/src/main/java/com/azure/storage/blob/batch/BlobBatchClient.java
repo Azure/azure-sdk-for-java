@@ -162,6 +162,7 @@ public final class BlobBatchClient {
      * @throws BlobStorageException If the batch request is malformed.
      * @throws BlobBatchStorageException If any of the set tier operations fail.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier,
         Duration timeout, Context context) {
         return new PagedIterable<>(client.setBlobsAccessTierWithTimeout(blobUrls, accessTier, timeout, context));

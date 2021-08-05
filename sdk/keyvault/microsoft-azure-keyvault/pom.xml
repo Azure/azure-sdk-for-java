@@ -142,7 +142,7 @@ the MIT License. See License.txt in the project root for license information. --
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -154,7 +154,7 @@ the MIT License. See License.txt in the project root for license information. --
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.3.22.v20171030</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
+        <version>9.4.33.v20201020</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
         <configuration>
           <scanIntervalSeconds>0</scanIntervalSeconds>
           <stopPort>11079</stopPort>
@@ -162,6 +162,7 @@ the MIT License. See License.txt in the project root for license information. --
           <stopWait>20</stopWait>
           <waitForChild>false</waitForChild>
           <jettyXml>../../../jetty.xml</jettyXml>
+          <supportedPackagings>jar</supportedPackagings>
         </configuration>
         <executions>
           <execution>
@@ -170,10 +171,6 @@ the MIT License. See License.txt in the project root for license information. --
             <goals>
               <goal>run-forked</goal>
             </goals>
-            <configuration>
-             <scanIntervalSeconds>0</scanIntervalSeconds>
-             <daemon>true</daemon>
-            </configuration>
           </execution>
           <execution>
             <id>stop-jetty</id>

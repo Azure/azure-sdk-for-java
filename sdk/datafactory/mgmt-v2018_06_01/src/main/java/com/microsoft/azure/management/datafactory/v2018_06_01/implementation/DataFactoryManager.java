@@ -31,6 +31,8 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.Triggers;
 import com.microsoft.azure.management.datafactory.v2018_06_01.TriggerRuns;
 import com.microsoft.azure.management.datafactory.v2018_06_01.DataFlows;
 import com.microsoft.azure.management.datafactory.v2018_06_01.DataFlowDebugSessions;
+import com.microsoft.azure.management.datafactory.v2018_06_01.ManagedVirtualNetworks;
+import com.microsoft.azure.management.datafactory.v2018_06_01.ManagedPrivateEndpoints;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -53,6 +55,8 @@ public final class DataFactoryManager extends ManagerCore<DataFactoryManager, Da
     private TriggerRuns triggerRuns;
     private DataFlows dataFlows;
     private DataFlowDebugSessions dataFlowDebugSessions;
+    private ManagedVirtualNetworks managedVirtualNetworks;
+    private ManagedPrivateEndpoints managedPrivateEndpoints;
     /**
     * Get a Configurable instance that can be used to create DataFactoryManager with optional configuration.
     *
@@ -248,6 +252,26 @@ public final class DataFactoryManager extends ManagerCore<DataFactoryManager, Da
             this.dataFlowDebugSessions = new DataFlowDebugSessionsImpl(this);
         }
         return this.dataFlowDebugSessions;
+    }
+
+    /**
+     * @return Entry point to manage ManagedVirtualNetworks.
+     */
+    public ManagedVirtualNetworks managedVirtualNetworks() {
+        if (this.managedVirtualNetworks == null) {
+            this.managedVirtualNetworks = new ManagedVirtualNetworksImpl(this);
+        }
+        return this.managedVirtualNetworks;
+    }
+
+    /**
+     * @return Entry point to manage ManagedPrivateEndpoints.
+     */
+    public ManagedPrivateEndpoints managedPrivateEndpoints() {
+        if (this.managedPrivateEndpoints == null) {
+            this.managedPrivateEndpoints = new ManagedPrivateEndpointsImpl(this);
+        }
+        return this.managedPrivateEndpoints;
     }
 
     /**

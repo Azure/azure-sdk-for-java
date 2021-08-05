@@ -33,11 +33,19 @@ public final class AccountSasPermission {
 
     private boolean deletePermission;
 
+    private boolean deleteVersionPermission;
+
     private boolean listPermission;
 
     private boolean updatePermission;
 
     private boolean processMessagesPermission;
+
+    private boolean tagsPermission;
+
+    private boolean filterTagsPermission;
+
+    private boolean immutabilityPolicyPermission;
 
     /**
      * Initializes an {@link AccountSasPermission} object with all fields set to false.
@@ -49,18 +57,18 @@ public final class AccountSasPermission {
      * Creates an {@link AccountSasPermission} from the specified permissions string. This method will throw an {@link
      * IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@link AccountSasPermission}.
+     * @param permissionString A {@code String} which represents the {@link AccountSasPermission}.
      *
      * @return An {@link AccountSasPermission} object generated from the given {@link String}.
      *
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u,
-     *     or p.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, x, l, a, c, u, p,
+     * t, f or i.
      */
-    public static AccountSasPermission parse(String permString) {
+    public static AccountSasPermission parse(String permissionString) {
         AccountSasPermission permissions = new AccountSasPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.readPermission = true;
@@ -70,6 +78,9 @@ public final class AccountSasPermission {
                     break;
                 case 'd':
                     permissions.deletePermission = true;
+                    break;
+                case 'x':
+                    permissions.deleteVersionPermission = true;
                     break;
                 case 'l':
                     permissions.listPermission = true;
@@ -86,10 +97,19 @@ public final class AccountSasPermission {
                 case 'p':
                     permissions.processMessagesPermission = true;
                     break;
+                case 't':
+                    permissions.tagsPermission = true;
+                    break;
+                case 'f':
+                    permissions.filterTagsPermission = true;
+                    break;
+                case 'i':
+                    permissions.immutabilityPolicyPermission = true;
+                    break;
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                            "Permissions", permissionString, c));
             }
         }
         return permissions;
@@ -191,6 +211,25 @@ public final class AccountSasPermission {
     }
 
     /**
+     * @return the delete version permission status
+     */
+    public boolean hasDeleteVersionPermission() {
+        return deleteVersionPermission;
+    }
+
+    /**
+     * Sets the delete version permission status.
+     *
+     * @param hasDeleteVersionPermission Permission status to set
+     *
+     * @return the updated AccountSasPermission object
+     */
+    public AccountSasPermission setDeleteVersionPermission(boolean hasDeleteVersionPermission) {
+        this.deleteVersionPermission = hasDeleteVersionPermission;
+        return this;
+    }
+
+    /**
      * @return the list permission status
      */
     public boolean hasListPermission() {
@@ -253,6 +292,60 @@ public final class AccountSasPermission {
     }
 
     /**
+     * @return the tags permission status.
+     */
+    public boolean hasTagsPermission() {
+        return tagsPermission;
+    }
+
+    /**
+     * Sets the tags permission status.
+     *
+     * @param tagsPermission Permission status to set
+     * @return the updated AccountSasPermission object.
+     */
+    public AccountSasPermission setTagsPermission(boolean tagsPermission) {
+        this.tagsPermission = tagsPermission;
+        return this;
+    }
+
+    /**
+     * @return the filter tags permission status.
+     */
+    public boolean hasFilterTagsPermission() {
+        return filterTagsPermission;
+    }
+
+    /**
+     * Sets the filter tags permission status.
+     *
+     * @param filterTagsPermission Permission status to set
+     * @return the updated AccountSasPermission object.
+     */
+    public AccountSasPermission setFilterTagsPermission(boolean filterTagsPermission) {
+        this.filterTagsPermission = filterTagsPermission;
+        return this;
+    }
+
+    /**
+     * @return the set immutability policy permission status.
+     */
+    public boolean hasImmutabilityPolicyPermission() {
+        return immutabilityPolicyPermission;
+    }
+
+    /**
+     * Sets the set immutability policy permission status.
+     *
+     * @param immutabilityPolicyPermission Permission status to set
+     * @return the updated AccountSasPermission object.
+     */
+    public AccountSasPermission setImmutabilityPolicyPermission(boolean immutabilityPolicyPermission) {
+        this.immutabilityPolicyPermission = immutabilityPolicyPermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -276,6 +369,10 @@ public final class AccountSasPermission {
             builder.append('d');
         }
 
+        if (this.deleteVersionPermission) {
+            builder.append('x');
+        }
+
         if (this.listPermission) {
             builder.append('l');
         }
@@ -294,6 +391,18 @@ public final class AccountSasPermission {
 
         if (this.processMessagesPermission) {
             builder.append('p');
+        }
+
+        if (this.tagsPermission) {
+            builder.append('t');
+        }
+
+        if (this.filterTagsPermission) {
+            builder.append('f');
+        }
+
+        if (this.immutabilityPolicyPermission) {
+            builder.append('i');
         }
 
         return builder.toString();

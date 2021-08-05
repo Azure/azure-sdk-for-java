@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/sqlvirtualmachine/ci.yml
+      - sdk/sqlvirtualmachine/azure-resourcemanager-sqlvirtualmachine/
+    exclude:
+      - sdk/sqlvirtualmachine/pom.xml
+      - sdk/sqlvirtualmachine/azure-resourcemanager-sqlvirtualmachine/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/sqlvirtualmachine/ci.yml
+      - sdk/sqlvirtualmachine/azure-resourcemanager-sqlvirtualmachine/
+    exclude:
+      - sdk/sqlvirtualmachine/pom.xml
+      - sdk/sqlvirtualmachine/azure-resourcemanager-sqlvirtualmachine/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: sqlvirtualmachine
+    Artifacts:
+      - name: azure-resourcemanager-sqlvirtualmachine
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersqlvirtualmachine

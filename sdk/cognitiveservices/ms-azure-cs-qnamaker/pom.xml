@@ -15,11 +15,11 @@
     </parent>
     <artifactId>azure-cognitiveservices-qnamaker</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <version>1.0.0-beta</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-qnamaker;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-qnamaker;current} -->
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Cognitive Service Computer Vision</name>
-    <description>This package contains Microsoft Cognitive Service Computer Vision SDK.</description>
-    <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/vision/qnamaker</url>
+    <name>Microsoft Azure SDK for Cognitive Service QnA Maker</name>
+    <description>This package contains Microsoft Cognitive Service QnA Maker SDK.</description>
+    <url>https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cognitiveservices/ms-azure-cs-qnamaker</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>

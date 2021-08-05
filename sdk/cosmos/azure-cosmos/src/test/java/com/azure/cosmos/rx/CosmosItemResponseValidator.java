@@ -3,7 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.ModelBridgeInternal;
 
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ public interface CosmosItemResponseValidator {
                 public void validate(CosmosItemResponse itemResponse) {
                     assertThat(itemResponse.getItem()).isNotNull();
                     // This could be validated for potential improvement by remove fromObject
-                    assertThat(CosmosItemProperties.fromObject(itemResponse.getItem())
-                                   .getId()).as("check Resource Id").isEqualTo(resourceId);
+                    assertThat(InternalObjectNode.fromObject(itemResponse.getItem())
+                                                 .getId()).as("check Resource Id").isEqualTo(resourceId);
                 }
             });
             return this;
@@ -41,7 +41,7 @@ public interface CosmosItemResponseValidator {
                 public void validate(CosmosItemResponse itemResponse) {
                     assertThat(itemResponse.getItem()).isNotNull();
                     assertThat(ModelBridgeInternal
-                        .getObjectFromJsonSerializable(CosmosItemProperties.fromObject(itemResponse.getItem()), propertyName))
+                        .getObjectFromJsonSerializable(InternalObjectNode.fromObject(itemResponse.getItem()), propertyName))
                         .as("check property")
                         .isEqualTo(value);
                 }

@@ -5,13 +5,66 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-cosomos-service</artifactId>
+  <artifactId>azure-cosmos-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-    <module>azure-cosmos</module>
-    <module>azure-cosmos-benchmark</module>
-    <module>azure-cosmos-examples</module>
-  </modules>
 
+  <profiles>
+    <profile>
+      <id>coverage</id>
+      <modules>
+        <module>azure-cosmos</module>
+      </modules>
+
+      <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-cosmos</artifactId>
+          <version>4.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>report-aggregate</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>report-aggregate</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+                  <excludes>
+                    <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                    <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                    <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+                  </excludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-cosmos</module>
+        <module>azure-cosmos-benchmark</module>
+        <module>azure-cosmos-dotnet-benchmark</module>
+        <module>azure-cosmos-encryption</module>
+        <module>azure-spring-data-cosmos</module>
+        <module>azure-spring-data-cosmos-test</module>
+        <module>azure-cosmos-spark_3-1_2-12</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

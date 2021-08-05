@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.Objects;
+
 /**
  * Represents an excluded path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
@@ -57,4 +59,19 @@ public final class ExcludedPath {
     }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ExcludedPath that = (ExcludedPath) o;
+        return Objects.equals(jsonSerializable, that.jsonSerializable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jsonSerializable);
+    }
 }

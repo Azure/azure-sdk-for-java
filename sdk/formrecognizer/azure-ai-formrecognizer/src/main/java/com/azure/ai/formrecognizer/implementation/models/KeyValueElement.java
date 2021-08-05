@@ -8,9 +8,15 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The KeyValueElement model. */
+/** Information about the extracted key or value in a key-value pair. */
 @Fluent
 public final class KeyValueElement {
+    /*
+     * Semantic data type of the key value element.
+     */
+    @JsonProperty(value = "type")
+    private KeyValueType type;
+
     /*
      * The text content of the key or value.
      */
@@ -29,6 +35,26 @@ public final class KeyValueElement {
      */
     @JsonProperty(value = "elements")
     private List<String> elements;
+
+    /**
+     * Get the type property: Semantic data type of the key value element.
+     *
+     * @return the type value.
+     */
+    public KeyValueType getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Semantic data type of the key value element.
+     *
+     * @param type the type value to set.
+     * @return the KeyValueElement object itself.
+     */
+    public KeyValueElement setType(KeyValueType type) {
+        this.type = type;
+        return this;
+    }
 
     /**
      * Get the text property: The text content of the key or value.

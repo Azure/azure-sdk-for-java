@@ -28,6 +28,18 @@ public class OperationInner {
     private OperationDisplay display;
 
     /**
+     * The intended executor of the operation.
+     */
+    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
+    private String origin;
+
+    /**
+     * Additional descriptions for the operation.
+     */
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private Object properties;
+
+    /**
      * Get operation name: {provider}/{resource}/{read | write | action | delete}.
      *
      * @return the name value
@@ -54,6 +66,24 @@ public class OperationInner {
     public OperationInner withDisplay(OperationDisplay display) {
         this.display = display;
         return this;
+    }
+
+    /**
+     * Get the intended executor of the operation.
+     *
+     * @return the origin value
+     */
+    public String origin() {
+        return this.origin;
+    }
+
+    /**
+     * Get additional descriptions for the operation.
+     *
+     * @return the properties value
+     */
+    public Object properties() {
+        return this.properties;
     }
 
 }

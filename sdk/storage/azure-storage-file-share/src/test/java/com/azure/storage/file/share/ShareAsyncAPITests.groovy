@@ -6,12 +6,19 @@ package com.azure.storage.file.share
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.file.share.implementation.util.ModelHelper
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareProtocols
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
+import com.azure.storage.file.share.models.ShareRootSquash
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareCreateOptions
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -22,12 +29,12 @@ class ShareAsyncAPITests extends APISpec {
     ShareAsyncClient primaryShareAsyncClient
     String shareName
     static Map<String, String> testMetadata
-    static FileSmbProperties smbProperties
+    FileSmbProperties smbProperties
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        primaryFileServiceAsyncClient = fileServiceBuilderHelper(interceptorManager).buildAsyncClient()
+        shareName = namer.getRandomName(60)
+        primaryFileServiceAsyncClient = fileServiceBuilderHelper().buildAsyncClient()
         primaryShareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(shareName)
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
@@ -35,7 +42,7 @@ class ShareAsyncAPITests extends APISpec {
 
     def "Get share URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName)
         when:
         def shareURL = primaryShareAsyncClient.getShareUrl()
@@ -99,14 +106,14 @@ class ShareAsyncAPITests extends APISpec {
     def "Create snapshot"() {
         given:
         primaryShareAsyncClient.create().block()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = namer.getRandomName(60)
         when:
         def createSnapshotVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(null))
 
         then:
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
-            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
+            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
                 .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
@@ -126,13 +133,13 @@ class ShareAsyncAPITests extends APISpec {
     def "Create snapshot metadata"() {
         given:
         primaryShareAsyncClient.create().block()
-        def shareSnapshotName = testResourceName.randomName(methodName, 60)
+        def shareSnapshotName = namer.getRandomName(60)
         when:
         def createSnapshotVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(testMetadata))
         then:
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
-            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
+            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
                 .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
@@ -189,9 +196,15 @@ class ShareAsyncAPITests extends APISpec {
             }
     }
 
+    @Unroll
+    @PlaybackOnly
     def "Get properties premium"() {
         given:
-        def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(), testMetadata, null).block().getValue()
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol)
+
+        def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(),
+            new ShareCreateOptions().setMetadata(testMetadata).setProtocols(enabledProtocol)
+            .setRootSquash(rootSquash), null).block().getValue()
         when:
         def getPropertiesVerifier = StepVerifier.create(premiumShare.getPropertiesWithResponse())
         then:
@@ -203,7 +216,40 @@ class ShareAsyncAPITests extends APISpec {
             assert it.getValue().getProvisionedIngressMBps()
             assert it.getValue().getProvisionedEgressMBps()
             assert it.getValue().getNextAllowedQuotaDowngradeTime()
+            assert it.getValue().getProtocols().toString() == enabledProtocol.toString()
+            assert it.getValue().getRootSquash() == rootSquash
         }.verifyComplete()
+
+        where:
+        protocol                               | rootSquash
+        Constants.HeaderConstants.SMB_PROTOCOL | null
+        Constants.HeaderConstants.NFS_PROTOCOL | ShareRootSquash.ALL_SQUASH
+        Constants.HeaderConstants.NFS_PROTOCOL | ShareRootSquash.NO_ROOT_SQUASH
+        Constants.HeaderConstants.NFS_PROTOCOL | ShareRootSquash.ROOT_SQUASH
+    }
+
+    @Unroll
+    @PlaybackOnly
+    def "Set premium properties"() {
+        setup:
+        def premiumShareClient = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(),
+            new ShareCreateOptions().setProtocols(new ShareProtocols().setNfsEnabled(true)), null)
+            .block().getValue()
+
+        when:
+        premiumShareClient.setProperties(new ShareSetPropertiesOptions().setRootSquash(rootSquash)).block()
+
+        then:
+        StepVerifier.create(premiumShareClient.getProperties())
+            .assertNext{
+                assert it.getRootSquash() == rootSquash
+            }.verifyComplete()
+
+        where:
+        rootSquash                     | _
+        ShareRootSquash.ROOT_SQUASH    | _
+        ShareRootSquash.NO_ROOT_SQUASH | _
+        ShareRootSquash.ALL_SQUASH     | _
     }
 
     def "Set quota"() {
@@ -211,7 +257,7 @@ class ShareAsyncAPITests extends APISpec {
         primaryShareAsyncClient.createWithResponse(null, 1).block()
         when:
         def getQuotaBeforeVerifier = StepVerifier.create(primaryShareAsyncClient.getProperties())
-        def setQuotaVerifier = StepVerifier.create(primaryShareAsyncClient.setQuotaWithResponse(2, null))
+        def setQuotaVerifier = StepVerifier.create(primaryShareAsyncClient.setQuotaWithResponse(2))
         def getQuotaAfterVerifier = StepVerifier.create(primaryShareAsyncClient.getProperties())
         then:
         getQuotaBeforeVerifier.assertNext {
@@ -338,8 +384,8 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         def permissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(permissionKey)
         expect:
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null))
@@ -384,8 +430,8 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         def permissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(permissionKey)
 
         expect:
@@ -432,7 +478,7 @@ class ShareAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
-            null, new ShareRequestConditions().setLeaseId(getRandomUUID())))
+            null, new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
             .verifyError(ShareStorageException)
     }
 
@@ -440,8 +486,8 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders().setContentType("txt")
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
         expect:
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata))
                 .assertNext {
@@ -530,7 +576,7 @@ class ShareAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryShareAsyncClient.deleteFileWithResponse(fileName,
-            new ShareRequestConditions().setLeaseId(getRandomUUID())))
+            new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
             .verifyError(ShareStorageException)
     }
 
@@ -597,7 +643,7 @@ class ShareAsyncAPITests extends APISpec {
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
         when:
-        def shareSnapshotClient = shareBuilderHelper(interceptorManager, shareName).snapshot(snapshot).buildAsyncClient()
+        def shareSnapshotClient = shareBuilderHelper(shareName).snapshot(snapshot).buildAsyncClient()
         then:
         snapshot == shareSnapshotClient.getSnapshotId()
     }

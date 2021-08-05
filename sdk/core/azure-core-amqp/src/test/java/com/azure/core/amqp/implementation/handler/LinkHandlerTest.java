@@ -28,9 +28,10 @@ import java.time.Duration;
 import static com.azure.core.amqp.exception.AmqpErrorCondition.LINK_STOLEN;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class LinkHandlerTest {
@@ -50,11 +51,11 @@ class LinkHandlerTest {
     private final Symbol symbol = Symbol.getSymbol(linkStolen.getErrorCondition());
     private final String description = "test-description";
     private final LinkHandler handler = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, logger);
-
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll
@@ -64,16 +65,20 @@ class LinkHandlerTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         when(event.getLink()).thenReturn(link);
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
 
         handler.close();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**
@@ -110,7 +115,7 @@ class LinkHandlerTest {
         handler.onLinkLocalClose(event);
 
         // Assert
-        verifyZeroInteractions(session);
+        verifyNoInteractions(session);
     }
 
     /**
@@ -147,18 +152,16 @@ class LinkHandlerTest {
         when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.Step<EndpointState> endpointState = StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.CLOSED);
-
-        StepVerifier.Step<Throwable> throwableStep = StepVerifier.create(handler.getErrors())
-            .assertNext(error -> {
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onLinkRemoteClose(event))
+            .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
                 Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
-            });
-
-        handler.onLinkRemoteClose(event);
+            })
+            .verify();
 
         // Assert
         verify(link).setCondition(errorCondition);
@@ -166,17 +169,46 @@ class LinkHandlerTest {
 
         verify(session, never()).setCondition(errorCondition);
         verify(session, never()).close();
-
-        endpointState.thenCancel().verify();
-        throwableStep.then(() -> handler.close())
-            .verifyComplete();
     }
 
     /**
-     * Verifies that it does not close the link when the link is already in a closed endpoint state.
+     * Verifies that a Remote Detach event.
      */
     @Test
-    void onLinkRemoteCloseNoException() {
+    void onLinkRemoteDetach() {
+        // Arrange
+        final ErrorCondition errorCondition = new ErrorCondition(symbol, description);
+
+        when(link.getRemoteCondition()).thenReturn(errorCondition);
+        when(link.getSession()).thenReturn(session);
+
+        when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        // Act
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onLinkRemoteDetach(event))
+            .expectErrorSatisfies(error -> {
+                Assertions.assertTrue(error instanceof AmqpException);
+
+                AmqpException exception = (AmqpException) error;
+                Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
+            })
+            .verify();
+
+        // Assert
+        verify(link).setCondition(errorCondition);
+        verify(link).close();
+
+        verify(session, never()).setCondition(errorCondition);
+        verify(session, never()).close();
+    }
+
+    /**
+     * Verifies that an error is propagated if there is an error condition on close.
+     */
+    @Test
+    void onLinkRemoteCloseWithErrorCondition() {
         // Arrange
         final ErrorCondition errorCondition = new ErrorCondition(symbol, description);
 
@@ -185,19 +217,16 @@ class LinkHandlerTest {
         when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
 
         // Act & Assert
-        StepVerifier.Step<EndpointState> endpointState = StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.CLOSED)
-            .expectNoEvent(Duration.ofSeconds(2));
-
-        StepVerifier.Step<Throwable> throwableStep = StepVerifier.create(handler.getErrors())
-            .assertNext(error -> {
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onLinkRemoteClose(event))
+            .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
                 Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
-            });
-
-        handler.onLinkRemoteClose(event);
+            })
+            .verify();
 
         // Assert
         verify(link, never()).setCondition(errorCondition);
@@ -205,10 +234,40 @@ class LinkHandlerTest {
 
         verify(session, never()).setCondition(errorCondition);
         verify(session, never()).close();
-
-        endpointState.thenCancel().verify();
-        throwableStep.thenCancel().verify();
     }
+
+    /**
+     * Verifies that no error is propagated. And it is closed instead.
+     */
+    @Test
+    void onLinkRemoteCloseNoErrorCondition() {
+        // Arrange
+        final ErrorCondition errorCondition = new ErrorCondition(null, description);
+        final Event finalEvent = mock(Event.class);
+
+        when(link.getRemoteCondition()).thenReturn(errorCondition);
+        when(link.getSession()).thenReturn(session);
+        when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
+
+        // Act & Assert
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> {
+                handler.onLinkRemoteClose(event);
+                handler.onLinkFinal(finalEvent);
+            })
+            .expectNext(EndpointState.CLOSED)
+            .expectComplete()
+            .verify();
+
+        // Assert
+        verify(link, never()).setCondition(errorCondition);
+        verify(link, never()).close();
+
+        verify(session, never()).setCondition(errorCondition);
+        verify(session, never()).close();
+    }
+
 
     private static final class MockLinkHandler extends LinkHandler {
         MockLinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {

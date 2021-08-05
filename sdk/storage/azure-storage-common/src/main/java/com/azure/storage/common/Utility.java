@@ -225,43 +225,118 @@ public final class Utility {
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
-        final long[] currentTotalLength = new long[1];
-        return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
-            .map(i -> i * blockSize)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                long count = pos + blockSize > length ? length - pos : blockSize;
-                byte[] cache = new byte[(int) count];
-                int numOfBytes = 0;
-                int offset = 0;
-                // Revise the casting if the max allowed network data transmission is over 2G.
-                int len = (int) count;
-                while (numOfBytes != -1 && offset < count) {
-                    numOfBytes = data.read(cache, offset, len);
-                    offset += numOfBytes;
-                    len -= numOfBytes;
-                    if (numOfBytes != -1) {
-                        currentTotalLength[0] += numOfBytes;
-                    }
-                }
-                if (numOfBytes == -1 && currentTotalLength[0] < length) {
+        return convertStreamToByteBuffer(data, length, blockSize, true);
+    }
+
+    /**
+     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length
+     * and the input length.
+     *
+     * Using markAndReset=true to force a seekable stream implies a buffering strategy is not being used, in which case
+     * length is still needed for whatever underlying REST call is being streamed to. If markAndReset=false and data is
+     * being buffered, consider using {@link com.azure.core.util.FluxUtil#toFluxByteBuffer(InputStream, int)} which
+     * does not require a data length.
+     *
+     * @param data The input data which needs to convert to ByteBuffer.
+     * @param length The expected input data length.
+     * @param blockSize The size of each ByteBuffer.
+     * @param markAndReset Whether the stream needs to be marked and reset. This should generally always be true to
+     * support retries. It is false in the case of buffered upload to support non markable streams because buffered
+     * upload uses its own mechanisms to support retries.
+     * @return {@link ByteBuffer} which contains the input data.
+     * @throws UnexpectedLengthException when input data length mismatch input length.
+     * @throws RuntimeException When I/O error occurs.
+     */
+    public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize,
+                                                             boolean markAndReset) {
+        if (markAndReset) {
+            data.mark(Integer.MAX_VALUE);
+        }
+        if (length == 0) {
+            try {
+                if (data.read() != -1) {
+                    long totalLength = 1 + data.available();
                     throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                        String.format("Request body emitted %d bytes, less than the expected %d bytes.",
-                            currentTotalLength[0], length), currentTotalLength[0], length));
+                        String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                            totalLength, length), totalLength, length));
                 }
-                return ByteBuffer.wrap(cache);
-            }))
-            .doOnComplete(() -> {
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
+            }
+        }
+        return Flux.defer(() -> {
+            /*
+            If the request needs to be retried, the flux will be resubscribed to. The stream and counter must be
+            reset in order to correctly return the same data again.
+             */
+            final long[] currentTotalLength = new long[1];
+            if (markAndReset) {
                 try {
-                    if (data.available() > 0) {
-                        long totalLength = currentTotalLength[0] + data.available();
-                        throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                            String.format("Request body emitted %d bytes, more than the expected %d bytes.",
-                                totalLength, length), totalLength, length));
-                    }
+                    data.reset();
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
-                        + e.getMessage()));
+                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
                 }
-            });
+            }
+            return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
+                .map(i -> i * blockSize)
+                .concatMap(pos -> Mono.fromCallable(() -> {
+                    long count = pos + blockSize > length ? length - pos : blockSize;
+                    byte[] cache = new byte[(int) count];
+                    int numOfBytes = 0;
+                    int offset = 0;
+                    // Revise the casting if the max allowed network data transmission is over 2G.
+                    int len = (int) count;
+                    while (numOfBytes != -1 && offset < count) {
+                        numOfBytes = data.read(cache, offset, len);
+                        if (numOfBytes != -1) {
+                            offset += numOfBytes;
+                            len -= numOfBytes;
+                            currentTotalLength[0] += numOfBytes;
+                        }
+                    }
+                    if (numOfBytes == -1 && currentTotalLength[0] < length) {
+                        throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes, less than the expected %d bytes.",
+                                currentTotalLength[0], length), currentTotalLength[0], length));
+                    }
+
+                    // Validate that stream isn't longer.
+                    if (currentTotalLength[0] >= length) {
+                        try {
+                            if (data.read() != -1) {
+                                long totalLength = 1 + currentTotalLength[0] + data.available();
+                                throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                                    String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                                        totalLength, length), totalLength, length));
+                            } else if (currentTotalLength[0] > length) {
+                                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                                    String.format("Read more data than was requested. Size of data read: %d. Size of data"
+                                        + " requested: %d", currentTotalLength[0], length)));
+                            }
+                        } catch (IOException e) {
+                            throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
+                        }
+                    }
+
+                    return ByteBuffer.wrap(cache, 0, offset);
+                }));
+        });
+    }
+
+    /**
+     * Appends a query parameter to a url.
+     *
+     * @param url The url.
+     * @param key The query key.
+     * @param value The query value.
+     * @return The updated url.
+     */
+    public static String appendQueryParameter(String url, String key, String value) {
+        if (url.contains("?")) {
+            url = String.format("%s&%s=%s", url, key, value);
+        } else {
+            url = String.format("%s?%s=%s", url, key, value);
+        }
+        return url;
     }
 }

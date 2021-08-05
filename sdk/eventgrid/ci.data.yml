@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/eventgrid/ci.data.yml
+      - sdk/eventgrid/microsoft-azure-eventgrid/
+    exclude:
+      - sdk/eventgrid/pom.xml
+      - sdk/eventgrid/microsoft-azure-eventgrid/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/eventgrid/ci.data.yml
+      - sdk/eventgrid/microsoft-azure-eventgrid/
+    exclude:
+      - sdk/eventgrid/pom.xml
+      - sdk/eventgrid/microsoft-azure-eventgrid/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    SDKType: data
+    ServiceDirectory: eventgrid
+    Artifacts:
+      - name: azure-eventgrid
+        groupId: com.microsoft.azure
+        safeName: azureeventgrid

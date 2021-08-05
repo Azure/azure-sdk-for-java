@@ -26,13 +26,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <property name="fileExtensions" value="java"/>
   </module>
 
-  <module name="FileTabCharacter">
-    <!-- Checks that there are no tab characters in the file. -->
-  </module>
+  <!-- Checks that there are no tab characters in the file. -->
+  <module name="FileTabCharacter" />
 
-  <module name="NewlineAtEndOfFile">
-    <property name="lineSeparator" value="lf"/>
-  </module>
+  <module name="NewlineAtEndOfFile" />
 
   <module name="RegexpSingleline">
     <!-- Checks that FIXME is not used in comments.  TODO is preferred. -->
@@ -55,7 +52,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <property name="max" value="120"/>
     <!-- Allow codeSnippet to override max line length -->
     <!-- Allow comment with single word to override max line length -->
-    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)|^ *\* *[^ ]+$"/>
+    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)|^ *\* *[^ ]+$||http://|https://|^ *\* *[^ ]+$"/>
   </module>
 
   <!-- All Java AST specific tests live under TreeWalker module. -->
@@ -272,16 +269,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!--Checks for package naming and name length limit. Package names have to starting with either-->
     <!--'com.microsoft.azure' or 'com.azure', and then the extension names should only contains-->
-    <!--characters 'a' to 'z' with no more than 20 characters and  the package names should be no-->
+    <!--characters 'a' to 'z' with no more than 30 characters and  the package names should be no-->
     <!--more than 80 characters.-->
     <module name="PackageName">
-      <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[a-z]{1,20})*)+$"/>
+      <property name="format" value="^(?=.{9,80}$)((com.microsoft|com.azure)(\.[a-z]{1,30})*)+$"/>
     </module>
 
     <!-- Javadoc checks                                   -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html -->
     <module name="JavadocMethod">
-      <property name="scope" value="protected"/>
+      <property name="accessModifiers" value="public, protected"/>
     </module>
     <module name="MissingJavadocMethod"/>
     <module name="MissingJavadocType"/>
@@ -399,8 +396,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Fluent method checks:
     (1) A method returns an instance of the class, and that have one parameter,
     (2) should not start with the words in the avoidStartWords list.-->
-<!--    <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">-->
-<!--      <property name="avoidStartWords" value="with,set"/>-->
-<!--    </module>-->
+    <!-- <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">-->
+    <!--    <property name="avoidStartWords" value="with,set"/>-->
+    <!-- </module>-->
   </module>
 </module>

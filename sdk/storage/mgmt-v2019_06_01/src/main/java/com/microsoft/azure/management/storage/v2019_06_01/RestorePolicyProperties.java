@@ -29,10 +29,16 @@ public class RestorePolicyProperties {
     private Integer days;
 
     /**
-     * Returns the date and time the restore policy was last enabled.
+     * Deprecated in favor of minRestoreTime property.
      */
     @JsonProperty(value = "lastEnabledTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastEnabledTime;
+
+    /**
+     * Returns the minimum date and time that the restore can be started.
+     */
+    @JsonProperty(value = "minRestoreTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime minRestoreTime;
 
     /**
      * Get blob restore is enabled if set to true.
@@ -75,12 +81,21 @@ public class RestorePolicyProperties {
     }
 
     /**
-     * Get returns the date and time the restore policy was last enabled.
+     * Get deprecated in favor of minRestoreTime property.
      *
      * @return the lastEnabledTime value
      */
     public DateTime lastEnabledTime() {
         return this.lastEnabledTime;
+    }
+
+    /**
+     * Get returns the minimum date and time that the restore can be started.
+     *
+     * @return the minRestoreTime value
+     */
+    public DateTime minRestoreTime() {
+        return this.minRestoreTime;
     }
 
 }

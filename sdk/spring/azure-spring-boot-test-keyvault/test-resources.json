@@ -1,0 +1,394 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "String"
+    },
+    "tenantId": {
+      "type": "String"
+    },
+    "testApplicationId": {
+      "type": "String"
+    },
+    "testApplicationSecret": {
+      "type": "String"
+    },
+    "testApplicationOid": {
+      "type": "String"
+    },
+    "endpointSuffix": {
+      "defaultValue": "vault.azure.net",
+      "type": "String"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "azureKeyVaultUri": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
+    "secretName": "spring-cosmos-db-key",
+    "secretValue": "rock",
+    "duplicateSecretName": "duplicateKey",
+    "duplicateSecretValue1": "duplicate1",
+    "keyVaultName": "[parameters('baseName')]",
+    "azureKeyVault2Uri": "[format('https://{0}.{1}/', variables('keyVaultName2'), parameters('endpointSuffix'))]",
+    "secretName2": "spring-cosmos-db-key-2",
+    "secretValue2": "rock-2",
+    "duplicateSecretValue2": "duplicate2",
+    "keyVaultName2": "[concat(parameters('baseName'),'-2')]",
+    "appServicePlanName": "[concat(parameters('baseName'), '-plan')]",
+    "appServiceName": "[concat(parameters('baseName'), '-app')]",
+    "vmName": "[concat(parameters('baseName'), '-vm')]",
+    "adminUsername": "deploy",
+    "adminPassword": "12NewPAwX0rd!",
+    "vmSize": "Standard_D2s_v3",
+    "ubuntuOSVersion": "18.04-LTS",
+    "networkSecurityGroupName": "[concat(parameters('baseName'), '-nsg')]",
+    "virtualNetworkName": "[concat(parameters('baseName'), '-vn')]",
+    "networkInterfaceName": "[concat(parameters('baseName'), '-ni')]",
+    "subnetName": "default",
+    "publicIpAddressName": "[concat(parameters('baseName'), '-ip')]",
+    "nsgId": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "ipId": "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]",
+    "niId": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]",
+    "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-11-01",
+      "name": "[variables('appServicePlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[variables('location')]",
+      "kind": "linux",
+      "tags": null,
+      "properties": {
+        "name": "[variables('appServicePlanName')]",
+        "workerSize": "0",
+        "workerSizeId": "0",
+        "numberOfWorkers": "1",
+        "reserved": true
+      },
+      "sku": {
+        "Tier": "Basic",
+        "Name": "B1"
+      }
+    },
+    {
+      "apiVersion": "2018-11-01",
+      "name": "[variables('appServiceName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ],
+      "properties": {
+        "name": "[variables('appServiceName')]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "AZURE_KEYVAULT_URI",
+              "value": "[variables('azureKeyVaultUri')]"
+            }
+          ],
+          "linuxFxVersion": "JAVA|8-jre8",
+          "alwaysOn": false
+        },
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "clientAffinityEnabled": false
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2019-02-01",
+      "name": "[variables('networkSecurityGroupName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "HTTP",
+            "properties": {
+              "priority": 234,
+              "protocol": "*",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "8080"
+            }
+          },
+          {
+            "name": "SSH",
+            "properties": {
+              "priority": 235,
+              "protocol": "TCP",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "22"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2018-10-01",
+      "name": "[variables('networkInterfaceName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[variables('nsgId')]",
+        "[variables('vnetId')]",
+        "[variables('ipId')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              },
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIpAddress": {
+                "id": "[variables('ipId')]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[variables('nsgId')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2019-04-01",
+      "name": "[variables('virtualNetworkName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.0.0.0/24"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('subnetName')]",
+            "properties": {
+              "addressPrefix": "10.0.0.0/24",
+              "networkSecurityGroup": {
+                "id": "[variables('nsgId')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIpAddresses",
+      "apiVersion": "2019-02-01",
+      "name": "[variables('publicIpAddressName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "publicIpAllocationMethod": "Dynamic"
+      },
+      "sku": {
+        "name": "Basic"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2016-10-01",
+      "name": "[variables('keyVaultName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
+      ],
+      "properties": {
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[parameters('testApplicationOid')]",
+            "permissions": {
+              "secrets": [
+                "get",
+                "list"
+              ]
+            }
+          },
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('appServiceName')), '2019-08-01', 'Full').identity.principalId]",
+            "permissions": {
+              "secrets": [
+                "get",
+                "list"
+              ]
+            }
+          }
+        ],
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": false
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', variables('secretName'))]",
+      "apiVersion": "2018-02-14",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[variables('secretValue')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', variables('duplicateSecretName'))]",
+      "apiVersion": "2018-02-14",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ],
+      "properties": {
+        "value": "[variables('duplicateSecretValue1')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2016-10-01",
+      "name": "[variables('keyVaultName2')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[parameters('testApplicationOid')]",
+            "permissions": {
+              "secrets": [ "get", "list" ]
+            }
+          }
+        ],
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": false
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName2'), '/', variables('secretName2'))]",
+      "apiVersion": "2018-02-14",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName2'))]"
+      ],
+      "properties": {
+        "value": "[variables('secretValue2')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName2'), '/', variables('duplicateSecretName'))]",
+      "apiVersion": "2018-02-14",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName2'))]"
+      ],
+      "properties": {
+        "value": "[variables('duplicateSecretValue2')]"
+      }
+    }
+  ],
+  "outputs": {
+    "AZURE_KEYVAULT_URI": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultUri')]"
+    },
+    "SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
+    "SPRING_CLIENT_ID": {
+      "type": "string",
+      "value": "[parameters('testApplicationId')]"
+    },
+    "SPRING_CLIENT_SECRET": {
+      "type": "string",
+      "value": "[parameters('testApplicationSecret')]"
+    },
+    "KEY_VAULT_SPRING_RESOURCE_GROUP": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    },
+    "SPRING_SUBSCRIPTION_ID": {
+      "type": "string",
+      "value": "[subscription().subscriptionId]"
+    },
+    "KEY_VAULT_SECRET_NAME": {
+      "type": "string",
+      "value": "[variables('secretName')]"
+    },
+    "KEY_VAULT_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('secretValue')]"
+    },
+    "AZURE_KEYVAULT2_URI": {
+      "type": "string",
+      "value": "[variables('azureKeyVault2Uri')]"
+    },
+    "KEY_VAULT2_SECRET_NAME": {
+      "type": "string",
+      "value": "[variables('secretName2')]"
+    },
+    "KEY_VAULT2_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('secretValue2')]"
+    },
+    "KEY_VAULT_COMMON_SECRET_NAME": {
+      "type": "string",
+      "value": "[variables('duplicateSecretName')]"
+    },
+    "KEY_VAULT1_COMMON_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('duplicateSecretValue1')]"
+    },
+    "KEY_VAULT2_COMMON_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('duplicateSecretValue2')]"
+    },
+    "APP_SERVICE_NAME": {
+      "type": "string",
+      "value": "[variables('appServiceName')]"
+    },
+    "VM_NAME": {
+      "type": "string",
+      "value": "[variables('vmName')]"
+    },
+    "VM_USER_USERNAME": {
+      "type": "string",
+      "value": "[variables('adminUsername')]"
+    },
+    "VM_USER_PASSWORD": {
+      "type": "string",
+      "value": "[variables('adminPassword')]"
+    }
+  }
+}

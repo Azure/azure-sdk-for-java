@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 class PartitionControllerImpl implements PartitionController {
     private static final Logger logger = LoggerFactory.getLogger(PartitionControllerImpl.class);
     private final Map<String, WorkerTask> currentlyOwnedPartitions = new ConcurrentHashMap<>();
+    private final Object lock;
 
     private final LeaseContainer leaseContainer;
     private final LeaseManager leaseManager;
@@ -44,6 +45,7 @@ class PartitionControllerImpl implements PartitionController {
             PartitionSynchronizer synchronizer,
             Scheduler scheduler) {
 
+        this.lock = new Object();
         this.leaseContainer = leaseContainer;
         this.leaseManager = leaseManager;
         this.partitionSupervisorFactory = partitionSupervisorFactory;
@@ -60,7 +62,7 @@ class PartitionControllerImpl implements PartitionController {
     @Override
     public synchronized Mono<Lease> addOrUpdateLease(final Lease lease) {
         WorkerTask workerTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
-        if ( workerTask != null && workerTask.isRunning()) {
+        if (workerTask != null && workerTask.isRunning()) {
             return this.leaseManager.updateProperties(lease)
                 .map(updatedLease -> {
                     logger.debug("Partition {}: updated.", updatedLease.getLeaseToken());
@@ -71,10 +73,15 @@ class PartitionControllerImpl implements PartitionController {
         return this.leaseManager.acquire(lease)
             .defaultIfEmpty(lease)
             .map(updatedLease -> {
-                logger.info("Partition {}: acquired.", updatedLease.getLeaseToken());
-                PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(updatedLease);
-                this.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
-                return updatedLease;
+                synchronized (lock) {
+                    WorkerTask checkTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
+                    if (checkTask == null) {
+                        logger.info("Partition {}: acquired.", updatedLease.getLeaseToken());
+                        PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(updatedLease);
+                        this.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
+                    }
+                    return updatedLease;
+                }
             })
             .onErrorResume(throwable -> {
                 logger.warn("Partition {}: unexpected error; removing lease from current cache.", lease.getLeaseToken());
@@ -102,54 +109,62 @@ class PartitionControllerImpl implements PartitionController {
     }
 
     private Mono<Void> removeLease(Lease lease) {
-            if (this.currentlyOwnedPartitions.get(lease.getLeaseToken()) != null) {
+        return Mono.just(this)
+            .flatMap(value -> {
                 WorkerTask workerTask = this.currentlyOwnedPartitions.remove(lease.getLeaseToken());
+                if (workerTask != null && workerTask.isRunning()) {
+                    workerTask.cancelJob();
+                }
+                logger.info("Partition {}: released.", lease.getLeaseToken());
 
-                if (workerTask.isRunning()) {
-                    workerTask.interrupt();
+                return this.leaseManager.release(lease);
+            })
+            .onErrorResume(e -> {
+                if (e instanceof LeaseLostException) {
+                    logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
+                } else {
+                    logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
                 }
 
-                logger.info("Partition {}: released.", lease.getLeaseToken());
-            }
-
-            return this.leaseManager.release(lease)
-                .onErrorResume(e -> {
-                    if (e instanceof LeaseLostException) {
-                        logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
-                    } else {
-                        logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
-                    }
-
-                    return Mono.empty();
-                })
-                .doOnSuccess(aVoid -> {
-                    logger.info("Partition {}: successfully removed lease.", lease.getLeaseToken());
-                });
+                return Mono.empty();
+            })
+            .doOnSuccess(aVoid -> {
+                logger.info("Partition {}: successfully removed lease.", lease.getLeaseToken());
+            });
     }
 
     private WorkerTask processPartition(PartitionSupervisor partitionSupervisor, Lease lease) {
-        CancellationToken cancellationToken = this.shutdownCts.getToken();
+        CancellationToken shutdownToken = this.shutdownCts.getToken();
 
-        WorkerTask partitionSupervisorTask = new WorkerTask(lease, () -> {
-            partitionSupervisor.run(cancellationToken)
-                .onErrorResume(throwable -> {
-                    if (throwable instanceof PartitionSplitException) {
-                        PartitionSplitException ex = (PartitionSplitException) throwable;
-                        return this.handleSplit(lease, ex.getLastContinuation());
-                    } else if (throwable instanceof TaskCancelledException) {
-                        logger.debug("Partition {}: processing canceled.", lease.getLeaseToken());
-                    } else {
-                        logger.warn("Partition {}: processing failed.", lease.getLeaseToken(), throwable);
-                    }
-
-                    return Mono.empty();
-                })
-                .then(this.removeLease(lease)).subscribe();
-        });
+        WorkerTask partitionSupervisorTask =
+            new WorkerTask(
+                lease,
+                partitionSupervisor,
+                getWorkerJob(partitionSupervisor, lease, shutdownToken));
 
         this.scheduler.schedule(partitionSupervisorTask);
 
         return partitionSupervisorTask;
+    }
+
+    private Mono<Void> getWorkerJob(
+        PartitionSupervisor partitionSupervisor,
+        Lease lease,
+        CancellationToken shutdownToken) {
+        return partitionSupervisor.run(shutdownToken)
+            .onErrorResume(throwable -> {
+                if (throwable instanceof PartitionSplitException) {
+                    PartitionSplitException ex = (PartitionSplitException) throwable;
+                    return this.handleSplit(lease, ex.getLastContinuation());
+                } else if (throwable instanceof TaskCancelledException) {
+                    logger.debug("Partition {}: processing canceled.", lease.getLeaseToken());
+                } else {
+                    logger.warn("Partition {}: processing failed.", lease.getLeaseToken(), throwable);
+                }
+
+                return Mono.empty();
+            })
+            .then(this.removeLease(lease));
     }
 
     private Mono<Void> handleSplit(Lease lease, String lastContinuationToken) {

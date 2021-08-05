@@ -12,6 +12,11 @@ import java.util.Objects;
 
 /**
  * The HTTP pipeline that HTTP requests and responses will flow through.
+ * <p>
+ * The HTTP pipeline may apply a set of {@link HttpPipelinePolicy HttpPipelinePolicies} to the request before it is
+ * sent and on the response as it is being returned.
+ *
+ * @see HttpPipelinePolicy
  */
 public final class HttpPipeline {
     private final HttpClient httpClient;
@@ -19,13 +24,12 @@ public final class HttpPipeline {
 
 
     /**
-     * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through
-     * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
+     * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through {@link
+     * HttpPipeline#send(HttpPipelineCallContext)} and it's response.
      *
      * @param httpClient the http client to write request to wire and receive response from wire.
-     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will
-     *     be made hence changing the original array after the creation of pipeline
-     *     will not  mutate the pipeline
+     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will be made
+     * hence changing the original array after the creation of pipeline will not  mutate the pipeline
      */
     HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
         Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
@@ -46,6 +50,7 @@ public final class HttpPipeline {
 
     /**
      * Get the count of policies in the pipeline.
+     *
      * @return count of policies.
      */
     public int getPolicyCount() {
@@ -66,7 +71,7 @@ public final class HttpPipeline {
      *
      * @param request The HTTP request to send.
      * @return A publisher upon subscription flows the context through policies, sends the request, and emits response
-     *     upon completion.
+     * upon completion.
      */
     public Mono<HttpResponse> send(HttpRequest request) {
         return this.send(new HttpPipelineCallContext(request));
@@ -78,7 +83,7 @@ public final class HttpPipeline {
      * @param request THe HTTP request to send.
      * @param data Additional metadata to pass along with the request.
      * @return A publisher upon subscription flows the context through policies, sends the request, and emits response
-     *     upon completion.
+     * upon completion.
      */
     public Mono<HttpResponse> send(HttpRequest request, Context data) {
         return this.send(new HttpPipelineCallContext(request, data));
@@ -89,11 +94,10 @@ public final class HttpPipeline {
      *
      * @param context The request context.
      * @return A publisher upon subscription flows the context through policies, sends the request and emits response
-     *     upon completion.
+     * upon completion.
      */
     public Mono<HttpResponse> send(HttpPipelineCallContext context) {
         // Return deferred to mono for complete lazy behaviour.
-        //
         return Mono.defer(() -> {
             HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context);
             return next.process();

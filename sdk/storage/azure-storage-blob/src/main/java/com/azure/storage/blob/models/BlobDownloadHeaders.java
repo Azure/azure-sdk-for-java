@@ -7,10 +7,12 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,19 +21,33 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob-Download-Headers")
 @Fluent
 public final class BlobDownloadHeaders {
+
     /*
      * Returns the date and time the container was last modified. Any operation
      * that modifies the blob, including an update of the blob's metadata or
      * properties, changes the last-modified time of the blob.
      */
     @JsonProperty(value = "Last-Modified")
-    private DateTimeRfc1123 lastModified;
+    private OffsetDateTime lastModified;
 
     /*
      * The metadata property.
      */
     @HeaderCollection("x-ms-meta-")
     private Map<String, String> metadata;
+
+    /*
+     * Optional. Only valid when Object Replication is enabled for the storage
+     * container and on the destination blob of the replication.
+     */
+    @JsonProperty(value = "x-ms-or-policy-id")
+    private String objectReplicationDestinationPolicyId;
+
+    /*
+     * The objectReplicationRuleStatus property.
+     */
+    @HeaderCollection("x-ms-or-")
+    private List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
 
     /*
      * The number of bytes present in the response body.
@@ -125,7 +141,7 @@ public final class BlobDownloadHeaders {
      * List.
      */
     @JsonProperty(value = "x-ms-copy-completion-time")
-    private DateTimeRfc1123 copyCompletionTime;
+    private OffsetDateTime copyCompletionTime;
 
     /*
      * Only appears when x-ms-copy-status is failed or pending. Describes the
@@ -219,6 +235,14 @@ public final class BlobDownloadHeaders {
     private String version;
 
     /*
+     * A DateTime value returned by the service that uniquely identifies the
+     * blob. The value of this header indicates the blob version, and may be
+     * used in subsequent requests to access this version of the blob.
+     */
+    @JsonProperty(value = "x-ms-version-id")
+    private String versionId;
+
+    /*
      * Indicates that the service supports requests for partial blob content.
      */
     @JsonProperty(value = "Accept-Ranges")
@@ -229,7 +253,7 @@ public final class BlobDownloadHeaders {
      * which the response was initiated
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private OffsetDateTime dateProperty;
 
     /*
      * The number of committed blocks present in the blob. This header is
@@ -274,6 +298,12 @@ public final class BlobDownloadHeaders {
     private byte[] blobContentMD5;
 
     /*
+     * The number of tags associated with the blob
+     */
+    @JsonProperty(value = "x-ms-tag-count")
+    private Long tagCount;
+
+    /*
      * If the request is to read a specified range and the
      * x-ms-range-get-content-crc64 is set to true, then the request returns a
      * crc64 for the range, as long as the range size is less than or equal to
@@ -289,6 +319,36 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
 
+    /*
+     * The isSealed property. Whether or not the blob is sealed  (marked as read only).
+     * This is only returned for Append blobs.
+     */
+    @JsonProperty(value = "IsSealed")
+    private Boolean sealed;
+
+    /*
+     * The lastAccessedTime property.
+     */
+    @JsonProperty(value = "LastAccessTime")
+    private OffsetDateTime lastAccessedTime;
+
+    /*
+     * The x-ms-is-current-version property.
+     */
+    @JsonProperty(value = "x-ms-is-current-version")
+    private Boolean currentVersion;
+
+    /*
+     * The x-ms-immutability-policy-mode and x-ms-immutability-policy-until-date property.
+     */
+    private BlobImmutabilityPolicy immutabilityPolicy;
+
+    /*
+     * The x-ms-legal-hold property.
+     */
+    @JsonProperty(value = "x-ms-legal-hold")
+    private Boolean hasLegalHold;
+
     /**
      * Get the lastModified property: Returns the date and time the container
      * was last modified. Any operation that modifies the blob, including an
@@ -298,10 +358,7 @@ public final class BlobDownloadHeaders {
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
+        return this.lastModified;
     }
 
     /**
@@ -314,11 +371,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
+        this.lastModified = lastModified;
         return this;
     }
 
@@ -339,6 +392,55 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationDestinationPolicyId property: Optional. Only
+     * valid when Object Replication is enabled for the storage container and
+     * on the destination blob of the replication.
+     *
+     * @return the objectReplicationDestinationPolicyId value.
+     */
+    public String getObjectReplicationDestinationPolicyId() {
+        return this.objectReplicationDestinationPolicyId;
+    }
+
+    /**
+     * Set the objectReplicationDestinationPolicyId property: Optional. Only
+     * valid when Object Replication is enabled for the storage container and
+     * on the destination blob of the replication.
+     *
+     * @param objectReplicationDestinationPolicyId the
+     * objectReplicationDestinationPolicyId value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setObjectReplicationDestinationPolicyId(String objectReplicationDestinationPolicyId) {
+        this.objectReplicationDestinationPolicyId = objectReplicationDestinationPolicyId;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationSourcePolicies property: The
+     * objectReplicationSourcePolicies property.
+     *
+     * @return the objectReplicationSourcePolicies value.
+     */
+    public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return Collections.unmodifiableList(this.objectReplicationSourcePolicies);
+    }
+
+    /**
+     * Set the objectReplicationSourcePolicies property: The
+     * objectReplicationSourcePolicies property.
+     *
+     * @param objectReplicationSourcePolicies the objectReplicationSourcePolicies value
+     * to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setObjectReplicationSourcePolicies(
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
+        this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         return this;
     }
 
@@ -614,10 +716,7 @@ public final class BlobDownloadHeaders {
      * @return the copyCompletionTime value.
      */
     public OffsetDateTime getCopyCompletionTime() {
-        if (this.copyCompletionTime == null) {
-            return null;
-        }
-        return this.copyCompletionTime.getDateTime();
+        return this.copyCompletionTime;
     }
 
     /**
@@ -633,11 +732,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
-        if (copyCompletionTime == null) {
-            this.copyCompletionTime = null;
-        } else {
-            this.copyCompletionTime = new DateTimeRfc1123(copyCompletionTime);
-        }
+        this.copyCompletionTime = copyCompletionTime;
         return this;
     }
 
@@ -920,6 +1015,32 @@ public final class BlobDownloadHeaders {
     }
 
     /**
+     * Get the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @return the versionId value.
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Set the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @param versionId the versionId value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
      * Get the acceptRanges property: Indicates that the service supports
      * requests for partial blob content.
      *
@@ -948,10 +1069,7 @@ public final class BlobDownloadHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
-            return null;
-        }
-        return this.dateProperty.getDateTime();
+        return this.dateProperty;
     }
 
     /**
@@ -962,11 +1080,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
-        } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
-        }
+        this.dateProperty = dateProperty;
         return this;
     }
 
@@ -1099,6 +1213,26 @@ public final class BlobDownloadHeaders {
     }
 
     /**
+     * Get the tagCount property: The number of tags associated with the blob.
+     *
+     * @return the tagCount value.
+     */
+    public Long getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The number of tags associated with the blob.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setTagCount(Long tagCount) {
+        this.tagCount = tagCount;
+        return this;
+    }
+
+    /**
      * Get the contentCrc64 property: If the request is to read a specified
      * range and the x-ms-range-get-content-crc64 is set to true, then the
      * request returns a crc64 for the range, as long as the range size is less
@@ -1145,6 +1279,108 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
+        return this;
+    }
+
+    /**
+     * Get the sealed property: The sealed property.
+     *
+     * @return Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
+     */
+    public Boolean isSealed() {
+        return this.sealed;
+    }
+
+    /**
+     * Set the sealed property: The sealed property.
+     *
+     * @param sealed Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setSealed(Boolean sealed) {
+        this.sealed = sealed;
+        return this;
+    }
+
+    /**
+     * Get the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @return the lastAccessedTime value.
+     */
+    public OffsetDateTime getLastAccessedTime() {
+        return this.lastAccessedTime;
+    }
+
+    /**
+     * Set the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @param lastAccessedTime the lastAccessedTime value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setLastAccessedTime(OffsetDateTime lastAccessedTime) {
+        this.lastAccessedTime = lastAccessedTime;
+        return this;
+    }
+
+    /**
+     * Get the currentVersion property: The x-ms-is-current-version property.
+     *
+     * @return the currentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.currentVersion;
+    }
+
+    /**
+     * Set the currentVersion property: The x-ms-is-current-version property.
+     *
+     * @param currentVersion the currentVersion value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setCurrentVersion(Boolean currentVersion) {
+        this.currentVersion = currentVersion;
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicy property: The  x-ms-immutability-policy-mode and x-ms-immutability-policy-until-date
+     * property.
+     *
+     * @return the immutabilityPolicy value.
+     */
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return this.immutabilityPolicy;
+    }
+
+    /**
+     * Set the immutabilityPolicy property:  x-ms-immutability-policy-mode and x-ms-immutability-policy-until-date
+     * property.
+     *
+     * @param immutabilityPolicy the immutabilityPolicy value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        this.immutabilityPolicy = immutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * Get the hasLegalHold property: The x-ms-legal-hold property.
+     *
+     * @return the hasLegalHold value.
+     */
+    public Boolean hasLegalHold() {
+        return this.hasLegalHold;
+    }
+
+    /**
+     * Set the hasLegalHold property: The x-ms-legal-hold property.
+     *
+     * @param hasLegalHold the xMsLegalHold value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setHasLegalHold(Boolean hasLegalHold) {
+        this.hasLegalHold = hasLegalHold;
         return this;
     }
 }

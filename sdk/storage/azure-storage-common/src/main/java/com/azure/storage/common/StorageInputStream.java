@@ -147,7 +147,7 @@ public abstract class StorageInputStream extends InputStream {
     }
 
     /**
-     * Dispatches a read operation of N bytes.
+     * Dispatches a read operation of N bytes and updates stream state accordingly.
      *
      * @param readLength An <code>int</code> which represents the number of bytes to read.
      * @param offset The start point of data to be acquired.
@@ -288,7 +288,7 @@ public abstract class StorageInputStream extends InputStream {
         for (int i = 0; i < chunks; i++) {
             int results = this.readInternal(b, off + numOfBytesRead, len - numOfBytesRead);
             if (results == -1) {
-                return -1;
+                return numOfBytesRead == 0 ? -1 : numOfBytesRead;
             }
             numOfBytesRead += results;
         }

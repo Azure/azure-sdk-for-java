@@ -3,9 +3,12 @@
 
 package com.azure.storage.file.datalake.sas;
 
+import com.azure.core.util.Configuration;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 import java.time.OffsetDateTime;
@@ -16,15 +19,16 @@ import java.time.OffsetDateTime;
  * representation of the SAS which can then be applied to a new client using the .sasToken(String) method on the
  * desired client builder.
  *
- * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
  * SAS</a>
- * @see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas>Constructing a
+ * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas>Constructing a
  * User Delegation SAS</a>
  */
 public final class DataLakeServiceSasSignatureValues {
 
-    private String version;
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, DataLakeServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
 
@@ -47,6 +51,12 @@ public final class DataLakeServiceSasSignatureValues {
     private String contentLanguage;
 
     private String contentType;
+
+    private String preauthorizedAgentObjectId; /* saoid */
+
+    private String agentObjectId; /* suoid */
+
+    private String correlationId;
 
     /**
      * Creates an object with the specified expiry time and permissions
@@ -90,7 +100,7 @@ public final class DataLakeServiceSasSignatureValues {
      * targeted by the library.
      */
     public String getVersion() {
-        return version;
+        return VERSION;
     }
 
     /**
@@ -99,9 +109,12 @@ public final class DataLakeServiceSasSignatureValues {
      *
      * @param version Version to target
      * @return the updated DataLakeServiceSasSignatureValues object
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
+    @Deprecated
     public DataLakeServiceSasSignatureValues setVersion(String version) {
-        this.version = version;
+        /* No-op.*/
         return this;
     }
 
@@ -203,6 +216,7 @@ public final class DataLakeServiceSasSignatureValues {
     /**
      * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      * @param sasIpRange Allowed IP range to set
      * @return the updated DataLakeServiceSasSignatureValues object
      */
@@ -213,7 +227,7 @@ public final class DataLakeServiceSasSignatureValues {
 
     /**
      * @return the name of the access policy on the file system this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
     public String getIdentifier() {
@@ -222,7 +236,7 @@ public final class DataLakeServiceSasSignatureValues {
 
     /**
      * Sets the name of the access policy on the file system this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      *
      * @param identifier Name of the access policy
@@ -320,6 +334,77 @@ public final class DataLakeServiceSasSignatureValues {
      */
     public DataLakeServiceSasSignatureValues setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * @return The AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform
+     * the action granted by the SAS token. The service will validate the SAS token and ensure that the owner of the
+     * user delegation key has the required permissions before granting access but no additional permission check for
+     * the agent object id will be performed.
+     */
+    public String getPreauthorizedAgentObjectId() {
+        return preauthorizedAgentObjectId;
+    }
+
+    /**
+     * Sets the AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform the
+     * action granted by the SAS token.
+     *
+     * @param preauthorizedAgentObjectId The AAD object ID of a user assumed to be authorized by the owner of the user
+     * delegation key to perform the action granted by the SAS token. The service will validate the SAS token and
+     * ensure that the owner of the user delegation key has the required permissions before granting access but no
+     * additional permission check for the agent object id will be performed.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setPreauthorizedAgentObjectId(String preauthorizedAgentObjectId) {
+        this.preauthorizedAgentObjectId = preauthorizedAgentObjectId;
+        return this;
+    }
+
+    /**
+     * @return The AAD object ID of a user assumed to be unauthorized by the owner of the user delegation key to
+     * perform the action granted by the SAS token. The service will validate the SAS token and ensure that the owner
+     * of the user delegation key has the required permissions before granting access and the service will perform an
+     * additional POSIX ACL check to determine if this user is authorized to perform the requested operation.
+     */
+    public String getAgentObjectId() {
+        return agentObjectId;
+    }
+
+    /**
+     * Sets the AAD object ID of a user assumed to be unauthorized by the owner of the user delegation key to perform
+     * the action granted by the SAS token.
+     *
+     * @param agentObjectId The AAD object ID of a user assumed to be unauthorized by the owner of the user delegation
+     * key to perform the action granted by the SAS token. The service will validate the SAS token and ensure that the
+     * owner of the user delegation key has the required permissions before granting access and the service will
+     * perform an additional POSIX ACL check to determine if this user is authorized to perform the requested operation.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setAgentObjectId(String agentObjectId) {
+        this.agentObjectId = agentObjectId;
+        return this;
+    }
+
+    /**
+     * @return the correlation id value for the SAS.
+     */
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    /**
+     * Sets the correlation id value for the SAS.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @param correlationId A correlation ID used to correlate the storage audit logs with the audit logs used by the
+     * principal generating and distributing SAS.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
         return this;
     }
 }

@@ -29,6 +29,7 @@ public class ReadmeSamples {
     }
 
     public void getDataLakeServiceClient2() {
+        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
         DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
             .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
             .buildClient();
@@ -47,6 +48,7 @@ public class ReadmeSamples {
     }
 
     public void getDataLakeFileSystemClient3() {
+        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
         DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
             .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "?" + "<your-sasToken>")
             .buildClient();
@@ -66,6 +68,7 @@ public class ReadmeSamples {
     }
 
     public void getFileClient3() {
+        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
         DataLakeFileClient fileClient = new DataLakePathClientBuilder()
             .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" + "?" + "<your-sasToken>")
             .buildFileClient();
@@ -85,6 +88,7 @@ public class ReadmeSamples {
     }
 
     public void getDirClient3() {
+        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
         DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
             .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" + "?" + "<your-sasToken>")
             .buildDirectoryClient();
@@ -105,12 +109,14 @@ public class ReadmeSamples {
     }
 
     public void renameFile() {
+        //Need to authenticate with azure identity and add role assignment "Storage Blob Data Contributor" to do the following operation.
         DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
         fileClient.create();
         fileClient.rename("new-file-system-name", "new-file-name");
     }
 
     public void renameDirectory() {
+        //Need to authenticate with azure identity and add role assignment "Storage Blob Data Contributor" to do the following operation.
         DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
         directoryClient.create();
         directoryClient.rename("new-file-system-name", "new-directory-name");

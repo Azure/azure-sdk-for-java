@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.routing.UInt128;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -41,6 +44,17 @@ public final class ItemComparator implements Comparator<Object>, Serializable {
             return Double.compare(((Number) obj1).doubleValue(), ((Number) obj2).doubleValue());
         case String:
             return ((String) obj1).compareTo((String) obj2);
+        case ArrayNode:
+        case ObjectNode:
+            try{
+                UInt128 hash1 = DistinctHash.getHash(obj1);
+                UInt128 hash2 = DistinctHash.getHash(obj2);
+                return hash1.compareTo(hash2);
+            }
+            catch (IOException e) {
+                throw new IllegalStateException(String.format("Getting hash exception for type %s ", type1.toString()), e);
+            }
+
         default:
             throw new ClassCastException(String.format("Unexpected type: %s", type1.toString()));
         }

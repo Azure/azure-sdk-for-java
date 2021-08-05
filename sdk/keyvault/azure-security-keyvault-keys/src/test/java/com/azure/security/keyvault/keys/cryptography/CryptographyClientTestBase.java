@@ -19,11 +19,22 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
@@ -33,15 +44,22 @@ import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Consumer;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class CryptographyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
+    protected boolean isManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -55,9 +73,9 @@ public abstract class CryptographyClientTestBase extends TestBase {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = System.getenv("ARM_CLIENTID");
-            String clientKey = System.getenv("ARM_CLIENTKEY");
-            String tenantId = System.getenv("AZURE_TENANT_ID");
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");
@@ -70,17 +88,21 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
         policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone(), serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
+
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential,
+                isManagedHsmTest ? CryptographyAsyncClient.MHSM_SCOPE : CryptographyAsyncClient.KEY_VAULT_SCOPE));
         }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
@@ -92,8 +114,17 @@ public abstract class CryptographyClientTestBase extends TestBase {
         return pipeline;
     }
 
+    static CryptographyClient initializeCryptographyClient(JsonWebKey key) {
+        return new CryptographyClientBuilder()
+            .jsonWebKey(key)
+            .buildClient();
+    }
+
     @Test
     public abstract void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+
+    @Test
+    public abstract void encryptDecryptRsaLocal() throws Exception;
 
     void encryptDecryptRsaRunner(Consumer<KeyPair> testRunner) throws Exception {
         final Map<String, String> tags = new HashMap<>();
@@ -102,10 +133,34 @@ public abstract class CryptographyClientTestBase extends TestBase {
     }
 
     @Test
+    public abstract void encryptDecryptAes128CbcLocal() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptAes192CbcLocal() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptAes256CbcLocal() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptAes128CbcPadLocal() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptAes192CbcPadLocal() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptAes256CbcPadLocal() throws Exception;
+
+    @Test
     public abstract void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
-    public abstract void wrapUnwraptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+    public abstract void signVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+
+    @Test
+    public abstract void wrapUnwrapRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+
+    @Test
+    public abstract void wrapUnwrapRsaLocal() throws Exception;
 
     @Test
     public abstract void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
@@ -127,6 +182,48 @@ public abstract class CryptographyClientTestBase extends TestBase {
         return new KeyPair(keyFactory.generatePublic(publicKeySpec), keyFactory.generatePrivate(privateKeySpec));
     }
 
+    static void encryptDecryptAesCbc(int keySize, EncryptParameters encryptParameters) throws NoSuchAlgorithmException {
+        byte[] plaintext = "My16BitPlaintext".getBytes();
+        byte[] iv = "My16BytesTestIv.".getBytes();
+        CryptographyClient cryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
+        EncryptResult encryptResult =
+            cryptographyClient.encrypt(encryptParameters, Context.NONE);
+        EncryptionAlgorithm algorithm = encryptParameters.getAlgorithm();
+        DecryptParameters decryptParameters = null;
+
+        if (algorithm == EncryptionAlgorithm.A128CBC) {
+            decryptParameters = DecryptParameters.createA128CbcParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A192CBC) {
+            decryptParameters = DecryptParameters.createA192CbcParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A256CBC) {
+            decryptParameters = DecryptParameters.createA256CbcParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A128CBCPAD) {
+            decryptParameters = DecryptParameters.createA128CbcPadParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A192CBCPAD) {
+            decryptParameters = DecryptParameters.createA192CbcPadParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A256CBCPAD) {
+            decryptParameters = DecryptParameters.createA256CbcPadParameters(encryptResult.getCipherText(), iv);
+        }
+
+        DecryptResult decryptResult = cryptographyClient.decrypt(decryptParameters, Context.NONE);
+
+        assertArrayEquals(plaintext, decryptResult.getPlainText());
+    }
+
+    private static JsonWebKey getTestJsonWebKey(int keySize) throws NoSuchAlgorithmException {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+
+        keyGen.init(keySize);
+
+        SecretKey secretKey = keyGen.generateKey();
+
+        List<KeyOperation> keyOperations = new ArrayList<>();
+        keyOperations.add(KeyOperation.ENCRYPT);
+        keyOperations.add(KeyOperation.DECRYPT);
+
+        return JsonWebKey.fromAes(secretKey, keyOperations).setId("testKey");
+    }
+
     String generateResourceId(String suffix) {
         if (interceptorManager.isPlaybackMode()) {
             return suffix;
@@ -136,10 +233,12 @@ public abstract class CryptographyClientTestBase extends TestBase {
     }
 
     public String getEndpoint() {
-        final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+        final String endpoint = isManagedHsmTest
+            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
+            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+
         Objects.requireNonNull(endpoint);
+
         return endpoint;
     }
 

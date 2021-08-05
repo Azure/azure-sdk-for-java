@@ -10,10 +10,12 @@
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.SensitivityLabelSource;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolSensitivityLabels;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.SensitivityLabels;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.CurrentSensitivityLabels;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.RecommendedSensitivityLabels;
@@ -53,6 +55,22 @@ class SqlPoolSensitivityLabelsImpl extends WrapperImpl<SqlPoolSensitivityLabelsI
     public Completable disableRecommendationAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName, String columnName) {
         SqlPoolSensitivityLabelsInner client = this.inner();
         return client.disableRecommendationAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName).toCompletable();
+    }
+
+    @Override
+    public Observable<SensitivityLabels> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource) {
+        SqlPoolSensitivityLabelsInner client = this.inner();
+        return client.getAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, sensitivityLabelSource)
+        .flatMap(new Func1<SensitivityLabelInner, Observable<SensitivityLabels>>() {
+            @Override
+            public Observable<SensitivityLabels> call(SensitivityLabelInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SensitivityLabels)wrapModel(inner));
+                }
+            }
+       });
     }
 
     @Override

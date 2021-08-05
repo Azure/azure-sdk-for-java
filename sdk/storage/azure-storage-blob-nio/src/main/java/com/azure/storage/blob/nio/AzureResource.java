@@ -4,8 +4,8 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
@@ -13,6 +13,9 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
@@ -69,7 +72,7 @@ final class AzureResource {
          */
         Path parent = this.path.getParent();
         return (parent == null || parent.equals(path.getRoot()))
-            || new AzureResource((AzurePath) this.path.getParent()).checkDirectoryExists();
+            || new AzureResource(this.path.getParent()).checkDirectoryExists();
     }
 
     /**
@@ -111,9 +114,6 @@ final class AzureResource {
                 return DirectoryStatus.DOES_NOT_EXIST;
             } else {
                 BlobItem item = blobIterator.next();
-                if (blobIterator.hasNext()) { // More than one item with dir path as prefix. Must be a dir.
-                    return DirectoryStatus.NOT_EMPTY;
-                }
                 if (!item.getName().equals(this.blobClient.getBlobName())) {
                     /*
                     Names do not match. Must be a virtual dir with one item. e.g. blob with name "foo/bar" means dir
@@ -121,8 +121,13 @@ final class AzureResource {
                      */
                     return DirectoryStatus.NOT_EMPTY;
                 }
+                // Metadata marker
                 if (item.getMetadata() != null && item.getMetadata().containsKey(DIR_METADATA_MARKER)) {
-                    return DirectoryStatus.EMPTY; // Metadata marker.
+                    if (blobIterator.hasNext()) { // More than one item with dir path as prefix. Must be a dir.
+                        return DirectoryStatus.NOT_EMPTY;
+                    } else {
+                        return DirectoryStatus.EMPTY;
+                    }
                 }
                 return DirectoryStatus.NOT_A_DIRECTORY; // There is a file (not a directory) at this location.
             }
@@ -238,6 +243,15 @@ final class AzureResource {
 
     BlobClient getBlobClient() {
         return this.blobClient;
+    }
+
+    BlobOutputStream getBlobOutputStream(ParallelTransferOptions pto, BlobRequestConditions rq) {
+        BlockBlobOutputStreamOptions options = new BlockBlobOutputStreamOptions()
+            .setHeaders(this.blobHeaders)
+            .setMetadata(this.blobMetadata)
+            .setParallelTransferOptions(pto)
+            .setRequestConditions(rq);
+        return this.blobClient.getBlockBlobClient().getBlobOutputStream(options);
     }
 
     private Map<String, String> prepareMetadataForDirectory() {

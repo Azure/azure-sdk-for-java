@@ -29,8 +29,18 @@ public interface BillingResponseListResult extends HasInner<BillingResponseListR
     List<VmSizeCompatibilityFilterV2> vmSizeFilters();
 
     /**
+     * @return the vmSizeProperties value.
+     */
+    List<VmSizeProperty> vmSizeProperties();
+
+    /**
      * @return the vmSizes value.
      */
     List<String> vmSizes();
+
+    /**
+     * @return the vmSizesWithEncryptionAtHost value.
+     */
+    List<String> vmSizesWithEncryptionAtHost();
 
 }

@@ -22,12 +22,8 @@ public final class ConnectionPolicy {
     private static final int defaultGatewayMaxConnectionPoolSize = GatewayConnectionConfig.getDefaultConfig()
         .getMaxConnectionPoolSize();
 
-    private static final ConnectionPolicy defaultPolicy =
-        new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-
     private ConnectionMode connectionMode;
     private boolean endpointDiscoveryEnabled;
-    private Duration idleConnectionTimeout;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
     private boolean readRequestsFallbackEnabled;
@@ -38,32 +34,41 @@ public final class ConnectionPolicy {
     private int maxConnectionPoolSize;
     private Duration requestTimeout;
     private ProxyOptions proxy;
+    private Duration idleHttpConnectionTimeout;
 
     //  Direct connection config properties
     private Duration connectTimeout;
-    private Duration idleEndpointTimeout;
+    private Duration idleTcpConnectionTimeout;
+    private Duration idleTcpEndpointTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
+
+    private boolean tcpConnectionEndpointRediscoveryEnabled;
+
+
+    private boolean clientTelemetryEnabled;
 
     /**
      * Constructor.
      */
     public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
         this(ConnectionMode.GATEWAY);
-        this.idleConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
+        this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
+        this.tcpConnectionEndpointRediscoveryEnabled = false;
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
         this(ConnectionMode.DIRECT);
         this.connectTimeout = directConnectionConfig.getConnectTimeout();
-        this.idleConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
-        this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
+        this.idleTcpConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
+        this.idleTcpEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
+        this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -78,12 +83,32 @@ public final class ConnectionPolicy {
     }
 
     /**
+     * Gets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
+     *
+     * @return {@code true} if Direct TCP connection endpoint rediscovery should is enabled; {@code false} otherwise.
+     */
+    public boolean isTcpConnectionEndpointRediscoveryEnabled() {
+        return this.tcpConnectionEndpointRediscoveryEnabled;
+    }
+
+    /**
+     * Sets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
+     *
+     * @return the {@linkplain ConnectionPolicy}.
+     */
+    public ConnectionPolicy setTcpConnectionEndpointRediscoveryEnabled(boolean tcpConnectionEndpointRediscoveryEnabled) {
+        this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
+        return this;
+    }
+
+
+    /**
      * Gets the default connection policy.
      *
      * @return the default connection policy.
      */
     public static ConnectionPolicy getDefaultPolicy() {
-        return ConnectionPolicy.defaultPolicy;
+        return new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
     }
 
     /**
@@ -149,24 +174,54 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the value of the timeout for an idle connection, the default is 60
+     * Gets the value of the timeout for an idle http connection, the default is 60
      * seconds.
      *
      * @return Idle connection timeout duration.
      */
-    public Duration getIdleConnectionTimeout() {
-        return this.idleConnectionTimeout;
+    public Duration getIdleHttpConnectionTimeout() {
+        return this.idleHttpConnectionTimeout;
     }
 
     /**
-     * sets the value of the timeout for an idle connection. After that time,
+     * sets the value of the timeout for an idle http connection. After that time,
      * the connection will be automatically closed.
      *
-     * @param idleConnectionTimeout the duration for an idle connection.
+     * @param idleHttpConnectionTimeout the duration for an idle connection.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setIdleConnectionTimeout(Duration idleConnectionTimeout) {
-        this.idleConnectionTimeout = idleConnectionTimeout;
+    public ConnectionPolicy setIdleHttpConnectionTimeout(Duration idleHttpConnectionTimeout) {
+        this.idleHttpConnectionTimeout = idleHttpConnectionTimeout;
+        return this;
+    }
+
+    /**
+     * Gets the idle tcp connection timeout for direct client
+     *
+     * Default value is {@link Duration#ZERO}
+     *
+     * Direct client doesn't close a single connection to an endpoint
+     * by default unless specified.
+     *
+     * @return idle tcp connection timeout
+     */
+    public Duration getIdleTcpConnectionTimeout() {
+        return idleTcpConnectionTimeout;
+    }
+
+    /**
+     * Sets the idle tcp connection timeout
+     *
+     * Default value is {@link Duration#ZERO}
+     *
+     * Direct client doesn't close a single connection to an endpoint
+     * by default unless specified.
+     *
+     * @param idleTcpConnectionTimeout idle connection timeout
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setIdleTcpConnectionTimeout(Duration idleTcpConnectionTimeout) {
+        this.idleTcpConnectionTimeout = idleTcpConnectionTimeout;
         return this;
     }
 
@@ -395,17 +450,17 @@ public final class ConnectionPolicy {
      * Gets the idle endpoint timeout
      * @return the idle endpoint timeout
      */
-    public Duration getIdleEndpointTimeout() {
-        return idleEndpointTimeout;
+    public Duration getIdleTcpEndpointTimeout() {
+        return idleTcpEndpointTimeout;
     }
 
     /**
      * Sets the idle endpoint timeout
-     * @param idleEndpointTimeout the idle endpoint timeout
+     * @param idleTcpEndpointTimeout the idle endpoint timeout
      * @return the {@link ConnectionPolicy}
      */
-    public ConnectionPolicy setIdleEndpointTimeout(Duration idleEndpointTimeout) {
-        this.idleEndpointTimeout = idleEndpointTimeout;
+    public ConnectionPolicy setIdleTcpEndpointTimeout(Duration idleTcpEndpointTimeout) {
+        this.idleTcpEndpointTimeout = idleTcpEndpointTimeout;
         return this;
     }
 
@@ -445,13 +500,22 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    public boolean isClientTelemetryEnabled() {
+        return clientTelemetryEnabled;
+    }
+
+    public void setClientTelemetryEnabled(boolean clientTelemetryEnabled) {
+        this.clientTelemetryEnabled = clientTelemetryEnabled;
+    }
+
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
             "requestTimeout=" + requestTimeout +
             ", connectionMode=" + connectionMode +
             ", maxConnectionPoolSize=" + maxConnectionPoolSize +
-            ", idleConnectionTimeout=" + idleConnectionTimeout +
+            ", idleHttpConnectionTimeout=" + idleHttpConnectionTimeout +
+            ", idleTcpConnectionTimeout=" + idleTcpConnectionTimeout +
             ", userAgentSuffix='" + userAgentSuffix + '\'' +
             ", throttlingRetryOptions=" + throttlingRetryOptions +
             ", endpointDiscoveryEnabled=" + endpointDiscoveryEnabled +
@@ -461,9 +525,11 @@ public final class ConnectionPolicy {
             ", inetSocketProxyAddress=" + (proxy != null ? proxy.getAddress() : null) +
             ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
             ", connectTimeout=" + connectTimeout +
-            ", idleEndpointTimeout=" + idleEndpointTimeout +
+            ", idleTcpEndpointTimeout=" + idleTcpEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
+            ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
+            ", clientTelemetryEnabled=" + clientTelemetryEnabled +
             '}';
     }
 }

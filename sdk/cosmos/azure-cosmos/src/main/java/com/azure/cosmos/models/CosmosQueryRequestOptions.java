@@ -3,13 +3,21 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.util.Beta;
+
+import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Specifies the options associated with query methods (enumeration operations)
  * in the Azure Cosmos DB database service.
  */
-public final class CosmosQueryRequestOptions {
+public class CosmosQueryRequestOptions {
+    private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private String partitionKeyRangeId;
     private Boolean scanInQueryEnabled;
@@ -23,11 +31,18 @@ public final class CosmosQueryRequestOptions {
     private boolean queryMetricsEnabled;
     private Map<String, Object> properties;
     private boolean emptyPagesAllowed;
+    private FeedRange feedRange;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
+    private String throughputControlGroupName;
+    private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
+    private Duration thresholdForDiagnosticsOnTracer;
+    private Map<String, String> customOptions;
 
     /**
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
+        this.queryMetricsEnabled = true;
     }
 
     /**
@@ -36,6 +51,7 @@ public final class CosmosQueryRequestOptions {
      * @param options the options
      */
     CosmosQueryRequestOptions(CosmosQueryRequestOptions options) {
+        this.consistencyLevel = options.consistencyLevel;
         this.sessionToken = options.sessionToken;
         this.partitionKeyRangeId = options.partitionKeyRangeId;
         this.scanInQueryEnabled = options.scanInQueryEnabled;
@@ -48,6 +64,18 @@ public final class CosmosQueryRequestOptions {
         this.partitionkey = options.partitionkey;
         this.queryMetricsEnabled = options.queryMetricsEnabled;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
+        this.throughputControlGroupName = options.throughputControlGroupName;
+        this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
+        this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+        this.customOptions = options.customOptions;
+    }
+
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
     }
 
     /**
@@ -67,6 +95,31 @@ public final class CosmosQueryRequestOptions {
      */
     CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
+        return this;
+    }
+
+    /**
+     * Gets the consistency level required for the request.
+     *
+     * @return the consistency level.
+     */
+
+    public ConsistencyLevel getConsistencyLevel() {
+        return consistencyLevel;
+    }
+
+    /**
+     * Sets the consistency level required for the request. The effective consistency level
+     * can only be reduce for read/query requests. So when the Account's default consistency level
+     * is for example Session you can specify on a request-by-request level for individual requests
+     * that Eventual consistency is sufficient - which could reduce the latency and RU charges for this
+     * request but will not guarantee session consistency (read-your-own-write) anymore
+     *
+     * @param consistencyLevel the consistency level.
+     * @return the CosmosItemRequestOptions.
+     */
+    public CosmosQueryRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+        this.consistencyLevel = consistencyLevel;
         return this;
     }
 
@@ -200,7 +253,7 @@ public final class CosmosQueryRequestOptions {
      * @param limitInKb continuation token size limit.
      * @return the CosmosQueryRequestOptions.
      */
-    public CosmosQueryRequestOptions getResponseContinuationTokenLimitInKb(int limitInKb) {
+    public CosmosQueryRequestOptions setResponseContinuationTokenLimitInKb(int limitInKb) {
         this.responseContinuationTokenLimitInKb = limitInKb;
         return this;
     }
@@ -214,7 +267,7 @@ public final class CosmosQueryRequestOptions {
      *
      * @return return set ResponseContinuationTokenLimitInKb, or 0 if not set
      */
-    public int setResponseContinuationTokenLimitInKb() {
+    public int getResponseContinuationTokenLimitInKb() {
         return responseContinuationTokenLimitInKb;
     }
 
@@ -284,16 +337,17 @@ public final class CosmosQueryRequestOptions {
     }
 
     /**
-     * Gets the option to enable populate query metrics
+     * Gets the option to enable populate query metrics. By default query metrics are enabled.
      *
-     * @return whether to enable populate query metrics
+     * @return whether to enable populate query metrics (default: true)
      */
     public boolean isQueryMetricsEnabled() {
         return queryMetricsEnabled;
     }
 
     /**
-     * Sets the option to enable/disable getting metrics relating to query execution on item query requests
+     * Sets the option to enable/disable getting metrics relating to query execution on item query requests.
+     * By default query metrics are enabled.
      *
      * @param queryMetricsEnabled whether to enable or disable query metrics
      * @return the CosmosQueryRequestOptions.
@@ -340,5 +394,149 @@ public final class CosmosQueryRequestOptions {
     CosmosQueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
         return this;
+    }
+
+    /**
+     * Gets the {@link FeedRange}
+     * @return the {@link FeedRange}
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public FeedRange getFeedRange() {
+        return feedRange;
+    }
+
+    /**
+     * Sets the {@link FeedRange} that we want to query
+     * @param feedRange the {@link FeedRange}
+     * @return the CosmosQueryRequestOptions.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setFeedRange(FeedRange feedRange) {
+        this.feedRange = feedRange;
+        return this;
+    }
+
+    /**
+     * Get throughput control group name.
+     * @return The throughput control group name.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    /**
+     * Set the throughput control group name.
+     *
+     * @param throughputControlGroupName The throughput control group name.
+     * @return A {@link CosmosQueryRequestOptions}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
+        return this;
+    }
+
+    /**
+     * Gets the Dedicated Gateway Request Options
+     * @return the Dedicated Gateway Request Options
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return this.dedicatedGatewayRequestOptions;
+    }
+
+    /**
+     * Sets the Dedicated Gateway Request Options
+     * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
+     * @return the CosmosQueryRequestOptions
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
+        return this;
+    }
+
+    /**
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms.
+     *
+     * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     */
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return thresholdForDiagnosticsOnTracer;
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms
+     *
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        return this;
+    }
+
+    /**
+     * Sets the custom query request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a string representing the custom option's value
+     *
+     * @return the CosmosQueryRequestOptions.
+     */
+    CosmosQueryRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Gets the custom query request options
+     *
+     * @return Map of custom request options
+     */
+    Map<String, String> getHeaders() {
+        return this.customOptions;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.setCosmosQueryRequestOptionsAccessor(
+            new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
+
+                @Override
+                public void setOperationContext(CosmosQueryRequestOptions queryRequestOptions,
+                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                    queryRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name
+                    , String value) {
+                    return queryRequestOptions.setHeader(name, value);
+                }
+
+                @Override
+                public Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.getHeaders();
+                }
+            });
     }
 }

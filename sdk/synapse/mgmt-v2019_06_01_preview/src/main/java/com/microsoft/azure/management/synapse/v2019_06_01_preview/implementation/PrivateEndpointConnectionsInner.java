@@ -12,14 +12,17 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -64,11 +67,11 @@ public class PrivateEndpointConnectionsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnections create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Body PrivateEndpointConnectionInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnections beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        Observable<Response<ResponseBody>> beginCreate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Body PrivateEndpointConnectionInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnections delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}", method = "DELETE", hasBody = true)
@@ -92,10 +95,10 @@ public class PrivateEndpointConnectionsInner {
      * Gets a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateEndpointConnectionInner object if successful.
      */
@@ -107,7 +110,7 @@ public class PrivateEndpointConnectionsInner {
      * Gets a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -121,7 +124,7 @@ public class PrivateEndpointConnectionsInner {
      * Gets a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateEndpointConnectionInner object
@@ -139,7 +142,7 @@ public class PrivateEndpointConnectionsInner {
      * Gets a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateEndpointConnectionInner object
@@ -174,10 +177,10 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<PrivateEndpointConnectionInner> getDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PrivateEndpointConnectionInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PrivateEndpointConnectionInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -185,42 +188,45 @@ public class PrivateEndpointConnectionsInner {
      * Approve or reject a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param request Request body of private endpoint connection to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateEndpointConnectionInner object if successful.
      */
-    public PrivateEndpointConnectionInner create(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
-        return createWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName).toBlocking().last().body();
+    public PrivateEndpointConnectionInner create(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner request) {
+        return createWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, request).toBlocking().last().body();
     }
 
     /**
      * Approve or reject a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param request Request body of private endpoint connection to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PrivateEndpointConnectionInner> createAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, final ServiceCallback<PrivateEndpointConnectionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName), serviceCallback);
+    public ServiceFuture<PrivateEndpointConnectionInner> createAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner request, final ServiceCallback<PrivateEndpointConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, request), serviceCallback);
     }
 
     /**
      * Approve or reject a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param request Request body of private endpoint connection to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<PrivateEndpointConnectionInner> createAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
-        return createWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName).map(new Func1<ServiceResponse<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>() {
+    public Observable<PrivateEndpointConnectionInner> createAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner request) {
+        return createWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, request).map(new Func1<ServiceResponse<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>() {
             @Override
             public PrivateEndpointConnectionInner call(ServiceResponse<PrivateEndpointConnectionInner> response) {
                 return response.body();
@@ -232,12 +238,13 @@ public class PrivateEndpointConnectionsInner {
      * Approve or reject a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param request Request body of private endpoint connection to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<PrivateEndpointConnectionInner>> createWithServiceResponseAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+    public Observable<ServiceResponse<PrivateEndpointConnectionInner>> createWithServiceResponseAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner request) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -250,10 +257,14 @@ public class PrivateEndpointConnectionsInner {
         if (privateEndpointConnectionName == null) {
             throw new IllegalArgumentException("Parameter privateEndpointConnectionName is required and cannot be null.");
         }
+        if (request == null) {
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, workspaceName, privateEndpointConnectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Validator.validate(request);
+        Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, workspaceName, privateEndpointConnectionName, request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<PrivateEndpointConnectionInner>() { }.getType());
     }
 
@@ -261,42 +272,45 @@ public class PrivateEndpointConnectionsInner {
      * Approve or reject a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param request Request body of private endpoint connection to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateEndpointConnectionInner object if successful.
      */
-    public PrivateEndpointConnectionInner beginCreate(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName).toBlocking().single().body();
+    public PrivateEndpointConnectionInner beginCreate(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner request) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, request).toBlocking().single().body();
     }
 
     /**
      * Approve or reject a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param request Request body of private endpoint connection to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PrivateEndpointConnectionInner> beginCreateAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, final ServiceCallback<PrivateEndpointConnectionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName), serviceCallback);
+    public ServiceFuture<PrivateEndpointConnectionInner> beginCreateAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner request, final ServiceCallback<PrivateEndpointConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, request), serviceCallback);
     }
 
     /**
      * Approve or reject a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param request Request body of private endpoint connection to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateEndpointConnectionInner object
      */
-    public Observable<PrivateEndpointConnectionInner> beginCreateAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName).map(new Func1<ServiceResponse<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>() {
+    public Observable<PrivateEndpointConnectionInner> beginCreateAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner request) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, request).map(new Func1<ServiceResponse<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>() {
             @Override
             public PrivateEndpointConnectionInner call(ServiceResponse<PrivateEndpointConnectionInner> response) {
                 return response.body();
@@ -308,12 +322,13 @@ public class PrivateEndpointConnectionsInner {
      * Approve or reject a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param request Request body of private endpoint connection to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateEndpointConnectionInner object
      */
-    public Observable<ServiceResponse<PrivateEndpointConnectionInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+    public Observable<ServiceResponse<PrivateEndpointConnectionInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner request) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -326,10 +341,14 @@ public class PrivateEndpointConnectionsInner {
         if (privateEndpointConnectionName == null) {
             throw new IllegalArgumentException("Parameter privateEndpointConnectionName is required and cannot be null.");
         }
+        if (request == null) {
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginCreate(this.client.subscriptionId(), resourceGroupName, workspaceName, privateEndpointConnectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Validator.validate(request);
+        return service.beginCreate(this.client.subscriptionId(), resourceGroupName, workspaceName, privateEndpointConnectionName, request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateEndpointConnectionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PrivateEndpointConnectionInner>> call(Response<ResponseBody> response) {
@@ -343,11 +362,11 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<PrivateEndpointConnectionInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PrivateEndpointConnectionInner> beginCreateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PrivateEndpointConnectionInner>() { }.getType())
                 .register(201, new TypeToken<PrivateEndpointConnectionInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -355,10 +374,10 @@ public class PrivateEndpointConnectionsInner {
      * Delete a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationResourceInner object if successful.
      */
@@ -370,7 +389,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -384,7 +403,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -402,7 +421,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -431,10 +450,10 @@ public class PrivateEndpointConnectionsInner {
      * Delete a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationResourceInner object if successful.
      */
@@ -446,7 +465,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -460,7 +479,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationResourceInner object
@@ -478,7 +497,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationResourceInner object
@@ -513,11 +532,12 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<OperationResourceInner> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationResourceInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<OperationResourceInner> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationResourceInner, ErrorContractException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<OperationResourceInner>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -525,9 +545,9 @@ public class PrivateEndpointConnectionsInner {
      * Lists private endpoint connection in workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PrivateEndpointConnectionInner&gt; object if successful.
      */
@@ -545,7 +565,7 @@ public class PrivateEndpointConnectionsInner {
      * Lists private endpoint connection in workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -566,7 +586,7 @@ public class PrivateEndpointConnectionsInner {
      * Lists private endpoint connection in workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PrivateEndpointConnectionInner&gt; object
      */
@@ -584,7 +604,7 @@ public class PrivateEndpointConnectionsInner {
      * Lists private endpoint connection in workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PrivateEndpointConnectionInner&gt; object
      */
@@ -606,7 +626,7 @@ public class PrivateEndpointConnectionsInner {
      * Lists private endpoint connection in workspace.
      *
     ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
-    ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> * @param workspaceName The name of the workspace
+    ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PrivateEndpointConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -637,10 +657,10 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> listDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateEndpointConnectionInner>, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> listDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateEndpointConnectionInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PrivateEndpointConnectionInner>>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -649,7 +669,7 @@ public class PrivateEndpointConnectionsInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PrivateEndpointConnectionInner&gt; object if successful.
      */
@@ -748,10 +768,10 @@ public class PrivateEndpointConnectionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateEndpointConnectionInner>, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateEndpointConnectionInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PrivateEndpointConnectionInner>>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolTransparentDataEncryptions;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.TransparentDataEncryption;
 
 class SqlPoolTransparentDataEncryptionsImpl extends WrapperImpl<SqlPoolTransparentDataEncryptionsInner> implements SqlPoolTransparentDataEncryptions {
@@ -43,6 +44,24 @@ class SqlPoolTransparentDataEncryptionsImpl extends WrapperImpl<SqlPoolTranspare
     public Observable<TransparentDataEncryption> createOrUpdateAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
         SqlPoolTransparentDataEncryptionsInner client = this.inner();
         return client.createOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName)
+        .map(new Func1<TransparentDataEncryptionInner, TransparentDataEncryption>() {
+            @Override
+            public TransparentDataEncryption call(TransparentDataEncryptionInner inner) {
+                return new TransparentDataEncryptionImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<TransparentDataEncryption> listAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName) {
+        SqlPoolTransparentDataEncryptionsInner client = this.inner();
+        return client.listAsync(resourceGroupName, workspaceName, sqlPoolName)
+        .flatMapIterable(new Func1<Page<TransparentDataEncryptionInner>, Iterable<TransparentDataEncryptionInner>>() {
+            @Override
+            public Iterable<TransparentDataEncryptionInner> call(Page<TransparentDataEncryptionInner> page) {
+                return page.items();
+            }
+        })
         .map(new Func1<TransparentDataEncryptionInner, TransparentDataEncryption>() {
             @Override
             public TransparentDataEncryption call(TransparentDataEncryptionInner inner) {

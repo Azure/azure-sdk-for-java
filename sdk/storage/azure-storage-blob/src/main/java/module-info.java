@@ -5,9 +5,12 @@ module com.azure.storage.blob {
     requires transitive com.azure.storage.common;
 
     requires com.fasterxml.jackson.dataformat.xml;
+    requires com.azure.storage.internal.avro;
+    requires com.azure.core.experimental;
 
     exports com.azure.storage.blob;
     exports com.azure.storage.blob.models;
+    exports com.azure.storage.blob.options;
     exports com.azure.storage.blob.sas;
     exports com.azure.storage.blob.specialized;
 
@@ -17,11 +20,17 @@ module com.azure.storage.blob {
         com.azure.storage.blob.batch,
         com.azure.storage.file.datalake;    // FIXME this should not be a long-term solution
 
-    exports com.azure.storage.blob.implementation.models to com.azure.storage.blob.batch;
+    exports com.azure.storage.blob.implementation.models to
+        com.azure.storage.blob.batch,
+        com.azure.storage.blob.cryptography;
 
     exports com.azure.storage.blob.implementation.util to
         com.azure.storage.blob.cryptography,
-        com.azure.storage.file.datalake;
+        com.azure.storage.file.datalake,
+        com.azure.storage.blob.changefeed,
+        com.fasterxml.jackson.databind,
+        com.azure.storage.blob.batch,
+        com.azure.storage.blob.nio;
 
     opens com.azure.storage.blob.models to
         com.fasterxml.jackson.databind,

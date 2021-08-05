@@ -9,8 +9,8 @@ import com.azure.messaging.eventhubs.jproxy.ProxyServer;
 import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * Verifies we can publish events through a proxy.
  */
@@ -34,9 +36,11 @@ class ProxySendTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 8999;
     private static final String PARTITION_ID = "3";
     private static final int NUMBER_OF_EVENTS = 25;
+    private static final ClientLogger LOGGER = new ClientLogger(ProxySendTest.class);
 
     private static ProxyServer proxyServer;
     private static ProxySelector defaultProxySelector;
+
     private EventHubClientBuilder builder;
 
     ProxySendTest() {
@@ -48,37 +52,39 @@ class ProxySendTest extends IntegrationTestBase {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
 
         proxyServer = new SimpleProxy(PROXY_PORT);
-        proxyServer.start(t -> {
-        });
+        proxyServer.start(t -> LOGGER.error("Starting proxy server failed.", t));
 
         defaultProxySelector = ProxySelector.getDefault();
         ProxySelector.setDefault(new ProxySelector() {
             @Override
             public List<Proxy> select(URI uri) {
+                LOGGER.info("Returning proxy '{}' for URI: {}", proxyServer.getHost(), uri);
                 return Collections.singletonList(new Proxy(Proxy.Type.HTTP, proxyServer.getHost()));
             }
 
             @Override
             public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
-                // no-op
+                LOGGER.error("Failed to connect. URI: {}. Address: {}", uri, sa, ioe);
             }
         });
     }
 
     @AfterAll
-    static void cleanupClient() throws Exception {
-        StepVerifier.resetDefaultTimeout();
-
-        if (proxyServer != null) {
-            proxyServer.stop();
+    static void cleanupClient() throws IOException {
+        try {
+            if (proxyServer != null) {
+                proxyServer.stop();
+            }
+        } finally {
+            ProxySelector.setDefault(defaultProxySelector);
+            StepVerifier.resetDefaultTimeout();
         }
-
-        ProxySelector.setDefault(defaultProxySelector);
     }
 
     @Override
     protected void beforeTest() {
         builder = new EventHubClientBuilder()
+            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .connectionString(getConnectionString());
     }
@@ -95,7 +101,7 @@ class ProxySendTest extends IntegrationTestBase {
         final List<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
         final PartitionProperties information = producer.getPartitionProperties(PARTITION_ID).block();
 
-        Assertions.assertNotNull(information, "Should receive partition information.");
+        assertNotNull(information, "Should receive partition information.");
 
         final EventPosition position = EventPosition.fromSequenceNumber(information.getLastEnqueuedSequenceNumber());
         final EventHubConsumerAsyncClient consumer = builder
@@ -109,6 +115,7 @@ class ProxySendTest extends IntegrationTestBase {
                 .verify(TIMEOUT);
 
             // Assert
+            logger.info("Waiting to receive events.");
             StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
                 .filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)

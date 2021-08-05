@@ -3,20 +3,23 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.Utility;
+import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -31,9 +34,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
+import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
+import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
@@ -133,12 +136,12 @@ class RecognizeEntityAsyncClient {
      * Helper method to convert the service response of {@link EntitiesResult} to {@link Response} which contains
      * {@link RecognizeEntitiesResultCollection}.
      *
-     * @param response the {@link SimpleResponse} of {@link EntitiesResult} returned by the service.
+     * @param response the {@link Response} of {@link EntitiesResult} returned by the service.
      *
      * @return A {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
     private Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponse(
-        final SimpleResponse<EntitiesResult> response) {
+        final Response<EntitiesResult> response) {
         EntitiesResult entitiesResult = response.getValue();
         // List of documents results
         List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
@@ -149,10 +152,14 @@ class RecognizeEntityAsyncClient {
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
                 new CategorizedEntityCollection(
-                    new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
-                        new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                            entity.getSubcategory(), entity.getConfidenceScore()))
-                        .collect(Collectors.toList())),
+                    new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
+                        final CategorizedEntity categorizedEntity =
+                            new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                                entity.getSubcategory(), entity.getConfidenceScore());
+                        CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
+                        return categorizedEntity;
+                    }).collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
                         .map(warning -> {
                             final WarningCodeValue warningCodeValue = warning.getCode();
@@ -162,22 +169,10 @@ class RecognizeEntityAsyncClient {
                         }).collect(Collectors.toList())))
             )));
         // Document errors
-        entitiesResult.getErrors().forEach(documentError -> {
-            /*
-             *  TODO: Remove this after service update to throw exception.
-             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
-             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
-             */
-            if (documentError.getId().isEmpty()) {
-                throw logger.logExceptionAsError(
-                    new HttpResponseException(documentError.getError().getInnererror().getMessage(),
-                    getEmptyErrorIdHttpResponse(response), documentError.getError().getInnererror().getCode()));
-            }
-
-            recognizeEntitiesResults.add(
-                new RecognizeEntitiesResult(documentError.getId(), null,
-                    toTextAnalyticsError(documentError.getError()), null));
-        });
+        for (DocumentError documentError : entitiesResult.getErrors()) {
+            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
 
         return new SimpleResponse<>(response,
             new RecognizeEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),
@@ -196,16 +191,19 @@ class RecognizeEntityAsyncClient {
      */
     private Mono<Response<RecognizeEntitiesResultCollection>> getRecognizedEntitiesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        options = options == null ? new TextAnalyticsRequestOptions() : options;
         return service.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics())
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+            options.getModelVersion(), options.isIncludeStatistics(),
+            options.isServiceLogsDisabled(),
+            StringIndexType.UTF16CODE_UNIT,
+            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
             .map(this::toRecognizeEntitiesResultCollectionResponse)
-            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

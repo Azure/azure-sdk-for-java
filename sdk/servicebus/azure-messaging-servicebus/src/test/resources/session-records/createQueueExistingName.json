@@ -3,18 +3,18 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.servicebus.windows.net/queue-5?api-version=2017-04",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.3 (11.0.5; Windows 10 10.0)",
+      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.4 (11.0.5; Windows 10; 10.0)",
       "Content-Type" : "application/xml"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=31536000",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "ETag" : "637271971426770000",
+      "ETag" : "637293228523600000",
       "retry-after" : "0",
       "StatusCode" : "409",
-      "Body" : "<Error><Code>409</Code><Detail>SubCode=40900. Conflict. You're requesting an operation that isn't allowed in the resource's current state. To know more visit https://aka.ms/sbResourceMgrExceptions. . TrackingId:6b1c42e7-0272-4499-9848-fb60303c56a7_G0, SystemTracker:sb-java-conniey-4.servicebus.windows.net:queue-5, Timestamp:2020-06-08T07:14:45</Detail></Error>",
-      "Date" : "Mon, 08 Jun 2020 07:14:45 GMT",
+      "Body" : "<Error><Code>409</Code><Detail>SubCode=40900. Conflict. You're requesting an operation that isn't allowed in the resource's current state. To know more visit https://aka.ms/sbResourceMgrExceptions. . TrackingId:65bf6389-d9e3-48db-a037-528c71f0fcfa_G4, SystemTracker:sb-java-conniey-1.servicebus.windows.net:queue-5, Timestamp:2020-07-02T22:49:02</Detail></Error>",
+      "Date" : "Thu, 02 Jul 2020 22:49:02 GMT",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Exception" : null

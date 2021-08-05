@@ -4,14 +4,26 @@ import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.Utility
-import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions
+import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
+import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.LeaseStateType
+import com.azure.storage.file.datalake.models.LeaseStatusType
+import com.azure.storage.file.datalake.models.ListPathsOptions
+import com.azure.storage.file.datalake.models.PathAccessControlEntry
+import com.azure.storage.file.datalake.models.PathDeletedItem
+import com.azure.storage.file.datalake.models.PathHttpHeaders
+import com.azure.storage.file.datalake.models.PathItem
+import com.azure.storage.file.datalake.models.PublicAccessType
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
+import java.util.stream.Collectors
 
 class FileSystemAPITest extends APISpec {
 
@@ -945,7 +957,20 @@ class FileSystemAPITest extends APISpec {
         def filePath = response.next()
         !response.hasNext()
     }
-    // TODO (gapra): Add more get paths tests (Github issue created)
+
+    def "List paths max results by page"() {
+        setup:
+        def dirName = generatePathName()
+        fsc.getDirectoryClient(dirName).create()
+
+        def fileName = generatePathName()
+        fsc.getFileClient(fileName).create()
+
+        expect:
+        for (def page : fsc.listPaths(new ListPathsOptions(), null).iterableByPage(1)) {
+            assert page.value.size() == 1
+        }
+    }
 
     @Unroll
     def "Create URL special chars encoded"() {
@@ -960,7 +985,7 @@ class FileSystemAPITest extends APISpec {
         fc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
         fc2.create()
         fc2.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-        fc2.appendWithResponse(defaultInputStream.get(), 0, defaultDataSize, null, null, null, null).getStatusCode() == 202
+        fc2.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, null, null, null, null).getStatusCode() == 202
         dc1.createWithResponse(null, null, null, null, null, null, null).getStatusCode() == 201
         dc2.create()
         dc2.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
@@ -1032,14 +1057,14 @@ class FileSystemAPITest extends APISpec {
         def identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(1))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(1))
                 .setPermissions("r"))
         def identifier2 = new DataLakeSignedIdentifier()
             .setId("0001")
             .setAccessPolicy(new DataLakeAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(2))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(2))
                 .setPermissions("w"))
         def ids = [identifier, identifier2] as List
 
@@ -1132,8 +1157,8 @@ class FileSystemAPITest extends APISpec {
         def identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy()
-                .setStartsOn(getUTCNow())
-                .setExpiresOn(getUTCNow().plusDays(1))
+                .setStartsOn(namer.getUtcNow())
+                .setExpiresOn(namer.getUtcNow().plusDays(1))
                 .setPermissions("r"))
         def ids = [identifier] as List
         fsc.setAccessPolicy(PublicAccessType.BLOB, ids)
@@ -1217,5 +1242,123 @@ class FileSystemAPITest extends APISpec {
         resp.getETag()
         resp.getLastModified()
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def fsc = getFileSystemClientBuilder(fsc.getFileSystemUrl()).addPolicy(getPerCallVersionPolicy()).credential(env.dataLakeAccount.credential).buildClient()
+
+        when: "blob endpoint"
+        def response = fsc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+
+        when: "dfs endpoint"
+        response = fsc.getAccessPolicyWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
+
+//    def "Rename"() {
+//        setup:
+//        def newName = generateFileSystemName()
+//
+//        when:
+//        def renamedContainer = fsc.rename(newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    def "Rename sas"() {
+//        setup:
+//        def newName = generateFileSystemName()
+//        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sasClient = getFileSystemClient(sas, fsc.getFileSystemUrl())
+//
+//        when:
+//        def renamedContainer = sasClient.rename(newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    @Unroll
+//    def "Rename AC"() {
+//        setup:
+//        leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
+//        def cac = new DataLakeRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        expect:
+//        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
+//            null, null).getStatusCode() == 200
+//
+//        where:
+//        leaseID         || _
+//        null            || _
+//        receivedLeaseID || _
+//    }
+//
+//    @Unroll
+//    def "Rename AC fail"() {
+//        setup:
+//        def cac = new DataLakeRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        when:
+//        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
+//            null, null)
+//
+//        then:
+//        thrown(BlobStorageException)
+//
+//        where:
+//        leaseID         || _
+//        garbageLeaseID  || _
+//    }
+//
+//    @Unroll
+//    def "Rename AC illegal"() {
+//        setup:
+//        def ac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+//
+//        when:
+//        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(ac),
+//            null, null)
+//
+//        then:
+//        thrown(UnsupportedOperationException)
+//
+//        where:
+//        modified | unmodified | match        | noneMatch
+//        oldDate  | null       | null         | null
+//        null     | newDate    | null         | null
+//        null     | null       | receivedEtag | null
+//        null     | null       | null         | garbageEtag
+//        null     | null       | null         | null
+//    }
+//
+//    def "Rename error"() {
+//        setup:
+//        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+//        def newName = generateFileSystemName()
+//
+//        when:
+//        fsc.rename(newName)
+//
+//        then:
+//        thrown(BlobStorageException)
+//    }
 
 }

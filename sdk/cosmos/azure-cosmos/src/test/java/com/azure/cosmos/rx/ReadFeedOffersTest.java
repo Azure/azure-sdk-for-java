@@ -99,7 +99,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
         partitionKeyDef.setPaths(paths);
         collection.setPartitionKey(partitionKeyDef);
 
-        return client.createCollection(getDatabaseLink(), collection, null).single().block().getResource();
+        return client.createCollection(getDatabaseLink(), collection, null).block().getResource();
     }
 
     private String getDatabaseLink() {

@@ -31,7 +31,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @param <T> the class of the expandable string enum.
      * @return The expandable string enum instance.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "deprecation"})
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
             return null;

@@ -18,17 +18,8 @@ public final class PatternReplaceTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        PatternReplaceTokenFilter patternReplaceTokenFilter = new PatternReplaceTokenFilter();
-
-        String name = obj.getName();
-        patternReplaceTokenFilter.setName(name);
-
-        String pattern = obj.getPattern();
-        patternReplaceTokenFilter.setPattern(pattern);
-
-        String replacement = obj.getReplacement();
-        patternReplaceTokenFilter.setReplacement(replacement);
-        return patternReplaceTokenFilter;
+        return new PatternReplaceTokenFilter(obj.getName(),
+            obj.getPattern(), obj.getReplacement());
     }
 
     /**
@@ -39,18 +30,9 @@ public final class PatternReplaceTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.PatternReplaceTokenFilter patternReplaceTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.PatternReplaceTokenFilter();
 
-        String name = obj.getName();
-        patternReplaceTokenFilter.setName(name);
-
-        String pattern = obj.getPattern();
-        patternReplaceTokenFilter.setPattern(pattern);
-
-        String replacement = obj.getReplacement();
-        patternReplaceTokenFilter.setReplacement(replacement);
-        return patternReplaceTokenFilter;
+        return new com.azure.search.documents.indexes.implementation.models.PatternReplaceTokenFilter(obj.getName(),
+            obj.getPattern(), obj.getReplacement());
     }
 
     private PatternReplaceTokenFilterConverter() {

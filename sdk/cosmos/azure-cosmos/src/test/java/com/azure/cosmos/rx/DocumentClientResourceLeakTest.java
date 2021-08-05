@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.guava27.Strings;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -75,9 +75,9 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
         }
     }
 
-    private CosmosItemProperties getDocumentDefinition() {
+    private InternalObjectNode getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
-        return new CosmosItemProperties(Strings.lenientFormat(
+        return new InternalObjectNode(Strings.lenientFormat(
             "{\"id\":\"%s\",\"mypk\":\"%s\",\"sgmts\":[[6519456,1471916863],[2498434,1455671440]]}", uuid, uuid
         ));
     }

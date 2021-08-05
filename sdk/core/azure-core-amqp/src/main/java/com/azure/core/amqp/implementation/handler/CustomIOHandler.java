@@ -9,6 +9,8 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.impl.IOHandler;
 
+import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
+
 public class CustomIOHandler extends IOHandler {
     private final ClientLogger logger = new ClientLogger(CustomIOHandler.class);
     private final String connectionId;
@@ -23,7 +25,7 @@ public class CustomIOHandler extends IOHandler {
         final Connection connection = event.getConnection();
 
         logger.info("onTransportClosed connectionId[{}], hostname[{}]",
-            connectionId, (connection != null ? connection.getHostname() : "n/a"));
+            connectionId, (connection != null ? connection.getHostname() : NOT_APPLICABLE));
 
         if (transport != null && connection != null && connection.getTransport() != null) {
             transport.unbind();

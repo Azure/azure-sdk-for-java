@@ -6,21 +6,32 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response from a list skillset request. If successful, it includes the full
- * definitions of all skillsets.
- */
-@Fluent
+/** Response from a list skillset request. If successful, it includes the full definitions of all skillsets. */
+@Immutable
 public final class ListSkillsetsResult {
     /*
      * The skillsets defined in the Search service.
      */
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndexerSkillset> skillsets;
+
+    /**
+     * Creates an instance of ListSkillsetsResult class.
+     *
+     * @param skillsets the skillsets value to set.
+     */
+    @JsonCreator
+    public ListSkillsetsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchIndexerSkillset> skillsets) {
+        this.skillsets = skillsets;
+    }
 
     /**
      * Get the skillsets property: The skillsets defined in the Search service.

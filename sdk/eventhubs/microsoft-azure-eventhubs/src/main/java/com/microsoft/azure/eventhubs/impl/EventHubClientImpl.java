@@ -107,7 +107,6 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         }
         Objects.requireNonNull(tokenProvider, "Token provider cannot be null.");
 
-        final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
         final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(endpoint.getHost(), tokenProvider, executor);
         if (options != null) {
             builder.setOperationTimeout(options.getOperationTimeout())
@@ -117,15 +116,32 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                 .setWatchdogTriggerTime(options.getMaximumSilentTime());
         }
 
-        return builder.build()
-                .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
-                    @Override
-                    public EventHubClient apply(MessagingFactory factory) {
-                        eventHubClient.underlyingFactory = factory;
-                        eventHubClient.timer = new Timer(factory);
-                        return eventHubClient;
-                    }
-                }, executor);
+        return  create(eventHubName, executor, builder.build());
+    }
+
+    /**
+     * Package private method for creating an EventHub client with the given messaging factory.
+     *
+     * @param eventHubName Name of the Event Hub to connect to.
+     * @param executor Thread pool to run on.
+     * @param messagingFactory A future that completes with the messaging factory.
+     * @return A new EventHubClient.
+     */
+    static CompletableFuture<EventHubClient> create(
+        final String eventHubName,
+        final ScheduledExecutorService executor,
+        final CompletableFuture<MessagingFactory> messagingFactory) {
+
+        if (StringUtil.isNullOrWhiteSpace(eventHubName)) {
+            throw new IllegalArgumentException("Event hub name cannot be null or empty");
+        }
+
+        return messagingFactory.thenApplyAsync(factory -> {
+            final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
+            eventHubClient.underlyingFactory = factory;
+            eventHubClient.timer = new Timer(factory);
+            return eventHubClient;
+        }, executor);
     }
 
     public String getEventHubName() {
@@ -158,12 +174,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
             throw new IllegalArgumentException("EventData cannot be empty.");
         }
 
-        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClientImpl.this.sender.send(((EventDataImpl) data).toAmqpMessage());
             }
-        }, this.executor);
+        });
     }
 
     @Override
@@ -172,12 +188,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
             throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
         }
 
-        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClientImpl.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas));
             }
-        }, this.executor);
+        });
     }
 
     @Override
@@ -202,12 +218,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
             throw new IllegalArgumentException("partitionKey cannot be null.");
         }
 
-        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClientImpl.this.sender.send(((EventDataImpl) eventData).toAmqpMessage(partitionKey));
             }
-        }, this.executor);
+        });
     }
 
     @Override
@@ -225,12 +241,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                     String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: %s", ClientConstants.MAX_PARTITION_KEY_LENGTH));
         }
 
-        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClientImpl.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey));
             }
-        }, this.executor);
+        });
     }
 
     @Override
@@ -240,25 +256,30 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     @Override
-    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition)
+    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId,
+        final EventPosition eventPosition)
             throws EventHubException {
         return this.createReceiver(consumerGroupName, partitionId, eventPosition, null);
     }
 
     @Override
-    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions)
+    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId,
+        final EventPosition eventPosition, final ReceiverOptions receiverOptions)
             throws EventHubException {
         return PartitionReceiverImpl.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, eventPosition, PartitionReceiverImpl.NULL_EPOCH, false, receiverOptions, this.executor);
     }
 
     @Override
-    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch)
+    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName,
+        final String partitionId, final EventPosition eventPosition, final long epoch)
             throws EventHubException {
         return this.createEpochReceiver(consumerGroupName, partitionId, eventPosition, epoch, null);
     }
 
     @Override
-    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions)
+    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName,
+        final String partitionId, final EventPosition eventPosition, final long epoch,
+        final ReceiverOptions receiverOptions)
             throws EventHubException {
         return PartitionReceiverImpl.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, eventPosition, epoch, true, receiverOptions, this.executor);
     }
@@ -268,12 +289,12 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         if (this.underlyingFactory != null) {
             synchronized (this.senderCreateSync) {
                 final CompletableFuture<Void> internalSenderClose = this.sender != null
-                        ? this.sender.close().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
+                        ? this.sender.close().thenCompose(new Function<Void, CompletableFuture<Void>>() {
                                 @Override
                                 public CompletableFuture<Void> apply(Void voidArg) {
                                     return EventHubClientImpl.this.underlyingFactory.close();
                                 }
-                            }, this.executor)
+                            })
                         : this.underlyingFactory.close();
 
                 return internalSenderClose;
@@ -311,7 +332,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         request.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_EVENTHUB_ENTITY_TYPE);
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
-        return addManagementToken(request).thenComposeAsync((requestWithToken) -> managementWithRetry(requestWithToken), this.executor).
+        return addManagementToken(request).thenCompose((requestWithToken) -> managementWithRetry(requestWithToken)).
                 thenApplyAsync((rawdata) -> {
                     return new EventHubRuntimeInformation(
                             (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
@@ -330,7 +351,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
-        return addManagementToken(request).thenComposeAsync((requestWithToken) -> managementWithRetry(requestWithToken), this.executor).
+        return addManagementToken(request).thenCompose((requestWithToken) -> managementWithRetry(requestWithToken)).
                 thenApplyAsync((rawdata) -> {
                     return new PartitionRuntimeInformation(
                             (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),

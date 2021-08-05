@@ -20,15 +20,9 @@ public final class KeepTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        KeepTokenFilter keepTokenFilter = new KeepTokenFilter();
 
-        String name = obj.getName();
-        keepTokenFilter.setName(name);
-
-        if (obj.getKeepWords() != null) {
-            List<String> keepWords = new ArrayList<>(obj.getKeepWords());
-            keepTokenFilter.setKeepWords(keepWords);
-        }
+        List<String> keepWords = new ArrayList<>(obj.getKeepWords());
+        KeepTokenFilter keepTokenFilter = new KeepTokenFilter(obj.getName(), keepWords);
 
         Boolean lowerCaseKeepWords = obj.isLowerCaseKeepWords();
         keepTokenFilter.setLowerCaseKeepWords(lowerCaseKeepWords);
@@ -42,19 +36,14 @@ public final class KeepTokenFilterConverter {
         if (obj == null) {
             return null;
         }
+
+        List<String> keepWords = new ArrayList<>(obj.getKeepWords());
         com.azure.search.documents.indexes.implementation.models.KeepTokenFilter keepTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.KeepTokenFilter();
-
-        String name = obj.getName();
-        keepTokenFilter.setName(name);
-
-        if (obj.getKeepWords() != null) {
-            List<String> keepWords = new ArrayList<>(obj.getKeepWords());
-            keepTokenFilter.setKeepWords(keepWords);
-        }
+            new com.azure.search.documents.indexes.implementation.models.KeepTokenFilter(obj.getName(), keepWords);
 
         Boolean lowerCaseKeepWords = obj.areLowerCaseKeepWords();
         keepTokenFilter.setLowerCaseKeepWords(lowerCaseKeepWords);
+
         return keepTokenFilter;
     }
 

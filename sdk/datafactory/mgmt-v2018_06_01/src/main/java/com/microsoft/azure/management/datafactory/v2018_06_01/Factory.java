@@ -37,9 +37,19 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
     DateTime createTime();
 
     /**
+     * @return the encryption value.
+     */
+    EncryptionConfiguration encryption();
+
+    /**
      * @return the eTag value.
      */
     String eTag();
+
+    /**
+     * @return the globalParameters value.
+     */
+    Map<String, GlobalParameterSpecification> globalParameters();
 
     /**
      * @return the identity value.
@@ -50,6 +60,11 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
      * @return the provisioningState value.
      */
     String provisioningState();
+
+    /**
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
 
     /**
      * @return the repoConfiguration value.
@@ -108,6 +123,30 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
         }
 
         /**
+         * The stage of the factory definition allowing to specify Encryption.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies encryption.
+             * @param encryption Properties to enable Customer Managed Key for the factory
+             * @return the next definition stage
+             */
+            WithCreate withEncryption(EncryptionConfiguration encryption);
+        }
+
+        /**
+         * The stage of the factory definition allowing to specify GlobalParameters.
+         */
+        interface WithGlobalParameters {
+            /**
+             * Specifies globalParameters.
+             * @param globalParameters List of parameters for factory
+             * @return the next definition stage
+             */
+            WithCreate withGlobalParameters(Map<String, GlobalParameterSpecification> globalParameters);
+        }
+
+        /**
          * The stage of the factory definition allowing to specify Identity.
          */
         interface WithIdentity {
@@ -117,6 +156,18 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
              * @return the next definition stage
              */
             WithCreate withIdentity(FactoryIdentity identity);
+        }
+
+        /**
+         * The stage of the factory definition allowing to specify PublicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies publicNetworkAccess.
+             * @param publicNetworkAccess Whether or not public network access is allowed for the data factory. Possible values include: 'Enabled', 'Disabled'
+             * @return the next definition stage
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
 
         /**
@@ -136,7 +187,7 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Factory>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithIdentity, DefinitionStages.WithRepoConfiguration {
+        interface WithCreate extends Creatable<Factory>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithEncryption, DefinitionStages.WithGlobalParameters, DefinitionStages.WithIdentity, DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithRepoConfiguration {
         }
     }
     /**

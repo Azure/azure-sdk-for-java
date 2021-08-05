@@ -11,7 +11,7 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -84,7 +84,7 @@ public class WorkspaceAadAdminsInner implements InnerSupportsDelete<Void> {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the WorkspaceAadAdminInfoInner object if successful.
      */
@@ -157,10 +157,10 @@ public class WorkspaceAadAdminsInner implements InnerSupportsDelete<Void> {
             });
     }
 
-    private ServiceResponse<WorkspaceAadAdminInfoInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<WorkspaceAadAdminInfoInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<WorkspaceAadAdminInfoInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkspaceAadAdminInfoInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<WorkspaceAadAdminInfoInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -171,7 +171,7 @@ public class WorkspaceAadAdminsInner implements InnerSupportsDelete<Void> {
      * @param workspaceName The name of the workspace
      * @param aadAdminInfo Workspace active directory administrator properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the WorkspaceAadAdminInfoInner object if successful.
      */
@@ -248,7 +248,7 @@ public class WorkspaceAadAdminsInner implements InnerSupportsDelete<Void> {
      * @param workspaceName The name of the workspace
      * @param aadAdminInfo Workspace active directory administrator properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the WorkspaceAadAdminInfoInner object if successful.
      */
@@ -328,11 +328,11 @@ public class WorkspaceAadAdminsInner implements InnerSupportsDelete<Void> {
             });
     }
 
-    private ServiceResponse<WorkspaceAadAdminInfoInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<WorkspaceAadAdminInfoInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<WorkspaceAadAdminInfoInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkspaceAadAdminInfoInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<WorkspaceAadAdminInfoInner>() { }.getType())
                 .register(202, new TypeToken<WorkspaceAadAdminInfoInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -342,7 +342,7 @@ public class WorkspaceAadAdminsInner implements InnerSupportsDelete<Void> {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String workspaceName) {
@@ -410,7 +410,7 @@ public class WorkspaceAadAdminsInner implements InnerSupportsDelete<Void> {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String workspaceName) {
@@ -482,11 +482,12 @@ public class WorkspaceAadAdminsInner implements InnerSupportsDelete<Void> {
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

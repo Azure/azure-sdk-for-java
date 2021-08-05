@@ -19,6 +19,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
@@ -53,6 +54,7 @@ import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 
 /**
@@ -169,6 +171,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return getEventHubProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
@@ -192,6 +195,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventDataBatch> createBatch() {
         return createBatch(DEFAULT_BATCH_OPTIONS);
     }
@@ -203,6 +207,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      * @throws NullPointerException if {@code options} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventDataBatch> createBatch(CreateBatchOptions options) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
@@ -310,6 +315,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(Iterable<EventData> events) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
@@ -336,6 +342,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
@@ -390,6 +397,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @see EventHubProducerAsyncClient#createBatch()
      * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(EventDataBatch batch) {
         if (batch == null) {
             return monoError(logger, new NullPointerException("'batch' cannot be null."));
@@ -421,7 +429,8 @@ public class EventHubProducerAsyncClient implements Closeable {
             if (isTracingEnabled) {
                 parentContext.set(event.getContext());
                 if (i == 0) {
-                    sharedContext = tracerProvider.getSharedSpanBuilder(parentContext.get());
+                    sharedContext = tracerProvider.getSharedSpanBuilder(ClientConstants.AZ_TRACING_SERVICE_NAME,
+                        parentContext.get());
                 }
                 tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
@@ -445,14 +454,16 @@ public class EventHubProducerAsyncClient implements Closeable {
                     .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
                     .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
             // Start send span and store updated context
-            parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
+            parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, finalSharedContext, ProcessKind.SEND));
         }
 
-        return withRetry(getSendLink(batch.getPartitionId())
-            .flatMap(link ->
-                messages.size() == 1
-                    ? link.send(messages.get(0))
-                    : link.send(messages)), retryOptions.getTryTimeout(), retryPolicy)
+        final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
+            .flatMap(link -> messages.size() == 1
+                ? link.send(messages.get(0))
+                : link.send(messages));
+
+        return withRetry(sendMessage, retryOptions,
+            String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId()))
             .publishOn(scheduler)
             .doOnEach(signal -> {
                 if (isTracingEnabled) {

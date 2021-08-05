@@ -104,9 +104,85 @@ public enum AmqpErrorCondition {
      */
     PROTON_IO("proton:io"),
     /**
-     * A connection error occurred.
+     * A connection error occurred. A valid frame header cannot be formed from the incoming byte stream.
      */
-    CONNECTION_FRAMING_ERROR("amqp:connection:framing-error");
+    CONNECTION_FRAMING_ERROR("amqp:connection:framing-error"),
+    /**
+     * The operation was cancelled.
+     */
+    OPERATION_CANCELLED("com.microsoft:operation-cancelled"),
+    /**
+     * Error condition when receiver attempts {@code complete}, {@code abandon}, {@code renewLock}, {@code deadLetter},
+     * or {@code defer} on a peek-locked message whose lock had already expired.
+     */
+    MESSAGE_LOCK_LOST("com.microsoft:message-lock-lost"),
+    /**
+     * Error condition when a session receiver performs an operation on a session after its lock is expired. When a
+     * client accepts a session, the session is locked to the receiver for a duration specified in the entity
+     * definition. When the accepted session remains idle for the duration of lock, that is no operations performed on
+     * the session, the lock expires and the session is made available to other clients.
+     */
+    SESSION_LOCK_LOST("com.microsoft:session-lock-lost"),
+    /**
+     * Error condition when a client attempts to accept a session that is already locked by another client.
+     */
+    SESSION_CANNOT_BE_LOCKED("com.microsoft:session-cannot-be-locked"),
+    /**
+     * Error condition when a receiver attempts to receive a message with sequence number and the message with that
+     * sequence number is not available in the queue or subscription.
+     */
+    MESSAGE_NOT_FOUND("com.microsoft:message-not-found"),
+    /**
+     * Error condition when a receiver attempts to receive from a session that does not exist.
+     */
+    SESSION_NOT_FOUND("com.microsoft:session-not-found"),
+    /**
+     * Error condition when a subscription client tries to create a rule with the name of an already existing rule.
+     */
+    ENTITY_ALREADY_EXISTS("com.microsoft:entity-already-exists"),
+
+    /**
+     * The container is no longer available on the current connection. The peer SHOULD attempt reconnection to the
+     * container using the details provided in the info map.
+     *
+     * The address provided cannot be resolved to a terminus at the current container. The info map MAY contain the
+     * following information to allow the client to locate the attach to the terminus.
+     *
+     * hostname:
+     * the hostname of the container. This is the value that SHOULD be supplied in the hostname field of the open frame,
+     * and during the SASL and TLS negotiation (if used).
+     *
+     * network-host:
+     * the DNS hostname or IP address of the machine hosting the container.
+     *
+     * port:
+     * the port number on the machine hosting the container.
+     */
+    CONNECTION_REDIRECT("amqp:connection:redirect"),
+
+    /**
+     * The address provided cannot be resolved to a terminus at the current container. The info map MAY contain the
+     * following information to allow the client to locate the attach to the terminus.
+     *
+     * hostname:
+     * the hostname of the container hosting the terminus. This is the value that SHOULD be supplied in the hostname
+     * field of the open frame, and during SASL and TLS negotiation (if used).
+     *
+     * network-host:
+     * the DNS hostname or IP address of the machine hosting the container.
+     *
+     * port:
+     * the port number on the machine hosting the container.
+     *
+     * address:
+     * the address of the terminus at the container.
+     */
+    LINK_REDIRECT("amqp:link:redirect"),
+
+    /**
+     * The peer sent more message transfers than currently allowed on the link.
+     */
+    TRANSFER_LIMIT_EXCEEDED("amqp:link:transfer-limit-exceeded");
 
     private static final Map<String, AmqpErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;
@@ -117,6 +193,11 @@ public enum AmqpErrorCondition {
         }
     }
 
+    /**
+     * Creates an instance with the error condition header.
+     *
+     * @param errorCondition Error condition header value.
+     */
     AmqpErrorCondition(String errorCondition) {
         this.errorCondition = errorCondition;
     }

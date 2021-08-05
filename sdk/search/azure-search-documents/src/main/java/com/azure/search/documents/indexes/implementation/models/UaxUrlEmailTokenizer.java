@@ -7,14 +7,12 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Tokenizes urls and emails as one token. This tokenizer is implemented using
- * Apache Lucene.
- */
+/** Tokenizes urls and emails as one token. This tokenizer is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.UaxUrlEmailTokenizer")
 @Fluent
@@ -28,9 +26,18 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
     private Integer maxTokenLength;
 
     /**
-     * Get the maxTokenLength property: The maximum token length. Default is
-     * 255. Tokens longer than the maximum length are split. The maximum token
-     * length that can be used is 300 characters.
+     * Creates an instance of UaxUrlEmailTokenizer class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public UaxUrlEmailTokenizer(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
+
+    /**
+     * Get the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
+     * are split. The maximum token length that can be used is 300 characters.
      *
      * @return the maxTokenLength value.
      */
@@ -39,9 +46,8 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the maxTokenLength property: The maximum token length. Default is
-     * 255. Tokens longer than the maximum length are split. The maximum token
-     * length that can be used is 300 characters.
+     * Set the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
+     * are split. The maximum token length that can be used is 300 characters.
      *
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the UaxUrlEmailTokenizer object itself.

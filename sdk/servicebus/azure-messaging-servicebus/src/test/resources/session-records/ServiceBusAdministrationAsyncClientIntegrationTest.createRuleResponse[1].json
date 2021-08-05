@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/topic-13/subscriptions/subscription/rules/rule32301?api-version=2017-04",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
+      "Content-Type" : "application/atom+xml"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "ETag" : "637362112606900000",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://sb-java-conniey-4.servicebus.windows.net/topic-13/subscriptions/subscription/rules/rule32301?api-version=2017-04</id><title type=\"text\">rule32301</title><published>2020-10-30T06:14:46Z</published><updated>2020-10-30T06:14:46Z</updated><link rel=\"self\" href=\"https://sb-java-conniey-4.servicebus.windows.net/topic-13/subscriptions/subscription/rules/rule32301?api-version=2017-04\"/><content type=\"application/xml\"><RuleDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Filter i:type=\"SqlFilter\"><SqlExpression>sys.To=[parameters('bar')] OR sys.MessageId IS NULL</SqlExpression><CompatibilityLevel>20</CompatibilityLevel><Parameters/></Filter><Action i:type=\"EmptyRuleAction\"/><CreatedAt>2020-10-30T06:14:46.2709954Z</CreatedAt><Name>rule32301</Name></RuleDescription></content></entry>",
+      "Date" : "Fri, 30 Oct 2020 06:14:46 GMT",
+      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "rule32301" ]
+}

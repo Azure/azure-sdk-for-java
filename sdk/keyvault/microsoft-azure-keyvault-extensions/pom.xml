@@ -83,17 +83,17 @@
     <dependency>
     	<groupId>com.google.guava</groupId>
     	<artifactId>guava</artifactId>
-     <version>24.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+     <version>30.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.8.1</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+      <version>3.12.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.13</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+      <version>1.15</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
     </dependency>
 
 
@@ -117,13 +117,13 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.60</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
+      <version>1.68</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -139,7 +139,7 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.3.22.v20171030</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
+        <version>9.4.33.v20201020</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
         <configuration>
           <scanIntervalSeconds>0</scanIntervalSeconds>
           <stopPort>11079</stopPort>
@@ -147,6 +147,7 @@
           <stopWait>20</stopWait>
           <waitForChild>false</waitForChild>
           <jettyXml>../../../jetty.xml</jettyXml>
+          <supportedPackagings>jar</supportedPackagings>
         </configuration>
         <executions>
           <execution>
@@ -155,10 +156,6 @@
             <goals>
               <goal>run-forked</goal>
             </goals>
-            <configuration>
-             <scanIntervalSeconds>0</scanIntervalSeconds>
-             <daemon>true</daemon>
-            </configuration>
           </execution>
           <execution>
             <id>stop-jetty</id>

@@ -3,18 +3,25 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Used internally to encapsulates a query's information in the Azure Cosmos DB database service.
  */
 public final class QueryInfo extends JsonSerializable {
+    public static final QueryInfo EMPTY = new QueryInfo();
+
     private static final String HAS_SELECT_VALUE = "hasSelectValue";
     private Integer top;
     private List<SortOrder> orderBy;
@@ -24,8 +31,10 @@ public final class QueryInfo extends JsonSerializable {
     private Integer offset;
     private Integer limit;
     private DistinctQueryType distinctQueryType;
+    private QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
-    public QueryInfo() { }
+    public QueryInfo() {
+    }
 
     /**
      * Constructor.
@@ -51,7 +60,7 @@ public final class QueryInfo extends JsonSerializable {
 
     public String getRewrittenQuery() {
         return this.rewrittenQuery != null ? this.rewrittenQuery
-                : (this.rewrittenQuery = super.getString("rewrittenQuery"));
+                   : (this.rewrittenQuery = super.getString("rewrittenQuery"));
     }
 
     public boolean hasTop() {
@@ -69,7 +78,16 @@ public final class QueryInfo extends JsonSerializable {
 
     public boolean hasAggregates() {
         Collection<AggregateOperator> aggregates = this.getAggregates();
-        return aggregates != null && aggregates.size() > 0;
+        boolean hasAggregates = aggregates != null && aggregates.size() > 0;
+
+        if (hasAggregates) {
+            return hasAggregates;
+        }
+        boolean aggregateAliasMappingNonEmpty = (this.getGroupByAliasToAggregateType() != null)
+                                                 && !this.getGroupByAliasToAggregateType()
+                                                        .values()
+                                                        .isEmpty();
+        return aggregateAliasMappingNonEmpty;
     }
 
     public Collection<AggregateOperator> getAggregates() {
@@ -80,11 +98,11 @@ public final class QueryInfo extends JsonSerializable {
 
     public Collection<String> getOrderByExpressions() {
         return this.orderByExpressions != null
-                ? this.orderByExpressions
-                : (this.orderByExpressions = super.getCollection("orderByExpressions", String.class));
+                   ? this.orderByExpressions
+                   : (this.orderByExpressions = super.getCollection("orderByExpressions", String.class));
     }
 
-    public boolean hasSelectValue(){
+    public boolean hasSelectValue() {
         return super.has(HAS_SELECT_VALUE) && Boolean.TRUE.equals(super.getBoolean(HAS_SELECT_VALUE));
     }
 
@@ -113,6 +131,11 @@ public final class QueryInfo extends JsonSerializable {
             return distinctQueryType;
         } else {
             final String distinctType = super.getString("distinctType");
+
+            if (distinctType == null) {
+                return DistinctQueryType.NONE;
+            }
+
             switch (distinctType) {
                 case "Ordered":
                     distinctQueryType = DistinctQueryType.ORDERED;
@@ -126,7 +149,69 @@ public final class QueryInfo extends JsonSerializable {
             }
             return distinctQueryType;
         }
+    }
 
+    public boolean hasGroupBy() {
+        final List<String> groupByExpressions = super.getList("groupByExpressions", String.class);
+        return groupByExpressions != null && !groupByExpressions.isEmpty();
+    }
+
+    public Map<String, AggregateOperator> getGroupByAliasToAggregateType(){
+            Map<String, AggregateOperator>  groupByAliasToAggregateMap;
+            groupByAliasToAggregateMap = super.getMap("groupByAliasToAggregateType");
+            return groupByAliasToAggregateMap;
+    }
+
+    public List<String> getGroupByAliases() {
+        return super.getList("groupByAliases", String.class);
+    }
+
+    public QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
+        return queryPlanDiagnosticsContext;
+    }
+
+    public void setQueryPlanDiagnosticsContext(QueryPlanDiagnosticsContext queryPlanDiagnosticsContext) {
+        this.queryPlanDiagnosticsContext = queryPlanDiagnosticsContext;
+    }
+
+    public static final class QueryPlanDiagnosticsContext {
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        private volatile Instant startTimeUTC;
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        private volatile Instant endTimeUTC;
+        private volatile RequestTimeline requestTimeline;
+        public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC) {
+            this.startTimeUTC = startTimeUTC;
+            this.endTimeUTC = endTimeUTC;
+        }
+
+        public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC, RequestTimeline requestTimeline) {
+            this.startTimeUTC = startTimeUTC;
+            this.endTimeUTC = endTimeUTC;
+            this.requestTimeline = requestTimeline;
+        }
+
+        public Instant getStartTimeUTC() {
+            return startTimeUTC;
+        }
+
+        public Instant getEndTimeUTC() {
+            return endTimeUTC;
+        }
+
+        public RequestTimeline getRequestTimeline() {
+            return requestTimeline;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }
 

@@ -34,6 +34,41 @@ public final class StemmerTokenFilter extends TokenFilter {
     private StemmerTokenFilterLanguage language;
 
     /**
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param language The language to use. Possible values include: 'Arabic', 'Armenian',
+     * 'Basque', 'Brazilian', 'Bulgarian', 'Catalan', 'Czech', 'Danish',
+     * 'Dutch', 'DutchKp', 'English', 'LightEnglish', 'MinimalEnglish',
+     * 'PossessiveEnglish', 'Porter2', 'Lovins', 'Finnish', 'LightFinnish',
+     * 'French', 'LightFrench', 'MinimalFrench', 'Galician', 'MinimalGalician',
+     * 'German', 'German2', 'LightGerman', 'MinimalGerman', 'Greek', 'Hindi',
+     * 'Hungarian', 'LightHungarian', 'Indonesian', 'Irish', 'Italian',
+     * 'LightItalian', 'Sorani', 'Latvian', 'Norwegian', 'LightNorwegian',
+     * 'MinimalNorwegian', 'LightNynorsk', 'MinimalNynorsk', 'Portuguese',
+     * 'LightPortuguese', 'MinimalPortuguese', 'PortugueseRslp', 'Romanian',
+     * 'Russian', 'LightRussian', 'Spanish', 'LightSpanish', 'Swedish',
+     * 'LightSwedish', 'Turkish'The language to use. Possible values include: 'Arabic', 'Armenian',
+     * 'Basque', 'Brazilian', 'Bulgarian', 'Catalan', 'Czech', 'Danish',
+     * 'Dutch', 'DutchKp', 'English', 'LightEnglish', 'MinimalEnglish',
+     * 'PossessiveEnglish', 'Porter2', 'Lovins', 'Finnish', 'LightFinnish',
+     * 'French', 'LightFrench', 'MinimalFrench', 'Galician', 'MinimalGalician',
+     * 'German', 'German2', 'LightGerman', 'MinimalGerman', 'Greek', 'Hindi',
+     * 'Hungarian', 'LightHungarian', 'Indonesian', 'Irish', 'Italian',
+     * 'LightItalian', 'Sorani', 'Latvian', 'Norwegian', 'LightNorwegian',
+     * 'MinimalNorwegian', 'LightNynorsk', 'MinimalNynorsk', 'Portuguese',
+     * 'LightPortuguese', 'MinimalPortuguese', 'PortugueseRslp', 'Romanian',
+     * 'Russian', 'LightRussian', 'Spanish', 'LightSpanish', 'Swedish',
+     * 'LightSwedish', 'Turkish'
+     */
+    public StemmerTokenFilter(String name, StemmerTokenFilterLanguage language) {
+        super(name);
+        this.language = language;
+    }
+
+    /**
      * Get the language property: The language to use. Possible values include:
      * 'Arabic', 'Armenian', 'Basque', 'Brazilian', 'Bulgarian', 'Catalan',
      * 'Czech', 'Danish', 'Dutch', 'DutchKp', 'English', 'LightEnglish',
@@ -53,25 +88,4 @@ public final class StemmerTokenFilter extends TokenFilter {
         return this.language;
     }
 
-    /**
-     * Set the language property: The language to use. Possible values include:
-     * 'Arabic', 'Armenian', 'Basque', 'Brazilian', 'Bulgarian', 'Catalan',
-     * 'Czech', 'Danish', 'Dutch', 'DutchKp', 'English', 'LightEnglish',
-     * 'MinimalEnglish', 'PossessiveEnglish', 'Porter2', 'Lovins', 'Finnish',
-     * 'LightFinnish', 'French', 'LightFrench', 'MinimalFrench', 'Galician',
-     * 'MinimalGalician', 'German', 'German2', 'LightGerman', 'MinimalGerman',
-     * 'Greek', 'Hindi', 'Hungarian', 'LightHungarian', 'Indonesian', 'Irish',
-     * 'Italian', 'LightItalian', 'Sorani', 'Latvian', 'Norwegian',
-     * 'LightNorwegian', 'MinimalNorwegian', 'LightNynorsk', 'MinimalNynorsk',
-     * 'Portuguese', 'LightPortuguese', 'MinimalPortuguese', 'PortugueseRslp',
-     * 'Romanian', 'Russian', 'LightRussian', 'Spanish', 'LightSpanish',
-     * 'Swedish', 'LightSwedish', 'Turkish'.
-     *
-     * @param language the language value to set.
-     * @return the StemmerTokenFilter object itself.
-     */
-    public StemmerTokenFilter setLanguage(StemmerTokenFilterLanguage language) {
-        this.language = language;
-        return this;
-    }
 }

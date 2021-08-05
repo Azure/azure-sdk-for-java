@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.BillingResources;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.VmSizeCompatibilityFilterV2;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.VmSizeProperty;
 
 class BillingResponseListResultImpl extends WrapperImpl<BillingResponseListResultInner> implements BillingResponseListResult {
     private final HDInsightManager manager;
@@ -37,8 +38,18 @@ class BillingResponseListResultImpl extends WrapperImpl<BillingResponseListResul
     }
 
     @Override
+    public List<VmSizeProperty> vmSizeProperties() {
+        return this.inner().vmSizeProperties();
+    }
+
+    @Override
     public List<String> vmSizes() {
         return this.inner().vmSizes();
+    }
+
+    @Override
+    public List<String> vmSizesWithEncryptionAtHost() {
+        return this.inner().vmSizesWithEncryptionAtHost();
     }
 
 }

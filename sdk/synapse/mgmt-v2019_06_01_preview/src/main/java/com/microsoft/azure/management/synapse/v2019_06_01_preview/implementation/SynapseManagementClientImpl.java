@@ -434,6 +434,84 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ExtendedSqlPoolBlobAuditingPoliciesInner object to access its operations.
+     */
+    private ExtendedSqlPoolBlobAuditingPoliciesInner extendedSqlPoolBlobAuditingPolicies;
+
+    /**
+     * Gets the ExtendedSqlPoolBlobAuditingPoliciesInner object to access its operations.
+     * @return the ExtendedSqlPoolBlobAuditingPoliciesInner object.
+     */
+    public ExtendedSqlPoolBlobAuditingPoliciesInner extendedSqlPoolBlobAuditingPolicies() {
+        return this.extendedSqlPoolBlobAuditingPolicies;
+    }
+
+    /**
+     * The DataMaskingPoliciesInner object to access its operations.
+     */
+    private DataMaskingPoliciesInner dataMaskingPolicies;
+
+    /**
+     * Gets the DataMaskingPoliciesInner object to access its operations.
+     * @return the DataMaskingPoliciesInner object.
+     */
+    public DataMaskingPoliciesInner dataMaskingPolicies() {
+        return this.dataMaskingPolicies;
+    }
+
+    /**
+     * The DataMaskingRulesInner object to access its operations.
+     */
+    private DataMaskingRulesInner dataMaskingRules;
+
+    /**
+     * Gets the DataMaskingRulesInner object to access its operations.
+     * @return the DataMaskingRulesInner object.
+     */
+    public DataMaskingRulesInner dataMaskingRules() {
+        return this.dataMaskingRules;
+    }
+
+    /**
+     * The SqlPoolColumnsInner object to access its operations.
+     */
+    private SqlPoolColumnsInner sqlPoolColumns;
+
+    /**
+     * Gets the SqlPoolColumnsInner object to access its operations.
+     * @return the SqlPoolColumnsInner object.
+     */
+    public SqlPoolColumnsInner sqlPoolColumns() {
+        return this.sqlPoolColumns;
+    }
+
+    /**
+     * The SqlPoolWorkloadGroupsInner object to access its operations.
+     */
+    private SqlPoolWorkloadGroupsInner sqlPoolWorkloadGroups;
+
+    /**
+     * Gets the SqlPoolWorkloadGroupsInner object to access its operations.
+     * @return the SqlPoolWorkloadGroupsInner object.
+     */
+    public SqlPoolWorkloadGroupsInner sqlPoolWorkloadGroups() {
+        return this.sqlPoolWorkloadGroups;
+    }
+
+    /**
+     * The SqlPoolWorkloadClassifiersInner object to access its operations.
+     */
+    private SqlPoolWorkloadClassifiersInner sqlPoolWorkloadClassifiers;
+
+    /**
+     * Gets the SqlPoolWorkloadClassifiersInner object to access its operations.
+     * @return the SqlPoolWorkloadClassifiersInner object.
+     */
+    public SqlPoolWorkloadClassifiersInner sqlPoolWorkloadClassifiers() {
+        return this.sqlPoolWorkloadClassifiers;
+    }
+
+    /**
      * The WorkspacesInner object to access its operations.
      */
     private WorkspacesInner workspaces;
@@ -460,6 +538,19 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The WorkspaceSqlAadAdminsInner object to access its operations.
+     */
+    private WorkspaceSqlAadAdminsInner workspaceSqlAadAdmins;
+
+    /**
+     * Gets the WorkspaceSqlAadAdminsInner object to access its operations.
+     * @return the WorkspaceSqlAadAdminsInner object.
+     */
+    public WorkspaceSqlAadAdminsInner workspaceSqlAadAdmins() {
+        return this.workspaceSqlAadAdmins;
+    }
+
+    /**
      * The WorkspaceManagedIdentitySqlControlSettingsInner object to access its operations.
      */
     private WorkspaceManagedIdentitySqlControlSettingsInner workspaceManagedIdentitySqlControlSettings;
@@ -470,6 +561,19 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
      */
     public WorkspaceManagedIdentitySqlControlSettingsInner workspaceManagedIdentitySqlControlSettings() {
         return this.workspaceManagedIdentitySqlControlSettings;
+    }
+
+    /**
+     * The RestorableDroppedSqlPoolsInner object to access its operations.
+     */
+    private RestorableDroppedSqlPoolsInner restorableDroppedSqlPools;
+
+    /**
+     * Gets the RestorableDroppedSqlPoolsInner object to access its operations.
+     * @return the RestorableDroppedSqlPoolsInner object.
+     */
+    public RestorableDroppedSqlPoolsInner restorableDroppedSqlPools() {
+        return this.restorableDroppedSqlPools;
     }
 
     /**
@@ -616,6 +720,123 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PrivateLinkHubsInner object to access its operations.
+     */
+    private PrivateLinkHubsInner privateLinkHubs;
+
+    /**
+     * Gets the PrivateLinkHubsInner object to access its operations.
+     * @return the PrivateLinkHubsInner object.
+     */
+    public PrivateLinkHubsInner privateLinkHubs() {
+        return this.privateLinkHubs;
+    }
+
+    /**
+     * The PrivateEndpointConnectionsPrivateLinkHubsInner object to access its operations.
+     */
+    private PrivateEndpointConnectionsPrivateLinkHubsInner privateEndpointConnectionsPrivateLinkHubs;
+
+    /**
+     * Gets the PrivateEndpointConnectionsPrivateLinkHubsInner object to access its operations.
+     * @return the PrivateEndpointConnectionsPrivateLinkHubsInner object.
+     */
+    public PrivateEndpointConnectionsPrivateLinkHubsInner privateEndpointConnectionsPrivateLinkHubs() {
+        return this.privateEndpointConnectionsPrivateLinkHubs;
+    }
+
+    /**
+     * The WorkspaceManagedSqlServerBlobAuditingPoliciesInner object to access its operations.
+     */
+    private WorkspaceManagedSqlServerBlobAuditingPoliciesInner workspaceManagedSqlServerBlobAuditingPolicies;
+
+    /**
+     * Gets the WorkspaceManagedSqlServerBlobAuditingPoliciesInner object to access its operations.
+     * @return the WorkspaceManagedSqlServerBlobAuditingPoliciesInner object.
+     */
+    public WorkspaceManagedSqlServerBlobAuditingPoliciesInner workspaceManagedSqlServerBlobAuditingPolicies() {
+        return this.workspaceManagedSqlServerBlobAuditingPolicies;
+    }
+
+    /**
+     * The WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesInner object to access its operations.
+     */
+    private WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesInner workspaceManagedSqlServerExtendedBlobAuditingPolicies;
+
+    /**
+     * Gets the WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesInner object to access its operations.
+     * @return the WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesInner object.
+     */
+    public WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesInner workspaceManagedSqlServerExtendedBlobAuditingPolicies() {
+        return this.workspaceManagedSqlServerExtendedBlobAuditingPolicies;
+    }
+
+    /**
+     * The WorkspaceManagedSqlServerSecurityAlertPolicysInner object to access its operations.
+     */
+    private WorkspaceManagedSqlServerSecurityAlertPolicysInner workspaceManagedSqlServerSecurityAlertPolicys;
+
+    /**
+     * Gets the WorkspaceManagedSqlServerSecurityAlertPolicysInner object to access its operations.
+     * @return the WorkspaceManagedSqlServerSecurityAlertPolicysInner object.
+     */
+    public WorkspaceManagedSqlServerSecurityAlertPolicysInner workspaceManagedSqlServerSecurityAlertPolicys() {
+        return this.workspaceManagedSqlServerSecurityAlertPolicys;
+    }
+
+    /**
+     * The WorkspaceManagedSqlServerVulnerabilityAssessmentsInner object to access its operations.
+     */
+    private WorkspaceManagedSqlServerVulnerabilityAssessmentsInner workspaceManagedSqlServerVulnerabilityAssessments;
+
+    /**
+     * Gets the WorkspaceManagedSqlServerVulnerabilityAssessmentsInner object to access its operations.
+     * @return the WorkspaceManagedSqlServerVulnerabilityAssessmentsInner object.
+     */
+    public WorkspaceManagedSqlServerVulnerabilityAssessmentsInner workspaceManagedSqlServerVulnerabilityAssessments() {
+        return this.workspaceManagedSqlServerVulnerabilityAssessments;
+    }
+
+    /**
+     * The WorkspaceManagedSqlServerUsagesInner object to access its operations.
+     */
+    private WorkspaceManagedSqlServerUsagesInner workspaceManagedSqlServerUsages;
+
+    /**
+     * Gets the WorkspaceManagedSqlServerUsagesInner object to access its operations.
+     * @return the WorkspaceManagedSqlServerUsagesInner object.
+     */
+    public WorkspaceManagedSqlServerUsagesInner workspaceManagedSqlServerUsages() {
+        return this.workspaceManagedSqlServerUsages;
+    }
+
+    /**
+     * The WorkspaceManagedSqlServerRecoverableSqlpoolsInner object to access its operations.
+     */
+    private WorkspaceManagedSqlServerRecoverableSqlpoolsInner workspaceManagedSqlServerRecoverableSqlpools;
+
+    /**
+     * Gets the WorkspaceManagedSqlServerRecoverableSqlpoolsInner object to access its operations.
+     * @return the WorkspaceManagedSqlServerRecoverableSqlpoolsInner object.
+     */
+    public WorkspaceManagedSqlServerRecoverableSqlpoolsInner workspaceManagedSqlServerRecoverableSqlpools() {
+        return this.workspaceManagedSqlServerRecoverableSqlpools;
+    }
+
+    /**
+     * The KeysInner object to access its operations.
+     */
+    private KeysInner keys;
+
+    /**
+     * Gets the KeysInner object to access its operations.
+     * @return the KeysInner object.
+     */
+    public KeysInner keys() {
+        return this.keys;
+    }
+
+    /**
      * Initializes an instance of SynapseManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -673,9 +894,17 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
         this.sqlPoolVulnerabilityAssessmentScans = new SqlPoolVulnerabilityAssessmentScansInner(restClient().retrofit(), this);
         this.sqlPoolSecurityAlertPolicies = new SqlPoolSecurityAlertPoliciesInner(restClient().retrofit(), this);
         this.sqlPoolVulnerabilityAssessmentRuleBaselines = new SqlPoolVulnerabilityAssessmentRuleBaselinesInner(restClient().retrofit(), this);
+        this.extendedSqlPoolBlobAuditingPolicies = new ExtendedSqlPoolBlobAuditingPoliciesInner(restClient().retrofit(), this);
+        this.dataMaskingPolicies = new DataMaskingPoliciesInner(restClient().retrofit(), this);
+        this.dataMaskingRules = new DataMaskingRulesInner(restClient().retrofit(), this);
+        this.sqlPoolColumns = new SqlPoolColumnsInner(restClient().retrofit(), this);
+        this.sqlPoolWorkloadGroups = new SqlPoolWorkloadGroupsInner(restClient().retrofit(), this);
+        this.sqlPoolWorkloadClassifiers = new SqlPoolWorkloadClassifiersInner(restClient().retrofit(), this);
         this.workspaces = new WorkspacesInner(restClient().retrofit(), this);
         this.workspaceAadAdmins = new WorkspaceAadAdminsInner(restClient().retrofit(), this);
+        this.workspaceSqlAadAdmins = new WorkspaceSqlAadAdminsInner(restClient().retrofit(), this);
         this.workspaceManagedIdentitySqlControlSettings = new WorkspaceManagedIdentitySqlControlSettingsInner(restClient().retrofit(), this);
+        this.restorableDroppedSqlPools = new RestorableDroppedSqlPoolsInner(restClient().retrofit(), this);
         this.integrationRuntimes = new IntegrationRuntimesInner(restClient().retrofit(), this);
         this.integrationRuntimeNodeIpAddressOperations = new IntegrationRuntimeNodeIpAddressOperationsInner(restClient().retrofit(), this);
         this.integrationRuntimeObjectMetadatas = new IntegrationRuntimeObjectMetadatasInner(restClient().retrofit(), this);
@@ -687,6 +916,15 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
         this.integrationRuntimeStatusOperations = new IntegrationRuntimeStatusOperationsInner(restClient().retrofit(), this);
         this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
+        this.privateLinkHubs = new PrivateLinkHubsInner(restClient().retrofit(), this);
+        this.privateEndpointConnectionsPrivateLinkHubs = new PrivateEndpointConnectionsPrivateLinkHubsInner(restClient().retrofit(), this);
+        this.workspaceManagedSqlServerBlobAuditingPolicies = new WorkspaceManagedSqlServerBlobAuditingPoliciesInner(restClient().retrofit(), this);
+        this.workspaceManagedSqlServerExtendedBlobAuditingPolicies = new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesInner(restClient().retrofit(), this);
+        this.workspaceManagedSqlServerSecurityAlertPolicys = new WorkspaceManagedSqlServerSecurityAlertPolicysInner(restClient().retrofit(), this);
+        this.workspaceManagedSqlServerVulnerabilityAssessments = new WorkspaceManagedSqlServerVulnerabilityAssessmentsInner(restClient().retrofit(), this);
+        this.workspaceManagedSqlServerUsages = new WorkspaceManagedSqlServerUsagesInner(restClient().retrofit(), this);
+        this.workspaceManagedSqlServerRecoverableSqlpools = new WorkspaceManagedSqlServerRecoverableSqlpoolsInner(restClient().retrofit(), this);
+        this.keys = new KeysInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

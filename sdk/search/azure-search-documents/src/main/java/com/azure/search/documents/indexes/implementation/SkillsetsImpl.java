@@ -23,72 +23,100 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
-import com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Skillsets.
- */
+/** An instance of this class provides access to all the operations defined in Skillsets. */
 public final class SkillsetsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private SkillsetsService service;
+    /** The proxy service used to perform REST calls. */
+    private final SkillsetsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SearchServiceRestClientImpl client;
+    /** The service client containing this operation class. */
+    private final SearchServiceClientImpl client;
 
     /**
      * Initializes an instance of SkillsetsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public SkillsetsImpl(SearchServiceRestClientImpl client) {
-        this.service = RestProxy.create(SkillsetsService.class, client.getHttpPipeline());
+    SkillsetsImpl(SearchServiceClientImpl client) {
+        this.service =
+                RestProxy.create(SkillsetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SearchServiceRestClientSkillsets to be used by the proxy service to
+     * The interface defining all the services for SearchServiceClientSkillsets to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceRestClientSkillsets")
-    private interface SkillsetsService {
-        @Put("skillsets('{skillsetName}')")
+    @ServiceInterface(name = "SearchServiceClientS")
+    public interface SkillsetsService {
+        @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchIndexerSkillset>> createOrUpdate(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") SearchIndexerSkillset skillset, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SearchIndexerSkillset>> createOrUpdate(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("skillsetName") String skillsetName,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Prefer") String prefer,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                @BodyParam("application/json") SearchIndexerSkillset skillset,
+                Context context);
 
-        @Delete("skillsets('{skillsetName}')")
+        @Delete("/skillsets('{skillsetName}')")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> delete(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<Void>> delete(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("skillsetName") String skillsetName,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Get("skillsets('{skillsetName}')")
+        @Get("/skillsets('{skillsetName}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchIndexerSkillset>> get(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SearchIndexerSkillset>> get(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("skillsetName") String skillsetName,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Get("skillsets")
+        @Get("/skillsets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<ListSkillsetsResult>> list(@HostParam("endpoint") String endpoint, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<ListSkillsetsResult>> list(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("$select") String select,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Post("skillsets")
+        @Post("/skillsets")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchIndexerSkillset>> create(@HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") SearchIndexerSkillset skillset, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SearchIndexerSkillset>> create(
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                @BodyParam("application/json") SearchIndexerSkillset skillset,
+                Context context);
     }
 
     /**
@@ -96,190 +124,155 @@ public final class SkillsetsImpl {
      *
      * @param skillsetName The name of the skillset to create or update.
      * @param skillset The skillset containing one or more skills to create or update in a search service.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of skills.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerSkillset>> createOrUpdateWithRestResponseAsync(String skillsetName, SearchIndexerSkillset skillset, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
+    public Mono<Response<SearchIndexerSkillset>> createOrUpdateWithResponseAsync(
+            String skillsetName,
+            SearchIndexerSkillset skillset,
+            String ifMatch,
+            String ifNoneMatch,
+            RequestOptions requestOptions,
+            Context context) {
         final String prefer = "return=representation";
-        final UUID xMsClientRequestId = null;
-        return service.createOrUpdate(skillsetName, this.client.getEndpoint(), skillset, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * Creates a new skillset in a search service or updates the skillset if it already exists.
-     *
-     * @param skillsetName The name of the skillset to create or update.
-     * @param skillset The skillset containing one or more skills to create or update in a search service.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerSkillset>> createOrUpdateWithRestResponseAsync(String skillsetName, SearchIndexerSkillset skillset, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final String prefer = "return=representation";
-        UUID xMsClientRequestId = null;
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.createOrUpdate(skillsetName, this.client.getEndpoint(), skillset, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.createOrUpdate(
+                this.client.getEndpoint(),
+                skillsetName,
+                xMsClientRequestId,
+                ifMatch,
+                ifNoneMatch,
+                prefer,
+                this.client.getApiVersion(),
+                accept,
+                skillset,
+                context);
     }
 
     /**
      * Deletes a skillset in a search service.
      *
      * @param skillsetName The name of the skillset to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithRestResponseAsync(String skillsetName, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final UUID xMsClientRequestId = null;
-        return service.delete(skillsetName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * Deletes a skillset in a search service.
-     *
-     * @param skillsetName The name of the skillset to delete.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithRestResponseAsync(String skillsetName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<Void>> deleteWithResponseAsync(
+            String skillsetName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.delete(skillsetName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.delete(
+                this.client.getEndpoint(),
+                skillsetName,
+                xMsClientRequestId,
+                ifMatch,
+                ifNoneMatch,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
      * Retrieves a skillset in a search service.
      *
      * @param skillsetName The name of the skillset to retrieve.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of skills.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerSkillset>> getWithRestResponseAsync(String skillsetName, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final UUID xMsClientRequestId = null;
-        return service.get(skillsetName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * Retrieves a skillset in a search service.
-     *
-     * @param skillsetName The name of the skillset to retrieve.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerSkillset>> getWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<SearchIndexerSkillset>> getWithResponseAsync(
+            String skillsetName, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.get(skillsetName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.get(
+                this.client.getEndpoint(),
+                skillsetName,
+                xMsClientRequestId,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
      * List all skillsets in a search service.
      *
+     * @param select Selects which top-level properties of the skillsets to retrieve. Specified as a comma-separated
+     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a list skillset request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListSkillsetsResult>> listWithRestResponseAsync(Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final String select = null;
-        final UUID xMsClientRequestId = null;
-        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * List all skillsets in a search service.
-     *
-     * @param select Selects which top-level properties of the skillsets to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListSkillsetsResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<ListSkillsetsResult>> listWithResponseAsync(
+            String select, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.list(
+                this.client.getEndpoint(), select, xMsClientRequestId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Creates a new skillset in a search service.
      *
      * @param skillset The skillset containing one or more skills to create in a search service.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of skills.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerSkillset>> createWithRestResponseAsync(SearchIndexerSkillset skillset, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final UUID xMsClientRequestId = null;
-        return service.create(this.client.getEndpoint(), skillset, this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * Creates a new skillset in a search service.
-     *
-     * @param skillset The skillset containing one or more skills to create in a search service.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerSkillset>> createWithRestResponseAsync(SearchIndexerSkillset skillset, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<SearchIndexerSkillset>> createWithResponseAsync(
+            SearchIndexerSkillset skillset, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.create(this.client.getEndpoint(), skillset, this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.create(
+                this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, skillset, context);
     }
 }

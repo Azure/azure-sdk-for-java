@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -10,13 +11,22 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
+import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RetryPolicyTests {
 
@@ -39,7 +49,7 @@ public class RetryPolicyTests {
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
 
-        Assertions.assertEquals(501, response.getStatusCode());
+        assertEquals(501, response.getStatusCode());
     }
 
     @Test
@@ -61,7 +71,7 @@ public class RetryPolicyTests {
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
 
-        Assertions.assertEquals(500, response.getStatusCode());
+        assertEquals(500, response.getStatusCode());
     }
 
     @Test
@@ -93,8 +103,8 @@ public class RetryPolicyTests {
     @Test
     public void exponentialDelayRetry() throws Exception {
         final int maxRetries = 5;
-        final long baseDelayMillis = 1000;
-        final long maxDelayMillis = 100000;
+        final long baseDelayMillis = 100;
+        final long maxDelayMillis = 1000;
         ExponentialBackoff exponentialBackoff = new ExponentialBackoff(maxRetries, Duration.ofMillis(baseDelayMillis),
             Duration.ofMillis(maxDelayMillis));
         final HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -118,9 +128,64 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(exponentialBackoff))
             .build();
 
-        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
+    @Test
+    public void retryConsumesBody() {
+        final AtomicInteger bodyConsumptionCount = new AtomicInteger();
+        Flux<ByteBuffer> errorBody = Flux.generate(sink -> {
+            bodyConsumptionCount.incrementAndGet();
+            sink.next(ByteBuffer.wrap("Should be consumed".getBytes(StandardCharsets.UTF_8)));
+            sink.complete();
+        });
 
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
+            .httpClient(request -> Mono.just(new HttpResponse(request) {
+                @Override
+                public int getStatusCode() {
+                    return 503;
+                }
+
+                @Override
+                public String getHeaderValue(String name) {
+                    return getHeaders().getValue(name);
+                }
+
+                @Override
+                public HttpHeaders getHeaders() {
+                    return new HttpHeaders();
+                }
+
+                @Override
+                public Flux<ByteBuffer> getBody() {
+                    return errorBody;
+                }
+
+                @Override
+                public Mono<byte[]> getBodyAsByteArray() {
+                    return FluxUtil.collectBytesInByteBufferStream(getBody());
+                }
+
+                @Override
+                public Mono<String> getBodyAsString() {
+                    return getBodyAsString(StandardCharsets.UTF_8);
+                }
+
+                @Override
+                public Mono<String> getBodyAsString(Charset charset) {
+                    return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+                }
+            }))
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com")))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertEquals(2, bodyConsumptionCount.get());
+    }
 }

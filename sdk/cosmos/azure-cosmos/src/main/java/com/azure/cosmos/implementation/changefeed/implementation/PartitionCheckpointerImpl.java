@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Checkpoint the given partition up to the given continuation token.
  */
@@ -23,8 +26,14 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
     }
 
     @Override
-    public Mono<Lease> checkpointPartition(String сontinuationToken) {
-        return this.leaseCheckpointer.checkpoint(this.lease, сontinuationToken)
+    public Mono<Lease> checkpointPartition(ChangeFeedState continuationState) {
+        checkNotNull(continuationState, "Argument 'continuationSttae' must not be null.");
+        checkArgument(
+            continuationState.getContinuation().getContinuationTokenCount() == 1,
+            "For ChangeFeedProcessor the continuation state should always have one range/continuation");
+        return this.leaseCheckpointer.checkpoint(
+            this.lease,
+            continuationState.getContinuation().getCurrentContinuationToken().getToken())
             .map(lease1 -> {
                 this.lease = lease1;
                 logger.info("Checkpoint: partition {}, new continuation {}", this.lease.getLeaseToken(), this.lease.getContinuationToken());

@@ -71,6 +71,12 @@ public class Role {
     private List<ScriptActionInner> scriptActions;
 
     /**
+     * Indicates whether encrypt the data disks.
+     */
+    @JsonProperty(value = "encryptDataDisks")
+    private Boolean encryptDataDisks;
+
+    /**
      * Get the name of the role.
      *
      * @return the name value
@@ -247,6 +253,26 @@ public class Role {
      */
     public Role withScriptActions(List<ScriptActionInner> scriptActions) {
         this.scriptActions = scriptActions;
+        return this;
+    }
+
+    /**
+     * Get indicates whether encrypt the data disks.
+     *
+     * @return the encryptDataDisks value
+     */
+    public Boolean encryptDataDisks() {
+        return this.encryptDataDisks;
+    }
+
+    /**
+     * Set indicates whether encrypt the data disks.
+     *
+     * @param encryptDataDisks the encryptDataDisks value to set
+     * @return the Role object itself.
+     */
+    public Role withEncryptDataDisks(Boolean encryptDataDisks) {
+        this.encryptDataDisks = encryptDataDisks;
         return this;
     }
 

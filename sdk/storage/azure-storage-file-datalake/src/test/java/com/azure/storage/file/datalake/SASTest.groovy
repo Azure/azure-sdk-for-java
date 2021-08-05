@@ -3,15 +3,24 @@
 
 package com.azure.storage.file.datalake
 
-import com.azure.storage.blob.BlobServiceVersion
-import com.azure.storage.blob.implementation.util.BlobSasImplUtil
+import com.azure.core.credential.AzureSasCredential
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.sas.*
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.sas.SasIpRange
+import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil
+import com.azure.storage.file.datalake.models.AccessControlType
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
 import com.azure.storage.file.datalake.models.DataLakeStorageException
-import com.azure.storage.file.datalake.models.FileRange
+import com.azure.storage.file.datalake.models.ListPathsOptions
+import com.azure.storage.file.datalake.models.PathAccessControlEntry
 import com.azure.storage.file.datalake.models.PathProperties
+import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.models.UserDelegationKey
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission
@@ -29,50 +38,16 @@ class SASTest extends APISpec {
 
     def setup() {
         pathName = generatePathName()
-        sasClient = getFileClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        sasClient = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
-        sasClient.append(defaultInputStream.get(), 0, defaultDataSize)
-        sasClient.flush(defaultDataSize)
-    }
-
-    @Unroll
-    def "File range"() {
-        expect:
-        if (count == null) {
-            assert new FileRange(offset).toHeaderValue() == result
-        } else {
-            assert new FileRange(offset, count).toHeaderValue() == result
-        }
-
-
-        where:
-        offset | count || result
-        0      | null  || null
-        0      | 5     || "bytes=0-4"
-        5      | 10    || "bytes=5-14"
-    }
-
-    @Unroll
-    def "File range IA"() {
-        when:
-        new FileRange(offset, count)
-
-        then:
-        thrown(IllegalArgumentException)
-
-        where:
-        offset | count
-        -1     | 5
-        0      | -1
+        sasClient.append(data.defaultInputStream, 0, data.defaultDataSize)
+        sasClient.flush(data.defaultDataSize)
     }
 
     DataLakeServiceSasSignatureValues generateValues(PathSasPermission permission) {
-        return new DataLakeServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
-            .setStartTime(getUTCNow().minusDays(1))
+        return new DataLakeServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+            .setStartTime(namer.getUtcNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setSasIpRange(new SasIpRange()
-                .setIpMin("0.0.0.0")
-                .setIpMax("255.255.255.255"))
             .setCacheControl("cache")
             .setContentDisposition("disposition")
             .setContentEncoding("encoding")
@@ -90,22 +65,29 @@ class SASTest extends APISpec {
     }
 
     UserDelegationKey getUserDelegationInfo() {
-        def key = getOAuthServiceClient().getUserDelegationKey(getUTCNow().minusDays(1), getUTCNow().plusDays(1))
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def key = getOAuthServiceClient().getUserDelegationKey(namer.getUtcNow().minusDays(1), namer.getUtcNow().plusDays(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
         return key
     }
 
-    def "serviceSASSignatureValues network test file"() {
+    def "file sas permission"() {
         setup:
         def permissions = new PathSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
-            .setCreatePermission(true)
             .setDeletePermission(true)
+            .setCreatePermission(true)
             .setAddPermission(true)
+            .setListPermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= DataLakeServiceVersion.V2019_12_12.version) {
+            permissions.setMovePermission(true)
+                .setExecutePermission(true)
+                .setManageOwnershipPermission(true)
+                .setManageAccessControlPermission(true)
+        }
 
         def sasValues = generateValues(permissions)
 
@@ -119,30 +101,97 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }
 
-    def "serviceSASSignatureValues network test file system"() {
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "directory sas permission"() {
+        setup:
+        def pathName = generatePathName()
+        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        sasClient.create()
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setManageOwnershipPermission(true)
+            .setManageAccessControlPermission(true)
+
+        def sasValues = generateValues(permissions)
+
+        when:
+        def sas = sasClient.generateSas(sasValues)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), pathName)
+
+        def properties = client.getProperties()
+
+        then:
+        notThrown(DataLakeStorageException)
+        validateSasProperties(properties)
+
+        when:
+        client.createSubdirectory(generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "directory sas permission fail"() {
+        setup:
+        def pathName = generatePathName()
+        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        sasClient.create()
+        def permissions = new PathSasPermission() /* No read permission. */
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setCreatePermission(true)
+
+        def sasValues = generateValues(permissions)
+
+        when:
+        def sas = sasClient.generateSas(sasValues)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), pathName)
+
+        client.getProperties()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "file system sas identifier"() {
         setup:
         def identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(getUTCNow().plusDays(1)))
+                .setExpiresOn(namer.getUtcNow().plusDays(1)))
         fsc.setAccessPolicy(null, Arrays.asList(identifier))
 
         // Check containerSASPermissions
         def permissions = new FileSystemSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
-            .setListPermission(true)
-            .setCreatePermission(true)
             .setDeletePermission(true)
+            .setCreatePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= DataLakeServiceVersion.V2020_02_10.version) {
+            permissions.setMovePermission(true)
+                .setExecutePermission(true)
+                .setManageOwnershipPermission(true)
+                .setManageAccessControlPermission(true)
+        }
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new DataLakeServiceSasSignatureValues(identifier.getId())
@@ -165,14 +214,21 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "serviceSASSignatureValues network test file user delegation"() {
+    def "file user delegation"() {
         setup:
         def permissions = new PathSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
-            .setCreatePermission(true)
             .setDeletePermission(true)
+            .setCreatePermission(true)
             .setAddPermission(true)
+            .setListPermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= DataLakeServiceVersion.V2019_12_12.version) {
+            permissions.setMovePermission(true)
+                .setExecutePermission(true)
+                .setManageOwnershipPermission(true)
+                .setManageAccessControlPermission(true)
+        }
 
         def sasValues = generateValues(permissions)
 
@@ -186,29 +242,82 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }
 
-    def "serviceSASSignatureValues network test file system user delegation"() {
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "directory user delegation"() {
+        setup:
+        def pathName = generatePathName()
+        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        sasClient.create()
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setManageOwnershipPermission(true)
+            .setManageAccessControlPermission(true)
+
+        def sasValues = generateValues(permissions)
+
+        when:
+        def sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo())
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), pathName)
+
+        def properties = client.getProperties()
+
+        then:
+        notThrown(DataLakeStorageException)
+        validateSasProperties(properties)
+
+        when:
+        client.createSubdirectory(generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+
+        when:
+        fsc = getFileSystemClient(sas, fsc.getFileSystemUrl())
+        def it = fsc.listPaths(new ListPathsOptions().setPath(pathName), null).iterator()
+
+        then:
+        it.next()
+        !it.hasNext()
+        notThrown(DataLakeStorageException)
+    }
+
+    def "file system user delegation"() {
         setup:
         def permissions = new FileSystemSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
-            .setCreatePermission(true)
             .setDeletePermission(true)
+            .setCreatePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= DataLakeServiceVersion.V2020_02_10.version) {
+            permissions.setMovePermission(true)
+                .setExecutePermission(true)
+                .setManageOwnershipPermission(true)
+                .setManageAccessControlPermission(true)
+        }
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         when:
@@ -222,13 +331,213 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "accountSAS network test file read"() {
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "file user delegation saoid"() {
+        setup:
+        def saoid = namer.getRandomUuid()
+        def pathName = generatePathName()
+
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setManageOwnershipPermission(true)
+            .setManageAccessControlPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        when:
+        /* Grant userOID on root folder. */
+        def rootClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
+        ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
+        PathAccessControlEntry ace = new PathAccessControlEntry()
+            .setAccessControlType(AccessControlType.USER)
+            .setEntityId(saoid.toString())
+            .setPermissions(RolePermissions.parseSymbolic("rwx", false))
+        acl.add(ace)
+        rootClient.setAccessControlList(acl, null, null)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setPreauthorizedAgentObjectId(saoid)
+        def sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
+
+        def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
+
+        client.create(true)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
+
+        then:
+        notThrown(DataLakeStorageException)
+        sasWithPermissions.contains("saoid=" + saoid)
+
+        when:
+        client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        def accessControl = client.getAccessControl()
+
+        then:
+        notThrown(DataLakeStorageException)
+        accessControl.getOwner() == saoid
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "file user delegation suoid"() {
+        setup:
+        def suoid = namer.getRandomUuid()
+        def pathName = generatePathName()
+
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setManageOwnershipPermission(true)
+            .setManageAccessControlPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        when: "User is not authorized yet."
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setAgentObjectId(suoid)
+        def sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, key)
+
+        def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
+        client.create(true)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
+
+        then:
+        thrown(DataLakeStorageException)
+        sasWithPermissions.contains("suoid=" + suoid)
+
+        when: "User is now authorized."
+        /* Grant userOID on root folder. */
+        def rootClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
+        ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
+        PathAccessControlEntry ace = new PathAccessControlEntry()
+            .setAccessControlType(AccessControlType.USER)
+            .setEntityId(suoid.toString())
+            .setPermissions(RolePermissions.parseSymbolic("rwx", false))
+        acl.add(ace)
+        rootClient.setAccessControlList(acl, null, null)
+
+        sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setAgentObjectId(suoid)
+        sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
+
+        client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
+
+        client.create(true)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
+
+        client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+
+        then:
+        notThrown(DataLakeStorageException)
+        sasWithPermissions.contains("suoid=" + suoid)
+        client.getAccessControl().getOwner() == suoid
+
+        when: "Use random other suoid. User should not be authorized."
+        sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setAgentObjectId(namer.getRandomUuid())
+        sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
+
+        client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
+
+        client.getProperties()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    def "file system user delegation correlation id"() {
+        setup:
+        def permissions = new FileSystemSasPermission()
+            .setListPermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def cid = namer.getRandomUuid()
+
+        when:
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setCorrelationId(cid)
+        def sasWithPermissions = fsc.generateUserDelegationSas(sasValues, key)
+
+        def client = getFileSystemClient(sasWithPermissions, fsc.getFileSystemUrl())
+        client.listPaths().iterator().hasNext()
+
+        then:
+        sasWithPermissions.contains("scid=" + cid)
+        notThrown(DataLakeStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "file system user delegation correlation id error"() {
+        setup:
+        def permissions = new FileSystemSasPermission()
+            .setListPermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def cid = "invalidcid"
+
+        when:
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+            .setCorrelationId(cid)
+        def sasWithPermissions = fsc.generateUserDelegationSas(sasValues, key)
+
+        def client = getFileSystemClient(sasWithPermissions, fsc.getFileSystemUrl())
+        client.listPaths().iterator().hasNext()
+
+        then:
+        sasWithPermissions.contains("scid=" + cid)
+        thrown(DataLakeStorageException)
+    }
+
+    def "account sas file read"() {
         setup:
         def pathName = generatePathName()
         def fc = fsc.getFileClient(pathName)
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -238,7 +547,7 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -248,10 +557,10 @@ class SASTest extends APISpec {
         client.download(os)
 
         then:
-        os.toString() == defaultText
+        os.toString() == data.defaultText
     }
 
-    def "accountSAS network test file delete fails"() {
+    def "account sas file delete error"() {
         setup:
         def pathName = generatePathName()
         def fc = fsc.getFileClient(pathName)
@@ -265,7 +574,7 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -277,7 +586,7 @@ class SASTest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "accountSAS network create file system fails"() {
+    def "account sas create file system error"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -288,7 +597,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(false)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -300,7 +609,7 @@ class SASTest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "accountSAS network create file system succeeds"() {
+    def "account sas create file system"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -311,7 +620,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -323,7 +632,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
-    def "accountSAS network account sas token on endpoint"() {
+    def "account sas token on endpoint"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -334,7 +643,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
@@ -348,7 +657,7 @@ class SASTest extends APISpec {
         def fsc = getFileSystemClientBuilder(primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "?" + sas).buildClient()
         fsc.listPaths()
 
-        def fc = getFileClient(primaryCredential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
+        def fc = getFileClient(env.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
 
         fc.create()
 
@@ -376,7 +685,7 @@ class SASTest extends APISpec {
         } else {
             v = new DataLakeServiceSasSignatureValues(e, p)
         }
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def expected = String.format(expectedStringToSign, env.dataLakeAccount.name)
 
         v.setPermissions(p)
 
@@ -396,9 +705,9 @@ class SASTest extends APISpec {
             .setContentLanguage(language)
             .setContentType(type)
 
-        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null)
+        def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
-        def sasToken = util.stringToSign(util.getCanonicalName(primaryCredential.getAccountName()))
+        def sasToken = util.stringToSign(util.getCanonicalName(env.dataLakeAccount.name))
 
         then:
         sasToken == expected
@@ -411,17 +720,18 @@ class SASTest extends APISpec {
          */
         where:
         startTime                                                 | identifier | ipRange          | protocol               | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null             | null                   | null         | null          | null       | null       | null   || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | "id"       | null             | null                   | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\nid\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null       | new SasIpRange() | null                   | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\nip\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null       | null             | SasProtocol.HTTPS_ONLY | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null       | null             | null                   | "control"    | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
-        null                                                      | null       | null             | null                   | null         | "disposition" | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
-        null                                                      | null       | null             | null                   | null         | null          | "encoding" | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
-        null                                                      | null       | null             | null                   | null         | null          | null       | "language" | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
-        null                                                      | null       | null             | null                   | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null             | null                   | null         | null          | null       | null       | null   || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | "id"       | null             | null                   | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\nid\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null       | new SasIpRange() | null                   | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\nip\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null       | null             | SasProtocol.HTTPS_ONLY | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null       | null             | null                   | "control"    | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\ncontrol\n\n\n\n"
+        null                                                      | null       | null             | null                   | null         | "disposition" | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\ndisposition\n\n\n"
+        null                                                      | null       | null             | null                   | null         | null          | "encoding" | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\nencoding\n\n"
+        null                                                      | null       | null             | null                   | null         | null          | null       | "language" | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\nlanguage\n"
+        null                                                      | null       | null             | null                   | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\ntype"
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "sas impl util string to sign user delegation key"() {
         when:
@@ -431,7 +741,7 @@ class SASTest extends APISpec {
         p.setReadPermission(true)
 
         def v = new DataLakeServiceSasSignatureValues(e, p)
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def expected = String.format(expectedStringToSign, env.dataLakeAccount.name)
 
         p.setReadPermission(true)
         v.setPermissions(p)
@@ -459,9 +769,13 @@ class SASTest extends APISpec {
             .setSignedVersion(keyVersion)
             .setValue(keyValue)
 
-        def util = new BlobSasImplUtil(Transforms.toBlobSasValues(v), "fileSystemName", "pathName", null)
+        v.setCorrelationId(cid)
+            .setPreauthorizedAgentObjectId(saoid)
+            .setAgentObjectId(suoid)
+
+        def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
-        def sasToken = util.stringToSign(Transforms.toBlobUserDelegationKey(key), util.getCanonicalName(primaryCredential.getAccountName()))
+        def sasToken = util.stringToSign(key, util.getCanonicalName(env.dataLakeAccount.name))
 
         then:
         sasToken == expected
@@ -470,133 +784,163 @@ class SASTest extends APISpec {
         We test string to sign functionality directly related to user delegation sas specific parameters
          */
         where:
-        startTime                                                 | keyOid                                 | keyTid                                 | keyStart                                                              | keyExpiry                                                             | keyService | keyVersion   | keyValue                                       | ipRange          | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\nb\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n2018-06-17\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\nip\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\ncontrol\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\ndisposition\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\nencoding\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\nlanguage\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\ntype"
+        startTime                                                 | keyOid                                 | keyTid                                 | keyStart                                                              | keyExpiry                                                             | keyService | keyVersion   | keyValue                                       | ipRange          | protocol               | cacheControl | disposition   | encoding   | language   | type   | saoid   | suoid   | cid   || expectedStringToSign
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\nb\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n2018-06-17\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new SasIpRange() | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\nip\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | SasProtocol.HTTPS_ONLY | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | "control"    | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\ncontrol\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | "disposition" | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\ndisposition\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | "encoding" | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\nencoding\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | "language" | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\nlanguage\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | "type" | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\ntype"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | "saoid" | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\nsaoid\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | "suoid" | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\nsuoid\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | "cid" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\ncid\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
     }
 
-    @Unroll
-    def "PathSasPermission toString"() {
+    def "can use sas to authenticate"() {
         setup:
-        def perms = new PathSasPermission()
-            .setReadPermission(read)
-            .setWritePermission(write)
-            .setDeletePermission(delete)
-            .setCreatePermission(create)
-            .setAddPermission(add)
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
+        def pathName = generatePathName()
+        fsc.createDirectory(pathName)
 
-        expect:
-        perms.toString() == expectedString
-
-        where:
-        read  | write | delete | create | add   || expectedString
-        true  | false | false  | false  | false || "r"
-        false | true  | false  | false  | false || "w"
-        false | false | true   | false  | false || "d"
-        false | false | false  | true   | false || "c"
-        false | false | false  | false  | true  || "a"
-        true  | true  | true   | true   | true  || "racwd"
-    }
-
-    @Unroll
-    def "PathSasPermission parse"() {
         when:
-        def perms = PathSasPermission.parse(permString)
+        instrument(new DataLakeFileSystemClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .sasToken(sas))
+            .buildClient()
+            .getProperties()
 
         then:
-        perms.hasReadPermission() == read
-        perms.hasWritePermission() == write
-        perms.hasDeletePermission() == delete
-        perms.hasCreatePermission() == create
-        perms.hasAddPermission() == add
+        noExceptionThrown()
 
-        where:
-        permString || read  | write | delete | create | add
-        "r"        || true  | false | false  | false  | false
-        "w"        || false | true  | false  | false  | false
-        "d"        || false | false | true   | false  | false
-        "c"        || false | false | false  | true   | false
-        "a"        || false | false | false  | false  | true
-        "racwd"    || true  | true  | true   | true   | true
-        "dcwra"    || true  | true  | true   | true   | true
-    }
-
-    def "PathSasPermission parse IA"() {
         when:
-        PathSasPermission.parse("rwaq")
+        instrument(new DataLakeFileSystemClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .credential(new AzureSasCredential(sas)))
+            .buildClient()
+            .getProperties()
 
         then:
-        thrown(IllegalArgumentException)
-    }
+        noExceptionThrown()
 
-    @Unroll
-    def "FileSystemSasPermission toString"() {
-        setup:
-        def perms = new FileSystemSasPermission()
-            .setReadPermission(read)
-            .setWritePermission(write)
-            .setDeletePermission(delete)
-            .setCreatePermission(create)
-            .setAddPermission(add)
-            .setListPermission(list)
-
-        expect:
-        perms.toString() == expectedString
-
-        where:
-        read  | write | delete | create | add   | list  || expectedString
-        true  | false | false  | false  | false | false || "r"
-        false | true  | false  | false  | false | false || "w"
-        false | false | true   | false  | false | false || "d"
-        false | false | false  | true   | false | false || "c"
-        false | false | false  | false  | true  | false || "a"
-        false | false | false  | false  | false | true  || "l"
-        true  | true  | true   | true   | true  | true  || "racwdl"
-    }
-
-    @Unroll
-    def "FileSystemSasPermission parse"() {
         when:
-        def perms = FileSystemSasPermission.parse(permString)
+        instrument(new DataLakeFileSystemClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas))
+            .buildClient()
+            .getProperties()
 
         then:
-        perms.hasReadPermission() == read
-        perms.hasWritePermission() == write
-        perms.hasDeletePermission() == delete
-        perms.hasCreatePermission() == create
-        perms.hasAddPermission() == add
-        perms.hasListPermission() == list
+        noExceptionThrown()
 
-        where:
-        permString || read  | write | delete | create | add   | list
-        "r"        || true  | false | false  | false  | false | false
-        "w"        || false | true  | false  | false  | false | false
-        "d"        || false | false | true   | false  | false | false
-        "c"        || false | false | false  | true   | false | false
-        "a"        || false | false | false  | false  | true  | false
-        "l"        || false | false | false  | false  | false | true
-        "racwdl"   || true  | true  | true   | true   | true  | true
-        "dcwrla"   || true  | true  | true   | true   | true  | true
-    }
-
-    def "FileSystemSasPermission parse IA"() {
         when:
-        FileSystemSasPermission.parse("rwaq")
+        instrument(new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .pathName(pathName)
+            .sasToken(sas))
+            .buildDirectoryClient()
+            .getProperties()
 
         then:
-        thrown(IllegalArgumentException)
-    }
+        noExceptionThrown()
 
+        when:
+        instrument(new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .pathName(pathName)
+            .credential(new AzureSasCredential(sas)))
+            .buildDirectoryClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        instrument(new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
+            .pathName(pathName))
+            .buildDirectoryClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        instrument(new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .pathName(pathName)
+            .sasToken(sas))
+            .buildFileClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        instrument(new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .pathName(pathName)
+            .credential(new AzureSasCredential(sas)))
+            .buildFileClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        instrument(new DataLakePathClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
+            .pathName(pathName))
+            .buildFileClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        instrument(new DataLakeServiceClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .sasToken(sas))
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        instrument(new DataLakeServiceClientBuilder()
+            .endpoint(fsc.getFileSystemUrl())
+            .credential(new AzureSasCredential(sas)))
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        instrument(new DataLakeServiceClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas))
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+    }
 }

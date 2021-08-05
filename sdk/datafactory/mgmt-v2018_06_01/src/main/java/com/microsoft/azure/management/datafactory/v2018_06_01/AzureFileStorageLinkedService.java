@@ -25,7 +25,7 @@ public class AzureFileStorageLinkedService extends LinkedServiceInner {
      * Host name of the server. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "typeProperties.host", required = true)
+    @JsonProperty(value = "typeProperties.host")
     private Object host;
 
     /**
@@ -40,6 +40,48 @@ public class AzureFileStorageLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
+
+    /**
+     * The connection string. It is mutually exclusive with sasUri property.
+     * Type: string, SecureString or AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "typeProperties.connectionString")
+    private Object connectionString;
+
+    /**
+     * The Azure key vault secret reference of accountKey in connection string.
+     */
+    @JsonProperty(value = "typeProperties.accountKey")
+    private AzureKeyVaultSecretReference accountKey;
+
+    /**
+     * SAS URI of the Azure File resource. It is mutually exclusive with
+     * connectionString property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "typeProperties.sasUri")
+    private Object sasUri;
+
+    /**
+     * The Azure key vault secret reference of sasToken in sas uri.
+     */
+    @JsonProperty(value = "typeProperties.sasToken")
+    private AzureKeyVaultSecretReference sasToken;
+
+    /**
+     * The azure file share name. It is required when auth with
+     * accountKey/sasToken. Type: string (or Expression with resultType
+     * string).
+     */
+    @JsonProperty(value = "typeProperties.fileShare")
+    private Object fileShare;
+
+    /**
+     * The azure file share snapshot version. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.snapshot")
+    private Object snapshot;
 
     /**
      * The encrypted credential used for authentication. Credentials are
@@ -106,6 +148,126 @@ public class AzureFileStorageLinkedService extends LinkedServiceInner {
      */
     public AzureFileStorageLinkedService withPassword(SecretBase password) {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value
+     */
+    public Object connectionString() {
+        return this.connectionString;
+    }
+
+    /**
+     * Set the connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withConnectionString(Object connectionString) {
+        this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Get the Azure key vault secret reference of accountKey in connection string.
+     *
+     * @return the accountKey value
+     */
+    public AzureKeyVaultSecretReference accountKey() {
+        return this.accountKey;
+    }
+
+    /**
+     * Set the Azure key vault secret reference of accountKey in connection string.
+     *
+     * @param accountKey the accountKey value to set
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
+        this.accountKey = accountKey;
+        return this;
+    }
+
+    /**
+     * Get sAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the sasUri value
+     */
+    public Object sasUri() {
+        return this.sasUri;
+    }
+
+    /**
+     * Set sAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param sasUri the sasUri value to set
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withSasUri(Object sasUri) {
+        this.sasUri = sasUri;
+        return this;
+    }
+
+    /**
+     * Get the Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value
+     */
+    public AzureKeyVaultSecretReference sasToken() {
+        return this.sasToken;
+    }
+
+    /**
+     * Set the Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withSasToken(AzureKeyVaultSecretReference sasToken) {
+        this.sasToken = sasToken;
+        return this;
+    }
+
+    /**
+     * Get the azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with resultType string).
+     *
+     * @return the fileShare value
+     */
+    public Object fileShare() {
+        return this.fileShare;
+    }
+
+    /**
+     * Set the azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with resultType string).
+     *
+     * @param fileShare the fileShare value to set
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withFileShare(Object fileShare) {
+        this.fileShare = fileShare;
+        return this;
+    }
+
+    /**
+     * Get the azure file share snapshot version. Type: string (or Expression with resultType string).
+     *
+     * @return the snapshot value
+     */
+    public Object snapshot() {
+        return this.snapshot;
+    }
+
+    /**
+     * Set the azure file share snapshot version. Type: string (or Expression with resultType string).
+     *
+     * @param snapshot the snapshot value to set
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService withSnapshot(Object snapshot) {
+        this.snapshot = snapshot;
         return this;
     }
 

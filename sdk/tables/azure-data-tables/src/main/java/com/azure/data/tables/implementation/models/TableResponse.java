@@ -7,7 +7,7 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TableResponse model. */
+/** The response for a single table. */
 @Fluent
 public final class TableResponse extends TableResponseProperties {
     /*

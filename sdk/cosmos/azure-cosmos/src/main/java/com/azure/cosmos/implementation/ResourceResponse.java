@@ -286,7 +286,7 @@ public final class ResourceResponse<T extends Resource> {
         if (StringUtils.isEmpty(value)) {
             return 0;
         }
-        return Double.valueOf(value);
+        return Double.parseDouble(value);
     }
 
     /**

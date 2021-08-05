@@ -1,7 +1,7 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: batch
       Artifacts:
@@ -9,7 +9,6 @@ jobs:
           groupId: com.microsoft.azure
           safeName: azurebatch
       EnvVars:
-        AZURE_TEST_MODE: RECORD # RECORD mode hits live services
         AZURE_BATCH_ACCOUNT: $(java-batch-test-account-name)
         AZURE_BATCH_ACCESS_KEY: $(java-batch-test-account-access-key)
         STORAGE_ACCOUNT_KEY: $(java-batch-test-storage-account-key)

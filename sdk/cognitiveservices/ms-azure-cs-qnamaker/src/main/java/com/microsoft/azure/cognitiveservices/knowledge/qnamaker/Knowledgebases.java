@@ -8,15 +8,20 @@
 
 package com.microsoft.azure.cognitiveservices.knowledge.qnamaker;
 
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.DownloadOptionalParameter;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.TrainOptionalParameter;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.CreateKbDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.EnvironmentType;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.ErrorResponseException;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.FeedbackRecordDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.KnowledgebaseDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.KnowledgebasesDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.KnowledgebaseUpdateHeaders;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.Operation;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.QnADocumentsDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.QnADTO;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.QnASearchResultList;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.QueryDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.UpdateKbOperationDTO;
 import java.io.IOException;
 import java.util.List;
@@ -182,28 +187,219 @@ public interface Knowledgebases {
     Observable<Operation> createAsync(CreateKbDTO createKbPayload);
 
 
-
     /**
      * Download the knowledgebase.
      *
      * @param kbId Knowledgebase id.
      * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'.
+     * @param downloadOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the QnADocumentsDTO object if successful.
      */
-    QnADocumentsDTO download(String kbId, EnvironmentType environment);
+    QnADocumentsDTO download(String kbId, EnvironmentType environment, DownloadOptionalParameter downloadOptionalParameter);
 
     /**
      * Download the knowledgebase.
      *
      * @param kbId Knowledgebase id.
      * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'.
+     * @param downloadOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the QnADocumentsDTO object
      */
-    Observable<QnADocumentsDTO> downloadAsync(String kbId, EnvironmentType environment);
+    Observable<QnADocumentsDTO> downloadAsync(String kbId, EnvironmentType environment, DownloadOptionalParameter downloadOptionalParameter);
 
+    /**
+     * Download the knowledgebase.
+     *
+     * @return the first stage of the download call
+     */
+    KnowledgebasesDownloadDefinitionStages.WithKbId download();
+
+    /**
+     * Grouping of download definition stages.
+     */
+    interface KnowledgebasesDownloadDefinitionStages {
+        /**
+         * The stage of the definition to be specify kbId.
+         */
+        interface WithKbId {
+            /**
+             * Knowledgebase id.
+             *
+             * @return next definition stage
+             */
+            WithEnvironment withKbId(String kbId);
+        }
+        /**
+         * The stage of the definition to be specify environment.
+         */
+        interface WithEnvironment {
+            /**
+             * Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'.
+             *
+             * @return next definition stage
+             */
+            KnowledgebasesDownloadDefinitionStages.WithExecute withEnvironment(EnvironmentType environment);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The source property filter to apply.
+             *
+             * @return next definition stage
+             */
+            KnowledgebasesDownloadDefinitionStages.WithExecute withSource(String source);
+
+            /**
+             * The last changed status property filter to apply.
+             *
+             * @return next definition stage
+             */
+            KnowledgebasesDownloadDefinitionStages.WithExecute withChangedSince(String changedSince);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends KnowledgebasesDownloadDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the QnADocumentsDTO object if successful.
+             */
+            QnADocumentsDTO execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the QnADocumentsDTO object
+             */
+            Observable<QnADocumentsDTO> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of download definition.
+     */
+    interface KnowledgebasesDownloadDefinition extends
+        KnowledgebasesDownloadDefinitionStages.WithKbId,
+        KnowledgebasesDownloadDefinitionStages.WithEnvironment,
+        KnowledgebasesDownloadDefinitionStages.WithExecute {
+    }
+
+
+    /**
+     * GenerateAnswer call to query knowledgebase (QnA Maker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param generateAnswerPayload Post body of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the QnASearchResultList object if successful.
+     */
+    QnASearchResultList generateAnswer(String kbId, QueryDTO generateAnswerPayload);
+
+    /**
+     * GenerateAnswer call to query knowledgebase (QnA Maker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param generateAnswerPayload Post body of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QnASearchResultList object
+     */
+    Observable<QnASearchResultList> generateAnswerAsync(String kbId, QueryDTO generateAnswerPayload);
+
+
+    /**
+     * Train call to add suggestions to knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param trainOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void train(String kbId, TrainOptionalParameter trainOptionalParameter);
+
+    /**
+     * Train call to add suggestions to knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param trainOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> trainAsync(String kbId, TrainOptionalParameter trainOptionalParameter);
+
+    /**
+     * Train call to add suggestions to knowledgebase (QnAMaker Managed).
+     *
+     * @return the first stage of the train call
+     */
+    KnowledgebasesTrainDefinitionStages.WithKbId train();
+
+    /**
+     * Grouping of train definition stages.
+     */
+    interface KnowledgebasesTrainDefinitionStages {
+        /**
+         * The stage of the definition to be specify kbId.
+         */
+        interface WithKbId {
+            /**
+             * Knowledgebase id.
+             *
+             * @return next definition stage
+             */
+            KnowledgebasesTrainDefinitionStages.WithExecute withKbId(String kbId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * List of feedback records.
+             *
+             * @return next definition stage
+             */
+            KnowledgebasesTrainDefinitionStages.WithExecute withFeedbackRecords(List<FeedbackRecordDTO> feedbackRecords);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends KnowledgebasesTrainDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             */
+            void execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return a representation of the deferred computation of this call if successful.
+             */
+            Observable<Void> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of train definition.
+     */
+    interface KnowledgebasesTrainDefinition extends
+        KnowledgebasesTrainDefinitionStages.WithKbId,
+        KnowledgebasesTrainDefinitionStages.WithExecute {
+    }
 
 }

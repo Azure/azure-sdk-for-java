@@ -6,12 +6,14 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.CosmosResourceType;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -99,11 +101,11 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         client = clientBuilder().build();
 
         userWithReadPermission = createUser(client, createdDatabase.getId(), getUserDefinition());
-        readPermission = client.createPermission(userWithReadPermission.getSelfLink(), getPermission(createdCollection, "ReadPermissionOnColl", PermissionMode.READ), null).single().block()
+        readPermission = client.createPermission(userWithReadPermission.getSelfLink(), getPermission(createdCollection, "ReadPermissionOnColl", PermissionMode.READ), null).block()
                 .getResource();
 
         userWithAllPermission = createUser(client, createdDatabase.getId(), getUserDefinition());
-        allPermission = client.createPermission(userWithAllPermission.getSelfLink(), getPermission(createdCollection, "AllPermissionOnColl", PermissionMode.ALL), null).single().block()
+        allPermission = client.createPermission(userWithAllPermission.getSelfLink(), getPermission(createdCollection, "AllPermissionOnColl", PermissionMode.ALL), null).block()
                 .getResource();
     }
 
@@ -327,7 +329,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(""));
             String sprocLink = "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/sprocs/" + sprocId;
-            StoredProcedureResponse result = asyncClientWithTokenResolver.executeStoredProcedure(sprocLink, options, null).single().block();
+            StoredProcedureResponse result = asyncClientWithTokenResolver.executeStoredProcedure(sprocLink, options, null).block();
             assertThat(result.getResponseAsString()).isEqualTo("\"Success!\"");
         } finally {
             safeClose(asyncClientWithTokenResolver);
@@ -343,9 +345,9 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         try {
             asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
             Document document1 = asyncClientWithTokenResolver.createDocument(createdCollection.getSelfLink(), new Document("{'id': '" + id1 + "'}"), null, false)
-                    .single().block().getResource();
+                    .block().getResource();
             Document document2 = asyncClientWithTokenResolver.createDocument(createdCollection.getSelfLink(), new Document("{'id': '" + id2 + "'}"), null, false)
-                    .single().block().getResource();
+                    .block().getResource();
             List<String> expectedIds = new ArrayList<String>();
             String rid1 = document1.getResourceId();
             String rid2 = document2.getResourceId();
@@ -390,10 +392,20 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
             Thread.sleep(1500);
 
             document1 = asyncClientWithTokenResolver
-                    .createDocument(createdCollection.getSelfLink(), document1, null, false).single().block()
+                    .createDocument(
+                        createdCollection.getSelfLink(),
+                        document1,
+                        null,
+                        false)
+                    .block()
                     .getResource();
             document2 = asyncClientWithTokenResolver
-                    .createDocument(createdCollection.getSelfLink(), document2, null, false).single().block()
+                    .createDocument(
+                        createdCollection.getSelfLink(),
+                        document2,
+                        null,
+                        false)
+                    .block()
                     .getResource();
             List<String> expectedIds = new ArrayList<String>();
             String rid1 = document1.getResourceId();
@@ -401,13 +413,14 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
             expectedIds.add(rid1);
             expectedIds.add(rid2);
 
-            ChangeFeedOptions options = new ChangeFeedOptions();
-            options.setPartitionKey(new PartitionKey(partitionKeyValue));
-            options.setStartDateTime(befTime);
+            FeedRange feedRange = new FeedRangePartitionKeyImpl(
+                ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(partitionKeyValue)));
+            CosmosChangeFeedRequestOptions options =
+                CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(befTime, feedRange);
 
             Thread.sleep(1000);
             Flux<FeedResponse<Document>> queryObservable = asyncClientWithTokenResolver
-                    .queryDocumentChangeFeed(createdCollection.getSelfLink(), options);
+                    .queryDocumentChangeFeed(createdCollection, options);
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                     .exactlyContainsInAnyOrder(expectedIds).build();
             validateQuerySuccess(queryObservable, validator, TIMEOUT);

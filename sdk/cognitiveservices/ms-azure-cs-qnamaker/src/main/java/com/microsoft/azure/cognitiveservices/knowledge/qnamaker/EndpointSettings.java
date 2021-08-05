@@ -8,11 +8,10 @@
 
 package com.microsoft.azure.cognitiveservices.knowledge.qnamaker;
 
-import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.UpdateSettingsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.EndpointSettingsDTO;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.EndpointSettingsDTOActiveLearning;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.ErrorResponseException;
-import java.io.IOException;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.models.UpdateSettingsOptionalParameter;
 import rx.Observable;
 
 /**
@@ -47,18 +46,17 @@ public interface EndpointSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the String object if successful.
      */
-    String updateSettings(UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
+    void updateSettings(UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
 
     /**
      * Updates endpoint settings for an endpoint.
      *
      * @param updateSettingsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
+     * @return a representation of the deferred computation of this call if successful.
      */
-    Observable<String> updateSettingsAsync(UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
+    Observable<Void> updateSettingsAsync(UpdateSettingsOptionalParameter updateSettingsOptionalParameter);
 
     /**
      * Updates endpoint settings for an endpoint.
@@ -92,16 +90,15 @@ public interface EndpointSettings {
             /**
              * Execute the request.
              *
-             * @return the String object if successful.
              */
-            String execute();
+            void execute();
 
             /**
              * Execute the request asynchronously.
              *
-             * @return the observable to the String object
+             * @return a representation of the deferred computation of this call if successful.
              */
-            Observable<String> executeAsync();
+            Observable<Void> executeAsync();
         }
     }
 

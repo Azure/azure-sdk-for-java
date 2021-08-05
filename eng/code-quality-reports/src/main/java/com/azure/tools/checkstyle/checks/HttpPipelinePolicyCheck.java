@@ -7,7 +7,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
@@ -82,12 +82,11 @@ public class HttpPipelinePolicyCheck extends AbstractCheck {
             return;
         }
 
-        final DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
-        final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(classDefToken);
         final String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
         // Public class check
-        if (!accessModifier.equals(AccessModifier.PUBLIC)) {
-            log(modifiersToken, String.format("Class ''%s'' implementing ''%s'' and should be a public class",
+        if (!accessModifier.equals(AccessModifierOption.PUBLIC)) {
+            log(classDefToken, String.format("Class ''%s'' implementing ''%s'' and should be a public class",
                 className, HTTP_PIPELINE_POLICY));
         }
 

@@ -3,8 +3,10 @@
 
 package com.azure.storage.blob.nio
 
+import com.azure.core.test.TestMode
 import spock.lang.Unroll
 
+import java.nio.file.ClosedFileSystemException
 import java.nio.file.DirectoryIteratorException
 import java.nio.file.Path
 
@@ -18,7 +20,7 @@ class AzureDirectoryStreamTest extends APISpec {
     @Unroll
     def "List files"() {
         setup:
-        if (numFiles > 50 && !liveMode()) {
+        if (numFiles > 50 && env.testMode != TestMode.LIVE) {
             return // Skip large data set in record and playback
         }
         def rootName = absolute ? getNonDefaultRootDir(fs) : ""
@@ -160,6 +162,7 @@ class AzureDirectoryStreamTest extends APISpec {
     }
 
     def "Next hasNext fail after close"() {
+        setup:
         def rootName = getNonDefaultRootDir(fs)
         def dirName = generateBlobName()
         List<AzureResource> resources = []
@@ -182,6 +185,21 @@ class AzureDirectoryStreamTest extends APISpec {
 
         then:
         thrown(NoSuchElementException)
+    }
+
+    def "Has next fail after fs close"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+        putDirectoryBlob(rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(path.getFileName().toString())
+            .getBlockBlobClient())
+        def stream = fs.provider().newDirectoryStream(path, null)
+
+        when:
+        fs.close()
+        stream.iterator().hasNext()
+
+        then:
+        def e = thrown(ClosedFileSystemException)
     }
 
     def "Filter"() {

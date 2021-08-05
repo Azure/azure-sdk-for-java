@@ -16,10 +16,12 @@ import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * HTTP client that plays back {@link NetworkCallRecord NetworkCallRecords}.
@@ -27,6 +29,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class PlaybackClient implements HttpClient {
     private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
     private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
+
+    // Pattern that matches all '//' in a URL that aren't prefixed by 'http:' or 'https:'.
+    private static final Pattern DOUBLE_SLASH_CLEANER = Pattern.compile("(?<!https?:)\\/\\/");
+
     private final ClientLogger logger = new ClientLogger(PlaybackClient.class);
     private final AtomicInteger count = new AtomicInteger(0);
     private final Map<String, String> textReplacementRules;
@@ -60,8 +66,20 @@ public final class PlaybackClient implements HttpClient {
 
         final String matchingUrl = removeHost(incomingUrl);
 
-        NetworkCallRecord networkCallRecord = recordedData.findFirstAndRemoveNetworkCall(record ->
-            record.getMethod().equalsIgnoreCase(incomingMethod) && removeHost(record.getUri()).equalsIgnoreCase(matchingUrl));
+        NetworkCallRecord networkCallRecord = recordedData.findFirstAndRemoveNetworkCall(record -> {
+            if (!record.getMethod().equalsIgnoreCase(incomingMethod)) {
+                return false;
+            }
+
+            String removedHostUri = removeHost(record.getUri());
+
+            // There is an upcoming change in azure-core to fix a scenario with '//' being used instead of '/'.
+            // For now both recording formats need to be supported.
+            String cleanedHostUri = DOUBLE_SLASH_CLEANER.matcher(removedHostUri).replaceAll("/");
+            String cleanedMatchingUrl = DOUBLE_SLASH_CLEANER.matcher(matchingUrl).replaceAll("/");
+
+            return cleanedHostUri.equalsIgnoreCase(cleanedMatchingUrl);
+        });
 
         count.incrementAndGet();
 
@@ -96,7 +114,7 @@ public final class PlaybackClient implements HttpClient {
                         rawHeader = rawHeader.replaceAll(rule.getKey(), rule.getValue());
                     }
                 }
-                headers.put(pair.getKey(), rawHeader);
+                headers.set(pair.getKey(), rawHeader);
             }
         }
 
@@ -113,24 +131,41 @@ public final class PlaybackClient implements HttpClient {
             String contentType = networkCallRecord.getResponse().get("Content-Type");
 
             /*
-             * application/octet-stream and avro/binary are written to disk using Arrays.toString() which creates an
-             * output such as "[12, -1]".
+             * The Body Content-Type is application/octet-stream or avro/binary, those use a custom format to be written
+             * to disk. In older versions of azure-core-test this used Arrays.toString(), bodies saved using this format
+             * will begin with '[' and end with ']'. The new format for persisting these Content-Types is Base64
+             * encoding. Base64 encoding is more compact as Arrays.toString() will separate each byte with ', ', adding
+             * (2 * byte[].length) - 1 additional characters, additionally each byte on average takes 2-3 characters to
+             * be written to disk [-128,127). Base64 encoding only takes about 4 characters per 3 bytes, this results
+             * in a drastically smaller size on disk. In addition to a smaller size on disk, loading the body when it
+             * is Base64 encoded is much faster as it doesn't require string splitting.
              */
             if (contentType != null
                 && (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
                     || contentType.equalsIgnoreCase("avro/binary"))) {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                for (String piece : rawBody.substring(1, rawBody.length() - 1).split(", ")) {
-                    outputStream.write(Byte.parseByte(piece));
-                }
+                if (rawBody.startsWith("[") && rawBody.endsWith("]")) {
+                    /*
+                     * Body is encoded using the old Arrays.toString() format. Remove the leading '[' and trailing ']'
+                     * and split the string into individual bytes using ', '.
+                     */
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    for (String piece : rawBody.substring(1, rawBody.length() - 1).split(", ")) {
+                        outputStream.write(Byte.parseByte(piece));
+                    }
 
-                bytes = outputStream.toByteArray();
+                    bytes = outputStream.toByteArray();
+                } else {
+                    /*
+                     * Body is encoded using the Base64 encoded format, simply Base64 decode it.
+                     */
+                    bytes = Base64.getDecoder().decode(rawBody);
+                }
             } else {
                 bytes = rawBody.getBytes(StandardCharsets.UTF_8);
             }
 
             if (bytes.length > 0) {
-                headers.put("Content-Length", String.valueOf(bytes.length));
+                headers.set("Content-Length", String.valueOf(bytes.length));
             }
         }
 

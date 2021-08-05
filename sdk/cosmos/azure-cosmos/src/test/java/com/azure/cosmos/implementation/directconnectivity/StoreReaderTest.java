@@ -5,20 +5,21 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.PartitionIsMigratingException;
-import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
-import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
@@ -37,14 +38,20 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.GONE;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_SPLIT;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE;
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoreReaderTest {
+    private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+
     private static final int TIMEOUT = 30000;
 
 
@@ -76,7 +83,7 @@ public class StoreReaderTest {
                 }
             }
         }.start())).when(addressSelector).resolveAllUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(true), Mockito.eq(true));
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         storeReader.startBackgroundAddressRefresh(request);
 
         subject.onNext(uris);
@@ -128,6 +135,17 @@ public class StoreReaderTest {
         };
     }
 
+    @DataProvider(name = "storeResponseArgProvider")
+    public Object[][] storeResponseArgProvider() {
+        return new Object[][]{
+            { new PartitionKeyRangeGoneException(), null, },
+            { new PartitionKeyRangeIsSplittingException() , null, },
+            { new PartitionIsMigratingException(), null, },
+            { new GoneException(), null, },
+            { null, Mockito.mock(StoreResponse.class), }
+        };
+    }
+
     @Test(groups = "unit", dataProvider = "exceptionArgProvider")
     public void exception(Exception ex, Class<Exception> klass, int expectedStatusCode, Integer expectedSubStatusCode) {
         TransportClientWrapper transportClientWrapper = new TransportClientWrapper.Builder.ReplicaResponseBuilder
@@ -148,7 +166,7 @@ public class StoreReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
         dsr.requestContext.timeoutHelper = timeoutHelper;
@@ -218,7 +236,7 @@ public class StoreReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
@@ -295,7 +313,7 @@ public class StoreReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
@@ -364,7 +382,7 @@ public class StoreReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
@@ -426,7 +444,7 @@ public class StoreReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         dsr.requestContext = new DocumentServiceRequestContext();
@@ -464,7 +482,7 @@ public class StoreReaderTest {
 
         Uri primaryURI = Uri.create("primaryLoc");
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
@@ -495,7 +513,7 @@ public class StoreReaderTest {
 
         Uri primaryURI = Uri.create("primaryLoc");
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
@@ -522,7 +540,7 @@ public class StoreReaderTest {
 
         Uri primaryURI = Uri.create("primaryLoc");
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
@@ -542,6 +560,41 @@ public class StoreReaderTest {
         Mono<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
         FailureValidator validator = FailureValidator.builder().instanceOf(GoneException.class).build();
         validateException(readResult, validator);
+    }
+
+    @Test(groups = "unit")
+    public void canParseLongLsn() {
+        TransportClient transportClient = Mockito.mock(TransportClient.class);
+        AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+
+        Uri primaryURI = Uri.create("primaryLoc");
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+                OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        Mockito.doReturn(true).when(request.requestContext.timeoutHelper).isElapsed();
+        request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
+                Mockito.eq(request) , Mockito.eq(false));
+
+
+        StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
+
+        long bigLsn = 3629783308L;
+        StoreResponse storeResponse = StoreResponseBuilder.create()
+                .withLSN(bigLsn)
+                .withLocalLSN(bigLsn)
+                .withGlobalCommittedLsn(bigLsn)
+                .build();
+
+        StoreResult result = storeReader.createStoreResult(storeResponse, null, false, false, null);
+        assertThat(result.globalCommittedLSN).isEqualTo(bigLsn);
+        assertThat(result.lsn).isEqualTo(bigLsn);
     }
 
     @DataProvider(name = "readPrimaryAsync_RetryOnGoneArgProvider")
@@ -604,7 +657,7 @@ public class StoreReaderTest {
         Uri primaryURIPriorToRefresh = Uri.create("stale");
         Uri primaryURIAfterRefresh = Uri.create("new");
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext.performLocalRefreshOnGoneException = performLocalRefreshOnGoneException;
@@ -670,7 +723,7 @@ public class StoreReaderTest {
                 .withSecondary(secondaryReplicaURIs)
                 .build();
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
         request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
@@ -745,6 +798,57 @@ public class StoreReaderTest {
                 .verifyTotalInvocations(1);
     }
 
+    @Test(groups = "unit", dataProvider = "storeResponseArgProvider")
+    public void storeResponseRecordedOnException(Exception ex, StoreResponse storeResponse) {
+        TransportClientWrapper transportClientWrapper;
+
+        if (ex != null) {
+            transportClientWrapper = new TransportClientWrapper.Builder.ReplicaResponseBuilder
+                .SequentialBuilder()
+                .then(ex)
+                .then(ex)
+                .then(ex)
+                .then(ex)
+                .build();
+        } else {
+            transportClientWrapper = new TransportClientWrapper.Builder.ReplicaResponseBuilder
+                .SequentialBuilder()
+                .then(storeResponse)
+                .then(storeResponse)
+                .then(storeResponse)
+                .then(storeResponse)
+                .build();
+        }
+
+        Uri primaryUri = Uri.create("primary");
+        Uri secondaryUri1 = Uri.create("secondary1");
+        Uri secondaryUri2 = Uri.create("secondary2");
+        Uri secondaryUri3 = Uri.create("secondary3");
+
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(primaryUri)
+            .withSecondary(ImmutableList.of(secondaryUri1, secondaryUri2, secondaryUri3))
+            .build();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
+
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.timeoutHelper = timeoutHelper;
+        dsr.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("1");
+
+        try {
+            storeReader.readMultipleReplicaAsync(dsr, true, 3, true, true, ReadMode.Strong).subscribe();
+        } catch (Exception e) {
+            // catch any exceptions here
+        }
+
+        String cosmosDiagnostics = dsr.requestContext.cosmosDiagnostics.toString();
+        assertThat(this.getMatchingElementCount(cosmosDiagnostics, "storeResult") >= 1).isTrue();
+    }
+
     public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator) {
         validateSuccess(single, validator, 10000);
@@ -794,6 +898,18 @@ public class StoreReaderTest {
     public static <T> void validateException(Mono<T> single,
                                             FailureValidator validator) {
         validateException(single, validator, TIMEOUT);
+    }
+
+    private int getMatchingElementCount(String cosmosDiagnostics, String regex) {
+        Pattern storeResultPattern = Pattern.compile(regex);
+        Matcher matcher = storeResultPattern.matcher(cosmosDiagnostics);
+
+        int count = 0;
+        while (matcher.find()) {
+            count++;
+        }
+
+        return count;
     }
 
     private PartitionKeyRange partitionKeyRangeWithId(String id) {

@@ -21,6 +21,7 @@ module com.azure.core {
     exports com.azure.core.http;
     exports com.azure.core.http.policy;
     exports com.azure.core.http.rest;
+    exports com.azure.core.models;
     exports com.azure.core.util;
     exports com.azure.core.util.logging;
     exports com.azure.core.util.paging;
@@ -30,29 +31,20 @@ module com.azure.core {
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.fasterxml.jackson.databind;
+    opens com.azure.core.models to com.fasterxml.jackson.databind;
     opens com.azure.core.util to com.fasterxml.jackson.databind;
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.util.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
-    opens com.azure.core.implementation.serializer.jsonwrapper to com.fasterxml.jackson.databind;
-
-    // Exports HttpProviders#getAllHttpClients API to azure-core-test module
-    exports com.azure.core.implementation.http to com.azure.core.test;
-
-    // Exports JsonSerializer to azure-core-serializer-json-gson and azure-core-serializer-json-jackson
-    exports com.azure.core.implementation.serializer to com.azure.core.serializer.json.gson,
-        com.azure.core.serializer.json.jackson;
+    opens com.azure.core.http.rest to com.fasterxml.jackson.databind;
 
     // Service Provider Interfaces
-    uses com.azure.core.util.tracing.Tracer;
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;
     uses com.azure.core.http.policy.AfterRetryPolicyProvider;
-    uses com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
-
-    // indicate JacksonPlugin provides a service implementation for JsonPlugin
-    provides com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin
-        with com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonPlugin;
+    uses com.azure.core.util.serializer.JsonSerializerProvider;
+    uses com.azure.core.util.serializer.MemberNameConverterProvider;
+    uses com.azure.core.util.tracing.Tracer;
 }

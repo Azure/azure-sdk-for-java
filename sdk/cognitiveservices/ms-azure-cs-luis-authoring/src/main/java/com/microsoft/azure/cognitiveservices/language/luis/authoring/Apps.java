@@ -12,6 +12,8 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.List
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportMethodAppsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.DeleteAppsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateSettingsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportV2AppAppsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportLuFormatAppsOptionalParameter;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ApplicationCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ApplicationInfoResponse;
@@ -21,6 +23,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Appl
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AvailableCulture;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisApp;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisAppV2;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PersonalAssistantsResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PrebuiltDomain;
@@ -786,5 +789,179 @@ public interface Apps {
      */
     Observable<InputStream> packageTrainedApplicationAsGzipAsync(UUID appId, String versionId);
 
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the UUID object if successful.
+     */
+    UUID importV2App(LuisAppV2 luisAppV2, ImportV2AppAppsOptionalParameter importV2AppOptionalParameter);
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the UUID object
+     */
+    Observable<UUID> importV2AppAsync(LuisAppV2 luisAppV2, ImportV2AppAppsOptionalParameter importV2AppOptionalParameter);
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @return the first stage of the importV2App call
+     */
+    AppsImportV2AppDefinitionStages.WithLuisAppV2 importV2App();
+
+    /**
+     * Grouping of importV2App definition stages.
+     */
+    interface AppsImportV2AppDefinitionStages {
+        /**
+         * The stage of the definition to be specify luisAppV2.
+         */
+        interface WithLuisAppV2 {
+            /**
+             * A LUIS application structure.
+             *
+             * @return next definition stage
+             */
+            AppsImportV2AppDefinitionStages.WithExecute withLuisAppV2(LuisAppV2 luisAppV2);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The application name to create. If not specified, the application name will be read from the imported
+             *   object. If the application name already exists, an error is returned.
+             *
+             * @return next definition stage
+             */
+            AppsImportV2AppDefinitionStages.WithExecute withAppName(String appName);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends AppsImportV2AppDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of importV2App definition.
+     */
+    interface AppsImportV2AppDefinition extends
+        AppsImportV2AppDefinitionStages.WithLuisAppV2,
+        AppsImportV2AppDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @param luisAppLu A LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the UUID object if successful.
+     */
+    UUID importLuFormat(String luisAppLu, ImportLuFormatAppsOptionalParameter importLuFormatOptionalParameter);
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @param luisAppLu A LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the UUID object
+     */
+    Observable<UUID> importLuFormatAsync(String luisAppLu, ImportLuFormatAppsOptionalParameter importLuFormatOptionalParameter);
+
+    /**
+     * Imports an application to LUIS, the application's structure is included in the request body.
+     *
+     * @return the first stage of the importLuFormat call
+     */
+    AppsImportLuFormatDefinitionStages.WithLuisAppLu importLuFormat();
+
+    /**
+     * Grouping of importLuFormat definition stages.
+     */
+    interface AppsImportLuFormatDefinitionStages {
+        /**
+         * The stage of the definition to be specify luisAppLu.
+         */
+        interface WithLuisAppLu {
+            /**
+             * A LUIS application structure.
+             *
+             * @return next definition stage
+             */
+            AppsImportLuFormatDefinitionStages.WithExecute withLuisAppLu(String luisAppLu);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The application name to create. If not specified, the application name will be read from the imported
+             *   object. If the application name already exists, an error is returned.
+             *
+             * @return next definition stage
+             */
+            AppsImportLuFormatDefinitionStages.WithExecute withAppName(String appName);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends AppsImportLuFormatDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the UUID object if successful.
+             */
+            UUID execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the UUID object
+             */
+            Observable<UUID> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of importLuFormat definition.
+     */
+    interface AppsImportLuFormatDefinition extends
+        AppsImportLuFormatDefinitionStages.WithLuisAppLu,
+        AppsImportLuFormatDefinitionStages.WithExecute {
+    }
 
 }

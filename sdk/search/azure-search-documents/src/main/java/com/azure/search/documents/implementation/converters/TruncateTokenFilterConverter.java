@@ -18,10 +18,7 @@ public final class TruncateTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        TruncateTokenFilter truncateTokenFilter = new TruncateTokenFilter();
-
-        String name = obj.getName();
-        truncateTokenFilter.setName(name);
+        TruncateTokenFilter truncateTokenFilter = new TruncateTokenFilter(obj.getName());
 
         Integer length = obj.getLength();
         truncateTokenFilter.setLength(length);
@@ -37,10 +34,7 @@ public final class TruncateTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter truncateTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter();
-
-        String name = obj.getName();
-        truncateTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.TruncateTokenFilter(obj.getName());
 
         Integer length = obj.getLength();
         truncateTokenFilter.setLength(length);

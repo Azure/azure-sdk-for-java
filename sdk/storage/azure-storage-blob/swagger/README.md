@@ -4,175 +4,35 @@
 
 ### Setup
 
-Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
+> see https://github.com/Azure/autorest.java
 
 ### Generation
+> see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
-autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.modeler#440af3935c504cea4410133e1fd940b78f6af749  --version=2.0.4280
+mvn install
+autorest --java --use:@autorest/java@4.0.x
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-07-07/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
 enable-xml: true
+generate-client-as-impl: true
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
+context-client-method-parameter: true
+optional-constant-as-enum: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode
 custom-types-subpackage: models
-```
-
-### /{containerName}?restype=container
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-        $.delete.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?restype=container&comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=metadata"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?restype=container&comp=acl
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=acl"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?comp=lease&restype=container&acquire
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?comp=lease&restype=container&acquire"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?comp=lease&restype=container&release
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?comp=lease&restype=container&release"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?comp=lease&restype=container&renew
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?comp=lease&restype=container&renew"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?comp=lease&restype=container&break
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?comp=lease&restype=container&break"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?comp=lease&restype=container&change
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?comp=lease&restype=container&change"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?restype=container&comp=list&flat
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?restype=container&comp=list&hierarchy
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{containerName}?restype=account&comp=properties
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=account&comp=properties"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
+customization-jar-path: target/azure-storage-blob-customization-1.0.0-beta.1.jar
+customization-class: com.azure.storage.blob.customization.BlobStorageCustomization
 ```
 
 ### /{containerName}/{blob}
@@ -181,49 +41,12 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}/{blob}"]
   transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-        $.get.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-        $.get.parameters.splice(1, 0, { "$ref": path + "Blob" });
-        $.get.description = "The Download operation reads or downloads a blob from the system, including its metadata and properties. You can also call Download to read a snapshot or version.";
-        $.head.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-        $.head.parameters.splice(1, 0, { "$ref": path + "Blob" });
-        $.delete.description = "If the storage account's soft delete feature is disabled then, when a blob is deleted, it is permanently removed from the storage account. If the storage account's soft delete feature is enabled, then, when a blob is deleted, it is marked for deletion and becomes inaccessible immediately. However, the blob service retains the blob or snapshot for the number of days specified by the DeleteRetentionPolicy section of [Storage service properties] (Set-Blob-Service-Properties.md). After the specified number of days has passed, the blob's data is permanently removed from the storage account. Note that you continue to be charged for the soft-deleted blob's storage until it is permanently removed. Use the List Blobs API and specify the \"include=deleted\" query parameter to discover which blobs and snapshots have been soft deleted. You can then use the Undelete Blob API to restore a soft-deleted blob. All other operations on a soft-deleted blob or snapshot causes the service to return an HTTP status code of 404 (ResourceNotFound). If the storage account's automatic snapshot feature is enabled, then, when a blob is deleted, an automatic snapshot is created. The blob becomes inaccessible immediately. All other operations on the blob causes the service to return an HTTP status code of 404 (ResourceNotFound). You can access automatic snapshot using snapshot timestamp or version id. You can restore the blob by calling Put or Copy Blob API with automatic snapshot as source. Deleting automatic snapshot requires shared key or special SAS/RBAC permissions.";
-        $.delete.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-        $.delete.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
+    $.get.description = "The Download operation reads or downloads a blob from the system, including its metadata and properties. You can also call Download to read a snapshot or version.";
+    $.delete.description = "If the storage account's soft delete feature is disabled then, when a blob is deleted, it is permanently removed from the storage account. If the storage account's soft delete feature is enabled, then, when a blob is deleted, it is marked for deletion and becomes inaccessible immediately. However, the blob service retains the blob or snapshot for the number of days specified by the DeleteRetentionPolicy section of [Storage service properties] (Set-Blob-Service-Properties.md). After the specified number of days has passed, the blob's data is permanently removed from the storage account. Note that you continue to be charged for the soft-deleted blob's storage until it is permanently removed. Use the List Blobs API and specify the \"include=deleted\" query parameter to discover which blobs and snapshots have been soft deleted. You can then use the Undelete Blob API to restore a soft-deleted blob. All other operations on a soft-deleted blob or snapshot causes the service to return an HTTP status code of 404 (ResourceNotFound). If the storage account's automatic snapshot feature is enabled, then, when a blob is deleted, an automatic snapshot is created. The blob becomes inaccessible immediately. All other operations on the blob causes the service to return an HTTP status code of 404 (ResourceNotFound). You can access automatic snapshot using snapshot timestamp or version id. You can restore the blob by calling Put or Copy Blob API with automatic snapshot as source. Deleting automatic snapshot requires shared key or special SAS/RBAC permissions.";
     $.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
     $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
 ```
 
-### /{containerName}/{blob}?PageBlob
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?PageBlob"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref":  path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref":  path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?AppendBlob
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?AppendBlob"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref":  path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref":  path + "Blob" });
-    }
-```
 
 ### /{containerName}/{blob}?comp=appendblock
 ``` yaml
@@ -234,163 +57,18 @@ directive:
     $.put.consumes = ["application/octet-stream"];
 ```
 
-### /{containerName}/{blob}?BlockBlob
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?BlockBlob"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref":  path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref":  path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=undelete
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=undelete"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=properties&SetHTTPHeaders
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=properties&SetHTTPHeaders"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=metadata"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=lease&acquire
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=lease&acquire"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=lease&release
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=lease&release"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=lease&renew
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=lease&renew"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=lease&change
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=lease&change"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=lease&break
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=lease&break"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=snapshot
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=snapshot"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
 ### /{containerName}/{blob}?comp=copy
 ``` yaml
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}/{blob}?comp=copy"]
   transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-      $.put.responses["202"].headers["x-ms-version-id"] = {
+     $.put.responses["202"].headers["x-ms-version-id"] = {
         "x-ms-client-name": "VersionId",
         "type": "string",
         "description": "UTC date/time value generated by the service that identifies the version of the blob. This header is returned for requests made against version 2018-11-09 and above."
-      };
-    }
+     };
+    
 ```
 
 ### /{containerName}/{blob}?comp=copy&sync
@@ -399,159 +77,11 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}/{blob}?comp=copy&sync"]
   transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-      $.put.responses["202"].headers["x-ms-version-id"] = {
+     $.put.responses["202"].headers["x-ms-version-id"] = {
         "x-ms-client-name": "VersionId",
         "type": "string",
         "description": "UTC date/time value generated by the service that identifies the version of the blob. This header is returned for requests made against version 2018-11-09 and above."
-      };
-    }
-```
-
-### /{containerName}/{blob}?comp=copy&copyid={CopyId}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=copy&copyid={CopyId}"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=tier
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=tier"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?restype=account&comp=properties
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?restype=account&comp=properties"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.get.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.get.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=block
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=block"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=block&fromURL
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=block&fromURL"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref":  path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref":  path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=blocklist
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=blocklist"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref":  path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref":  path + "Blob" });
-      $.get.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.get.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=page&update
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=page&update"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=page&clear
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=page&clear"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=page&clear
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=page&clear"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=page&update&fromUrl
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=page&update&fromUrl"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
+     };
 ```
 
 ### /{containerName}/{blob}?comp=pagelist
@@ -560,13 +90,7 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist"]
   transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.get.description = "The Get Page Ranges operation returns the list of valid page ranges for a page blob, version or snapshot of a page blob";
-      $.get.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.get.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
+     $.get.description = "The Get Page Ranges operation returns the list of valid page ranges for a page blob, version or snapshot of a page blob";
 ```
 
 ### /{containerName}/{blob}?comp=pagelist&diff
@@ -575,90 +99,14 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"]
   transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.get.description = "[Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot or version.";
-      $.get.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.get.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
+    $.get.description = "[Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot or version.";
 ```
 
-### /{containerName}/{blob}?comp=properties&Resize
+### BlobItemInternal
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=properties&Resize"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=properties&UpdateSequenceNumber
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=properties&UpdateSequenceNumber"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=incrementalcopy
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=incrementalcopy"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=appendblock
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=appendblock"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref":  path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref":  path + "Blob" });
-    }
-```
-
-### /{containerName}/{blob}?comp=appendblock&fromUrl
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=appendblock&fromUrl"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### BlobItem
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.BlobItem
+  where: $.definitions.BlobItemInternal
   transform: >
     if (!$.required.includes("VersionId")) {
       $.required.push("VersionId");
@@ -670,7 +118,7 @@ directive:
     $.properties.IsPrefix = { "type": "boolean" };
 ```
 
-### BlobItemProperties and ContainerItemProperties
+### BlobItemPropertiesInternal and ContainerItemProperties
 ``` yaml
 directive:
 - from: swagger-document
@@ -693,21 +141,20 @@ directive:
         $.BlobContainerItem.properties.Properties.$ref = path;
         delete $.ContainerItem;
     }
-    if (!$.BlobItemProperties) {
-        $.BlobItemProperties = $.BlobProperties;
-        delete $.BlobProperties;
-        $.BlobItemProperties.properties.CustomerProvidedKeySha256 = { "type": "string" }
-        $.BlobItemProperties.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
-        //
-        const etag = $.BlobItemProperties.properties.Etag;
+    if (!$.BlobItemPropertiesInternal) {
+        $.BlobItemPropertiesInternal = $.BlobPropertiesInternal;
+        delete $.BlobPropertiesInternal;
+        $.BlobItemPropertiesInternal.properties.CustomerProvidedKeySha256 = { "type": "string" }
+        $.BlobItemPropertiesInternal.properties["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+        const etag = $.BlobItemPropertiesInternal.properties.Etag;
         if (etag && !etag["x-ms-client-name"]) {
             etag["x-ms-client-name"] = "eTag";
-            $.BlobItemProperties.properties.Etag = etag;
+            $.BlobItemPropertiesInternal.properties.Etag = etag;
         }
     }
-    if ($.BlobItem) {
-        const path = $.BlobItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemProperties");
-        $.BlobItem.properties.Properties.$ref = path;
+    if ($.BlobItemInternal) {
+        const path = $.BlobItemInternal.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemPropertiesInternal");
+        $.BlobItemInternal.properties.Properties.$ref = path;
     }
 ```
 
@@ -781,93 +228,6 @@ directive:
     }
 ```
 
-### /{containerName}/{blob}?comp=tags
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=tags"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ContainerName")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
-      $.get.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
-      $.get.parameters.splice(1, 0, { "$ref": path + "Blob" });
-    }
-```
-
-### /{filesystem}/{path}?resource=directory&Create
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{filesystem}/{path}?resource=directory&Create"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("Filesystem")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "Filesystem" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Path" });
-    }
-```
-
-### /{filesystem}/{path}?DirectoryRename
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{filesystem}/{path}?DirectoryRename"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("Filesystem")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "Filesystem" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Path" });
-    }
-```
-
-### /{filesystem}/{path}?DirectoryDelete
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{filesystem}/{path}?DirectoryDelete"]
-  transform: >
-    let param = $.delete.parameters[0];
-    if (!param["$ref"].endsWith("Filesystem")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.delete.parameters.splice(0, 0, { "$ref": path + "Filesystem" });
-      $.delete.parameters.splice(1, 0, { "$ref": path + "Path" });
-    }
-```
-
-### /{filesystem}/{path}?FileRename
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{filesystem}/{path}?FileRename"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("Filesystem")) {
-      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
-      $.put.parameters.splice(0, 0, { "$ref": path + "Filesystem" });
-      $.put.parameters.splice(1, 0, { "$ref": path + "Path" });
-    }
-```
-
-### Add the CustomHierarchicalListingDeserializer attribute
-``` yaml
-directive:
-- from: BlobHierarchyListSegment.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "import com.fasterxml.jackson.annotation.JsonProperty;",
-        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
-      replace(
-        "public final class BlobHierarchyListSegment {",
-        "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
-```
-
 ### Add EncryptionKeySha256 to PageBlobUploadPagesFromURLHeaders
 ``` yaml
 directive:
@@ -939,7 +299,8 @@ directive:
 - from: swagger-document
   where: $.parameters.ListContainersInclude
   transform: >
-    $["x-ms-enum"].name = "ListBlobContainersIncludeType";
+    $["x-ms-client-name"] = "ListBlobContainersIncludeType";
+    $["items"]["x-ms-enum"].name = "ListBlobContainersIncludeType";
 ```
 
 ### /?comp=list
@@ -967,83 +328,6 @@ directive:
         $.get.responses["200"].schema = { "$ref": path };
     }
     $.get.operationId = "Service_ListBlobContainersSegment";
-```
-
-### Change StorageErrorException to StorageException
-``` yaml
-directive:
-- from: ServicesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: ContainersImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: BlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: AppendBlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: BlockBlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: PageBlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
 ```
 
 ### GeoReplication
@@ -1182,17 +466,6 @@ directive:
     $.BlobSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/BlobAccessPolicy";
 ```
 
-### BlobServiceProperties Annotation Fix
-``` yaml
-directive:
-- from: BlobServiceProperties.java
-  where: $
-  transform: >
-    return $.replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private BlobMetrics hourMetrics;').
-      replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private BlobMetrics minuteMetrics;').
-      replace('@JsonProperty(value = "RetentionPolicy")\n    private BlobRetentionPolicy deleteRetentionPolicy;', '@JsonProperty(value = "DeleteRetentionPolicy")\n    private BlobRetentionPolicy deleteRetentionPolicy;');
-```
-
 ### Rename BlobHttpHeaders to BlobHttpHeader
 ``` yaml
 directive:
@@ -1233,6 +506,7 @@ directive:
     delete $.SourceIfModifiedSince["x-ms-parameter-grouping"];
     delete $.SourceIfNoneMatch["x-ms-parameter-grouping"];
     delete $.SourceIfUnmodifiedSince["x-ms-parameter-grouping"];
+    delete $.SourceIfTags["x-ms-parameter-grouping"];
 - from: swagger-document
   where: $.parameters
   transform: >
@@ -1240,6 +514,7 @@ directive:
     delete $.IfModifiedSince["x-ms-parameter-grouping"];
     delete $.IfNoneMatch["x-ms-parameter-grouping"];
     delete $.IfUnmodifiedSince["x-ms-parameter-grouping"];
+    delete $.IfTags["x-ms-parameter-grouping"];
 - from: swagger-document
   where: $.parameters
   transform: >
@@ -1277,35 +552,85 @@ directive:
     $.EncryptionScope["x-ms-parameter-grouping"]["name"] = "encryption-scope";	
 ```
 
-### BlobContainerEncryptionScope Boolean Fix
+### Block size int to long transition
 ``` yaml
 directive:
-- from: BlobContainerEncryptionScope.java
-  where: $
+- from: swagger-document
+  where: $.definitions.Block
   transform: >
-    return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
-      replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
-      replace('public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(Boolean preventEncryptionScopeOverride) {', 'public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(boolean preventEncryptionScopeOverride) {');
+    $.properties.Size["x-ms-client-name"] = "sizeLong";
+    $.properties.Size["format"] = "int64";
+    $.properties.SizeInt = { "type" : "integer" };
+    $.required.push("SizeInt");
 ```
 
-### ContainersImpl Boolean Fix
+### /{containerName}/{blob}?comp=query
 ``` yaml
 directive:
-- from: ContainersImpl.java
-  where: $
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=query"]
   transform: >
-    return $.replace('preventEncryptionScopeOverride = blobContainerEncryptionScope.isPreventEncryptionScopeOverride();', 'preventEncryptionScopeOverride = blobContainerEncryptionScope.preventEncryptionScopeOverride();');
+    $.post.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    $.post.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    $.post.responses["200"].headers["x-ms-blob-content-md5"]["x-ms-client-name"] = "blobContentMd5";
+    $.post.responses["206"].headers["x-ms-blob-content-md5"]["x-ms-client-name"] = "blobContentMd5";
+    $.post.responses["200"].headers["x-ms-server-encrypted"]["x-ms-client-name"] = "serverEncrypted";
+    $.post.responses["206"].headers["x-ms-server-encrypted"]["x-ms-client-name"] = "serverEncrypted";
 ```
 
-### BlobContainerItemProperties Boolean Fix
+### Hide TagValue in FilterBlobItem
 ``` yaml
 directive:
-- from: BlobContainerItemProperties.java
-  where: $
+- from: swagger-document
+  where: $.definitions
   transform: >
-    return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
-      replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
-      replace('public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {', 'public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {');
+    delete $.FilterBlobItem.properties.TagValue;
+```
+
+### Hide AllowPermanentDelete in RetentionPolicy
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.BlobRetentionPolicy
+  transform: >
+    delete $.properties.AllowPermanentDelete;
+```
+
+### Service_ListContainersSegment x-ms-pageable itemName
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/?comp=list"].get
+  transform: >
+    $["x-ms-pageable"].itemName = "BlobContainerItems";
+```
+
+
+### Delete Container_ListBlobFlatSegment x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### Delete Container_ListBlobHierarchySegment x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### BlobDeleteType expandable string enum
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.BlobDeleteType
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

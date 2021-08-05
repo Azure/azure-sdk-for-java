@@ -11,12 +11,14 @@ package com.microsoft.azure.management.datafactory.v2018_06_01.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.datafactory.v2018_06_01.ExposureControlBatchRequest;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ExposureControlRequest;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
@@ -61,6 +63,10 @@ public class ExposureControlsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactory.v2018_06_01.ExposureControls getFeatureValueByFactory" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getFeatureValue")
         Observable<Response<ResponseBody>> getFeatureValueByFactory(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body ExposureControlRequest exposureControlRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactory.v2018_06_01.ExposureControls queryFeatureValuesByFactory" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryFeaturesValue")
+        Observable<Response<ResponseBody>> queryFeatureValuesByFactory(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ExposureControlBatchRequest exposureControlBatchRequest, @Header("User-Agent") String userAgent);
 
     }
 
@@ -241,6 +247,102 @@ public class ExposureControlsInner {
     private ServiceResponse<ExposureControlResponseInner> getFeatureValueByFactoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ExposureControlResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExposureControlResponseInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get list of exposure control features for specific factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param exposureControlRequests List of exposure control features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ExposureControlBatchResponseInner object if successful.
+     */
+    public ExposureControlBatchResponseInner queryFeatureValuesByFactory(String resourceGroupName, String factoryName, List<ExposureControlRequest> exposureControlRequests) {
+        return queryFeatureValuesByFactoryWithServiceResponseAsync(resourceGroupName, factoryName, exposureControlRequests).toBlocking().single().body();
+    }
+
+    /**
+     * Get list of exposure control features for specific factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param exposureControlRequests List of exposure control features.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryAsync(String resourceGroupName, String factoryName, List<ExposureControlRequest> exposureControlRequests, final ServiceCallback<ExposureControlBatchResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(queryFeatureValuesByFactoryWithServiceResponseAsync(resourceGroupName, factoryName, exposureControlRequests), serviceCallback);
+    }
+
+    /**
+     * Get list of exposure control features for specific factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param exposureControlRequests List of exposure control features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ExposureControlBatchResponseInner object
+     */
+    public Observable<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryAsync(String resourceGroupName, String factoryName, List<ExposureControlRequest> exposureControlRequests) {
+        return queryFeatureValuesByFactoryWithServiceResponseAsync(resourceGroupName, factoryName, exposureControlRequests).map(new Func1<ServiceResponse<ExposureControlBatchResponseInner>, ExposureControlBatchResponseInner>() {
+            @Override
+            public ExposureControlBatchResponseInner call(ServiceResponse<ExposureControlBatchResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get list of exposure control features for specific factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param exposureControlRequests List of exposure control features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ExposureControlBatchResponseInner object
+     */
+    public Observable<ServiceResponse<ExposureControlBatchResponseInner>> queryFeatureValuesByFactoryWithServiceResponseAsync(String resourceGroupName, String factoryName, List<ExposureControlRequest> exposureControlRequests) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (exposureControlRequests == null) {
+            throw new IllegalArgumentException("Parameter exposureControlRequests is required and cannot be null.");
+        }
+        Validator.validate(exposureControlRequests);
+        ExposureControlBatchRequest exposureControlBatchRequest = new ExposureControlBatchRequest();
+        exposureControlBatchRequest.withExposureControlRequests(exposureControlRequests);
+        return service.queryFeatureValuesByFactory(this.client.subscriptionId(), resourceGroupName, factoryName, this.client.apiVersion(), this.client.acceptLanguage(), exposureControlBatchRequest, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExposureControlBatchResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ExposureControlBatchResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ExposureControlBatchResponseInner> clientResponse = queryFeatureValuesByFactoryDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ExposureControlBatchResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ExposureControlBatchResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

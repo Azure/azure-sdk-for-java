@@ -1,7 +1,84 @@
 # Release History
 
-## 12.5.0-beta.1 (Unreleased)
-- Fixed bug in ShareFileClient.uploadRangeFromUrl and ShareFileClient.beginCopy where sourceUrl was not getting encoded. 
+## 12.11.0-beta.2 (Unreleased)
+
+
+## 12.11.0-beta.1 (2021-07-28)
+- Added support to reliably download a file. 
+- Added support for the 2020-10-02 service version.
+- Fixed a bug that was cause an Exception when downloading a zero length file.
+
+## 12.10.0 (2021-06-09)
+- GA release
+
+## 12.10.0-beta.1 (2021-05-13)
+- Added support for the 2020-08-04 service version.
+- Added back ability to create a ShareLeaseClient for a Share or Share Snapshot.
+- Added upload() overloads to ShareFileClient supporting large ranges and parallel upload.
+- Deprecated old upload() overloads on ShareFileClient that only supported single Put Range operations, replacing them
+with uploadRange() methods.
+
+## 12.9.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` to version `1.16.0`
+- Updated `azure-storage-common` to version `12.11.1`
+
+## 12.9.0 (2021-04-29)
+- ShareLeaseClient now updates it's leaseID through a lease change.
+- Fixed a bug where working with a root directory client could improperly form requests and subdirectory clients
+
+## 12.9.0-beta.3 (2021-04-16)
+- Updated azure-storage-common dependencies.
+
+## 12.9.0-beta.2 (2021-03-29)
+- Updated azure-storage-common and azure-core dependencies.
+
+## 12.9.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+
+## 12.8.0 (2021-01-14)
+- GA release
+
+## 12.8.0-beta.1 (2020-12-07)
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
+- Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
+- Fixed a bug where the sharesnapshot query parameter would be ignored in share and share file client builders.
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
+- Added support for the 2020-04-08 service version. 
+- Added support for specifying enabled protocols on share creation
+- Added support for setting root squash on share creation and through set properties.
+
+## 12.7.0 (2020-11-11)
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Added support for setting access tier on a share through ShareClient.create, ShareClient.setAccessTier.
+- Added support for getting access tier on a share through ShareClient.getProperties, ShareServiceClient.listShares
+- Fixed a bug where interspersed element types returned by range diff listing would deserialize incorrectly.
+- Renamed setAccessTier to setProperties and deprecated setQuotaInGb in favor of setProperties.
+- Renamed DeleteSnapshotsOptionType to ShareSnapshotsDeleteOptionType in ShareClient.delete
+- Removed ability to create a ShareLeaseClient for a Share or Share Snapshot. This feature has been rescheduled for future release.
+
+## 12.7.0-beta.1 (2020-10-01)
+- Added support for the 2020-02-10 service version. 
+- Added support to getFileRanges on a previous snapshot by adding the getFileRangesDiff API. 
+- Added support to set whether or not smb multichannel is enabled.
+- Added support to lease shares and snapshot shares.
+- Added support to specify a lease id for share operations.
+- Fixed a bug where getProperties on a file client would throw a HttpResponseException instead of ShareStorageException.
+- Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
+- Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http
+- Fixed a bug where a custom application id in HttpLogOptions would not be added to the User Agent String.
+
+## 12.6.0 (2020-08-13)
+- GA release for 2019-12-12 service version
+
+## 12.6.0-beta.1 (2020-07-07)
+- Added support for the 2019-12-12 service version.
+- Added support for restoring file share.
+
+## 12.5.0 (2020-06-12)
+- Fixed bug in ShareFileClient.uploadRangeFromUrl and ShareFileClient.beginCopy where sourceUrl was not getting encoded.
+- Updated azure-storage-common and azure-core dependencies. 
 
 ## 12.4.1 (2020-05-06)
 - Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
@@ -29,18 +106,18 @@
 
 ## 12.1.0 (2020-01-08)
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.1.0/sdk/storage/azure-storage-file-share/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.1.0/sdk/storage/azure-storage-file-share/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.1.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.1.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
 
 ## 12.1.0-beta.1 (2019-12-18)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setFilePath, setShareName generateSasQueryParameters methods on ShareServiceSasSignatureValues to direct users to using the methods added on clients.
 
 ## 12.0.0 (2019-12-04)
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0/sdk/storage/azure-storage-file-share/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.0.0/sdk/storage/azure-storage-file-share/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.0.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
 
 - GA release.
 - Changed return type for forceCloseHandle from void to CloseHandlesInfo.
@@ -74,7 +151,7 @@ and
 - Renamed FileSasPermission getters to use has prefix
 - Changed return type for FileClient.downloadWithProperties from Response<Void> to FileDownloadResponse and FileAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<FileDownloadAsyncResponse>
 
-## 12.0.0-preview.4 (2019-10-8)
+## 12.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's
@@ -124,7 +201,7 @@ demonstrate the new API.
 ## 12.0.0-preview.2 (2019-08-08)
 Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
 
-For details on the Azure SDK for Java (August 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+For details on the Azure SDK for Java (August 2019 Preview) release, you can refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
 
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.2/sdk/storage/azure-storage-file/README.md)
@@ -138,5 +215,3 @@ demonstrate the new API.
     - `azure-storage-file` contains a `FileServiceClient`,  `FileServiceAsyncClient`, `ShareClient`, `ShareAsyncClient`, `DirectoryClient`, `DirectoryAsyncClient`, `FileClient` and `FileAsyncClient` for storage file operations.
 - Client instances are scoped to storage file service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-
-

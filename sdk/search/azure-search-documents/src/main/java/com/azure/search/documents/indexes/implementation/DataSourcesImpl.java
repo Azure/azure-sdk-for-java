@@ -23,7 +23,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
@@ -32,63 +31,92 @@ import com.azure.search.documents.indexes.implementation.models.SearchIndexerDat
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * DataSources.
- */
+/** An instance of this class provides access to all the operations defined in DataSources. */
 public final class DataSourcesImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private DataSourcesService service;
+    /** The proxy service used to perform REST calls. */
+    private final DataSourcesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SearchServiceRestClientImpl client;
+    /** The service client containing this operation class. */
+    private final SearchServiceClientImpl client;
 
     /**
      * Initializes an instance of DataSourcesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public DataSourcesImpl(SearchServiceRestClientImpl client) {
-        this.service = RestProxy.create(DataSourcesService.class, client.getHttpPipeline());
+    DataSourcesImpl(SearchServiceClientImpl client) {
+        this.service =
+                RestProxy.create(DataSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SearchServiceRestClientDataSources to be used by the proxy service to
+     * The interface defining all the services for SearchServiceClientDataSources to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceRestClientDataSources")
-    private interface DataSourcesService {
-        @Put("datasources('{dataSourceName}')")
+    @ServiceInterface(name = "SearchServiceClientD")
+    public interface DataSourcesService {
+        @Put("/datasources('{dataSourceName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchIndexerDataSource>> createOrUpdate(@PathParam("dataSourceName") String dataSourceName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") SearchIndexerDataSource dataSource, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SearchIndexerDataSource>> createOrUpdate(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataSourceName") String dataSourceName,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Prefer") String prefer,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                @BodyParam("application/json") SearchIndexerDataSource dataSource,
+                Context context);
 
-        @Delete("datasources('{dataSourceName}')")
+        @Delete("/datasources('{dataSourceName}')")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> delete(@PathParam("dataSourceName") String dataSourceName, @HostParam("endpoint") String endpoint, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<Void>> delete(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataSourceName") String dataSourceName,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Get("datasources('{dataSourceName}')")
+        @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchIndexerDataSource>> get(@PathParam("dataSourceName") String dataSourceName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SearchIndexerDataSource>> get(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataSourceName") String dataSourceName,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Get("datasources")
+        @Get("/datasources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<ListDataSourcesResult>> list(@HostParam("endpoint") String endpoint, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<ListDataSourcesResult>> list(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("$select") String select,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Post("datasources")
+        @Post("/datasources")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchIndexerDataSource>> create(@HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") SearchIndexerDataSource dataSource, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SearchIndexerDataSource>> create(
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                @BodyParam("application/json") SearchIndexerDataSource dataSource,
+                Context context);
     }
 
     /**
@@ -96,190 +124,160 @@ public final class DataSourcesImpl {
      *
      * @param dataSourceName The name of the datasource to create or update.
      * @param dataSource The definition of the datasource to create or update.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a datasource definition, which can be used to configure an indexer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerDataSource>> createOrUpdateWithRestResponseAsync(String dataSourceName, SearchIndexerDataSource dataSource, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
+    public Mono<Response<SearchIndexerDataSource>> createOrUpdateWithResponseAsync(
+            String dataSourceName,
+            SearchIndexerDataSource dataSource,
+            String ifMatch,
+            String ifNoneMatch,
+            RequestOptions requestOptions,
+            Context context) {
         final String prefer = "return=representation";
-        final UUID xMsClientRequestId = null;
-        return service.createOrUpdate(dataSourceName, this.client.getEndpoint(), dataSource, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * Creates a new datasource or updates a datasource if it already exists.
-     *
-     * @param dataSourceName The name of the datasource to create or update.
-     * @param dataSource The definition of the datasource to create or update.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerDataSource>> createOrUpdateWithRestResponseAsync(String dataSourceName, SearchIndexerDataSource dataSource, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final String prefer = "return=representation";
-        UUID xMsClientRequestId = null;
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.createOrUpdate(dataSourceName, this.client.getEndpoint(), dataSource, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.createOrUpdate(
+                this.client.getEndpoint(),
+                dataSourceName,
+                xMsClientRequestId,
+                ifMatch,
+                ifNoneMatch,
+                prefer,
+                this.client.getApiVersion(),
+                accept,
+                dataSource,
+                context);
     }
 
     /**
      * Deletes a datasource.
      *
      * @param dataSourceName The name of the datasource to delete.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     *     matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     *     server does not match this value.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithRestResponseAsync(String dataSourceName, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final UUID xMsClientRequestId = null;
-        return service.delete(dataSourceName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * Deletes a datasource.
-     *
-     * @param dataSourceName The name of the datasource to delete.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithRestResponseAsync(String dataSourceName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<Void>> deleteWithResponseAsync(
+            String dataSourceName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.delete(dataSourceName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.delete(
+                this.client.getEndpoint(),
+                dataSourceName,
+                xMsClientRequestId,
+                ifMatch,
+                ifNoneMatch,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
      * Retrieves a datasource definition.
      *
      * @param dataSourceName The name of the datasource to retrieve.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a datasource definition, which can be used to configure an indexer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerDataSource>> getWithRestResponseAsync(String dataSourceName, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final UUID xMsClientRequestId = null;
-        return service.get(dataSourceName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * Retrieves a datasource definition.
-     *
-     * @param dataSourceName The name of the datasource to retrieve.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerDataSource>> getWithRestResponseAsync(String dataSourceName, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<SearchIndexerDataSource>> getWithResponseAsync(
+            String dataSourceName, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.get(dataSourceName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.get(
+                this.client.getEndpoint(),
+                dataSourceName,
+                xMsClientRequestId,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
      * Lists all datasources available for a search service.
      *
+     * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated
+     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Datasources request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListDataSourcesResult>> listWithRestResponseAsync(Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final String select = null;
-        final UUID xMsClientRequestId = null;
-        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * Lists all datasources available for a search service.
-     *
-     * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ListDataSourcesResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<ListDataSourcesResult>> listWithResponseAsync(
+            String select, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.list(
+                this.client.getEndpoint(), select, xMsClientRequestId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Creates a new datasource.
      *
      * @param dataSource The definition of the datasource to create.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a datasource definition, which can be used to configure an indexer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerDataSource>> createWithRestResponseAsync(SearchIndexerDataSource dataSource, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        final UUID xMsClientRequestId = null;
-        return service.create(this.client.getEndpoint(), dataSource, this.client.getApiVersion(), accept, xMsClientRequestId, context);
-    }
-
-    /**
-     * Creates a new datasource.
-     *
-     * @param dataSource The definition of the datasource to create.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchIndexerDataSource>> createWithRestResponseAsync(SearchIndexerDataSource dataSource, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=minimal";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<SearchIndexerDataSource>> createWithResponseAsync(
+            SearchIndexerDataSource dataSource, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.create(this.client.getEndpoint(), dataSource, this.client.getApiVersion(), accept, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.create(
+                this.client.getEndpoint(),
+                xMsClientRequestId,
+                this.client.getApiVersion(),
+                accept,
+                dataSource,
+                context);
     }
 }

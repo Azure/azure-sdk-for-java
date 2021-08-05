@@ -24,6 +24,16 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
 
     /**
+     * Endpoint to connect to when using Azure Active Directory managed service identity (MSI).
+     */
+    public static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
+
+    /**
+     * Header when connecting to Azure Active Directory using managed service identity (MSI).
+     */
+    public static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+
+    /**
      * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
      */
     public static final String PROPERTY_NO_PROXY = "NO_PROXY";
@@ -74,6 +84,21 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH = "AZURE_CLIENT_CERTIFICATE_PATH";
 
     /**
+     * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
+     */
+    public static final String PROPERTY_AZURE_IDENTITY_DISABLE_CP1 = "AZURE_IDENTITY_DISABLE_CP1";
+
+    /**
+     * URL used by Bridge To Kubernetes to redirect IMDS calls in the development environment.
+     */
+    public static final String PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL = "AZURE_POD_IDENTITY_TOKEN_URL";
+
+    /*
+     * Name of Azure AAD regional authority.
+     */
+    public static final String PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME = "AZURE_REGIONAL_AUTHORITY_NAME";
+
+    /**
      * Name of the Azure resource group.
      */
     public static final String PROPERTY_AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";
@@ -99,6 +124,11 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
 
     /**
+     * Enables HTTP request/response logging by setting an HTTP log detail level.
+     */
+    public static final String PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL = "AZURE_HTTP_LOG_DETAIL_LEVEL";
+
+    /**
      * Disables tracing.
      */
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
@@ -109,6 +139,8 @@ public class Configuration implements Cloneable {
     private static final String[] DEFAULT_CONFIGURATIONS = {
         PROPERTY_HTTP_PROXY,
         PROPERTY_HTTPS_PROXY,
+        PROPERTY_IDENTITY_ENDPOINT,
+        PROPERTY_IDENTITY_HEADER,
         PROPERTY_NO_PROXY,
         PROPERTY_MSI_ENDPOINT,
         PROPERTY_MSI_SECRET,
@@ -118,12 +150,16 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_CLIENT_ID,
         PROPERTY_AZURE_CLIENT_SECRET,
         PROPERTY_AZURE_TENANT_ID,
+        PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
         PROPERTY_AZURE_RESOURCE_GROUP,
         PROPERTY_AZURE_CLOUD,
         PROPERTY_AZURE_AUTHORITY_HOST,
         PROPERTY_AZURE_TELEMETRY_DISABLED,
         PROPERTY_AZURE_LOG_LEVEL,
+        PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL,
         PROPERTY_AZURE_TRACING_DISABLED,
+        PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
+        PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME
     };
 
     /*
@@ -162,9 +198,12 @@ public class Configuration implements Cloneable {
 
     /**
      * Gets the value of the configuration.
+     * <p>
+     * This method first checks the values previously loaded from the environment, if the configuration is found there
+     * it will be returned. Otherwise, this will attempt to load the value from the environment.
      *
      * @param name Name of the configuration.
-     * @return Value of the configuration if found, otherwise {@code null}.
+     * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
         return getOrLoad(name);
@@ -172,7 +211,10 @@ public class Configuration implements Cloneable {
 
     /**
      * Gets the value of the configuration converted to {@code T}.
-     *
+     * <p>
+     * This method first checks the values previously loaded from the environment, if the configuration is found there
+     * it will be returned. Otherwise, this will attempt to load the value from the environment.
+     * <p>
      * If no configuration is found, the {@code defaultValue} is returned.
      *
      * @param name Name of the configuration.
@@ -185,11 +227,16 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * Gets the converted value of the configuration.
+     * Gets the value of the configuration and converts it with the {@code converter}.
+     * <p>
+     * This method first checks the values previously loaded from the environment, if the configuration is found there
+     * it will be returned. Otherwise, this will attempt to load the value from the environment.
+     * <p>
+     * If no configuration is found the {@code converter} won't be called and null will be returned.
      *
      * @param name Name of the configuration.
      * @param converter Converter used to map the configuration to {@code T}.
-     * @param <T> Generic type that the configuration is converted to if found.
+     * @param <T> Type that the configuration is converted to if found.
      * @return The converted configuration if found, otherwise null.
      */
     public <T> T get(String name, Function<String, T> converter) {
@@ -254,8 +301,8 @@ public class Configuration implements Cloneable {
 
     /**
      * Adds a configuration with the given value.
-     *
-     * If a configuration with the same name already exists, this will update it to the passed value.
+     * <p>
+     * This will overwrite the previous configuration value if it existed.
      *
      * @param name Name of the configuration.
      * @param value Value of the configuration.
@@ -268,9 +315,11 @@ public class Configuration implements Cloneable {
 
     /**
      * Removes the configuration.
+     * <p>
+     * This returns the value of the configuration if it previously existed.
      *
      * @param name Name of the configuration.
-     * @return If the configuration was removed the value of it, otherwise {@code null}.
+     * @return The configuration if it previously existed, otherwise null.
      */
     public String remove(String name) {
         return configurations.remove(name);
@@ -278,6 +327,9 @@ public class Configuration implements Cloneable {
 
     /**
      * Determines if the configuration exists.
+     * <p>
+     * This only checks against values previously loaded into the Configuration object, this won't inspect the
+     * environment for containing the value.
      *
      * @param name Name of the configuration.
      * @return True if the configuration exists, otherwise false.
@@ -287,6 +339,8 @@ public class Configuration implements Cloneable {
     }
 
     /**
+     * Clones this Configuration object.
+     *
      * @return A clone of the Configuration object.
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")

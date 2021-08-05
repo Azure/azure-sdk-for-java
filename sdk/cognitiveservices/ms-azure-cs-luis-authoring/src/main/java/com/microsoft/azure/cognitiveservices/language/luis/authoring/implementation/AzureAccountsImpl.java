@@ -9,7 +9,9 @@
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AssignToAppOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetAssignedOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.RemoveFromAppOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListUserLUISAccountsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.AzureAccounts;
 import com.google.common.base.Joiner;
@@ -64,19 +66,19 @@ public class AzureAccountsImpl implements AzureAccounts {
     interface AzureAccountsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.AzureAccounts assignToApp" })
         @POST("apps/{appId}/azureaccounts")
-        Observable<Response<ResponseBody>> assignToApp(@Path("appId") UUID appId, @Body AzureAccountInfoObject azureAccountInfoObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> assignToApp(@Path("appId") UUID appId, @Header("ArmToken") String armToken, @Body AzureAccountInfoObject azureAccountInfoObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.AzureAccounts getAssigned" })
         @GET("apps/{appId}/azureaccounts")
-        Observable<Response<ResponseBody>> getAssigned(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAssigned(@Path("appId") UUID appId, @Header("ArmToken") String armToken, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.AzureAccounts removeFromApp" })
         @HTTP(path = "apps/{appId}/azureaccounts", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> removeFromApp(@Path("appId") UUID appId, @Body AzureAccountInfoObject azureAccountInfoObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> removeFromApp(@Path("appId") UUID appId, @Header("ArmToken") String armToken, @Body AzureAccountInfoObject azureAccountInfoObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.AzureAccounts listUserLUISAccounts" })
         @GET("azureaccounts")
-        Observable<Response<ResponseBody>> listUserLUISAccounts(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listUserLUISAccounts(@Header("ArmToken") String armToken, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -144,9 +146,10 @@ public class AzureAccountsImpl implements AzureAccounts {
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
+        final String armToken = assignToAppOptionalParameter != null ? assignToAppOptionalParameter.armToken() : null;
         final AzureAccountInfoObject azureAccountInfoObject = assignToAppOptionalParameter != null ? assignToAppOptionalParameter.azureAccountInfoObject() : null;
 
-        return assignToAppWithServiceResponseAsync(appId, azureAccountInfoObject);
+        return assignToAppWithServiceResponseAsync(appId, armToken, azureAccountInfoObject);
     }
 
     /**
@@ -154,11 +157,12 @@ public class AzureAccountsImpl implements AzureAccounts {
      * Assigns an Azure account to the application.
      *
      * @param appId The application ID.
+     * @param armToken The custom arm token header to use; containing the user's ARM token used to validate azure accounts information.
      * @param azureAccountInfoObject The Azure account information object.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<ServiceResponse<OperationStatus>> assignToAppWithServiceResponseAsync(UUID appId, AzureAccountInfoObject azureAccountInfoObject) {
+    public Observable<ServiceResponse<OperationStatus>> assignToAppWithServiceResponseAsync(UUID appId, String armToken, AzureAccountInfoObject azureAccountInfoObject) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -167,7 +171,7 @@ public class AzureAccountsImpl implements AzureAccounts {
         }
         Validator.validate(azureAccountInfoObject);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.assignToApp(appId, azureAccountInfoObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.assignToApp(appId, armToken, azureAccountInfoObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -199,6 +203,7 @@ public class AzureAccountsImpl implements AzureAccounts {
     class AzureAccountsAssignToAppParameters implements AzureAccountsAssignToAppDefinition {
         private AzureAccountsImpl parent;
         private UUID appId;
+        private String armToken;
         private AzureAccountInfoObject azureAccountInfoObject;
 
         /**
@@ -216,6 +221,12 @@ public class AzureAccountsImpl implements AzureAccounts {
         }
 
         @Override
+        public AzureAccountsAssignToAppParameters withArmToken(String armToken) {
+            this.armToken = armToken;
+            return this;
+        }
+
+        @Override
         public AzureAccountsAssignToAppParameters withAzureAccountInfoObject(AzureAccountInfoObject azureAccountInfoObject) {
             this.azureAccountInfoObject = azureAccountInfoObject;
             return this;
@@ -223,12 +234,12 @@ public class AzureAccountsImpl implements AzureAccounts {
 
         @Override
         public OperationStatus execute() {
-        return assignToAppWithServiceResponseAsync(appId, azureAccountInfoObject).toBlocking().single().body();
+        return assignToAppWithServiceResponseAsync(appId, armToken, azureAccountInfoObject).toBlocking().single().body();
     }
 
         @Override
         public Observable<OperationStatus> executeAsync() {
-            return assignToAppWithServiceResponseAsync(appId, azureAccountInfoObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            return assignToAppWithServiceResponseAsync(appId, armToken, azureAccountInfoObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
                 @Override
                 public OperationStatus call(ServiceResponse<OperationStatus> response) {
                     return response.body();
@@ -237,18 +248,20 @@ public class AzureAccountsImpl implements AzureAccounts {
         }
     }
 
+
     /**
      * apps - Get LUIS Azure accounts assigned to the application.
      * Gets the LUIS Azure accounts assigned to the application for the user using his ARM token.
      *
      * @param appId The application ID.
+     * @param getAssignedOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;AzureAccountInfoObject&gt; object if successful.
      */
-    public List<AzureAccountInfoObject> getAssigned(UUID appId) {
-        return getAssignedWithServiceResponseAsync(appId).toBlocking().single().body();
+    public List<AzureAccountInfoObject> getAssigned(UUID appId, GetAssignedOptionalParameter getAssignedOptionalParameter) {
+        return getAssignedWithServiceResponseAsync(appId, getAssignedOptionalParameter).toBlocking().single().body();
     }
 
     /**
@@ -256,12 +269,13 @@ public class AzureAccountsImpl implements AzureAccounts {
      * Gets the LUIS Azure accounts assigned to the application for the user using his ARM token.
      *
      * @param appId The application ID.
+     * @param getAssignedOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AzureAccountInfoObject>> getAssignedAsync(UUID appId, final ServiceCallback<List<AzureAccountInfoObject>> serviceCallback) {
-        return ServiceFuture.fromResponse(getAssignedWithServiceResponseAsync(appId), serviceCallback);
+    public ServiceFuture<List<AzureAccountInfoObject>> getAssignedAsync(UUID appId, GetAssignedOptionalParameter getAssignedOptionalParameter, final ServiceCallback<List<AzureAccountInfoObject>> serviceCallback) {
+        return ServiceFuture.fromResponse(getAssignedWithServiceResponseAsync(appId, getAssignedOptionalParameter), serviceCallback);
     }
 
     /**
@@ -269,11 +283,12 @@ public class AzureAccountsImpl implements AzureAccounts {
      * Gets the LUIS Azure accounts assigned to the application for the user using his ARM token.
      *
      * @param appId The application ID.
+     * @param getAssignedOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;AzureAccountInfoObject&gt; object
      */
-    public Observable<List<AzureAccountInfoObject>> getAssignedAsync(UUID appId) {
-        return getAssignedWithServiceResponseAsync(appId).map(new Func1<ServiceResponse<List<AzureAccountInfoObject>>, List<AzureAccountInfoObject>>() {
+    public Observable<List<AzureAccountInfoObject>> getAssignedAsync(UUID appId, GetAssignedOptionalParameter getAssignedOptionalParameter) {
+        return getAssignedWithServiceResponseAsync(appId, getAssignedOptionalParameter).map(new Func1<ServiceResponse<List<AzureAccountInfoObject>>, List<AzureAccountInfoObject>>() {
             @Override
             public List<AzureAccountInfoObject> call(ServiceResponse<List<AzureAccountInfoObject>> response) {
                 return response.body();
@@ -286,10 +301,32 @@ public class AzureAccountsImpl implements AzureAccounts {
      * Gets the LUIS Azure accounts assigned to the application for the user using his ARM token.
      *
      * @param appId The application ID.
+     * @param getAssignedOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;AzureAccountInfoObject&gt; object
      */
-    public Observable<ServiceResponse<List<AzureAccountInfoObject>>> getAssignedWithServiceResponseAsync(UUID appId) {
+    public Observable<ServiceResponse<List<AzureAccountInfoObject>>> getAssignedWithServiceResponseAsync(UUID appId, GetAssignedOptionalParameter getAssignedOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        final String armToken = getAssignedOptionalParameter != null ? getAssignedOptionalParameter.armToken() : null;
+
+        return getAssignedWithServiceResponseAsync(appId, armToken);
+    }
+
+    /**
+     * apps - Get LUIS Azure accounts assigned to the application.
+     * Gets the LUIS Azure accounts assigned to the application for the user using his ARM token.
+     *
+     * @param appId The application ID.
+     * @param armToken The custom arm token header to use; containing the user's ARM token used to validate azure accounts information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;AzureAccountInfoObject&gt; object
+     */
+    public Observable<ServiceResponse<List<AzureAccountInfoObject>>> getAssignedWithServiceResponseAsync(UUID appId, String armToken) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -297,7 +334,7 @@ public class AzureAccountsImpl implements AzureAccounts {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getAssigned(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.getAssigned(appId, armToken, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AzureAccountInfoObject>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<AzureAccountInfoObject>>> call(Response<ResponseBody> response) {
@@ -316,6 +353,55 @@ public class AzureAccountsImpl implements AzureAccounts {
                 .register(200, new TypeToken<List<AzureAccountInfoObject>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public AzureAccountsGetAssignedParameters getAssigned() {
+        return new AzureAccountsGetAssignedParameters(this);
+    }
+
+    /**
+     * Internal class implementing AzureAccountsGetAssignedDefinition.
+     */
+    class AzureAccountsGetAssignedParameters implements AzureAccountsGetAssignedDefinition {
+        private AzureAccountsImpl parent;
+        private UUID appId;
+        private String armToken;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        AzureAccountsGetAssignedParameters(AzureAccountsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public AzureAccountsGetAssignedParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public AzureAccountsGetAssignedParameters withArmToken(String armToken) {
+            this.armToken = armToken;
+            return this;
+        }
+
+        @Override
+        public List<AzureAccountInfoObject> execute() {
+        return getAssignedWithServiceResponseAsync(appId, armToken).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<AzureAccountInfoObject>> executeAsync() {
+            return getAssignedWithServiceResponseAsync(appId, armToken).map(new Func1<ServiceResponse<List<AzureAccountInfoObject>>, List<AzureAccountInfoObject>>() {
+                @Override
+                public List<AzureAccountInfoObject> call(ServiceResponse<List<AzureAccountInfoObject>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -382,9 +468,10 @@ public class AzureAccountsImpl implements AzureAccounts {
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
+        final String armToken = removeFromAppOptionalParameter != null ? removeFromAppOptionalParameter.armToken() : null;
         final AzureAccountInfoObject azureAccountInfoObject = removeFromAppOptionalParameter != null ? removeFromAppOptionalParameter.azureAccountInfoObject() : null;
 
-        return removeFromAppWithServiceResponseAsync(appId, azureAccountInfoObject);
+        return removeFromAppWithServiceResponseAsync(appId, armToken, azureAccountInfoObject);
     }
 
     /**
@@ -392,11 +479,12 @@ public class AzureAccountsImpl implements AzureAccounts {
      * Removes assigned Azure account from the application.
      *
      * @param appId The application ID.
+     * @param armToken The custom arm token header to use; containing the user's ARM token used to validate azure accounts information.
      * @param azureAccountInfoObject The Azure account information object.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<ServiceResponse<OperationStatus>> removeFromAppWithServiceResponseAsync(UUID appId, AzureAccountInfoObject azureAccountInfoObject) {
+    public Observable<ServiceResponse<OperationStatus>> removeFromAppWithServiceResponseAsync(UUID appId, String armToken, AzureAccountInfoObject azureAccountInfoObject) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -405,7 +493,7 @@ public class AzureAccountsImpl implements AzureAccounts {
         }
         Validator.validate(azureAccountInfoObject);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.removeFromApp(appId, azureAccountInfoObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.removeFromApp(appId, armToken, azureAccountInfoObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -437,6 +525,7 @@ public class AzureAccountsImpl implements AzureAccounts {
     class AzureAccountsRemoveFromAppParameters implements AzureAccountsRemoveFromAppDefinition {
         private AzureAccountsImpl parent;
         private UUID appId;
+        private String armToken;
         private AzureAccountInfoObject azureAccountInfoObject;
 
         /**
@@ -454,6 +543,12 @@ public class AzureAccountsImpl implements AzureAccounts {
         }
 
         @Override
+        public AzureAccountsRemoveFromAppParameters withArmToken(String armToken) {
+            this.armToken = armToken;
+            return this;
+        }
+
+        @Override
         public AzureAccountsRemoveFromAppParameters withAzureAccountInfoObject(AzureAccountInfoObject azureAccountInfoObject) {
             this.azureAccountInfoObject = azureAccountInfoObject;
             return this;
@@ -461,12 +556,12 @@ public class AzureAccountsImpl implements AzureAccounts {
 
         @Override
         public OperationStatus execute() {
-        return removeFromAppWithServiceResponseAsync(appId, azureAccountInfoObject).toBlocking().single().body();
+        return removeFromAppWithServiceResponseAsync(appId, armToken, azureAccountInfoObject).toBlocking().single().body();
     }
 
         @Override
         public Observable<OperationStatus> executeAsync() {
-            return removeFromAppWithServiceResponseAsync(appId, azureAccountInfoObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            return removeFromAppWithServiceResponseAsync(appId, armToken, azureAccountInfoObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
                 @Override
                 public OperationStatus call(ServiceResponse<OperationStatus> response) {
                     return response.body();
@@ -475,40 +570,44 @@ public class AzureAccountsImpl implements AzureAccounts {
         }
     }
 
+
     /**
      * user - Get LUIS Azure accounts.
      * Gets the LUIS Azure accounts for the user using his ARM token.
      *
+     * @param listUserLUISAccountsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;AzureAccountInfoObject&gt; object if successful.
      */
-    public List<AzureAccountInfoObject> listUserLUISAccounts() {
-        return listUserLUISAccountsWithServiceResponseAsync().toBlocking().single().body();
+    public List<AzureAccountInfoObject> listUserLUISAccounts(ListUserLUISAccountsOptionalParameter listUserLUISAccountsOptionalParameter) {
+        return listUserLUISAccountsWithServiceResponseAsync(listUserLUISAccountsOptionalParameter).toBlocking().single().body();
     }
 
     /**
      * user - Get LUIS Azure accounts.
      * Gets the LUIS Azure accounts for the user using his ARM token.
      *
+     * @param listUserLUISAccountsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AzureAccountInfoObject>> listUserLUISAccountsAsync(final ServiceCallback<List<AzureAccountInfoObject>> serviceCallback) {
-        return ServiceFuture.fromResponse(listUserLUISAccountsWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<AzureAccountInfoObject>> listUserLUISAccountsAsync(ListUserLUISAccountsOptionalParameter listUserLUISAccountsOptionalParameter, final ServiceCallback<List<AzureAccountInfoObject>> serviceCallback) {
+        return ServiceFuture.fromResponse(listUserLUISAccountsWithServiceResponseAsync(listUserLUISAccountsOptionalParameter), serviceCallback);
     }
 
     /**
      * user - Get LUIS Azure accounts.
      * Gets the LUIS Azure accounts for the user using his ARM token.
      *
+     * @param listUserLUISAccountsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;AzureAccountInfoObject&gt; object
      */
-    public Observable<List<AzureAccountInfoObject>> listUserLUISAccountsAsync() {
-        return listUserLUISAccountsWithServiceResponseAsync().map(new Func1<ServiceResponse<List<AzureAccountInfoObject>>, List<AzureAccountInfoObject>>() {
+    public Observable<List<AzureAccountInfoObject>> listUserLUISAccountsAsync(ListUserLUISAccountsOptionalParameter listUserLUISAccountsOptionalParameter) {
+        return listUserLUISAccountsWithServiceResponseAsync(listUserLUISAccountsOptionalParameter).map(new Func1<ServiceResponse<List<AzureAccountInfoObject>>, List<AzureAccountInfoObject>>() {
             @Override
             public List<AzureAccountInfoObject> call(ServiceResponse<List<AzureAccountInfoObject>> response) {
                 return response.body();
@@ -520,15 +619,33 @@ public class AzureAccountsImpl implements AzureAccounts {
      * user - Get LUIS Azure accounts.
      * Gets the LUIS Azure accounts for the user using his ARM token.
      *
+     * @param listUserLUISAccountsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;AzureAccountInfoObject&gt; object
      */
-    public Observable<ServiceResponse<List<AzureAccountInfoObject>>> listUserLUISAccountsWithServiceResponseAsync() {
+    public Observable<ServiceResponse<List<AzureAccountInfoObject>>> listUserLUISAccountsWithServiceResponseAsync(ListUserLUISAccountsOptionalParameter listUserLUISAccountsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        final String armToken = listUserLUISAccountsOptionalParameter != null ? listUserLUISAccountsOptionalParameter.armToken() : null;
+
+        return listUserLUISAccountsWithServiceResponseAsync(armToken);
+    }
+
+    /**
+     * user - Get LUIS Azure accounts.
+     * Gets the LUIS Azure accounts for the user using his ARM token.
+     *
+     * @param armToken The custom arm token header to use; containing the user's ARM token used to validate azure accounts information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;AzureAccountInfoObject&gt; object
+     */
+    public Observable<ServiceResponse<List<AzureAccountInfoObject>>> listUserLUISAccountsWithServiceResponseAsync(String armToken) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.listUserLUISAccounts(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listUserLUISAccounts(armToken, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AzureAccountInfoObject>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<AzureAccountInfoObject>>> call(Response<ResponseBody> response) {
@@ -547,6 +664,48 @@ public class AzureAccountsImpl implements AzureAccounts {
                 .register(200, new TypeToken<List<AzureAccountInfoObject>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public AzureAccountsListUserLUISAccountsParameters listUserLUISAccounts() {
+        return new AzureAccountsListUserLUISAccountsParameters(this);
+    }
+
+    /**
+     * Internal class implementing AzureAccountsListUserLUISAccountsDefinition.
+     */
+    class AzureAccountsListUserLUISAccountsParameters implements AzureAccountsListUserLUISAccountsDefinition {
+        private AzureAccountsImpl parent;
+        private String armToken;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        AzureAccountsListUserLUISAccountsParameters(AzureAccountsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public AzureAccountsListUserLUISAccountsParameters withArmToken(String armToken) {
+            this.armToken = armToken;
+            return this;
+        }
+
+        @Override
+        public List<AzureAccountInfoObject> execute() {
+        return listUserLUISAccountsWithServiceResponseAsync(armToken).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<AzureAccountInfoObject>> executeAsync() {
+            return listUserLUISAccountsWithServiceResponseAsync(armToken).map(new Func1<ServiceResponse<List<AzureAccountInfoObject>>, List<AzureAccountInfoObject>>() {
+                @Override
+                public List<AzureAccountInfoObject> call(ServiceResponse<List<AzureAccountInfoObject>> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }

@@ -8,8 +8,11 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -20,6 +23,8 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+
+import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,19 +50,18 @@ import java.util.function.Supplier;
  * from the Event Hub.</li>
  * <li>{@link #processError(Consumer) processError} - A callback that handles errors that may occur while running the
  * EventProcessorClient.</li>
- * <li>Credentials -
- *  <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
- *  one of the following methods:
- *  <ul>
- *  <li>{@link #connectionString(String)} with a connection string to a specific Event Hub.
- *  </li>
- *  <li>{@link #connectionString(String, String)} with an Event Hub <i>namespace</i> connection string and the Event Hub
- *  name.</li>
- *  <li>{@link #credential(String, String, TokenCredential)} with the fully qualified namespace, Event Hub name, and a
- *  set of credentials authorized to use the Event Hub.
- *  </li>
- *  </ul>
- *  </li>
+ * <li>Credentials to perform operations against Azure Event Hubs. They can be set by using one of the following
+ * methods:
+ * <ul>
+ * <li>{@link #connectionString(String) connectionString(String)} with a connection string to a specific Event Hub.
+ * </li>
+ * <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
+ * connection string and the Event Hub name.</li>
+ * <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the fully
+ * qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
+ * </li>
+ * </ul>
+ * </li>
  * </ul>
  *
  * <p><strong>Creating an {@link EventProcessorClient}</strong></p>
@@ -70,6 +74,8 @@ import java.util.function.Supplier;
 @ServiceClientBuilder(serviceClients = EventProcessorClient.class)
 public class EventProcessorClientBuilder {
 
+    public static final Duration DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL = Duration.ofSeconds(10);
+    public static final int DEFAULT_OWNERSHIP_EXPIRATION_FACTOR = 6;
     private final ClientLogger logger = new ClientLogger(EventProcessorClientBuilder.class);
 
     private final EventHubClientBuilder eventHubClientBuilder;
@@ -84,6 +90,9 @@ public class EventProcessorClientBuilder {
     private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
     private int maxBatchSize = 1; // setting this to 1 by default
     private Duration maxWaitTime;
+    private Duration loadBalancingUpdateInterval;
+    private Duration partitionOwnershipExpirationInterval;
+    private LoadBalancingStrategy loadBalancingStrategy = LoadBalancingStrategy.BALANCED;
 
     /**
      * Creates a new instance of {@link EventProcessorClientBuilder}.
@@ -173,6 +182,67 @@ public class EventProcessorClientBuilder {
     }
 
     /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
+     * @param credential The shared access name and key credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty
+     *     string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     *     null.
+     */
+    public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+        AzureNamedKeyCredential credential) {
+        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
+     * @param credential The shared access signature credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty
+     *     string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     *     null.
+     */
+    public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+        AzureSasCredential credential) {
+        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        return this;
+    }
+
+    /**
+     * Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network
+     * does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through
+     * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
+     * <p>
+     * If no port is specified, the default port for the {@link #transportType(AmqpTransportType) transport type} is
+     * used.
+     *
+     * @param customEndpointAddress The custom endpoint address.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code customEndpointAddress} cannot be parsed into a valid {@link URL}.
+     */
+    public EventProcessorClientBuilder customEndpointAddress(String customEndpointAddress) {
+        eventHubClientBuilder.customEndpointAddress(customEndpointAddress);
+        return this;
+    }
+
+    /**
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
      * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
@@ -208,6 +278,19 @@ public class EventProcessorClientBuilder {
     }
 
     /**
+     * Sets the client options for the processor client. The application id set on the client options will be used
+     * for tracing. The headers set on {@code ClientOptions} are currently not used but can be used in later releases
+     * to add to AMQP message.
+     *
+     * @param clientOptions The client options.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     */
+    public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
+        eventHubClientBuilder.clientOptions(clientOptions);
+        return this;
+    }
+
+    /**
      * Sets the consumer group name from which the {@link EventProcessorClient} should consume events.
      *
      * @param consumerGroup The consumer group name this {@link EventProcessorClient} should consume events.
@@ -234,6 +317,75 @@ public class EventProcessorClientBuilder {
      */
     public EventProcessorClientBuilder checkpointStore(CheckpointStore checkpointStore) {
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null");
+        return this;
+    }
+
+    /**
+     * The time interval between load balancing update cycles. This is also generally the interval at which ownership
+     * of partitions are renewed. By default, this interval is set to 10 seconds.
+     *
+     * @param loadBalancingUpdateInterval The time duration between load balancing update cycles.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     * @throws NullPointerException if {@code loadBalancingUpdateInterval} is {@code null}.
+     * @throws IllegalArgumentException if {@code loadBalancingUpdateInterval} is zero or a negative duration.
+     */
+    public EventProcessorClientBuilder loadBalancingUpdateInterval(Duration loadBalancingUpdateInterval) {
+        Objects.requireNonNull(loadBalancingUpdateInterval, "'loadBalancingUpdateInterval' cannot be null");
+        if (loadBalancingUpdateInterval.isZero() || loadBalancingUpdateInterval.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'loadBalancingUpdateInterval' "
+                + "should be a positive duration"));
+        }
+        this.loadBalancingUpdateInterval = loadBalancingUpdateInterval;
+        return this;
+    }
+
+    /**
+     * The time duration after which the ownership of partition expires if it's not renewed by the owning processor
+     * instance. This is the duration that this processor instance will wait before taking over the ownership of
+     * partitions previously owned by an inactive processor. By default, this duration is set to a minute.
+     *
+     * @param partitionOwnershipExpirationInterval The time duration after which the ownership of partition expires.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     * @throws NullPointerException if {@code partitionOwnershipExpirationInterval} is {@code null}.
+     * @throws IllegalArgumentException if {@code partitionOwnershipExpirationInterval} is zero or a negative duration.
+     */
+    public EventProcessorClientBuilder partitionOwnershipExpirationInterval(
+        Duration partitionOwnershipExpirationInterval) {
+        Objects.requireNonNull(partitionOwnershipExpirationInterval, "'partitionOwnershipExpirationInterval' cannot "
+            + "be null");
+        if (partitionOwnershipExpirationInterval.isZero() || partitionOwnershipExpirationInterval.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionOwnershipExpirationInterval' "
+                + "should be a positive duration"));
+        }
+        this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
+        return this;
+    }
+
+    /**
+     * The {@link LoadBalancingStrategy} the {@link EventProcessorClient event processor} will use for claiming
+     * partition ownership. By default, a {@link LoadBalancingStrategy#BALANCED Balanced} approach will be used.
+     *
+     * @param loadBalancingStrategy The {@link LoadBalancingStrategy} to use.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     * @throws NullPointerException if {@code loadBalancingStrategy} is {@code null}.
+     */
+    public EventProcessorClientBuilder loadBalancingStrategy(LoadBalancingStrategy loadBalancingStrategy) {
+        this.loadBalancingStrategy = Objects.requireNonNull(loadBalancingStrategy, "'loadBalancingStrategy' cannot be"
+            + " null");
+        return this;
+    }
+
+    /**
+     * Sets the count used by the receivers to control the number of events each consumer will actively receive
+     * and queue locally without regard to whether a receive operation is currently active.
+     *
+     * @param prefetchCount The number of events to queue locally.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code prefetchCount} is less than 1 or greater than 8000.
+     */
+    public EventProcessorClientBuilder prefetchCount(int prefetchCount) {
+        eventHubClientBuilder.prefetchCount(prefetchCount);
         return this;
     }
 
@@ -421,9 +573,18 @@ public class EventProcessorClientBuilder {
         }
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-        return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
+        if (loadBalancingUpdateInterval == null) {
+            loadBalancingUpdateInterval = DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL;
+        }
+        if (partitionOwnershipExpirationInterval == null) {
+            partitionOwnershipExpirationInterval = loadBalancingUpdateInterval.multipliedBy(
+                DEFAULT_OWNERSHIP_EXPIRATION_FACTOR);
+        }
+
+        return new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
-            processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null);
+            processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,
+            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

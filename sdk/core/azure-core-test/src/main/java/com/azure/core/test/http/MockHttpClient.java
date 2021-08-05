@@ -33,12 +33,12 @@ import java.util.Map;
  */
 public class MockHttpClient extends NoOpHttpClient {
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders()
-        .put("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
-        .put("Via", "1.1 vegur")
-        .put("Connection", "keep-alive")
-        .put("X-Processed-Time", "1.0")
-        .put("Access-Control-Allow-Credentials", "true")
-        .put("Content-Type", "application/json");
+        .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
+        .set("Via", "1.1 vegur")
+        .set("Connection", "keep-alive")
+        .set("X-Processed-Time", "1.0")
+        .set("Access-Control-Allow-Credentials", "true")
+        .set("Content-Type", "application/json");
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
@@ -64,8 +64,8 @@ public class MockHttpClient extends NoOpHttpClient {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
                     HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
-                        .put("Content-Type", ContentType.APPLICATION_OCTET_STREAM)
-                        .put("Content-Length", Integer.toString(byteCount));
+                        .set("Content-Type", ContentType.APPLICATION_OCTET_STREAM)
+                        .set("Content-Length", Integer.toString(byteCount));
                     response = new MockHttpResponse(request, 200, newHeaders, byteCount == 0 ? null : new byte[byteCount]);
                 } else if (requestPathLower.startsWith("/base64urlbytes/")) {
                     final String byteCountString = requestPath.substring("/base64urlbytes/".length());
@@ -201,10 +201,10 @@ public class MockHttpClient extends NoOpHttpClient {
         return body;
     }
 
-    private static Map<String, String> toMap(HttpHeaders headers) {
-        final Map<String, String> result = new HashMap<>();
+    private static Map<String, List<String>> toMap(HttpHeaders headers) {
+        final Map<String, List<String>> result = new HashMap<>();
         for (final HttpHeader header : headers) {
-            result.put(header.getName(), header.getValue());
+            result.put(header.getName(), header.getValuesList());
         }
         return result;
     }

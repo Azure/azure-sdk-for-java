@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
@@ -32,6 +33,8 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,6 +71,8 @@ class ServiceBusReactorReceiverTest {
     private AmqpRetryPolicy retryPolicy;
     @Mock
     private ReceiveLinkHandler receiveLinkHandler;
+    @Mock
+    private AmqpConnection connection;
 
     private ServiceBusReactorReceiver reactorReceiver;
 
@@ -102,12 +107,13 @@ class ServiceBusReactorReceiverTest {
         when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
         when(receiveLinkHandler.getLinkName()).thenReturn(LINK_NAME);
         when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
-        when(receiveLinkHandler.getErrors()).thenReturn(Flux.never());
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
 
-        reactorReceiver = new ServiceBusReactorReceiver(ENTITY_PATH, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider, Duration.ofSeconds(20), retryPolicy);
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+
+        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, receiveLinkHandler,
+            tokenManager, reactorProvider, Duration.ofSeconds(20), retryPolicy);
     }
 
     @AfterEach
@@ -164,7 +170,7 @@ class ServiceBusReactorReceiverTest {
         // Arrange
         // 2020-04-28 06:42:27
         final long ticks = 637236529470000000L;
-        final Instant lockedUntil = Instant.ofEpochSecond(1588056147L);
+        final OffsetDateTime lockedUntil = Instant.ofEpochSecond(1588056147L).atOffset(ZoneOffset.UTC);
         final String actualSession = "a-session-id-from-service";
         final Map<Symbol, Object> properties = new HashMap<>();
         properties.put(SESSION_FILTER, actualSession);

@@ -62,13 +62,21 @@ public class SapTableSource extends TabularSource {
     private Object customRfcReadTableFunctionModule;
 
     /**
+     * The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "sapDataColumnDelimiter")
+    private Object sapDataColumnDelimiter;
+
+    /**
      * The partition mechanism that will be used for SAP table read in
-     * parallel. Possible values include: 'None', 'PartitionOnInt',
-     * 'PartitionOnCalendarYear', 'PartitionOnCalendarMonth',
-     * 'PartitionOnCalendarDate', 'PartitionOnTime'.
+     * parallel. Possible values include: "None", "PartitionOnInt",
+     * "PartitionOnCalendarYear", "PartitionOnCalendarMonth",
+     * "PartitionOnCalendarDate", "PartitionOnTime".
      */
     @JsonProperty(value = "partitionOption")
-    private SapTablePartitionOption partitionOption;
+    private Object partitionOption;
 
     /**
      * The settings that will be leveraged for SAP table source partitioning.
@@ -197,21 +205,41 @@ public class SapTableSource extends TabularSource {
     }
 
     /**
-     * Get the partition mechanism that will be used for SAP table read in parallel. Possible values include: 'None', 'PartitionOnInt', 'PartitionOnCalendarYear', 'PartitionOnCalendarMonth', 'PartitionOnCalendarDate', 'PartitionOnTime'.
+     * Get the single character that will be used as delimiter passed to SAP RFC as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     *
+     * @return the sapDataColumnDelimiter value
+     */
+    public Object sapDataColumnDelimiter() {
+        return this.sapDataColumnDelimiter;
+    }
+
+    /**
+     * Set the single character that will be used as delimiter passed to SAP RFC as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     *
+     * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set
+     * @return the SapTableSource object itself.
+     */
+    public SapTableSource withSapDataColumnDelimiter(Object sapDataColumnDelimiter) {
+        this.sapDataColumnDelimiter = sapDataColumnDelimiter;
+        return this;
+    }
+
+    /**
+     * Get the partition mechanism that will be used for SAP table read in parallel. Possible values include: "None", "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth", "PartitionOnCalendarDate", "PartitionOnTime".
      *
      * @return the partitionOption value
      */
-    public SapTablePartitionOption partitionOption() {
+    public Object partitionOption() {
         return this.partitionOption;
     }
 
     /**
-     * Set the partition mechanism that will be used for SAP table read in parallel. Possible values include: 'None', 'PartitionOnInt', 'PartitionOnCalendarYear', 'PartitionOnCalendarMonth', 'PartitionOnCalendarDate', 'PartitionOnTime'.
+     * Set the partition mechanism that will be used for SAP table read in parallel. Possible values include: "None", "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth", "PartitionOnCalendarDate", "PartitionOnTime".
      *
      * @param partitionOption the partitionOption value to set
      * @return the SapTableSource object itself.
      */
-    public SapTableSource withPartitionOption(SapTablePartitionOption partitionOption) {
+    public SapTableSource withPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
     }

@@ -33,10 +33,10 @@ public class SignVerifyOperationsAsync {
             .keyIdentifier("<Your-Key-Id-From-Keyvault>")
             .buildAsyncClient();
 
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
+        byte[] plaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintext);
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(plainText);
+        md.update(plaintext);
         byte[] digest = md.digest();
 
         // Let's create a signature from a simple digest.

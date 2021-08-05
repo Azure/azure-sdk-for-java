@@ -7,7 +7,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.SearchIndexer;
-import com.azure.search.documents.models.RequestOptions;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class ListIndexersExample {
     }
 
     private static void listIndexers(SearchIndexerAsyncClient indexerAsyncClient) {
-        PagedResponse<SearchIndexer> response = indexerAsyncClient.listIndexers(new RequestOptions(), null)
+        PagedResponse<SearchIndexer> response = indexerAsyncClient.listIndexers(null)
             .byPage().blockFirst();
 
         if (response != null) {

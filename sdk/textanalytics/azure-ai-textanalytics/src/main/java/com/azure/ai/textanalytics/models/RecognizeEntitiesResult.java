@@ -28,9 +28,12 @@ public final class RecognizeEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get an {@link IterableStream} of {@link CategorizedEntity}.
+     * Gets an {@link IterableStream} of {@link CategorizedEntity}.
      *
      * @return An {@link IterableStream} of {@link CategorizedEntity}.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public CategorizedEntityCollection getEntities() {
         throwExceptionIfError();

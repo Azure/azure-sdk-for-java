@@ -1,0 +1,353 @@
+{
+  "analysisservices": {
+    "dir": "azure-resourcemanager-analysisservices",
+    "source": "specification/analysisservices/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.analysisservices",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-05"
+  },
+  "apimanagement": {
+    "dir": "azure-resourcemanager-apimanagement",
+    "source": "specification/apimanagement/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.apimanagement",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-01"
+  },
+  "appplatform": {
+    "dir": "azure-resourcemanager-appplatform",
+    "source": "specification/appplatform/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.appplatform",
+    "args": "--payload-flattening-threshold=1 --tag=package-preview-2020-11 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability"
+  },
+  "appservice": {
+    "dir": "azure-resourcemanager-appservice",
+    "source": "specification/web/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.appservice",
+    "args": "--payload-flattening-threshold=1 --tag=package-2020-12 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
+    "note": "Add status code '200' to 'syncFunctionTriggers'"
+  },
+  "authorization": {
+    "dir": "azure-resourcemanager-authorization",
+    "source": "specification/authorization/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.authorization",
+    "args": "--tag=package-2018-01-01-preview --payload-flattening-threshold=1"
+  },
+  "automation": {
+    "dir": "azure-resourcemanager-automation",
+    "source": "specification/automation/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.automation",
+    "args": "--payload-flattening-threshold=1 --tag=package-2015-10"
+  },
+  "batch": {
+    "dir": "azure-resourcemanager-batch",
+    "source": "specification/batch/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.batch",
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-08"
+  },
+  "batchai": {
+    "dir": "azure-resourcemanager-batchai",
+    "source": "specification/batchai/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.batchai",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-05"
+  },
+  "batchService": {
+    "dir": "azure-resourcemanager-batch",
+    "source": "specification/batch/data-plane/readme.md",
+    "package": "com.microsoft.azure.batch.protocol",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-07.3.1",
+    "fluent": false
+  },
+  "billing": {
+    "dir": "azure-resourcemanager-billing",
+    "source": "specification/billing/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.billing",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04-preview"
+  },
+  "cdn": {
+    "dir": "azure-resourcemanager-cdn",
+    "source": "specification/cdn/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.cdn",
+    "args": "--payload-flattening-threshold=2 --tag=package-2020-09 --rename-model=CdnEndpoint:EndpointResource"
+  },
+  "cognitiveservices": {
+    "dir": "azure-resourcemanager-cognitiveservices",
+    "source": "specification/cognitiveservices/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.cognitiveservices",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+  "compute": {
+    "dir": "azure-resourcemanager-compute",
+    "source": "specification/compute/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.compute",
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-04-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities"
+  },
+  "consumption": {
+    "dir": "azure-resourcemanager-consumption",
+    "source": "specification/consumption/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.consumption",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-01"
+  },
+  "containerinstance": {
+    "dir": "azure-resourcemanager-containerinstance",
+    "source": "specification/containerinstance/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.containerinstance",
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-03 --remove-inner=Container,Operation,CachedImages,Capabilities"
+  },
+  "containerregistry": {
+    "dir": "azure-resourcemanager-containerregistry",
+    "source": "specification/containerregistry/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.containerregistry",
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-05"
+  },
+  "containerservice": {
+    "dir": "azure-resourcemanager-containerservice",
+    "source": "specification/containerservice/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.containerservice",
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-05 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --remove-model=BaseManagedCluster --rename-model=ManagedClusterIdentityUserAssignedIdentitiesValue:ManagedClusterIdentityUserAssignedIdentities,ManagedClusterPropertiesIdentityProfile:ManagedClusterPropertiesIdentityProfileValue",
+    "note": "Remove 'final' from 'ManagedClusterAgentPoolProfile'"
+  },
+  "cosmos": {
+    "dir": "azure-resourcemanager-cosmos",
+    "source": "specification/cosmos-db/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.cosmos",
+    "args": "--payload-flattening-threshold=0 --tag=package-2021-06"
+  },
+  "customerinsights": {
+    "dir": "azure-resourcemanager-customerinsights",
+    "source": "specification/customer-insights/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.customerinsights",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+  "datalake.analytics.account": {
+    "dir": "azure-resourcemanager-datalakeanalytics",
+    "source": "specification/datalake-analytics/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.datalake.analytics",
+    "args": "--payload-flattening-threshold=2 --tag=package-2016-11",
+    "fluent": false
+  },
+  "datalake.analytics.catalog": {
+    "dir": "azure-resourcemanager-datalakeanalytics",
+    "source": "specification/datalake-analytics/data-plane/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.datalake.analytics",
+    "args": "--payload-flattening-threshold=2 --tag=package-catalog-2016-11",
+    "fluent": false
+  },
+  "datalake.analytics.job": {
+    "dir": "azure-resourcemanager-datalakeanalytics",
+    "source": "specification/datalake-analytics/data-plane/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.datalake.analytics",
+    "args": "--payload-flattening-threshold=2 --tag=package-job-2017-09-preview",
+    "fluent": false
+  },
+  "datalake.store.account": {
+    "dir": "azure-resourcemanager-datalakestore",
+    "source": "specification/datalake-store/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.datalake.store",
+    "args": "--payload-flattening-threshold=2 --tag=package-2016-11",
+    "fluent": false
+  },
+  "devtestlab": {
+    "dir": "azure-resourcemanager-devtestlab",
+    "source": "specification/devtestlabs/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.devtestlab",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-05"
+  },
+  "dns": {
+    "dir": "azure-resourcemanager-dns",
+    "source": "specification/dns/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.dns",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
+  },
+  "eventhubs": {
+    "dir": "azure-resourcemanager-eventhubs",
+    "source": "specification/eventhub/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.eventhubs",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+  "features": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-features-2021-07"
+  },
+  "graphrbac": {
+    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager",
+    "dir": "azure-resourcemanager-authorization",
+    "source": "azure-resourcemanager-authorization/swagger/swagger.md",
+    "package": "com.azure.resourcemanager.authorization",
+    "args": "--tag=v1.0 --title=MicrosoftGraphClient --models-subpackage=fluent.models"
+  },
+  "iothub": {
+    "dir": "azure-resourcemanager-devices",
+    "source": "specification/iothub/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.devices",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-01"
+  },
+  "keyvault": {
+    "dir": "azure-resourcemanager-keyvault",
+    "source": "specification/keyvault/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.keyvault",
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-09"
+  },
+  "locks": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--payload-flattening-threshold=1 --tag=package-locks-2016-09"
+  },
+  "logic": {
+    "dir": "azure-resourcemanager-logic",
+    "source": "specification/logic/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.logic",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-06"
+  },
+  "machinelearning": {
+    "dir": "azure-resourcemanager-machinelearning",
+    "source": "specification/machinelearning/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.machinelearning",
+    "args": "--payload-flattening-threshold=1 --tag=package-webservices-2017-01"
+  },
+  "monitor": {
+    "dir": "azure-resourcemanager-monitor",
+    "source": "specification/monitor/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.monitor",
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit"
+  },
+  "network": {
+    "dir": "azure-resourcemanager-network",
+    "source": "specification/network/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.network",
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-02 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
+  },
+  "notificationhubs": {
+    "dir": "azure-resourcemanager-notificationhubs",
+    "source": "specification/notificationhubs/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.notificationhubs",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+  "policy": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--payload-flattening-threshold=1 --tag=package-policy-2020-09"
+  },
+  "powerbi": {
+    "dir": "azure-resourcemanager-powerbi",
+    "source": "specification/powerbiembedded/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.powerbi",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-01"
+  },
+  "privatedns": {
+    "dir": "azure-resourcemanager-privatedns",
+    "source": "specification/privatedns/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.privatedns",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-09"
+  },
+  "recoveryservices": {
+    "dir": "azure-resourcemanager-recoveryservices",
+    "source": "specification/recoveryservices/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.recoveryservices",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-12"
+  },
+  "recoveryservicesbackup": {
+    "dir": "azure-resourcemanager-recoveryservicesbackup",
+    "source": "specification/recoveryservicesbackup/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.recoveryservicesbackup",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-06"
+  },
+  "recoveryservicessiterecovery": {
+    "dir": "azure-resourcemanager-recoveryservicessiterecovery",
+    "source": "specification/recoveryservicessiterecovery/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.recoveryservicessiterecovery",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-08"
+  },
+  "redis": {
+    "dir": "azure-resourcemanager-redis",
+    "source": "specification/redis/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.redis",
+    "args": "--payload-flattening-threshold=1 --tag=package-2020-06"
+  },
+  "relay": {
+    "dir": "azure-resourcemanager-relay",
+    "source": "specification/relay/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.relay",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+  "resources": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-resources-2021-01 --payload-flattening-threshold=1 --add-inner=Deployment"
+  },
+  "scheduler": {
+    "dir": "azure-resourcemanager-scheduler",
+    "source": "specification/scheduler/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.scheduler",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-03"
+  },
+  "search": {
+    "dir": "azure-resourcemanager-search",
+    "source": "specification/search/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.search",
+    "args": "--payload-flattening-threshold=1 --tag=package-2020-08 --remove-inner=CheckNameAvailabilityOutput"
+  },
+  "servermanagement": {
+    "dir": "azure-resourcemanager-servermanagement",
+    "source": "specification/servermanagement/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.servermanagement",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-07-preview"
+  },
+  "servicebus": {
+    "dir": "azure-resourcemanager-servicebus",
+    "source": "specification/servicebus/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.servicebus",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04",
+    "note": "Add '@JsonSerialize(using = DurationSerializer.class)' to properties of 'Duration' type of class 'SBTopicInner', 'SBQueueInner', 'SBSubscriptionInner'"
+  },
+  "servicefabric": {
+    "dir": "azure-resourcemanager-servicefabric",
+    "source": "specification/servicefabric/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.servicefabric",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-09"
+  },
+  "sql": {
+    "dir": "azure-resourcemanager-sql",
+    "source": "specification/sql/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.sql",
+    "args": "--payload-flattening-threshold=1 --tag=package-composite-v3"
+  },
+  "storage": {
+    "dir": "azure-resourcemanager-storage",
+    "source": "specification/storage/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.storage",
+    "args": "--payload-flattening-threshold=2 --tag=package-2021-02"
+  },
+  "storsimple8000series": {
+    "dir": "azure-resourcemanager-storsimple8000series",
+    "source": "specification/storsimple8000series/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.storsimple8000series",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-06"
+  },
+  "streamanalytics": {
+    "dir": "azure-resourcemanager-streamanalytics",
+    "source": "specification/streamanalytics/resource-manager/readme.md",
+    "package": "com.microsoft.azure.resourcemanager.streamanalytics",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-03"
+  },
+  "subscriptions": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-subscriptions-2021-01 --name-for-ungrouped-operations=ResourceName"
+  },
+  "trafficmanager": {
+    "dir": "azure-resourcemanager-trafficmanager",
+    "source": "specification/trafficmanager/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.trafficmanager",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-04"
+  },
+  "msi": {
+    "dir": "azure-resourcemanager-msi",
+    "source": "specification/msi/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.msi",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-11-30 --add-client-flatten=Identity"
+  }
+}

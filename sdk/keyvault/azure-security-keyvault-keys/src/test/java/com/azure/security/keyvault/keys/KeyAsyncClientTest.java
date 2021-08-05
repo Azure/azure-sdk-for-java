@@ -3,46 +3,56 @@
 
 package com.azure.security.keyvault.keys;
 
-import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.polling.*;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
+import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeyAsyncClientTest extends KeyClientTestBase {
+import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
-    private KeyAsyncClient client;
+public class KeyAsyncClientTest extends KeyClientTestBase {
+    protected KeyAsyncClient client;
 
     @Override
     protected void beforeTest() {
         beforeTestSetup();
     }
 
-
-    private void createKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+    protected void createKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
-        client = new KeyClientBuilder()
+        client = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
             .serviceVersion(serviceVersion)
-            .buildAsyncClient();
+            .buildAsyncClient());
+
+        if (interceptorManager.isPlaybackMode()) {
+            when(client.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
     }
 
     /**
@@ -58,14 +68,38 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
+     * Tests that a RSA key created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        createRsaKeyRunner((expected) -> StepVerifier.create(client.createRsaKey(expected))
+            .assertNext(response -> assertKeyEquals(expected, response))
+            .verifyComplete());
+    }
+
+    /**
      * Tests that we cannot create a key when the key is an empty string.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        if (isManagedHsmTest && interceptorManager.isPlaybackMode()) {
+            // Setting a key with an empty name returns 500 in MHSM, we don't currently produce a recording for that the
+            // way things are set.
+            return;
+        }
+
         createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.createKey("", KeyType.RSA))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
+            .verifyErrorSatisfies(ex -> {
+                if (isManagedHsmTest) {
+                    assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_SERVER_ERROR);
+                } else {
+                    assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
+                }
+            });
     }
 
     /**
@@ -75,12 +109,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void setKeyNullType(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        setKeyEmptyValueRunner((key) -> {
-
-            StepVerifier.create(client.createKey(key))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
-
-        });
+        setKeyEmptyValueRunner((key) -> StepVerifier.create(client.createKey(key))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST)));
     }
 
     /**
@@ -105,6 +135,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             StepVerifier.create(client.createKey(original))
                 .assertNext(response -> assertKeyEquals(original, response))
                 .verifyComplete();
+
             KeyVaultKey keyToUpdate = client.getKey(original.getName()).block();
 
             StepVerifier.create(client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn())))
@@ -192,7 +223,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void getKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
 
@@ -209,8 +240,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(keyToDelete.getName());
             AsyncPollResponse<DeletedKey, Void> deletedKeyPollResponse = poller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .blockLast();
+                .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
             DeletedKey deletedKeyResponse = deletedKeyPollResponse.getValue();
             assertNotNull(deletedKeyResponse.getDeletedOn());
             assertNotNull(deletedKeyResponse.getRecoveryId());
@@ -235,7 +266,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void getDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDeletedKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -251,15 +282,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndRecover.getName());
             AsyncPollResponse<DeletedKey, Void> deleteKeyPollResponse
-                    = poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                            .blockLast();
+                = poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
 
             assertNotNull(deleteKeyPollResponse.getValue());
 
             PollerFlux<KeyVaultKey, Void> recoverPoller = client.beginRecoverDeletedKey(keyToDeleteAndRecover.getName());
 
             AsyncPollResponse<KeyVaultKey, Void> recoverKeyPollResponse
-                    = recoverPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                = recoverPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                 .blockLast();
 
             KeyVaultKey keyResponse = recoverKeyPollResponse.getValue();
@@ -307,7 +338,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void backupKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.backupKey("non-existing"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -324,14 +355,14 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(keyToBackupAndRestore.getName());
             AsyncPollResponse<DeletedKey, Void> pollResponse = poller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .blockLast();
+                .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
             assertNotNull(pollResponse.getValue());
 
             StepVerifier.create(client.purgeDeletedKeyWithResponse(keyToBackupAndRestore.getName()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
+                .assertNext(voidResponse -> {
+                    assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
+                }).verifyComplete();
             pollOnKeyPurge(keyToBackupAndRestore.getName());
 
             sleepInRecordMode(60000);
@@ -354,7 +385,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         createKeyAsyncClient(httpClient, serviceVersion);
         byte[] keyBackupBytes = "non-existing".getBytes();
         StepVerifier.create(client.restoreKeyBackup(keyBackupBytes))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
     /**
@@ -371,8 +402,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndGet.getName());
             AsyncPollResponse<DeletedKey, Void> pollResponse = poller
-                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                    .blockLast();
+                .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
             assertNotNull(pollResponse.getValue());
 
             StepVerifier.create(client.getDeletedKey(keyToDeleteAndGet.getName()))
@@ -392,33 +423,38 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
+
         if (!interceptorManager.isPlaybackMode()) {
             return;
         }
 
         listDeletedKeysRunner((keys) -> {
-
             List<DeletedKey> deletedKeys = new ArrayList<>();
+
             for (CreateKeyOptions key : keys.values()) {
                 StepVerifier.create(client.createKey(key))
                     .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
             }
+
             sleepInRecordMode(10000);
 
             for (CreateKeyOptions key : keys.values()) {
                 PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(key.getName());
-
                 AsyncPollResponse<DeletedKey, Void> response = poller.blockLast();
+
                 assertNotNull(response.getValue());
             }
 
             sleepInRecordMode(90000);
+
             DeletedKey deletedKey = client.listDeletedKeys().map(actualKey -> {
                 deletedKeys.add(actualKey);
                 assertNotNull(actualKey.getDeletedOn());
                 assertNotNull(actualKey.getRecoveryId());
+
                 return actualKey;
             }).blockLast();
+
             assertNotNull(deletedKey);
         });
     }
@@ -471,6 +507,24 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             }).blockLast();
             assertEquals(0, keys.size());
         });
+    }
+
+    /**
+     * Tests that an RSA key with a public exponent can be created in the key vault.
+     */
+    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) ->
+            StepVerifier.create(client.createRsaKey(createRsaKeyOptions))
+                .assertNext(rsaKey -> assertKeyEquals(createRsaKeyOptions, rsaKey))
+                .assertNext(rsaKey -> {
+                    ByteBuffer wrappedArray = ByteBuffer.wrap(rsaKey.getKey().getE()); // Big-endian by default
+                    assertEquals(createRsaKeyOptions.getPublicExponent(), wrappedArray.getInt());
+                })
+                .verifyComplete());
     }
 
     private void pollOnKeyDeletion(String keyName) {

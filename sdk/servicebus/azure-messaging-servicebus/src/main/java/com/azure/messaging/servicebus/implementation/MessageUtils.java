@@ -3,11 +3,14 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.ExceptionUtil;
+import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -18,13 +21,26 @@ import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import reactor.core.publisher.Signal;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * Contains helper methods for message conversions, reading status codes, and getting delivery state.
@@ -47,6 +63,30 @@ public final class MessageUtils {
         return clientTimeout.minusMillis(1000);
     }
 
+    /**
+     * Calculate the total time from the retry options assuming all retries are exhausted.
+     */
+    public static Duration getTotalTimeout(AmqpRetryOptions retryOptions) {
+        long tryTimeout = retryOptions.getTryTimeout().toNanos();
+        long maxDelay = retryOptions.getMaxDelay().toNanos();
+        long totalTimeout = tryTimeout;  // The original attempt not counted as a retry
+        if (retryOptions.getMode() == AmqpRetryMode.FIXED) {
+            totalTimeout += (retryOptions.getDelay().toNanos() + tryTimeout) * retryOptions.getMaxRetries();
+        } else {
+            int multiplier = 1;
+            for (int i = 0; i < retryOptions.getMaxRetries(); i++) {
+                long retryDelay = retryOptions.getDelay().toNanos() * multiplier;
+                if (retryDelay >= maxDelay) {
+                    retryDelay = maxDelay;
+                    totalTimeout += (tryTimeout + retryDelay) * (retryOptions.getMaxRetries() - i);
+                    break;
+                }
+                multiplier *= 2;
+                totalTimeout += tryTimeout + retryDelay;
+            }
+        }
+        return Duration.ofNanos(totalTimeout);
+    }
     /**
      * Converts a .NET GUID to its Java UUID representation.
      *
@@ -90,19 +130,19 @@ public final class MessageUtils {
     }
 
     /**
-     * Gets the {@link Instant} representation of .NET epoch ticks. .NET ticks are measured from 0001/01/01. Java {@link
-     * Instant} is measured from 1970/01/01.
+     * Gets the {@link OffsetDateTime} representation of .NET epoch ticks. .NET ticks are measured from 0001/01/01.
+     * Java {@link OffsetDateTime} is measured from 1970/01/01.
      *
      * @param dotNetTicks long measured from 01/01/0001
      *
      * @return The instant represented by the ticks.
      */
-    static Instant convertDotNetTicksToInstant(long dotNetTicks) {
+    static OffsetDateTime convertDotNetTicksToOffsetDateTime(long dotNetTicks) {
         long ticksFromEpoch = dotNetTicks - EPOCH_IN_DOT_NET_TICKS;
         long millisecondsFromEpoch = Double.valueOf(ticksFromEpoch * 0.0001).longValue();
         long fractionTicks = ticksFromEpoch % 10000;
 
-        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks * 100);
+        return Instant.ofEpochMilli(millisecondsFromEpoch).plusNanos(fractionTicks * 100).atOffset(ZoneOffset.UTC);
     }
 
     /**
@@ -180,32 +220,33 @@ public final class MessageUtils {
     }
 
     /**
-     * Creates an exception given the error condition and context.
+     * Gets the primitive value or {@code false} if there is no value.
      *
-     * @param errorCondition Error condition for the AMQP exception.
-     * @param errorContext AMQP context it occurred in.
-     *
-     * @return Corresponding {@link Throwable} for the error condition.
+     * @param value The value.
+     * @return It's primitive type.
      */
-    static Throwable toException(ErrorCondition errorCondition, AmqpErrorContext errorContext) {
-        final Symbol condition = errorCondition.getCondition();
-        final String description = errorCondition.getDescription();
-
-        try {
-            return ExceptionUtil.toException(condition.toString(), description, errorContext);
-        } catch (IllegalArgumentException ignored) {
-            final ServiceBusErrorCondition error = ServiceBusErrorCondition.fromString(condition.toString());
-
-            return toException(error, description, errorContext);
-        }
+    public static boolean toPrimitive(Boolean value) {
+        return value != null ? value : false;
     }
 
-    static Throwable toException(ServiceBusErrorCondition errorCondition, String description,
-        AmqpErrorContext errorContext) {
+    /**
+     * Gets the primitive value or 0 if there is no value.
+     *
+     * @param value The value.
+     * @return It's primitive type.
+     */
+    public static int toPrimitive(Integer value) {
+        return value != null ? value : 0;
+    }
 
-        final boolean isTransient = errorCondition.isTransient();
-        final String message = String.format("condition[%s]: %s", errorCondition.toString(), description);
-        return new AmqpException(isTransient, message, errorContext);
+    /**
+     * Gets the primitive value or {@code 0L} if there is no value.
+     *
+     * @param value The value.
+     * @return It's primitive type.
+     */
+    public static long toPrimitive(Long value) {
+        return value != null ? value : 0L;
     }
 
     private static byte[] reorderBytes(byte[] javaBytes) {
@@ -252,5 +293,33 @@ public final class MessageUtils {
         transactionalState.setTxnId(new Binary(transactionId.array()));
         transactionalState.setOutcome(outcome);
         return transactionalState;
+    }
+
+    /**
+     * Used in ServiceBusMessageBatch.tryAddMessage() to start tracing for to-be-sent out messages.
+     */
+    public static ServiceBusMessage traceMessageSpan(ServiceBusMessage serviceBusMessage,
+        Context messageContext, String hostname, String entityPath, TracerProvider tracerProvider) {
+        Optional<Object> eventContextData = messageContext.getData(SPAN_CONTEXT_KEY);
+        if (eventContextData.isPresent()) {
+            // if message has context (in case of retries), don't start a message span or add a new context
+            return serviceBusMessage;
+        } else {
+            // Starting the span makes the sampling decision (nothing is logged at this time)
+            Context newMessageContext = messageContext
+                .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+                .addData(ENTITY_PATH_KEY, entityPath)
+                .addData(HOST_NAME_KEY, hostname);
+            Context eventSpanContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, newMessageContext,
+                ProcessKind.MESSAGE);
+            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+            if (eventDiagnosticIdOptional.isPresent()) {
+                serviceBusMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get()
+                    .toString());
+                tracerProvider.endSpan(eventSpanContext, Signal.complete());
+                serviceBusMessage.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
+            }
+        }
+        return serviceBusMessage;
     }
 }

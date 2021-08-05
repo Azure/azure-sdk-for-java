@@ -7,14 +7,15 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Splits words into subwords and performs optional transformations on subword
- * groups. This token filter is implemented using Apache Lucene.
+ * Splits words into subwords and performs optional transformations on subword groups. This token filter is implemented
+ * using Apache Lucene.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.WordDelimiterTokenFilter")
@@ -95,9 +96,18 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     private List<String> protectedWords;
 
     /**
-     * Get the generateWordParts property: A value indicating whether to
-     * generate part words. If set, causes parts of words to be generated; for
-     * example "AzureSearch" becomes "Azure" "Search". Default is true.
+     * Creates an instance of WordDelimiterTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public WordDelimiterTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
+
+    /**
+     * Get the generateWordParts property: A value indicating whether to generate part words. If set, causes parts of
+     * words to be generated; for example "AzureSearch" becomes "Azure" "Search". Default is true.
      *
      * @return the generateWordParts value.
      */
@@ -106,9 +116,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the generateWordParts property: A value indicating whether to
-     * generate part words. If set, causes parts of words to be generated; for
-     * example "AzureSearch" becomes "Azure" "Search". Default is true.
+     * Set the generateWordParts property: A value indicating whether to generate part words. If set, causes parts of
+     * words to be generated; for example "AzureSearch" becomes "Azure" "Search". Default is true.
      *
      * @param generateWordParts the generateWordParts value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -119,8 +128,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the generateNumberParts property: A value indicating whether to
-     * generate number subwords. Default is true.
+     * Get the generateNumberParts property: A value indicating whether to generate number subwords. Default is true.
      *
      * @return the generateNumberParts value.
      */
@@ -129,8 +137,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the generateNumberParts property: A value indicating whether to
-     * generate number subwords. Default is true.
+     * Set the generateNumberParts property: A value indicating whether to generate number subwords. Default is true.
      *
      * @param generateNumberParts the generateNumberParts value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -141,9 +148,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the catenateWords property: A value indicating whether maximum runs
-     * of word parts will be catenated. For example, if this is set to true,
-     * "Azure-Search" becomes "AzureSearch". Default is false.
+     * Get the catenateWords property: A value indicating whether maximum runs of word parts will be catenated. For
+     * example, if this is set to true, "Azure-Search" becomes "AzureSearch". Default is false.
      *
      * @return the catenateWords value.
      */
@@ -152,9 +158,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the catenateWords property: A value indicating whether maximum runs
-     * of word parts will be catenated. For example, if this is set to true,
-     * "Azure-Search" becomes "AzureSearch". Default is false.
+     * Set the catenateWords property: A value indicating whether maximum runs of word parts will be catenated. For
+     * example, if this is set to true, "Azure-Search" becomes "AzureSearch". Default is false.
      *
      * @param catenateWords the catenateWords value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -165,9 +170,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the catenateNumbers property: A value indicating whether maximum
-     * runs of number parts will be catenated. For example, if this is set to
-     * true, "1-2" becomes "12". Default is false.
+     * Get the catenateNumbers property: A value indicating whether maximum runs of number parts will be catenated. For
+     * example, if this is set to true, "1-2" becomes "12". Default is false.
      *
      * @return the catenateNumbers value.
      */
@@ -176,9 +180,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the catenateNumbers property: A value indicating whether maximum
-     * runs of number parts will be catenated. For example, if this is set to
-     * true, "1-2" becomes "12". Default is false.
+     * Set the catenateNumbers property: A value indicating whether maximum runs of number parts will be catenated. For
+     * example, if this is set to true, "1-2" becomes "12". Default is false.
      *
      * @param catenateNumbers the catenateNumbers value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -189,9 +192,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the catenateAll property: A value indicating whether all subword
-     * parts will be catenated. For example, if this is set to true,
-     * "Azure-Search-1" becomes "AzureSearch1". Default is false.
+     * Get the catenateAll property: A value indicating whether all subword parts will be catenated. For example, if
+     * this is set to true, "Azure-Search-1" becomes "AzureSearch1". Default is false.
      *
      * @return the catenateAll value.
      */
@@ -200,9 +202,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the catenateAll property: A value indicating whether all subword
-     * parts will be catenated. For example, if this is set to true,
-     * "Azure-Search-1" becomes "AzureSearch1". Default is false.
+     * Set the catenateAll property: A value indicating whether all subword parts will be catenated. For example, if
+     * this is set to true, "Azure-Search-1" becomes "AzureSearch1". Default is false.
      *
      * @param catenateAll the catenateAll value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -213,9 +214,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the splitOnCaseChange property: A value indicating whether to split
-     * words on caseChange. For example, if this is set to true, "AzureSearch"
-     * becomes "Azure" "Search". Default is true.
+     * Get the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if this
+     * is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
      *
      * @return the splitOnCaseChange value.
      */
@@ -224,9 +224,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the splitOnCaseChange property: A value indicating whether to split
-     * words on caseChange. For example, if this is set to true, "AzureSearch"
-     * becomes "Azure" "Search". Default is true.
+     * Set the splitOnCaseChange property: A value indicating whether to split words on caseChange. For example, if this
+     * is set to true, "AzureSearch" becomes "Azure" "Search". Default is true.
      *
      * @param splitOnCaseChange the splitOnCaseChange value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -237,8 +236,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the preserveOriginal property: A value indicating whether original
-     * words will be preserved and added to the subword list. Default is false.
+     * Get the preserveOriginal property: A value indicating whether original words will be preserved and added to the
+     * subword list. Default is false.
      *
      * @return the preserveOriginal value.
      */
@@ -247,8 +246,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the preserveOriginal property: A value indicating whether original
-     * words will be preserved and added to the subword list. Default is false.
+     * Set the preserveOriginal property: A value indicating whether original words will be preserved and added to the
+     * subword list. Default is false.
      *
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -259,9 +258,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the splitOnNumerics property: A value indicating whether to split on
-     * numbers. For example, if this is set to true, "Azure1Search" becomes
-     * "Azure" "1" "Search". Default is true.
+     * Get the splitOnNumerics property: A value indicating whether to split on numbers. For example, if this is set to
+     * true, "Azure1Search" becomes "Azure" "1" "Search". Default is true.
      *
      * @return the splitOnNumerics value.
      */
@@ -270,9 +268,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the splitOnNumerics property: A value indicating whether to split on
-     * numbers. For example, if this is set to true, "Azure1Search" becomes
-     * "Azure" "1" "Search". Default is true.
+     * Set the splitOnNumerics property: A value indicating whether to split on numbers. For example, if this is set to
+     * true, "Azure1Search" becomes "Azure" "1" "Search". Default is true.
      *
      * @param splitOnNumerics the splitOnNumerics value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -283,8 +280,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the stemEnglishPossessive property: A value indicating whether to
-     * remove trailing "'s" for each subword. Default is true.
+     * Get the stemEnglishPossessive property: A value indicating whether to remove trailing "'s" for each subword.
+     * Default is true.
      *
      * @return the stemEnglishPossessive value.
      */
@@ -293,8 +290,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the stemEnglishPossessive property: A value indicating whether to
-     * remove trailing "'s" for each subword. Default is true.
+     * Set the stemEnglishPossessive property: A value indicating whether to remove trailing "'s" for each subword.
+     * Default is true.
      *
      * @param stemEnglishPossessive the stemEnglishPossessive value to set.
      * @return the WordDelimiterTokenFilter object itself.
@@ -305,8 +302,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the protectedWords property: A list of tokens to protect from being
-     * delimited.
+     * Get the protectedWords property: A list of tokens to protect from being delimited.
      *
      * @return the protectedWords value.
      */
@@ -315,8 +311,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the protectedWords property: A list of tokens to protect from being
-     * delimited.
+     * Set the protectedWords property: A list of tokens to protect from being delimited.
      *
      * @param protectedWords the protectedWords value to set.
      * @return the WordDelimiterTokenFilter object itself.

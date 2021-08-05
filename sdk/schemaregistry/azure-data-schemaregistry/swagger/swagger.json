@@ -95,9 +95,20 @@
           ]
         },
         "put": {
-          "summary": "Create schema group",
-          "description": "Create schema group with specified schema type in registry namespace.",
-          "operationId": "createGroup",
+          "summary": "Create or update a schema group",
+          "description": "Create or update schema group with specified schema type in registry namespace.",
+          "operationId": "createOrUpdateGroup",
+          "parameters": [
+            {
+              "name": "If-Match",
+              "description": "Specify an ETag value to perform update operation only on schema group with a matching Guid value. If a '*' is supplied then update is performed without ETag check. Supplying empty value will enforce the create-only behavior",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "requestBody": {
             "description": "schema group description",
             "required": true,
@@ -471,6 +482,10 @@
             },
             "schemaType": {
               "type": "string"
+            },
+            "etag": {
+              "type": "string",
+              "description": "Define an read-only identifier that uniquely describe an instance of the group. This is returned from get call for update purposes. Setting this on create or update has no effect."
             },
             "schemaCompatibility": {
               "type": "integer",

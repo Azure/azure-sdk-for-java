@@ -26,13 +26,13 @@ import java.util.function.Function;
  */
 final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     private final ClientLogger logger = new ClientLogger(DefaultSyncPoller.class);
-    private final Duration defaultPollInterval;
     private final Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation;
     private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation;
     private final Function<PollingContext<T>, Mono<U>> fetchResultOperation;
     private final PollResponse<T> activationResponse;
-    private volatile PollingContext<T> terminalPollContext;
     private final PollingContext<T> pollingContext = new PollingContext<>();
+    private volatile PollingContext<T> terminalPollContext;
+    private volatile Duration pollInterval;
 
     /**
      * Creates DefaultSyncPoller.
@@ -58,11 +58,11 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
                              BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
                              Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
+        if (pollInterval.isNegative() || pollInterval.isZero()) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
-        this.defaultPollInterval = pollInterval;
+        this.pollInterval = pollInterval;
         Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
@@ -143,7 +143,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     @Override
     public PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
-        if (timeout.toNanos() <= 0) {
+        if (timeout.isNegative() || timeout.isZero()) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for timeout is not allowed."));
         }
@@ -206,6 +206,17 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
         }
     }
 
+    @Override
+    public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        if (pollInterval.isNegative() || pollInterval.isZero()) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+                "Negative or zero value for 'pollInterval' is not allowed."));
+        }
+        this.pollInterval = pollInterval;
+        return this;
+    }
+
     private static <T, U> PollResponse<T> toPollResponse(AsyncPollResponse<T, U> asyncPollResponse) {
         return new PollResponse<>(asyncPollResponse.getStatus(),
             asyncPollResponse.getValue(),
@@ -234,11 +245,6 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
                     .switchIfEmpty(Mono.error(new IllegalStateException("PollOperation returned Mono.empty().")))
                     .repeat()
                     .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
-                    .onErrorResume(throwable -> {
-                        logger.warning("Received an error from pollOperation. Any error from pollOperation "
-                               + "will be ignored and polling will be continued. Error:" + throwable.getMessage());
-                        return Mono.empty();
-                    })
                     .concatMap(currentPollResponse -> {
                         cxt.setLatestResponse(currentPollResponse);
                         return Mono.just(new AsyncPollResponse<>(cxt,
@@ -257,11 +263,11 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     private Duration getDelay(PollResponse<T> pollResponse) {
         Duration retryAfter = pollResponse.getRetryAfter();
         if (retryAfter == null) {
-            return this.defaultPollInterval;
+            return this.pollInterval;
         } else {
             return retryAfter.compareTo(Duration.ZERO) > 0
                     ? retryAfter
-                    : this.defaultPollInterval;
+                    : this.pollInterval;
         }
     }
 }

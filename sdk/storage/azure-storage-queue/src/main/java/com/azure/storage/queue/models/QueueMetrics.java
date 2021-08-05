@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The QueueMetrics model.
- */
+/** a summary of request statistics grouped by API in hour or minute aggregates for queues. */
 @JacksonXmlRootElement(localName = "Metrics")
 @Fluent
 public final class QueueMetrics {
@@ -27,7 +25,7 @@ public final class QueueMetrics {
     private boolean enabled;
 
     /*
-     * The retentionPolicy property.
+     * the retention policy
      */
     @JsonProperty(value = "RetentionPolicy")
     private QueueRetentionPolicy retentionPolicy;
@@ -60,8 +58,7 @@ public final class QueueMetrics {
     }
 
     /**
-     * Get the enabled property: Indicates whether metrics are enabled for the
-     * Queue service.
+     * Get the enabled property: Indicates whether metrics are enabled for the Queue service.
      *
      * @return the enabled value.
      */
@@ -70,8 +67,7 @@ public final class QueueMetrics {
     }
 
     /**
-     * Set the enabled property: Indicates whether metrics are enabled for the
-     * Queue service.
+     * Set the enabled property: Indicates whether metrics are enabled for the Queue service.
      *
      * @param enabled the enabled value to set.
      * @return the QueueMetrics object itself.
@@ -82,7 +78,7 @@ public final class QueueMetrics {
     }
 
     /**
-     * Get the retentionPolicy property: The retentionPolicy property.
+     * Get the retentionPolicy property: the retention policy.
      *
      * @return the retentionPolicy value.
      */
@@ -91,7 +87,7 @@ public final class QueueMetrics {
     }
 
     /**
-     * Set the retentionPolicy property: The retentionPolicy property.
+     * Set the retentionPolicy property: the retention policy.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the QueueMetrics object itself.
@@ -102,8 +98,8 @@ public final class QueueMetrics {
     }
 
     /**
-     * Get the includeApis property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
+     * Get the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @return the includeApis value.
      */
@@ -112,8 +108,8 @@ public final class QueueMetrics {
     }
 
     /**
-     * Set the includeApis property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
+     * Set the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @param includeApis the includeApis value to set.
      * @return the QueueMetrics object itself.

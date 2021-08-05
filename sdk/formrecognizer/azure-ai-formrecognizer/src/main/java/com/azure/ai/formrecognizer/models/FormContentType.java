@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
- * Define values for FormContentType.
+ * Define values for content type supported for local files.
  */
 public final class FormContentType extends ExpandableStringEnum<FormContentType> {
 
@@ -29,6 +29,11 @@ public final class FormContentType extends ExpandableStringEnum<FormContentType>
      * Static value Line for FormContentType.
      */
     public static final FormContentType IMAGE_TIFF = fromString("image/tiff");
+
+    /**
+     * Static value Line for FormContentType.
+     */
+    public static final FormContentType IMAGE_BMP = fromString("image/bmp");
 
     /**
      * Creates or finds a ElementType from its string representation.

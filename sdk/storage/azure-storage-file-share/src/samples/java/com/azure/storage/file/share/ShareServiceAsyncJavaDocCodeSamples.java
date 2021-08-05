@@ -2,13 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
+import com.azure.storage.file.share.options.ShareCreateOptions;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -119,6 +124,23 @@ public class ShareServiceAsyncJavaDocCodeSamples {
                 () -> System.out.println("Complete creating the share!")
             );
         // END: com.azure.storage.file.share.ShareServiceAsyncClient.createShareWithResponse#string-map-integer.quota
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareServiceAsyncClient#createShareWithResponse(String, ShareCreateOptions)}.
+     */
+    public void createShareAsyncWithOptions() {
+        ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.createShareWithResponse#String-ShareCreateOptions
+        fileServiceAsyncClient.createShareWithResponse("test", new ShareCreateOptions()
+            .setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
+            .setAccessTier(ShareAccessTier.HOT)).subscribe(
+                response -> System.out.printf("Creating the share completed with status code %d",
+                    response.getStatusCode()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete creating the share!")
+        );
+        // END: com.azure.storage.file.share.ShareServiceAsyncClient.createShareWithResponse#String-ShareCreateOptions
     }
 
     /**
@@ -285,5 +307,63 @@ public class ShareServiceAsyncJavaDocCodeSamples {
         // Client must be authenticated via StorageSharedKeyCredential
         String sas = fileServiceAsyncClient.generateAccountSas(sasValues);
         // END: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceAsyncClient#generateAccountSas(AccountSasSignatureValues, Context)}
+     */
+    public void generateAccountSasWithContext() {
+        ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = fileServiceAsyncClient.generateAccountSas(sasValues, new Context("key", "value"));
+        // END: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceAsyncClient#undeleteShare(String, String)}.
+     */
+    public void undeleteShare() {
+        ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShare#String-String
+        ListSharesOptions listSharesOptions = new ListSharesOptions();
+        listSharesOptions.setIncludeDeleted(true);
+        fileServiceAsyncClient.listShares(listSharesOptions).flatMap(
+            deletedShare -> {
+                Mono<ShareAsyncClient> shareAsyncClient = fileServiceAsyncClient.undeleteShare(
+                    deletedShare.getName(), deletedShare.getVersion());
+                return shareAsyncClient;
+            }
+        ).blockFirst();
+        // END: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShare#String-String
+    }
+
+    /**
+     * Code snippet for
+     * {@link ShareServiceAsyncClient#undeleteShareWithResponse(String, String)}
+     */
+    public void undeleteShareWithResponseWithRename() {
+        ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShareWithResponse#String-String
+        ListSharesOptions listSharesOptions = new ListSharesOptions();
+        listSharesOptions.setIncludeDeleted(true);
+        fileServiceAsyncClient.listShares(listSharesOptions).flatMap(
+            deletedShare -> {
+                Mono<ShareAsyncClient> shareAsyncClient = fileServiceAsyncClient.undeleteShareWithResponse(
+                    deletedShare.getName(), deletedShare.getVersion()).map(Response::getValue);
+                return shareAsyncClient;
+            }
+        ).blockFirst();
+        // END: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShareWithResponse#String-String
     }
 }

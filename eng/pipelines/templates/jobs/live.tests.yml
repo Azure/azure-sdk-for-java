@@ -1,0 +1,124 @@
+parameters:
+  ServiceDirectory: ''
+  TestResourceDirectories:
+  Artifacts: []
+  AdditionalModules: []
+  EnvVars: {}
+  MaxParallel: 0
+  PreSteps: []
+  PostSteps: []
+  TimeoutInMinutes: 60
+  TestMode: 'LIVE'
+  TestStepMavenInputs: {}
+  TestResultsFiles: ''
+  CloudConfig: {}
+  ArmTemplateParameters: '@{}'
+  Location: ''
+  Matrix: ''
+  DependsOn: ''
+  UsePlatformContainer: false
+  DisableAzureResourceCreation: false
+
+jobs:
+  - job:
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+    strategy:
+      maxParallel: ${{ parameters.MaxParallel }}
+      matrix: $[ ${{ parameters.Matrix }} ]
+
+    variables:
+      - template: ../variables/globals.yml
+      - name: ArmTemplateParameters
+        value: '@{}'
+
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+
+    pool:
+      name: $(Pool)
+      vmImage: $(OSVmImage)
+
+    ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
+      # Add a default so the job doesn't fail when the matrix is empty
+      container: $[ variables['Container'] ]
+
+    steps:
+      - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
+        parameters:
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+
+      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - template: /eng/common/TestResources/build-test-resource-config.yml
+          parameters:
+            SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+            SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
+
+        - ${{ if parameters.TestResourceDirectories }}:
+          - ${{ each directory in parameters.TestResourceDirectories }}:
+            - template: /eng/common/TestResources/deploy-test-resources.yml
+              parameters:
+                ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+                  Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+                ServiceDirectory: '${{ directory }}'
+                SubscriptionConfiguration: $(SubscriptionConfiguration)
+                ArmTemplateParameters: $(ArmTemplateParameters)
+        - ${{ if not(parameters.TestResourceDirectories) }}:
+          - template: /eng/common/TestResources/deploy-test-resources.yml
+            parameters:
+              ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+                Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              SubscriptionConfiguration: $(SubscriptionConfiguration)
+              ArmTemplateParameters: $(ArmTemplateParameters)
+
+      - ${{ parameters.PreSteps }}
+
+      - task: Maven@3
+        displayName: 'Build and Install, JDK Version: $(JavaTestVersion)'
+        inputs:
+          mavenPomFile: pom.xml
+          goals: 'install'
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: Maven@3
+        displayName: 'Run tests: $(Agent.JobName)'
+        inputs:
+          mavenPomFile: pom.xml
+          ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
+        env:
+          AZURE_TEST_MODE: ${{ parameters.TestMode }}
+          ${{ each var in parameters.EnvVars }}:
+            ${{ var.key }}: ${{ var.value }}
+
+      - ${{ parameters.PostSteps }}
+
+      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - ${{ if parameters.TestResourceDirectories }}:
+          - ${{ each directory in parameters.TestResourceDirectories }}:
+            - template: /eng/common/TestResources/remove-test-resources.yml
+              parameters:
+                ServiceDirectory: '${{ directory }}'
+                SubscriptionConfiguration: $(SubscriptionConfiguration)
+        - ${{ if not(parameters.TestResourceDirectories) }}:
+          - template: /eng/common/TestResources/remove-test-resources.yml
+            parameters:
+              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              SubscriptionConfiguration: $(SubscriptionConfiguration)
+
+      - template: ../steps/upload-repository-on-failure.yml
+
+      - task: PublishTestResults@2
+        condition: always()
+        inputs:
+          mergeTestResults: true
+          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} ${{ parameters.CloudConfig.Cloud }} $(Agent.JobName)'
+          ${{ if ne(parameters.TestResultsFiles, '') }}:
+            testResultsFiles: ${{ parameters.TestResultsFiles }}

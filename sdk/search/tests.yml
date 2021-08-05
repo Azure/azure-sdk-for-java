@@ -1,13 +1,11 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: search
-      Timeout: 120
-      MaxParallel: 2
-      EnvVars:
-        AZURE_TEST_MODE: LIVE
+      TimeoutInMinutes: 60
+      MaxParallel: 7
       Artifacts:
         - name: azure-search-documents
           groupId: com.azure

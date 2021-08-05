@@ -5,15 +5,15 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionContainer;
@@ -29,6 +29,8 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
 public class ReplicatedResourceClientPartitionSplitTest {
     protected static final int TIMEOUT = 120000;
@@ -112,7 +114,8 @@ public class ReplicatedResourceClientPartitionSplitTest {
         SessionContainer sessionContainer = new SessionContainer("test");
 
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(new Configs(),
+        ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(mockDiagnosticsClientContext(),
+                                                                               new Configs(),
                                                                                addressSelectorWrapper.addressSelector,
                                                                                sessionContainer,
                                                                                transportClientWrapper.transportClient,
@@ -121,7 +124,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
                                                                                false,
                                                                                false);
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId(partitionKeyRangeIdBeforeSplit);

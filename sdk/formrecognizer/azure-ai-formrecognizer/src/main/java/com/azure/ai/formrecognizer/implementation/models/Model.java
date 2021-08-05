@@ -6,8 +6,9 @@ package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The Model model. */
+/** Response to the get custom model operation. */
 @Fluent
 public final class Model {
     /*
@@ -23,10 +24,16 @@ public final class Model {
     private KeysResult keys;
 
     /*
-     * Custom model training result.
+     * Training result for custom model.
      */
     @JsonProperty(value = "trainResult")
     private TrainResult trainResult;
+
+    /*
+     * Training result for composed model.
+     */
+    @JsonProperty(value = "composedTrainResults")
+    private List<TrainResult> composedTrainResults;
 
     /**
      * Get the modelInfo property: Basic custom model information.
@@ -69,7 +76,7 @@ public final class Model {
     }
 
     /**
-     * Get the trainResult property: Custom model training result.
+     * Get the trainResult property: Training result for custom model.
      *
      * @return the trainResult value.
      */
@@ -78,13 +85,33 @@ public final class Model {
     }
 
     /**
-     * Set the trainResult property: Custom model training result.
+     * Set the trainResult property: Training result for custom model.
      *
      * @param trainResult the trainResult value to set.
      * @return the Model object itself.
      */
     public Model setTrainResult(TrainResult trainResult) {
         this.trainResult = trainResult;
+        return this;
+    }
+
+    /**
+     * Get the composedTrainResults property: Training result for composed model.
+     *
+     * @return the composedTrainResults value.
+     */
+    public List<TrainResult> getComposedTrainResults() {
+        return this.composedTrainResults;
+    }
+
+    /**
+     * Set the composedTrainResults property: Training result for composed model.
+     *
+     * @param composedTrainResults the composedTrainResults value to set.
+     * @return the Model object itself.
+     */
+    public Model setComposedTrainResults(List<TrainResult> composedTrainResults) {
+        this.composedTrainResults = composedTrainResults;
         return this;
     }
 }

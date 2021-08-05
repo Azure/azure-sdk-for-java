@@ -3,6 +3,9 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -17,16 +20,24 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
+import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.models.AccessControlChangeResult;
+import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -38,6 +49,7 @@ import java.util.Map;
 /**
  * This class provides a client that contains all operations that apply to any path object.
  */
+@ServiceClient(builder = DataLakePathClientBuilder.class)
 public class DataLakePathClient {
     private final ClientLogger logger = new ClientLogger(DataLakePathClient.class);
 
@@ -47,6 +59,15 @@ public class DataLakePathClient {
     DataLakePathClient(DataLakePathAsyncClient dataLakePathAsyncClient, BlockBlobClient blockBlobClient) {
         this.dataLakePathAsyncClient = dataLakePathAsyncClient;
         this.blockBlobClient = blockBlobClient;
+    }
+
+    /**
+     * Gets the URL of the storage account.
+     *
+     * @return the URL.
+     */
+    String getAccountUrl() {
+        return dataLakePathAsyncClient.getAccountUrl();
     }
 
     /**
@@ -120,11 +141,12 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.create}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
      * @return Information about the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo create() {
         return create(false);
     }
@@ -137,13 +159,14 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.create#boolean}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
      * @param overwrite Whether or not to overwrite, should data exist on the path.
      *
      * @return Information about the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo create(boolean overwrite) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
         if (!overwrite) {
@@ -160,18 +183,20 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
      * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
      * @param umask Restricts permissions of the resource to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing information about the created resource
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
@@ -191,10 +216,12 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setMetadata#Map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-file-metadata">Azure Docs</a></p>
      *
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, null, Context.NONE);
     }
@@ -208,14 +235,16 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setMetadata#Map-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-file-metadata">Azure Docs</a></p>
      *
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
@@ -232,10 +261,11 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setHttpHeaders#PathHttpHeaders}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
      *
      * @param headers {@link PathHttpHeaders}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void setHttpHeaders(PathHttpHeaders headers) {
         setHttpHeadersWithResponse(headers, null, null, Context.NONE);
     }
@@ -249,7 +279,7 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-file-properties">Azure Docs</a></p>
      *
      * @param headers {@link PathHttpHeaders}
      * @param requestConditions {@link DataLakeRequestConditions}
@@ -257,6 +287,7 @@ public class DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
@@ -272,13 +303,14 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setAccessControlList#List-String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControlList A list of {@link PathAccessControlEntry} objects.
      * @param group The group of the resource.
      * @param owner The owner of the resource.
      * @return The resource info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo setAccessControlList(List<PathAccessControlEntry> accessControlList, String group, String owner) {
         return setAccessControlListWithResponse(accessControlList, group, owner, null, null, Context.NONE).getValue();
     }
@@ -291,7 +323,7 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControlList A list of {@link PathAccessControlEntry} objects.
      * @param group The group of the resource.
@@ -301,6 +333,7 @@ public class DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> setAccessControlListWithResponse(List<PathAccessControlEntry> accessControlList,
         String group, String owner, DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PathInfo>> response = dataLakePathAsyncClient.setAccessControlWithResponse(accessControlList,
@@ -317,13 +350,14 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setPermissions#PathPermissions-String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param permissions {@link PathPermissions}
      * @param group The group of the resource.
      * @param owner The owner of the resource.
      * @return The resource info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo setPermissions(PathPermissions permissions, String group, String owner) {
         return setPermissionsWithResponse(permissions, group, owner, null, null, Context.NONE).getValue();
     }
@@ -336,7 +370,7 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param permissions {@link PathPermissions}
      * @param group The group of the resource.
@@ -346,6 +380,7 @@ public class DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> setPermissionsWithResponse(PathPermissions permissions, String group, String owner,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PathInfo>> response = dataLakePathAsyncClient.setAccessControlWithResponse(null, permissions,
@@ -355,6 +390,164 @@ public class DataLakePathClient {
     }
 
     /**
+     * Recursively sets the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursive#List}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControlList The POSIX access control list for the file or directory.
+     * @return The result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessControlChangeResult setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
+        return setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(accessControlList), null,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Recursively sets the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param options {@link PathSetAccessControlRecursiveOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessControlChangeResult> setAccessControlRecursiveWithResponse(
+        PathSetAccessControlRecursiveOptions options, Duration timeout, Context context) {
+        Mono<Response<AccessControlChangeResult>> response =
+            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
+                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.SET, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinueOnFailure(), options.getContinuationToken(), context);
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Recursively updates the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.updateAccessControlRecursive#List}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControlList The POSIX access control list for the file or directory.
+     * @return The result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessControlChangeResult updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
+        return updateAccessControlRecursiveWithResponse(new PathUpdateAccessControlRecursiveOptions(accessControlList),
+            null, Context.NONE).getValue();
+    }
+
+    /**
+     * Recursively updates the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param options {@link PathUpdateAccessControlRecursiveOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessControlChangeResult> updateAccessControlRecursiveWithResponse(
+        PathUpdateAccessControlRecursiveOptions options, Duration timeout, Context context) {
+        Mono<Response<AccessControlChangeResult>> response =
+            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
+                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
+                PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
+                options.isContinueOnFailure(), options.getContinuationToken(), context);
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Recursively removes the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.removeAccessControlRecursive#List}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param accessControlList The POSIX access control list for the file or directory.
+     * @return The result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessControlChangeResult removeAccessControlRecursive(
+        List<PathRemoveAccessControlEntry> accessControlList) {
+        return removeAccessControlRecursiveWithResponse(new PathRemoveAccessControlRecursiveOptions(accessControlList),
+            null, Context.NONE).getValue();
+    }
+
+    /**
+     * Recursively removes the access control on a path and all subpaths.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     *
+     * @param options {@link PathRemoveAccessControlRecursiveOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A  response containing the result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessControlChangeResult> removeAccessControlRecursiveWithResponse(
+        PathRemoveAccessControlRecursiveOptions options, Duration timeout, Context context) {
+        Mono<Response<AccessControlChangeResult>> response =
+            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
+                PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
+                options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
+                options.getMaxBatches(), options.isContinueOnFailure(), options.getContinuationToken(), context);
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+
+    /**
      * Returns the access control for a resource.
      *
      * <p><strong>Code Samples</strong></p>
@@ -362,10 +555,11 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.getAccessControl}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
      * @return The resource access control.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathAccessControl getAccessControl() {
         return getAccessControlWithResponse(false, null, null, Context.NONE).getValue();
     }
@@ -378,7 +572,7 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
      * @param userPrincipalNameReturned When true, user identity values returned as User Principal Names. When false,
      * user identity values returned as Azure Active Directory Object IDs. Default value is false.
@@ -387,6 +581,7 @@ public class DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource access control.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathAccessControl> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<Response<PathAccessControl>> response = dataLakePathAsyncClient.getAccessControlWithResponse(
@@ -403,10 +598,11 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
      * @return The resource properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PathProperties getProperties() {
         return getPropertiesWithResponse(null, null, Context.NONE).getValue();
     }
@@ -419,13 +615,14 @@ public class DataLakePathClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the resource properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
@@ -447,6 +644,7 @@ public class DataLakePathClient {
      *
      * @return true if the path exists, false if it doesn't
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
@@ -456,7 +654,7 @@ public class DataLakePathClient {
      * <p>Note that this method does not guarantee that the path type (file/directory) matches expectations.</p>
      * <p>For example, a DataLakeFileClient representing a path to a datalake directory will return true, and vice
      * versa.</p>
-     * 
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.existsWithResponse#Duration-Context}
@@ -465,6 +663,7 @@ public class DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return true if the path exists, false if it doesn't
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blockBlobClient.existsWithResponse(timeout, context), logger);
@@ -511,10 +710,11 @@ public class DataLakePathClient {
         String renameSource = "/" + dataLakePathAsyncClient.getFileSystemName() + "/"
             + Utility.urlEncode(dataLakePathAsyncClient.getObjectPath());
 
-        return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(
-            null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, renameSource,
+        return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
+            null /* requestId */, null /* timeout */, null /* pathResourceType */,
+            null /* continuation */, PathRenameMode.LEGACY, renameSource,
             sourceRequestConditions.getLeaseId(), null /* properties */, null /* permissions */, null /* umask */,
-            null /* request id */, null /* timeout */, null /* headers */, destLac, destMac, sourceConditions, context)
+            null /* headers */, destLac, destMac, sourceConditions, context)
             .map(response -> new SimpleResponse<>(response, dataLakePathClient));
     }
 
@@ -545,10 +745,10 @@ public class DataLakePathClient {
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @see DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
-     * get a user delegation key.
+     * See {@link DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
@@ -556,8 +756,32 @@ public class DataLakePathClient {
     }
 
     /**
+     * Generates a user delegation SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
+     * @param accountName The account name.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Context context) {
+        return dataLakePathAsyncClient.generateUserDelegationSas(dataLakeServiceSasSignatureValues, userDelegationKey,
+            accountName, context);
+    }
+
+    /**
      * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -566,10 +790,28 @@ public class DataLakePathClient {
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
         return dataLakePathAsyncClient.generateSas(dataLakeServiceSasSignatureValues);
+    }
+
+    /**
+     * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClient.generateSas#DataLakeServiceSasSignatureValues-Context}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues, Context context) {
+        return dataLakePathAsyncClient.generateSas(dataLakeServiceSasSignatureValues, context);
     }
 
 }

@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public abstract class DocumentClientRetryPolicy extends RetryPolicyWithDiagnostics {
+public abstract class DocumentClientRetryPolicy implements IRetryPolicy {
 
     // TODO: this is just a place holder for now. As .Net has this method.
     // I have to spend more time figure out what's the right pattern for this (if method needed)

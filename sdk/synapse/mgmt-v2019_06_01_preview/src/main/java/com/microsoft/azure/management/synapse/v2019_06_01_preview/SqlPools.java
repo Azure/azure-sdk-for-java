@@ -43,19 +43,6 @@ public interface SqlPools extends SupportsCreating<SqlPool.DefinitionStages.Blan
     Observable<Object> resumeAsync(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Rename a SQL pool.
-     * Rename a SQL pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
-     * @param sqlPoolName SQL pool name
-     * @param id The target ID for the resource
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable renameAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String id);
-
-    /**
      * Get SQL pool.
      * Get SQL pool properties.
      *

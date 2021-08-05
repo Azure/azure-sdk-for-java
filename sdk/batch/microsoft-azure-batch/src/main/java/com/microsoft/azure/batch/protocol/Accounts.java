@@ -105,7 +105,7 @@ public interface Accounts {
     Observable<ServiceResponseWithHeaders<Page<ImageInformation>, AccountListSupportedImagesHeaders>> listSupportedImagesWithServiceResponseAsync(final AccountListSupportedImagesOptions accountListSupportedImagesOptions);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -115,7 +115,7 @@ public interface Accounts {
     PagedList<PoolNodeCounts> listPoolNodeCounts();
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -124,7 +124,7 @@ public interface Accounts {
     ServiceFuture<List<PoolNodeCounts>> listPoolNodeCountsAsync(final ListOperationCallback<PoolNodeCounts> serviceCallback);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolNodeCounts&gt; object
@@ -132,14 +132,14 @@ public interface Accounts {
     Observable<Page<PoolNodeCounts>> listPoolNodeCountsAsync();
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PoolNodeCounts&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<PoolNodeCounts>, AccountListPoolNodeCountsHeaders>> listPoolNodeCountsWithServiceResponseAsync();
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -150,7 +150,7 @@ public interface Accounts {
     PagedList<PoolNodeCounts> listPoolNodeCounts(final AccountListPoolNodeCountsOptions accountListPoolNodeCountsOptions);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -160,7 +160,7 @@ public interface Accounts {
     ServiceFuture<List<PoolNodeCounts>> listPoolNodeCountsAsync(final AccountListPoolNodeCountsOptions accountListPoolNodeCountsOptions, final ListOperationCallback<PoolNodeCounts> serviceCallback);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -169,7 +169,7 @@ public interface Accounts {
     Observable<Page<PoolNodeCounts>> listPoolNodeCountsAsync(final AccountListPoolNodeCountsOptions accountListPoolNodeCountsOptions);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -261,7 +261,7 @@ public interface Accounts {
     Observable<ServiceResponseWithHeaders<Page<ImageInformation>, AccountListSupportedImagesHeaders>> listSupportedImagesNextWithServiceResponseAsync(final String nextPageLink, final AccountListSupportedImagesNextOptions accountListSupportedImagesNextOptions);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -272,7 +272,7 @@ public interface Accounts {
     PagedList<PoolNodeCounts> listPoolNodeCountsNext(final String nextPageLink);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -283,7 +283,7 @@ public interface Accounts {
     ServiceFuture<List<PoolNodeCounts>> listPoolNodeCountsNextAsync(final String nextPageLink, final ServiceFuture<List<PoolNodeCounts>> serviceFuture, final ListOperationCallback<PoolNodeCounts> serviceCallback);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -292,7 +292,7 @@ public interface Accounts {
     Observable<Page<PoolNodeCounts>> listPoolNodeCountsNextAsync(final String nextPageLink);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -300,7 +300,7 @@ public interface Accounts {
      */
     Observable<ServiceResponseWithHeaders<Page<PoolNodeCounts>, AccountListPoolNodeCountsHeaders>> listPoolNodeCountsNextWithServiceResponseAsync(final String nextPageLink);
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation
@@ -312,7 +312,7 @@ public interface Accounts {
     PagedList<PoolNodeCounts> listPoolNodeCountsNext(final String nextPageLink, final AccountListPoolNodeCountsNextOptions accountListPoolNodeCountsNextOptions);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation
@@ -324,7 +324,7 @@ public interface Accounts {
     ServiceFuture<List<PoolNodeCounts>> listPoolNodeCountsNextAsync(final String nextPageLink, final AccountListPoolNodeCountsNextOptions accountListPoolNodeCountsNextOptions, final ServiceFuture<List<PoolNodeCounts>> serviceFuture, final ListOperationCallback<PoolNodeCounts> serviceCallback);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation
@@ -334,7 +334,7 @@ public interface Accounts {
     Observable<Page<PoolNodeCounts>> listPoolNodeCountsNextAsync(final String nextPageLink, final AccountListPoolNodeCountsNextOptions accountListPoolNodeCountsNextOptions);
 
     /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool.
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be up to date. If you need exact node counts, use a list query.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation

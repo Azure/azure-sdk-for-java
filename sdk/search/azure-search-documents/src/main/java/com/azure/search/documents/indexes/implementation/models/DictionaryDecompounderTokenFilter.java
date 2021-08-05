@@ -7,15 +7,13 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Decomposes compound words found in many Germanic languages. This token
- * filter is implemented using Apache Lucene.
- */
+/** Decomposes compound words found in many Germanic languages. This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter")
 @Fluent
@@ -55,6 +53,20 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     private Boolean onlyLongestMatch;
 
     /**
+     * Creates an instance of DictionaryDecompounderTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param wordList the wordList value to set.
+     */
+    @JsonCreator
+    public DictionaryDecompounderTokenFilter(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "wordList", required = true) List<String> wordList) {
+        super(name);
+        this.wordList = wordList;
+    }
+
+    /**
      * Get the wordList property: The list of words to match against.
      *
      * @return the wordList value.
@@ -64,19 +76,8 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the wordList property: The list of words to match against.
-     *
-     * @param wordList the wordList value to set.
-     * @return the DictionaryDecompounderTokenFilter object itself.
-     */
-    public DictionaryDecompounderTokenFilter setWordList(List<String> wordList) {
-        this.wordList = wordList;
-        return this;
-    }
-
-    /**
-     * Get the minWordSize property: The minimum word size. Only words longer
-     * than this get processed. Default is 5. Maximum is 300.
+     * Get the minWordSize property: The minimum word size. Only words longer than this get processed. Default is 5.
+     * Maximum is 300.
      *
      * @return the minWordSize value.
      */
@@ -85,8 +86,8 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the minWordSize property: The minimum word size. Only words longer
-     * than this get processed. Default is 5. Maximum is 300.
+     * Set the minWordSize property: The minimum word size. Only words longer than this get processed. Default is 5.
+     * Maximum is 300.
      *
      * @param minWordSize the minWordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
@@ -97,8 +98,8 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the minSubwordSize property: The minimum subword size. Only subwords
-     * longer than this are outputted. Default is 2. Maximum is 300.
+     * Get the minSubwordSize property: The minimum subword size. Only subwords longer than this are outputted. Default
+     * is 2. Maximum is 300.
      *
      * @return the minSubwordSize value.
      */
@@ -107,8 +108,8 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the minSubwordSize property: The minimum subword size. Only subwords
-     * longer than this are outputted. Default is 2. Maximum is 300.
+     * Set the minSubwordSize property: The minimum subword size. Only subwords longer than this are outputted. Default
+     * is 2. Maximum is 300.
      *
      * @param minSubwordSize the minSubwordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
@@ -119,8 +120,8 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the maxSubwordSize property: The maximum subword size. Only subwords
-     * shorter than this are outputted. Default is 15. Maximum is 300.
+     * Get the maxSubwordSize property: The maximum subword size. Only subwords shorter than this are outputted. Default
+     * is 15. Maximum is 300.
      *
      * @return the maxSubwordSize value.
      */
@@ -129,8 +130,8 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the maxSubwordSize property: The maximum subword size. Only subwords
-     * shorter than this are outputted. Default is 15. Maximum is 300.
+     * Set the maxSubwordSize property: The maximum subword size. Only subwords shorter than this are outputted. Default
+     * is 15. Maximum is 300.
      *
      * @param maxSubwordSize the maxSubwordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
@@ -141,8 +142,8 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the onlyLongestMatch property: A value indicating whether to add
-     * only the longest matching subword to the output. Default is false.
+     * Get the onlyLongestMatch property: A value indicating whether to add only the longest matching subword to the
+     * output. Default is false.
      *
      * @return the onlyLongestMatch value.
      */
@@ -151,8 +152,8 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the onlyLongestMatch property: A value indicating whether to add
-     * only the longest matching subword to the output. Default is false.
+     * Set the onlyLongestMatch property: A value indicating whether to add only the longest matching subword to the
+     * output. Default is false.
      *
      * @param onlyLongestMatch the onlyLongestMatch value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.

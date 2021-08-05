@@ -12,6 +12,7 @@ import org.slf4j.helpers.NOPLogger;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
@@ -35,6 +36,7 @@ import java.util.Objects;
  * @see Configuration
  */
 public class ClientLogger {
+    private static final Pattern CRLF_PATTERN = Pattern.compile("[\r\n]");
     private final Logger logger;
 
     /**
@@ -70,7 +72,7 @@ public class ClientLogger {
      */
     public void verbose(String message) {
         if (logger.isDebugEnabled()) {
-            logger.debug(message);
+            logger.debug(sanitizeLogMessageInput(message));
         }
     }
 
@@ -106,7 +108,7 @@ public class ClientLogger {
      */
     public void info(String message) {
         if (logger.isInfoEnabled()) {
-            logger.info(message);
+            logger.info(sanitizeLogMessageInput(message));
         }
     }
 
@@ -142,7 +144,7 @@ public class ClientLogger {
      */
     public void warning(String message) {
         if (logger.isWarnEnabled()) {
-            logger.warn(message);
+            logger.warn(sanitizeLogMessageInput(message));
         }
     }
 
@@ -178,7 +180,7 @@ public class ClientLogger {
      */
     public void error(String message) {
         if (logger.isErrorEnabled()) {
-            logger.error(message);
+            logger.error(sanitizeLogMessageInput(message));
         }
     }
 
@@ -327,6 +329,7 @@ public class ClientLogger {
             }
         }
 
+        sanitizeLogMessageInput(format);
         switch (logLevel) {
             case VERBOSE:
                 logger.debug(format, args);
@@ -400,5 +403,18 @@ public class ClientLogger {
      */
     private Object[] removeThrowable(Object... args) {
         return Arrays.copyOf(args, args.length - 1);
+    }
+
+    /**
+     * Removes CRLF pattern in the {@code logMessage}.
+     *
+     * @param logMessage The log message to sanitize.
+     * @return The updated logMessage.
+     */
+    private static String sanitizeLogMessageInput(String logMessage) {
+        if (CoreUtils.isNullOrEmpty(logMessage)) {
+            return logMessage;
+        }
+        return CRLF_PATTERN.matcher(logMessage).replaceAll("");
     }
 }

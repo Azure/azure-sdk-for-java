@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/chat/threads/19:4b72178530934b7790135dd9359205e0@thread.v2/readReceipts?api-version=2021-04-05-preview6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-chat/1.1.0-beta.1 (1.8.0_262; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d214cd8a-e88b-46ba-a915-5d118cab0bee"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "433",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"senderCommunicationIdentifier\":{\"communicationUser\":{ \"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000005-334f-e4af-b274-5a3a0d0002f9\"} },\"chatMessageId\":\"1600201311647\",\"readOn\":\"2020-09-15T20:21:51Z\"},{\"senderCommunicationIdentifier\":{\"communicationUser\":{ \"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000005-334f-e4af-b274-5a3a0d0002f9\"} },\"chatMessageId\":\"1600201311648\",\"readOn\":\"2020-09-15T20:21:53Z\"}]}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

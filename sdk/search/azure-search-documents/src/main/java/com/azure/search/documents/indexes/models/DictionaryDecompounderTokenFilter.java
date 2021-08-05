@@ -52,23 +52,25 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     private Boolean onlyLongestMatched;
 
     /**
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param wordList The list of words to match against.
+     */
+    public DictionaryDecompounderTokenFilter(String name, List<String> wordList) {
+        super(name);
+        this.wordList = wordList;
+    }
+
+    /**
      * Get the wordList property: The list of words to match against.
      *
      * @return the wordList value.
      */
     public List<String> getWordList() {
         return this.wordList;
-    }
-
-    /**
-     * Set the wordList property: The list of words to match against.
-     *
-     * @param wordList the wordList value to set.
-     * @return the DictionaryDecompounderTokenFilter object itself.
-     */
-    public DictionaryDecompounderTokenFilter setWordList(List<String> wordList) {
-        this.wordList = wordList;
-        return this;
     }
 
     /**

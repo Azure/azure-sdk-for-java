@@ -8,17 +8,20 @@ import com.azure.storage.blob.specialized.BlobInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 
 /**
  * Provides an InputStream to read a file stored as an Azure Blob.
  */
-public class NioBlobInputStream extends InputStream {
+public final class NioBlobInputStream extends InputStream {
     private final ClientLogger logger = new ClientLogger(NioBlobInputStream.class);
 
     private final BlobInputStream blobInputStream;
+    private final Path path;
 
-    NioBlobInputStream(BlobInputStream blobInputStream) {
+    NioBlobInputStream(BlobInputStream blobInputStream, Path path) {
         this.blobInputStream = blobInputStream;
+        this.path = path;
     }
 
     /**
@@ -30,7 +33,8 @@ public class NioBlobInputStream extends InputStream {
      * over) from this input stream without blocking, or 0 when it reaches the end of the input stream.
      */
     @Override
-    public synchronized int available() {
+    public synchronized int available() throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         return this.blobInputStream.available();
     }
 
@@ -38,7 +42,8 @@ public class NioBlobInputStream extends InputStream {
      * Closes this input stream and releases any system resources associated with the stream.
      */
     @Override
-    public synchronized void close() {
+    public synchronized void close() throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         this.blobInputStream.close();
     }
 
@@ -75,6 +80,7 @@ public class NioBlobInputStream extends InputStream {
      */
     @Override
     public int read() throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             return this.blobInputStream.read();
             /*
@@ -111,6 +117,7 @@ public class NioBlobInputStream extends InputStream {
      */
     @Override
     public int read(final byte[] b) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             return this.blobInputStream.read(b);
         } catch (RuntimeException e) {
@@ -152,6 +159,7 @@ public class NioBlobInputStream extends InputStream {
      */
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         if (off < 0 || len < 0 || len > b.length - off) {
             throw logger.logExceptionAsError(new IndexOutOfBoundsException());
         }
@@ -170,6 +178,7 @@ public class NioBlobInputStream extends InputStream {
      */
     @Override
     public synchronized void reset() throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             this.blobInputStream.reset();
         } catch (RuntimeException e) {
@@ -191,7 +200,12 @@ public class NioBlobInputStream extends InputStream {
      * @param n A <code>long</code> which represents the number of bytes to skip.
      */
     @Override
-    public synchronized long skip(final long n) {
+    public synchronized long skip(final long n) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         return this.blobInputStream.skip(n);
+    }
+
+    BlobInputStream getBlobInputStream() {
+        return blobInputStream;
     }
 }

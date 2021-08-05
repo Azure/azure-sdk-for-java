@@ -15,7 +15,7 @@ public class ExtractKeyPhrasesResultCollection extends IterableStream<ExtractKey
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
     /**
-     * Create a {@link ExtractKeyPhrasesResultCollection} model that maintains a list of {@link ExtractKeyPhraseResult}
+     * Creates a {@link ExtractKeyPhrasesResultCollection} model that maintains a list of {@link ExtractKeyPhraseResult}
      * along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link ExtractKeyPhraseResult}.
@@ -30,7 +30,7 @@ public class ExtractKeyPhrasesResultCollection extends IterableStream<ExtractKey
     }
 
     /**
-     * Get the model version trained in service for the request.
+     * Gets the model version trained in service for the request.
      *
      * @return The model version trained in service for the request.
      */
@@ -39,7 +39,7 @@ public class ExtractKeyPhrasesResultCollection extends IterableStream<ExtractKey
     }
 
     /**
-     * Get the batch statistics of response.
+     * Gets the batch statistics of response.
      *
      * @return The batch statistics of response.
      */

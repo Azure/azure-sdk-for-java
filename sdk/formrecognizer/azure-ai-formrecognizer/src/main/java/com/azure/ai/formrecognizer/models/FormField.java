@@ -6,52 +6,33 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The FormField model.
+ * Represents a field recognized in an input document.
  */
 @Immutable
 public final class FormField {
 
-    /*
-     * The confidence value of the field.
-     */
     private final float confidence;
-
-    /*
-     * The label text of the field.
-     */
-    private final FieldText labelText;
-
-    /*
-     * The name value of the field.
-     */
+    private final FieldData labelData;
     private final String name;
-
-    /*
-     * The value of the field.
-     */
-    private final FieldValue fieldValue;
-
-    /*
-     * The text value field..
-     */
-    private final FieldText valueText;
+    private final FieldValue value;
+    private final FieldData valueData;
 
     /**
      * Constructs a FormField object.
      *
+     * @param name The name the field or label.
+     * @param labelData The text, bounding box, and field elements for the field label.
+     * @param valueData The text, bounding box, and field elements for the field value.
+     * @param value The value of the recognized field.
      * @param confidence The confidence of the recognized field.
-     * @param labelText The label text value for the field.
-     * @param name The name the field.
-     * @param fieldValue The value of the field.
-     * @param valueText The label value text for the field.
      */
-    public FormField(final float confidence, final FieldText labelText, final String name, final FieldValue fieldValue,
-        final FieldText valueText) {
+    public FormField(final String name, final FieldData labelData, final FieldData valueData,
+        final FieldValue value, final float confidence) {
         this.confidence = confidence;
-        this.labelText = labelText;
+        this.labelData = labelData;
         this.name = name;
-        this.fieldValue = fieldValue;
-        this.valueText = valueText;
+        this.value = value;
+        this.valueData = valueData;
     }
 
     /**
@@ -64,38 +45,38 @@ public final class FormField {
     }
 
     /**
-     * Get the label text of the field.
+     * Get the text, bounding box, and field elements for the field label.
      *
-     * @return the text-label value.
+     * @return the text, bounding box, and field elements for the field value.
      */
-    public FieldText getLabelText() {
-        return this.labelText;
+    public FieldData getLabelData() {
+        return this.labelData;
     }
 
     /**
      * Get the name of the field in the provided document.
      *
-     * @return the name value.
+     * @return the name of field or label.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Get the value of the field.
+     * Get the value of the recognized field.
      *
-     * @return Value of the field.
+     * @return Value of the recognized field.
      */
-    public FieldValue getFieldValue() {
-        return this.fieldValue;
+    public FieldValue getValue() {
+        return this.value;
     }
 
     /**
-     * Get the value text of the field.
+     * Get the text, bounding box, and field elements for the field value.
      *
-     * @return the value text of the field.
+     * @return the text, bounding box, and field elements for the field value.
      */
-    public FieldText getValueText() {
-        return this.valueText;
+    public FieldData getValueData() {
+        return this.valueData;
     }
 }

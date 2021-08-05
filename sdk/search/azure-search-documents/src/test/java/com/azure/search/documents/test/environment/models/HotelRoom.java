@@ -3,7 +3,10 @@
 package com.azure.search.documents.test.environment.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({ "Description", "Description_fr", "Type", "BaseRate", "BedOptions", "BedOptions", "SleepsCount",
+})
 public class HotelRoom {
     @JsonProperty(value = "Description")
     private String description;

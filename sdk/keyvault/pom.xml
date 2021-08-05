@@ -1,23 +1,91 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved.
      Licensed under the MIT License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-service</artifactId>
   <packaging>pom</packaging>
-
   <version>1.0.0</version>  <!-- Need not change for every release-->
-  <modules>
-    <module>microsoft-azure-keyvault-webkey</module>
-    <module>microsoft-azure-keyvault</module>
-    <module>microsoft-azure-keyvault-complete</module>
-    <module>microsoft-azure-keyvault-core</module>
-    <module>microsoft-azure-keyvault-cryptography</module>
-    <module>microsoft-azure-keyvault-extensions</module>
-    <module>microsoft-azure-keyvault-test</module>
-    <module>azure-security-keyvault-certificates</module>
-    <module>azure-security-keyvault-keys</module>
-    <module>azure-security-keyvault-secrets</module>
-  </modules>
+
+  <profiles>
+    <profile>
+      <id>coverage</id>
+      <modules>
+        <module>azure-security-keyvault-administration</module>
+        <module>azure-security-keyvault-certificates</module>
+        <module>azure-security-keyvault-jca</module>
+        <module>azure-security-keyvault-keys</module>
+        <module>azure-security-keyvault-secrets</module>
+      </modules>
+
+      <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-administration</artifactId>
+          <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-certificates</artifactId>
+          <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-keys</artifactId>
+          <version>4.4.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-secrets</artifactId>
+          <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>report-aggregate</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>report-aggregate</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>microsoft-azure-keyvault-webkey</module>
+        <module>microsoft-azure-keyvault</module>
+        <module>microsoft-azure-keyvault-complete</module>
+        <module>microsoft-azure-keyvault-core</module>
+        <module>microsoft-azure-keyvault-cryptography</module>
+        <module>microsoft-azure-keyvault-extensions</module>
+        <module>microsoft-azure-keyvault-test</module>
+        <module>azure-security-test-keyvault-jca</module>
+        <module>azure-security-keyvault-administration</module>
+        <module>azure-security-keyvault-certificates</module>
+        <module>azure-security-keyvault-jca</module>
+        <module>azure-security-keyvault-keys</module>
+        <module>azure-security-keyvault-secrets</module>
+        <module>azure-security-keyvault-perf</module>
+      </modules>
+    </profile>
+  </profiles>
+
 </project>

@@ -7,14 +7,12 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Filters out tokens with same text as the previous token. This token filter
- * is implemented using Apache Lucene.
- */
+/** Filters out tokens with same text as the previous token. This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.UniqueTokenFilter")
 @Fluent
@@ -27,8 +25,18 @@ public final class UniqueTokenFilter extends TokenFilter {
     private Boolean onlyOnSamePosition;
 
     /**
-     * Get the onlyOnSamePosition property: A value indicating whether to
-     * remove duplicates only at the same position. Default is false.
+     * Creates an instance of UniqueTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public UniqueTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
+
+    /**
+     * Get the onlyOnSamePosition property: A value indicating whether to remove duplicates only at the same position.
+     * Default is false.
      *
      * @return the onlyOnSamePosition value.
      */
@@ -37,8 +45,8 @@ public final class UniqueTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the onlyOnSamePosition property: A value indicating whether to
-     * remove duplicates only at the same position. Default is false.
+     * Set the onlyOnSamePosition property: A value indicating whether to remove duplicates only at the same position.
+     * Default is false.
      *
      * @param onlyOnSamePosition the onlyOnSamePosition value to set.
      * @return the UniqueTokenFilter object itself.

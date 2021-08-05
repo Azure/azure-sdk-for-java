@@ -3,8 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -41,40 +40,39 @@ public class RecognizeCustomFormsAsync {
             .buildAsyncClient();
 
         // The form you are recognizing must be of the same type as the forms the custom model was trained on
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "forms/Invoice_6.pdf");
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
+            + "sample-forms/forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
         String modelId = "{modelId}";
-
-        PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), modelId,
-                sourceFile.length(),
-                FormContentType.APPLICATION_PDF);
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller;
+        try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
+            recognizeFormPoller = client.beginRecognizeCustomForms(modelId, toFluxByteBuffer(targetStream),
+                sourceFile.length());
+        }
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
-            .flatMap(recognizeFormPollOperation -> {
-                if (recognizeFormPollOperation.getStatus().isComplete()) {
-                    // training completed successfully, retrieving final result.
-                    return recognizeFormPollOperation.getFinalResult();
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + recognizeFormPollOperation.getStatus()));
+                        + pollResponse.getStatus()));
                 }
             });
 
         recognizeFormResult.subscribe(recognizedForms -> {
             for (int i = 0; i < recognizedForms.size(); i++) {
                 final RecognizedForm form = recognizedForms.get(i);
-                System.out.printf("----------- Recognized Form page %s -----------", i);
+                System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
                 System.out.printf("Form type: %s%n", form.getFormType());
+                System.out.printf("Form has form type confidence : %.2f%n", form.getFormTypeConfidence());
+                System.out.printf("Form was analyzed with model with ID: %s%n", form.getModelId());
                 form.getFields().forEach((label, formField) -> {
-                    System.out.printf("Field %s has value %s with confidence score of %.2f.%n", label,
-                        formField.getFieldValue(),
+                    System.out.printf("Field '%s' has label '%s' with confidence score of %.2f.%n", label,
+                        formField.getLabelData().getText(),
                         formField.getConfidence());
                 });
-                System.out.print("-----------------------------------");
             }
         });
 

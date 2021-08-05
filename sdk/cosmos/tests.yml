@@ -3,12 +3,22 @@ trigger: none
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
   - name: AdditionalArgs
-    value: ''
+    value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      TestName: Single_Region_Session
+      CloudConfig:
+        Cosmos_Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      Clouds: 'Cosmos_Public'
+      MatrixConfigs:
+        - Name: Cosmos_live_test
+          Path: sdk/cosmos/platform-matrix.json
+          Selection: all
+          GenerateVMJobs: true
       ServiceDirectory: cosmos
       Artifacts:
         - name: azure-cosmos
@@ -17,431 +27,38 @@ jobs:
       AdditionalModules:
         - name: azure-cosmos-benchmark
           groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
-      TimeoutInMinutes: 90
-      EnvVars:
-        ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
-        ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
-        SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-secondary-key)
-        ACCOUNT_CONSISTENCY: "Session"
-      MaxParallel: 1
-      Matrix:
-        # 59m 59s, timed out
-        Http_E2E:
-          DisplayName: ReadMyWrites Integration Tests
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
-          DESIRED_CONSISTENCY: 'Session'
-        # 59m 59s, timed out
-        Session_Tcp_E2E:
-          DisplayName: ReadMyWrites Integration Tests
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
-          DESIRED_CONSISTENCY: 'Session'
-        # 09m 23s, expect passed
-        Single_Region_Fast:
-          DisplayName: Single Region Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-        # 09m 0s, expect passed
-        Single_Region_Direct:
-          DisplayName: Single Region Direct
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pdirect'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-        # 7m 44s, expect passed
-        Single_Region_Examples:
-          DisplayName: Single Region Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-
-      PreRunSteps:
+      TimeoutInMinutes: 120
+      MaxParallel: 8
+      PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
       TestStepMavenInputs:
-          goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-
+        goals: verify
+        options: '$(DefaultTestOptions) $(ProfileFlag) $(AdditionalArgs)'
+        mavenOptions: '$(DefaultTestMavenOptions)'
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
-
-  # This template parllelizes tests that could be run on Single_Region_Session
-  # by running them against a different cosmosdb instance
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      TestName: Single_Region_Session_2
+      TestName: 'Integration'
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      MatrixConfigs:
+        - Name: Cosmos_live_test_integration
+          Path: sdk/cosmos/integration-matrix.json
+          Selection: all
+          GenerateVMJobs: true
       ServiceDirectory: cosmos
       Artifacts:
-        - name: azure-cosmos
+        - name: azure-spring-data-cosmos-test
           groupId: com.azure
-          safeName: azurecosmos
-      AdditionalModules:
-        - name: azure-cosmos-benchmark
-          groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
+          safeName: azurespringdatacosmostest
       TimeoutInMinutes: 90
-      EnvVars:
-        ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
-        ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
-        ACCOUNT_CONSISTENCY: "Session"
-        SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-secondary-key)
-        DESIRED_CONSISTENCIES: '["Session"]'
-        PROTOCOLS: '["Tcp"]'
-      MaxParallel: 1
-      Matrix:
-        # 09m 07s, expect passed
-        Fast:
-          DisplayName: Multimaster Single Region Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-        # 09m 14s, expect passed
-        Direct:
-          DisplayName: Multimaster Single Region Direct
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pdirect'
-        # 07m 42s, expect passed
-        Examples:
-          DisplayName: Multimaster Single Region Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
-        # 07m 05s, expect passed
-        NonEmulator:
-          DisplayName: Multimaster Single Region NonEmulator
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pnon-emulator'
-        # 28m 42s, expect passed (rebalanced)
-        Single_Region_Long:
-          DisplayName: Long Integration Tests
-          OSVmImage: 'windows-2019'
-          ProfileFlag: '-e -Plong'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: null
-          PROTOCOLS: ''
-        # 6m 58s, expect passed (rebalanced)
-        Single_Region_NonEmulator:
-          DisplayName: Single Region NonEmulator
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pnon-emulator'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-
-      PreRunSteps:
+      PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
       TestStepMavenInputs:
-          goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-
-      TestResultsFiles: '**/junitreports/TEST-*.xml'
-
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: Single_Region_Strong_Tcp
-      ServiceDirectory: cosmos
-      Artifacts:
-        - name: azure-cosmos
-          groupId: com.azure
-          safeName: azurecosmos
-      AdditionalModules:
-        - name: azure-cosmos-benchmark
-          groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
-      TimeoutInMinutes: 90
-      EnvVars:
-        ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
-        ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
-        SECONDARY_ACCOUNT_KEY: $(java-cosmos-strong-singleregion-secondary-key)
-      MaxParallel: 1
-      Matrix:
-        # 09m 32s, expect passed
-        Strong_Tcp_Fast:
-          DisplayName: Strong TCP Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Bounded_Staleness_Tcp_Fast:
-          DisplayName: Bounded Staleness TCP Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
-        Consistent_Prefix_Tcp_Fast:
-          DisplayName: Consistent Prefix TCP Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
-        # 08m 53s, expect passed
-        Strong_Tcp_Direct:
-          DisplayName: Strong TCP Direct
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 07m 36s, expect passed
-        Strong_Tcp_Examples:
-          DisplayName: Strong TCP Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 06m 59s, expect passed
-        Strong_Tcp_NonEmulator:
-          DisplayName: Strong TCP NonEmulator
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-
-      PreRunSteps:
-        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
-      TestStepMavenInputs:
-          goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-
-      TestResultsFiles: '**/junitreports/TEST-*.xml'
-
-  # Same host as above, parallelizing the e2e tests saves time overall
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: Single_Region_Strong_Https
-      ServiceDirectory: cosmos
-      Artifacts:
-        - name: azure-cosmos
-          groupId: com.azure
-          safeName: azurecosmos
-      AdditionalModules:
-        - name: azure-cosmos-benchmark
-          groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
-      TimeoutInMinutes: 90
-      EnvVars:
-        ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
-        ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
-        SECONDARY_ACCOUNT_KEY: $(java-cosmos-strong-singleregion-secondary-key)
-      MaxParallel: 1
-      Matrix:
-        # 59m 58s, timed out
-        Https_E2E:
-          DisplayName: Single Region ReadMyWrites
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
-          DESIRED_CONSISTENCY: 'Strong'
-        Bounded_Staleness_Https_E2E:
-          DisplayName: Bounded Staleness Single Region ReadMyWrites
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
-          DESIRED_CONSISTENCY: 'BoundedStaleness'
-        # 59m 58s, timed out
-        Strong_Tcp_E2E:
-          DisplayName: Single Region ReadMyWrites
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
-          DESIRED_CONSISTENCY: 'Strong'
-        Bounded_Staleness_Tcp_E2E:
-          DisplayName: Bounded Staleness Single Region ReadMyWrites
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
-          DESIRED_CONSISTENCY: 'BoundedStaleness'
-        # 08m 50s, expect passed
-        Strong_Https_Fast:
-          DisplayName: Strong HTTP Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Bounded_Staleness_Https_Fast:
-          DisplayName: Bounded Staleness HTTP Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
-        Consistent_Prefix_Https_Fast:
-          DisplayName: Consistent Prefix HTTP Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
-        # 08m 50s, expect passed
-        Strong_Https_Direct:
-          DisplayName: Strong HTTP Direct
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 07m 36s, expect passed
-        Strong_Https_Examples:
-          DisplayName: Strong HTTP Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 06m 59s, expect passed
-        Strong_Https_NonEmulator:
-          DisplayName: Strong HTTP NonEmulator
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-
-      PreRunSteps:
-        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
-      TestStepMavenInputs:
-          goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-
-      TestResultsFiles: '**/junitreports/TEST-*.xml'
-
-
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: MultiMaster_Multi_Region
-      ServiceDirectory: cosmos
-      Artifacts:
-        - name: azure-cosmos
-          groupId: com.azure
-          safeName: azurecosmos
-      AdditionalModules:
-        - name: azure-cosmos-benchmark
-          groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
-      TimeoutInMinutes: 90
-      EnvVars:
-        ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
-        ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
-        SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-secondary-key)
-        ACCOUNT_CONSISTENCY: "Session"
-        DESIRED_CONSISTENCIES: '["Session"]'
-        PREFERRED_LOCATIONS: '["East US 2"]'
-      MaxParallel: 1
-      Matrix:
-        # 29m 23s, expect passed
-        Long:
-          DisplayName: Multimaster Multi Region Long
-          OSVmImage: 'windows-2019'
-          ProfileFlag: '-e -Plong'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
-        # 06m 34s, previously failing
-        MultiMaster:
-          DisplayName: Multimaster Multi Region Multi-Master
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pmulti-master'
-        # 09m 43s, expect passed
-        Fast:
-          DisplayName: Multimaster Multi Region Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-        # 09m 10s, expect passed
-        Direct:
-          DisplayName: Multimaster Multi Region Direct
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pdirect'
-        # 07m 49s, expect passed
-        Examples:
-          DisplayName: Multimaster Multi Region Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
-        # 08m 0s, expect passed
-        NonEmulator:
-          DisplayName: Multimaster Multi Region NonEmulator
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pnon-emulator'
-
-      PreRunSteps:
-        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
-      TestStepMavenInputs:
-          goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-
-      TestResultsFiles: '**/junitreports/TEST-*.xml'
-
-
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: MultiMaster_Single_Region
-      ServiceDirectory: cosmos
-      Artifacts:
-        - name: azure-cosmos
-          groupId: com.azure
-          safeName: azurecosmos
-      AdditionalModules:
-        - name: azure-cosmos-benchmark
-          groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
-      TimeoutInMinutes: 90
-      EnvVars:
-        ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
-        ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
-        SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-secondary-key)
-        DESIRED_CONSISTENCIES: '["Session"]'
-        PREFERRED_LOCATIONS: null
-      MaxParallel: 1
-      Matrix:
-        # 05m 21s, previously failing
-        MultiMaster:
-          DisplayName: MultiMaster Single Region Multi-Master
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pmulti-master'
-        # 09m 34s, expect passed
-        Fast:
-          DisplayName: Multimaster Single Region Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-        # 09m 05s, expect passed
-        Direct:
-          DisplayName: Multimaster Single Region Direct
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
-        # 07m 52s, expect passed
-        Examples:
-          DisplayName: Multimaster Single Region Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
-        # 07m 10s, expect passed
-        NonEmulator:
-          DisplayName: Multimaster Single Region NonEmulator
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pnon-emulator'
-
-      PreRunSteps:
-        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
-      TestStepMavenInputs:
-          goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-
-      TestResultsFiles: '**/junitreports/TEST-*.xml'
+        goals: clean verify
+        options: '$(DefaultTestOptions) $(ProfileFlag)'
+        mavenOptions: '$(DefaultTestMavenOptions)'

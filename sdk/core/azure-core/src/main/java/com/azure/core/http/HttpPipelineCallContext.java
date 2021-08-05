@@ -3,13 +3,14 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
 import com.azure.core.util.Context;
 
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Type representing context local to a single http request and it's response.
+ * Represents the information used to make a single HTTP request.
  */
 public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;
@@ -46,6 +47,10 @@ public final class HttpPipelineCallContext {
         this.data = data;
     }
 
+    static {
+        HttpPipelineCallContextHelper.setAccessor(HttpPipelineCallContext::getContext);
+    }
+
     /**
      * Stores a key-value data in the context.
      *
@@ -64,6 +69,15 @@ public final class HttpPipelineCallContext {
      */
     public Optional<Object> getData(String key) {
         return this.data.getData(key);
+    }
+
+    /**
+     *  Gets the context associated to the HTTP call.
+     *
+     * @return The context associated to the HTTP call.
+     */
+    Context getContext() {
+        return data;
     }
 
     /**

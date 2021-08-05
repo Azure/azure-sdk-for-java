@@ -1,9 +1,118 @@
 # Release History
 
-## 12.7.0-beta.2 (Unreleased)
+## 12.14.0-beta.2 (Unreleased)
 
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.14.0-beta.1 (2021-07-28)
+- Fixed a bug where BlobClient.exists would not function correctly on blobs encrypted with CPK.
+- Added support for the 2020-10-02 service version.
+- Added support to list blobs deleted with versioning enabled.
+- Added support to specify Parquet Input Serialization when querying a blob.
+- Updated DownloadRetryOptions.maxRetryRequests to default downloads to retry 5 times.
+
+## 12.13.0 (2021-07-22)
+- Added support to get a blob client that uses an encryption scope and customer provided key.  
+
+## 12.12.0 (2021-06-09)
+- GA release
+
+## 12.12.0-beta.1 (2021-05-13)
+- Added support for the 2020-08-04 service version.
+- Deprecated support to undelete a blob container to a new name. 
+
+## 12.11.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` to version `1.16.0`
+
+## 12.11.0 (2021-04-29)
+- Fixed a bug where large files would hang when the upload method was called. 
+
+## 12.11.0-beta.3 (2021-04-16)
+- Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.
+- Fixed a bug where BlobOutputStream could hang when writing in a tight loop because the inner FluxSink would buffer in an unbounded manner. This would cause memory issues especially if the heap size was set to less than the size of the data being uploaded.
+- Fixed a bug where a null check was placed on the wrong parameter of the InputStream constructor for BlobParallelUploadOptions
+
+## 12.11.0-beta.2 (2021-03-29)
+- Fixed a bug where downloading would throw a NPE on large downloads due to a lack of eTag.
+- Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
+- Added upload and download methods on BlobClient and BlobAsyncClient that work with BinaryData.
+- Fixed a bug that ignored the page size when calling PagedIterable.byPage(pageSize)
+
+## 12.10.2 (2021-03-26)
+- Fixed a bug where BlobInputStream would not use request conditions when doing the initial getProperties call in openInputStream.
+
+## 12.10.1 (2021-03-19)
+- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
+- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
+
+## 12.11.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+- Added support to lock on version id by specifying a consistent read control when opening a BlobInputStream.
+- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
+- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
+
+## 12.10.0 (2021-01-14)
+- GA release
+
+## 12.10.0-beta.1 (2020-12-07)
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
+- Added ability to get container client from blob clients and service client from container clients
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
+- Added support for the 2020-04-08 service version. 
+- Added support to upload block blob from URL.
+- Added lease ID parameter to Get and Set Blob Tags.
+- Added blob tags to BlobServiceClient.findBlobsByTags() result.
+
+## 12.9.0 (2020-11-11)
+- Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
+- Fixed a bug where BlobInputStream would not eTag lock on the blob, resulting in undesirable behavior if the blob was modified in the middle of reading. 
+- Renamed BlobDownloadToFileOptions.rangeGetContentMd5 to BlobDownloadToFileOptions.retrieveContentRangeMd5.
+- Added support for move and execute permissions on blob SAS and container SAS, and list permissions on blob SAS.
+- Added support to specify a preauthorized user id and correlation id for user delegation SAS.
+
+## 12.9.0-beta.2 (2020-10-08)
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+
+## 12.9.0-beta.1 (2020-10-01)
+- Added support for the 2020-02-10 service version.
+- Added support to specify Arrow Output Serialization when querying a blob. 
+- Added support to undelete a container. 
+- Added support to set BlobParallelUploadOptions.computeMd5 so the service can perform an md5 verification.
+- Added support to specify block size when using BlobInputStream.
+- Fixed a bug where users could not download more than 5000MB of data in one shot in the downloadToFile API.
+- Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
+- Fixed a bug where Default Azure Credential would not work with Azurite.
+- Fixed a bug where a custom application id in HttpLogOptions would not be added to the User Agent String.
+- Fixed a bug where BlockBlobOutputStream would not handle certain errors.
+- Added BlobImmutableDueToPolicy to the BlobErrorCode enum.
+
+## 12.8.0 (2020-08-13)
+- Fixed a bug that, when the data length parameter did not match the actual length of the data in BlobClient.upload, caused a zero length blob to be uploaded rather than throwing an exception.
+- Fixed a bug that ignored the customer's specified block size when determining buffer sizes in BlobClient.upload
+- Added support for Object Replication Service on listBlobs and getProperties.
+- Added support for blob tags. Added tagsConditions to BlobRequestConditions that allow a user to specify a SQL statement for the blob's tags to satisfy.
+- Added support for setting tags and filterTags operations on SAS by adding to AccountSASPermissions, BlobSASPermissions, and BlobContainerSASPermissions.
+- Added support for setting and getting the StaticWebsite.DefaultIndexDocumentPath property on the service client.
+- Added RehydratePriority to BlobProperties and BlobItemProperties.
+- Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
+- Added support to seal an append blob. Added AppendBlob.seal. Added ability to specify destinationSealed on BlobClient.beginCopy. isSealed property returned on getProperties/getBlob/listBlob. 
+- Added support to set tier on a snapshot or version.
+- Fixed a bug that would cause buffered upload to always put an empty blob before uploading actual data.
+
+## 12.8.0-beta.1 (2020-07-07)
+- Added support for the 2019-12-12 service version.
+- Added support for blob tags. Added get/setTags method to Blob(Async)ClientBase. Added filterTags api to BlobServiceClient. Added ability to specify tags on all methods that create a blob. Tag count returned on getProperties/getBlob. Option to include returning tags on listing. 
+- Added support to query a blob. Added query and openQueryInputStream methods to Blob(Async)ClientBase.
+- Added support to version a blob. Added `getVersionClient` to clients that returns a new client associated to the version. 
+- Added support to increase the maximum size of data that can be sent via a stage block. 
+
+## 12.7.0 (2020-06-12)
+- Moved BlobParallelUploadOptions into options package.
+- Added data source and data length to BlobParallelUploadOptions and removed them from the relevant method parameter lists
+
+## 12.7.0-beta.1 (2020-06-08)
+- Fixed a bug that would cause empty data to be sent if a call to stage block, block blob upload, append block, or upload pages was automatically retried by the SDK.
 - Added a maxConcurrency option on ParallelTransferOptions that allows the customer to limit how many concurrent network requests will be outstanding per api request at once. 
 - Added an overload to BlobClient.upload which returns a BlockBlobItem containing the properties returned by the service upon blob creation.
 - Fixed a bug that caused auth failures when constructing a client to a secondary endpoint using token auth.
@@ -107,7 +216,7 @@ and
 - Added support for blob names with special characters
 - Changed return type for BlobClient.downloadWithProperties from Response<Void> to BlobDownloadResponse and BlobAsyncClient.downloadWithProperties from Mono<Response<Flux<ByteBuffer>>> to Mono<BlobDownloadAsyncResponse>
 
-## 12.0.0-preview.4 (2019-10-8)
+## 12.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's
@@ -160,7 +269,7 @@ and
 demonstrate the new API.
 
 ## 12.0.0-preview.2 (2019-08-08)
-For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
 
 - Renamed `StorageClient`, `StorageAsyncClient`, and `StorageClientBuilder` to `BlobServiceClient`, `BlobServiceAsyncClient`, and `BlobServiceClientBuilder`.
 - Combined `AppendBlobClientBuilder`, `BlockBlobClientBuilder`, and `PageBlobClientBuilder` into `BlobClientBuilder`. Methods to create each client type were added.

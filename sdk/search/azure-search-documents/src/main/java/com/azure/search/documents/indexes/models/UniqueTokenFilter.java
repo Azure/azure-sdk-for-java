@@ -24,6 +24,17 @@ public final class UniqueTokenFilter extends TokenFilter {
     private Boolean onlyOnSamePosition;
 
     /**
+     * Constructor of {@link UniqueTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public UniqueTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the onlyOnSamePosition property: A value indicating whether to
      * remove duplicates only at the same position. Default is false.
      *

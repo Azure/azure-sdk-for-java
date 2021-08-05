@@ -16,6 +16,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -258,15 +259,15 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
-        public Builder<T> withOrderedResults(List<CosmosItemProperties> expectedOrderedList,
+        public Builder<T> withOrderedResults(List<InternalObjectNode> expectedOrderedList,
                 List<CompositePath> compositeIndex) {
-            validators.add(new FeedResponseListValidator<CosmosItemProperties>() {
+            validators.add(new FeedResponseListValidator<InternalObjectNode>() {
                 @Override
-                public void validate(List<FeedResponse<CosmosItemProperties>> feedList) {
+                public void validate(List<FeedResponse<InternalObjectNode>> feedList) {
 
-                    List<CosmosItemProperties> resultOrderedList = feedList.stream()
-                            .flatMap(f -> f.getResults().stream())
-                            .collect(Collectors.toList());
+                    List<InternalObjectNode> resultOrderedList = feedList.stream()
+                                                                         .flatMap(f -> f.getResults().stream())
+                                                                         .collect(Collectors.toList());
                     assertThat(expectedOrderedList.size()).isEqualTo(resultOrderedList.size());
 
                     ArrayList<String> paths = new ArrayList<String>();
@@ -311,12 +312,12 @@ public interface FeedResponseListValidator<T> {
         }
 
         @SuppressWarnings("unchecked")
-        public Builder<T> hasValidQueryMetrics(boolean shouldHaveMetrics) {
+        public Builder<T> hasValidQueryMetrics(Boolean shouldHaveMetrics) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
                 public void validate(List<FeedResponse<T>> feedList) {
                     for(FeedResponse<T> feedPage: feedList) {
-                        if (shouldHaveMetrics) {
+                        if (shouldHaveMetrics ==  null || shouldHaveMetrics) {
                             QueryMetrics queryMetrics = BridgeInternal.createQueryMetricsFromCollection(BridgeInternal.queryMetricsFromFeedResponse(feedPage).values());
                             assertThat(queryMetrics.getIndexHitDocumentCount()).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getRetrievedDocumentSize()).isGreaterThanOrEqualTo(0);
@@ -351,6 +352,9 @@ public interface FeedResponseListValidator<T> {
                 || response instanceof CosmosUserDefinedFunctionProperties
                 || response instanceof CosmosUserProperties) {
                 return ModelBridgeInternal.getResource(response);
+            }
+            if (response instanceof ObjectNode) {
+                return new Document((ObjectNode)response);
             }
             return null;
         }

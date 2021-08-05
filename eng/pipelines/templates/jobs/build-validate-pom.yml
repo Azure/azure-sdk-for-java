@@ -1,0 +1,91 @@
+parameters:
+  SDKType: bom
+  ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
+  ValidationSteps: []
+
+jobs:
+  - job: 'BuildAndValidate'
+    displayName: 'Build and Validate'
+
+    variables:
+      - template: ../variables/globals.yml
+
+    pool:
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
+
+    strategy:
+      matrix:
+        Client Libraries:
+          ArtifactName: 'packages'
+
+    steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/${{ parameters.ServiceDirectory }}'
+            - '**/*.xml'
+            - '**/*.md'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
+
+      - script: |
+          echo "##vso[build.addbuildtag]Scheduled"
+        displayName: 'Tag scheduled builds'
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
+
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
+      - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
+
+      - script: |
+          pip install setuptools wheel
+          pip install doc-warden==$(DocWardenVersion)
+          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
+        displayName: 'Verify Readmes'
+
+      - template: ../steps/cache-maven-repository.yml
+        parameters:
+          JobType: 'Build and Validate'
+          SDKType: ${{ parameters.SDKType }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
+      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+
+      - ${{ each artifact in parameters.Artifacts }}:
+        - task: Maven@3
+          displayName: 'Prepare POM: ${{artifact.groupId}}:${{artifact.name}}'
+          inputs:
+            mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
+            goals: 'deploy'
+            options: '$(DefaultOptions) -pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build -Ddependency-checker -Dgpg.skip'
+            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaBuildVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+
+      - task: PowerShell@2
+        displayName: 'Copy artifacts to staging'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Stage-MavenPackageArtifacts.ps1
+          arguments: >
+            -SourceDirectory $(System.DefaultWorkingDirectory)/build
+            -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -InformationAction Continue
+
+      - publish: $(Build.ArtifactStagingDirectory)
+        displayName: 'Publish Artifacts $(ArtifactName)'
+        artifact: '$(ArtifactName)'
+
+      - publish: $(System.DefaultWorkingDirectory)
+        condition: and(eq(variables['CaptureRepositoryOnFailure'], 'true'), failed())
+        displayName: 'Capture repo state for analysis'
+        artifact: repository

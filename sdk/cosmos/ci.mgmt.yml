@@ -1,40 +1,57 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/cosmos/
+      - sdk/cosmos/ci.mgmt.yml
+      - sdk/cosmos/mgmt-v2015_04_08/
+      - sdk/cosmos/mgmt-v2019_08_01/
+      - sdk/cosmos/mgmt-v2019_08_01_preview/
+      - sdk/cosmos/mgmt-v2019_12_12/
+      - sdk/cosmos/mgmt-v2020_03_01/
+      - sdk/cosmos/mgmt-v2020_04_01/
+      - sdk/cosmos/mgmt-v2020_06_01_preview/
     exclude:
-      - sdk/cosmos/azure-cosmos
-      - sdk/cosmos/azure-cosmos-benchmark
-      - sdk/cosmos/azure-cosmos-examples
-      - sdk/cosmos/azure-cosmos-table
+      - sdk/cosmos/pom.xml
+      - sdk/cosmos/mgmt-v2015_04_08/pom.xml
+      - sdk/cosmos/mgmt-v2019_08_01/pom.xml
+      - sdk/cosmos/mgmt-v2019_08_01_preview/pom.xml
+      - sdk/cosmos/mgmt-v2019_12_12/pom.xml
+      - sdk/cosmos/mgmt-v2020_03_01/pom.xml
+      - sdk/cosmos/mgmt-v2020_04_01/pom.xml
+      - sdk/cosmos/mgmt-v2020_06_01_preview/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/cosmos/
+      - sdk/cosmos/ci.mgmt.yml
+      - sdk/cosmos/mgmt-v2015_04_08/
+      - sdk/cosmos/mgmt-v2019_08_01/
+      - sdk/cosmos/mgmt-v2019_08_01_preview/
+      - sdk/cosmos/mgmt-v2019_12_12/
+      - sdk/cosmos/mgmt-v2020_03_01/
+      - sdk/cosmos/mgmt-v2020_04_01/
+      - sdk/cosmos/mgmt-v2020_06_01_preview/
     exclude:
-      - sdk/cosmos/azure-cosmos
-      - sdk/cosmos/azure-cosmos-benchmark
-      - sdk/cosmos/azure-cosmos-examples
-      - sdk/cosmos/azure-cosmos-table
+      - sdk/cosmos/pom.xml
+      - sdk/cosmos/mgmt-v2015_04_08/pom.xml
+      - sdk/cosmos/mgmt-v2019_08_01/pom.xml
+      - sdk/cosmos/mgmt-v2019_08_01_preview/pom.xml
+      - sdk/cosmos/mgmt-v2019_12_12/pom.xml
+      - sdk/cosmos/mgmt-v2020_03_01/pom.xml
+      - sdk/cosmos/mgmt-v2020_04_01/pom.xml
+      - sdk/cosmos/mgmt-v2020_06_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

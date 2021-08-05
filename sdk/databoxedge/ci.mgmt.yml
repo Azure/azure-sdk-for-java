@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/databoxedge/ci.mgmt.yml
+      - sdk/databoxedge/mgmt-v2019_08_01/
+      - sdk/databoxedge/mgmt-v2020_05_01_preview/
+    exclude:
+      - sdk/databoxedge/pom.xml
+      - sdk/databoxedge/mgmt-v2019_08_01/pom.xml
+      - sdk/databoxedge/mgmt-v2020_05_01_preview/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/databoxedge/ci.mgmt.yml
+      - sdk/databoxedge/mgmt-v2019_08_01/
+      - sdk/databoxedge/mgmt-v2020_05_01_preview/
+    exclude:
+      - sdk/databoxedge/pom.xml
+      - sdk/databoxedge/mgmt-v2019_08_01/pom.xml
+      - sdk/databoxedge/mgmt-v2020_05_01_preview/pom.xml
+
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+    parameters:
+      ServiceDirectory: databoxedge

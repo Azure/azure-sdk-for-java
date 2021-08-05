@@ -6,15 +6,16 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.search.documents.models.AnswerResult;
+import com.azure.search.documents.models.FacetResult;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Response containing search results from an index.
- */
-@Fluent
+/** Response containing search results from an index. */
+@Immutable
 public final class SearchDocumentsResult {
     /*
      * The total count of results found by the search operation, or null if the
@@ -42,6 +43,13 @@ public final class SearchDocumentsResult {
     private Map<String, List<FacetResult>> facets;
 
     /*
+     * The answers query results for the search operation; null if the answers
+     * query parameter was not specified or set to 'none'.
+     */
+    @JsonProperty(value = "@search.answers", access = JsonProperty.Access.WRITE_ONLY)
+    private List<AnswerResult> answers;
+
+    /*
      * Continuation JSON payload returned when Azure Cognitive Search can't
      * return all the requested results in a single Search response. You can
      * use this JSON along with @odata.nextLink to formulate another POST
@@ -67,12 +75,22 @@ public final class SearchDocumentsResult {
     private String nextLink;
 
     /**
-     * Get the count property: The total count of results found by the search
-     * operation, or null if the count was not requested. If present, the count
-     * may be greater than the number of results in this response. This can
-     * happen if you use the $top or $skip parameters, or if Azure Cognitive
-     * Search can't return all the requested documents in a single Search
-     * response.
+     * Creates an instance of SearchDocumentsResult class.
+     *
+     * @param results the results value to set.
+     */
+    @JsonCreator
+    public SearchDocumentsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SearchResult> results) {
+        this.results = results;
+    }
+
+    /**
+     * Get the count property: The total count of results found by the search operation, or null if the count was not
+     * requested. If present, the count may be greater than the number of results in this response. This can happen if
+     * you use the $top or $skip parameters, or if Azure Cognitive Search can't return all the requested documents in a
+     * single Search response.
      *
      * @return the count value.
      */
@@ -81,9 +99,8 @@ public final class SearchDocumentsResult {
     }
 
     /**
-     * Get the coverage property: A value indicating the percentage of the
-     * index that was included in the query, or null if minimumCoverage was not
-     * specified in the request.
+     * Get the coverage property: A value indicating the percentage of the index that was included in the query, or null
+     * if minimumCoverage was not specified in the request.
      *
      * @return the coverage value.
      */
@@ -92,9 +109,8 @@ public final class SearchDocumentsResult {
     }
 
     /**
-     * Get the facets property: The facet query results for the search
-     * operation, organized as a collection of buckets for each faceted field;
-     * null if the query did not include any facet expressions.
+     * Get the facets property: The facet query results for the search operation, organized as a collection of buckets
+     * for each faceted field; null if the query did not include any facet expressions.
      *
      * @return the facets value.
      */
@@ -103,11 +119,19 @@ public final class SearchDocumentsResult {
     }
 
     /**
-     * Get the nextPageParameters property: Continuation JSON payload returned
-     * when Azure Cognitive Search can't return all the requested results in a
-     * single Search response. You can use this JSON along with @odata.nextLink
-     * to formulate another POST Search request to get the next part of the
-     * search response.
+     * Get the answers property: The answers query results for the search operation; null if the answers query parameter
+     * was not specified or set to 'none'.
+     *
+     * @return the answers value.
+     */
+    public List<AnswerResult> getAnswers() {
+        return this.answers;
+    }
+
+    /**
+     * Get the nextPageParameters property: Continuation JSON payload returned when Azure Cognitive Search can't return
+     * all the requested results in a single Search response. You can use this JSON along with @odata.nextLink to
+     * formulate another POST Search request to get the next part of the search response.
      *
      * @return the nextPageParameters value.
      */
@@ -125,12 +149,10 @@ public final class SearchDocumentsResult {
     }
 
     /**
-     * Get the nextLink property: Continuation URL returned when Azure
-     * Cognitive Search can't return all the requested results in a single
-     * Search response. You can use this URL to formulate another GET or POST
-     * Search request to get the next part of the search response. Make sure to
-     * use the same verb (GET or POST) as the request that produced this
-     * response.
+     * Get the nextLink property: Continuation URL returned when Azure Cognitive Search can't return all the requested
+     * results in a single Search response. You can use this URL to formulate another GET or POST Search request to get
+     * the next part of the search response. Make sure to use the same verb (GET or POST) as the request that produced
+     * this response.
      *
      * @return the nextLink value.
      */

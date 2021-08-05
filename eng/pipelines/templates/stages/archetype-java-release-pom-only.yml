@@ -1,0 +1,120 @@
+parameters:
+  Artifacts: []
+  ArtifactName: 'not-specified'
+  TargetDocRepoOwner: ''
+  TargetDocRepoName: ''
+  EnableIntegrationStage: true
+
+stages:
+  # The signing stage is responsible for submitting binaries to ESRP for our official signing
+  # where appropriate and also meeting any other signing requirements for particular artifacts,
+  # in this case we do GPG signing in order to publish to Maven Central. At the moment signing
+  # is protected by an approval check but this may be removed in the future.
+  - stage: Signing
+    dependsOn: ${{parameters.DependsOn}}
+    jobs:
+      - deployment: SignPackage
+        environment: esrp
+        timeoutInMinutes: 20
+        variables:
+          - template: ../variables/globals.yml
+        pool:
+          vmImage: ubuntu-20.04
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
+
+                - download: current
+                  artifact: ${{parameters.ArtifactName}}
+                  timeoutInMinutes: 5
+
+                - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
+                  parameters:
+                    Artifacts: ${{parameters.Artifacts}}
+                    ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+
+                - publish: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                  artifact: ${{parameters.ArtifactName}}-signed
+                  displayName: 'Store signed packages in ${{parameters.ArtifactName}}-signed artifact'
+                  timeoutInMinutes: 5
+
+  # We generate two interdepdent stages for each artifact listed in the ci.yml file, creates the release
+  # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
+  # effectively burn the version number. For testing of packages prior to burning the version number -
+  # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
+  # pipeline completes.
+  - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
+    - ${{ each artifact in parameters.Artifacts }}:
+      - stage: Release_${{artifact.safeName}}
+        displayName: 'Release: ${{artifact.name}}'
+        dependsOn: Signing
+        condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
+        jobs:
+          - deployment: TagRepository
+            displayName: "Create release tag"
+            condition: ne(variables['Skip.TagRepository'], 'true')
+            environment: github
+            timeoutInMinutes: 5
+            variables:
+              - template: ../variables/globals.yml
+            pool:
+              name: Azure Pipelines
+              vmImage: vs2017-win2016
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                    - template: /eng/common/pipelines/templates/steps/retain-run.yml
+                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                      parameters:
+                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                        PackageRepository: Maven
+                        ReleaseSha: $(Build.SourceVersion)
+
+          - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
+            - deployment: PublishPackage
+              displayName: "Publish to Maven Central"
+              condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+              environment: maven
+              dependsOn: TagRepository
+              variables:
+                - template: ../variables/globals.yml
+              pool:
+                vmImage: vs2017-win2016
+              strategy:
+                runOnce:
+                  deploy:
+                    steps:
+                      - checkout: azure-sdk-build-tools
+                        path: azure-sdk-build-tools
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          SkipDefaultCheckout: true
+                          Repositories:
+                            - Name: Azure/azure-sdk-for-java
+                              Commitish: $(Build.SourceVersion)
+                              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+                      - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+                      - template: /eng/pipelines/templates/steps/java-publishing.yml
+                        parameters:
+                          ArtifactID: ${{artifact.name}}
+                          GroupID: ${{artifact.groupId}}
+                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          Target: MavenCentral
+                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                      # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
+                      # this is that the azure-sdk-for-java feed will have the package available immediately
+                      # whereas Maven can take several hours for the package to become available.
+                      - template: /eng/pipelines/templates/steps/java-publishing.yml
+                        parameters:
+                          ArtifactID: ${{artifact.name}}
+                          GroupID: ${{artifact.groupId}}
+                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+                          Target: JavaDevFeed
+                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java

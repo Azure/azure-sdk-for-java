@@ -3,21 +3,25 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.*;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,12 +38,16 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
@@ -60,8 +68,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -79,6 +88,7 @@ class ManagementChannelTests {
     // Mocked response values from the RequestResponseChannel.
     private final Message responseMessage = Proton.message();
     private final Map<String, Object> applicationProperties = new HashMap<>();
+    private AmqpResponseCode authorizationResponseCode;
 
     private ManagementChannel managementChannel;
 
@@ -90,6 +100,8 @@ class ManagementChannelTests {
     private RequestResponseChannel requestResponseChannel;
     @Captor
     private ArgumentCaptor<Message> messageCaptor;
+    @Captor
+    private ArgumentCaptor<DeliveryState> amqpDeliveryStateCaptor;
 
     @BeforeAll
     static void beforeAll() {
@@ -107,9 +119,11 @@ class ManagementChannelTests {
 
         MockitoAnnotations.initMocks(this);
 
+        authorizationResponseCode = AmqpResponseCode.OK;
+
         Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
             logger.info("Requested {} authorization results.", requested);
-            sink.next(AmqpResponseCode.OK);
+            sink.next(authorizationResponseCode);
         }));
 
         applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
@@ -185,7 +199,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.setSessionState("", sessionState, LINK_NAME))
             .verifyError(IllegalArgumentException.class);
 
-        verifyZeroInteractions(requestResponseChannel);
+        verifyNoInteractions(requestResponseChannel);
     }
 
     /**
@@ -234,7 +248,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.getSessionState("", LINK_NAME))
             .verifyError(IllegalArgumentException.class);
 
-        verifyZeroInteractions(requestResponseChannel);
+        verifyNoInteractions(requestResponseChannel);
     }
 
     /**
@@ -284,7 +298,7 @@ class ManagementChannelTests {
 
         // Act & Assert
         StepVerifier.create(managementChannel.renewSessionLock(sessionId, LINK_NAME))
-            .assertNext(expiration -> assertEquals(instant, expiration))
+            .assertNext(expiration -> assertEquals(instant.atOffset(ZoneOffset.UTC), expiration))
             .verifyComplete();
 
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
@@ -314,7 +328,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.renewSessionLock("", LINK_NAME))
             .verifyError(IllegalArgumentException.class);
 
-        verifyZeroInteractions(requestResponseChannel);
+        verifyNoInteractions(requestResponseChannel);
     }
 
     /**
@@ -381,21 +395,133 @@ class ManagementChannelTests {
     }
 
     /**
+     * Verifies that transaction-id is set properly.
+     */
+    @Test
+    void updateDispositionWithTransaction() {
+        // Arrange
+        final String associatedLinkName = "associatedLinkName";
+        final String txnIdString = "Transaction-ID";
+        final DeadLetterOptions options = new DeadLetterOptions()
+            .setDeadLetterErrorDescription("dlq-description")
+            .setDeadLetterReason("dlq-reason");
+
+        final UUID lockToken = UUID.randomUUID();
+        final ServiceBusTransactionContext mockTransaction = mock(ServiceBusTransactionContext.class);
+        when(mockTransaction.getTransactionId()).thenReturn(ByteBuffer.wrap(txnIdString.getBytes()));
+        when(requestResponseChannel.sendWithAck(any(Message.class), any(DeliveryState.class)))
+            .thenReturn(Mono.just(responseMessage));
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.updateDisposition(lockToken.toString(), DispositionStatus.SUSPENDED,
+            options.getDeadLetterReason(), options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
+            null, associatedLinkName, mockTransaction))
+            .verifyComplete();
+
+        // Verify the contents of our request to make sure the correct properties were given.
+        verify(requestResponseChannel).sendWithAck(any(Message.class), amqpDeliveryStateCaptor.capture());
+
+        final DeliveryState delivery = amqpDeliveryStateCaptor.getValue();
+        Assertions.assertNotNull(delivery);
+        Assertions.assertTrue(delivery instanceof TransactionalState);
+        Assertions.assertEquals(txnIdString, ((TransactionalState) delivery).getTxnId().toString());
+    }
+
+    /**
      * Verifies that an error is emitted when user is unauthorized.
      */
     @Test
     void unauthorized() {
         // Arrange
         final String sessionId = "A session-id";
-        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NOT_FOUND.getValue());
+        authorizationResponseCode = AmqpResponseCode.UNAUTHORIZED;
 
         // Act & Assert
         StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME))
             .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
-                assertFalse(((AmqpException) error).isTransient());
+                assertTrue(error instanceof ServiceBusException);
+                assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                assertFalse(((ServiceBusException) error).isTransient());
             })
             .verify();
+
+        StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.renewSessionLock(sessionId, LINK_NAME))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.setSessionState(sessionId, new byte[0], LINK_NAME))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.schedule(new ArrayList<>(), OffsetDateTime.now(), 1, LINK_NAME, null))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.updateDisposition(UUID.randomUUID().toString(),
+                DispositionStatus.ABANDONED, "", "",
+                null, sessionId, LINK_NAME, null))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+    }
+
+    @Test
+    void getDeferredMessagesWithEmptyArrayReturnsAnEmptyFlux() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, new ArrayList<>()))
+            .verifyComplete();
+    }
+
+    @Test
+    void getDeferredMessagesWithNullThrows() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @Test
+    void cancelScheduledMessagesWithEmptyIterable() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.cancelScheduledMessages(new ArrayList<>(), null))
+                .verifyComplete();
     }
 
     private static Stream<Arguments> updateDisposition() {

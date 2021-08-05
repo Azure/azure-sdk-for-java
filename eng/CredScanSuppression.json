@@ -1,0 +1,44 @@
+{
+    "tool": "Credential Scanner",
+    "suppressions": [
+        {
+            "placeholder": [
+                "secret=",
+                "NewPassword1!",
+                "temp2",
+                "123",
+                "Xabo2448",
+                "12NewPAwX0rd!",
+                "1234567890",
+                "((***Redacted***by***CredScan***))",
+                "proxyPassword",
+                "pass",
+                "dummyPassword",
+                "P@ssw0rd",
+                "12NewPA$$w0rd!",
+                "Samp1eP@ssw0rd"
+            ],
+            "_justification": "Secret used by test code, it is fake."
+        },
+        {
+            "file":[
+                "sdk/cosmos/azure-cosmos/src/test/resources/server.jks",
+                "sdk/cosmos/azure-cosmos/src/test/resources/client.jks",
+                "sdk/identity/azure-identity/src/test/resources/cert-chain.pem",
+                "sdk/identity/azure-identity/src/test/resources/key.pem",
+                "sdk/identity/azure-identity/src/test/resources/keyStore.pfx",
+                "sdk/keyvault/azure-security-keyvault-certificates/src/test/resources/pemCert.pem",
+                "sdk/keyvault/microsoft-azure-keyvault/src/test/resources/pkcs12_base64_testdata.cer",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p256key.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p256keynew.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p384keynew.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p521keynew.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/SECP256key.pem",
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/secp256keynew.pem",
+                "sdk/spring/azure-spring-boot/src/test/resources/testkeyvault.pfx",
+                "sdk/spring/azure-spring-boot/src/test/resources/nopwdcert.pfx"
+            ],
+            "_justification": "File contains private key used by test code."
+        }
+    ]
+}

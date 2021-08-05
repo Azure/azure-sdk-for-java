@@ -7,14 +7,12 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Truncates the terms to a specific length. This token filter is implemented
- * using Apache Lucene.
- */
+/** Truncates the terms to a specific length. This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.TruncateTokenFilter")
 @Fluent
@@ -26,8 +24,17 @@ public final class TruncateTokenFilter extends TokenFilter {
     private Integer length;
 
     /**
-     * Get the length property: The length at which terms will be truncated.
-     * Default and maximum is 300.
+     * Creates an instance of TruncateTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public TruncateTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
+
+    /**
+     * Get the length property: The length at which terms will be truncated. Default and maximum is 300.
      *
      * @return the length value.
      */
@@ -36,8 +43,7 @@ public final class TruncateTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the length property: The length at which terms will be truncated.
-     * Default and maximum is 300.
+     * Set the length property: The length at which terms will be truncated. Default and maximum is 300.
      *
      * @param length the length value to set.
      * @return the TruncateTokenFilter object itself.

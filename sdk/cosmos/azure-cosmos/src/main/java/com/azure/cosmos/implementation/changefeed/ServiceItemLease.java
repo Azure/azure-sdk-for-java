@@ -2,8 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -17,6 +22,8 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Document service lease.
@@ -99,6 +106,21 @@ public class ServiceItemLease implements Lease {
     @Override
     public String getContinuationToken() {
         return this.ContinuationToken;
+    }
+
+    public ChangeFeedState getContinuationState(
+        String containerRid,
+        FeedRangeInternal feedRange) {
+
+        checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
+
+        return new ChangeFeedStateV1(
+            containerRid,
+            feedRange,
+            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.ContinuationToken, feedRange),
+            null);
     }
 
     @Override
@@ -189,7 +211,7 @@ public class ServiceItemLease implements Lease {
         return this.getETag();
     }
 
-    public static ServiceItemLease fromDocument(CosmosItemProperties document) {
+    public static ServiceItemLease fromDocument(InternalObjectNode document) {
         ServiceItemLease lease = new ServiceItemLease()
             .withId(document.getId())
             .withETag(document.getETag())

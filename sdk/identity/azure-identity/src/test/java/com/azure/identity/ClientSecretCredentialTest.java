@@ -17,7 +17,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
@@ -33,8 +32,9 @@ import static org.mockito.Mockito.when;
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class ClientSecretCredentialTest {
 
-    private final String tenantId = "contoso.com";
-    private final String clientId = UUID.randomUUID().toString();
+
+    private static final String TENANT_ID = "contoso.com";
+    private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testValidSecrets() throws Exception {
@@ -55,7 +55,7 @@ public class ClientSecretCredentialTest {
 
         // test
         ClientSecretCredential credential =
-            new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret).build();
         StepVerifier.create(credential.getToken(request1))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -64,41 +64,6 @@ public class ClientSecretCredentialTest {
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
-    }
-
-    @Test
-    public void testValidSecretsWithTokenRefreshOffset() throws Exception {
-        // setup
-        String secret = "secret";
-        String token1 = "token1";
-        String token2 = "token2";
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
-        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
-        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        Duration offset = Duration.ofMinutes(10);
-
-        // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
-        when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt, offset));
-        when(identityClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt, offset));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
-
-        // test
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-                .tenantId(tenantId)
-                .clientId(clientId)
-                .clientSecret(secret)
-                .tokenRefreshOffset(offset)
-                .build();
-        StepVerifier.create(credential.getToken(request1))
-                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                        && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
-                .verifyComplete();
-        StepVerifier.create(credential.getToken(request2))
-                .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
-                        && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
-                .verifyComplete();
     }
 
     @Test
@@ -117,18 +82,18 @@ public class ClientSecretCredentialTest {
         when(badIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
         when(identityClient.authenticateWithConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         when(badIdentityClient.authenticateWithConfidentialClient(request)).thenReturn(Mono.error(new MsalServiceException("bad secret", "BadSecret")));
-        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), eq(secret), isNull(), isNull(), any()).thenReturn(identityClient);
-        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), eq(badSecret), isNull(), isNull(), any()).thenReturn(badIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(secret), isNull(), isNull(), isNull(), eq(false), any()).thenReturn(identityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(badSecret), isNull(), isNull(), isNull(), eq(false), any()).thenReturn(badIdentityClient);
 
         // test
         ClientSecretCredential credential =
-            new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(secret).build();
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret).build();
         StepVerifier.create(credential.getToken(request))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
         credential =
-            new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).clientSecret(badSecret).build();
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret).build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e instanceof MsalServiceException && "bad secret".equals(e.getMessage()))
             .verify();
@@ -150,21 +115,19 @@ public class ClientSecretCredentialTest {
 
         // test
         try {
-            ClientSecretCredential credential =
-                new ClientSecretCredentialBuilder().clientId(clientId).clientSecret(secret).build();
+            new ClientSecretCredentialBuilder().clientId(CLIENT_ID).clientSecret(secret).build();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("tenantId"));
         }
         try {
-            ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientSecret(secret).build();
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientSecret(secret).build();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
-            ClientSecretCredential credential =
-                new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId).build();
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).build();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("clientSecret"));

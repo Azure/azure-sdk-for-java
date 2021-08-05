@@ -11,19 +11,21 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.security.keyvault.keys.models.KeyCurveName;
-import com.azure.security.keyvault.keys.models.KeyOperation;
-import com.azure.security.keyvault.keys.models.KeyType;
-import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.KeyType;
 import reactor.util.context.Context;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link KeyAsyncClient}
@@ -43,8 +45,8 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .vaultUrl("https://myvault.azure.net/")
+            .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .addPolicy(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation
@@ -130,21 +132,32 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getName(),
                     keyResponse.getId()));
         // END: com.azure.security.keyvault.keys.async.keyclient.createEcKey#EcKeyCreateOptions
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKey#CreateOctKeyOptions
+        CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
+            .setNotBefore(OffsetDateTime.now().plusDays(1))
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createOctKey(createOctKeyOptions)
+            .contextWrite(Context.of(key1, value1, key2, value2))
+            .subscribe(keyResponse ->
+                System.out.printf("Key is created with name %s and id %s %n", keyResponse.getName(),
+                    keyResponse.getId()));
+        // END: com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKey#CreateOctKeyOptions
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#beginDeleteKey(String)}
+     * Generates a code sample for using {@link KeyAsyncClient#beginDeleteKey(String)}.
      */
     public void deleteKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKey#String
         keyAsyncClient.beginDeleteKey("keyName")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
                 System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
-        // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
+        // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#String
     }
 
     /**
@@ -226,6 +239,17 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getValue().getName(),
                     keyResponse.getValue().getId()));
         // END: com.azure.security.keyvault.keys.async.keyclient.createEcKeyWithResponse#EcKeyCreateOptions
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKeyWithResponse#CreateOctKeyOptions
+        CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
+            .setNotBefore(OffsetDateTime.now().plusDays(1))
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createOctKeyWithResponse(createOctKeyOptions)
+            .contextWrite(Context.of(key1, value1, key2, value2))
+            .subscribe(keyResponse ->
+                System.out.printf("Key is created with name %s and id %s %n", keyResponse.getValue().getName(),
+                    keyResponse.getValue().getId()));
+        // END: com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKeyWithResponse#CreateOctKeyOptions
     }
 
     /**
@@ -360,18 +384,18 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#beginRecoverDeletedKey(String)}
+     * Generates a code sample for using {@link KeyAsyncClient#beginRecoverDeletedKey(String)}.
      */
     public void recoverDeletedKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String
         keyAsyncClient.beginRecoverDeletedKey("deletedKeyName")
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recover Key Name: " + pollResponse.getValue().getName());
                 System.out.println("Recover Key Type: " + pollResponse.getValue().getKeyType());
             });
-        // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string
+        // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String
     }
 
     /**
@@ -472,6 +496,28 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                         keyResponse.getName(),
                         keyResponse.getKeyType(), keyResponse.getProperties().getVersion())));
         // END: com.azure.security.keyvault.keys.async.keyclient.listKeyVersions
+    }
+
+    /**
+     * Generates code samples for using {@link KeyAsyncClient#getRandomBytes(int)} and
+     * {@link KeyAsyncClient#getRandomBytesWithResponse(int)}.
+     */
+    public void getRandomBytes() {
+        KeyAsyncClient keyAsyncClient = createAsyncClient();
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int
+        int amount = 16;
+        keyAsyncClient.getRandomBytes(amount)
+            .subscribe(randomBytes ->
+                System.out.printf("Retrieved %d random bytes: %s%n", amount, Arrays.toString(randomBytes.getBytes())));
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
+        int amountOfBytes = 16;
+        keyAsyncClient.getRandomBytesWithResponse(amountOfBytes).subscribe(response ->
+            System.out.printf("Response received successfully with status code: %d. Retrieved %d random bytes: %s%n",
+                response.getStatusCode(), amountOfBytes, Arrays.toString(response.getValue().getBytes())));
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
     }
 
     /**

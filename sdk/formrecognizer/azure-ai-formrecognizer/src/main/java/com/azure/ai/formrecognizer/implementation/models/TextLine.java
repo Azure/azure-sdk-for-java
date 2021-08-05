@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TextLine model. */
+/** An object representing an extracted text line. */
 @Fluent
 public final class TextLine {
     /*
@@ -24,17 +24,16 @@ public final class TextLine {
     private List<Float> boundingBox;
 
     /*
-     * The detected language of this line, if different from the overall page
-     * language.
-     */
-    @JsonProperty(value = "language")
-    private Language language;
-
-    /*
      * List of words in the text line.
      */
     @JsonProperty(value = "words", required = true)
     private List<TextWord> words;
+
+    /*
+     * Text appearance properties.
+     */
+    @JsonProperty(value = "appearance")
+    private Appearance appearance;
 
     /**
      * Get the text property: The text content of the line.
@@ -77,26 +76,6 @@ public final class TextLine {
     }
 
     /**
-     * Get the language property: The detected language of this line, if different from the overall page language.
-     *
-     * @return the language value.
-     */
-    public Language getLanguage() {
-        return this.language;
-    }
-
-    /**
-     * Set the language property: The detected language of this line, if different from the overall page language.
-     *
-     * @param language the language value to set.
-     * @return the TextLine object itself.
-     */
-    public TextLine setLanguage(Language language) {
-        this.language = language;
-        return this;
-    }
-
-    /**
      * Get the words property: List of words in the text line.
      *
      * @return the words value.
@@ -113,6 +92,26 @@ public final class TextLine {
      */
     public TextLine setWords(List<TextWord> words) {
         this.words = words;
+        return this;
+    }
+
+    /**
+     * Get the appearance property: Text appearance properties.
+     *
+     * @return the appearance value.
+     */
+    public Appearance getAppearance() {
+        return this.appearance;
+    }
+
+    /**
+     * Set the appearance property: Text appearance properties.
+     *
+     * @param appearance the appearance value to set.
+     * @return the TextLine object itself.
+     */
+    public TextLine setAppearance(Appearance appearance) {
+        this.appearance = appearance;
         return this;
     }
 }

@@ -29,4 +29,15 @@ public interface SqlPoolBlobAuditingPolicies extends SupportsCreating<SqlPoolBlo
      */
     Observable<SqlPoolBlobAuditingPolicy> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName);
 
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlPoolBlobAuditingPolicy> listBySqlPoolAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName);
+
 }

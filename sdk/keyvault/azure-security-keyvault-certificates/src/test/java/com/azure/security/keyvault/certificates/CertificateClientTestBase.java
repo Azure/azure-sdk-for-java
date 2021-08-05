@@ -19,27 +19,30 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.CertificateContact;
-import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.CertificateKeyUsage;
-import com.azure.security.keyvault.certificates.models.CertificateContentType;
-import com.azure.security.keyvault.certificates.models.AdministratorContact;
-import com.azure.security.keyvault.certificates.models.CertificateKeyType;
-import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-import com.azure.security.keyvault.certificates.models.LifetimeAction;
-import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
-import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.Duration;
 import java.util.stream.Stream;
+
+import com.azure.security.keyvault.certificates.models.CertificateContact;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
+import com.azure.security.keyvault.certificates.models.CertificateContentType;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.AdministratorContact;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
+import com.azure.security.keyvault.certificates.models.CertificateKeyUsage;
+import com.azure.security.keyvault.certificates.models.CertificateKeyType;
+import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.LifetimeAction;
+import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -47,7 +50,14 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.Objects;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.BiConsumer;
 import org.junit.jupiter.params.provider.Arguments;
@@ -77,9 +87,9 @@ public abstract class CertificateClientTestBase extends TestBase {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = System.getenv("ARM_CLIENTID");
-            String clientKey = System.getenv("ARM_CLIENTKEY");
-            String tenantId = System.getenv("AZURE_TENANT_ID");
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");
@@ -103,7 +113,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
@@ -131,7 +141,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     @Test
     public abstract void createCertificateNullPolicy(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
-    @Test public abstract void createCertoificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+    @Test public abstract void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
     @Test
     public abstract void updateCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);
@@ -240,6 +250,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     @Test
     public abstract void cancelCertificateOperation(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
+
     void cancelCertificateOperationRunner(Consumer<String> testRunner) {
         testRunner.accept(generateResourceId("testCertificate11"));
     }
@@ -265,7 +276,6 @@ public abstract class CertificateClientTestBase extends TestBase {
         testRunner.accept(generateResourceId("testCertificate14"));
     }
 
-
     @Test
     public abstract void restoreCertificateFromMalformedBackup(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
@@ -273,6 +283,19 @@ public abstract class CertificateClientTestBase extends TestBase {
     public abstract void listCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
     void listCertificatesRunner(Consumer<List<String>> testRunner) {
+        List<String> certificates = new ArrayList<>();
+        String certificateName;
+        for (int i = 0; i < 2; i++) {
+            certificateName = generateResourceId("listCertKey" + i);
+            certificates.add(certificateName);
+        }
+        testRunner.accept(certificates);
+    }
+
+    @Test
+    public abstract void listPropertiesOfCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+
+    void listPropertiesOfCertificatesRunner(Consumer<List<String>> testRunner) {
         List<String> certificates = new ArrayList<>();
         String certificateName;
         for (int i = 0; i < 2; i++) {
@@ -532,10 +555,11 @@ public abstract class CertificateClientTestBase extends TestBase {
 
 
     public String getEndpoint() {
-        final String endpoint = interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
-            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+        final String endpoint =
+            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+
         Objects.requireNonNull(endpoint);
+
         return endpoint;
     }
 
@@ -622,7 +646,8 @@ public abstract class CertificateClientTestBase extends TestBase {
             .forEach(httpClient -> {
                 Arrays.stream(CertificateServiceVersion.values()).filter(
                     CertificateClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> { argumentsList.add(Arguments.of(httpClient, serviceVersion)); });
+                    .forEach(serviceVersion -> {
+                        argumentsList.add(Arguments.of(httpClient, serviceVersion)); });
             });
         return argumentsList.stream();
     }

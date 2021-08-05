@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/recoveryservices/ci.yml
+      - sdk/recoveryservices/azure-resourcemanager-recoveryservices/
+    exclude:
+      - sdk/recoveryservices/pom.xml
+      - sdk/recoveryservices/azure-resourcemanager-recoveryservices/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/recoveryservices/ci.yml
+      - sdk/recoveryservices/azure-resourcemanager-recoveryservices/
+    exclude:
+      - sdk/recoveryservices/pom.xml
+      - sdk/recoveryservices/azure-resourcemanager-recoveryservices/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: recoveryservices
+    Artifacts:
+      - name: azure-resourcemanager-recoveryservices
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerrecoveryservices

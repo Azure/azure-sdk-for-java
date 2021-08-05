@@ -14,6 +14,7 @@ import com.microsoft.azure.management.storage.v2019_06_01.PrivateEndpointConnect
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
+import java.util.List;
 import com.microsoft.azure.management.storage.v2019_06_01.PrivateEndpointConnection;
 
 class PrivateEndpointConnectionsImpl extends WrapperImpl<PrivateEndpointConnectionsInner> implements PrivateEndpointConnections {
@@ -39,6 +40,24 @@ class PrivateEndpointConnectionsImpl extends WrapperImpl<PrivateEndpointConnecti
 
     private PrivateEndpointConnectionImpl wrapModel(String name) {
         return new PrivateEndpointConnectionImpl(name, this.manager());
+    }
+
+    @Override
+    public Observable<PrivateEndpointConnection> listAsync(String resourceGroupName, String accountName) {
+        PrivateEndpointConnectionsInner client = this.inner();
+        return client.listAsync(resourceGroupName, accountName)
+        .flatMap(new Func1<List<PrivateEndpointConnectionInner>, Observable<PrivateEndpointConnectionInner>>() {
+            @Override
+            public Observable<PrivateEndpointConnectionInner> call(List<PrivateEndpointConnectionInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<PrivateEndpointConnectionInner, PrivateEndpointConnection>() {
+            @Override
+            public PrivateEndpointConnection call(PrivateEndpointConnectionInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
     @Override

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.SensitivityLabelSource;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SensitivityLabels;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
@@ -20,6 +21,7 @@ class SensitivityLabelsImpl extends CreatableUpdatableImpl<SensitivityLabels, Se
     private String schemaName;
     private String tableName;
     private String columnName;
+    private SensitivityLabelSource sensitivityLabelSource;
 
     SensitivityLabelsImpl(String name, SynapseManager manager) {
         super(name, new SensitivityLabelInner());
@@ -41,6 +43,7 @@ class SensitivityLabelsImpl extends CreatableUpdatableImpl<SensitivityLabels, Se
         this.schemaName = IdParsingUtils.getValueFromIdByName(inner.id(), "schemas");
         this.tableName = IdParsingUtils.getValueFromIdByName(inner.id(), "tables");
         this.columnName = IdParsingUtils.getValueFromIdByName(inner.id(), "columns");
+        this.sensitivityLabelSource = SensitivityLabelSource.fromString(IdParsingUtils.getValueFromIdByName(inner.id(), "sensitivityLabels"));
         //
     }
 
@@ -66,7 +69,7 @@ class SensitivityLabelsImpl extends CreatableUpdatableImpl<SensitivityLabels, Se
     @Override
     protected Observable<SensitivityLabelInner> getInnerAsync() {
         SqlPoolSensitivityLabelsInner client = this.manager().inner().sqlPoolSensitivityLabels();
-        return null; // NOP getInnerAsync implementation as get is not supported
+        return client.getAsync(this.resourceGroupName, this.workspaceName, this.sqlPoolName, this.schemaName, this.tableName, this.columnName, this.sensitivityLabelSource);
     }
 
     @Override

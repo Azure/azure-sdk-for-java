@@ -96,6 +96,7 @@ public final class HttpProxyHandler extends ProxyHandler {
 
     private String authScheme = null;
     private HttpResponseStatus status;
+    private HttpHeaders innerHeaders;
 
     public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
         AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
@@ -103,7 +104,6 @@ public final class HttpProxyHandler extends ProxyHandler {
 
         this.challengeHandler = challengeHandler;
         this.proxyChallengeHolderReference = proxyChallengeHolderReference;
-
         this.codec = new HttpClientCodec();
     }
 
@@ -139,7 +139,7 @@ public final class HttpProxyHandler extends ProxyHandler {
         String hostString = HttpUtil.formatHostnameForHttp(destinationAddress);
         int port = destinationAddress.getPort();
         String url = hostString + ":" + port;
-        String hostHeader = (port != 80 && port != 443) ? url : hostString;
+        String hostHeader = (port == 80 || port == 443) ? url : hostString;
         FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.CONNECT, url,
             Unpooled.EMPTY_BUFFER, false);
 
@@ -212,6 +212,7 @@ public final class HttpProxyHandler extends ProxyHandler {
 
             HttpResponse response = (HttpResponse) o;
             status = response.status();
+            innerHeaders = response.headers();
 
             if (response.status().code() == 407) {
                 /*
@@ -235,9 +236,11 @@ public final class HttpProxyHandler extends ProxyHandler {
         boolean responseComplete = o instanceof LastHttpContent;
         if (responseComplete) {
             if (status == null) {
-                throw new ProxyConnectException("Never received response for CONNECT request.");
+                throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
+                    "Never received response for CONNECT request.", innerHeaders);
             } else if (status.code() != 200) {
-                throw new ProxyConnectException("Failed to connect to proxy.");
+                throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
+                    "Failed to connect to proxy. Status: " + status, innerHeaders);
             }
         }
 

@@ -1,7 +1,0 @@
-steps:
-  - pwsh: |
-      $java11Installs = Get-ChildItem -Path 'C:\Program Files\Java' -Filter '*azure-jdk_11*' | Sort-Object -Property Name -Descending | Select-Object -First 1
-      $latestJava11Install = $java11Installs.FullName;
-      Write-Host "##vso[task.setvariable variable=JAVA_HOME_11_X64]$latestJava11Install"
-    displayName: Resolve bad selection of Java11 instead of Java13
-    condition: and(succeeded(), eq(variables['OSVmImage'],'windows-2019'))

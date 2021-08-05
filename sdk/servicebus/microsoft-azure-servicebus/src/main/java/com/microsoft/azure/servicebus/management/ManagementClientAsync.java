@@ -111,7 +111,7 @@ public class ManagementClientAsync {
             } else {
                 try {
                     nsInfoFuture.complete(NamespaceInfoSerializer.parseFromContent(content));
-                } catch (ServiceBusException e) {
+                } catch (Exception e) {
                     nsInfoFuture.completeExceptionally(e);
                 }
             }
@@ -138,7 +138,7 @@ public class ManagementClientAsync {
             } else {
                 try {
                     qdFuture.complete(QueueDescriptionSerializer.parseFromContent(content));
-                } catch (MessagingEntityNotFoundException e) {
+                } catch (Exception e) {
                     qdFuture.completeExceptionally(e);
                 }
             }
@@ -165,7 +165,7 @@ public class ManagementClientAsync {
             } else {
                 try {
                     qdFuture.complete(QueueRuntimeInfoSerializer.parseFromContent(content));
-                } catch (MessagingEntityNotFoundException e) {
+                } catch (Exception e) {
                     qdFuture.completeExceptionally(e);
                 }
             }
@@ -192,7 +192,7 @@ public class ManagementClientAsync {
             } else {
                 try {
                     tdFuture.complete(TopicDescriptionSerializer.parseFromContent(content));
-                } catch (MessagingEntityNotFoundException e) {
+                } catch (Exception e) {
                     tdFuture.completeExceptionally(e);
                 }
             }
@@ -219,7 +219,7 @@ public class ManagementClientAsync {
             } else {
                 try {
                     tdFuture.complete(TopicRuntimeInfoSerializer.parseFromContent(content));
-                } catch (MessagingEntityNotFoundException e) {
+                } catch (Exception e) {
                     tdFuture.completeExceptionally(e);
                 }
             }
@@ -249,7 +249,7 @@ public class ManagementClientAsync {
             } else {
                 try {
                     sdFuture.complete(SubscriptionDescriptionSerializer.parseFromContent(topicPath, content));
-                } catch (MessagingEntityNotFoundException e) {
+                } catch (Exception e) {
                     sdFuture.completeExceptionally(e);
                 }
             }
@@ -279,7 +279,7 @@ public class ManagementClientAsync {
             } else {
                 try {
                     sdFuture.complete(SubscriptionRuntimeInfoSerializer.parseFromContent(topicPath, content));
-                } catch (MessagingEntityNotFoundException e) {
+                } catch (Exception e) {
                     sdFuture.completeExceptionally(e);
                 }
             }
@@ -311,7 +311,7 @@ public class ManagementClientAsync {
             } else {
                 try {
                     rdFuture.complete(RuleDescriptionSerializer.parseFromContent(content));
-                } catch (MessagingEntityNotFoundException e) {
+                } catch (Exception e) {
                     rdFuture.completeExceptionally(e);
                 }
             }
@@ -352,7 +352,11 @@ public class ManagementClientAsync {
             if (ex != null) {
                 qdFuture.completeExceptionally(ex);
             } else {
-                qdFuture.complete(QueueDescriptionSerializer.parseCollectionFromContent(content));
+            	try	{
+            		qdFuture.complete(QueueDescriptionSerializer.parseCollectionFromContent(content));
+            	} catch (Exception e)	{
+            		qdFuture.completeExceptionally(e);
+            	}
             }
             return null;
         }, MessagingFactory.INTERNAL_THREAD_POOL);
@@ -391,7 +395,11 @@ public class ManagementClientAsync {
             if (ex != null) {
                 tdFuture.completeExceptionally(ex);
             } else {
-                tdFuture.complete(TopicDescriptionSerializer.parseCollectionFromContent(content));
+            	try {
+            		tdFuture.complete(TopicDescriptionSerializer.parseCollectionFromContent(content));
+            	} catch (Exception e) {
+            		tdFuture.completeExceptionally(e);
+            	}
             }
             return null;
         }, MessagingFactory.INTERNAL_THREAD_POOL);
@@ -434,7 +442,11 @@ public class ManagementClientAsync {
             if (ex != null) {
                 sdFuture.completeExceptionally(ex);
             } else {
-                sdFuture.complete(SubscriptionDescriptionSerializer.parseCollectionFromContent(topicName, content));
+            	try {
+            		sdFuture.complete(SubscriptionDescriptionSerializer.parseCollectionFromContent(topicName, content));
+            	} catch (Exception e) {
+            		sdFuture.completeExceptionally(e);
+            	}
             }
             return null;
         }, MessagingFactory.INTERNAL_THREAD_POOL);
@@ -483,7 +495,11 @@ public class ManagementClientAsync {
             if (ex != null) {
                 rulesFuture.completeExceptionally(ex);
             } else {
-                rulesFuture.complete(RuleDescriptionSerializer.parseCollectionFromContent(content));
+            	try {
+            		rulesFuture.complete(RuleDescriptionSerializer.parseCollectionFromContent(content));
+            	} catch (Exception e) {
+            		rulesFuture.completeExceptionally(e);
+            	}
             }
             return null;
         }, MessagingFactory.INTERNAL_THREAD_POOL);
@@ -563,7 +579,7 @@ public class ManagementClientAsync {
                     } else {
                         try {
                             responseFuture.complete(QueueDescriptionSerializer.parseFromContent(content));
-                        } catch (MessagingEntityNotFoundException e) {
+                        } catch (Exception e) {
                             responseFuture.completeExceptionally(e);
                         }
                     }
@@ -627,7 +643,7 @@ public class ManagementClientAsync {
                     } else {
                         try {
                             responseFuture.complete(TopicDescriptionSerializer.parseFromContent(content));
-                        } catch (MessagingEntityNotFoundException e) {
+                        } catch (Exception e) {
                             responseFuture.completeExceptionally(e);
                         }
                     }
@@ -706,7 +722,7 @@ public class ManagementClientAsync {
                     } else {
                         try {
                             responseFuture.complete(SubscriptionDescriptionSerializer.parseFromContent(subscriptionDescription.getTopicPath(), content));
-                        } catch (MessagingEntityNotFoundException e) {
+                        } catch (Exception e) {
                             responseFuture.completeExceptionally(e);
                         }
                     }
@@ -766,7 +782,7 @@ public class ManagementClientAsync {
                     } else {
                         try {
                             responseFuture.complete(RuleDescriptionSerializer.parseFromContent(content));
-                        } catch (MessagingEntityNotFoundException e) {
+                        } catch (Exception e) {
                             responseFuture.completeExceptionally(e);
                         }
                     }

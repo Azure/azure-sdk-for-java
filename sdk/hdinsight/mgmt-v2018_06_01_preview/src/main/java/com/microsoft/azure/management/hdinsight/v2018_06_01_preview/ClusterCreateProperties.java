@@ -70,10 +70,28 @@ public class ClusterCreateProperties {
     private DiskEncryptionProperties diskEncryptionProperties;
 
     /**
+     * The encryption-in-transit properties.
+     */
+    @JsonProperty(value = "encryptionInTransitProperties")
+    private EncryptionInTransitProperties encryptionInTransitProperties;
+
+    /**
      * The minimal supported tls version.
      */
     @JsonProperty(value = "minSupportedTlsVersion")
     private String minSupportedTlsVersion;
+
+    /**
+     * The network properties.
+     */
+    @JsonProperty(value = "networkProperties")
+    private NetworkProperties networkProperties;
+
+    /**
+     * The compute isolation properties.
+     */
+    @JsonProperty(value = "computeIsolationProperties")
+    private ComputeIsolationProperties computeIsolationProperties;
 
     /**
      * Get the version of the cluster.
@@ -256,6 +274,26 @@ public class ClusterCreateProperties {
     }
 
     /**
+     * Get the encryption-in-transit properties.
+     *
+     * @return the encryptionInTransitProperties value
+     */
+    public EncryptionInTransitProperties encryptionInTransitProperties() {
+        return this.encryptionInTransitProperties;
+    }
+
+    /**
+     * Set the encryption-in-transit properties.
+     *
+     * @param encryptionInTransitProperties the encryptionInTransitProperties value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withEncryptionInTransitProperties(EncryptionInTransitProperties encryptionInTransitProperties) {
+        this.encryptionInTransitProperties = encryptionInTransitProperties;
+        return this;
+    }
+
+    /**
      * Get the minimal supported tls version.
      *
      * @return the minSupportedTlsVersion value
@@ -272,6 +310,46 @@ public class ClusterCreateProperties {
      */
     public ClusterCreateProperties withMinSupportedTlsVersion(String minSupportedTlsVersion) {
         this.minSupportedTlsVersion = minSupportedTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the network properties.
+     *
+     * @return the networkProperties value
+     */
+    public NetworkProperties networkProperties() {
+        return this.networkProperties;
+    }
+
+    /**
+     * Set the network properties.
+     *
+     * @param networkProperties the networkProperties value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withNetworkProperties(NetworkProperties networkProperties) {
+        this.networkProperties = networkProperties;
+        return this;
+    }
+
+    /**
+     * Get the compute isolation properties.
+     *
+     * @return the computeIsolationProperties value
+     */
+    public ComputeIsolationProperties computeIsolationProperties() {
+        return this.computeIsolationProperties;
+    }
+
+    /**
+     * Set the compute isolation properties.
+     *
+     * @param computeIsolationProperties the computeIsolationProperties value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withComputeIsolationProperties(ComputeIsolationProperties computeIsolationProperties) {
+        this.computeIsolationProperties = computeIsolationProperties;
         return this;
     }
 

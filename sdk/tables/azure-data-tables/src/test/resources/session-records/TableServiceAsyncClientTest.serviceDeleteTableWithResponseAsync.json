@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e40ae7b0-9dd2-457e-b90d-ad079e2ae0fc",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 21 Apr 2021 19:12:09 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('test189515e94f')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "19a73f0e-8002-001e-1ae2-364fe0000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "e40ae7b0-9dd2-457e-b90d-ad079e2ae0fc",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('test189515e94f')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test189515e94f')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.7 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f129dcb5-648d-413c-9471-e349899abf48"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "19a73f22-8002-001e-28e2-364fe0000000",
+      "Date" : "Wed, 21 Apr 2021 19:12:09 GMT",
+      "x-ms-client-request-id" : "f129dcb5-648d-413c-9471-e349899abf48"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test189515e94f" ]
+}

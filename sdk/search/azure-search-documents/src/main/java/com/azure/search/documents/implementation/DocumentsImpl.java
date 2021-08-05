@@ -19,617 +19,761 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.search.documents.implementation.models.AutocompleteMode;
-import com.azure.search.documents.implementation.models.AutocompleteOptions;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
-import com.azure.search.documents.implementation.models.AutocompleteResult;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
-import com.azure.search.documents.implementation.models.QueryType;
 import com.azure.search.documents.implementation.models.RequestOptions;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchErrorException;
-import com.azure.search.documents.implementation.models.SearchMode;
 import com.azure.search.documents.implementation.models.SearchOptions;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
-import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.Captions;
+import com.azure.search.documents.models.QueryLanguage;
+import com.azure.search.documents.models.QuerySpeller;
+import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.ScoringStatistics;
+import com.azure.search.documents.models.SearchMode;
+import com.azure.search.documents.models.SuggestOptions;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Documents.
- */
+/** An instance of this class provides access to all the operations defined in Documents. */
 public final class DocumentsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private DocumentsService service;
+    /** The proxy service used to perform REST calls. */
+    private final DocumentsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SearchIndexRestClientImpl client;
+    /** The service client containing this operation class. */
+    private final SearchIndexClientImpl client;
 
     /**
      * Initializes an instance of DocumentsImpl.
      *
      * @param client the instance of the service client containing this operation class.
-     * @param serializer the serializer to be used for service client requests.
      */
-    public DocumentsImpl(SearchIndexRestClientImpl client, SerializerAdapter serializer) {
-        this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializer);
+    DocumentsImpl(SearchIndexClientImpl client) {
+        this.service =
+                RestProxy.create(DocumentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SearchIndexRestClientDocuments to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SearchIndexClientDocuments to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}/indexes('{indexName}')")
-    @ServiceInterface(name = "SearchIndexRestClientDocuments")
-    private interface DocumentsService {
-        @Get("docs/$count")
+    @ServiceInterface(name = "SearchIndexClientDoc")
+    public interface DocumentsService {
+        @Get("/docs/$count")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Long>> count(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<Long>> count(
+                @HostParam("endpoint") String endpoint,
+                @HostParam("indexName") String indexName,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Get("docs")
+        @Get("/docs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchDocumentsResult>> searchGet(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("search") String searchText, @QueryParam("api-version") String apiVersion, @QueryParam("$count") Boolean includeTotalResultCount, @QueryParam("facet") String facets, @QueryParam("$filter") String filter, @QueryParam("highlight") String highlightFields, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("queryType") QueryType queryType, @QueryParam("scoringParameter") String scoringParameters, @QueryParam("scoringProfile") String scoringProfile, @QueryParam("searchFields") String searchFields, @QueryParam("searchMode") SearchMode searchMode, @QueryParam("$select") String select, @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SearchDocumentsResult>> searchGet(
+                @HostParam("endpoint") String endpoint,
+                @HostParam("indexName") String indexName,
+                @QueryParam("search") String searchText,
+                @QueryParam("$count") Boolean includeTotalCount,
+                @QueryParam("facet") String facets,
+                @QueryParam("$filter") String filter,
+                @QueryParam("highlight") String highlightFields,
+                @QueryParam("highlightPostTag") String highlightPostTag,
+                @QueryParam("highlightPreTag") String highlightPreTag,
+                @QueryParam("minimumCoverage") Double minimumCoverage,
+                @QueryParam("$orderby") String orderBy,
+                @QueryParam("queryType") QueryType queryType,
+                @QueryParam("scoringParameter") String scoringParameters,
+                @QueryParam("scoringProfile") String scoringProfile,
+                @QueryParam("searchFields") String searchFields,
+                @QueryParam("queryLanguage") QueryLanguage queryLanguage,
+                @QueryParam("speller") QuerySpeller speller,
+                @QueryParam("answers") String answers,
+                @QueryParam("searchMode") SearchMode searchMode,
+                @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
+                @QueryParam("sessionId") String sessionId,
+                @QueryParam("$select") String select,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("captions") Captions captions,
+                @QueryParam("semanticFields") String semanticFields,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Post("docs/search.post.search")
+        @Post("/docs/search.post.search")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchDocumentsResult>> searchPost(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @BodyParam("application/json; charset=utf-8") SearchRequest searchRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SearchDocumentsResult>> searchPost(
+                @HostParam("endpoint") String endpoint,
+                @HostParam("indexName") String indexName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("Accept") String accept,
+                @BodyParam("application/json") SearchRequest searchRequest,
+                Context context);
 
-        @Get("docs('{key}')")
+        @Get("/docs('{key}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Map<? extends String, Object>>> get(@PathParam("key") String key, @HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<Object>> get(
+                @HostParam("endpoint") String endpoint,
+                @HostParam("indexName") String indexName,
+                @PathParam("key") String key,
+                @QueryParam("$select") String selectedFields,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Get("docs/search.suggest")
+        @Get("/docs/search.suggest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SuggestDocumentsResult>> suggestGet(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName, @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter, @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("searchFields") String searchFields, @QueryParam("$select") String select, @QueryParam("$top") Integer top, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SuggestDocumentsResult>> suggestGet(
+                @HostParam("endpoint") String endpoint,
+                @HostParam("indexName") String indexName,
+                @QueryParam("search") String searchText,
+                @QueryParam("suggesterName") String suggesterName,
+                @QueryParam("$filter") String filter,
+                @QueryParam("fuzzy") Boolean useFuzzyMatching,
+                @QueryParam("highlightPostTag") String highlightPostTag,
+                @QueryParam("highlightPreTag") String highlightPreTag,
+                @QueryParam("minimumCoverage") Double minimumCoverage,
+                @QueryParam("$orderby") String orderBy,
+                @QueryParam("searchFields") String searchFields,
+                @QueryParam("$select") String select,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Post("docs/search.post.suggest")
+        @Post("/docs/search.post.suggest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SuggestDocumentsResult>> suggestPost(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @BodyParam("application/json; charset=utf-8") SuggestRequest suggestRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<SuggestDocumentsResult>> suggestPost(
+                @HostParam("endpoint") String endpoint,
+                @HostParam("indexName") String indexName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("Accept") String accept,
+                @BodyParam("application/json") SuggestRequest suggestRequest,
+                Context context);
 
-        @Post("docs/search.index")
+        @Post("/docs/search.index")
         @ExpectedResponses({200, 207})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<IndexDocumentsResult>> index(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @BodyParam("application/json; charset=utf-8") IndexBatch batch, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<IndexDocumentsResult>> index(
+                @HostParam("endpoint") String endpoint,
+                @HostParam("indexName") String indexName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @HeaderParam("Accept") String accept,
+                @BodyParam("application/json") IndexBatch batch,
+                Context context);
 
-        @Get("docs/search.autocomplete")
+        @Get("/docs/search.autocomplete")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<AutocompleteResult>> autocompleteGet(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("api-version") String apiVersion, @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @QueryParam("autocompleteMode") AutocompleteMode autocompleteMode, @QueryParam("$filter") String filter, @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("searchFields") String searchFields, @QueryParam("$top") Integer top, Context context);
+        Mono<Response<AutocompleteResult>> autocompleteGet(
+                @HostParam("endpoint") String endpoint,
+                @HostParam("indexName") String indexName,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("search") String searchText,
+                @QueryParam("suggesterName") String suggesterName,
+                @QueryParam("autocompleteMode") AutocompleteMode autocompleteMode,
+                @QueryParam("$filter") String filter,
+                @QueryParam("fuzzy") Boolean useFuzzyMatching,
+                @QueryParam("highlightPostTag") String highlightPostTag,
+                @QueryParam("highlightPreTag") String highlightPreTag,
+                @QueryParam("minimumCoverage") Double minimumCoverage,
+                @QueryParam("searchFields") String searchFields,
+                @QueryParam("$top") Integer top,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Post("docs/search.post.autocomplete")
+        @Post("/docs/search.post.autocomplete")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<AutocompleteResult>> autocompletePost(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("api-version") String apiVersion, @BodyParam("application/json; charset=utf-8") AutocompleteRequest autocompleteRequest, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<AutocompleteResult>> autocompletePost(
+                @HostParam("endpoint") String endpoint,
+                @HostParam("indexName") String indexName,
+                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                @BodyParam("application/json") AutocompleteRequest autocompleteRequest,
+                Context context);
     }
 
     /**
      * Queries the number of documents in the index.
      *
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Long>> countWithRestResponseAsync(Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final UUID xMsClientRequestId = null;
-        return service.count(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), xMsClientRequestId, context);
-    }
-
-    /**
-     * Queries the number of documents in the index.
-     *
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Long>> countWithRestResponseAsync(RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<Long>> countWithResponseAsync(RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.count(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), xMsClientRequestId, context);
-    }
-
-    /**
-     * Searches for documents in the index.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchDocumentsResult>> searchGetWithRestResponseAsync(Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final String searchText = null;
-        final Boolean includeTotalResultCount = null;
-        final String filter = null;
-        final String highlightPostTag = null;
-        final String highlightPreTag = null;
-        final Double minimumCoverage = null;
-        final QueryType queryType = null;
-        final String scoringProfile = null;
-        final SearchMode searchMode = null;
-        final Integer skip = null;
-        final Integer top = null;
-        final UUID xMsClientRequestId = null;
-        String facetsConverted = null;
-        String highlightFieldsConverted = null;
-        String orderByConverted = null;
-        String scoringParametersConverted = null;
-        String searchFieldsConverted = null;
-        String selectConverted = null;
-        return service.searchGet(this.client.getEndpoint(), this.client.getIndexName(), accept, searchText, this.client.getApiVersion(), includeTotalResultCount, facetsConverted, filter, highlightFieldsConverted, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, queryType, scoringParametersConverted, scoringProfile, searchFieldsConverted, searchMode, selectConverted, skip, top, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.count(
+                this.client.getEndpoint(),
+                this.client.getIndexName(),
+                xMsClientRequestId,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
      * Searches for documents in the index.
      *
      * @param searchText A full-text search query expression; Use "*" or omit this parameter to match all documents.
-     * @param searchOptions Additional parameters for the operation.
-     * @param requestOptions Additional parameters for the operation.
+     * @param searchOptions Parameter group.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing search results from an index.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchDocumentsResult>> searchGetWithRestResponseAsync(String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        Boolean includeTotalResultCount = null;
+    public Mono<Response<SearchDocumentsResult>> searchGetWithResponseAsync(
+            String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=none";
+        Boolean includeTotalCountInternal = null;
         if (searchOptions != null) {
-            includeTotalResultCount = searchOptions.isIncludeTotalResultCount();
+            includeTotalCountInternal = searchOptions.isTotalCountIncluded();
         }
-        List<String> facets = null;
+        Boolean includeTotalCount = includeTotalCountInternal;
+        List<String> facetsInternal = null;
         if (searchOptions != null) {
-            facets = searchOptions.getFacets();
+            facetsInternal = searchOptions.getFacets();
         }
-        String filter = null;
+        List<String> facets = facetsInternal;
+        String filterInternal = null;
         if (searchOptions != null) {
-            filter = searchOptions.getFilter();
+            filterInternal = searchOptions.getFilter();
         }
-        List<String> highlightFields = null;
+        String filter = filterInternal;
+        List<String> highlightFieldsInternal = null;
         if (searchOptions != null) {
-            highlightFields = searchOptions.getHighlightFields();
+            highlightFieldsInternal = searchOptions.getHighlightFields();
         }
-        String highlightPostTag = null;
+        List<String> highlightFields = highlightFieldsInternal;
+        String highlightPostTagInternal = null;
         if (searchOptions != null) {
-            highlightPostTag = searchOptions.getHighlightPostTag();
+            highlightPostTagInternal = searchOptions.getHighlightPostTag();
         }
-        String highlightPreTag = null;
+        String highlightPostTag = highlightPostTagInternal;
+        String highlightPreTagInternal = null;
         if (searchOptions != null) {
-            highlightPreTag = searchOptions.getHighlightPreTag();
+            highlightPreTagInternal = searchOptions.getHighlightPreTag();
         }
-        Double minimumCoverage = null;
+        String highlightPreTag = highlightPreTagInternal;
+        Double minimumCoverageInternal = null;
         if (searchOptions != null) {
-            minimumCoverage = searchOptions.getMinimumCoverage();
+            minimumCoverageInternal = searchOptions.getMinimumCoverage();
         }
-        List<String> orderBy = null;
+        Double minimumCoverage = minimumCoverageInternal;
+        List<String> orderByInternal = null;
         if (searchOptions != null) {
-            orderBy = searchOptions.getOrderBy();
+            orderByInternal = searchOptions.getOrderBy();
         }
-        QueryType queryType = null;
+        List<String> orderBy = orderByInternal;
+        QueryType queryTypeInternal = null;
         if (searchOptions != null) {
-            queryType = searchOptions.getQueryType();
+            queryTypeInternal = searchOptions.getQueryType();
         }
-        List<String> scoringParameters = null;
+        QueryType queryType = queryTypeInternal;
+        List<String> scoringParametersInternal = null;
         if (searchOptions != null) {
-            scoringParameters = searchOptions.getScoringParameters();
+            scoringParametersInternal = searchOptions.getScoringParameters();
         }
-        String scoringProfile = null;
+        List<String> scoringParameters = scoringParametersInternal;
+        String scoringProfileInternal = null;
         if (searchOptions != null) {
-            scoringProfile = searchOptions.getScoringProfile();
+            scoringProfileInternal = searchOptions.getScoringProfile();
         }
-        List<String> searchFields = null;
+        String scoringProfile = scoringProfileInternal;
+        List<String> searchFieldsInternal = null;
         if (searchOptions != null) {
-            searchFields = searchOptions.getSearchFields();
+            searchFieldsInternal = searchOptions.getSearchFields();
         }
-        SearchMode searchMode = null;
+        List<String> searchFields = searchFieldsInternal;
+        QueryLanguage queryLanguageInternal = null;
         if (searchOptions != null) {
-            searchMode = searchOptions.getSearchMode();
+            queryLanguageInternal = searchOptions.getQueryLanguage();
         }
-        List<String> select = null;
+        QueryLanguage queryLanguage = queryLanguageInternal;
+        QuerySpeller spellerInternal = null;
         if (searchOptions != null) {
-            select = searchOptions.getSelect();
+            spellerInternal = searchOptions.getSpeller();
         }
-        Integer skip = null;
+        QuerySpeller speller = spellerInternal;
+        String answersInternal = null;
         if (searchOptions != null) {
-            skip = searchOptions.getSkip();
+            answersInternal = searchOptions.getAnswers();
         }
-        Integer top = null;
+        String answers = answersInternal;
+        SearchMode searchModeInternal = null;
         if (searchOptions != null) {
-            top = searchOptions.getTop();
+            searchModeInternal = searchOptions.getSearchMode();
         }
-        UUID xMsClientRequestId = null;
+        SearchMode searchMode = searchModeInternal;
+        ScoringStatistics scoringStatisticsInternal = null;
+        if (searchOptions != null) {
+            scoringStatisticsInternal = searchOptions.getScoringStatistics();
+        }
+        ScoringStatistics scoringStatistics = scoringStatisticsInternal;
+        String sessionIdInternal = null;
+        if (searchOptions != null) {
+            sessionIdInternal = searchOptions.getSessionId();
+        }
+        String sessionId = sessionIdInternal;
+        List<String> selectInternal = null;
+        if (searchOptions != null) {
+            selectInternal = searchOptions.getSelect();
+        }
+        List<String> select = selectInternal;
+        Integer skipInternal = null;
+        if (searchOptions != null) {
+            skipInternal = searchOptions.getSkip();
+        }
+        Integer skip = skipInternal;
+        Integer topInternal = null;
+        if (searchOptions != null) {
+            topInternal = searchOptions.getTop();
+        }
+        Integer top = topInternal;
+        Captions captionsInternal = null;
+        if (searchOptions != null) {
+            captionsInternal = searchOptions.getCaptions();
+        }
+        Captions captions = captionsInternal;
+        List<String> semanticFieldsInternal = null;
+        if (searchOptions != null) {
+            semanticFieldsInternal = searchOptions.getSemanticFields();
+        }
+        List<String> semanticFields = semanticFieldsInternal;
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        String facetsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(facets, CollectionFormat.MULTI);
-        String highlightFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(highlightFields, CollectionFormat.CSV);
-        String orderByConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
-        String scoringParametersConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(scoringParameters, CollectionFormat.MULTI);
-        String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
-        String selectConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        return service.searchGet(this.client.getEndpoint(), this.client.getIndexName(), accept, searchText, this.client.getApiVersion(), includeTotalResultCount, facetsConverted, filter, highlightFieldsConverted, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, queryType, scoringParametersConverted, scoringProfile, searchFieldsConverted, searchMode, selectConverted, skip, top, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        String facetsConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(facets, CollectionFormat.CSV);
+        String highlightFieldsConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(highlightFields, CollectionFormat.CSV);
+        String orderByConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
+        String scoringParametersConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(scoringParameters, CollectionFormat.CSV);
+        String searchFieldsConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
+        String selectConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+        String semanticFieldsConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(semanticFields, CollectionFormat.CSV);
+        return service.searchGet(
+                this.client.getEndpoint(),
+                this.client.getIndexName(),
+                searchText,
+                includeTotalCount,
+                facetsConverted,
+                filter,
+                highlightFieldsConverted,
+                highlightPostTag,
+                highlightPreTag,
+                minimumCoverage,
+                orderByConverted,
+                queryType,
+                scoringParametersConverted,
+                scoringProfile,
+                searchFieldsConverted,
+                queryLanguage,
+                speller,
+                answers,
+                searchMode,
+                scoringStatistics,
+                sessionId,
+                selectConverted,
+                skip,
+                top,
+                captions,
+                semanticFieldsConverted,
+                this.client.getApiVersion(),
+                xMsClientRequestId,
+                accept,
+                context);
     }
 
     /**
      * Searches for documents in the index.
      *
      * @param searchRequest The definition of the Search request.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing search results from an index.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchDocumentsResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final UUID xMsClientRequestId = null;
-        return service.searchPost(this.client.getEndpoint(), this.client.getIndexName(), accept, searchRequest, this.client.getApiVersion(), xMsClientRequestId, context);
-    }
-
-    /**
-     * Searches for documents in the index.
-     *
-     * @param searchRequest The definition of the Search request.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SearchDocumentsResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(
+            SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.searchPost(this.client.getEndpoint(), this.client.getIndexName(), accept, searchRequest, this.client.getApiVersion(), xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.searchPost(
+                this.client.getEndpoint(),
+                this.client.getIndexName(),
+                this.client.getApiVersion(),
+                xMsClientRequestId,
+                accept,
+                searchRequest,
+                context);
     }
 
     /**
      * Retrieves a document from the index.
      *
      * @param key The key of the document to retrieve.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
+     *     from the returned document.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Map<? extends String, Object>>> getWithRestResponseAsync(String key, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final UUID xMsClientRequestId = null;
-        String selectedFieldsConverted = null;
-        return service.get(key, this.client.getEndpoint(), this.client.getIndexName(), accept, selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, context);
-    }
-
-    /**
-     * Retrieves a document from the index.
-     *
-     * @param key The key of the document to retrieve.
-     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing from the returned document.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Map<? extends String, Object>>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<Object>> getWithResponseAsync(
+            String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        String selectedFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(selectedFields, CollectionFormat.CSV);
-        return service.get(key, this.client.getEndpoint(), this.client.getIndexName(), accept, selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        String selectedFieldsConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(selectedFields, CollectionFormat.CSV);
+        return service.get(
+                this.client.getEndpoint(),
+                this.client.getIndexName(),
+                key,
+                selectedFieldsConverted,
+                this.client.getApiVersion(),
+                xMsClientRequestId,
+                accept,
+                context);
     }
 
     /**
      * Suggests documents in the index that match the given partial query text.
      *
-     * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100 characters.
-     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
+     * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100
+     *     characters.
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     *     definition.
+     * @param suggestOptions Parameter group.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SuggestDocumentsResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final String filter = null;
-        final Boolean useFuzzyMatching = null;
-        final String highlightPostTag = null;
-        final String highlightPreTag = null;
-        final Double minimumCoverage = null;
-        final Integer top = null;
-        final UUID xMsClientRequestId = null;
-        String orderByConverted = null;
-        String searchFieldsConverted = null;
-        String selectConverted = null;
-        return service.suggestGet(this.client.getEndpoint(), this.client.getIndexName(), accept, searchText, suggesterName, this.client.getApiVersion(), filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, searchFieldsConverted, selectConverted, top, xMsClientRequestId, context);
-    }
-
-    /**
-     * Suggests documents in the index that match the given partial query text.
-     *
-     * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100 characters.
-     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
-     * @param suggestOptions Additional parameters for the operation.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SuggestDocumentsResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, SuggestOptions suggestOptions, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        String filter = null;
+    public Mono<Response<SuggestDocumentsResult>> suggestGetWithResponseAsync(
+            String searchText,
+            String suggesterName,
+            SuggestOptions suggestOptions,
+            RequestOptions requestOptions,
+            Context context) {
+        final String accept = "application/json; odata.metadata=none";
+        String filterInternal = null;
         if (suggestOptions != null) {
-            filter = suggestOptions.getFilter();
+            filterInternal = suggestOptions.getFilter();
         }
-        Boolean useFuzzyMatching = null;
+        String filter = filterInternal;
+        Boolean useFuzzyMatchingInternal = null;
         if (suggestOptions != null) {
-            useFuzzyMatching = suggestOptions.isUseFuzzyMatching();
+            useFuzzyMatchingInternal = suggestOptions.useFuzzyMatching();
         }
-        String highlightPostTag = null;
+        Boolean useFuzzyMatching = useFuzzyMatchingInternal;
+        String highlightPostTagInternal = null;
         if (suggestOptions != null) {
-            highlightPostTag = suggestOptions.getHighlightPostTag();
+            highlightPostTagInternal = suggestOptions.getHighlightPostTag();
         }
-        String highlightPreTag = null;
+        String highlightPostTag = highlightPostTagInternal;
+        String highlightPreTagInternal = null;
         if (suggestOptions != null) {
-            highlightPreTag = suggestOptions.getHighlightPreTag();
+            highlightPreTagInternal = suggestOptions.getHighlightPreTag();
         }
-        Double minimumCoverage = null;
+        String highlightPreTag = highlightPreTagInternal;
+        Double minimumCoverageInternal = null;
         if (suggestOptions != null) {
-            minimumCoverage = suggestOptions.getMinimumCoverage();
+            minimumCoverageInternal = suggestOptions.getMinimumCoverage();
         }
-        List<String> orderBy = null;
+        Double minimumCoverage = minimumCoverageInternal;
+        List<String> orderByInternal = null;
         if (suggestOptions != null) {
-            orderBy = suggestOptions.getOrderBy();
+            orderByInternal = suggestOptions.getOrderBy();
         }
-        List<String> searchFields = null;
+        List<String> orderBy = orderByInternal;
+        List<String> searchFieldsInternal = null;
         if (suggestOptions != null) {
-            searchFields = suggestOptions.getSearchFields();
+            searchFieldsInternal = suggestOptions.getSearchFields();
         }
-        List<String> select = null;
+        List<String> searchFields = searchFieldsInternal;
+        List<String> selectInternal = null;
         if (suggestOptions != null) {
-            select = suggestOptions.getSelect();
+            selectInternal = suggestOptions.getSelect();
         }
-        Integer top = null;
+        List<String> select = selectInternal;
+        Integer topInternal = null;
         if (suggestOptions != null) {
-            top = suggestOptions.getTop();
+            topInternal = suggestOptions.getTop();
         }
-        UUID xMsClientRequestId = null;
+        Integer top = topInternal;
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        String orderByConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
-        String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
-        String selectConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        return service.suggestGet(this.client.getEndpoint(), this.client.getIndexName(), accept, searchText, suggesterName, this.client.getApiVersion(), filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, searchFieldsConverted, selectConverted, top, xMsClientRequestId, context);
-    }
-
-    /**
-     * Suggests documents in the index that match the given partial query text.
-     *
-     * @param suggestRequest The Suggest request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SuggestDocumentsResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final UUID xMsClientRequestId = null;
-        return service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(), accept, suggestRequest, this.client.getApiVersion(), xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        String orderByConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
+        String searchFieldsConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
+        String selectConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+        return service.suggestGet(
+                this.client.getEndpoint(),
+                this.client.getIndexName(),
+                searchText,
+                suggesterName,
+                filter,
+                useFuzzyMatching,
+                highlightPostTag,
+                highlightPreTag,
+                minimumCoverage,
+                orderByConverted,
+                searchFieldsConverted,
+                selectConverted,
+                top,
+                this.client.getApiVersion(),
+                xMsClientRequestId,
+                accept,
+                context);
     }
 
     /**
      * Suggests documents in the index that match the given partial query text.
      *
      * @param suggestRequest The Suggest request.
-     * @param requestOptions Additional parameters for the operation.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SuggestDocumentsResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(
+            SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(), accept, suggestRequest, this.client.getApiVersion(), xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.suggestPost(
+                this.client.getEndpoint(),
+                this.client.getIndexName(),
+                this.client.getApiVersion(),
+                xMsClientRequestId,
+                accept,
+                suggestRequest,
+                context);
     }
 
     /**
      * Sends a batch of document write actions to the index.
      *
      * @param batch The batch of index actions.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing the status of operations for all documents in the indexing request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatch batch, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final UUID xMsClientRequestId = null;
-        return service.index(this.client.getEndpoint(), this.client.getIndexName(), accept, batch, this.client.getApiVersion(), xMsClientRequestId, context);
-    }
-
-    /**
-     * Sends a batch of document write actions to the index.
-     *
-     * @param batch The batch of index actions.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatch batch, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(
+            IndexBatch batch, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.index(this.client.getEndpoint(), this.client.getIndexName(), accept, batch, this.client.getApiVersion(), xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.index(
+                this.client.getEndpoint(),
+                this.client.getIndexName(),
+                this.client.getApiVersion(),
+                xMsClientRequestId,
+                accept,
+                batch,
+                context);
     }
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
      * @param searchText The incomplete term which should be auto-completed.
-     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     *     definition.
+     * @param requestOptions Parameter group.
+     * @param autocompleteOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of Autocomplete query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AutocompleteResult>> autocompleteGetWithRestResponseAsync(String searchText, String suggesterName, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final UUID xMsClientRequestId = null;
-        final AutocompleteMode autocompleteMode = null;
-        final String filter = null;
-        final Boolean useFuzzyMatching = null;
-        final String highlightPostTag = null;
-        final String highlightPreTag = null;
-        final Double minimumCoverage = null;
-        final Integer top = null;
-        String searchFieldsConverted = null;
-        return service.autocompleteGet(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), searchText, suggesterName, xMsClientRequestId, autocompleteMode, filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, searchFieldsConverted, top, context);
-    }
-
-    /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the index.
-     *
-     * @param searchText The incomplete term which should be auto-completed.
-     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
-     * @param requestOptions Additional parameters for the operation.
-     * @param autocompleteOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AutocompleteResult>> autocompleteGetWithRestResponseAsync(String searchText, String suggesterName, RequestOptions requestOptions, AutocompleteOptions autocompleteOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<AutocompleteResult>> autocompleteGetWithResponseAsync(
+            String searchText,
+            String suggesterName,
+            RequestOptions requestOptions,
+            AutocompleteOptions autocompleteOptions,
+            Context context) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        AutocompleteMode autocompleteMode = null;
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        AutocompleteMode autocompleteModeInternal = null;
         if (autocompleteOptions != null) {
-            autocompleteMode = autocompleteOptions.getAutocompleteMode();
+            autocompleteModeInternal = autocompleteOptions.getAutocompleteMode();
         }
-        String filter = null;
+        AutocompleteMode autocompleteMode = autocompleteModeInternal;
+        String filterInternal = null;
         if (autocompleteOptions != null) {
-            filter = autocompleteOptions.getFilter();
+            filterInternal = autocompleteOptions.getFilter();
         }
-        Boolean useFuzzyMatching = null;
+        String filter = filterInternal;
+        Boolean useFuzzyMatchingInternal = null;
         if (autocompleteOptions != null) {
-            useFuzzyMatching = autocompleteOptions.isUseFuzzyMatching();
+            useFuzzyMatchingInternal = autocompleteOptions.useFuzzyMatching();
         }
-        String highlightPostTag = null;
+        Boolean useFuzzyMatching = useFuzzyMatchingInternal;
+        String highlightPostTagInternal = null;
         if (autocompleteOptions != null) {
-            highlightPostTag = autocompleteOptions.getHighlightPostTag();
+            highlightPostTagInternal = autocompleteOptions.getHighlightPostTag();
         }
-        String highlightPreTag = null;
+        String highlightPostTag = highlightPostTagInternal;
+        String highlightPreTagInternal = null;
         if (autocompleteOptions != null) {
-            highlightPreTag = autocompleteOptions.getHighlightPreTag();
+            highlightPreTagInternal = autocompleteOptions.getHighlightPreTag();
         }
-        Double minimumCoverage = null;
+        String highlightPreTag = highlightPreTagInternal;
+        Double minimumCoverageInternal = null;
         if (autocompleteOptions != null) {
-            minimumCoverage = autocompleteOptions.getMinimumCoverage();
+            minimumCoverageInternal = autocompleteOptions.getMinimumCoverage();
         }
-        List<String> searchFields = null;
+        Double minimumCoverage = minimumCoverageInternal;
+        List<String> searchFieldsInternal = null;
         if (autocompleteOptions != null) {
-            searchFields = autocompleteOptions.getSearchFields();
+            searchFieldsInternal = autocompleteOptions.getSearchFields();
         }
-        Integer top = null;
+        List<String> searchFields = searchFieldsInternal;
+        Integer topInternal = null;
         if (autocompleteOptions != null) {
-            top = autocompleteOptions.getTop();
+            topInternal = autocompleteOptions.getTop();
         }
-        String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
-        return service.autocompleteGet(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), searchText, suggesterName, xMsClientRequestId, autocompleteMode, filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, searchFieldsConverted, top, context);
+        Integer top = topInternal;
+        String searchFieldsConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
+        return service.autocompleteGet(
+                this.client.getEndpoint(),
+                this.client.getIndexName(),
+                xMsClientRequestId,
+                this.client.getApiVersion(),
+                searchText,
+                suggesterName,
+                autocompleteMode,
+                filter,
+                useFuzzyMatching,
+                highlightPostTag,
+                highlightPreTag,
+                minimumCoverage,
+                searchFieldsConverted,
+                top,
+                accept,
+                context);
     }
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
      * @param autocompleteRequest The definition of the Autocomplete request.
+     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of Autocomplete query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AutocompleteResult>> autocompletePostWithRestResponseAsync(AutocompleteRequest autocompleteRequest, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final UUID xMsClientRequestId = null;
-        return service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), autocompleteRequest, xMsClientRequestId, context);
-    }
-
-    /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the index.
-     *
-     * @param autocompleteRequest The definition of the Autocomplete request.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AutocompleteResult>> autocompletePostWithRestResponseAsync(AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        UUID xMsClientRequestId = null;
+    public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(
+            AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=none";
+        UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-            xMsClientRequestId = requestOptions.getXMsClientRequestId();
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-        return service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), autocompleteRequest, xMsClientRequestId, context);
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.autocompletePost(
+                this.client.getEndpoint(),
+                this.client.getIndexName(),
+                xMsClientRequestId,
+                this.client.getApiVersion(),
+                accept,
+                autocompleteRequest,
+                context);
     }
 }

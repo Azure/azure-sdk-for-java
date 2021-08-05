@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -30,7 +31,7 @@ public class TokenCacheTests {
         Flux.range(1, 10)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs cache.getToken() on 10 different threads
-                .subscribeOn(Schedulers.newParallel("pool", 10))
+                .publishOn(Schedulers.parallel())
                 .flatMap(start -> cache.getToken()
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
@@ -44,8 +45,11 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await();
-        Assertions.assertTrue(maxMillis.get() > 1000);
-        Assertions.assertTrue(maxMillis.get() < 2000); // Big enough for any latency, small enough to make sure no get token is called twice
+        long maxMs = maxMillis.get();
+        Assertions.assertTrue(maxMs > 1000, () -> String.format("maxMillis was less than 1000ms. Was %d.", maxMs));
+
+        // Big enough for any latency, small enough to make sure no get token is called twice
+        Assertions.assertTrue(maxMs < 2000, () -> String.format("maxMillis was greater than 2000ms. Was %d.", maxMs));
     }
 
     @Test
@@ -58,13 +62,14 @@ public class TokenCacheTests {
             return remoteGetTokenThatExpiresSoonAsync(1000, 0);
         });
 
+        VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
         CountDownLatch latch = new CountDownLatch(1);
 
-        Flux.interval(Duration.ofMillis(100))
+        Flux.interval(Duration.ofMillis(100), virtualTimeScheduler)
             .take(100)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs cache.getToken() on 10 different threads
-                .subscribeOn(Schedulers.newParallel("pool", 100))
+                .subscribeOn(Schedulers.parallel())
                 .flatMap(start -> cache.getToken()
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
@@ -73,6 +78,8 @@ public class TokenCacheTests {
                     })))
             .doOnComplete(latch::countDown)
             .subscribe();
+
+        virtualTimeScheduler.advanceTimeBy(Duration.ofSeconds(40));
 
         latch.await();
         // At most 10 requests should do actual token acquisition, use 11 for safe

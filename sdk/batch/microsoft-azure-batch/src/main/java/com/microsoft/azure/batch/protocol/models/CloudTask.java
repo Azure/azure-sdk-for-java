@@ -180,6 +180,15 @@ public class CloudTask {
     private TaskConstraints constraints;
 
     /**
+     * The number of scheduling slots that the Task requires to run.
+     * The default is 1. A Task can only be scheduled to run on a compute node
+     * if the node has enough free scheduling slots available. For
+     * multi-instance Tasks, this must be 1.
+     */
+    @JsonProperty(value = "requiredSlots")
+    private Integer requiredSlots;
+
+    /**
      * The user identity under which the Task runs.
      * If omitted, the Task runs as a non-administrative user unique to the
      * Task.
@@ -606,6 +615,26 @@ public class CloudTask {
      */
     public CloudTask withConstraints(TaskConstraints constraints) {
         this.constraints = constraints;
+        return this;
+    }
+
+    /**
+     * Get the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must be 1.
+     *
+     * @return the requiredSlots value
+     */
+    public Integer requiredSlots() {
+        return this.requiredSlots;
+    }
+
+    /**
+     * Set the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must be 1.
+     *
+     * @param requiredSlots the requiredSlots value to set
+     * @return the CloudTask object itself.
+     */
+    public CloudTask withRequiredSlots(Integer requiredSlots) {
+        this.requiredSlots = requiredSlots;
         return this;
     }
 

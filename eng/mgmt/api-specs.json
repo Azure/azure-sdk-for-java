@@ -25,10 +25,11 @@
   },
   "appservice/resource-manager": {
     "source": "specification/web/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"AppService\""
-    }
+    "args": "--multiapi --fluent"
+  },
+  "attestation/resource-manager": {
+    "source": "specification/attestation/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "automation/resource-manager": {
     "source": "specification/automation/resource-manager/readme.md",
@@ -38,20 +39,36 @@
     "source": "specification/authorization/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
-  "azure-kusto/resource-manager": {
-    "source": "specification/azure-kusto/resource-manager/readme.md",
+  "avs/resource-manager": {
+    "source": "specification/vmware/resource-manager/readme.md",
     "args": "--multiapi --fluent"
-  },
+  },  
   "azurestack/resource-manager": {
     "source": "specification/azurestack/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "azurestackhci/resource-manager": {
+    "source": "specification/azurestackhci/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "batchai/resource-manager": {
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "cdn/resource-manager": {
+    "source": "specification/cdn/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "cognitiveservices/resource-manager": {
     "source": "specification/cognitiveservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "commerce/resource-manager": {
+    "source": "specification/commerce/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "communication/resource-manager": {
+    "source": "specification/communication/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "compute/resource-manager": {
@@ -60,6 +77,10 @@
   },
   "consumption/resource-manager": {
     "source": "specification/consumption/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "containerinstance/resource-manager": {
+    "source": "specification/containerinstance/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "containerservice/resource-manager": {
@@ -74,7 +95,7 @@
     "source": "specification/cost-management/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
-  "cosmosdb/resource-manager": {
+  "cosmos/resource-manager": {
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
@@ -86,6 +107,10 @@
     "source": "specification/databox/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "databoxedge/resource-manager": {
+    "source": "specification/databoxedge/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "datafactory/resource-manager": {
     "source": "specification/datafactory/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -110,6 +135,10 @@
     "source": "specification/devtestlabs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "digitaltwins/resource-manager" : {
+    "source": "specification/digitaltwins/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "dns/resource-manager": {
     "source": "specification/dns/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -130,20 +159,29 @@
     "source": "specification/eventhub/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "frontdoor/resource-manager": {
+    "source": "specification/frontdoor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "hanaonazure/resource-manager": {
     "source": "specification/hanaonazure/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "healthcareapis/resource-manager": {
+    "source": "specification/healthcareapis/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "hdinsight/resource-manager": {
     "source": "specification/hdinsight/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "hybridcompute/resource-manager": {
+    "source": "specification/hybridcompute/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "iotcentral/resource-manager": {
     "source": "specification/iotcentral/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"IoTCentral\""
-    }
+    "args": "--multiapi --fluent"
   },
   "iothub/resource-manager": {
     "source": "specification/iothub/resource-manager/readme.md",
@@ -160,6 +198,10 @@
     "source": "specification/kubernetesconfiguration/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "kusto/resource-manager": {
+    "source": "specification/azure-kusto/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "loganalytics/data-plane": {
     "source": "specification/operationalinsights/data-plane/readme.md",
     "args": "--payload-flattening-threshold=1 --override-client-name=LogAnalyticsDataClient"
@@ -202,10 +244,7 @@
   },
   "mysql/resource-manager": {
     "source": "specification/mysql/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"MySQL\""
-    }
+    "args": "--multiapi --fluent --service-name=MySQL"
   },
   "monitor/resource-manager": {
     "source": "specification/monitor/resource-manager/readme.md",
@@ -279,6 +318,10 @@
     "source": "specification/resources/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "resourcemover/resource-manager": {
+    "source": "specification/resourcemover/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "search/resource-manager": {
     "source": "specification/search/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -322,14 +365,14 @@
   },
   "streamanalytics/resource-manager": {
     "source": "specification/streamanalytics/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"StreamAnalytics\""
-    }
+    "args": "--multiapi --fluent"
   },
   "subscription/resource-manager": {
     "source": "specification/subscription/resource-manager/readme.md",
-    "args": "--multiapi --fluent"
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"Subscription\""
+    }
   },
   "support/resource-manager": {
     "source": "specification/support/resource-manager/readme.md",

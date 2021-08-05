@@ -1,11 +1,96 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
+
+## 1.7.1 (2021-07-01)
+
+### Features Added
+
+- Added support for new `HttpClientOptions` configurations.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
+## 1.7.0 (2021-06-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.16.0` to `1.17.0`.
+
+## 1.6.2 (2021-05-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
+
+## 1.6.1 (2021-04-02)
+
+### Bug Fixes
+
+- Fixed a bug where a proxy's address is only resolved during construction of the client, now it is resolved per connection. [#19497](https://github.com/Azure/azure-sdk-for-java/issues/19497)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.14.0` to `1.15.0`.
+
+## 1.6.0 (2021-03-08)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.13.0` to `1.14.0`.
+
+## 1.5.0 (2021-02-05)
+
+### New Features
+
+- Exposed service provider interfaces used to create `HttpClient` instances.
+
+## 1.4.1 (2021-01-11)
+
+### Bug Fixes
+
+- Fixed a bug where environment proxy configurations were not sanitizing the non-proxy host string into a valid `Pattern` format. [#18156](https://github.com/Azure/azure-sdk-for-java/issues/18156)
+
+## 1.4.0 (2020-11-24)
+
+### New Features
+
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
+
+## 1.3.3 (2020-10-29)
+
+### Dependency updates
+
+- Updated `azure-core` to `1.10.0`.
+
+## 1.3.2 (2020-10-01)
+
+- Updated `azure-core` version.
+
+## 1.3.1 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.3.0 (2020-09-03)
+
+- Updated `okhttp` dependency from `4.2.2` to `4.8.1`.
+- Fixed bug where `Configuration` proxy would lead to a `NullPointerException` when set.
+- Added request timeout configuration.
+- Changed default connect timeout from 60 seconds to 10 and default read timeout from 120 seconds to 60 seconds.
+
+## 1.2.5 (2020-08-07)
+
+- Updated `azure-core` dependency.
+
+## 1.2.4 (2020-07-02)
+
+- Updated `azure-core` dependency.
 
 ## 1.2.3 (2020-06-08)
 
-- Updated Azure Core dependency.
+- Updated `azure-core` dependency.
 
 ## 1.2.2 (2020-05-04)
 
@@ -17,7 +102,7 @@
 
 ## 1.2.0 (2020-03-06)
 
-- Updated to latest version of Azure Core.
+- Updated `azure-core` dependency.
 
 ## 1.2.0-beta.1 (2020-02-11)
 
@@ -26,7 +111,8 @@
 - Removed setting 'Content-Type' to 'application/octet-stream' when null.
 
 ## 1.1.0 (2020-01-07)
-- Updated version of dependent libraries.
+
+- Updated versions of dependent libraries.
 
 ## Version 1.0.0 (2019-10-29)
 This package's

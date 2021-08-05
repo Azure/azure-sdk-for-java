@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  * It may be set to null if no access conditions are desired.
  * <p>
  * Please refer to the request header section
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/put-page>here</a> for more conceptual information.
+ * <a href=https://docs.microsoft.com/rest/api/storageservices/put-page>here</a> for more conceptual information.
  */
 @Fluent
 public final class PageBlobRequestConditions extends BlobRequestConditions {
@@ -79,6 +79,18 @@ public final class PageBlobRequestConditions extends BlobRequestConditions {
     @Override
     public PageBlobRequestConditions setLeaseId(String leaseId) {
         super.setLeaseId(leaseId);
+        return this;
+    }
+
+    /**
+     * Optionally applies the SQL statement to the tags of the blob.
+     *
+     * @param tagsConditions The SQL statement that apply to the tags of the blob.
+     * @return The updated BlobRequestConditions object.
+     */
+    @Override
+    public PageBlobRequestConditions setTagsConditions(String tagsConditions) {
+        super.setTagsConditions(tagsConditions);
         return this;
     }
 

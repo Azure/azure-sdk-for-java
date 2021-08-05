@@ -5,6 +5,8 @@ package com.azure.storage.file.share.specialized;
 
 import com.azure.core.util.Context;
 import com.azure.storage.file.share.ShareFileClientBuilder;
+import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
+import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 
 import java.time.Duration;
 
@@ -55,6 +57,15 @@ public class LeaseClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link ShareLeaseClient#renewLease()}
+     */
+    public void renewLease() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLease
+        System.out.printf("Renewed lease ID is %s%n", client.renewLease());
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLease
+    }
+
+    /**
      * Code snippets for {@link ShareLeaseClient#acquireLeaseWithResponse(Duration, Context)}
      */
     public void acquireLeaseWithResponseCodeSnippets() {
@@ -63,6 +74,17 @@ public class LeaseClientJavaDocCodeSnippets {
             .acquireLeaseWithResponse(timeout, new Context(key, value))
             .getValue());
         // END: com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link ShareLeaseClient#acquireLeaseWithResponse(ShareAcquireLeaseOptions, Duration, Context)}
+     */
+    public void acquireLeaseWithResponseCodeSnippets2() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions-Duration-Context
+        System.out.printf("Lease ID is %s%n", client
+            .acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(10), timeout, new Context(key, value))
+            .getValue());
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions-Duration-Context
     }
 
     /**
@@ -87,6 +109,17 @@ public class LeaseClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link ShareLeaseClient#breakLeaseWithResponse(ShareBreakLeaseOptions, Duration, Context)}
+     */
+    public void breakLeaseWithResponseCodeSnippets2() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#ShareBreakLeaseOptions-Duration-Context
+        client.breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(25)),
+            timeout, new Context(key, value));
+        System.out.println("The lease has been successfully broken");
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#ShareBreakLeaseOptions-Duration-Context
+    }
+
+    /**
      * Code snippets for {@link ShareLeaseClient#changeLeaseWithResponse(String, Duration, Context)}
      */
     public void changeLeaseWithResponseCodeSnippets() {
@@ -95,5 +128,16 @@ public class LeaseClientJavaDocCodeSnippets {
             client.changeLeaseWithResponse("proposedId", timeout, new Context(key, value))
                 .getValue());
         // END: com.azure.storage.file.share.specialized.ShareLeaseClient.changeLeaseWithResponse#String-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link ShareLeaseClient#renewLeaseWithResponse(Duration, Context)}
+     */
+    public void renewLeaseWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context
+        System.out.printf("Renewed lease ID is %s%n",
+            client.releaseLeaseWithResponse(timeout, new Context(key, value))
+                .getValue());
+        // END: com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context
     }
 }

@@ -20,15 +20,13 @@ import java.time.Duration;
 import java.util.Locale;
 
 public class SessionHandler extends Handler {
-    private final ClientLogger logger = new ClientLogger(SessionHandler.class);
-
     private final String entityName;
     private final Duration openTimeout;
     private final ReactorDispatcher reactorDispatcher;
 
     public SessionHandler(String connectionId, String hostname, String entityName, ReactorDispatcher reactorDispatcher,
                           Duration openTimeout) {
-        super(connectionId, hostname);
+        super(connectionId, hostname, new ClientLogger(SessionHandler.class));
         this.entityName = entityName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;
@@ -63,20 +61,23 @@ public class SessionHandler extends Handler {
                     getConnectionId(), this.entityName, ioException.getMessage());
             final Throwable exception = new AmqpException(false, message, ioException, getErrorContext());
 
-            onNext(exception);
+            onError(exception);
         }
     }
 
     @Override
     public void onSessionRemoteOpen(Event e) {
         final Session session = e.getSession();
-
-        logger.info(
-            "onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}], sessionOutgoingWindow[{}]",
-            getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
-
         if (session.getLocalState() == EndpointState.UNINITIALIZED) {
+            logger.warning("onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}],"
+                    + " sessionOutgoingWindow[{}] endpoint was uninitialised.",
+                getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
+
             session.open();
+        } else {
+            logger.info("onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}],"
+                    + " sessionOutgoingWindow[{}]",
+                getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
         }
 
         onNext(EndpointState.ACTIVE);
@@ -117,26 +118,17 @@ public class SessionHandler extends Handler {
             session.close();
         }
 
-        onNext(EndpointState.CLOSED);
-
-        if (condition != null) {
+        if (condition == null || condition.getCondition() == null) {
+            onNext(EndpointState.CLOSED);
+        } else {
             final String id = getConnectionId();
             final AmqpErrorContext context = getErrorContext();
-            final Exception exception;
-            if (condition.getCondition() == null) {
-                exception = new AmqpException(false,
-                    String.format(Locale.US,
-                        "onSessionRemoteClose connectionId[%s], entityName[%s], condition[%s]", id, entityName,
-                        condition),
-                    context);
-            } else {
-                exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                    String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", id,
-                        entityName),
-                    context);
-            }
 
-            onNext(exception);
+            final Exception exception = ExceptionUtil.toException(condition.getCondition().toString(),
+                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s] condition[%s]",
+                    id, entityName, condition), context);
+
+            onError(exception);
         }
     }
 

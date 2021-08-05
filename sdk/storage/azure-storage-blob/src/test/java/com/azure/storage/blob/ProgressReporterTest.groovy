@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
 import spock.lang.Requires
 
@@ -35,7 +36,7 @@ class ProgressReporterTest extends APISpec {
         0 * mockReceiver.reportProgress({ it > 30 })
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Report progress sequential network test"() {
         setup:
         ProgressReceiver mockReceiver = Mock(ProgressReceiver)
@@ -44,7 +45,7 @@ class ProgressReporterTest extends APISpec {
         Flux<ByteBuffer> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
 
         when:
-        BlockBlobAsyncClient bu = getBlobAsyncClient(primaryCredential, cc.getBlobContainerUrl(), generateBlobName())
+        BlockBlobAsyncClient bu = getBlobAsyncClient(env.primaryAccount.credential, cc.getBlobContainerUrl(), generateBlobName())
             .getBlockBlobAsyncClient()
 
         bu.upload(data, buffer.remaining()).block()
@@ -74,12 +75,14 @@ class ProgressReporterTest extends APISpec {
         data2 = ProgressReporter.addParallelProgressReporting(data2, mockReceiver, lock, totalProgress)
 
         when:
-        data.subscribe()
-        data2.subscribe()
-        data.subscribe()
-        data2.subscribe()
+        def disposable1 = data.subscribe()
+        def disposable2 = data2.subscribe()
+        def disposable3 = data.subscribe()
+        def disposable4 = data2.subscribe()
 
-        sleep(3000) // These Fluxes should complete quickly, but we don't want to block or it'll order everything
+        while (!(disposable1.isDisposed() && disposable2.isDisposed() && disposable3.isDisposed() && disposable4.isDisposed())) {
+
+        }
 
         then:
         /*

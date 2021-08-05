@@ -1,30 +1,37 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/streamanalytics/
+      - sdk/streamanalytics/ci.mgmt.yml
+      - sdk/streamanalytics/mgmt-v2016_03_01/
+      - sdk/streamanalytics/mgmt-v2020_03_01_preview/
+    exclude:
+      - sdk/streamanalytics/pom.xml
+      - sdk/streamanalytics/mgmt-v2016_03_01/pom.xml
+      - sdk/streamanalytics/mgmt-v2020_03_01_preview/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/streamanalytics/
+      - sdk/streamanalytics/ci.mgmt.yml
+      - sdk/streamanalytics/mgmt-v2016_03_01/
+      - sdk/streamanalytics/mgmt-v2020_03_01_preview/
+    exclude:
+      - sdk/streamanalytics/pom.xml
+      - sdk/streamanalytics/mgmt-v2016_03_01/pom.xml
+      - sdk/streamanalytics/mgmt-v2020_03_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

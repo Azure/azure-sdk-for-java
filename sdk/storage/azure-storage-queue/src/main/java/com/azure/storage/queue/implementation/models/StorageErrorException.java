@@ -7,9 +7,7 @@ package com.azure.storage.queue.implementation.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/**
- * Exception thrown for an invalid response with StorageError information.
- */
+/** Exception thrown for an invalid response with StorageError information. */
 public final class StorageErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the StorageErrorException class.

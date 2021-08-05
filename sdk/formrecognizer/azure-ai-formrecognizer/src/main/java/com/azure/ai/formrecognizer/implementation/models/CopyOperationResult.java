@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The CopyOperationResult model. */
+/** Status and result of the queued copy operation. */
 @Fluent
 public final class CopyOperationResult {
     /*

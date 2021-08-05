@@ -61,4 +61,49 @@ public interface Alterations {
     Observable<Void> replaceAsync(List<AlterationsDTO> wordAlterations);
 
 
+
+    /**
+     * Download alterations per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WordAlterationsDTO object if successful.
+     */
+    WordAlterationsDTO getAlterationsForKb(String kbId);
+
+    /**
+     * Download alterations per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WordAlterationsDTO object
+     */
+    Observable<WordAlterationsDTO> getAlterationsForKbAsync(String kbId);
+
+
+
+    /**
+     * Replace alterations data per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param wordAlterations Collection of word alterations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void replaceAlterationsForKb(String kbId, List<AlterationsDTO> wordAlterations);
+
+    /**
+     * Replace alterations data per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param wordAlterations Collection of word alterations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> replaceAlterationsForKbAsync(String kbId, List<AlterationsDTO> wordAlterations);
+
+
 }

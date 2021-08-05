@@ -1,7 +1,50 @@
 # Release History
 
-## 8.1.0-beta.1 (Unreleased)
+## 10.1.0-beta.1 (Unreleased)
 
+
+## 10.0.0 (2021-07-30)
+
+### Features
+
+- Adds two properties on accounts which enable auto-storage to use a managed identity for authentication rather than a shared key:
+   - Setting `autoStorageAuthenticationMode` to "BatchAccountManagedIdentity" will use the identity on the account for storage management operations such as blob container creation/deletion.
+   - Setting `identityReference` will specify the identity which can be used on compute nodes to access auto-storage. Note that this identity *must* be assigned to each pool individually.
+- Adds an `identityReference` property to the following models to support accessing resources via managed identity:
+  - `AzureBlobFileSystemConfiguration`
+  - `OutputFileBlobContainerDestination`
+  - `ContainerRegistry`
+  - `ResourceFile`
+  - `UploadBatchServiceLogsConfiguration`
+- Adds an `allowedAuthenticationModes` property on `BatchAccount` to list the allowed authentication modes for a given account that can be used to authenticate with the data plane. This does not affect authentication with the control plane.
+- Adds a `computeNodeExtension` operation to `BatchServiceClient` for getting and listing VM extensions on a node.
+- Adds an `extensions` property to `VirtualMachineConfiguration` on `CloudPool` to specify virtual machine extensions for nodes.
+- Adds the ability to specify availability zones using a new property `nodePlacementConfiguration` on `VirtualMachineConfiguration`
+- Adds an `osDisk` property to `VirtualMachineConfiguration`, which contains settings for the operating system disk of the virtual machine.
+  - The `placement` property on `DiffDiskSettings` specifies the ephemeral disk placement for operating system disks for all VMs in the pool. Setting it to "CacheDisk" will store the ephemeral OS disk on the VM cache.
+- Adds a `maxParallelTasks` property on `CloudJob` to control the maximum allowed tasks per job (defaults to `-1`, meaning unlimited).
+- Adds a `virtualMachineInfo` property on `ComputeNode` which contains information about the current state of the virtual machine, including the exact version of the marketplace image the VM is using.
+- Adds a `recurrenceInterval` property to `Schedule` to control the interval between the start times of two successive job under a job schedule.
+ - Adds a `listSupportedVirtualMachineSkus` operation, which gets the list of Batch-supported Virtual Machine VM sizes available at a given location.
+ - Adds a `listOutboundNetworkDependenciesEndpoints` operation, which lists the endpoints that a Batch Compute Node under a Batch Account may call as part of Batch service administration.
+    - [More information about creating a pool inside of a virtual network.](https://docs.microsoft.com/azure/batch/batch-virtual-network)
+
+## 9.0.0 (2021-01-08)
+
+### Features
+
+- Adds support for task slots
+  - `JobOperations.getTaskSlotCounts()` returns task slot counts
+  - `JobOperations.getTaskCountsResult()` returns a `TaskCountsResult` object containing both task and slot counts
+- Adds property `requiredSlots` to `CloudTask`, allowing the user to specify how many slots on a node they should take up
+- Exposes a `BatchClient` factory method
+
+### Breaking Changes
+
+- Property `maxTasksPerNode` is replaced with `taskSlotsPerNode`, which allows nodes to consume a dynamic amount of slots for more fine-grained control over resource consumption
+  - `CloudPool.maxTasksPerNode` &rarr; `CloudPool.taskSlotsPerNode`
+  - `PoolAddParameter.maxTasksPerNode` &rarr; `PoolAddParameter.taskSlotsPerNode`
+  - `PoolSpecification.maxTasksPerNode` &rarr; `PoolSpecification.taskSlotsPerNode`
 
 ## 8.0.0 (2020-04-27)
 ### Features
@@ -74,7 +117,7 @@ This version of the Batch .NET client library targets version 2018-12-01.8.0 of 
  - Update 'List' methods to return the lower layer PagedList object instead of the standard List.
 
 ### REST API version
-This version of the Batch Java client library targets version 2018-08-01.7.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/en-us/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-08-0171) for detail.
+This version of the Batch Java client library targets version 2018-08-01.7.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-08-0171) for detail.
 
 ## 3.3.0
 ### Features
@@ -93,7 +136,7 @@ This version of the Batch Java client library targets version 2018-08-01.7.1 of 
    - This is intended for use in debugging by Microsoft support when there are problems on a node.
 
 ### REST API version
-This version of the Batch Java client library targets version 2018-03-01.6.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/en-us/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-03-0161) for detail.
+This version of the Batch Java client library targets version 2018-03-01.6.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-03-0161) for detail.
 
 
 ## 3.0.0
@@ -107,4 +150,4 @@ This version of the Batch Java client library targets version 2018-03-01.6.1 of 
 - Added support for tasks run using Docker containers. To run a task using a Docker container you must specify a `containerConfiguration` on the `VirtualMachineConfiguration` for a pool, and then add `taskContainerSettings` on the Task.
 
 ### REST API version
-This version of the Batch Java client library targets version 2017-09-01.6.0 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/en-us/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2017-09-0160) for detail.
+This version of the Batch Java client library targets version 2017-09-01.6.0 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2017-09-0160) for detail.

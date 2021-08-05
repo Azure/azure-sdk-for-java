@@ -7,11 +7,21 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.Executor;
 
 /**
@@ -19,7 +29,33 @@ import java.util.concurrent.Executor;
  * first introduced as preview in JDK 9, but made generally available from JDK 11 onwards.
  */
 public class JdkAsyncHttpClientBuilder {
+
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
+    private static final String JAVA_HOME = System.getProperty("java.home");
+    private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
+
+    // These headers are restricted by default in native JDK12 HttpClient.
+    // These headers can be whitelisted by setting jdk.httpclient.allowRestrictedHeaders
+    // property in the network properties file: 'JAVA_HOME/conf/net.properties'
+    // e.g white listing 'host' header.
+    //
+    // jdk.httpclient.allowRestrictedHeaders=host
+    // Also see - https://bugs.openjdk.java.net/browse/JDK-8213189
+    static final Set<String> DEFAULT_RESTRICTED_HEADERS;
+
+    static {
+        TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        treeSet.addAll(Set.of(
+            "connection",
+            "content-length",
+            "expect",
+            "host",
+            "upgrade"
+        ));
+        DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
+    }
+
+    private final ClientLogger logger = new ClientLogger(JdkAsyncHttpClientBuilder.class);
 
     private java.net.http.HttpClient.Builder httpClientBuilder;
     private Duration connectionTimeout;
@@ -45,8 +81,8 @@ public class JdkAsyncHttpClientBuilder {
 
     /**
      * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
-     *
-     * <p> If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
+     * <p>
+     * If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
      * newly built {@code HttpClient}.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
@@ -113,8 +149,8 @@ public class JdkAsyncHttpClientBuilder {
      */
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder = this.httpClientBuilder == null
-                     ? java.net.http.HttpClient.newBuilder()
-                     : this.httpClientBuilder;
+            ? java.net.http.HttpClient.newBuilder()
+            : this.httpClientBuilder;
 
         httpClientBuilder = (this.connectionTimeout != null)
             ? httpClientBuilder.connectTimeout(this.connectionTimeout)
@@ -144,7 +180,54 @@ public class JdkAsyncHttpClientBuilder {
                         buildProxyOptions.getPassword()));
             }
         }
-        return new JdkAsyncHttpClient(httpClientBuilder.build());
+        return new JdkAsyncHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()));
+    }
+
+    Set<String> getRestrictedHeaders() {
+        // Compute the effective restricted headers by removing the allowed headers from default restricted headers
+        Set<String> allowRestrictedHeaders = getAllowRestrictedHeaders();
+        Set<String> restrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        restrictedHeaders.addAll(DEFAULT_RESTRICTED_HEADERS);
+        restrictedHeaders.removeAll(allowRestrictedHeaders);
+        return restrictedHeaders;
+    }
+
+    private Set<String> getAllowRestrictedHeaders() {
+        Properties properties = getNetworkProperties();
+        String[] allowRestrictedHeadersNetProperties =
+            properties.getProperty(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
+
+        // Read all allowed restricted headers from configuration
+        Configuration config = (this.configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
+        String[] allowRestrictedHeadersSystemProperties = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "")
+            .split(",");
+
+        Set<String> allowRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+
+        // Combine the set of all allowed restricted headers from both sources
+        for (String header : allowRestrictedHeadersSystemProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
+
+        for (String header : allowRestrictedHeadersNetProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
+
+        return allowRestrictedHeaders;
+    }
+
+    Properties getNetworkProperties() {
+        // Read all allowed restricted headers from JAVA_HOME/conf/net.properties
+        Path path = Paths.get(JAVA_HOME, "conf", "net.properties");
+        Properties properties = new Properties();
+        try (Reader reader = Files.newBufferedReader(path)) {
+            properties.load(reader);
+        } catch (IOException e) {
+            logger.warning("Cannot read net properties file at path {}", path, e);
+        }
+        return properties;
     }
 
     private static class ProxyAuthenticator extends Authenticator {

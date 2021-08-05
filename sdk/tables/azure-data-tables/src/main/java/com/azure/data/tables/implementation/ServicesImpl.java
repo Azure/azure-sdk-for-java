@@ -39,7 +39,7 @@ public final class ServicesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     ServicesImpl(AzureTableImpl client) {
-        this.service = RestProxy.create(ServicesService.class, client.getHttpPipeline());
+        this.service = RestProxy.create(ServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -49,7 +49,7 @@ public final class ServicesImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureTableServices")
-    private interface ServicesService {
+    public interface ServicesService {
         @Put("/")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
@@ -61,6 +61,7 @@ public final class ServicesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @BodyParam("application/xml") TableServiceProperties tableServiceProperties,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/")
@@ -73,6 +74,7 @@ public final class ServicesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/")
@@ -85,6 +87,7 @@ public final class ServicesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -92,7 +95,7 @@ public final class ServicesImpl {
      * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
      *
-     * @param tableServiceProperties Table Service Properties.
+     * @param tableServiceProperties The Table Service properties.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when analytics logging is enabled.
@@ -107,6 +110,7 @@ public final class ServicesImpl {
             TableServiceProperties tableServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
+        final String accept = "application/xml";
         return service.setProperties(
                 this.client.getUrl(),
                 restype,
@@ -115,6 +119,7 @@ public final class ServicesImpl {
                 this.client.getVersion(),
                 requestId,
                 tableServiceProperties,
+                accept,
                 context);
     }
 
@@ -137,8 +142,9 @@ public final class ServicesImpl {
             Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
+        final String accept = "application/xml";
         return service.getProperties(
-                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, context);
+                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
     }
 
     /**
@@ -159,7 +165,8 @@ public final class ServicesImpl {
             Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
+        final String accept = "application/xml";
         return service.getStatistics(
-                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, context);
+                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
     }
 }

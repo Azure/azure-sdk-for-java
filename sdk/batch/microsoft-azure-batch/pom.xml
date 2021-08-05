@@ -16,7 +16,7 @@
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-batch</artifactId>
   <packaging>jar</packaging>
-  <version>8.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
+  <version>10.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
 
   <name>Microsoft Azure Batch SDK Root</name>
   <description>This package contains the root module of Microsoft Azure Batch SDK.</description>
@@ -49,14 +49,14 @@
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.13</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+      <version>1.15</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -79,6 +79,13 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure</artifactId>
       <version>1.24.1</version> <!-- {x-version-update;com.microsoft.azure:azure;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -118,7 +125,7 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.3.22.v20171030</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
+        <version>9.4.33.v20201020</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
         <configuration>
           <scanIntervalSeconds>0</scanIntervalSeconds>
           <stopPort>11079</stopPort>
@@ -126,6 +133,7 @@
           <stopWait>20</stopWait>
           <waitForChild>false</waitForChild>
           <jettyXml>../../../jetty.xml</jettyXml>
+          <supportedPackagings>jar</supportedPackagings>
         </configuration>
         <executions>
           <execution>
@@ -134,10 +142,6 @@
             <goals>
               <goal>run-forked</goal>
             </goals>
-            <configuration>
-             <scanIntervalSeconds>0</scanIntervalSeconds>
-             <daemon>true</daemon>
-            </configuration>
           </execution>
           <execution>
             <id>stop-jetty</id>
@@ -178,5 +182,31 @@
     </plugins>
 
   </build>
+  <profiles>
+    <profile>
+      <id>is.jdk.11</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version><!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <reuseForks>false</reuseForks>
+              <argLine>
+                -Xmx4096m
+                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.microsoft.azure.batch/com.microsoft.azure.batch=ALL-UNNAMED
+                --add-opens java.base/java.util=ALL-UNNAMED
+              </argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

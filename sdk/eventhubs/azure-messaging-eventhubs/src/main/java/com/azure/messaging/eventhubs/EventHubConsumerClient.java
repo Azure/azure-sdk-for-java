@@ -30,8 +30,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * <p><strong>Consuming events from a single partition</strong></p>
  * <p>Events from a single partition can be consumed using {@link #receiveFromPartition(String, int, EventPosition)} or
- * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to `receive` completes and returns an
- * {@link IterableStream} when either the maximum number of events is received, or the timeout has elapsed.</p>
+ * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to {@code receiveFromPartition}
+ * completes and returns an {@link IterableStream} when either the maximum number of events is received, or the
+ * timeout has elapsed.</p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
  */
@@ -94,6 +95,7 @@ public class EventHubConsumerClient implements Closeable {
      *
      * @return The set of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<String> getPartitionIds() {
         return new IterableStream<>(consumer.getPartitionIds());
     }
@@ -128,6 +130,7 @@ public class EventHubConsumerClient implements Closeable {
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1, or if {@code partitionId} is an
      *     empty string.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition) {
         return receiveFromPartition(partitionId, maximumMessageCount, startingPosition, timeout);
@@ -150,6 +153,7 @@ public class EventHubConsumerClient implements Closeable {
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
      *     zero or a negative duration.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition, Duration maximumWaitTime) {
         if (Objects.isNull(maximumWaitTime)) {
@@ -197,6 +201,7 @@ public class EventHubConsumerClient implements Closeable {
      * @throws IllegalArgumentException if {@code maximumMessageCount} is less than 1 or {@code maximumWaitTime} is
      *     zero or a negative duration.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition, Duration maximumWaitTime, ReceiveOptions receiveOptions) {
         if (Objects.isNull(maximumWaitTime)) {

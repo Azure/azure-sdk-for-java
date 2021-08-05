@@ -73,7 +73,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
             return new ArrayList<Lease>();
 
         if (expiredLeases.size() > 0) {
-            return expiredLeases.subList(0, partitionsNeededForMe);
+            return expiredLeases.subList(0, Math.min(partitionsNeededForMe, expiredLeases.size()));
         }
 
         Lease stolenLease = getLeaseToSteal(workerToPartitionCount, target, partitionsNeededForMe, allPartitions);

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-/** The FieldValue model. */
+/** Recognized field value. */
 @Fluent
 public final class FieldValue {
     /*
@@ -66,6 +66,18 @@ public final class FieldValue {
      */
     @JsonProperty(value = "valueObject")
     private Map<String, FieldValue> valueObject;
+
+    /*
+     * Selection mark value.
+     */
+    @JsonProperty(value = "valueSelectionMark")
+    private FieldValueSelectionMark valueSelectionMark;
+
+    /*
+     * 3-letter country code (ISO 3166-1 alpha-3).
+     */
+    @JsonProperty(value = "valueCountryRegion")
+    private String valueCountryRegion;
 
     /*
      * Text content of the extracted field.
@@ -275,6 +287,46 @@ public final class FieldValue {
      */
     public FieldValue setValueObject(Map<String, FieldValue> valueObject) {
         this.valueObject = valueObject;
+        return this;
+    }
+
+    /**
+     * Get the valueSelectionMark property: Selection mark value.
+     *
+     * @return the valueSelectionMark value.
+     */
+    public FieldValueSelectionMark getValueSelectionMark() {
+        return this.valueSelectionMark;
+    }
+
+    /**
+     * Set the valueSelectionMark property: Selection mark value.
+     *
+     * @param valueSelectionMark the valueSelectionMark value to set.
+     * @return the FieldValue object itself.
+     */
+    public FieldValue setValueSelectionMark(FieldValueSelectionMark valueSelectionMark) {
+        this.valueSelectionMark = valueSelectionMark;
+        return this;
+    }
+
+    /**
+     * Get the valueCountryRegion property: 3-letter country code (ISO 3166-1 alpha-3).
+     *
+     * @return the valueCountryRegion value.
+     */
+    public String getValueCountryRegion() {
+        return this.valueCountryRegion;
+    }
+
+    /**
+     * Set the valueCountryRegion property: 3-letter country code (ISO 3166-1 alpha-3).
+     *
+     * @param valueCountryRegion the valueCountryRegion value to set.
+     * @return the FieldValue object itself.
+     */
+    public FieldValue setValueCountryRegion(String valueCountryRegion) {
+        this.valueCountryRegion = valueCountryRegion;
         return this;
     }
 

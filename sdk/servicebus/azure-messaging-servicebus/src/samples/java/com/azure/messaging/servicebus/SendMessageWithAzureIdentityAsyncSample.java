@@ -4,18 +4,19 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus using Azure Identity.
+ *
+ * @see DefaultAzureCredentialBuilder
+ * @see <a href="https://devblogs.microsoft.com/azure-sdk/authentication-and-the-azure-sdk/">Authentication and the
+ * Azure SDK</a>
  */
 public class SendMessageWithAzureIdentityAsyncSample {
-
     /**
      * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service bus Queue.
      *
@@ -23,8 +24,7 @@ public class SendMessageWithAzureIdentityAsyncSample {
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
-        ServiceBusMessage guestCheckInEvent = new ServiceBusMessage("Microsoft HQ is at Redmond.".getBytes(UTF_8))
-            .setMessageId(UUID.randomUUID().toString());
+        ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Microsoft HQ is at Redmond."));
 
         // DefaultAzureCredential checks multiple locations for credentials and determines the best one to use.
         // For the purpose of this sample, create a service principal and set the following environment variables.
@@ -47,11 +47,11 @@ public class SendMessageWithAzureIdentityAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        sender.send(guestCheckInEvent)
+        sender.sendMessage(message)
             .subscribe(
                 unused -> System.out.println("Sent."),
                 error -> System.err.println("Error occurred while publishing message: " + error),
-                () -> System.out.printf("Message was sent with id: %s%n", guestCheckInEvent.getMessageId()));
+                () -> System.out.println("Message was sent with id."));
 
         // .subscribe is not a blocking call. We sleep here so the program does not end before the send is complete.
         TimeUnit.SECONDS.sleep(5);

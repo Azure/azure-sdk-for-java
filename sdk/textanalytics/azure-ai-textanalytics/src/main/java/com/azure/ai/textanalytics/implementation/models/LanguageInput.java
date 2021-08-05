@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LanguageInput model.
- */
+/** The LanguageInput model. */
 @Fluent
 public final class LanguageInput {
     /*
@@ -32,7 +30,7 @@ public final class LanguageInput {
 
     /**
      * Get the id property: Unique, non-empty document identifier.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -41,7 +39,7 @@ public final class LanguageInput {
 
     /**
      * Set the id property: Unique, non-empty document identifier.
-     * 
+     *
      * @param id the id value to set.
      * @return the LanguageInput object itself.
      */
@@ -52,7 +50,7 @@ public final class LanguageInput {
 
     /**
      * Get the text property: The text property.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -61,7 +59,7 @@ public final class LanguageInput {
 
     /**
      * Set the text property: The text property.
-     * 
+     *
      * @param text the text value to set.
      * @return the LanguageInput object itself.
      */
@@ -72,7 +70,7 @@ public final class LanguageInput {
 
     /**
      * Get the countryHint property: The countryHint property.
-     * 
+     *
      * @return the countryHint value.
      */
     public String getCountryHint() {
@@ -81,7 +79,7 @@ public final class LanguageInput {
 
     /**
      * Set the countryHint property: The countryHint property.
-     * 
+     *
      * @param countryHint the countryHint value to set.
      * @return the LanguageInput object itself.
      */

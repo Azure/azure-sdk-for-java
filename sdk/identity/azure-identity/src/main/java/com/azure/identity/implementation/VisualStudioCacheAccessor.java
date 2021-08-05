@@ -6,13 +6,15 @@ package com.azure.identity.implementation;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.CredentialUnavailableException;
-import com.azure.identity.KnownAuthorityHosts;
+import com.azure.identity.AzureAuthorityHosts;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -33,7 +35,6 @@ public class VisualStudioCacheAccessor {
         JsonNode output = null;
         String homeDir = System.getProperty("user.home");
         String settingsPath = "";
-        ObjectMapper mapper = new ObjectMapper();
         try {
             if (Platform.isWindows()) {
                 settingsPath = Paths.get(System.getenv("APPDATA"), "Code", "User", "settings.json")
@@ -48,12 +49,21 @@ public class VisualStudioCacheAccessor {
                 throw logger.logExceptionAsError(
                         new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
             }
-            File settingsFile = new File(settingsPath);
-            output = mapper.readTree(settingsFile);
+            output =  readJsonFile(settingsPath);
         } catch (Exception e) {
             return null;
         }
         return output;
+    }
+
+    JsonNode readJsonFile(String path) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
+        mapper.configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true);
+        mapper.configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), true);
+
+        File settingsFile = new File(path);
+        return mapper.readTree(settingsFile);
     }
 
     /**
@@ -66,7 +76,7 @@ public class VisualStudioCacheAccessor {
         Map<String, String> details = new HashMap<>();
 
         String tenant = null;
-        String cloud = "Azure";
+        String cloud = "AzureCloud";
 
         if (userSettings != null && !userSettings.isNull()) {
             if (userSettings.has("azure.tenant")) {
@@ -104,7 +114,7 @@ public class VisualStudioCacheAccessor {
                 WindowsCredentialAccessor winCredAccessor =
                         new WindowsCredentialAccessor(serviceName, accountName);
                 credential = winCredAccessor.read();
-            } catch (Exception e) {
+            } catch (Exception | Error e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
                         "Failed to read Vs Code credentials from Windows Credential API.", e));
             }
@@ -117,7 +127,7 @@ public class VisualStudioCacheAccessor {
 
                 byte[] readCreds = keyChainAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
-            } catch (Exception e) {
+            } catch (Exception | Error e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
                         "Failed to read Vs Code credentials from Mac Native Key Chain.", e));
             }
@@ -131,7 +141,7 @@ public class VisualStudioCacheAccessor {
 
                 byte[] readCreds = keyRingAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
-            } catch (Exception e) {
+            } catch (Exception | Error e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
                         "Failed to read Vs Code credentials from Linux Key Ring.", e));
             }
@@ -160,16 +170,16 @@ public class VisualStudioCacheAccessor {
     public String getAzureAuthHost(String cloud) {
 
         switch (cloud) {
-            case "Azure":
-                return KnownAuthorityHosts.AZURE_CLOUD;
+            case "AzureCloud":
+                return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
             case "AzureChina":
-                return KnownAuthorityHosts.AZURE_CHINA_CLOUD;
+                return AzureAuthorityHosts.AZURE_CHINA;
             case "AzureGermanCloud":
-                return KnownAuthorityHosts.AZURE_GERMAN_CLOUD;
+                return AzureAuthorityHosts.AZURE_GERMANY;
             case "AzureUSGovernment":
-                return KnownAuthorityHosts.AZURE_US_GOVERNMENT;
+                return AzureAuthorityHosts.AZURE_GOVERNMENT;
             default:
-                return KnownAuthorityHosts.AZURE_CLOUD;
+                return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
         }
     }
 

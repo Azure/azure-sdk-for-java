@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,6 +62,13 @@ public final class ExceptionUtil {
             case PARTITION_NOT_OWNED_ERROR:
             case STORE_LOCK_LOST_ERROR:
             case RESOURCE_LIMIT_EXCEEDED:
+            case OPERATION_CANCELLED:
+            case MESSAGE_LOCK_LOST:
+            case SESSION_LOCK_LOST:
+            case SESSION_CANNOT_BE_LOCKED:
+            case ENTITY_ALREADY_EXISTS:
+            case MESSAGE_NOT_FOUND:
+            case SESSION_NOT_FOUND:
                 isTransient = false;
                 break;
             case NOT_IMPLEMENTED:
@@ -71,8 +77,9 @@ public final class ExceptionUtil {
             case NOT_FOUND:
                 return distinguishNotFound(description, errorContext);
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, "This condition '%s' is not known.",
-                    condition));
+                return new AmqpException(false, condition, String.format("errorCondition[%s]. description[%s] "
+                        + "Condition could not be mapped to a transient condition.",
+                    errorCondition, description), errorContext);
         }
 
         return new AmqpException(isTransient, condition, description, errorContext);

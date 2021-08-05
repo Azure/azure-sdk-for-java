@@ -6,20 +6,23 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,6 +42,8 @@ public class EventHubClientBuilderTest {
     private static final String CORRECT_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+    public static final String JAVA_NET_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
+    private ClientLogger logger = new ClientLogger(EventHubClientBuilderTest.class);
 
     @Test
     public void missingConnectionString() {
@@ -51,11 +56,8 @@ public class EventHubClientBuilderTest {
     public void defaultProxyConfigurationBuilder() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
         final EventHubAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING).buildAsyncClient();
-        try {
-            assertNotNull(client);
-        } finally {
-            client.close();
-        }
+
+        assertNotNull(client);
     }
 
     @Test
@@ -91,11 +93,31 @@ public class EventHubClientBuilderTest {
         });
     }
 
+    @Test
+    public void testConnectionStringWithSas() {
+
+        String connectionStringWithNoEntityPath = "Endpoint=sb://eh-name.servicebus.windows.net/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value";
+        String connectionStringWithEntityPath = "Endpoint=sb://eh-name.servicebus.windows.net/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=eh-name";
+
+        assertNotNull(new EventHubClientBuilder()
+            .connectionString(connectionStringWithNoEntityPath, "eh-name"));
+        assertNotNull(new EventHubClientBuilder()
+            .connectionString(connectionStringWithEntityPath));
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
+            .connectionString(connectionStringWithNoEntityPath));
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .connectionString(connectionStringWithEntityPath, "eh-name-mismatch"));
+    }
+
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
     public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
+        configuration = configuration.put(JAVA_NET_USE_SYSTEM_PROXIES, "true");
+
         boolean clientCreated = false;
         try {
             EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
@@ -107,8 +129,58 @@ public class EventHubClientBuilderTest {
             clientCreated = true;
         } catch (Exception ex) {
         }
-
         Assertions.assertEquals(expectedClientCreation, clientCreated);
+    }
+
+    @Test
+    public void testConnectionWithAzureNameKeyCredential() {
+        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String sharedAccessKeyName = "SharedAccessKeyName test-value";
+        String sharedAccessKey = "SharedAccessKey test-value";
+        String eventHubName = "test-event-hub-name";
+
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
+            .credential(null, eventHubName,
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
+            .credential(fullyQualifiedNamespace, null,
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential("", eventHubName,
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential(fullyQualifiedNamespace, "",
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
+            .credential(fullyQualifiedNamespace, eventHubName, (AzureNamedKeyCredential) null));
+
+    }
+
+    @Test
+    public void testConnectionWithAzureSasCredential() {
+        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String sharedAccessSignature = "SharedAccessSignature test-value";
+        String eventHubName = "test-event-hub-name";
+
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
+            .credential(null, eventHubName, new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
+            .credential(fullyQualifiedNamespace, null, new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential("", eventHubName, new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential(fullyQualifiedNamespace, "", new AzureSasCredential(sharedAccessSignature)));
+
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
+            .credential(fullyQualifiedNamespace, eventHubName, (AzureSasCredential) null));
+
     }
 
     private static Stream<Arguments> getProxyConfigurations() {
@@ -124,7 +196,6 @@ public class EventHubClientBuilderTest {
             Arguments.of("https://username:password@sub.example.com:8080", true),
             Arguments.of("https://username:password@sub.example.com", true)
         );
-
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

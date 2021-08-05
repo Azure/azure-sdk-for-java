@@ -1,12 +1,11 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: textanalytics
+      TestMode: RECORD # to make sure recordedData is not null but still testing LIVE mode
       Artifacts:
         - name: azure-ai-textanalytics
           groupId: com.azure
           safeName: azureaitextanalytics
-      EnvVars:
-        AZURE_TEST_MODE: RECORD

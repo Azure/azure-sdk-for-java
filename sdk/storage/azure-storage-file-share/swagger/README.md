@@ -4,29 +4,34 @@
 
 ### Setup
 
-Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
+> see https://github.com/Azure/autorest.java
 
 ### Generation
+> see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
-autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.modeler#440af3935c504cea4410133e1fd940b78f6af749  --version=2.0.4280
+mvn install
+autorest --java --use:@autorest/java@4.0.x
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-07-07/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-10-02/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
 enable-xml: true
+generate-client-as-impl: true
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
+context-client-method-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType
+custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel
+customization-jar-path: target/azure-storage-file-share-customization-1.0.0-beta.1.jar
+customization-class: com.azure.storage.file.share.customization.ShareStorageCustomization
 ```
 
 ### Query Parameters
@@ -69,103 +74,18 @@ directive:
     }
 ```
 
-### /{shareName}?restype=share
+### Remove directoryPath from path params
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share"]
+  where: $["x-ms-paths"]
   transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-        $.delete.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=filepermission
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=filepermission"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-    param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=properties
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=properties"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=snapshot
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=snapshot"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=metadata"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=acl
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=acl"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-
-### /{shareName}?restype=share&comp=stats
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=stats"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
+    for (const property in $)
+    {
+        if (property.includes("/{shareName}/{directory}/{fileName}"))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) {return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/DirectoryPath"))});
+        }
     }
 ```
 
@@ -175,23 +95,13 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory"] = $["/{shareName}/{directory}?restype=directory"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.delete.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?restype=directory"];
+        const op = $["/{shareName}/{directory}?restype=directory"];
         op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-    }
 ```
 
 ### /{shareName}/{directoryPath}?restype=directory&comp=properties
@@ -200,76 +110,10 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory&comp=properties"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory&comp=properties"] = $["/{shareName}/{directory}?restype=directory&comp=properties"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?restype=directory&comp=properties"];
+        const op = $["/{shareName}/{directory}?restype=directory&comp=properties"];
         op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-    }
-```
-
-### /{shareName}/{directoryPath}?restype=directory&comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory&comp=metadata"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory&comp=metadata"] = $["/{shareName}/{directory}?restype=directory&comp=metadata"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?restype=directory&comp=metadata"];
-    }
-```
-
-### /{shareName}/{directoryPath}?restype=directory&comp=list
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory&comp=list"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory&comp=list"] = $["/{shareName}/{directory}?restype=directory&comp=list"];
-        const path = op.get.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?restype=directory&comp=list"];
-    }
-```
-
-### /{shareName}/{directoryPath}?comp=listhandles
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{directoryPath}?comp=listhandles"]) {
-        const op = $["/{shareName}/{directoryPath}?comp=listhandles"] = $["/{shareName}/{directory}?comp=listhandles"];
-        const path = op.get.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?comp=listhandles"];
-    }
-```
-
-### /{shareName}/{directoryPath}?comp=forceclosehandles
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{directoryPath}?comp=forceclosehandles"]) {
-        const op = $["/{shareName}/{directoryPath}?comp=forceclosehandles"] = $["/{shareName}/{directory}?comp=forceclosehandles"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?comp=forceclosehandles"];
-    }
 ```
 
 ### /{shareName}/{filePath}
@@ -278,24 +122,15 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}"]) {
-        const op = $["/{shareName}/{filePath}"] = $["/{shareName}/{directory}/{fileName}"];
+    if (!$["/{shareName}/{fileName}"]) {
+        const op = $["/{shareName}/{fileName}"] = $["/{shareName}/{directory}/{fileName}"];
         const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         op.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         op.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         delete op.get.responses["200"].headers["x-ms-content-md5"]["x-ms-client-name"];
         delete op.get.responses["206"].headers["x-ms-content-md5"]["x-ms-client-name"];
         op.get.responses["200"].headers["x-ms-content-md5"]["x-ms-client-name"] = "FileContentMd5";
         op.get.responses["206"].headers["x-ms-content-md5"]["x-ms-client-name"] = "FileContentMd5";
-        op.head.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.head.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete op.head.responses.default.schema;
-        op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.delete.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}"];
         op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
@@ -318,30 +153,12 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}?comp=properties"]) {
-        const op = $["/{shareName}/{filePath}?comp=properties"] = $["/{shareName}/{directory}/{fileName}?comp=properties"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+    if (!$["/{shareName}/{fileName}?comp=properties"]) {
+        const op = $["/{shareName}/{fileName}?comp=properties"] = $["/{shareName}/{directory}/{fileName}?comp=properties"];
         delete $["/{shareName}/{directory}/{fileName}?comp=properties"];
         op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-    }
-```
-
-### /{shareName}/{filePath}?comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=metadata"]) {
-        const op = $["/{shareName}/{filePath}?comp=metadata"] = $["/{shareName}/{directory}/{fileName}?comp=metadata"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=metadata"];
     }
 ```
 
@@ -351,177 +168,41 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}?comp=range"]) {
-        const op = $["/{shareName}/{filePath}?comp=range"] = $["/{shareName}/{directory}/{fileName}?comp=range"];
+    if (!$["/{shareName}/{fileName}?comp=range"]) {
+        const op = $["/{shareName}/{fileName}?comp=range"] = $["/{shareName}/{directory}/{fileName}?comp=range"];
         op.put.parameters[3]["x-ms-enum"].name = "ShareFileRangeWriteType";
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}?comp=range"];
     }
 ```
-### /{shareName}/{filePath}?comp=range&fromURL
+
 ``` yaml
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}?comp=range&fromURL"]) {
-        const op = $["/{shareName}/{filePath}?comp=range&fromURL"] = $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
+    for (const property in $)
+    {
+        if (property.includes("/{shareName}/{directory}/{fileName}"))
+        {
+            var oldName = property;
+            var newName = property.replace('/{shareName}/{directory}/{fileName}', '/{shareName}/{fileName}');
+            $[newName] = $[oldName];
+            delete $[oldName];
+        }
     }
 ```
 
-
-### /{shareName}/{filePath}?comp=rangelist
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=rangelist"]) {
-        const op = $["/{shareName}/{filePath}?comp=rangelist"] = $["/{shareName}/{directory}/{fileName}?comp=rangelist"];
-        const path = op.get.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=rangelist"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=copy
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=copy"]) {
-        const op = $["/{shareName}/{filePath}?comp=copy"] = $["/{shareName}/{directory}/{fileName}?comp=copy"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=copy"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=copy&copyid={CopyId}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=copy&copyid={CopyId}"]) {
-        const op = $["/{shareName}/{filePath}?comp=copy&copyid={CopyId}"] = $["/{shareName}/{directory}/{fileName}?comp=copy&copyid={CopyId}"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=copy&copyid={CopyId}"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=listhandles
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=listhandles"]) {
-        const op = $["/{shareName}/{filePath}?comp=listhandles"] = $["/{shareName}/{directory}/{fileName}?comp=listhandles"];
-        const path = op.get.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=listhandles"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=forceclosehandles
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=forceclosehandles"]) {
-        const op = $["/{shareName}/{filePath}?comp=forceclosehandles"] = $["/{shareName}/{directory}/{fileName}?comp=forceclosehandles"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=forceclosehandles"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=lease&acquire
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=lease&acquire"]) {
-        const op = $["/{shareName}/{filePath}?comp=lease&acquire"] = $["/{shareName}/{directory}/{fileName}?comp=lease&acquire"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=lease&acquire"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=lease&release
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=lease&release"]) {
-        const op = $["/{shareName}/{filePath}?comp=lease&release"] = $["/{shareName}/{directory}/{fileName}?comp=lease&release"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=lease&release"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=lease&change
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=lease&change"]) {
-        const op = $["/{shareName}/{filePath}?comp=lease&change"] = $["/{shareName}/{directory}/{fileName}?comp=lease&change"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=lease&change"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=lease&break
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=lease&break"]) {
-        const op = $["/{shareName}/{filePath}?comp=lease&break"] = $["/{shareName}/{directory}/{fileName}?comp=lease&break"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=lease&break"];
-    }
-```
-
-### ShareProperties
+### SharePropertiesInternal
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.ShareProperties.properties.Metadata) {
-        const path = $.ShareItem.properties.Metadata.$ref;
-        $.ShareProperties.properties.Metadata = { "$ref": path };
+    if (!$.SharePropertiesInternal.properties.Metadata) {
+        const path = $.ShareItemInternal.properties.Metadata.$ref;
+        $.SharePropertiesInternal.properties.Metadata = { "$ref": path };
     }
-    $.ShareProperties.properties.Etag["x-ms-client-name"] = "eTag";
+    $.SharePropertiesInternal.properties.Etag["x-ms-client-name"] = "eTag";
 ```
 
 ### ShareUsageBytes
@@ -565,21 +246,6 @@ directive:
     delete $.default;
     delete $["x-ms-enum"];
     $["x-ms-parameter-location"] = "method";
-```
-
-### Add the CustomFileAndDirectoryListingDeserializer attribute
-``` yaml
-directive:
-- from: FilesAndDirectoriesListSegment.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "import com.fasterxml.jackson.annotation.JsonProperty;",
-        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
-      replace(
-        "public final class FilesAndDirectoriesListSegment {",
-        "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
 ```
 
 ### ShareErrorCode
@@ -711,58 +377,7 @@ directive:
     $.FileContentType["x-ms-client-name"] = "contentType";
 ```
 
-### Change StorageErrorException to StorageException
-``` yaml
-directive:
-- from: ServicesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.ShareStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
-      );
-- from: SharesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.ShareStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
-      );
-- from: DirectorysImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.ShareStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
-      );
-- from: FilesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.ShareStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
-      );
-```
+
 ## Rename FileDownloadHeaders to ShareFileDownloadHeaders
 ``` yaml
 directive: 
@@ -778,6 +393,24 @@ directive:
   where: $.parameters.LeaseIdOptional
   transform: >
     delete $["x-ms-parameter-grouping"];
+```
+
+### ListSharesSegment x-ms-pageable itemName
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/?comp=list"].get
+  transform: >
+    $["x-ms-pageable"].itemName = "ShareItems";
+```
+
+### Delete Directory_ListFilesAndDirectoriesSegment x-ms-pageable as autorest does not currently support multiple return types for pageable
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}/{directory}?restype=directory&comp=list"].get
+  transform: >
+    delete $["x-ms-pageable"];
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)

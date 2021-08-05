@@ -1,46 +1,67 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://e88xscnapdz5ptf01d.file.preprod.core.windows.net/jtsfileserviceasyncapitestslistshareswithpremiumshare056496c5?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/e1ae039b0e1ae039beb363014bb3dd0f1ca6744a9af6?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "8f5cc721-a266-4e7f-a701-e7e0bb6289e9"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f21c1057-80cc-46ec-b518-56120b9bf5e5"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D779C31B4C492D",
-      "Last-Modified" : "Thu, 05 Dec 2019 20:38:37 GMT",
+      "eTag" : "0x8D910031B845322",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:38 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ccf4dcc2-a01a-006a-4cab-abb167000000",
-      "Date" : "Thu, 05 Dec 2019 20:38:37 GMT",
-      "x-ms-client-request-id" : "8f5cc721-a266-4e7f-a701-e7e0bb6289e9"
+      "x-ms-request-id" : "7ebf3733-d01a-0046-62eb-4102cb000000",
+      "x-ms-client-request-id" : "f21c1057-80cc-46ec-b518-56120b9bf5e5",
+      "Date" : "Wed, 05 May 2021 20:19:37 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://e88xscnapdz5ptf01d.file.preprod.core.windows.net?include=&comp=list",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&include=",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0ac5fec7-9257-4e2b-b6b6-ca9a9369d3ae"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e1fb6844-3ae0-4e38-943b-fc09c738706e"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "ccf4dcc5-a01a-006a-4dab-abb167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://e88xscnapdz5ptf01d.file.preprod.core.windows.net/\"><Shares><Share><Name>jtsfileserviceapitestslistshareswithpremiumshare0038723930</Name><Properties><Last-Modified>Thu, 05 Dec 2019 19:25:55 GMT</Last-Modified><Etag>\"0x8D779B8F32EE1E0\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 19:25:55 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>jtsfileserviceapitestslistshareswithpremiumshare07537755af</Name><Properties><Last-Modified>Thu, 05 Dec 2019 20:37:58 GMT</Last-Modified><Etag>\"0x8D779C30379688F\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 20:37:57 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>jtsfileserviceasyncapitestslistshareswithpremiumshare0229959a</Name><Properties><Last-Modified>Thu, 05 Dec 2019 19:34:11 GMT</Last-Modified><Etag>\"0x8D779BA1AA09CDE\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 19:34:11 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>jtsfileserviceasyncapitestslistshareswithpremiumshare056496c5</Name><Properties><Last-Modified>Thu, 05 Dec 2019 20:38:37 GMT</Last-Modified><Etag>\"0x8D779C31B4C492D\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 20:38:37 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>jtsfileserviceasyncapitestslistshareswithpremiumshare05687330</Name><Properties><Last-Modified>Thu, 05 Dec 2019 20:16:46 GMT</Last-Modified><Etag>\"0x8D779C00D582B1D\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 20:16:46 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>jtsfileserviceasyncapitestslistshareswithpremiumshare0588960d</Name><Properties><Last-Modified>Thu, 05 Dec 2019 19:31:12 GMT</Last-Modified><Etag>\"0x8D779B9AFFA6838\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 19:31:12 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>jtsfileserviceasyncapitestslistshareswithpremiumshare07866844</Name><Properties><Last-Modified>Thu, 05 Dec 2019 20:16:55 GMT</Last-Modified><Etag>\"0x8D779C013258493\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 20:16:55 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>jtsfileserviceasyncapitestslistshareswithpremiumshare0799469d</Name><Properties><Last-Modified>Thu, 05 Dec 2019 19:35:52 GMT</Last-Modified><Etag>\"0x8D779BA56C81E32\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 19:35:52 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>jtsshareapitestsgetpropertiespremium083320a655990a80</Name><Properties><Last-Modified>Thu, 05 Dec 2019 19:16:45 GMT</Last-Modified><Etag>\"0x8D779B7AB2E6AE9\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 19:16:45 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>jtsshareasyncapitestsgetpropertiespremium004757e6d7da63</Name><Properties><Last-Modified>Thu, 05 Dec 2019 20:20:32 GMT</Last-Modified><Etag>\"0x8D779C094778270\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 05 Dec 2019 20:20:32 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>test-share-4f448f0a-b9a5-3581-bff4-b852cd2a616e</Name><Properties><Last-Modified>Thu, 21 Nov 2019 23:58:27 GMT</Last-Modified><Etag>\"0x8D76EDEB41D146D\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 21 Nov 2019 23:58:27 GMT</NextAllowedQuotaDowngradeTime></Properties></Share><Share><Name>test-share-bde8486f-e193-78f9-914e-19c3418dae0d</Name><Properties><Last-Modified>Fri, 22 Nov 2019 00:24:32 GMT</Last-Modified><Etag>\"0x8D76EE25888B159\"</Etag><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><ProvisionedIops>100</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Fri, 22 Nov 2019 00:24:32 GMT</NextAllowedQuotaDowngradeTime></Properties></Share></Shares><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 05 Dec 2019 20:38:38 GMT",
-      "x-ms-client-request-id" : "0ac5fec7-9257-4e2b-b6b6-ca9a9369d3ae",
+      "x-ms-request-id" : "7ebf3737-d01a-0046-63eb-4102cb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolpremiumcanaryfile.file.core.windows.net/\"><Shares><Share><Name>51c57c98051c57c98177984628b08a39401f84d35982</Name><Properties><Last-Modified>Wed, 05 May 2021 19:16:15 GMT</Last-Modified><Etag>\"0x8D90FFA40DDED85\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 19:16:15 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>51c57c98051c57c983231618025b24f242d6f40c5b5d</Name><Properties><Last-Modified>Wed, 05 May 2021 20:04:18 GMT</Last-Modified><Etag>\"0x8D91000F75DA68D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 20:04:18 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>51c57c98051c57c98f4f48896749239c6b8644d4daed</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:38 GMT</Last-Modified><Etag>\"0x8D910031B83DD0E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 20:19:38 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>e1ae039b0e1ae039b8ed7631406c3a0f6907e4d7fa45</Name><Properties><Last-Modified>Wed, 05 May 2021 20:04:19 GMT</Last-Modified><Etag>\"0x8D91000F7A6DA4E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 20:04:19 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>e1ae039b0e1ae039bc02931343e5259114920490a9ba</Name><Properties><Last-Modified>Wed, 05 May 2021 19:16:18 GMT</Last-Modified><Etag>\"0x8D90FFA42E53681\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 19:16:18 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>e1ae039b0e1ae039beb363014bb3dd0f1ca6744a9af6</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:38 GMT</Last-Modified><Etag>\"0x8D910031B845322\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 20:19:38 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>jtsshareapitestsgetpropertiespremium05297687e65c4d0d</Name><Properties><Last-Modified>Tue, 12 May 2020 20:02:51 GMT</Last-Modified><Etag>\"0x8D7F6AF735E7E50\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Tue, 12 May 2020 20:02:51 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "e1fb6844-3ae0-4e38-943b-fc09c738706e",
+      "Date" : "Wed, 05 May 2021 20:19:37 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=e1ae039b&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ad13b602-61c1-484f-9632-4f4120415b4e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "a3ea5d69-601a-002d-46eb-4179c2000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>e1ae039b</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "ad13b602-61c1-484f-9632-4f4120415b4e",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceasyncapitestslistshareswithpremiumshare815412b", "jtsfileserviceasyncapitestslistshareswithpremiumshare056496c5" ]
+  "variables" : [ "e1ae039be1ae039beb31046418916a579dc84811a0", "e1ae039b0e1ae039beb363014bb3dd0f1ca6744a9af6" ]
 }

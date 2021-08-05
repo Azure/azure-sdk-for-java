@@ -88,17 +88,21 @@ class VaultImpl extends GroupableResourceCoreImpl<Vault, VaultInner, VaultImpl, 
     }
 
     @Override
-    public VaultImpl withIdentity(IdentityData identity) {
-        this.inner().withIdentity(identity);
-        return this;
-    }
-
-    @Override
     public VaultImpl withETag(String eTag) {
         if (isInCreateMode()) {
             this.inner().withETag(eTag);
         } else {
             this.updateParameter.withETag(eTag);
+        }
+        return this;
+    }
+
+    @Override
+    public VaultImpl withIdentity(IdentityData identity) {
+        if (isInCreateMode()) {
+            this.inner().withIdentity(identity);
+        } else {
+            this.updateParameter.withIdentity(identity);
         }
         return this;
     }

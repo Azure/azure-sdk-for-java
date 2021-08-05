@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -15,23 +17,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
-import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
+import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.FindBlobsOptions;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.Constants;
@@ -44,9 +51,11 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -65,7 +74,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  * available on {@link BlobAsyncClient}.
  *
  * <p>
- * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
+ * Please see <a href=https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction>here</a> for more
  * information on containers.
  *
  * <p>
@@ -111,11 +120,11 @@ public final class BlobServiceAsyncClient {
         } catch (IllegalArgumentException ex) {
             throw logger.logExceptionAsError(ex);
         }
-        this.azureBlobStorage = new AzureBlobStorageBuilder()
+        this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -143,8 +152,7 @@ public final class BlobServiceAsyncClient {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        return new BlobContainerAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString(), getServiceVersion(),
+        return new BlobContainerAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
@@ -178,6 +186,7 @@ public final class BlobServiceAsyncClient {
      * @param containerName Name of the container to create
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerAsyncClient> createBlobContainer(String containerName) {
         try {
             return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
@@ -196,12 +205,14 @@ public final class BlobServiceAsyncClient {
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType}
      *
      * @param containerName Name of the container to create
-     * @param metadata Metadata to associate with the container
+     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the container created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType) {
         try {
@@ -223,7 +234,7 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
-     * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      * <p><strong>Code Samples</strong></p>
      *
@@ -232,6 +243,7 @@ public final class BlobServiceAsyncClient {
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteBlobContainer(String containerName) {
         try {
             return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
@@ -242,7 +254,7 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
-     * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -252,6 +264,7 @@ public final class BlobServiceAsyncClient {
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName) {
         try {
             return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
@@ -284,6 +297,7 @@ public final class BlobServiceAsyncClient {
      *
      * @return A reactive response emitting the list of containers.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BlobContainerItem> listBlobContainers() {
         try {
             return this.listBlobContainers(new ListBlobContainersOptions());
@@ -303,6 +317,7 @@ public final class BlobServiceAsyncClient {
      * @param options A {@link ListBlobContainersOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of containers.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BlobContainerItem> listBlobContainers(ListBlobContainersOptions options) {
         try {
             return listBlobContainersWithOptionalTimeout(options, null);
@@ -314,32 +329,153 @@ public final class BlobServiceAsyncClient {
     PagedFlux<BlobContainerItem> listBlobContainersWithOptionalTimeout(ListBlobContainersOptions options,
         Duration timeout) {
         throwOnAnonymousAccess();
-        Function<String, Mono<PagedResponse<BlobContainerItem>>> func =
-            marker -> listBlobContainersSegment(marker, options, timeout)
-                .map(response -> new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getBlobContainerItems(),
-                    response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders()));
+        BiFunction<String, Integer, Mono<PagedResponse<BlobContainerItem>>> func =
+            (marker, pageSize) -> {
+                ListBlobContainersOptions finalOptions;
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListBlobContainersOptions().setMaxResultsPerPage(pageSize);
+                    } else {
+                        finalOptions = new ListBlobContainersOptions()
+                            .setMaxResultsPerPage(pageSize)
+                            .setDetails(options.getDetails())
+                            .setPrefix(options.getPrefix());
+                    }
+                } else {
+                    finalOptions = options;
+                }
+                return listBlobContainersSegment(marker, finalOptions, timeout);
+            };
 
-        return new PagedFlux<>(() -> func.apply(null), func);
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
-    private Mono<ServicesListBlobContainersSegmentResponse> listBlobContainersSegment(String marker,
+    private Mono<PagedResponse<BlobContainerItem>> listBlobContainersSegment(String marker,
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
-                options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toIncludeType(), null,
-                null, Context.NONE), timeout);
+            this.azureBlobStorage.getServices().listBlobContainersSegmentSinglePageAsync(
+                options.getPrefix(), marker, options.getMaxResultsPerPage(),
+                toIncludeTypes(options.getDetails()),
+                null, null, Context.NONE), timeout);
+    }
+
+    /**
+     * Returns a reactive Publisher emitting the blobs in this account whose tags match the query expression. For more
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String}
+     *
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
+     * @return A reactive response emitting the list of blobs.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TaggedBlobItem> findBlobsByTags(String query) {
+        return this.findBlobsByTags(new FindBlobsOptions(query));
+    }
+
+    /**
+     * Returns a reactive Publisher emitting the blobs in this account whose tags match the query expression. For more
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions}
+     *
+     * @param options {@link FindBlobsOptions}
+     * @return A reactive response emitting the list of blobs.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options) {
+        try {
+            return findBlobsByTags(options, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
+        throwOnAnonymousAccess();
+        StorageImplUtils.assertNotNull("options", options);
+        BiFunction<String, Integer, Mono<PagedResponse<TaggedBlobItem>>> func =
+            (marker, pageSize) -> withContext(context -> this.findBlobsByTags(
+                new FindBlobsOptions(options.getQuery()).setMaxResultsPerPage(pageSize), marker, timeout, context));
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
+    }
+
+    PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
+        throwOnAnonymousAccess();
+        StorageImplUtils.assertNotNull("options", options);
+        BiFunction<String, Integer, Mono<PagedResponse<TaggedBlobItem>>> func =
+            (marker, pageSize) -> {
+                FindBlobsOptions finalOptions;
+                if (pageSize != null) {
+                    finalOptions = new FindBlobsOptions(options.getQuery())
+                        .setMaxResultsPerPage(pageSize);
+                } else {
+                    finalOptions = options;
+                }
+                return this.findBlobsByTags(finalOptions, marker, timeout, context);
+            };
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
+    }
+
+    private Mono<PagedResponse<TaggedBlobItem>> findBlobsByTags(
+        FindBlobsOptions options, String marker,
+        Duration timeout, Context context) {
+        throwOnAnonymousAccess();
+        StorageImplUtils.assertNotNull("options", options);
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getServices().filterBlobsWithResponseAsync(null, null,
+                options.getQuery(), marker, options.getMaxResultsPerPage(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
+            .map(response -> {
+                List<TaggedBlobItem> value = response.getValue().getBlobs() == null
+                    ? Collections.emptyList()
+                    : response.getValue().getBlobs().stream()
+                    .map(ModelHelper::populateTaggedBlobItem)
+                    .collect(Collectors.toList());
+
+                return new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    value,
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders());
+            });
+    }
+
+    /**
+     * Converts {@link BlobContainerListDetails} into list of {@link ListBlobContainersIncludeType}
+     * that contains only options selected. If no option is selected then null is returned.
+     *
+     * @return a list of selected options converted into {@link ListBlobContainersIncludeType}, null if none
+     * of options has been selected.
+     */
+    private List<ListBlobContainersIncludeType> toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
+        boolean hasDetails = blobContainerListDetails != null
+            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
+        if (hasDetails) {
+            List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
+            if (blobContainerListDetails.getRetrieveDeleted()) {
+                flags.add(ListBlobContainersIncludeType.DELETED);
+            }
+            if (blobContainerListDetails.getRetrieveMetadata()) {
+                flags.add(ListBlobContainersIncludeType.METADATA);
+            }
+            return flags;
+        } else {
+            return null;
+        }
     }
 
     /**
      * Gets the properties of a storage account’s Blob service. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -347,6 +483,7 @@ public final class BlobServiceAsyncClient {
      *
      * @return A reactive response containing the storage account properties.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobServiceProperties> getProperties() {
         try {
             return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
@@ -357,7 +494,7 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Gets the properties of a storage account’s Blob service. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -366,6 +503,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the storage
      * account properties.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobServiceProperties>> getPropertiesWithResponse() {
         try {
             return withContext(this::getPropertiesWithResponse);
@@ -377,14 +515,14 @@ public final class BlobServiceAsyncClient {
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null,
+        return this.azureBlobStorage.getServices().getPropertiesWithResponseAsync(null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
      * Sets properties for a storage account's Blob service endpoint. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
      * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
@@ -397,6 +535,7 @@ public final class BlobServiceAsyncClient {
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(BlobServiceProperties properties) {
         try {
             return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
@@ -407,7 +546,7 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Sets properties for a storage account's Blob service endpoint. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
      * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
@@ -419,6 +558,7 @@ public final class BlobServiceAsyncClient {
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties) {
         try {
             return withContext(context -> setPropertiesWithResponse(properties, context));
@@ -487,7 +627,7 @@ public final class BlobServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null,
+        return this.azureBlobStorage.getServices().setPropertiesWithResponseAsync(finalProperties, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -538,6 +678,7 @@ public final class BlobServiceAsyncClient {
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      * @throws NullPointerException If {@code expiry} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         try {
             return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
@@ -562,6 +703,7 @@ public final class BlobServiceAsyncClient {
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      * @throws NullPointerException If {@code expiry} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
         try {
@@ -581,7 +723,7 @@ public final class BlobServiceAsyncClient {
         throwOnAnonymousAccess();
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
+        return this.azureBlobStorage.getServices().getUserDelegationKeyWithResponseAsync(
                 new KeyInfo()
                     .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
@@ -593,7 +735,7 @@ public final class BlobServiceAsyncClient {
      * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the storage account. For more information, see
      * the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -601,6 +743,7 @@ public final class BlobServiceAsyncClient {
      *
      * @return A {@link Mono} containing the storage account statistics.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobServiceStatistics> getStatistics() {
         try {
             return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
@@ -613,7 +756,7 @@ public final class BlobServiceAsyncClient {
      * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the storage account. For more information, see
      * the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -622,6 +765,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the
      * storage account statistics.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse() {
         try {
             return withContext(this::getStatisticsWithResponse);
@@ -634,20 +778,21 @@ public final class BlobServiceAsyncClient {
         throwOnAnonymousAccess();
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null,
+        return this.azureBlobStorage.getServices().getStatisticsWithResponseAsync(null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
      * Returns the sku name and account kind for the account. For more information, please see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-account-information">Azure Docs</a>.
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfo}
      *
      * @return A {@link Mono} containing containing the storage account info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInfo> getAccountInfo() {
         try {
             return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
@@ -658,7 +803,7 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Returns the sku name and account kind for the account. For more information, please see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -667,6 +812,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} the storage account
      * info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
         try {
             return withContext(this::getAccountInfoWithResponse);
@@ -677,10 +823,10 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(context)
+        return this.azureBlobStorage.getServices().getAccountInfoWithResponseAsync(context)
             .map(rb -> {
-                ServiceGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
-                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
+                ServicesGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
             });
     }
 
@@ -695,7 +841,7 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
@@ -704,12 +850,30 @@ public final class BlobServiceAsyncClient {
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
+        return generateAccountSas(accountSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
+     * containers and file shares.</p>
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
         throwOnAnonymousAccess();
         return new AccountSasImplUtil(accountSasSignatureValues)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
     /**
@@ -721,4 +885,117 @@ public final class BlobServiceAsyncClient {
                 + "credentials"));
         }
     }
+
+    /**
+     * Restores a previously deleted container.
+     * If the container associated with provided <code>deletedContainerName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String}
+     *
+     * @param deletedContainerName The name of the previously deleted container.
+     * @param deletedContainerVersion The version of the previously deleted container.
+     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
+     * to interact with the restored container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
+        String deletedContainerName, String deletedContainerVersion) {
+        return this.undeleteBlobContainerWithResponse(new UndeleteBlobContainerOptions(deletedContainerName,
+            deletedContainerVersion)
+        ).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Restores a previously deleted container. The restored container
+     * will be renamed to the <code>destinationContainerName</code> if provided in <code>options</code>.
+     * Otherwise <code>deletedContainerName</code> is used as destination container name.
+     * If the container associated with provided <code>destinationContainerName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions}
+     *
+     * @param options {@link UndeleteBlobContainerOptions}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * BlobContainerAsyncClient} used to interact with the restored container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
+        UndeleteBlobContainerOptions options) {
+        try {
+            return withContext(context -> undeleteBlobContainerWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
+        UndeleteBlobContainerOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        boolean hasOptionalDestinationContainerName = options.getDestinationContainerName() != null;
+        String finalDestinationContainerName =
+            hasOptionalDestinationContainerName ? options.getDestinationContainerName()
+                : options.getDeletedContainerName();
+        context = context == null ? Context.NONE : context;
+        return this.azureBlobStorage.getContainers().restoreWithResponseAsync(finalDestinationContainerName, null,
+            null, options.getDeletedContainerName(), options.getDeletedContainerVersion(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response,
+                getBlobContainerAsyncClient(finalDestinationContainerName)));
+    }
+
+//    /**
+//     * Renames an existing blob container.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainer#String-String}
+//     *
+//     * @param sourceContainerName The current name of the container.
+//     * @param destinationContainerName The new name of the container.
+//     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the renamed container.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    Mono<BlobContainerAsyncClient> renameBlobContainer(String sourceContainerName,
+//        String destinationContainerName) {
+//        return renameBlobContainerWithResponse(sourceContainerName,
+//            new BlobContainerRenameOptions(destinationContainerName)).flatMap(FluxUtil::toMono);
+//    }
+//
+//    /**
+//     * Renames an existing blob container.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainerWithResponse#String-BlobContainerRenameOptions}
+//     *
+//     * @param sourceContainerName The current name of the container.
+//     * @param options {@link BlobContainerRenameOptions}
+//     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
+//     * {@link BlobContainerAsyncClient} used to interact with the renamed container.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    Mono<Response<BlobContainerAsyncClient>> renameBlobContainerWithResponse(String sourceContainerName,
+//        BlobContainerRenameOptions options) {
+//        try {
+//            return withContext(context -> renameBlobContainerWithResponse(sourceContainerName, options, context));
+//        } catch (RuntimeException ex) {
+//            return monoError(logger, ex);
+//        }
+//    }
+//
+//    Mono<Response<BlobContainerAsyncClient>> renameBlobContainerWithResponse(String sourceContainerName,
+//        BlobContainerRenameOptions options, Context context) {
+//        BlobContainerAsyncClient destinationContainerClient = getBlobContainerAsyncClient(
+//            options.getDestinationContainerName());
+//        return destinationContainerClient.renameWithResponseHelper(sourceContainerName, options, context);
+//    }
 }

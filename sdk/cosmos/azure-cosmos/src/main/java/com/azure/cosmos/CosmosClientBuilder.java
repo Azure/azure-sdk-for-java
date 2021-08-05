@@ -4,14 +4,23 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Helper class to build CosmosAsyncClient {@link CosmosAsyncClient} and CosmosClient {@link CosmosClient}
@@ -22,7 +31,7 @@ import java.util.List;
  * Though consistencyLevel is not mandatory, but we strongly suggest to pay attention to this API when building client.
  * By default, account consistency level is used if none is provided.
  * <p>
- * By default, direct connection mode is used if none specified. 
+ * By default, direct connection mode is used if none specified.
  * <pre>
  *     Building Cosmos Async Client minimal APIs (without any customized configurations)
  * {@code
@@ -80,6 +89,8 @@ public class CosmosClientBuilder {
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
+    private CosmosClientMetadataCachesSnapshot state;
+    private TokenCredential tokenCredential;
     private ConnectionPolicy connectionPolicy;
     private GatewayConnectionConfig gatewayConnectionConfig;
     private DirectConnectionConfig directConnectionConfig;
@@ -96,6 +107,7 @@ public class CosmosClientBuilder {
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
+    private boolean clientTelemetryEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -108,6 +120,15 @@ public class CosmosClientBuilder {
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
     }
 
+    CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
+        this.state = metadataCachesSnapshot;
+        return this;
+    }
+
+    CosmosClientMetadataCachesSnapshot metadataCaches() {
+        return this.state;
+    }
+
     /**
      * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
      * For other consistency levels, it is not needed, unless if you need occasionally send requests with Session
@@ -117,7 +138,7 @@ public class CosmosClientBuilder {
      * @param sessionCapturingOverrideEnabled session capturing override
      * @return current cosmosClientBuilder
      */
-    CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+    public CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
         this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
         return this;
     }
@@ -199,7 +220,12 @@ public class CosmosClientBuilder {
      */
     CosmosClientBuilder authorizationTokenResolver(
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
-        this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
+        this.cosmosAuthorizationTokenResolver = Objects.requireNonNull(cosmosAuthorizationTokenResolver,
+            "'cosmosAuthorizationTokenResolver' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.credential = null;
+        this.permissions = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -219,7 +245,7 @@ public class CosmosClientBuilder {
      * @return current Builder
      */
     public CosmosClientBuilder endpoint(String endpoint) {
-        this.serviceEndpoint = endpoint;
+        this.serviceEndpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
 
@@ -241,12 +267,16 @@ public class CosmosClientBuilder {
      * @return current Builder.
      */
     public CosmosClientBuilder key(String key) {
-        this.keyOrResourceToken = key;
+        this.keyOrResourceToken = Objects.requireNonNull(key, "'key' cannot be null.");
+        this.cosmosAuthorizationTokenResolver = null;
+        this.credential = null;
+        this.permissions = null;
+        this.tokenCredential = null;
         return this;
     }
 
     /**
-     * Sets a resource token used to perform authentication
+     * Gets a resource token used to perform authentication
      * for accessing resource.
      *
      * @return the resourceToken
@@ -263,7 +293,37 @@ public class CosmosClientBuilder {
      * @return current Builder.
      */
     public CosmosClientBuilder resourceToken(String resourceToken) {
-        this.keyOrResourceToken = resourceToken;
+        this.keyOrResourceToken = Objects.requireNonNull(resourceToken, "'resourceToken' cannot be null.");
+        this.cosmosAuthorizationTokenResolver = null;
+        this.credential = null;
+        this.permissions = null;
+        this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Gets a token credential instance used to perform authentication
+     * for accessing resource.
+     *
+     * @return the token credential.
+     */
+    TokenCredential getTokenCredential() {
+        return tokenCredential;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link TokenCredential}.
+     * @return the updated CosmosClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public CosmosClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.credential = null;
+        this.permissions = null;
         return this;
     }
 
@@ -285,7 +345,11 @@ public class CosmosClientBuilder {
      * @return current Builder.
      */
     public CosmosClientBuilder permissions(List<CosmosPermissionProperties> permissions) {
-        this.permissions = permissions;
+        this.permissions = Objects.requireNonNull(permissions, "'permissions' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.credential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -338,7 +402,11 @@ public class CosmosClientBuilder {
      * @return current cosmosClientBuilder
      */
     public CosmosClientBuilder credential(AzureKeyCredential credential) {
-        this.credential = credential;
+        this.credential = Objects.requireNonNull(credential, "'cosmosKeyCredential' cannot be null.");
+        this.keyOrResourceToken = null;
+        this.cosmosAuthorizationTokenResolver = null;
+        this.permissions = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -346,13 +414,13 @@ public class CosmosClientBuilder {
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to false (which is by default), this removes the resource from response. It reduces networking
-     * and CPU load by not sending the resource back over the network and serializing it
+     * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it
      * on the client.
      *
      * By-default, this is false.
      *
-     * @return a boolean indicating whether resource will be included in the response or not
+     * @return a boolean indicating whether payload will be included in the response or not
      */
     boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
@@ -362,14 +430,14 @@ public class CosmosClientBuilder {
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to false (which is by default), this removes the resource from response. It reduces networking
-     * and CPU load by not sending the resource back over the network and serializing it on the client.
+     * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
      *
      * This feature does not impact RU usage for read or write operations.
      *
      * By-default, this is false.
      *
-     * @param contentResponseOnWriteEnabled a boolean indicating whether resource will be included in the response or not
+     * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included in the response or not
      * @return current cosmosClientBuilder
      */
     public CosmosClientBuilder contentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
@@ -530,6 +598,21 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Sets the flag to enable client telemetry which will periodically collect
+     * database operations aggregation statistics, system information like cpu/memory
+     * and send it to cosmos monitoring service, which will be helpful during debugging.
+     *<p>
+     * DEFAULT value is false indicating this is opt in feature, by default no telemetry collection.
+     *
+     * @param clientTelemetryEnabled flag to enable client telemetry.
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
+        this.clientTelemetryEnabled = clientTelemetryEnabled;
+        return this;
+    }
+
+    /**
      * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
      * DEFAULT value is true.
@@ -622,6 +705,15 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Gets the flag to enabled client telemetry.
+     *
+     * @return flag to enable client telemetry.
+     */
+    boolean isClientTelemetryEnabled() {
+        return clientTelemetryEnabled;
+    }
+
+    /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
      * DEFAULT value is true.
@@ -668,8 +760,11 @@ public class CosmosClientBuilder {
             //  Check if the user passed additional gateway connection configuration
             if (this.gatewayConnectionConfig != null) {
                 this.connectionPolicy.setMaxConnectionPoolSize(this.gatewayConnectionConfig.getMaxConnectionPoolSize());
+                //  TODO(kuthapar): potential bug - when we expose requestTimeout from direct and gateway connection config,
+                //   as gateway connection config will overwrite direct connection config settings
                 this.connectionPolicy.setRequestTimeout(this.gatewayConnectionConfig.getRequestTimeout());
-                this.connectionPolicy.setIdleConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
+                this.connectionPolicy.setIdleHttpConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
+                this.connectionPolicy.setProxy(this.gatewayConnectionConfig.getProxy());
             }
         } else if (gatewayConnectionConfig != null) {
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
@@ -680,13 +775,33 @@ public class CosmosClientBuilder {
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
+        this.connectionPolicy.setClientTelemetryEnabled(this.clientTelemetryEnabled);
     }
 
     private void validateConfig() {
+        URI uri;
+        try {
+            uri = new URI(serviceEndpoint);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("invalid serviceEndpoint", e);
+        }
+
+        if (preferredRegions != null) {
+            // validate preferredRegions
+            preferredRegions.stream().forEach(
+                preferredRegion -> {
+                    Preconditions.checkArgument(StringUtils.trimToNull(preferredRegion) != null, "preferredRegion can't be empty");
+                    String trimmedPreferredRegion = preferredRegion.toLowerCase(Locale.ROOT).replace(" ", "");
+                    LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
+                }
+            );
+        }
+
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
-            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.credential == null,
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
+                && this.credential == null && this.tokenCredential == null,
             "cannot buildAsyncClient client without any one of key, resource token, permissions, and "
                 + "azure key credential");
         ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
@@ -711,5 +826,27 @@ public class CosmosClientBuilder {
         if (value) {
             throw new IllegalArgumentException(error);
         }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(
+            new CosmosClientBuilderHelper.CosmosClientBuilderAccessor() {
+
+                @Override
+                public void setCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder,
+                                                                  CosmosClientMetadataCachesSnapshot metadataCache) {
+                    builder.metadataCaches(metadataCache);
+                }
+
+                @Override
+                public CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder) {
+                    return builder.metadataCaches();
+                }
+            });
     }
 }

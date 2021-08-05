@@ -5,30 +5,24 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.util.Constants;
+import com.azure.search.documents.implementation.util.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -37,39 +31,39 @@ import java.util.Objects;
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  * <p>
- * The following information must be provided to successfully create a client.
+ * The following must be provided to construct a client instance.
  * <ul>
- *     <li>{@link #endpoint(String)}</li>
- *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
+ * <li>The Azure Cognitive Search service URL.</li>
+ * <li>An {@link AzureKeyCredential} that grants access to the Azure Cognitive Search service.</li>
  * </ul>
+ *
+ * <p><strong>Instantiating an asynchronous Search Indexer Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Search Indexer Client</strong></p>
+ *
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.instantiation}
+ *
+ * @see SearchIndexerClient
+ * @see SearchIndexerAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
 public class SearchIndexerClientBuilder {
-    private static final String API_KEY = "api-key";
-
-    /*
-     * This header tells the service to return the request ID in the HTTP response. This is useful for correlating the
-     * request sent to the response.
-     */
-    private static final String ECHO_REQUEST_ID_HEADER = "return-client-request-id";
-
-    private static final String SEARCH_PROPERTIES = "azure-search-documents.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-
     private final ClientLogger logger = new ClientLogger(SearchIndexerClientBuilder.class);
-    private final List<HttpPipelinePolicy> policies = new ArrayList<>();
-    private final HttpHeaders headers = new HttpHeaders().put(ECHO_REQUEST_ID_HEADER, "true");
 
-    private final String clientName;
-    private final String clientVersion;
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
-    private AzureKeyCredential credential;
+    private AzureKeyCredential azureKeyCredential;
+    private TokenCredential tokenCredential;
+
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
-    private HttpLogOptions httpLogOptions = new HttpLogOptions();
+    private ClientOptions clientOptions;
+    private HttpLogOptions httpLogOptions;
     private Configuration configuration;
     private RetryPolicy retryPolicy;
 
@@ -78,9 +72,6 @@ public class SearchIndexerClientBuilder {
      * SearchIndexerClients} and {@link SearchIndexerAsyncClient SearchIndexerAsyncClients}.
      */
     public SearchIndexerClientBuilder() {
-        Map<String, String> properties = CoreUtils.getProperties(SEARCH_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     }
 
     /**
@@ -110,7 +101,6 @@ public class SearchIndexerClientBuilder {
      */
     public SearchIndexerAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
@@ -120,41 +110,16 @@ public class SearchIndexerClientBuilder {
             return new SearchIndexerAsyncClient(endpoint, buildVersion, httpPipeline);
         }
 
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-        final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
-        httpPipelinePolicies.add(new AddHeadersPolicy(headers));
-        httpPipelinePolicies.add(new RequestIdPolicy());
+        HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
+            azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, logger);
 
-        HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
-        httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-
-        httpPipelinePolicies.add(new AddDatePolicy());
-
-        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, credential));
-
-        httpPipelinePolicies.addAll(this.policies);
-
-        HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
-
-        httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        httpPipelinePolicies.add(new HttpLoggingPolicy(httpLogOptions));
-
-        HttpPipeline buildPipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
-            .build();
-
-        return new SearchIndexerAsyncClient(endpoint, buildVersion, buildPipeline);
+        return new SearchIndexerAsyncClient(endpoint, buildVersion, pipeline);
     }
 
     /**
-     * Sets the service endpoint for the Azure Search instance.
+     * Sets the service endpoint for the Azure Cognitive Search instance.
      *
-     * @param endpoint The URL of the Azure Search instance.
+     * @param endpoint The URL of the Azure Cognitive Search instance.
      * @return The updated SearchIndexerClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
@@ -173,12 +138,20 @@ public class SearchIndexerClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexerClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
     public SearchIndexerClientBuilder credential(AzureKeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.credential = credential;
+        this.azureKeyCredential = credential;
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     *
+     * @param credential The {@link TokenCredential} used to authenticate HTTP requests.
+     * @return The updated SearchIndexerClientBuilder object.
+     */
+    public SearchIndexerClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
         return this;
     }
 
@@ -196,6 +169,26 @@ public class SearchIndexerClientBuilder {
     }
 
     /**
+     * Gets the default Azure Search headers and query parameters allow list.
+     *
+     * @return The default {@link HttpLogOptions} allow list.
+     */
+    public static HttpLogOptions getDefaultLogOptions() {
+        return Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
+    }
+
+    /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The client options.
+     * @return The updated SearchIndexerClientBuilder object.
+     */
+    public SearchIndexerClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
      * Adds a pipeline policy to apply to each request sent.
      * <p>
      * This method may be called multiple times, each time it is called the policy will be added to the end of added
@@ -206,7 +199,14 @@ public class SearchIndexerClientBuilder {
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public SearchIndexerClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        policies.add(Objects.requireNonNull(policy));
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
+
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
+
         return this;
     }
 

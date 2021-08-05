@@ -30,6 +30,17 @@ public final class LimitTokenFilter extends TokenFilter {
     private Boolean allTokensConsumed;
 
     /**
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public LimitTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the maxTokenCount property: The maximum number of tokens to produce.
      * Default is 1.
      *

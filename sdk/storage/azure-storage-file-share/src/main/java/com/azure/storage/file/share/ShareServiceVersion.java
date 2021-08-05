@@ -11,7 +11,13 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum ShareServiceVersion implements ServiceVersion {
     V2019_02_02("2019-02-02"),
-    V2019_07_07("2019-07-07");
+    V2019_07_07("2019-07-07"),
+    V2019_12_12("2019-12-12"),
+    V2020_02_10("2020-02-10"),
+    V2020_04_08("2020-04-08"),
+    V2020_06_12("2020-06-12"),
+    V2020_08_04("2020-08-04"),
+    V2020_10_02("2020-10-02");
 
     private final String version;
 
@@ -33,6 +39,6 @@ public enum ShareServiceVersion implements ServiceVersion {
      * @return the latest {@link ShareServiceVersion}
      */
     public static ShareServiceVersion getLatest() {
-        return V2019_07_07;
+        return V2020_10_02;
     }
 }

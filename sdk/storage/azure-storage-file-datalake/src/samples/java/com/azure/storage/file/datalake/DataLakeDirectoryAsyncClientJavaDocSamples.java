@@ -177,4 +177,19 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         System.out.println("Directory Client has been renamed");
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions
     }
+
+    /**
+     * Code snippets for {@link DataLakeDirectoryAsyncClient#listPaths()} and
+     * {@link DataLakeDirectoryAsyncClient#listPaths(boolean, boolean, Integer)}
+     */
+    public void listPaths() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths
+        client.listPaths().subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#boolean-boolean-Integer
+        client.listPaths(false, false, 10)
+            .subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#boolean-boolean-Integer
+    }
 }

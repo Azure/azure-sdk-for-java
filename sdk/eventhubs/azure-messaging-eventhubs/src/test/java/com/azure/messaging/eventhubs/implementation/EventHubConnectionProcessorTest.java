@@ -10,10 +10,12 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.DirectProcessor;
@@ -61,6 +63,12 @@ class EventHubConnectionProcessorTest {
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         when(connection.getShutdownSignals()).thenReturn(shutdownSignalProcessor);
+        when(connection.closeAsync()).thenReturn(Mono.empty());
+    }
+
+    @AfterEach
+    void teardown() {
+        Mockito.framework().clearInlineMocks();
     }
 
     /**
@@ -118,10 +126,9 @@ class EventHubConnectionProcessorTest {
         connection2Endpoint.next(AmqpEndpointState.ACTIVE);
 
         when(connection2.getEndpointStates()).thenReturn(connection2EndpointProcessor);
+        when(connection2.closeAsync()).thenReturn(Mono.empty());
 
         // Act & Assert
-
-        // Verify that we get the first connection.
         StepVerifier.create(processor)
             .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
             .expectNext(connection)

@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -56,6 +57,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private final AsyncKeyEncryptionKey keyWrapper;
 
     /**
+     * Whether or not encryption is enforced by this client. Throws an exception if data is downloaded and it is not
+     * encrypted.
+     */
+    private final boolean requiresEncryption;
+
+    /**
      * Initializes a new instance of the {@link BlobDecryptionPolicy} class with the specified key and resolver.
      * <p>
      * If the generated policy is intended to be used for encryption, users are expected to provide a key at the
@@ -67,10 +74,13 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption
      * key
      * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
+     * @param requiresEncryption Whether or not encryption is enforced by this client.
      */
-    BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver) {
+    BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver,
+        boolean requiresEncryption) {
         this.keyWrapper = key;
         this.keyResolver = keyResolver;
+        this.requiresEncryption = requiresEncryption;
     }
 
     @Override
@@ -105,7 +115,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 boolean padding = encryptedRange.toBlobRange().getOffset()
                     + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE);
                 String encryptedDataString = responseHeaders
-                    .getValue(CryptographyConstants.METADATA_HEADER + CryptographyConstants.ENCRYPTION_DATA_KEY);
+                    .getValue(Constants.HeaderConstants.X_MS_META + "-"
+                        + CryptographyConstants.ENCRYPTION_DATA_KEY);
 
                 Flux<ByteBuffer> plainTextData = this.decryptBlob(encryptedDataString,
                     httpResponse.getBody(), encryptedRange, padding);
@@ -303,6 +314,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      */
     private EncryptionData getAndValidateEncryptionData(String encryptedDataString) {
         if (encryptedDataString == null) {
+            if (requiresEncryption) {
+                throw logger.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
+                    + "downloaded data is not encrypted."));
+            }
             return null;
         }
         ObjectMapper objectMapper = new ObjectMapper();
@@ -311,6 +326,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
             // Blob being downloaded is not null.
             if (encryptionData == null) {
+                if (requiresEncryption) {
+                    throw logger.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
+                        + "downloaded data is not encrypted."));
+                }
                 return null;
             }
 

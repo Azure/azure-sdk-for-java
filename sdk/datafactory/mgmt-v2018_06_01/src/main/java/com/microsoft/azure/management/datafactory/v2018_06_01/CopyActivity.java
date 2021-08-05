@@ -83,10 +83,17 @@ public class CopyActivity extends ExecutionActivity {
     private RedirectIncompatibleRowSettings redirectIncompatibleRowSettings;
 
     /**
-     * Log storage settings customer need to provide when enabling session log.
+     * (Deprecated. Please use LogSettings) Log storage settings customer need
+     * to provide when enabling session log.
      */
     @JsonProperty(value = "typeProperties.logStorageSettings")
     private LogStorageSettings logStorageSettings;
+
+    /**
+     * Log settings customer needs provide when enabling log.
+     */
+    @JsonProperty(value = "typeProperties.logSettings")
+    private LogSettings logSettings;
 
     /**
      * Preserve Rules.
@@ -306,7 +313,7 @@ public class CopyActivity extends ExecutionActivity {
     }
 
     /**
-     * Get log storage settings customer need to provide when enabling session log.
+     * Get (Deprecated. Please use LogSettings) Log storage settings customer need to provide when enabling session log.
      *
      * @return the logStorageSettings value
      */
@@ -315,13 +322,33 @@ public class CopyActivity extends ExecutionActivity {
     }
 
     /**
-     * Set log storage settings customer need to provide when enabling session log.
+     * Set (Deprecated. Please use LogSettings) Log storage settings customer need to provide when enabling session log.
      *
      * @param logStorageSettings the logStorageSettings value to set
      * @return the CopyActivity object itself.
      */
     public CopyActivity withLogStorageSettings(LogStorageSettings logStorageSettings) {
         this.logStorageSettings = logStorageSettings;
+        return this;
+    }
+
+    /**
+     * Get log settings customer needs provide when enabling log.
+     *
+     * @return the logSettings value
+     */
+    public LogSettings logSettings() {
+        return this.logSettings;
+    }
+
+    /**
+     * Set log settings customer needs provide when enabling log.
+     *
+     * @param logSettings the logSettings value to set
+     * @return the CopyActivity object itself.
+     */
+    public CopyActivity withLogSettings(LogSettings logSettings) {
+        this.logSettings = logSettings;
         return this;
     }
 

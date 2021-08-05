@@ -22,15 +22,22 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.implementation.Lin
 @JsonFlatten
 public class SquareLinkedService extends LinkedServiceInner {
     /**
+     * Properties used to connect to Square. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /**
      * The URL of the Square instance. (i.e. mystore.mysquare.com).
      */
-    @JsonProperty(value = "typeProperties.host", required = true)
+    @JsonProperty(value = "typeProperties.host")
     private Object host;
 
     /**
      * The client ID associated with your Square application.
      */
-    @JsonProperty(value = "typeProperties.clientId", required = true)
+    @JsonProperty(value = "typeProperties.clientId")
     private Object clientId;
 
     /**
@@ -43,7 +50,7 @@ public class SquareLinkedService extends LinkedServiceInner {
      * The redirect URL assigned in the Square application dashboard. (i.e.
      * http://localhost:2500).
      */
-    @JsonProperty(value = "typeProperties.redirectUri", required = true)
+    @JsonProperty(value = "typeProperties.redirectUri")
     private Object redirectUri;
 
     /**
@@ -75,6 +82,26 @@ public class SquareLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get properties used to connect to Square. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value
+     */
+    public Object connectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set properties used to connect to Square. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the URL of the Square instance. (i.e. mystore.mysquare.com).

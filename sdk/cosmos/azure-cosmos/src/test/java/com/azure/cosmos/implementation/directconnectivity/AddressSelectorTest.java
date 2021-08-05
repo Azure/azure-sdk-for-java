@@ -3,10 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -15,13 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class AddressSelectorTest {
+    private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
 
     @Test(groups = "unit", expectedExceptions = GoneException.class)
     public void getPrimaryUri_NoAddress() throws Exception {
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         Mockito.doReturn(null).when(request).getDefaultReplicaIndex();
         List<AddressInformation>  replicaAddresses = new ArrayList<>();
 
@@ -29,9 +33,9 @@ public class AddressSelectorTest {
     }
 
     @Test(groups = "unit", expectedExceptions = GoneException.class, expectedExceptionsMessageRegExp =
-        "The requested resource is no longer available at the server. Returned addresses are \\{https://cosmos1/,https://cosmos2/\\}")
+        ".*\"innerErrorMessage\":\"The requested resource is no longer available at the server. Returned addresses are .*https://cosmos1/,https://cosmos2/}.*")
     public void getPrimaryUri_NoPrimaryAddress() throws Exception {
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         Mockito.doReturn(null).when(request).getDefaultReplicaIndex();
 
         List<AddressInformation>  replicaAddresses = new ArrayList<>();
@@ -44,7 +48,7 @@ public class AddressSelectorTest {
 
     @Test(groups = "unit")
     public void getPrimaryUri() throws Exception {
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         Mockito.doReturn(null).when(request).getDefaultReplicaIndex();
 
         List<AddressInformation>  replicaAddresses = new ArrayList<>();
@@ -60,7 +64,7 @@ public class AddressSelectorTest {
 
     @Test(groups = "unit")
     public void getPrimaryUri_WithRequestReplicaIndex() throws Exception {
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         Mockito.doReturn(1).when(request).getDefaultReplicaIndex();
 
         List<AddressInformation>  replicaAddresses = new ArrayList<>();
@@ -79,7 +83,7 @@ public class AddressSelectorTest {
         IAddressResolver addressResolver = Mockito.mock(IAddressResolver.class);
         AddressSelector selector = new AddressSelector(addressResolver, Protocol.HTTPS);
 
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         Mockito.doReturn(null).when(request).getDefaultReplicaIndex();
 
         List<AddressInformation>  replicaAddresses = new ArrayList<>();
@@ -90,7 +94,7 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
+        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), ArgumentMatchers.eq(false));
 
         Uri res = selector.resolvePrimaryUriAsync(request, false).block();
 
@@ -102,7 +106,7 @@ public class AddressSelectorTest {
         IAddressResolver addressResolver = Mockito.mock(IAddressResolver.class);
         AddressSelector selector = new AddressSelector(addressResolver, Protocol.HTTPS);
 
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         Mockito.doReturn(null).when(request).getDefaultReplicaIndex();
 
         List<AddressInformation>  replicaAddresses = new ArrayList<>();
@@ -113,7 +117,9 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
+        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0])))
+               .when(addressResolver)
+               .resolveAsync(Mockito.any(RxDocumentServiceRequest.class), ArgumentMatchers.eq(false));
 
         List<Uri> res = selector.resolveAllUriAsync(request, true, false).block();
 
@@ -125,7 +131,7 @@ public class AddressSelectorTest {
         IAddressResolver addressResolver = Mockito.mock(IAddressResolver.class);
         AddressSelector selector = new AddressSelector(addressResolver, Protocol.HTTPS);
 
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         Mockito.doReturn(null).when(request).getDefaultReplicaIndex();
 
         List<AddressInformation>  replicaAddresses = new ArrayList<>();
@@ -136,7 +142,9 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
+        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0])))
+               .when(addressResolver)
+               .resolveAsync(Mockito.any(RxDocumentServiceRequest.class), ArgumentMatchers.eq(false));
 
         List<AddressInformation> res = selector.resolveAddressesAsync(request, false).block();
 
@@ -148,7 +156,7 @@ public class AddressSelectorTest {
         IAddressResolver addressResolver = Mockito.mock(IAddressResolver.class);
         AddressSelector selector = new AddressSelector(addressResolver, Protocol.TCP);
 
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         Mockito.doReturn(null).when(request).getDefaultReplicaIndex();
 
         List<AddressInformation>  replicaAddresses = new ArrayList<>();
@@ -159,7 +167,8 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
+        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0])))
+               .when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), ArgumentMatchers.eq(false));
 
         List<Uri> res = selector.resolveAllUriAsync(request, true, false).block();
 

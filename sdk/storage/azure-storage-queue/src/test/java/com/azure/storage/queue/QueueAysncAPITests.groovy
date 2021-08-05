@@ -3,15 +3,19 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.util.BinaryData
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.queue.models.PeekedMessageItem
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueMessageItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
+import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -25,14 +29,14 @@ class QueueAysncAPITests extends APISpec {
     def queueName
 
     def setup() {
-        queueName = testResourceName.randomName(methodName, 60)
-        primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
+        queueName = namer.getRandomName(60)
+        primaryQueueServiceAsyncClient = queueServiceBuilderHelper().buildAsyncClient()
         queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
     }
 
     def "Get queue URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName)
 
         when:
@@ -45,7 +49,7 @@ class QueueAysncAPITests extends APISpec {
     def "IP based endpoint"() {
         when:
         def queueAsyncClient = new QueueClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .endpoint("http://127.0.0.1:10001/devstoreaccount1/myqueue")
             .buildAsyncClient()
 
@@ -294,6 +298,22 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
     }
 
+    def "Enqueue message binary data"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = BinaryData.fromString("test message")
+        when:
+        def enqueueMsgVerifier = StepVerifier.create(queueAsyncClient.sendMessageWithResponse(expectMsg, null, null))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
+        then:
+        enqueueMsgVerifier.assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 201)
+        }.verifyComplete()
+        peekMsgVerifier.assertNext {
+            assert expectMsg.toBytes() == it.getBody().toBytes()
+        }.verifyComplete()
+    }
+
     def "Enqueue empty message"() {
         given:
         queueAsyncClient.create().block()
@@ -321,6 +341,34 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
     }
 
+    def "Enqueue message encoded message"() {
+        given:
+        queueAsyncClient.create().block()
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        def expectMsg = BinaryData.fromString("test message")
+        when:
+        def enqueueMsgVerifier = StepVerifier.create(encodingQueueClient.sendMessageWithResponse(expectMsg, null, null))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
+        then:
+        enqueueMsgVerifier.assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 201)
+        }.verifyComplete()
+        peekMsgVerifier.assertNext {
+            assert Base64.getEncoder().encodeToString(expectMsg.toBytes()) == it.getBody().toString()
+        }.verifyComplete()
+    }
+
+    def "Dequeue message from empty queue"() {
+        given:
+        queueAsyncClient.create().block()
+
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.receiveMessage())
+
+        then:
+        dequeueMsgVerifier.verifyComplete()
+    }
+
     def "Dequeue message"() {
         given:
         queueAsyncClient.create().block()
@@ -332,6 +380,130 @@ class QueueAysncAPITests extends APISpec {
         dequeueMsgVerifier.assertNext {
             assert expectMsg == it.getMessageText()
         }.verifyComplete()
+    }
+
+    def "Dequeue encoded message"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessage())
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+        }.verifyComplete()
+    }
+
+    def "Dequeue fails without handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        queueAsyncClient.sendMessage(expectMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessage())
+        then:
+        dequeueMsgVerifier.verifyError(IllegalArgumentException.class)
+    }
+
+    def "Dequeue with handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        QueueMessageItem badMessage = null
+        String queueUrl = null
+        def encodingQueueClient = queueServiceBuilderHelper()
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .processMessageDecodingErrorAsync({ failure ->
+                badMessage = failure.getQueueMessageItem()
+                queueUrl = failure.getQueueAsyncClient().getQueueUrl()
+                return Mono.empty()
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessages(10))
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage != null
+            assert badMessage.getBody().toString() == expectMsg
+            assert queueUrl == queueAsyncClient.getQueueUrl()
+        }.verifyComplete()
+    }
+
+    def "Dequeue and delete with handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        QueueMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper()
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .processMessageDecodingErrorAsync({ failure ->
+                badMessage = failure.getQueueMessageItem()
+                return failure.getQueueAsyncClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessages(10))
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage != null
+            assert badMessage.getBody().toString() == expectMsg
+        }.verifyComplete()
+    }
+
+    def "Dequeue and delete with sync handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        QueueMessageItem badMessage = null
+        def encodingQueueClient = queueServiceBuilderHelper()
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .processMessageDecodingError({ failure ->
+                badMessage = failure.getQueueMessageItem()
+                failure.getQueueClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessages(10))
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage != null
+            assert badMessage.getBody().toString() == expectMsg
+        }.verifyComplete()
+    }
+
+    def "Dequeue with handler error"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper()
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .processMessageDecodingErrorAsync({ message ->
+                throw new IllegalStateException("KABOOM")
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessages(10))
+        then:
+        dequeueMsgVerifier.verifyError(IllegalStateException.class)
     }
 
     def "Dequeue multiple messages"() {
@@ -362,6 +534,45 @@ class QueueAysncAPITests extends APISpec {
         }
     }
 
+    def "Enqueue Dequeue non-UTF message"() {
+        given:
+        queueAsyncClient.create().block()
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
+        encodingQueueClient.sendMessage(BinaryData.fromBytes(content)).block()
+
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.receiveMessage())
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert content == it.getBody().toBytes()
+        }.verifyComplete()
+    }
+
+    def "Enqueue Peek non-UTF message"() {
+        given:
+        queueAsyncClient.create().block()
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
+        encodingQueueClient.sendMessage(BinaryData.fromBytes(content)).block()
+
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessage())
+        then:
+        dequeueMsgVerifier.assertNext {
+            assert content == it.getBody().toBytes()
+        }.verifyComplete()
+    }
+
+    def "Peek message from empty queue"() {
+        given:
+        queueAsyncClient.create().block()
+        when:
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
+        then:
+        peekMsgVerifier.verifyComplete()
+    }
+
     def "Peek message"() {
         given:
         queueAsyncClient.create().block()
@@ -373,6 +584,112 @@ class QueueAysncAPITests extends APISpec {
         peekMsgVerifier.assertNext {
             assert expectMsg == it.getMessageText()
         }.verifyComplete()
+    }
+
+    def "Peek encoded message"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessage())
+        then:
+        peekMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+        }.verifyComplete()
+    }
+
+    def "Peek fails without handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        queueAsyncClient.sendMessage(expectMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessage())
+        then:
+        peekMsgVerifier.verifyError(IllegalArgumentException.class)
+    }
+
+    def "Peek with handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        PeekedMessageItem badMessage = null
+        String queueUrl = null
+        Exception cause = null
+        def encodingQueueClient = queueServiceBuilderHelper()
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .processMessageDecodingErrorAsync({ failure ->
+                badMessage = failure.getPeekedMessageItem()
+                queueUrl = failure.getQueueAsyncClient().getQueueUrl()
+                cause = failure.getCause()
+                return Mono.empty()
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessages(10))
+        then:
+        peekMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage != null
+            assert badMessage.getBody().toString() == expectMsg
+            assert queueUrl == queueAsyncClient.getQueueUrl()
+            assert cause != null
+        }.verifyComplete()
+    }
+
+    def "Peek with sync handler"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        PeekedMessageItem badMessage = null
+        Exception cause = null
+        def encodingQueueClient = queueServiceBuilderHelper()
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .processMessageDecodingError({ failure ->
+                badMessage = failure.getPeekedMessageItem()
+                cause = failure.getCause()
+                // call some sync API
+                failure.getQueueClient().getProperties()
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessages(10))
+        then:
+        peekMsgVerifier.assertNext {
+            assert expectMsg == it.getBody().toString()
+            assert badMessage != null
+            assert badMessage.getBody().toString() == expectMsg
+            assert cause != null
+        }.verifyComplete()
+    }
+
+    def "Peek with handler exception"() {
+        given:
+        queueAsyncClient.create().block()
+        def expectMsg = "test message"
+        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
+        queueAsyncClient.sendMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(encodedMsg).block()
+        def encodingQueueClient = queueServiceBuilderHelper()
+            .messageEncoding(QueueMessageEncoding.BASE64)
+            .processMessageDecodingErrorAsync({ message ->
+                throw new IllegalStateException("KABOOM")
+            })
+            .buildAsyncClient().getQueueAsyncClient(queueName)
+        when:
+        def peekMsgVerifier = StepVerifier.create(encodingQueueClient.peekMessages(10))
+        then:
+        peekMsgVerifier.verifyError(IllegalStateException.class)
     }
 
     def "Peek multiple messages"() {
@@ -503,7 +820,8 @@ class QueueAysncAPITests extends APISpec {
         when:
         def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(
             dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1)))
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage().delaySubscription(Duration.ofSeconds(2)))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage()
+            .delaySubscription(getMessageUpdateDelay(2000)))
         then:
         updateMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)

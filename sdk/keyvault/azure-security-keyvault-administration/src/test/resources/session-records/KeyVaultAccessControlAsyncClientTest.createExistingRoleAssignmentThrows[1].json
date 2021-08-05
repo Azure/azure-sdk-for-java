@@ -1,0 +1,74 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions?api-version=7.2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "6944",
+      "x-frame-options" : "SAMEORIGIN",
+      "x-ms-build-version" : "1.0.20210407-3-27236ed1-develop",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "1",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.114.0;act_addr_fam=Ipv4;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a4e41264-aecd-11eb-8eeb-000d3a31c437",
+      "Body" : "{\"value\":[{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/7b127d3c-77bd-4e3e-bbe0-dbb8971fa7f8\",\"name\":\"7b127d3c-77bd-4e3e-bbe0-dbb8971fa7f8\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[{\"actions\":[],\"dataActions\":[\"Microsoft.KeyVault/managedHsm/backup/start/action\",\"Microsoft.KeyVault/managedHsm/backup/status/action\",\"Microsoft.KeyVault/managedHsm/keys/backup/action\"],\"notActions\":[],\"notDataActions\":[]}],\"roleName\":\"Managed HSM Backup\",\"type\":\"AKVBuiltInRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"},{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/33413926-3206-4cdd-b39a-83574fe37a17\",\"name\":\"33413926-3206-4cdd-b39a-83574fe37a17\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[{\"actions\":[],\"dataActions\":[\"Microsoft.KeyVault/managedHsm/keys/read/action\",\"Microsoft.KeyVault/managedHsm/keys/wrap/action\",\"Microsoft.KeyVault/managedHsm/keys/unwrap/action\"],\"notActions\":[],\"notDataActions\":[]}],\"roleName\":\"Managed HSM Crypto Service Encryption\",\"type\":\"AKVBuiltInRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"},{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/21dbd100-6940-42c2-9190-5d6cb909625c\",\"name\":\"21dbd100-6940-42c2-9190-5d6cb909625c\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[{\"actions\":[],\"dataActions\":[\"Microsoft.KeyVault/managedHsm/keys/release/action\"],\"notActions\":[],\"notDataActions\":[]}],\"roleName\":\"Managed HSM Crypto Service Release\",\"type\":\"AKVBuiltInRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"},{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/2c18b078-7c48-4d3a-af88-5a3a1b3f82b3\",\"name\":\"2c18b078-7c48-4d3a-af88-5a3a1b3f82b3\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[{\"actions\":[],\"dataActions\":[\"Microsoft.KeyVault/managedHsm/roleAssignments/read/action\",\"Microsoft.KeyVault/managedHsm/roleDefinitions/read/action\",\"Microsoft.KeyVault/managedHsm/keys/read/action\",\"Microsoft.KeyVault/managedHsm/keys/deletedKeys/read/action\"],\"notActions\":[],\"notDataActions\":[]}],\"roleName\":\"Managed HSM Crypto Auditor\",\"type\":\"AKVBuiltInRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"},{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/4bd23610-cdcf-4971-bdee-bdc562cc28e4\",\"name\":\"4bd23610-cdcf-4971-bdee-bdc562cc28e4\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[{\"actions\":[],\"dataActions\":[\"Microsoft.KeyVault/managedHsm/roleDefinitions/read/action\",\"Microsoft.KeyVault/managedHsm/roleDefinitions/write/action\",\"Microsoft.KeyVault/managedHsm/roleDefinitions/delete/action\",\"Microsoft.KeyVault/managedHsm/roleAssignments/read/action\",\"Microsoft.KeyVault/managedHsm/roleAssignments/write/action\",\"Microsoft.KeyVault/managedHsm/roleAssignments/delete/action\"],\"notActions\":[],\"notDataActions\":[]}],\"roleName\":\"Managed HSM Policy Administrator\",\"type\":\"AKVBuiltInRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"},{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/21dbd100-6940-42c2-9190-5d6cb909625b\",\"name\":\"21dbd100-6940-42c2-9190-5d6cb909625b\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[{\"actions\":[],\"dataActions\":[\"Microsoft.KeyVault/managedHsm/roleDefinitions/read/action\",\"Microsoft.KeyVault/managedHsm/roleAssignments/read/action\",\"Microsoft.KeyVault/managedHsm/keys/read/action\",\"Microsoft.KeyVault/managedHsm/keys/write/action\",\"Microsoft.KeyVault/managedHsm/keys/delete\",\"Microsoft.KeyVault/managedHsm/keys/create\",\"Microsoft.KeyVault/managedHsm/keys/import/action\",\"Microsoft.KeyVault/managedHsm/keys/release/action\",\"Microsoft.KeyVault/managedHsm/keys/backup/action\",\"Microsoft.KeyVault/managedHsm/keys/restore/action\",\"Microsoft.KeyVault/managedHsm/keys/encrypt/action\",\"Microsoft.KeyVault/managedHsm/keys/decrypt/action\",\"Microsoft.KeyVault/managedHsm/keys/wrap/action\",\"Microsoft.KeyVault/managedHsm/keys/unwrap/action\",\"Microsoft.KeyVault/managedHsm/keys/sign/action\",\"Microsoft.KeyVault/managedHsm/keys/verify/action\"],\"notActions\":[],\"notDataActions\":[]}],\"roleName\":\"Managed HSM Crypto User\",\"type\":\"AKVBuiltInRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"},{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/515eb02d-2335-4d2d-92f2-b1cbdf9c3778\",\"name\":\"515eb02d-2335-4d2d-92f2-b1cbdf9c3778\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[{\"actions\":[],\"dataActions\":[\"Microsoft.KeyVault/managedHsm/roleAssignments/delete/action\",\"Microsoft.KeyVault/managedHsm/roleAssignments/read/action\",\"Microsoft.KeyVault/managedHsm/roleAssignments/write/action\",\"Microsoft.KeyVault/managedHsm/roleDefinitions/read/action\",\"Microsoft.KeyVault/managedHsm/roleDefinitions/write/action\",\"Microsoft.KeyVault/managedHsm/roleDefinitions/delete/action\",\"Microsoft.KeyVault/managedHsm/keys/deletedKeys/read/action\",\"Microsoft.KeyVault/managedHsm/keys/deletedKeys/delete\",\"Microsoft.KeyVault/managedHsm/keys/deletedKeys/recover/action\",\"Microsoft.KeyVault/managedHsm/keys/export/action\"],\"notActions\":[],\"notDataActions\":[]}],\"roleName\":\"Managed HSM Crypto Officer\",\"type\":\"AKVBuiltInRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"},{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/a290e904-7015-4bba-90c8-60543313cdb4\",\"name\":\"a290e904-7015-4bba-90c8-60543313cdb4\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[{\"actions\":[],\"dataActions\":[\"Microsoft.KeyVault/managedHsm/roleAssignments/delete/action\",\"Microsoft.KeyVault/managedHsm/roleAssignments/read/action\",\"Microsoft.KeyVault/managedHsm/roleAssignments/write/action\",\"Microsoft.KeyVault/managedHsm/roleDefinitions/read/action\",\"Microsoft.KeyVault/managedHsm/roleDefinitions/write/action\",\"Microsoft.KeyVault/managedHsm/roleDefinitions/delete/action\",\"Microsoft.KeyVault/managedHsm/securitydomain/download/action\",\"Microsoft.KeyVault/managedHsm/securitydomain/download/read\",\"Microsoft.KeyVault/managedHsm/securitydomain/upload/action\",\"Microsoft.KeyVault/managedHsm/securitydomain/upload/read\",\"Microsoft.KeyVault/managedHsm/securitydomain/transferkey/read\",\"Microsoft.KeyVault/managedHsm/backup/start/action\",\"Microsoft.KeyVault/managedHsm/restore/start/action\",\"Microsoft.KeyVault/managedHsm/backup/status/action\",\"Microsoft.KeyVault/managedHsm/restore/status/action\"],\"notActions\":[],\"notDataActions\":[]}],\"roleName\":\"Managed HSM Administrator\",\"type\":\"AKVBuiltInRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"},{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/91d62511-feb2-456f-80a0-5b17bbaa50ec\",\"name\":\"91d62511-feb2-456f-80a0-5b17bbaa50ec\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[],\"roleName\":\"91d62511-feb2-456f-80a0-5b17bbaa50ec\",\"type\":\"CustomRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/4553f6a9-6796-47cd-b4c9-16158db89f8a?api-version=7.2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "398",
+      "x-frame-options" : "SAMEORIGIN",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "80",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.114.0;act_addr_fam=Ipv4;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a70ffecc-aecd-11eb-a764-000d3a3b7b4c",
+      "Body" : "{\"id\":\"/providers/Microsoft.Authorization/roleAssignments/4553f6a9-6796-47cd-b4c9-16158db89f8a\",\"name\":\"4553f6a9-6796-47cd-b4c9-16158db89f8a\",\"properties\":{\"principalId\":\"49acc88b-8f9e-4619-9856-16691db66767\",\"roleDefinitionId\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/515eb02d-2335-4d2d-92f2-b1cbdf9c3778\",\"scope\":\"/\"},\"type\":\"Microsoft.Authorization/roleAssignments\"}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/4553f6a9-6796-47cd-b4c9-16158db89f8a?api-version=7.2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "141",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "x-frame-options" : "SAMEORIGIN",
+      "content-type" : "application/json; charset=utf-8",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "a734027c-aecd-11eb-a764-000d3a3b7b4c",
+      "Body" : "{\"error\":{\"code\":\"RoleAssignmentExists\",\"message\":\"The role assignment already exists. (Activity ID: a734027c-aecd-11eb-a764-000d3a3b7b4c)\"}}",
+      "x-ms-server-latency" : "1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "4553f6a9-6796-47cd-b4c9-16158db89f8a" ]
+}

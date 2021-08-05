@@ -4,13 +4,12 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
-import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The CopyResult model. */
+/** Custom model copy result. */
 @Fluent
 public final class CopyResult {
     /*

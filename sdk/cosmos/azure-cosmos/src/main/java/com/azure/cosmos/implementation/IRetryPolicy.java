@@ -5,16 +5,12 @@ package com.azure.cosmos.implementation;
 
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-
 // TODO update documentation
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public interface IRetryPolicy  {
+public interface IRetryPolicy {
     // this capture all the retry logic
     // TODO: design decision should this return a single or an observable?
 
@@ -26,71 +22,5 @@ public interface IRetryPolicy  {
     /// <returns>If the retry needs to be attempted or not</returns>
     Mono<ShouldRetryResult> shouldRetry(Exception e);
 
-    int getRetryCount();
-
-    void incrementRetry();
-
-    void captureStartTimeIfNotSet();
-
-    void updateEndTime();
-
-    Duration getRetryLatency();
-
-    Instant getStartTime();
-
-    Instant getEndTime();
-
-    void addStatusAndSubStatusCode(Integer index, int statusCode, int subStatusCode);
-
-    List<int[]> getStatusAndSubStatusCodes();
-
-    class ShouldRetryResult {
-        /// <summary>
-        /// How long to wait before next retry. 0 indicates retry immediately.
-        /// </summary>
-        public final Duration backOffTime;
-        public final Exception exception;
-        public boolean shouldRetry;
-        public final Quadruple<Boolean, Boolean, Duration, Integer> policyArg;
-
-        private ShouldRetryResult(Duration dur, Exception e, boolean shouldRetry,
-                Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
-            this.backOffTime = dur;
-            this.exception = e;
-            this.shouldRetry = shouldRetry;
-            this.policyArg = policyArg;
-        }
-
-        public static ShouldRetryResult retryAfter(Duration dur) {
-            Utils.checkNotNullOrThrow(dur, "duration", "cannot be null");
-            return new ShouldRetryResult(dur, null, true, null);
-        }
-
-        public static ShouldRetryResult retryAfter(Duration dur,
-                Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
-            Utils.checkNotNullOrThrow(dur, "duration", "cannot be null");
-            return new ShouldRetryResult(dur, null, true, policyArg);
-        }
-
-        public static ShouldRetryResult error(Exception e) {
-            Utils.checkNotNullOrThrow(e, "exception", "cannot be null");
-            return new ShouldRetryResult(null, e, false, null);
-        }
-
-        public static ShouldRetryResult noRetry() {
-            return new ShouldRetryResult(null, null, false, null);
-        }
-
-        public void throwIfDoneTrying(Exception capturedException) throws Exception {
-            if (this.shouldRetry) {
-                return;
-            }
-
-            if (this.exception == null) {
-                throw capturedException;
-            } else {
-                throw this.exception;
-            }
-        }
-    }
+    RetryContext getRetryContext();
 }

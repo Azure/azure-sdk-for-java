@@ -8,15 +8,27 @@
 
 package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 
-import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.OperationsInner;
 import com.microsoft.azure.arm.model.HasInner;
+import rx.Completable;
 
 /**
  * Type representing Operations.
  */
 public interface Operations extends HasInner<OperationsInner> {
+    /**
+     * Get operation status.
+     * Get the status of an operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param operationId Operation ID
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<OperationResource> getAzureAsyncHeaderResultAsync(String resourceGroupName, String workspaceName, String operationId);
+
     /**
      * Get operation result.
      * Get the result of an operation.
@@ -28,18 +40,6 @@ public interface Operations extends HasInner<OperationsInner> {
      * @return the observable for the request
      */
     Completable getLocationHeaderResultAsync(String resourceGroupName, String workspaceName, String operationId);
-
-    /**
-     * Get operation status.
-     * Get the status of an operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
-     * @param operationId Operation ID
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Object> getAzureAsyncHeaderResultAsync(String resourceGroupName, String workspaceName, String operationId);
 
     /**
      * Check name availability.

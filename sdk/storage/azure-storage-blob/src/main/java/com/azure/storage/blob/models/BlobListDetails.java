@@ -18,9 +18,14 @@ import java.util.ArrayList;
 public final class BlobListDetails {
     private boolean retrieveCopy;
     private boolean retrieveMetadata;
+    private boolean retrieveTags;
     private boolean retrieveSnapshots;
     private boolean retrieveUncommittedBlobs;
     private boolean retrieveDeletedBlobs;
+    private boolean retrieveVersions;
+    private boolean retrieveDeletedWithVersions;
+    private boolean retrieveImmutabilityPolicy;
+    private boolean retrieveLegalHold;
 
     /**
      * Constructs an unpopulated {@link BlobListDetails}.
@@ -69,6 +74,26 @@ public final class BlobListDetails {
     }
 
     /**
+     * Whether blob tags should be returned.
+     *
+     * @return a flag indicating if tags will be returned in the listing
+     */
+    public boolean getRetrieveTags() {
+        return retrieveTags;
+    }
+
+    /**
+     * Whether blob tags should be returned.
+     *
+     * @param retrieveTags Flag indicating whether tags should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveTags(boolean retrieveTags) {
+        this.retrieveTags = retrieveTags;
+        return this;
+    }
+
+    /**
      * Whether snapshots should be returned. Snapshots are listed from oldest to newest.
      *
      * @return a flag indicating if snapshots will be returned in the listing
@@ -85,6 +110,26 @@ public final class BlobListDetails {
      */
     public BlobListDetails setRetrieveSnapshots(boolean retrieveSnapshots) {
         this.retrieveSnapshots = retrieveSnapshots;
+        return this;
+    }
+
+    /**
+     * Whether versions should be returned. Versions are listed from oldest to newest.
+     *
+     * @return a flag indicating if versions will be returned in the listing
+     */
+    public boolean getRetrieveVersions() {
+        return retrieveVersions;
+    }
+
+    /**
+     * Whether versions should be returned. Versions are listed from oldest to newest.
+     *
+     * @param retrieveVersions Flag indicating whether versions should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveVersions(boolean retrieveVersions) {
+        this.retrieveVersions = retrieveVersions;
         return this;
     }
 
@@ -131,6 +176,66 @@ public final class BlobListDetails {
     }
 
     /**
+     * Whether blobs which have been deleted with versioning.
+     *
+     * @return a flag indicating if deleted blobs with versioning will be returned in the listing
+     */
+    public boolean getRetrieveDeletedBlobsWithVersions() {
+        return retrieveDeletedWithVersions;
+    }
+
+    /**
+     * Whether blobs which have been deleted with versioning should be returned.
+     *
+     * @param retrieveDeletedWithVersions Flag indicating whether deleted blobs with versioning should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveDeletedBlobsWithVersions(boolean retrieveDeletedWithVersions) {
+        this.retrieveDeletedWithVersions = retrieveDeletedWithVersions;
+        return this;
+    }
+
+    /**
+     * Whether immutability policy for the blob should be returned.
+     *
+     * @return a flag indicating if immutability policy for the blob will be returned in the listing
+     */
+    public boolean getRetrieveImmutabilityPolicy() {
+        return retrieveImmutabilityPolicy;
+    }
+
+    /**
+     * Whether immutability policy for the blob should be returned.
+     *
+     * @param retrieveImmutabilityPolicy Flag indicating whether immutability policy for the blob should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveImmutabilityPolicy(boolean retrieveImmutabilityPolicy) {
+        this.retrieveImmutabilityPolicy = retrieveImmutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * Whether legal hold for the blob should be returned.
+     *
+     * @return a flag indicating if legal hold for the blob will be returned in the listing
+     */
+    public boolean getRetrieveLegalHold() {
+        return retrieveLegalHold;
+    }
+
+    /**
+     * Whether legal hold for the blob should be returned.
+     *
+     * @param retrieveLegalHold Flag indicating whetherlegal hold for the blob  should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveLegalHold(boolean retrieveLegalHold) {
+        this.retrieveLegalHold = retrieveLegalHold;
+        return this;
+    }
+
+    /**
      * @return a list of the flag set to true
      */
     public ArrayList<ListBlobsIncludeItem> toList() {
@@ -144,11 +249,26 @@ public final class BlobListDetails {
         if (this.retrieveMetadata) {
             details.add(ListBlobsIncludeItem.METADATA);
         }
+        if (this.retrieveTags) {
+            details.add(ListBlobsIncludeItem.TAGS);
+        }
         if (this.retrieveSnapshots) {
             details.add(ListBlobsIncludeItem.SNAPSHOTS);
         }
         if (this.retrieveUncommittedBlobs) {
             details.add(ListBlobsIncludeItem.UNCOMMITTEDBLOBS);
+        }
+        if (this.retrieveVersions) {
+            details.add(ListBlobsIncludeItem.VERSIONS);
+        }
+        if (this.retrieveDeletedWithVersions) {
+            details.add(ListBlobsIncludeItem.DELETEDWITHVERSIONS);
+        }
+        if (this.retrieveImmutabilityPolicy) {
+            details.add(ListBlobsIncludeItem.IMMUTABILITYPOLICY);
+        }
+        if (this.retrieveLegalHold) {
+            details.add(ListBlobsIncludeItem.LEGALHOLD);
         }
         return details;
     }

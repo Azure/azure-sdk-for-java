@@ -3,10 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,7 +20,6 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.util.Locale;
@@ -72,7 +69,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final int prefetchCount;
-    private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClosed;
     /**
@@ -84,14 +80,13 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
+        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
-        this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
         this.onClientClosed = onClientClosed;
     }
@@ -140,6 +135,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return getEventHubProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
@@ -177,6 +173,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @throws NullPointerException if {@code partitionId}, or {@code startingPosition} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition) {
         return receiveFromPartition(partitionId, startingPosition, defaultReceiveOptions);
     }
@@ -205,6 +202,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *     null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
         if (Objects.isNull(partitionId)) {
@@ -235,6 +233,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A stream of events for every partition in the Event Hub starting from the beginning of each partition.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive() {
         return receive(true, defaultReceiveOptions);
     }
@@ -256,6 +255,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A stream of events for every partition in the Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent) {
         return receive(startReadingAtEarliestEvent, defaultReceiveOptions);
     }
@@ -289,6 +289,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code receiveOptions} is null.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent, ReceiveOptions receiveOptions) {
         if (Objects.isNull(receiveOptions)) {
             return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
@@ -353,18 +354,21 @@ public class EventHubConsumerAsyncClient implements Closeable {
         final AtomicReference<Supplier<EventPosition>> initialPosition = new AtomicReference<>(() -> startingPosition);
         final Flux<AmqpReceiveLink> receiveLinkMono = connectionProcessor
             .flatMap(connection -> {
-                logger.info("connectionId[{}] linkName[{}]: Creating receive consumer for partition '{}'",
+                logger.info("connectionId[{}] linkName[{}] Creating receive consumer for partition '{}'",
                     connection.getId(), linkName, partitionId);
                 return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions);
             })
             .repeat();
 
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
-            new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy, connectionProcessor));
+            new AmqpReceiveLinkProcessor(entityPath, prefetchCount, connectionProcessor));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
-            receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
+            receiveOptions.getTrackLastEnqueuedEventProperties());
+    }
+
+    boolean isConnectionClosed() {
+        return this.connectionProcessor.isChannelClosed();
     }
 }

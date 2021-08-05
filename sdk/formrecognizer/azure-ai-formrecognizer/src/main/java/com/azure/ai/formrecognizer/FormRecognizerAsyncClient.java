@@ -4,24 +4,32 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.Language;
+import com.azure.ai.formrecognizer.implementation.models.Locale;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
-import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -31,24 +39,24 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
-import static com.azure.ai.formrecognizer.Transforms.toReceipt;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.implementation.Utility.detectContentType;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
+import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOperation;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt data from documents, extracting layout information and
- * analyzing custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
+ * input documents, extracting layout information, analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
@@ -62,7 +70,7 @@ public final class FormRecognizerAsyncClient {
     private final FormRecognizerServiceVersion serviceVersion;
 
     /**
-     * Create a {@link FormRecognizerAsyncClient} that sends requests to the Form Recognizer services's endpoint. Each
+     * Create a {@link FormRecognizerAsyncClient} that sends requests to the Form Recognizer service's endpoint. Each
      * service call goes through the {@link FormRecognizerClientBuilder#pipeline(HttpPipeline)} http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
@@ -75,26 +83,26 @@ public final class FormRecognizerAsyncClient {
 
     /**
      * Recognizes form data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * model with or without labels.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string}
      *
-     * @param formUrl The source URL to the input form.
      * @param modelId The UUID string format custom trained model Id to be used.
+     * @param formUrl The URL of the form to analyze.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId) {
-        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, false, null);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl) {
+        return beginRecognizeCustomFormsFromUrl(modelId, formUrl, null);
     }
 
     /**
@@ -104,36 +112,67 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions}
      *
-     * @param formUrl The source URL to the input form.
      * @param modelId The UUID string format custom trained model Id to be used.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param formUrl The source URL to the input form.
+     * @param recognizeCustomFormsOptions The additional configurable
+     * {@link RecognizeCustomFormsOptions options} that may be passed when recognizing custom forms.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, boolean includeTextDetails,
-        Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, List<RecognizedForm>>(
-            interval,
-            analyzeFormActivationOperation(formUrl, modelId, includeTextDetails),
-            createAnalyzeFormPollOperation(modelId),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchAnalyzeFormResultOperation(modelId, includeTextDetails));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl,
+        RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
+        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, recognizeCustomFormsOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId,
+        RecognizeCustomFormsOptions recognizeCustomFormsOptions,
+        Context context) {
+        try {
+            Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
+            Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+
+            final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
+                = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeCustomFormsOptions.isFieldElementsIncluded();
+            return new PollerFlux<>(
+                finalRecognizeCustomFormsOptions.getPollInterval(),
+                urlActivationOperation(() ->
+                        service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                            isFieldElementsIncluded,
+                            finalRecognizeCustomFormsOptions.getPages(),
+                            new SourcePath().setSource(formUrl),
+                            context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    logger),
+                pollingOperation(resultUid ->
+                    service.getAnalyzeFormResultWithResponseAsync(UUID.fromString(modelId), resultUid, context)),
+                (activationResponse, pollingContext) ->
+                    Mono.error(new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeFormResultWithResponseAsync(
+                    UUID.fromString(modelId), resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            modelId))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
     }
 
     /**
      * Recognizes form data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * model with or without labels.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -141,28 +180,27 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long}
      *
-     * @param form The data of the form to recognize form information from.
      * @param modelId The UUID string format custom trained model Id to be used.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
+     * @param form The data of the form to recognize form information from.
+     * @param length The exact length of the data.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, String modelId, long length, FormContentType formContentType) {
-        return beginRecognizeCustomForms(form, modelId, length, formContentType, false, null);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length) {
+        return beginRecognizeCustomForms(modelId, form, length, null);
     }
 
     /**
      * Recognizes form data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * model with or without labels.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -170,33 +208,87 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-RecognizeCustomFormsOptions}
      *
-     * @param form The data of the form to recognize form information from.
      * @param modelId The UUID string format custom trained model Id to be used.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param form The data of the form to recognize form information from.
+     * @param length The exact length of the data.
+     * @param recognizeCustomFormsOptions The additional configurable
+     * {@link RecognizeCustomFormsOptions options} that may be passed when recognizing custom forms.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, String modelId, long length, FormContentType formContentType,
-        boolean includeTextDetails, Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, List<RecognizedForm>>(
-            interval,
-            analyzeFormStreamActivationOperation(form, modelId, length, formContentType, includeTextDetails),
-            createAnalyzeFormPollOperation(modelId),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchAnalyzeFormResultOperation(modelId, includeTextDetails));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length,
+        RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
+        return beginRecognizeCustomForms(modelId, form, length, recognizeCustomFormsOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length,
+        RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
+        try {
+            Objects.requireNonNull(form, "'form' is required and cannot be null.");
+            Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+
+            final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
+                = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeCustomFormsOptions.isFieldElementsIncluded();
+            return new PollerFlux<>(
+                finalRecognizeCustomFormsOptions.getPollInterval(),
+                streamActivationOperation(
+                    contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
+                        ContentType.fromString(contentType.toString()),
+                        isFieldElementsIncluded,
+                        finalRecognizeCustomFormsOptions.getPages(),
+                        form,
+                        length,
+                        context)
+                        .map(response ->
+                            new FormRecognizerOperationResult(
+                                parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    form, finalRecognizeCustomFormsOptions.getContentType()),
+                pollingOperation(
+                    resultUuid -> service.getAnalyzeFormResultWithResponseAsync(
+                        UUID.fromString(modelId), resultUuid, context)),
+                (activationResponse, pollingContext) ->
+                    Mono.error(new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeFormResultWithResponseAsync(
+                    UUID.fromString(modelId), resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            modelId))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Recognizes content/layout data from documents using optical character recognition (OCR).
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string}
+     *
+     * @param formUrl The URL of the form to analyze.
+     *
+     * @return A {@link PollerFlux} that polls the recognize content operation until it has completed, has failed, or
+     * has been cancelled. The completed operation returns a list of {@link FormPage}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code formUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl) {
+        return beginRecognizeContentFromUrl(formUrl, null);
     }
 
     /**
@@ -205,56 +297,65 @@ public final class FormRecognizerAsyncClient {
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
+     * <p>Content recognition supports auto language identification and multilanguage documents, so only
+     * provide a language code if you would like to force the documented to be processed as
+     * that specific language in the {@link RecognizeContentOptions options}.</p>
+     *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions}
      *
      * @param formUrl The source URL to the input form.
+     * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
+     * that may be passed when recognizing content/layout on a form.
      *
-     * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @return A {@link PollerFlux} that polls the recognized content/layout operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl} is {@code null}.
+     * @throws NullPointerException If {@code formUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl) {
-        return beginRecognizeContentFromUrl(formUrl, null);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<FormPage>>
+        beginRecognizeContentFromUrl(String formUrl, RecognizeContentOptions recognizeContentOptions) {
+        return beginRecognizeContentFromUrl(formUrl, recognizeContentOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<FormPage>>
+        beginRecognizeContentFromUrl(String formUrl, RecognizeContentOptions recognizeContentOptions, Context context) {
+        try {
+            Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
+
+            RecognizeContentOptions finalRecognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
+            return new PollerFlux<>(
+                finalRecognizeContentOptions.getPollInterval(),
+                urlActivationOperation(
+                    () -> service.analyzeLayoutAsyncWithResponseAsync(
+                        finalRecognizeContentOptions.getPages(),
+                        finalRecognizeContentOptions.getLanguage() == null
+                            ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
+                        finalRecognizeContentOptions.getReadingOrder() != null
+                            ? com.azure.ai.formrecognizer.implementation.models.ReadingOrder.fromString(
+                            finalRecognizeContentOptions.getReadingOrder().toString())
+                            : null,
+                        new SourcePath().setSource(formUrl),
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    logger),
+                pollingOperation(resultId -> service.getAnalyzeLayoutResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) ->
+                    monoError(logger, new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeLayoutResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
     }
 
     /**
-     * Recognizes layout data using optical character recognition (OCR) and a prebuilt receipt trained
-     * model.
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-Duration}
-     *
-     * @param formUrl The source URL to the input form.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
-     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
-     * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<FormPage>>
-        beginRecognizeContentFromUrl(String formUrl, Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, List<FormPage>>(interval,
-            contentAnalyzeActivationOperation(formUrl),
-            extractContentPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
-            fetchExtractContentResult());
-    }
-
-    /**
-     * Recognizes layout data using optical character recognition (OCR) and a prebuilt receipt
-     * trained model.
+     * Recognizes content/layout data using optical character recognition (OCR).
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -262,58 +363,87 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long}
      *
      * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
+     * @param length The exact length of the data.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form} is {@code null}.
+     * @throws NullPointerException If {@code form} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
-        Flux<ByteBuffer> form, long length, FormContentType formContentType) {
-        return beginRecognizeContent(form, length, formContentType, null);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(
+        Flux<ByteBuffer> form, long length) {
+        return beginRecognizeContent(form, length, null);
     }
 
     /**
-     * Recognizes layout data using optical character recognition (OCR) and a prebuilt receipt
-     * trained model.
+     * Recognizes content/layout data using optical character recognition (OCR).
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
+     * <p>Content recognition supports auto language identification and multilanguage documents, so only
+     * provide a language code if you would like to force the documented to be processed as
+     * that specific language in the {@link RecognizeContentOptions options}.</p>
+
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-RecognizeContentOptions}
      *
      * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param length The exact length of the data.
+     * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
+     * that may be passed when recognizing content/layout on a form.
      *
-     * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form} is {@code null}.
+     * @throws NullPointerException If {@code form} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
-        Flux<ByteBuffer> form, long length, FormContentType formContentType, Duration pollInterval) {
-        return new PollerFlux<>(
-            pollInterval != null ? pollInterval : DEFAULT_DURATION,
-            contentStreamActivationOperation(form, length, formContentType),
-            extractContentPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
-            fetchExtractContentResult());
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(Flux<ByteBuffer> form,
+        long length, RecognizeContentOptions recognizeContentOptions) {
+        return beginRecognizeContent(form, length, recognizeContentOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(Flux<ByteBuffer> form, long length,
+        RecognizeContentOptions recognizeContentOptions, Context context) {
+        try {
+            Objects.requireNonNull(form, "'form' is required and cannot be null.");
+            RecognizeContentOptions finalRecognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
+            return new PollerFlux<>(
+                finalRecognizeContentOptions.getPollInterval(),
+                streamActivationOperation(
+                    contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType,
+                        finalRecognizeContentOptions.getPages(),
+                        finalRecognizeContentOptions.getLanguage() == null
+                            ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
+                        finalRecognizeContentOptions.getReadingOrder() != null
+                            ? com.azure.ai.formrecognizer.implementation.models.ReadingOrder.fromString(
+                            finalRecognizeContentOptions.getReadingOrder().toString())
+                            : null,
+                        form,
+                        length,
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    form, finalRecognizeContentOptions.getContentType()),
+                pollingOperation(resultId -> service.getAnalyzeLayoutResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) ->
+                    monoError(logger, new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeLayoutResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
     }
 
     /**
@@ -321,22 +451,23 @@ public final class FormRecognizerAsyncClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string}
      *
-     * @param receiptUrl The source URL to the input receipt.
+     * @param receiptUrl The URL of the receipt to analyze.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is {@code null}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedReceipt>>
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl) {
-        return beginRecognizeReceiptsFromUrl(receiptUrl, false, null);
+        return beginRecognizeReceiptsFromUrl(receiptUrl, null);
     }
 
     /**
@@ -346,29 +477,57 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions}
      *
      * @param receiptUrl The source URL to the input receipt.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param recognizeReceiptsOptions The additional configurable {@link RecognizeReceiptsOptions options}
+     * that may be passed when analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is {@code null}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedReceipt>>
-        beginRecognizeReceiptsFromUrl(String receiptUrl, boolean includeTextDetails, Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
-        return new PollerFlux<OperationResult, List<RecognizedReceipt>>(interval,
-            receiptAnalyzeActivationOperation(receiptUrl, includeTextDetails),
-            extractReceiptPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
-            fetchExtractReceiptResult(includeTextDetails));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeReceiptsFromUrl(String receiptUrl, RecognizeReceiptsOptions recognizeReceiptsOptions) {
+        return beginRecognizeReceiptsFromUrl(receiptUrl, recognizeReceiptsOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeReceiptsFromUrl(String receiptUrl,
+        RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
+        try {
+            Objects.requireNonNull(receiptUrl, "'receiptUrl' is required and cannot be null.");
+
+            final RecognizeReceiptsOptions finalRecognizeReceiptsOptions
+                = getRecognizeReceiptOptions(recognizeReceiptsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeReceiptsOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo  = finalRecognizeReceiptsOptions.getLocale();
+            return new PollerFlux<>(
+                finalRecognizeReceiptsOptions.getPollInterval(),
+                urlActivationOperation(
+                    () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeReceiptsOptions.getPages(),
+                        new SourcePath().setSource(receiptUrl),
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    logger),
+                pollingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            null))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
     }
 
     /**
@@ -376,27 +535,27 @@ public final class FormRecognizerAsyncClient {
      * trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
-     * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
+     * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long}
      *
      * @param receipt The data of the document to recognize receipt information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
+     * @param length The exact length of the data.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is {@code null}.
+     * @throws NullPointerException If {@code receipt} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
-        Flux<ByteBuffer> receipt, long length, FormContentType formContentType) {
-        return beginRecognizeReceipts(receipt, length, formContentType, false, null);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceipts(
+        Flux<ByteBuffer> receipt, long length) {
+        return beginRecognizeReceipts(receipt, length, null);
     }
 
     /**
@@ -404,267 +563,446 @@ public final class FormRecognizerAsyncClient {
      * and a prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
-     * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
+     * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-RecognizeReceiptsOptions}
      *
-     * @param receipt The data of the receipt to recognize receipt information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param receipt The data of the document to recognize receipt information from.
+     * @param length The exact length of the data.
+     * @param recognizeReceiptsOptions The additional configurable {@link RecognizeReceiptsOptions options}
+     * that may be passed when analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is {@code null}.
+     * @throws NullPointerException If {@code receipt} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
-        Flux<ByteBuffer> receipt, long length, FormContentType formContentType, boolean includeTextDetails,
-        Duration pollInterval) {
-
-        return new PollerFlux<>(
-            pollInterval != null ? pollInterval : DEFAULT_DURATION,
-            receiptStreamActivationOperation(receipt, length, formContentType, includeTextDetails),
-            extractReceiptPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
-            fetchExtractReceiptResult(includeTextDetails));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeReceipts(Flux<ByteBuffer> receipt, long length,
+        RecognizeReceiptsOptions recognizeReceiptsOptions) {
+        return beginRecognizeReceipts(receipt, length, recognizeReceiptsOptions, Context.NONE);
     }
 
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
-        String receiptUrl, boolean includeTextDetails) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(receiptUrl, "'receiptUrl' is required and cannot be null.");
-                return service.analyzeReceiptAsyncWithResponseAsync(includeTextDetails,
-                    new SourcePath().setSource(receiptUrl))
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptStreamActivationOperation(
-        Flux<ByteBuffer> form, long length, FormContentType formContentType, boolean includeTextDetails) {
-        return pollingContext -> {
-            try {
-                Objects.requireNonNull(form, "'form' is required and cannot be null.");
-                if (formContentType != null) {
-                    return service.analyzeReceiptAsyncWithResponseAsync(
-                        ContentType.fromString(formContentType.toString()), form, length, includeTextDetails)
-                        .map(response -> new OperationResult(
-                            parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-                } else {
-                    return detectContentType(form)
-                        .flatMap(contentType ->
-                            service.analyzeReceiptAsyncWithResponseAsync(contentType, form, length, includeTextDetails)
-                                .map(response -> new OperationResult(
-                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
-                }
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        extractReceiptPollOperation() {
-        return (pollingContext) -> {
-            try {
-                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-                UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
-                    .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
-                        operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<List<RecognizedReceipt>>>
-        fetchExtractReceiptResult(boolean includeTextDetails) {
-        return (pollingContext) -> {
-            try {
-                final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails);
-                    });
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentAnalyzeActivationOperation(
-        String formUrl) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
-                return service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(formUrl))
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentStreamActivationOperation(
-        Flux<ByteBuffer> form, long length, FormContentType formContentType) {
-        return pollingContext -> {
-            try {
-                Objects.requireNonNull(form, "'form' is required and cannot be null.");
-                if (formContentType != null) {
-                    return service.analyzeLayoutAsyncWithResponseAsync(
-                        ContentType.fromString(formContentType.toString()), form, length)
-                        .map(response -> new OperationResult(parseModelId(
-                            response.getDeserializedHeaders().getOperationLocation())));
-                } else {
-                    return detectContentType(form)
-                        .flatMap(contentType ->
-                            service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length)
-                                .map(response -> new OperationResult(
-                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
-                }
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        extractContentPollOperation() {
-        return (pollingContext) -> {
-            try {
-                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-                UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                    .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
-                        operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<List<FormPage>>>
-        fetchExtractContentResult() {
-        return (pollingContext) -> {
-            try {
-                final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true);
-                    });
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>>
-        fetchAnalyzeFormResultOperation(String modelId, boolean includeTextDetails) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                UUID modelUid = UUID.fromString(modelId);
-                return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails);
-                    });
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    /**
-     * Helper method that throws a {@link FormRecognizerException} if {@link AnalyzeOperationResult#getStatus()} is
-     * {@link OperationStatus#FAILED}.
-     *
-     * @param analyzeResponse The response returned from the service.
-     */
-    private void throwIfAnalyzeStatusInvalid(AnalyzeOperationResult analyzeResponse) {
-        if (OperationStatus.FAILED.equals(analyzeResponse.getStatus())) {
-            List<ErrorInformation> errorInformationList = analyzeResponse.getAnalyzeResult().getErrors();
-            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
-                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
-                    errorInformationList));
-            }
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeReceipts(Flux<ByteBuffer> receipt, long length,
+        RecognizeReceiptsOptions recognizeReceiptsOptions,
+        Context context) {
+        try {
+            Objects.requireNonNull(receipt, "'receipt' is required and cannot be null.");
+            final RecognizeReceiptsOptions finalRecognizeReceiptsOptions
+                = getRecognizeReceiptOptions(recognizeReceiptsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeReceiptsOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo  = finalRecognizeReceiptsOptions.getLocale();
+            return new PollerFlux<>(
+                finalRecognizeReceiptsOptions.getPollInterval(),
+                streamActivationOperation(
+                    (contentType -> service.analyzeReceiptAsyncWithResponseAsync(
+                        contentType,
+                        isFieldElementsIncluded,
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeReceiptsOptions.getPages(),
+                        receipt,
+                        length,
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                    receipt, finalRecognizeReceiptsOptions.getContentType()),
+                pollingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            null))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
         }
     }
 
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createAnalyzeFormPollOperation(String modelId) {
-        return (pollingContext) -> {
-            try {
-                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                UUID modelUid = UUID.fromString(modelId);
-                return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
-                    .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
-                        operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
-            }
-        };
+    /**
+     * Recognizes business card data using optical character recognition (OCR) and a prebuilt business card trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string}
+     *
+     * @param businessCardUrl The source URL to the input business card.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCardUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
+        String businessCardUrl) {
+        return beginRecognizeBusinessCardsFromUrl(businessCardUrl, null);
     }
 
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormActivationOperation(
-        String formUrl, String modelId, boolean includeTextDetails) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
-                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), includeTextDetails,
-                    new SourcePath().setSource(formUrl))
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
+    /**
+     * Recognizes business card data using optical character recognition (OCR) and a prebuilt business card trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions}
+     *
+     * @param businessCardUrl The source URL to the input business card.
+     * @param recognizeBusinessCardsOptions The additional configurable {@link RecognizeBusinessCardsOptions options}
+     * that may be passed when analyzing a business card.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCardUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
+        String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions) {
+        return beginRecognizeBusinessCardsFromUrl(businessCardUrl, recognizeBusinessCardsOptions, Context.NONE);
     }
 
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormStreamActivationOperation(
-        Flux<ByteBuffer> form, String modelId, long length,
-        FormContentType formContentType, boolean includeTextDetails) {
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
+        String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions, Context context) {
+        try {
+            Objects.requireNonNull(businessCardUrl, "'businessCardUrl' is required and cannot be null.");
 
+            final RecognizeBusinessCardsOptions finalRecognizeBusinessCardsOptions
+                = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeBusinessCardsOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo = finalRecognizeBusinessCardsOptions.getLocale();
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                urlActivationOperation(
+                    () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeBusinessCardsOptions.getPages(),
+                        new SourcePath().setSource(businessCardUrl),
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    logger),
+                pollingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
+                        modelSimpleResponse.getValue().getAnalyzeResult(),
+                        isFieldElementsIncluded,
+                        null))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Recognizes business card data using optical character recognition (OCR) and a prebuilt business card
+     * trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * Note that the {@code businessCard} passed must be replayable if retries are enabled (the default).
+     * In other words, the {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long}
+     *
+     * @param businessCard The data of the document to recognize business card information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
+        Flux<ByteBuffer> businessCard, long length) {
+        return beginRecognizeBusinessCards(businessCard, length, null);
+    }
+
+    /**
+     * Recognizes business card data from documents using optical character recognition (OCR)
+     * and a prebuilt business card trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * Note that the {@code businessCard} passed must be replayable if retries are enabled (the default).
+     * In other words, the {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-RecognizeBusinessCardsOptions}
+     *
+     * @param businessCard The data of the document to recognize business card information from.
+     * @param length The exact length of the data.
+     * @param recognizeBusinessCardsOptions The additional configurable {@link RecognizeBusinessCardsOptions options}
+     * that may be passed when analyzing a business card.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
+        Flux<ByteBuffer> businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions) {
+        return beginRecognizeBusinessCards(businessCard, length, recognizeBusinessCardsOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
+        Flux<ByteBuffer> businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions,
+        Context context) {
+        try {
+            Objects.requireNonNull(businessCard, "'businessCard' is required and cannot be null.");
+            final RecognizeBusinessCardsOptions finalRecognizeBusinessCardsOptions
+                = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeBusinessCardsOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo = finalRecognizeBusinessCardsOptions.getLocale();
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                streamActivationOperation(
+                    (contentType -> service.analyzeBusinessCardAsyncWithResponseAsync(
+                        contentType,
+                        isFieldElementsIncluded,
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeBusinessCardsOptions.getPages(),
+                        businessCard,
+                        length,
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                    businessCard, finalRecognizeBusinessCardsOptions.getContentType()),
+                pollingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
+                        modelSimpleResponse.getValue().getAnalyzeResult(),
+                        isFieldElementsIncluded,
+                        null))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
+     *
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string}
+     *
+     * @param identityDocumentUrl The source URL to the input identity document.
+     *
+     * @return A {@link PollerFlux} that polls the recognize identity document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code identityDocumentUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl) {
+        return beginRecognizeIdentityDocumentsFromUrl(identityDocumentUrl, null);
+    }
+
+    /**
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions}
+     *
+     * @param identityDocumentUrl The source URL to the input identity document.
+     * @param recognizeIdentityDocumentOptions The additional configurable
+     * {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
+     *
+     * @return A {@link PollerFlux} that polls the analyze identity document operation until it has completed, has
+     * failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code identityDocumentUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions) {
+        return beginRecognizeIdentityDocumentsFromUrl(identityDocumentUrl, recognizeIdentityDocumentOptions,
+            Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions,
+        Context context) {
+        try {
+            Objects.requireNonNull(identityDocumentUrl, "'identityDocumentUrl' is required and cannot be null.");
+
+            final RecognizeIdentityDocumentOptions finalRecognizeIdentityDocumentOptions
+                = getRecognizeIdentityDocumentOptions(recognizeIdentityDocumentOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeIdentityDocumentOptions.isFieldElementsIncluded();
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                urlActivationOperation(
+                    () -> service.analyzeIdDocumentAsyncWithResponseAsync(isFieldElementsIncluded,
+                        finalRecognizeIdentityDocumentOptions.getPages(),
+                        new SourcePath().setSource(identityDocumentUrl),
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    logger),
+                pollingOperation(resultId -> service.getAnalyzeIdDocumentResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeIdDocumentResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
+                        modelSimpleResponse.getValue().getAnalyzeResult(),
+                        isFieldElementsIncluded,
+                        null))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * Note that the {@code identityDocument} passed must be replayable if retries are enabled (the default).
+     * In other words, the {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long}
+     *
+     * @param identityDocument The data of the document to recognize identity document information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link PollerFlux} that polls the recognize identity document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code identityDocument} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        Flux<ByteBuffer> identityDocument, long length) {
+        return beginRecognizeIdentityDocuments(identityDocument, length, null);
+    }
+
+    /**
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * Note that the {@code identityDocument} passed must be replayable if retries are enabled (the default).
+     * In other words, the {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long-RecognizeIdentityDocumentOptions}
+     *
+     * @param identityDocument The data of the document to recognize identity document information from.
+     * @param length The exact length of the data.
+     * @param recognizeIdentityDocumentOptions The additional configurable
+     * {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
+     *
+     * @return A {@link PollerFlux} that polls the recognize identity document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code identityDocument} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        Flux<ByteBuffer> identityDocument, long length,
+        RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions) {
+        return beginRecognizeIdentityDocuments(identityDocument, length, recognizeIdentityDocumentOptions,
+            Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        Flux<ByteBuffer> identityDocument, long length,
+        RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions, Context context) {
+        try {
+            Objects.requireNonNull(identityDocument, "'identityDocument' is required and cannot be null.");
+            final RecognizeIdentityDocumentOptions finalRecognizeIdentityDocumentOptions
+                = getRecognizeIdentityDocumentOptions(recognizeIdentityDocumentOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeIdentityDocumentOptions.isFieldElementsIncluded();
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                streamActivationOperation(
+                    (contentType -> service.analyzeIdDocumentAsyncWithResponseAsync(
+                        contentType,
+                        isFieldElementsIncluded,
+                        finalRecognizeIdentityDocumentOptions.getPages(),
+                        identityDocument,
+                        length,
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                    identityDocument, finalRecognizeIdentityDocumentOptions.getContentType()),
+                pollingOperation(resultId -> service.getAnalyzeIdDocumentResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeIdDocumentResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
+                        modelSimpleResponse.getValue().getAnalyzeResult(),
+                        isFieldElementsIncluded,
+                        null))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /*
+     * Poller's ACTIVATION operation that takes stream as input.
+     */
+    private Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
+        streamActivationOperation(
+        Function<ContentType, Mono<FormRecognizerOperationResult>> activationOperation, Flux<ByteBuffer> form,
+        FormContentType contentType) {
         return pollingContext -> {
             try {
                 Objects.requireNonNull(form, "'form' is required and cannot be null.");
-                Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-                if (formContentType != null) {
-                    return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        ContentType.fromString(formContentType.toString()), form, length, includeTextDetails)
-                        .map(response -> new OperationResult(parseModelId(
-                            response.getDeserializedHeaders().getOperationLocation())));
+                if (contentType != null) {
+                    return activationOperation.apply(ContentType.fromString(contentType.toString()))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
                 } else {
                     return detectContentType(form)
-                        .flatMap(contentType ->
-                            service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), contentType, form,
-                                length, includeTextDetails)
-                                .map(response -> new OperationResult(
-                                    parseModelId(response.getDeserializedHeaders().getOperationLocation()))));
+                        .flatMap(activationOperation::apply)
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
                 }
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -672,11 +1010,48 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private static Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
-        SimpleResponse<AnalyzeOperationResult> analyzeOperationResultSimpleResponse,
-        PollResponse<OperationResult> operationResultPollResponse) {
+    /*
+     * Poller's POLLING operation.
+     */
+    private Function<PollingContext<FormRecognizerOperationResult>, Mono<PollResponse<FormRecognizerOperationResult>>>
+        pollingOperation(
+        Function<UUID, Mono<Response<AnalyzeOperationResult>>> pollingFunction) {
+        return pollingContext -> {
+            try {
+                final PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
+                    pollingContext.getLatestResponse();
+                final UUID resultUuid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
+                return pollingFunction.apply(resultUuid)
+                    .flatMap(modelResponse -> processAnalyzeModelResponse(modelResponse,
+                        operationResultPollResponse))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
+    }
+
+    /*
+     * Poller's FETCHING operation.
+     */
+    private Function<PollingContext<FormRecognizerOperationResult>, Mono<Response<AnalyzeOperationResult>>>
+        fetchingOperation(
+        Function<UUID, Mono<Response<AnalyzeOperationResult>>> fetchingFunction) {
+        return pollingContext -> {
+            try {
+                final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
+                return fetchingFunction.apply(resultUuid);
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
+    }
+
+    private Mono<PollResponse<FormRecognizerOperationResult>> processAnalyzeModelResponse(
+        Response<AnalyzeOperationResult> analyzeOperationResultResponse,
+        PollResponse<FormRecognizerOperationResult> operationResultPollResponse) {
         LongRunningOperationStatus status;
-        switch (analyzeOperationResultSimpleResponse.getValue().getStatus()) {
+        switch (analyzeOperationResultResponse.getValue().getStatus()) {
             case NOT_STARTED:
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
@@ -685,13 +1060,228 @@ public final class FormRecognizerAsyncClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                status = LongRunningOperationStatus.FAILED;
-                break;
+                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
+                    analyzeOperationResultResponse.getValue().getAnalyzeResult().getErrors().stream()
+                        .map(errorInformation ->
+                            new FormRecognizerErrorInformation(errorInformation.getCode(),
+                                errorInformation.getMessage()))
+                        .collect(Collectors.toList())));
             default:
                 status = LongRunningOperationStatus.fromString(
-                    analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);
+                    analyzeOperationResultResponse.getValue().getStatus().toString(), true);
                 break;
         }
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
+    }
+
+    /**
+     * Recognizes invoice data using optical character recognition (OCR) and a prebuilt invoice trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string}
+     *
+     * @param invoiceUrl The URL of the invoice to analyze.
+     *
+     * @return A {@link PollerFlux} that polls the recognize invoice operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code invoiceUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl) {
+        return beginRecognizeInvoicesFromUrl(invoiceUrl, null);
+    }
+
+    /**
+     * Recognizes invoice data using optical character recognition (OCR) and a prebuilt invoice trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions}
+     *
+     * @param invoiceUrl The source URL to the input invoice.
+     * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
+     * that may be passed when analyzing a invoice.
+     *
+     * @return A {@link PollerFlux} that polls the recognize invoice operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code invoiceUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl, RecognizeInvoicesOptions recognizeInvoicesOptions) {
+        return beginRecognizeInvoicesFromUrl(invoiceUrl, recognizeInvoicesOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl,
+        RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+        try {
+            Objects.requireNonNull(invoiceUrl, "'invoiceUrl' is required and cannot be null.");
+
+            final RecognizeInvoicesOptions finalRecognizeInvoicesOptions
+                = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo  = finalRecognizeInvoicesOptions.getLocale();
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                urlActivationOperation(
+                    () -> service.analyzeInvoiceAsyncWithResponseAsync(isFieldElementsIncluded,
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeInvoicesOptions.getPages(),
+                        new SourcePath().setSource(invoiceUrl),
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                    logger),
+                pollingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            null))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Recognizes invoice data using optical character recognition (OCR) and a prebuilt invoice
+     * trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
+     *
+     * Note that the {@code invoice} passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long}
+     *
+     * @param invoice The data of the document to recognize invoice information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link PollerFlux} that polls the recognize invoice operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code invoice} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoices(
+        Flux<ByteBuffer> invoice, long length) {
+        return beginRecognizeInvoices(invoice, length, null);
+    }
+
+    /**
+     * Recognizes invoice data from documents using optical character recognition (OCR)
+     * and a prebuilt invoice trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
+     *
+     * Note that the {@code invoice} passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeInvoices#Flux-long-RecognizeInvoicesOptions}
+     *
+     * @param invoice The data of the document to recognize invoice information from.
+     * @param length The exact length of the data.
+     * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
+     * that may be passed when analyzing a invoice.
+     *
+     * @return A {@link PollerFlux} that polls the recognize invoice operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code invoice} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoices(Flux<ByteBuffer> invoice, long length,
+        RecognizeInvoicesOptions recognizeInvoicesOptions) {
+        return beginRecognizeInvoices(invoice, length, recognizeInvoicesOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoices(Flux<ByteBuffer> invoice, long length,
+        RecognizeInvoicesOptions recognizeInvoicesOptions,
+        Context context) {
+        try {
+            Objects.requireNonNull(invoice, "'invoice' is required and cannot be null.");
+            final RecognizeInvoicesOptions finalRecognizeInvoicesOptions
+                = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
+            final FormRecognizerLocale localeInfo  = finalRecognizeInvoicesOptions.getLocale();
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                streamActivationOperation(
+                    (contentType -> service.analyzeInvoiceAsyncWithResponseAsync(
+                        contentType,
+                        isFieldElementsIncluded,
+                        localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
+                        finalRecognizeInvoicesOptions.getPages(),
+                        invoice,
+                        length,
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                    invoice, finalRecognizeInvoicesOptions.getContentType()),
+                pollingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeInvoiceResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            null))
+                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    private static RecognizeCustomFormsOptions
+        getRecognizeCustomFormOptions(RecognizeCustomFormsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeCustomFormsOptions() : userProvidedOptions;
+    }
+
+    private static RecognizeContentOptions
+        getRecognizeContentOptions(RecognizeContentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeContentOptions() : userProvidedOptions;
+    }
+
+    private static RecognizeReceiptsOptions
+        getRecognizeReceiptOptions(RecognizeReceiptsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeReceiptsOptions() : userProvidedOptions;
+    }
+
+    private static RecognizeBusinessCardsOptions getRecognizeBusinessCardsOptions(
+        RecognizeBusinessCardsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeBusinessCardsOptions() : userProvidedOptions;
+    }
+
+    private static RecognizeInvoicesOptions
+        getRecognizeInvoicesOptions(RecognizeInvoicesOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeInvoicesOptions() : userProvidedOptions;
+    }
+
+    private static RecognizeIdentityDocumentOptions getRecognizeIdentityDocumentOptions(
+        RecognizeIdentityDocumentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeIdentityDocumentOptions() : userProvidedOptions;
     }
 }

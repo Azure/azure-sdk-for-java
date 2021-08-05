@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-To build the SDK for ServiceBusManagementClient and ServiceBusManagementClient, simply [Install AutoRest](https://aka.ms/autorest/install) and in this folder, run:
+To build the SDK for ServiceBusManagementClient and ServiceBusManagementClient, simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/install/readme.md) and in this folder, run:
 
 ### Setup
 ```ps
@@ -27,17 +27,17 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/azure/azure-sdk-for-python/master/sdk/servicebus/azure-servicebus/swagger/servicebus-swagger.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/sb_dataplane_namespace/specification/servicebus/data-plane/servicebus-swagger.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
-namespace: com.azure.messaging.servicebus
+namespace: com.azure.messaging.servicebus.administration
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: AccessRights,AuthorizationRule,EntityAvailabilityStatus,EntityStatus,MessageCountDetails,QueueDescription,TopicDescription
+custom-types: AccessRights,AuthorizationRule,EntityStatus,NamespaceProperties,MessagingSku
 custom-types-subpackage: models
 context-client-method-parameter: true
 enable-xml: true

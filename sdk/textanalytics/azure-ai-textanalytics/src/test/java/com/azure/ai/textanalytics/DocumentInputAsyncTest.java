@@ -617,7 +617,7 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void analyzeSentimentBatchNullInput() {
-        StepVerifier.create(client.analyzeSentimentBatch(null, null, null))
+        StepVerifier.create(client.analyzeSentimentBatch(null, null, new TextAnalyticsRequestOptions()))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
                 assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
@@ -630,7 +630,7 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void analyzeSentimentBatchEmptyInputList() {
-        StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), null, null))
+        StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), null, new TextAnalyticsRequestOptions()))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
                 assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
@@ -643,7 +643,7 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void analyzeSentimentBatchNullInputWithLanguageHint() {
-        StepVerifier.create(client.analyzeSentimentBatch(null, "en", null))
+        StepVerifier.create(client.analyzeSentimentBatch(null, "en", new TextAnalyticsRequestOptions()))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
                 assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
@@ -656,7 +656,7 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void analyzeSentimentBatchEmptyInputListWithLanguageHint() {
-        StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), "en", null))
+        StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), "en", new TextAnalyticsRequestOptions()))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
                 assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));

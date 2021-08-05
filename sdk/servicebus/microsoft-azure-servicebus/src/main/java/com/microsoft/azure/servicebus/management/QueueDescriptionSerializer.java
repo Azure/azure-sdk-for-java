@@ -94,10 +94,14 @@ class QueueDescriptionSerializer {
                 doc.createElementNS(ManagementClientConstants.SB_NS, "EnableBatchedOperations")
                         .appendChild(doc.createTextNode(Boolean.toString(queueDescription.enableBatchedOperations))).getParentNode());
 
+        qdElement.appendChild(
+                doc.createElementNS(ManagementClientConstants.SB_NS, "IsAnonymousAccessible")
+                        .appendChild(doc.createTextNode(Boolean.toString(queueDescription.isAnonymousAccessible))).getParentNode());
+        
         if (queueDescription.authorizationRules != null) {
             qdElement.appendChild(AuthorizationRuleSerializer.serializeRules(queueDescription.authorizationRules, doc));
         }
-
+        
         qdElement.appendChild(
                 doc.createElementNS(ManagementClientConstants.SB_NS, "Status")
                         .appendChild(doc.createTextNode(queueDescription.status.name())).getParentNode());
@@ -113,6 +117,12 @@ class QueueDescriptionSerializer {
                     doc.createElementNS(ManagementClientConstants.SB_NS, "UserMetadata")
                             .appendChild(doc.createTextNode(queueDescription.userMetadata)).getParentNode());
         }
+        
+        if (queueDescription.isSupportOrderingExplicitlySet) {
+        	qdElement.appendChild(
+                    doc.createElementNS(ManagementClientConstants.SB_NS, "SupportOrdering")
+                            .appendChild(doc.createTextNode(Boolean.toString(queueDescription.supportOrdering))).getParentNode());
+        }        
 
         if (queueDescription.autoDeleteOnIdle.compareTo(ManagementClientConstants.MAX_DURATION) < 0) {
             qdElement.appendChild(
@@ -129,7 +139,13 @@ class QueueDescriptionSerializer {
                     doc.createElementNS(ManagementClientConstants.SB_NS, "ForwardDeadLetteredMessagesTo")
                             .appendChild(doc.createTextNode(queueDescription.forwardDeadLetteredMessagesTo)).getParentNode());
         }
+        
+        qdElement.appendChild(
+                doc.createElementNS(ManagementClientConstants.SB_NS, "EnableExpress")
+                        .appendChild(doc.createTextNode(Boolean.toString(queueDescription.enableExpress))).getParentNode());
 
+        queueDescription.appendUnknownPropertiesToDescriptionElement(qdElement);
+        
         // Convert dom document to string.
         StringWriter output = new StringWriter();
 
@@ -213,6 +229,9 @@ class QueueDescriptionSerializer {
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
                                 switch (element.getTagName()) {
+                                	case "LockDuration":
+	                                    qd.lockDuration = Duration.parse(element.getFirstChild().getNodeValue());
+	                                    break;
                                     case "MaxSizeInMegabytes":
                                         qd.maxSizeInMB = Long.parseLong(element.getFirstChild().getNodeValue());
                                         break;
@@ -222,17 +241,14 @@ class QueueDescriptionSerializer {
                                     case "RequiresSession":
                                         qd.requiresSession = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
+                                    case "DefaultMessageTimeToLive":
+                                        qd.defaultMessageTimeToLive = Duration.parse(element.getFirstChild().getNodeValue());
+                                        break;
                                     case "DeadLetteringOnMessageExpiration":
                                         qd.enableDeadLetteringOnMessageExpiration = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
                                     case "DuplicateDetectionHistoryTimeWindow":
                                         qd.duplicationDetectionHistoryTimeWindow = Duration.parse(element.getFirstChild().getNodeValue());
-                                        break;
-                                    case "LockDuration":
-                                        qd.lockDuration = Duration.parse(element.getFirstChild().getNodeValue());
-                                        break;
-                                    case "DefaultMessageTimeToLive":
-                                        qd.defaultMessageTimeToLive = Duration.parse(element.getFirstChild().getNodeValue());
                                         break;
                                     case "MaxDeliveryCount":
                                         qd.maxDeliveryCount = Integer.parseInt(element.getFirstChild().getNodeValue());
@@ -240,17 +256,14 @@ class QueueDescriptionSerializer {
                                     case "EnableBatchedOperations":
                                         qd.enableBatchedOperations = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
+                                    case "IsAnonymousAccessible":
+                                        qd.isAnonymousAccessible = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
+                                        break;
+                                    case "AuthorizationRules":
+                                        qd.authorizationRules = AuthorizationRuleSerializer.parseAuthRules(element);
+                                        break;
                                     case "Status":
                                         qd.status = EntityStatus.valueOf(element.getFirstChild().getNodeValue());
-                                        break;
-                                    case "AutoDeleteOnIdle":
-                                        qd.autoDeleteOnIdle = Duration.parse(element.getFirstChild().getNodeValue());
-                                        break;
-                                    case "EnablePartitioning":
-                                        qd.enablePartitioning = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
-                                        break;
-                                    case "UserMetadata":
-                                        qd.userMetadata = element.getFirstChild().getNodeValue();
                                         break;
                                     case "ForwardTo":
                                         Node fwd = element.getFirstChild();
@@ -258,16 +271,43 @@ class QueueDescriptionSerializer {
                                             qd.forwardTo = fwd.getNodeValue();
                                         }
                                         break;
+                                    case "UserMetadata":
+                                    	Node metadataTextNode = element.getFirstChild();
+                                    	if (metadataTextNode != null) {
+                                    		qd.userMetadata = metadataTextNode.getNodeValue();
+                                    	}                                        
+                                        break;
+                                    case "SupportOrdering":
+                                        qd.setSupportOrdering(Boolean.parseBoolean(element.getFirstChild().getNodeValue()));
+                                        break;
+                                    case "AutoDeleteOnIdle":
+                                        qd.autoDeleteOnIdle = Duration.parse(element.getFirstChild().getNodeValue());
+                                        break;
+                                    case "EnablePartitioning":
+                                        qd.enablePartitioning = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
+                                        break;
                                     case "ForwardDeadLetteredMessagesTo":
                                         Node fwdDlq = element.getFirstChild();
                                         if (fwdDlq != null) {
                                             qd.forwardDeadLetteredMessagesTo = fwdDlq.getNodeValue();
                                         }
                                         break;
-                                    case "AuthorizationRules":
-                                        qd.authorizationRules = AuthorizationRuleSerializer.parseAuthRules(element);
+                                    case "EnableExpress":
+                                        qd.enableExpress = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
+                                    case "AccessedAt":
+                                    case "CreatedAt":
+                                    case "MessageCount":
+                                    case "SizeInBytes":
+                                    case "UpdatedAt":
+                                    case "CountDetails":
+                                    case "EntityAvailabilityStatus":
+                                    case "SkippedUpdate":
+                                        // Ignore known properties
+                                        // Do nothing
+                                        break;                                    
                                     default:
+                                    	qd.addUnknownProperty(element);
                                         break;
                                 }
                             }

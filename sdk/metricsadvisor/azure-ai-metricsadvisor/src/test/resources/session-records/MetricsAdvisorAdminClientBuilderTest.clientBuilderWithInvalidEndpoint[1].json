@@ -1,0 +1,52 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "0f076db4-e67b-4833-b319-5e61505e9228"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "io.netty.resolver.dns.DnsResolveContext$SearchDomainUnknownHostException",
+      "ErrorMessage" : "Search domain query failed. Original hostname: 'notreal.azure.com' failed to resolve 'notreal.azure.com.corp.microsoft.com' after 6 queries "
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "0f076db4-e67b-4833-b319-5e61505e9228"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "io.netty.resolver.dns.DnsResolveContext$SearchDomainUnknownHostException",
+      "ErrorMessage" : "Search domain query failed. Original hostname: 'notreal.azure.com' failed to resolve 'notreal.azure.com.corp.microsoft.com' after 6 queries "
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "0f076db4-e67b-4833-b319-5e61505e9228"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "io.netty.resolver.dns.DnsResolveContext$SearchDomainUnknownHostException",
+      "ErrorMessage" : "Search domain query failed. Original hostname: 'notreal.azure.com' failed to resolve 'notreal.azure.com.corp.microsoft.com' after 6 queries "
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "0f076db4-e67b-4833-b319-5e61505e9228"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "io.netty.resolver.dns.DnsResolveContext$SearchDomainUnknownHostException",
+      "ErrorMessage" : "Search domain query failed. Original hostname: 'notreal.azure.com' failed to resolve 'notreal.azure.com.corp.microsoft.com' after 6 queries "
+    }
+  } ],
+  "variables" : [ ]
+}

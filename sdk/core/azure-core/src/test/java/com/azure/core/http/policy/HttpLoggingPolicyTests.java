@@ -17,11 +17,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,6 +30,7 @@ import reactor.test.StepVerifier;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -38,10 +39,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This class contains tests for {@link HttpLoggingPolicy}.
@@ -102,8 +106,7 @@ public class HttpLoggingPolicyTests {
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT))
             .verifyComplete();
 
-        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        Assertions.assertTrue(logString.contains(expectedQueryString));
+        assertTrue(convertOutputStreamToString(logCaptureStream).contains(expectedQueryString));
     }
 
     private static Stream<Arguments> redactQueryParametersSupplier() {
@@ -140,8 +143,8 @@ public class HttpLoggingPolicyTests {
         throws MalformedURLException {
         URL requestUrl = new URL("https://test.com");
         HttpHeaders requestHeaders = new HttpHeaders()
-            .put("Content-Type", ContentType.APPLICATION_JSON)
-            .put("Content-Length", Integer.toString(contentLength));
+            .set("Content-Type", ContentType.APPLICATION_JSON)
+            .set("Content-Length", Integer.toString(contentLength));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
@@ -154,9 +157,8 @@ public class HttpLoggingPolicyTests {
             CONTEXT))
             .verifyComplete();
 
-        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        System.out.println(logString);
-        Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
+        String logString = convertOutputStreamToString(logCaptureStream);
+        assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
     }
 
     /**
@@ -168,8 +170,8 @@ public class HttpLoggingPolicyTests {
     public void validateLoggingDoesNotConsumeResponse(Flux<ByteBuffer> stream, byte[] data, int contentLength) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
         HttpHeaders responseHeaders = new HttpHeaders()
-            .put("Content-Type", ContentType.APPLICATION_JSON)
-            .put("Content-Length", Integer.toString(contentLength));
+            .set("Content-Type", ContentType.APPLICATION_JSON)
+            .set("Content-Length", Integer.toString(contentLength));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
@@ -182,9 +184,8 @@ public class HttpLoggingPolicyTests {
                 .verifyComplete())
             .verifyComplete();
 
-        String logString = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
-        System.out.println(logString);
-        Assertions.assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
+        String logString = convertOutputStreamToString(logCaptureStream);
+        assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
     }
 
     private static Stream<Arguments> validateLoggingDoesNotConsumeSupplier() {
@@ -270,6 +271,38 @@ public class HttpLoggingPolicyTests {
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
             return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+        }
+    }
+
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
+        names = { "BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS" })
+    @ResourceLock("SYSTEM_OUT")
+    public void loggingIncludesRetryCount(HttpLogDetailLevel logLevel) {
+        AtomicInteger requestCount = new AtomicInteger();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(), new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(logLevel)))
+            .httpClient(ignored -> (requestCount.getAndIncrement() == 0)
+                ? Mono.error(new RuntimeException("Try again!"))
+                : Mono.just(new com.azure.core.http.MockHttpResponse(ignored, 200)))
+            .build();
+
+        StepVerifier.create(pipeline.send(request, CONTEXT))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        String logString = convertOutputStreamToString(logCaptureStream);
+        assertTrue(logString.contains("Try count: 1"));
+        assertTrue(logString.contains("Try count: 2"));
+    }
+
+    private static String convertOutputStreamToString(ByteArrayOutputStream stream) {
+        try {
+            return stream.toString("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 }

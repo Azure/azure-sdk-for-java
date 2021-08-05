@@ -36,6 +36,12 @@ class TriggerRunsImpl extends WrapperImpl<TriggerRunsInner> implements TriggerRu
     }
 
     @Override
+    public Completable cancelAsync(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        TriggerRunsInner client = this.inner();
+        return client.cancelAsync(resourceGroupName, factoryName, triggerName, runId).toCompletable();
+    }
+
+    @Override
     public Observable<TriggerRunsQueryResponse> queryByFactoryAsync(String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
         TriggerRunsInner client = this.inner();
         return client.queryByFactoryAsync(resourceGroupName, factoryName, filterParameters)

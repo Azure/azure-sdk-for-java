@@ -4,7 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.azure.search.documents.implementation.converters.IndexActionHelper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -25,11 +25,6 @@ public final class IndexAction<T> {
     @JsonIgnore
     private Map<String, Object> properties;
 
-    @JsonAnyGetter
-    public Map<String, Object> getParamMap() {
-        return properties;
-    }
-
     /*
      * The operation to perform on a document in an indexing batch. Possible
      * values include: 'Upload', 'Merge', 'MergeOrUpload', 'Delete'
@@ -37,12 +32,29 @@ public final class IndexAction<T> {
     @JsonProperty(value = "@search.action")
     private IndexActionType actionType;
 
+    static {
+        IndexActionHelper.setAccessor(new IndexActionHelper.IndexActionAccessor() {
+            @Override
+            public <U> void setProperties(IndexAction<U> indexAction, Map<String, Object> properties) {
+                indexAction.setProperties(properties);
+            }
+
+            @Override
+            public <U> Map<String, Object> getProperties(IndexAction<U> indexAction) {
+                return indexAction.getProperties();
+            }
+        });
+    }
     /**
      * Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.
      *
      * @return the document value.
      */
+    @SuppressWarnings("unchecked")
     public T getDocument() {
+        if (this.properties != null) {
+            return (T) this.properties;
+        }
         return this.document;
     }
 
@@ -86,5 +98,24 @@ public final class IndexAction<T> {
     public IndexAction<T> setActionType(IndexActionType actionType) {
         this.actionType = actionType;
         return this;
+    }
+
+    /**
+     * The private setter to set the properties property
+     * via {@link IndexActionHelper.IndexActionAccessor}.
+     *
+     * @param properties The properties.
+     */
+    private void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
+
+    /**
+     * The private getter to get the properties property
+     * via {@link IndexActionHelper.IndexActionAccessor}.
+     * @return The properties
+     */
+    private Map<String, Object> getProperties() {
+       return this.properties;
     }
 }

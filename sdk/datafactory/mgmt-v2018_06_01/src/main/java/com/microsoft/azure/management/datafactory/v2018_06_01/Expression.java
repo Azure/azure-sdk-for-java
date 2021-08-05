@@ -28,7 +28,6 @@ public class Expression {
 
     /**
      * Creates an instance of Expression class.
-     * @param value expression value.
      */
     public Expression() {
         type = "Expression";

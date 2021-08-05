@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.indexes.models.KeywordTokenizer;
 
 /**
@@ -23,11 +22,8 @@ public final class KeywordTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        KeywordTokenizer keywordTokenizer = new KeywordTokenizer();
-        PrivateFieldAccessHelper.set(keywordTokenizer, ODATA_FIELD_NAME, V2_ODATA_TYPE);
-
-        String name = obj.getName();
-        keywordTokenizer.setName(name);
+        KeywordTokenizer keywordTokenizer = new KeywordTokenizer(obj.getName());
+        KeywordTokenizerHelper.setODataType(keywordTokenizer, V2_ODATA_TYPE);
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         keywordTokenizer.setMaxTokenLength(maxTokenLength);
@@ -42,11 +38,8 @@ public final class KeywordTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        KeywordTokenizer keywordTokenizer = new KeywordTokenizer();
-
-        PrivateFieldAccessHelper.set(keywordTokenizer, ODATA_FIELD_NAME, V1_ODATA_TYPE);
-        String name = obj.getName();
-        keywordTokenizer.setName(name);
+        KeywordTokenizer keywordTokenizer = new KeywordTokenizer(obj.getName());
+        KeywordTokenizerHelper.setODataType(keywordTokenizer, V1_ODATA_TYPE);
 
         Integer bufferSize = obj.getBufferSize();
         keywordTokenizer.setMaxTokenLength(bufferSize);
@@ -63,13 +56,13 @@ public final class KeywordTokenizerConverter {
             return null;
         }
 
-        String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
+        String identifier = KeywordTokenizerHelper.getODataType(obj);
         if (V1_ODATA_TYPE.equals(identifier)) {
-            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizer()
-                .setBufferSize(obj.getMaxTokenLength()).setName(obj.getName());
+            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizer(obj.getName())
+                .setBufferSize(obj.getMaxTokenLength());
         } else {
-            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2()
-                .setMaxTokenLength(obj.getMaxTokenLength()).setName(obj.getName());
+            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2(obj.getName())
+                .setMaxTokenLength(obj.getMaxTokenLength());
         }
     }
 

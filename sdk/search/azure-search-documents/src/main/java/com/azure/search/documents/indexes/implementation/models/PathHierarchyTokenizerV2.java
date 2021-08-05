@@ -7,14 +7,12 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Tokenizer for path-like hierarchies. This tokenizer is implemented using
- * Apache Lucene.
- */
+/** Tokenizer for path-like hierarchies. This tokenizer is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.PathHierarchyTokenizerV2")
 @Fluent
@@ -23,13 +21,13 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
      * The delimiter character to use. Default is "/".
      */
     @JsonProperty(value = "delimiter")
-    private String delimiter;
+    private Character delimiter;
 
     /*
      * A value that, if set, replaces the delimiter character. Default is "/".
      */
     @JsonProperty(value = "replacement")
-    private String replacement;
+    private Character replacement;
 
     /*
      * The maximum token length. Default and maximum is 300.
@@ -51,52 +49,57 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     private Integer numberOfTokensToSkip;
 
     /**
-     * Get the delimiter property: The delimiter character to use. Default is
-     * "/".
+     * Creates an instance of PathHierarchyTokenizerV2 class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public PathHierarchyTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
+
+    /**
+     * Get the delimiter property: The delimiter character to use. Default is "/".
      *
      * @return the delimiter value.
      */
-    public String getDelimiter() {
+    public Character getDelimiter() {
         return this.delimiter;
     }
 
     /**
-     * Set the delimiter property: The delimiter character to use. Default is
-     * "/".
+     * Set the delimiter property: The delimiter character to use. Default is "/".
      *
      * @param delimiter the delimiter value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizerV2 setDelimiter(String delimiter) {
+    public PathHierarchyTokenizerV2 setDelimiter(Character delimiter) {
         this.delimiter = delimiter;
         return this;
     }
 
     /**
-     * Get the replacement property: A value that, if set, replaces the
-     * delimiter character. Default is "/".
+     * Get the replacement property: A value that, if set, replaces the delimiter character. Default is "/".
      *
      * @return the replacement value.
      */
-    public String getReplacement() {
+    public Character getReplacement() {
         return this.replacement;
     }
 
     /**
-     * Set the replacement property: A value that, if set, replaces the
-     * delimiter character. Default is "/".
+     * Set the replacement property: A value that, if set, replaces the delimiter character. Default is "/".
      *
      * @param replacement the replacement value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizerV2 setReplacement(String replacement) {
+    public PathHierarchyTokenizerV2 setReplacement(Character replacement) {
         this.replacement = replacement;
         return this;
     }
 
     /**
-     * Get the maxTokenLength property: The maximum token length. Default and
-     * maximum is 300.
+     * Get the maxTokenLength property: The maximum token length. Default and maximum is 300.
      *
      * @return the maxTokenLength value.
      */
@@ -105,8 +108,7 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     }
 
     /**
-     * Set the maxTokenLength property: The maximum token length. Default and
-     * maximum is 300.
+     * Set the maxTokenLength property: The maximum token length. Default and maximum is 300.
      *
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
@@ -117,8 +119,8 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     }
 
     /**
-     * Get the reverseTokenOrder property: A value indicating whether to
-     * generate tokens in reverse order. Default is false.
+     * Get the reverseTokenOrder property: A value indicating whether to generate tokens in reverse order. Default is
+     * false.
      *
      * @return the reverseTokenOrder value.
      */
@@ -127,8 +129,8 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     }
 
     /**
-     * Set the reverseTokenOrder property: A value indicating whether to
-     * generate tokens in reverse order. Default is false.
+     * Set the reverseTokenOrder property: A value indicating whether to generate tokens in reverse order. Default is
+     * false.
      *
      * @param reverseTokenOrder the reverseTokenOrder value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
@@ -139,8 +141,7 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     }
 
     /**
-     * Get the numberOfTokensToSkip property: The number of initial tokens to
-     * skip. Default is 0.
+     * Get the numberOfTokensToSkip property: The number of initial tokens to skip. Default is 0.
      *
      * @return the numberOfTokensToSkip value.
      */
@@ -149,8 +150,7 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     }
 
     /**
-     * Set the numberOfTokensToSkip property: The number of initial tokens to
-     * skip. Default is 0.
+     * Set the numberOfTokensToSkip property: The number of initial tokens to skip. Default is 0.
      *
      * @param numberOfTokensToSkip the numberOfTokensToSkip value to set.
      * @return the PathHierarchyTokenizerV2 object itself.

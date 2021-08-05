@@ -16,7 +16,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
@@ -28,14 +27,13 @@ import java.util.Iterator;
 
 /**
  * This scenario assumes an existing search solution, with index and an indexer setup (see LifecycleSetupExample)
- * Azure Search Sample Data
- * https://docs.microsoft.com/en-us/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
+ * <a href="https://github.com/Azure-Samples/azure-search-sample-data">Azure Cognitive Search Sample Data</a>.
  */
 public class RunningSearchSolutionExample {
 
     /**
-     * From the Azure portal, get your Azure Cognitive Search service URL and API admin key,
-     * and set the values of these environment variables:
+     * From the Azure portal, get your Azure Cognitive Search service URL and API admin key, and set the values of these
+     * environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
@@ -77,13 +75,14 @@ public class RunningSearchSolutionExample {
             .setUseFuzzyMatching(true);
 
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("vew",
-            SUGGESTER_NAME, suggestOptions, new RequestOptions(), Context.NONE);
+            SUGGESTER_NAME, suggestOptions, Context.NONE);
         Iterator<SuggestPagedResponse> iterator = suggestResult.iterableByPage().iterator();
 
         System.out.println("Suggest with fuzzy matching:");
         iterator.forEachRemaining(
             r -> r.getValue().forEach(
-                res -> System.out.printf("      Found match to: %s, match = %s%n", (String) res.getDocument().get("HotelName"), res.getText())
+                res -> System.out.printf("      Found match to: %s, match = %s%n", (String) res
+                    .getDocument(SearchDocument.class).get("HotelName"), res.getText())
             )
         );
     }
@@ -94,7 +93,7 @@ public class RunningSearchSolutionExample {
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("co",
-            SUGGESTER_NAME, params, new RequestOptions(), Context.NONE);
+            SUGGESTER_NAME, params, Context.NONE);
 
         System.out.println("Autocomplete with one term context results:");
         results.forEach(result -> System.out.println(result.getText()));
@@ -106,11 +105,11 @@ public class RunningSearchSolutionExample {
         SearchOptions searchOptions = new SearchOptions()
             .setIncludeTotalCount(true)
             .setSearchFields("HotelName");
-        SearchPagedIterable searchResults = client.search("Resort", searchOptions, new RequestOptions(), Context.NONE);
+        SearchPagedIterable searchResults = client.search("Resort", searchOptions, Context.NONE);
 
         System.out.println("Search query results:");
         searchResults.forEach(result -> {
-            SearchDocument doc = result.getDocument();
+            SearchDocument doc = result.getDocument(SearchDocument.class);
             String hotelName = (String) doc.get("HotelName");
             System.out.printf("     Hotel: %s%n", hotelName);
         });

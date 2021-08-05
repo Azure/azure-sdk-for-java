@@ -56,6 +56,17 @@ public final class CosmosConflictProperties {
     }
 
     /**
+     * Gets the conflicting resource in the Azure Cosmos DB service.
+     *
+     * @param <T>   the type of the object.
+     * @param klass The returned type of conflicting resource.
+     * @return The conflicting resource.
+     */
+    public <T> T getItem(Class<T> klass) {
+        return this.conflict.getItem(klass);
+    }
+
+    /**
      * Gets the name of the resource.
      *
      * @return the name of the resource.

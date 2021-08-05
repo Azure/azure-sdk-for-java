@@ -5,6 +5,8 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.file.datalake.models.AccessControlChangeResult;
+import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -12,8 +14,12 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
+import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
 
@@ -23,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Code snippets for {@link DataLakeFileSystemClient}
@@ -38,6 +45,7 @@ public class PathClientJavaDocCodeSamples {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
+    private String accountName = "accountName";
     private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
@@ -201,6 +209,160 @@ public class PathClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakePathClient#setAccessControlRecursive(List)}
+     */
+    public void setAccessControlListRecursiveCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursive#List
+        PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
+            .setEntityId("entityId")
+            .setPermissions(new RolePermissions().setReadPermission(true));
+        List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
+        pathAccessControlEntries.add(pathAccessControlEntry);
+
+        AccessControlChangeResult response = client.setAccessControlRecursive(pathAccessControlEntries);
+
+        System.out.printf("Successful changed file operations: %d",
+            response.getCounters().getChangedFilesCount());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursive#List
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#setAccessControlRecursiveWithResponse(com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions, Duration, Context)}
+     */
+    public void setAccessControlRecursiveWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
+            .setEntityId("entityId")
+            .setPermissions(new RolePermissions().setReadPermission(true));
+        List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
+        pathAccessControlEntries.add(pathAccessControlEntry);
+
+        Integer batchSize = 2;
+        Integer maxBatches = 10;
+        boolean continueOnFailure = false;
+        String continuationToken = null;
+        Consumer<Response<AccessControlChanges>> progressHandler =
+            response -> System.out.println("Received response");
+
+        PathSetAccessControlRecursiveOptions options =
+            new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
+                .setBatchSize(batchSize)
+                .setMaxBatches(maxBatches)
+                .setContinueOnFailure(continueOnFailure)
+                .setContinuationToken(continuationToken)
+                .setProgressHandler(progressHandler);
+
+        Response<AccessControlChangeResult> response = client.setAccessControlRecursiveWithResponse(options, timeout,
+            new Context(key2, value2));
+        System.out.printf("Successful changed file operations: %d",
+            response.getValue().getCounters().getChangedFilesCount());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#updateAccessControlRecursive(List)}
+     */
+    public void updateAccessControlListRecursiveCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.updateAccessControlRecursive#List
+        PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
+            .setEntityId("entityId")
+            .setPermissions(new RolePermissions().setReadPermission(true));
+        List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
+        pathAccessControlEntries.add(pathAccessControlEntry);
+
+        AccessControlChangeResult response = client.updateAccessControlRecursive(pathAccessControlEntries);
+
+        System.out.printf("Successful changed file operations: %d",
+            response.getCounters().getChangedFilesCount());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.updateAccessControlRecursive#List
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#updateAccessControlRecursiveWithResponse(com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions, Duration, Context)}
+     */
+    public void updateAccessControlRecursiveWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
+            .setEntityId("entityId")
+            .setPermissions(new RolePermissions().setReadPermission(true));
+        List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
+        pathAccessControlEntries.add(pathAccessControlEntry);
+
+        Integer batchSize = 2;
+        Integer maxBatches = 10;
+        boolean continueOnFailure = false;
+        String continuationToken = null;
+        Consumer<Response<AccessControlChanges>> progressHandler =
+            response -> System.out.println("Received response");
+
+        PathUpdateAccessControlRecursiveOptions options =
+            new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+                .setBatchSize(batchSize)
+                .setMaxBatches(maxBatches)
+                .setContinueOnFailure(continueOnFailure)
+                .setContinuationToken(continuationToken)
+                .setProgressHandler(progressHandler);
+
+        Response<AccessControlChangeResult> response = client.updateAccessControlRecursiveWithResponse(options, timeout,
+            new Context(key2, value2));
+        System.out.printf("Successful changed file operations: %d",
+            response.getValue().getCounters().getChangedFilesCount());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#removeAccessControlRecursive(List)}
+     */
+    public void removeAccessControlListRecursiveCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.removeAccessControlRecursive#List
+        PathRemoveAccessControlEntry pathAccessControlEntry = new PathRemoveAccessControlEntry()
+            .setEntityId("entityId");
+        List<PathRemoveAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
+        pathAccessControlEntries.add(pathAccessControlEntry);
+
+        AccessControlChangeResult response = client.removeAccessControlRecursive(pathAccessControlEntries);
+
+        System.out.printf("Successful changed file operations: %d",
+            response.getCounters().getChangedFilesCount());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.removeAccessControlRecursive#List
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#removeAccessControlRecursiveWithResponse(com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions, Duration, Context)}
+     */
+    public void removeAccessControlRecursiveWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+        PathRemoveAccessControlEntry pathAccessControlEntry = new PathRemoveAccessControlEntry()
+            .setEntityId("entityId");
+        List<PathRemoveAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
+        pathAccessControlEntries.add(pathAccessControlEntry);
+
+        Integer batchSize = 2;
+        Integer maxBatches = 10;
+        boolean continueOnFailure = false;
+        String continuationToken = null;
+        Consumer<Response<AccessControlChanges>> progressHandler =
+            response -> System.out.println("Received response");
+
+        PathRemoveAccessControlRecursiveOptions options =
+            new PathRemoveAccessControlRecursiveOptions(pathAccessControlEntries)
+                .setBatchSize(batchSize)
+                .setMaxBatches(maxBatches)
+                .setContinueOnFailure(continueOnFailure)
+                .setContinuationToken(continuationToken)
+                .setProgressHandler(progressHandler);
+
+        Response<AccessControlChangeResult> response = client.removeAccessControlRecursiveWithResponse(options, timeout,
+            new Context(key2, value2));
+        System.out.printf("Successful changed file operations: %d",
+            response.getValue().getCounters().getChangedFilesCount());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions-Duration-Context
+    }
+
+    /**
      * Code snippets for {@link DataLakePathClient#setPermissions(PathPermissions, String, String)}
      */
     public void setPermissionsCodeSnippets() {
@@ -291,6 +453,33 @@ public class PathClientJavaDocCodeSamples {
 
         client.generateUserDelegationSas(values, userDelegationKey);
         // END: com.azure.storage.file.datalake.DataLakePathClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey
+    }
+
+    /**
+     * Code snippet for {@link DataLakePathClient#generateUserDelegationSas(DataLakeServiceSasSignatureValues, UserDelegationKey, String, Context)}
+     * and {@link DataLakePathClient#generateSas(DataLakeServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.generateSas#DataLakeServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        PathSasPermission permission = new PathSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.file.datalake.DataLakePathClient.generateSas#DataLakeServiceSasSignatureValues-Context
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        PathSasPermission myPermission = new PathSasPermission().setReadPermission(true);
+
+        DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
+        // END: com.azure.storage.file.datalake.DataLakePathClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 
 }

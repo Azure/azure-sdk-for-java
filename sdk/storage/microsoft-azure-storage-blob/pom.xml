@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.28</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+            <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
         </dependency>
 
         <dependency>
@@ -69,14 +69,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+            <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>1.3-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+            <version>1.3-groovy-2.5</version> <!-- {x-version-update;microsoft_azure_storage_blob_org.spockframework:spock-core;external_dependency} -->
             <scope>test</scope>
         </dependency>
 

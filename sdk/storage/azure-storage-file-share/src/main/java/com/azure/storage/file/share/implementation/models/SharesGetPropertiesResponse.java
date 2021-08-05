@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the getProperties operation.
- */
-public final class SharesGetPropertiesResponse extends ResponseBase<ShareGetPropertiesHeaders, Void> {
+/** Contains all response data for the getProperties operation. */
+public final class SharesGetPropertiesResponse extends ResponseBase<SharesGetPropertiesHeaders, Void> {
     /**
      * Creates an instance of SharesGetPropertiesResponse.
      *
@@ -21,7 +19,12 @@ public final class SharesGetPropertiesResponse extends ResponseBase<ShareGetProp
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SharesGetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ShareGetPropertiesHeaders headers) {
+    public SharesGetPropertiesResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            SharesGetPropertiesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

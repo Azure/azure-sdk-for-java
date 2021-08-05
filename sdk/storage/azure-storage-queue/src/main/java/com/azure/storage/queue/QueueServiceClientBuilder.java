@@ -3,27 +3,33 @@
 package com.azure.storage.queue;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-
+import com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder;
 import com.azure.storage.queue.implementation.util.BuilderHelper;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -75,16 +81,23 @@ public final class QueueServiceClientBuilder {
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
+    private String sasToken;
 
     private HttpClient httpClient;
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
+    private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private QueueServiceVersion version;
+
+    private QueueMessageEncoding messageEncoding = QueueMessageEncoding.NONE;
+    private Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
+    private Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
@@ -108,20 +121,30 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or
      * {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public QueueServiceAsyncClient buildAsyncClient() {
+        if (processMessageDecodingErrorAsyncHandler != null && processMessageDecodingErrorHandler != null) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
+                    + "but not both.")
+            );
+        }
+
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
+        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
 
-        return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion);
+        return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
     /**
@@ -138,6 +161,7 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public QueueServiceClient buildClient() {
         return new QueueServiceClient(buildAsyncClient());
@@ -177,7 +201,7 @@ public final class QueueServiceClientBuilder {
     public QueueServiceClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -191,22 +215,36 @@ public final class QueueServiceClientBuilder {
     public QueueServiceClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated QueueServiceClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public QueueServiceClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
+     * @return the updated QueueServiceClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public QueueServiceClientBuilder credential(AzureSasCredential credential) {
+        this.azureSasCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         return this;
     }
 
@@ -264,7 +302,12 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public QueueServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
         return this;
     }
 
@@ -326,6 +369,92 @@ public final class QueueServiceClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the client options for all the requests made through the client.
+     *
+     * @param clientOptions {@link ClientOptions}.
+     * @return the updated QueueServiceClientBuilder object
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    public QueueServiceClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the queue message encoding.
+     *
+     * @param messageEncoding {@link QueueMessageEncoding}.
+     * @return the updated QueueServiceClientBuilder object
+     * @throws NullPointerException If {@code messageEncoding} is {@code null}.
+     */
+    public QueueServiceClientBuilder messageEncoding(QueueMessageEncoding messageEncoding) {
+        this.messageEncoding = Objects.requireNonNull(messageEncoding, "'messageEncoding' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the asynchronous handler that performs the tasks needed when a message is received or peaked from the queue
+     * but cannot be decoded.
+     * <p>
+     * Such message can be received or peaked when queue is expecting certain {@link QueueMessageEncoding}
+     * but there's another producer that is not encoding messages in expected way.
+     * I.e. the queue contains messages with different encoding.
+     * <p>
+     * {@link QueueMessageDecodingError} contains {@link QueueAsyncClient} for the queue that has received
+     * the message as well as {@link QueueMessageDecodingError#getQueueMessageItem()} or
+     * {@link QueueMessageDecodingError#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
+     * so that body can be inspected as has been received from the queue.
+     * <p>
+     * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
+     * handler itself.
+     * <p>
+     * The handler will be shared by all queue clients that are created from {@link QueueServiceClient} or
+     * {@link QueueServiceAsyncClient} built by this builder.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorAsyncHandler}
+     *
+     * @param processMessageDecodingErrorAsyncHandler the handler.
+     * @return the updated QueueServiceClientBuilder object
+     */
+    public QueueServiceClientBuilder processMessageDecodingErrorAsync(
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler) {
+        this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
+        return this;
+    }
+
+    /**
+     * Sets the handler that performs the tasks needed when a message is received or peaked from the queue
+     * but cannot be decoded.
+     * <p>
+     * Such message can be received or peaked when queue is expecting certain {@link QueueMessageEncoding}
+     * but there's another producer that is not encoding messages in expected way.
+     * I.e. the queue contains messages with different encoding.
+     * <p>
+     * {@link QueueMessageDecodingError} contains {@link QueueAsyncClient} for the queue that has received
+     * the message as well as {@link QueueMessageDecodingError#getQueueMessageItem()} or
+     * {@link QueueMessageDecodingError#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
+     * so that body can be inspected as has been received from the queue.
+     * <p>
+     * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
+     * handler itself.
+     * <p>
+     * The handler will be shared by all queue clients that are created from {@link QueueServiceClient} or
+     * {@link QueueServiceAsyncClient} built by this builder.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorHandler}
+     *
+     * @param processMessageDecodingErrorHandler the handler.
+     * @return the updated QueueServiceClientBuilder object
+     */
+    public QueueServiceClientBuilder processMessageDecodingError(
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
+        this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
         return this;
     }
 

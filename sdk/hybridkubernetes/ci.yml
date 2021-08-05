@@ -1,0 +1,37 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybridkubernetes/
+    exclude:
+      - sdk/hybridkubernetes/pom.xml
+      - sdk/hybridkubernetes/azure-resourcemanager-hybridkubernetes/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybridkubernetes/
+    exclude:
+      - sdk/hybridkubernetes/pom.xml
+      - sdk/hybridkubernetes/azure-resourcemanager-hybridkubernetes/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: hybridkubernetes
+    Artifacts:
+      - name: azure-resourcemanager-hybridkubernetes
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhybridkubernetes

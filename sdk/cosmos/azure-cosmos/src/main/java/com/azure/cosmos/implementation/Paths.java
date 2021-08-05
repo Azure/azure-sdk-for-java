@@ -8,6 +8,8 @@ package com.azure.cosmos.implementation;
  */
 public class Paths {
     static final String ROOT = "/";
+    static final char ROOT_CHAR = '/';
+    static final char ESCAPE_CHAR = '\\';
 
     public static final String DATABASES_PATH_SEGMENT = "dbs";
     public static final String DATABASES_ROOT = ROOT + DATABASES_PATH_SEGMENT;
@@ -21,6 +23,7 @@ public class Paths {
     public static final String CONFLICTS_PATH_SEGMENT = "conflicts";
     public static final String DOCUMENTS_PATH_SEGMENT = "docs";
     public static final String ATTACHMENTS_PATH_SEGMENT = "attachments";
+    public static final String CLIENT_ENCRYPTION_KEY_PATH_SEGMENT = "clientencryptionkeys";
 
     // /offers
     public static final String OFFERS_PATH_SEGMENT = "offers";

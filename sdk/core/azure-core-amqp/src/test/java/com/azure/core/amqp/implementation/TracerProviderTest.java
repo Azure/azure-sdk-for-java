@@ -22,35 +22,47 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class TracerProviderTest {
-    private static final String METHOD_NAME = "EventHubs.send";
+    private static final String SERVICE_BASE_NAME = "serviceBaseName";
+    private static final String METHOD_NAME = SERVICE_BASE_NAME + "send";
 
     @Mock
     private Tracer tracer;
 
     private List<Tracer> tracers;
     private TracerProvider tracerProvider;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         tracers = Collections.singletonList(tracer);
         tracerProvider = new TracerProvider(tracers);
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test
     public void startSpan() {
         // Act
-        tracerProvider.startSpan(Context.NONE, ProcessKind.SEND);
+        tracerProvider.startSpan(SERVICE_BASE_NAME, Context.NONE, ProcessKind.SEND);
 
         // Assert
         for (Tracer t : tracers) {
@@ -82,7 +94,7 @@ public class TracerProviderTest {
         );
 
         // Act
-        final Context updatedContext = tracerProvider.startSpan(startingContext, ProcessKind.SEND);
+        final Context updatedContext = tracerProvider.startSpan(SERVICE_BASE_NAME, startingContext, ProcessKind.SEND);
 
         // Assert
         // Want to ensure that the data added to the parent are available.
@@ -191,7 +203,7 @@ public class TracerProviderTest {
         );
 
         // Act
-        final Context updatedContext = tracerProvider.getSharedSpanBuilder(startingContext);
+        final Context updatedContext = tracerProvider.getSharedSpanBuilder(SERVICE_BASE_NAME, startingContext);
 
         // Assert
         final Optional<Object> spanBuilderData = updatedContext.getData(spanBuilderKey);

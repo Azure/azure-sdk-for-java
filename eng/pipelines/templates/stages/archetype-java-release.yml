@@ -1,9 +1,28 @@
 parameters:
-  Artifacts: []
-  ArtifactName: 'not-specified'
-  TargetDocRepoOwner: ''
-  TargetDocRepoName: ''
-  EnableIntegrationStage: true
+  - name: DependsOn
+    type: object
+  - name: ServiceDirectory
+    type: string
+  - name: SDKType
+    type: string
+  - name: Artifacts
+    type: object
+    default: []
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: ArtifactName
+    type: string
+    default: 'not-specified'
+  - name: TargetDocRepoOwner
+    type: string
+    default: ''
+  - name: TargetDocRepoName
+    type: string
+    default: ''
+  - name: EnableIntegrationStage
+    type: boolean
+    default: true
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -19,7 +38,8 @@ stages:
         variables:
           - template: ../variables/globals.yml
         pool:
-          vmImage: ubuntu-18.04
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
         strategy:
           runOnce:
             deploy:
@@ -58,13 +78,28 @@ stages:
             variables:
               - template: ../variables/globals.yml
             pool:
-              vmImage: ubuntu-18.04
+              name: azsdk-pool-mms-ubuntu-2004-general
+              vmImage: MMSUbuntu20.04
 
             steps:
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                parameters:
+                  Paths:
+                    - '${{ parameters.ServiceDirectory }}'
+                    - '**/*.xml'
+                    - '!sdk/**/test-recordings'
+                    - '!sdk/**/session-records'
+
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
                 inputs:
                   versionSpec: '3.6'
+
+              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+                parameters:
+                  PackageName: "azure-sdk-template"
+                  ServiceDirectory: "template"
+                  TestPipeline: ${{ parameters.TestPipeline }}
 
               - script: |
                   python --version
@@ -75,35 +110,37 @@ stages:
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 displayName: "Verify no unreleased dependencies"
 
+              - ${{if ne(parameters.SDKType, 'data')}}:
+                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                  parameters:
+                    PackageName: ${{artifact.name}}
+                    ServiceName: ${{parameters.ServiceDirectory}}
+                    ForRelease: true
+
 
           - deployment: TagRepository
             displayName: "Create release tag"
             condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
             environment: github
-            timeoutInMinutes: 5
             dependsOn: VerifyReleaseVersion
             variables:
               - template: ../variables/globals.yml
             pool:
+              name: Azure Pipelines
               vmImage: vs2017-win2016
             strategy:
               runOnce:
                 deploy:
                   steps:
-                    - checkout: self
-                    - template: /eng/pipelines/templates/steps/stage-artifacts.yml
-                      parameters:
-                        SourceFolder: ${{parameters.ArtifactName}}-signed
-                        TargetFolder: ${{artifact.safeName}}
-                        PackageName: ${{artifact.name}}
+                    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                    - template: /eng/common/pipelines/templates/steps/retain-run.yml
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
-                        ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         PackageRepository: Maven
                         ReleaseSha: $(Build.SourceVersion)
-                        RepoId: Azure/azure-sdk-for-java
 
-          - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
+          - ${{if ne(artifact.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
               displayName: "Publish to Maven Central"
               condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
@@ -112,15 +149,21 @@ stages:
               variables:
                 - template: ../variables/globals.yml
               pool:
+                name: Azure Pipelines
                 vmImage: vs2017-win2016
               strategy:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
-                        path: azure-sdk-for-java
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          SkipDefaultCheckout: true
+                          Repositories:
+                            - Name: Azure/azure-sdk-for-java
+                              Commitish: $(Build.SourceVersion)
+                              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                       - template: /eng/pipelines/templates/steps/java-publishing.yml
                         parameters:
@@ -138,46 +181,55 @@ stages:
                           ArtifactID: ${{artifact.name}}
                           GroupID: ${{artifact.groupId}}
                           ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
                           Target: JavaDevFeed
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
-          - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
+          - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
             - deployment: PublicDocsMs
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: github
-              timeoutInMinutes: 5
               dependsOn: PublishPackage
               variables:
-                - template: ../variables/globals.yml
+                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1','content_folder':'docs-ref-services/preview'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0','content_folder':'docs-ref-services/latest'}]}"
+                skipComponentGovernanceDetection: true
               pool:
+                name: Azure Pipelines
                 vmImage: vs2017-win2016
               strategy:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
-                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
-                          SourceFolder: ${{parameters.ArtifactName}}-signed
-                          TargetFolder: ${{artifact.safeName}}
-                          PackageName: ${{artifact.name}}
+                          paths:
+                            - .github/CODEOWNERS
+                      - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
+                        parameters:
+                          TargetVariable: "OwningGHUser"
+                          ServiceDirectory: ${{parameters.ServiceDirectory}}
                       - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
                         parameters:
-                          ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                           PackageRepository: Maven
                           ReleaseSha: $(Build.SourceVersion)
-                          RepoId: Azure/azure-sdk-for-java
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
                           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          PRBranchName: 'smoke-test-rdme'
-                          ArtifactName: ${{parameters.ArtifactName}}
+                          PRBranchName: onboarding-${{artifact.name}}-$(Build.BuildId)
+                          ArtifactName: ${{artifact.name}}
                           Language: 'java'
-                          DocRepoDestinationPath: 'docs-ref-services/' 
-                          
-          - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
+                          DocRepoDestinationPath: 'docs-ref-services/'
+                          GHReviewersVariable: 'OwningGHUser'
+                          CIConfigs: $(CIConfigs)
+                          CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                          SkipPackageJson: ${{artifact.skipUpdatePackageJson}}
+                          SparseCheckoutPaths:
+                            - docs-ref-services
+
+          - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
               displayName: Publish Docs to GitHubIO Blob Storage
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
@@ -186,32 +238,28 @@ stages:
               variables:
                 - template: ../variables/globals.yml
               pool:
-                vmImage: windows-2019
+                name: azsdk-pool-mms-win-2019-general
+                vmImage: MMS2019
               strategy:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
-                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
-                        parameters:
-                          SourceFolder: ${{parameters.ArtifactName}}-signed
-                          TargetFolder: ${{artifact.safeName}}
-                          PackageName: ${{artifact.name}}
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                       - pwsh: |
-                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
+                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         workingDirectory: $(Pipeline.Workspace)
                         displayName: Output Visible Artifacts
                       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
-                          FolderForUpload: '$(Pipeline.Workspace)/${{artifact.safeName}}'
+                          FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}'
                           BlobSASKey: '$(azure-sdk-docs-prod-sas)'
                           BlobName: '$(azure-sdk-docs-prod-blob-name)'
                           TargetLanguage: 'java'
-
+                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                           # we override the regular script path because we have cloned the build tools repo as a separate artifact.
                           ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
-          - ${{if ne(artifact.options.skipUpdatePackageVersion, 'true')}}:
+          - ${{if ne(artifact.skipUpdatePackageVersion, 'true')}}:
             - deployment: UpdatePackageVersion
               displayName: "Update Package Version"
               condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
@@ -220,12 +268,19 @@ stages:
               variables:
                 - template: ../variables/globals.yml
               pool:
-                vmImage: windows-2019
+                name: azsdk-pool-mms-win-2019-general
+                vmImage: MMS2019
               strategy:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          Paths:
+                            - '${{ parameters.ServiceDirectory }}'
+                            - '**/*.xml'
+                            - '!sdk/**/test-recordings'
+                            - '!sdk/**/session-records'
 
                       - task: UsePythonVersion@0
                         displayName: 'Use Python 3.6'
@@ -244,10 +299,11 @@ stages:
 
                       - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
                         parameters:
-                          RepoName: azure-sdk-for-java
                           PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                          PRLabels: "auto-merge"
+                          CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:
     - stage: Integration
@@ -258,26 +314,49 @@ stages:
         displayName: Publish package to daily feed
         variables:
           - template: ../variables/globals.yml
+          - name: RepositoryUrl
+            value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
+
         pool:
+          name: Azure Pipelines
           vmImage: vs2017-win2016
         steps:
-        - checkout: self
-          path: azure-sdk-for-java
         - checkout: azure-sdk-build-tools
           path: azure-sdk-build-tools
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            SkipDefaultCheckout: true
+            Repositories:
+              - Name: Azure/azure-sdk-for-java
+                Commitish: $(Build.SourceVersion)
+                WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - download: current
           artifact: ${{parameters.ArtifactName}}-signed
+        - pwsh: |
+            # For safety default to publishing to the private feed.
+            # Publish to https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
+            if ('$(Build.Repository.Name)' -eq 'Azure/azure-sdk-for-java') {
+              # Publish to the public feed
+              # Publish to https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+              echo "##vso[task.setvariable variable=RepositoryUrl]https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
+              echo "Using Java Public Dev Feed"
+            } else {
+              echo "Using Java Private Dev Feed"
+            }
+          displayName: Setup TargetFeed
           timeoutInMinutes: 5
 
         - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
         - ${{ each artifact in parameters.Artifacts }}:
-          - template: /eng/pipelines/templates/steps/java-publishing.yml
-            parameters:
-              ArtifactID: ${{artifact.name}}
-              GroupID: ${{artifact.groupId}}
-              ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-              Target: JavaDevFeed
-              BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+          - ${{if ne(artifact.skipPublishDevFeed, 'true')}}:
+            - template: /eng/pipelines/templates/steps/java-publishing.yml
+              parameters:
+                ArtifactID: ${{artifact.name}}
+                GroupID: ${{artifact.groupId}}
+                ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                RepositoryUrl: $(RepositoryUrl)
+                Target: JavaDevFeed
+                BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java

@@ -82,22 +82,70 @@ public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConne
         }
 
         /**
+         * The stage of the privateendpointconnection definition allowing to specify PrivateEndpoint.
+         */
+        interface WithPrivateEndpoint {
+            /**
+             * Specifies privateEndpoint.
+             * @param privateEndpoint The private endpoint which the connection belongs to
+             * @return the next definition stage
+             */
+            WithCreate withPrivateEndpoint(PrivateEndpoint privateEndpoint);
+        }
+
+        /**
+         * The stage of the privateendpointconnection definition allowing to specify PrivateLinkServiceConnectionState.
+         */
+        interface WithPrivateLinkServiceConnectionState {
+            /**
+             * Specifies privateLinkServiceConnectionState.
+             * @param privateLinkServiceConnectionState Connection state of the private endpoint connection
+             * @return the next definition stage
+             */
+            WithCreate withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PrivateEndpointConnection> {
+        interface WithCreate extends Creatable<PrivateEndpointConnection>, DefinitionStages.WithPrivateEndpoint, DefinitionStages.WithPrivateLinkServiceConnectionState {
         }
     }
     /**
      * The template for a PrivateEndpointConnection update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PrivateEndpointConnection> {
+    interface Update extends Appliable<PrivateEndpointConnection>, UpdateStages.WithPrivateEndpoint, UpdateStages.WithPrivateLinkServiceConnectionState {
     }
 
     /**
      * Grouping of PrivateEndpointConnection update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the privateendpointconnection update allowing to specify PrivateEndpoint.
+         */
+        interface WithPrivateEndpoint {
+            /**
+             * Specifies privateEndpoint.
+             * @param privateEndpoint The private endpoint which the connection belongs to
+             * @return the next update stage
+             */
+            Update withPrivateEndpoint(PrivateEndpoint privateEndpoint);
+        }
+
+        /**
+         * The stage of the privateendpointconnection update allowing to specify PrivateLinkServiceConnectionState.
+         */
+        interface WithPrivateLinkServiceConnectionState {
+            /**
+             * Specifies privateLinkServiceConnectionState.
+             * @param privateLinkServiceConnectionState Connection state of the private endpoint connection
+             * @return the next update stage
+             */
+            Update withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+        }
+
     }
 }

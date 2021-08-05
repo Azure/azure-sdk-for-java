@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/deployments/dpokluda-test-2021-302-1202-48/devicestates",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-b6bb8d3365d9aa4b93ee6e34c1cb9154-112bae4b6596d442-00",
+      "retry-after" : "0",
+      "Content-Length" : "170",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"deviceId\": \"dpokluda-test\",\r\n      \"deviceState\": \"Succeeded\",\r\n      \"retryCount\": 0,\r\n      \"movedOnToNewDeployment\": true\r\n    }\r\n  ]\r\n}",
+      "Date" : "Tue, 02 Mar 2021 21:29:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

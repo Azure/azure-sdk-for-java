@@ -106,7 +106,7 @@ public class FileShareItemInner extends AzureEntityResource {
      * value may not include all recently created or recently resized files.
      */
     @JsonProperty(value = "properties.shareUsageBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer shareUsageBytes;
+    private Long shareUsageBytes;
 
     /**
      * Get returns the date and time the share was last modified.
@@ -276,7 +276,7 @@ public class FileShareItemInner extends AzureEntityResource {
      *
      * @return the shareUsageBytes value
      */
-    public Integer shareUsageBytes() {
+    public Long shareUsageBytes() {
         return this.shareUsageBytes;
     }
 

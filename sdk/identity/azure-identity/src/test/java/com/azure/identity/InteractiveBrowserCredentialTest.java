@@ -30,8 +30,7 @@ import static org.mockito.Mockito.when;
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class InteractiveBrowserCredentialTest {
 
-    private final String tenantId = "contoso.com";
-    private final String clientId = UUID.randomUUID().toString();
+    private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testValidInteractive() throws Exception {
@@ -47,7 +46,7 @@ public class InteractiveBrowserCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
         when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> {
                 TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
@@ -63,7 +62,7 @@ public class InteractiveBrowserCredentialTest {
 
         // test
         InteractiveBrowserCredential credential =
-            new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
+            new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request1))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -72,6 +71,94 @@ public class InteractiveBrowserCredentialTest {
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
+    }
+
+    @Test
+    public void testValidInteractiveViaRedirectUri() throws Exception {
+        // setup
+        String token1 = "token1";
+        String token2 = "token2";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        String redirectUrl = "http://localhost:3761";
+
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(redirectUrl), eq(null))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
+            .thenAnswer(invocation -> {
+                TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    return TestUtils.getMockMsalToken(token2, expiresAt);
+                } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    return Mono.error(new UnsupportedOperationException("nothing cached"));
+                } else {
+                    throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                }
+            });
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+        // test
+        InteractiveBrowserCredential credential =
+            new InteractiveBrowserCredentialBuilder().redirectUrl(redirectUrl).clientId(CLIENT_ID).build();
+        StepVerifier.create(credential.getToken(request1))
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
+        StepVerifier.create(credential.getToken(request2))
+            .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
+    }
+
+    @Test
+    public void testValidInteractiveWithLoginHint() throws Exception {
+        // setup
+        String token1 = "token1";
+        String token2 = "token2";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        String username = "user@foo.com";
+
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(null), eq(username))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
+            .thenAnswer(invocation -> {
+                TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    return TestUtils.getMockMsalToken(token2, expiresAt);
+                } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    return Mono.error(new UnsupportedOperationException("nothing cached"));
+                } else {
+                    throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                }
+            });
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+        // test
+        InteractiveBrowserCredential credential =
+            new InteractiveBrowserCredentialBuilder().loginHint(username).clientId(CLIENT_ID).build();
+        StepVerifier.create(credential.getToken(request1))
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
+        StepVerifier.create(credential.getToken(request2))
+            .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCredentialDoesnWorkWIthPortAndRedirectUrlConfigured() throws Exception {
+        // setup
+        new InteractiveBrowserCredentialBuilder()
+            .clientId(CLIENT_ID)
+            .port(8080)
+            .redirectUrl("http://localhost:8080")
+            .build();
     }
 
     @Test
@@ -86,13 +173,13 @@ public class InteractiveBrowserCredentialTest {
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port)))
+        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
                 .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         InteractiveBrowserCredential credential =
-                new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
+                new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
         StepVerifier.create(credential.authenticate(request1))
                 .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
                                                                .equals("http://login.microsoftonline.com")

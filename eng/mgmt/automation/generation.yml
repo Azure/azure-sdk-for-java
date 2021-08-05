@@ -1,0 +1,46 @@
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+variables:
+- group: Release Secrets for GitHub
+- name: MAVEN_CACHE_FOLDER
+  value: $(Pipeline.Workspace)/.m2/repository
+- name: MAVEN_OPTS
+  value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+- name: NodeVersion
+  value: '14.x'
+
+steps:
+- bash: |
+    sudo apt-get install -y --upgrade python3-pip python3-setuptools
+    pip3 install --upgrade wheel
+    pip3 install --upgrade PyYAML requests
+  displayName: Update python
+
+- task: NodeTool@0
+  displayName: 'Install Node.js $(NodeVersion)'
+  inputs:
+    versionSpec: '$(NodeVersion)'
+
+- bash: |
+    npm install -g autorest
+    npm install
+  displayName: 'Install autorest'
+
+- bash: |
+    export PATH=$JAVA_HOME_11_X64/bin:$PATH
+    java -version
+    ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
+  displayName: Generation
+
+- template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+  parameters:
+    PRBranchName: fluent-lite-generation-$(Build.BuildId)
+    CommitMsg: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
+    PRTitle: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
+    PRLabels: 'Mgmt - Track 2'
+    OpenAsDraft: '$(DRAFT_PULL_REQUEST)'

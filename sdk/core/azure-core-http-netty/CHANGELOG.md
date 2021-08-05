@@ -1,7 +1,124 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.11.0-beta.1 (Unreleased)
 
+
+## 1.10.1 (2021-07-01)
+
+### Features Added
+
+- Added support for new `HttpClientOptions` configurations.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
+## 1.10.0 (2021-06-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.16.0` to `1.17.0`.
+- Upgraded Netty from `4.1.63.Final` to `4.1.65.Final`.
+- Upgraded Reactor Netty from `1.0.6` to `1.0.7`.
+
+## 1.9.2 (2021-05-07)
+
+### Fixed
+
+- Fixed a bug where `ProxyConnectException`s weren't eagerly being retried.
+- Updated how `ProxyConnectException`s are propagated to include response headers.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
+- Upgraded Netty from `4.1.60.Final` to `4.1.63.Final`.
+- Upgraded Reactor Netty from `1.0.4` to `1.0.6`.
+
+## 1.9.1 (2021-04-02)
+
+### Bug Fixes
+
+- Fixed a bug where a proxy's address is only resolved during construction of the client, now it is resolved per connection. [#19497](https://github.com/Azure/azure-sdk-for-java/issues/19497)
+- Fixed a bug where `Proxy Authentication Required` bubbled back up to a `RetryPolicy` leading to more time taken to
+  connect to a proxy when authentication information was supplied. [#19415](https://github.com/Azure/azure-sdk-for-java/issues/19415)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.14.0` to `1.15.0`.
+- Upgraded Netty from `4.1.59.Final` to `4.1.60.Final`.
+
+## 1.9.0 (2021-03-08)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.13.0` to `1.14.0`.
+- Upgraded Netty from `4.1.54.Final` to `4.1.59.Final`.
+- Upgraded Reactor Netty from `0.9.15.RELEASE` to `1.0.4`.
+
+## 1.8.0 (2021-02-05)
+
+### New Features
+
+- Exposed service provider interfaces used to create `HttpClient` instances.
+
+### Bug Fixes
+
+- Fixed a bug where authenticated proxies would use different DNS resolution than non-authenticated proxies. [#17930](https://github.com/Azure/azure-sdk-for-java/issues/17930)
+
+## 1.7.1 (2021-01-11)
+
+### Bug Fixes
+
+- Fixed a bug where environment proxy configurations were not sanitizing the non-proxy host string into a valid `Pattern` format. [#18156](https://github.com/Azure/azure-sdk-for-java/issues/18156)
+
+### Dependency Updates
+
+- Upgraded Netty from `4.1.53.Final` to `4.1.54.Final`.
+- Upgraded `reactor-netty` from `0.9.13.RELEASE` to `0.9.15.RELEASE`.
+
+## 1.7.0 (2020-11-24)
+
+### New Features
+
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
+
+### Bug Fixes
+
+- Fixed a bug where a connection would remain active when timed out instead of being closed.
+
+## 1.6.3 (2020-10-29)
+
+### Dependency Updates
+
+- Updated `azure-core` to `1.10.0`.
+
+## 1.6.2 (2020-10-01)
+
+- Updated `azure-core` version.
+
+## 1.6.1 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.6.0 (2020-09-03)
+
+- Added new APIs to configure request write timeout, response timeout, and response body read timeout.
+- Changed default timeouts from infinite to 60 seconds.
+- Updated `reactor-core` version to `3.3.9.RELEASE`.
+- Updated `reactor-netty` version to `0.9.11.RELEASE`.
+
+## 1.5.4 (2020-08-07)
+
+- Updated `reactor-core` version to `3.3.8.RELEASE`.
+- Updated `reactor-netty` version to `0.9.10.RELEASE`.
+- Updated `netty` version to `4.1.51.Final`.
+- Updated `netty-tcnative` version to `2.0.31.Final`.
+- Fixed a bug where connections weren't being re-used when using a proxy which lead to a new TCP and SSL session for each request.
+- Fixed a bug where a non-shareable proxy handler could be added twice into a `ChannelPipeline`.
+
+## 1.5.3 (2020-07-02)
+
+- Updated Azure Core dependency.
 
 ## 1.5.2 (2020-06-08)
 

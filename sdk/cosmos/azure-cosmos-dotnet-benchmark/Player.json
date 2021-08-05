@@ -1,0 +1,26 @@
+{
+    "id": "G02-D06-a067ff",
+    "playerId": "a067ff",
+    "hashedId": "bb0091",
+    "countryCode": "hk",
+    "nickname": "DannyBoy",
+    "nicknameLower": "dannyboy",
+    "score": 0,
+    "secondaryScore": 18,
+    "indexScore": 0.18,
+    "level": 1,
+    "lastSaveUnixTime": 1446591499,
+    "lastLoadUnixTime": 1446590552,
+    "disconnectedUnixTime": 1446591499,
+    "facebookId": "FB_1010006092353214",
+    "gameCenterId": "GC_G:1939511430",
+    "chatMessages": [
+        {
+            "playerId": "67879d8e",
+            "name": "lee",
+            "message": "hi",
+            "time": 760455049,
+            "notificationType": "None"
+        }
+    ]
+}

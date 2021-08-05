@@ -1,52 +1,40 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
   branches:
     include:
-      - master
-      - feature/*
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/keyvault/
+      - sdk/keyvault/ci.mgmt.yml
+      - sdk/keyvault/mgmt-v2015_06_01/
+      - sdk/keyvault/mgmt-v2016_10_01/
+      - sdk/keyvault/mgmt-v2019_09_01/
     exclude:
-      - sdk/keyvault/microsoft-azure-keyvault
-      - sdk/keyvault/microsoft-azure-keyvault-complete
-      - sdk/keyvault/microsoft-azure-keyvault-core
-      - sdk/keyvault/microsoft-azure-keyvault-cryptography
-      - sdk/keyvault/microsoft-azure-keyvault-extensions
-      - sdk/keyvault/microsoft-azure-keyvault-test
-      - sdk/keyvault/microsoft-azure-keyvault-webkey    
-      - sdk/keyvault/azure-security-keyvault-certificates
-      - sdk/keyvault/azure-security-keyvault-keys
-      - sdk/keyvault/azure-security-keyvault-secrets
+      - sdk/keyvault/pom.xml
+      - sdk/keyvault/mgmt-v2015_06_01/pom.xml
+      - sdk/keyvault/mgmt-v2016_10_01/pom.xml
+      - sdk/keyvault/mgmt-v2019_09_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/keyvault/
+      - sdk/keyvault/ci.mgmt.yml
+      - sdk/keyvault/mgmt-v2015_06_01/
+      - sdk/keyvault/mgmt-v2016_10_01/
+      - sdk/keyvault/mgmt-v2019_09_01/
     exclude:
-      - sdk/keyvault/microsoft-azure-keyvault
-      - sdk/keyvault/microsoft-azure-keyvault-complete
-      - sdk/keyvault/microsoft-azure-keyvault-core
-      - sdk/keyvault/microsoft-azure-keyvault-cryptography
-      - sdk/keyvault/microsoft-azure-keyvault-extensions
-      - sdk/keyvault/microsoft-azure-keyvault-test
-      - sdk/keyvault/microsoft-azure-keyvault-webkey    
-      - sdk/keyvault/azure-security-keyvault-certificates
-      - sdk/keyvault/azure-security-keyvault-keys
-      - sdk/keyvault/azure-security-keyvault-secrets
+      - sdk/keyvault/pom.xml
+      - sdk/keyvault/mgmt-v2015_06_01/pom.xml
+      - sdk/keyvault/mgmt-v2016_10_01/pom.xml
+      - sdk/keyvault/mgmt-v2019_09_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

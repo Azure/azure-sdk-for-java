@@ -34,8 +34,22 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
      * https://docs.azuredatabricks.net/api/latest/authentication.html. Type:
      * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.accessToken", required = true)
+    @JsonProperty(value = "typeProperties.accessToken")
     private SecretBase accessToken;
+
+    /**
+     * Required to specify MSI, if using Workspace resource id for databricks
+     * REST API. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.authentication")
+    private Object authentication;
+
+    /**
+     * Workspace resource id for databricks REST API. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.workspaceResourceId")
+    private Object workspaceResourceId;
 
     /**
      * The id of an existing interactive cluster that will be used for all runs
@@ -102,6 +116,13 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
     private Map<String, Object> newClusterCustomTags;
 
     /**
+     * Specify a location to deliver Spark driver, worker, and event logs.
+     * Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.newClusterLogDestination")
+    private Object newClusterLogDestination;
+
+    /**
      * The driver node type for the new job cluster. This property is ignored
      * in instance pool configurations. Type: string (or Expression with
      * resultType string).
@@ -132,6 +153,14 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * The policy id for limiting the ability to configure clusters based on a
+     * user defined set of rules. Type: string (or Expression with resultType
+     * string).
+     */
+    @JsonProperty(value = "typeProperties.policyId")
+    private Object policyId;
 
     /**
      * Get &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with resultType string).
@@ -170,6 +199,46 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
      */
     public AzureDatabricksLinkedService withAccessToken(SecretBase accessToken) {
         this.accessToken = accessToken;
+        return this;
+    }
+
+    /**
+     * Get required to specify MSI, if using Workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
+     *
+     * @return the authentication value
+     */
+    public Object authentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set required to specify MSI, if using Workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
+     *
+     * @param authentication the authentication value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withAuthentication(Object authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
+    /**
+     * Get workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
+     *
+     * @return the workspaceResourceId value
+     */
+    public Object workspaceResourceId() {
+        return this.workspaceResourceId;
+    }
+
+    /**
+     * Set workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
+     *
+     * @param workspaceResourceId the workspaceResourceId value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withWorkspaceResourceId(Object workspaceResourceId) {
+        this.workspaceResourceId = workspaceResourceId;
         return this;
     }
 
@@ -334,6 +403,26 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
     }
 
     /**
+     * Get specify a location to deliver Spark driver, worker, and event logs. Type: string (or Expression with resultType string).
+     *
+     * @return the newClusterLogDestination value
+     */
+    public Object newClusterLogDestination() {
+        return this.newClusterLogDestination;
+    }
+
+    /**
+     * Set specify a location to deliver Spark driver, worker, and event logs. Type: string (or Expression with resultType string).
+     *
+     * @param newClusterLogDestination the newClusterLogDestination value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withNewClusterLogDestination(Object newClusterLogDestination) {
+        this.newClusterLogDestination = newClusterLogDestination;
+        return this;
+    }
+
+    /**
      * Get the driver node type for the new job cluster. This property is ignored in instance pool configurations. Type: string (or Expression with resultType string).
      *
      * @return the newClusterDriverNodeType value
@@ -410,6 +499,26 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
      */
     public AzureDatabricksLinkedService withEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the policy id for limiting the ability to configure clusters based on a user defined set of rules. Type: string (or Expression with resultType string).
+     *
+     * @return the policyId value
+     */
+    public Object policyId() {
+        return this.policyId;
+    }
+
+    /**
+     * Set the policy id for limiting the ability to configure clusters based on a user defined set of rules. Type: string (or Expression with resultType string).
+     *
+     * @param policyId the policyId value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withPolicyId(Object policyId) {
+        this.policyId = policyId;
         return this;
     }
 

@@ -41,23 +41,25 @@ public final class CommonGramTokenFilter extends TokenFilter {
     private Boolean queryModeUsed;
 
     /**
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param commonWords The set of common words.
+     */
+    public CommonGramTokenFilter(String name, List<String> commonWords) {
+        super(name);
+        this.commonWords = commonWords;
+    }
+
+    /**
      * Get the commonWords property: The set of common words.
      *
      * @return the commonWords value.
      */
     public List<String> getCommonWords() {
         return this.commonWords;
-    }
-
-    /**
-     * Set the commonWords property: The set of common words.
-     *
-     * @param commonWords the commonWords value to set.
-     * @return the CommonGramTokenFilter object itself.
-     */
-    public CommonGramTokenFilter setCommonWords(List<String> commonWords) {
-        this.commonWords = commonWords;
-        return this;
     }
 
     /**

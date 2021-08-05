@@ -5,35 +5,40 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.HttpProxyExceptionHandler;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
+import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
+import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
+import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.proxy.ProxyHandler;
+import io.netty.handler.proxy.ProxyConnectException;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
-import reactor.netty.NettyPipeline;
-import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.netty.tcp.TcpClient;
+import reactor.util.retry.Retry;
 
+import javax.net.ssl.SSLException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
+import java.time.Duration;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
-import java.util.regex.Pattern;
+
+import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
@@ -46,83 +51,75 @@ import java.util.regex.Pattern;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
-    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
+    private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
 
-    private final EventLoopGroup eventLoopGroup;
-    private final Supplier<ProxyHandler> proxyHandlerSupplier;
-    private final Pattern nonProxyHostsPattern;
-    private final boolean disableBufferCopy;
+    final boolean disableBufferCopy;
+    final long readTimeout;
+    final long writeTimeout;
+    final long responseTimeout;
 
     final reactor.netty.http.client.HttpClient nettyClient;
-
-    /**
-     * Creates default NettyAsyncHttpClient.
-     */
-    NettyAsyncHttpClient() {
-        this(reactor.netty.http.client.HttpClient.create(), null, null, null, false);
-    }
 
     /**
      * Creates NettyAsyncHttpClient with provided http client.
      *
      * @param nettyClient the reactor-netty http client
-     * @param eventLoopGroup {@link EventLoopGroup} that processes requests.
-     * @param proxyHandlerSupplier Supplier that returns the {@link ProxyHandler} that connects to the configured
-     * proxy.
+     * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
      */
-    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, EventLoopGroup eventLoopGroup,
-        Supplier<ProxyHandler> proxyHandlerSupplier, String nonProxyHosts, boolean disableBufferCopy) {
+    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
+                         long readTimeout, long writeTimeout, long responseTimeout) {
         this.nettyClient = nettyClient;
-        this.eventLoopGroup = eventLoopGroup;
-        this.proxyHandlerSupplier = proxyHandlerSupplier;
-        this.nonProxyHostsPattern = (nonProxyHosts == null)
-            ? null
-            : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
         this.disableBufferCopy = disableBufferCopy;
+        this.readTimeout = readTimeout;
+        this.writeTimeout = writeTimeout;
+        this.responseTimeout = responseTimeout;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<HttpResponse> send(final HttpRequest request) {
+    public Mono<HttpResponse> send(HttpRequest request) {
+        return send(request, Context.NONE);
+    }
+
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
         Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
+
+        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+
+        Optional<Object> requestResponseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT);
+        long effectiveResponseTimeout = requestResponseTimeout
+                .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
+                .orElse(this.responseTimeout);
+
         return nettyClient
-            .tcpConfiguration(tcpClient -> configureTcpClient(tcpClient, request.getUrl().getHost()))
+            .doOnRequest((r, connection) -> addWriteTimeoutHandler(connection, writeTimeout))
+            .doAfterRequest((r, connection) ->
+                    addResponseTimeoutHandler(connection, effectiveResponseTimeout))
+            .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
+            .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, disableBufferCopy))
-            .single();
-    }
+            .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse))
+            .single()
+            .onErrorMap(throwable -> {
+                // The exception was an SSLException that was caused by a failure to connect to a proxy.
+                // Extract the inner ProxyConnectException and propagate that instead.
+                if (throwable instanceof SSLException) {
+                    if (throwable.getCause() instanceof ProxyConnectException) {
+                        return throwable.getCause();
+                    }
+                }
 
-    /*
-     * Configures the underlying TcpClient that sends the request.
-     */
-    private TcpClient configureTcpClient(TcpClient tcpClient, String host) {
-        if (eventLoopGroup != null) {
-            tcpClient = tcpClient.runOn(eventLoopGroup);
-        }
-
-        // Validate that the request should be proxied.
-        if (nonProxyHostsPattern == null || !nonProxyHostsPattern.matcher(host).matches()) {
-            ProxyHandler proxyHandler = (proxyHandlerSupplier == null) ? null : proxyHandlerSupplier.get();
-            if (proxyHandler != null) {
-                /*
-                 * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the first
-                 * operation in the pipeline as it needs to handle sending a CONNECT request to the proxy before any
-                 * request data is sent.
-                 */
-                tcpClient = tcpClient.bootstrap(bootstrap -> BootstrapHandlers
-                    .updateConfiguration(bootstrap, NettyPipeline.ProxyHandler, (connectionObserver, channel) ->
-                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler)
-                            .addLast("azure.proxy.exceptionHandler", new HttpProxyExceptionHandler())));
-            }
-        }
-
-        return tcpClient;
+                return throwable;
+            })
+            .retryWhen(Retry.max(1).filter(throwable -> throwable instanceof ProxyConnectException)
+                .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure()));
     }
 
     /**
@@ -134,9 +131,29 @@ class NettyAsyncHttpClient implements HttpClient {
     private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(
         final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
-            for (HttpHeader header : restRequest.getHeaders()) {
-                if (header.getValue() != null) {
-                    reactorNettyRequest.header(header.getName(), header.getValue());
+            for (HttpHeader hdr : restRequest.getHeaders()) {
+                // Reactor-Netty allows for headers with multiple values, but it treats them as separate headers,
+                // therefore, we must call rb.addHeader for each value, using the same key for all of them.
+                // We would ideally replace this for-loop with code akin to the code in ReactorNettyHttpResponseBase,
+                // whereby we would wrap the azure-core HttpHeaders in a Netty HttpHeaders wrapper, but as of today it
+                // is not possible in reactor-netty to do this without copying occurring within that library. This
+                // issue has been reported to the reactor-netty team at
+                // https://github.com/reactor/reactor-netty/issues/1479
+                if (reactorNettyRequest.requestHeaders().contains(hdr.getName())) {
+                    // The Reactor-Netty request headers include headers by default, to prevent a scenario where we end
+                    // adding a header twice that isn't allowed, such as User-Agent, check against the initial request
+                    // header names. If our request header already exists in the Netty request we overwrite it initially
+                    // then append our additional values if it is a multi-value header.
+                    final AtomicBoolean first = new AtomicBoolean(true);
+                    hdr.getValuesList().forEach(value -> {
+                        if (first.compareAndSet(true, false)) {
+                            reactorNettyRequest.header(hdr.getName(), value);
+                        } else {
+                            reactorNettyRequest.addHeader(hdr.getName(), value);
+                        }
+                    });
+                } else {
+                    hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
                 }
             }
             if (restRequest.getBody() != null) {
@@ -152,99 +169,62 @@ class NettyAsyncHttpClient implements HttpClient {
      * Delegate to receive response.
      *
      * @param restRequest the Rest request whose response this delegate handles
+     * @param disableBufferCopy Flag indicating if the network response shouldn't be buffered.
+     * @param eagerlyReadResponse Flag indicating if the network response should be eagerly read into memory.
      * @return a delegate upon invocation setup Rest response object
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
-        final HttpRequest restRequest, final boolean disableBufferCopy) {
-        return (reactorNettyResponse, reactorNettyConnection) ->
-            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
-                disableBufferCopy));
+        final HttpRequest restRequest, final boolean disableBufferCopy, final boolean eagerlyReadResponse) {
+        return (reactorNettyResponse, reactorNettyConnection) -> {
+            /*
+             * If we are eagerly reading the response into memory we can ignore the disable buffer copy flag as we
+             * MUST deep copy the buffer to ensure it can safely be used downstream.
+             */
+            if (eagerlyReadResponse) {
+                // Setup the body flux and dispose the connection once it has been received.
+                Flux<ByteBuffer> body = reactorNettyConnection.inbound().receive().asByteBuffer()
+                    .doFinally(ignored -> closeConnection(reactorNettyConnection));
+
+                return FluxUtil.collectBytesFromNetworkResponse(body,
+                    new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
+                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
+
+            } else {
+                return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
+                    disableBufferCopy));
+            }
+        };
     }
 
-    static class ReactorNettyHttpResponse extends HttpResponse {
-        private final HttpClientResponse reactorNettyResponse;
-        private final Connection reactorNettyConnection;
-        private final boolean disableBufferCopy;
+    /*
+     * Adds the write timeout handler once the request is ready to begin sending.
+     */
+    private static void addWriteTimeoutHandler(Connection connection, long timeoutMillis) {
+        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(timeoutMillis));
+    }
 
-        ReactorNettyHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
-            HttpRequest httpRequest, boolean disableBufferCopy) {
-            super(httpRequest);
-            this.reactorNettyResponse = reactorNettyResponse;
-            this.reactorNettyConnection = reactorNettyConnection;
-            this.disableBufferCopy = disableBufferCopy;
-        }
+    /*
+     * First removes the write timeout handler from the connection as the request has finished sending, then adds the
+     * response timeout handler.
+     */
+    private static void addResponseTimeoutHandler(Connection connection, long timeoutMillis) {
+        connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
+                .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(timeoutMillis));
+    }
 
-        @Override
-        public int getStatusCode() {
-            return reactorNettyResponse.status().code();
-        }
+    /*
+     * First removes the response timeout handler from the connection as the response has been received, then adds the
+     * read timeout handler.
+     */
+    private static void addReadTimeoutHandler(Connection connection, long timeoutMillis) {
+        connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
+                .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(timeoutMillis));
+    }
 
-        @Override
-        public String getHeaderValue(String name) {
-            return reactorNettyResponse.responseHeaders().get(name);
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            HttpHeaders headers = new HttpHeaders();
-            reactorNettyResponse.responseHeaders().forEach(e -> headers.put(e.getKey(), e.getValue()));
-            return headers;
-        }
-
-        @Override
-        public Flux<ByteBuffer> getBody() {
-            return bodyIntern().doFinally(s -> {
-                if (!reactorNettyConnection.isDisposed()) {
-                    reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-                }
-            }).map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf));
-        }
-
-        @Override
-        public Mono<byte[]> getBodyAsByteArray() {
-            return bodyIntern().aggregate().asByteArray().doFinally(s -> {
-                if (!reactorNettyConnection.isDisposed()) {
-                    reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-                }
-            });
-        }
-
-        @Override
-        public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray().map(bytes ->
-                CoreUtils.bomAwareToString(bytes, reactorNettyResponse.responseHeaders().get("Content-Type")));
-        }
-
-        @Override
-        public Mono<String> getBodyAsString(Charset charset) {
-            return bodyIntern().aggregate().asString(charset).doFinally(s -> {
-                if (!reactorNettyConnection.isDisposed()) {
-                    reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-                }
-            });
-        }
-
-        @Override
-        public void close() {
-            if (!reactorNettyConnection.isDisposed()) {
-                reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-            }
-        }
-
-        private ByteBufFlux bodyIntern() {
-            return reactorNettyConnection.inbound().receive();
-        }
-
-        // used for testing only
-        Connection internConnection() {
-            return reactorNettyConnection;
-        }
-
-        private static ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
-            ByteBuffer buffer = ByteBuffer.allocate(byteBuf.readableBytes());
-            byteBuf.readBytes(buffer);
-            buffer.rewind();
-            return buffer;
-        }
+    /*
+     * Removes the read timeout handler as the complete response has been received.
+     */
+    private static void removeReadTimeoutHandler(Connection connection) {
+        connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
     }
 }

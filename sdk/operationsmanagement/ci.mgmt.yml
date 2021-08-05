@@ -1,30 +1,33 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/operationsmanagement/
+      - sdk/operationsmanagement/ci.mgmt.yml
+      - sdk/operationsmanagement/mgmt-v2015_11_01_preview/
+    exclude:
+      - sdk/operationsmanagement/pom.xml
+      - sdk/operationsmanagement/mgmt-v2015_11_01_preview/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/operationsmanagement/
+      - sdk/operationsmanagement/ci.mgmt.yml
+      - sdk/operationsmanagement/mgmt-v2015_11_01_preview/
+    exclude:
+      - sdk/operationsmanagement/pom.xml
+      - sdk/operationsmanagement/mgmt-v2015_11_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

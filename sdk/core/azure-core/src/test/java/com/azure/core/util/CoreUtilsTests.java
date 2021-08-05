@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.HttpLogOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,8 +13,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -59,7 +69,7 @@ public class CoreUtilsTests {
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("version"));
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("name"));
         assertTrue(CoreUtils.getProperties("azure-core.properties").get("version")
-            .matches("\\d.\\d.\\d([-a-zA-Z0-9.])*"));
+            .matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?"));
     }
 
     @Test
@@ -67,6 +77,66 @@ public class CoreUtilsTests {
         assertNotNull(CoreUtils.getProperties("foo.properties"));
         assertTrue(CoreUtils.getProperties("foo.properties").isEmpty());
         assertNull(CoreUtils.getProperties("azure-core.properties").get("foo"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("cloneIntArraySupplier")
+    public void cloneIntArray(int[] intArray, int[] expected) {
+        assertArrayEquals(expected, CoreUtils.clone(intArray));
+    }
+
+    private static Stream<Arguments> cloneIntArraySupplier() {
+        return Stream.of(
+            Arguments.of(null, null),
+            Arguments.of(new int[0], new int[0]),
+            Arguments.of(new int[] { 1, 2, 3}, new int[] { 1, 2, 3})
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("cloneGenericArraySupplier")
+    public <T> void cloneGenericArray(T[] genericArray, T[] expected) {
+        assertArrayEquals(expected, CoreUtils.clone(genericArray));
+    }
+
+    private static Stream<Arguments> cloneGenericArraySupplier() {
+        return Stream.of(
+            Arguments.of(null, null),
+            Arguments.of(new String[0], new String[0]),
+            Arguments.of(new String[] { "1", "2", "3"}, new String[] { "1", "2", "3" })
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("isNullOrEmptyCollectionSupplier")
+    public void isNullOrEmptyCollection(Collection<?> collection, boolean expected) {
+        assertEquals(expected, CoreUtils.isNullOrEmpty(collection));
+    }
+
+    private static Stream<Arguments> isNullOrEmptyCollectionSupplier() {
+        return Stream.of(
+            Arguments.of(null, true),
+            Arguments.of(new ArrayList<>(), true),
+            Arguments.of(Collections.singletonList(1), false)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("arrayToStringSupplier")
+    public <T> void arrayToString(T[] array, Function<T, String> mapper, String expected) {
+        assertEquals(expected, CoreUtils.arrayToString(array, mapper));
+    }
+
+    private static Stream<Arguments> arrayToStringSupplier() {
+        Function<?, String> toStringFunction = String::valueOf;
+
+        return Stream.of(
+            Arguments.of(null, null, null),
+            Arguments.of(new String[0], toStringFunction, null),
+            Arguments.of(new String[] { "" }, toStringFunction, ""),
+            Arguments.of(new String[] { "Hello world!" }, toStringFunction, "Hello world!"),
+            Arguments.of(new String[] { "1", "2", "3" }, toStringFunction, "1,2,3")
+        );
     }
 
     @ParameterizedTest
@@ -98,5 +168,71 @@ public class CoreUtilsTests {
         System.arraycopy(BYTES, 0, mergedArray, arr1.length, BYTES.length);
 
         return mergedArray;
+    }
+
+    @ParameterizedTest
+    @MethodSource("getApplicationIdSupplier")
+    public void getApplicationId(ClientOptions clientOptions, HttpLogOptions logOptions, String expected) {
+        assertEquals(expected, CoreUtils.getApplicationId(clientOptions, logOptions));
+    }
+
+    @SuppressWarnings("deprecation")
+    private static Stream<Arguments> getApplicationIdSupplier() {
+        String clientOptionApplicationId = "clientOptions";
+        String logOptionsApplicationId = "logOptions";
+
+        ClientOptions clientOptionsWithApplicationId = new ClientOptions().setApplicationId(clientOptionApplicationId);
+        ClientOptions clientOptionsWithoutApplicationId = new ClientOptions();
+
+        HttpLogOptions logOptionsWithApplicationId = new HttpLogOptions().setApplicationId(logOptionsApplicationId);
+        HttpLogOptions logOptionsWithoutApplicationId = new HttpLogOptions();
+
+        return Stream.of(
+            Arguments.of(clientOptionsWithApplicationId, logOptionsWithApplicationId, clientOptionApplicationId),
+            Arguments.of(clientOptionsWithApplicationId, logOptionsWithoutApplicationId, clientOptionApplicationId),
+            Arguments.of(clientOptionsWithApplicationId, null, clientOptionApplicationId),
+            Arguments.of(clientOptionsWithoutApplicationId, logOptionsWithApplicationId, logOptionsApplicationId),
+            Arguments.of(clientOptionsWithoutApplicationId, logOptionsWithoutApplicationId, null),
+            Arguments.of(clientOptionsWithoutApplicationId, null, null),
+            Arguments.of(null, logOptionsWithApplicationId, logOptionsApplicationId),
+            Arguments.of(null, logOptionsWithoutApplicationId, null),
+            Arguments.of(null, null, null)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpHeadersFromClientOptionsSupplier")
+    public void createHttpHeadersFromClientOptions(ClientOptions clientOptions, HttpHeaders expected) {
+        HttpHeaders actual = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (expected == null) {
+            assertNull(actual);
+        } else {
+            assertEquals(expected.toMap(), actual.toMap());
+        }
+    }
+
+    private static Stream<Arguments> createHttpHeadersFromClientOptionsSupplier() {
+        List<Header> multipleHeadersList = new ArrayList<>();
+        multipleHeadersList.add(new Header("a", "header"));
+        multipleHeadersList.add(new Header("another", "headerValue"));
+
+        Map<String, String> multipleHeadersMap = new HashMap<>();
+        multipleHeadersMap.put("a", "header");
+        multipleHeadersMap.put("another", "headerValue");
+
+        return Stream.of(
+            // ClientOptions is null, null is returned.
+            Arguments.of(null, null),
+
+            // ClientOptions doesn't contain Header values, null is returned.
+            Arguments.of(new ClientOptions(), null),
+
+            // ClientOptions contains a single header value, a single header HttpHeaders is returned.
+            Arguments.of(new ClientOptions().setHeaders(Collections.singletonList(new Header("a", "header"))),
+                new HttpHeaders(Collections.singletonMap("a", "header"))),
+
+            // ClientOptions contains multiple header values, a multi-header HttpHeaders is returned.
+            Arguments.of(new ClientOptions().setHeaders(multipleHeadersList), new HttpHeaders(multipleHeadersMap))
+        );
     }
 }

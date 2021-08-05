@@ -2,6 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
+import org.mockito.Mockito;
+
 public class TestUtils {
     private static final String DATABASES_PATH_SEGMENT = "dbs";
     private static final String COLLECTIONS_PATH_SEGMENT = "colls";
@@ -31,8 +37,23 @@ public class TestUtils {
     }
 
     public static String getUserNameLink(String databaseId, String userId) {
-        
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + USERS_PATH_SEGMENT + "/" + userId;
+    }
+
+    public static DiagnosticsClientContext mockDiagnosticsClientContext() {
+        DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
+        Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
+        Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext)).when(clientContext).createDiagnostics();
+
+        return clientContext;
+    }
+
+    public static RxDocumentServiceRequest mockDocumentServiceRequest(DiagnosticsClientContext clientContext) {
+        RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
+        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+        Mockito.doReturn(clientContext.createDiagnostics()).when(dsr).createCosmosDiagnostics();
+        return dsr;
     }
 
     private TestUtils() {

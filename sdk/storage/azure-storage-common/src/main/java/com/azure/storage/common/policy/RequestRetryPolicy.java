@@ -9,8 +9,10 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.UrlBuilder;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -70,7 +72,6 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, HttpPipelineNextPolicy next,
                                             final HttpRequest originalRequest, final boolean considerSecondary,
                                             final int primaryTry, final int attempt) {
-
         // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
         final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
@@ -106,13 +107,17 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 return Mono.error(e);
             }
         }
+        /*
+        Update the RETRY_COUNT_CONTEXT to log retries.
+         */
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
 
         /*
          We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation
          until after the retry backoff delay, so we call delaySubscription.
          */
         return next.clone().process()
-            .timeout(Duration.ofSeconds(this.requestRetryOptions.getTryTimeout()))
+            .timeout(this.requestRetryOptions.getTryTimeoutDuration())
             .delaySubscription(Duration.ofMillis(delayMs))
             .flatMap(response -> {
                 boolean newConsiderSecondary = considerSecondary;
@@ -141,8 +146,18 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         ensure primaryTry is correct when passed to calculate the delay.
                          */
                     int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                        attempt + 1);
+
+                    Flux<ByteBuffer> responseBody = response.getBody();
+                    if (responseBody == null) {
+                        return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                            attempt + 1);
+                    } else {
+                        return response.getBody()
+                            .ignoreElements()
+                            .then(attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                                attempt + 1));
+                    }
+
                 }
                 return Mono.just(response);
             }).onErrorResume(throwable -> {
@@ -167,9 +182,10 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     A Timeout Exception is a client-side timeout coming from Rx.
                      */
                 String action;
-                if (throwable instanceof IOException) {
+                Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+                if (unwrappedThrowable instanceof IOException) {
                     action = "Retry: Network error";
-                } else if (throwable instanceof TimeoutException) {
+                } else if (unwrappedThrowable instanceof TimeoutException) {
                     action = "Retry: Client timeout";
                 } else {
                     action = "NoRetry: Unknown error";

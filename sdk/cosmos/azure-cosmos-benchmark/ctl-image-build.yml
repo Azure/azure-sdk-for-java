@@ -1,0 +1,79 @@
+jobs:
+  - job: Cosmos_CTL
+    timeoutInMinutes: 20
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - name: ContainerRegistryName
+        value: 'javactl'
+      - name: ContainerRegistryUserName
+        value: 'javactl'
+      - name: ContainerRegistryUrl
+        value: 'javactl.azurecr.io'
+
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - task: Maven@3
+      displayName: 'Build Cosmos and Benchmark'
+      inputs:
+        mavenPomFile: pom.xml
+        goals: 'package'
+        # The -Ppackage-assembly profile packages up both libraries into one package
+        options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure:azure-cosmos-benchmark -am'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+
+    - task: CopyFiles@2
+      displayName: 'Copy benchmark jar'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-benchmark/target'
+        Contents: '*'
+        TargetFolder: $(Agent.TempDirectory)/ctl
+
+    - task: CopyFiles@2
+      displayName: 'Copy docker config files'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-benchmark/ctl'
+        TargetFolder: $(Agent.TempDirectory)/ctl
+        
+    - task: CopyFiles@2
+      displayName: 'Copy benchmark jar for linkedin workload'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-benchmark/target'
+        Contents: '*'
+        TargetFolder: $(Agent.TempDirectory)/ctl/linkedin
+        
+    - task: CopyFiles@2
+      displayName: 'Copy docker config files for linkedin workload'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-benchmark/ctl/linkedin'
+        TargetFolder: $(Agent.TempDirectory)/ctl/linkedin
+
+    # Below will build the image and push it to azure container registry
+    - pwsh: |
+        cd $(Agent.TempDirectory)/ctl
+        Write-Host "Executing docker build . -t java-ctl"
+        docker build . -t java-ctl
+        Write-Host "Executing az acr login --name $(ContainerRegistryName) -u $(ContainerRegistryUserName) -p $(java-cosmos-container-registry-pwd)"
+        az acr login --name $(ContainerRegistryName) -u $(ContainerRegistryUserName) -p $(java-cosmos-container-registry-pwd)
+        Write-Host "Executing docker tag java-ctl $(ContainerRegistryUrl)/javactl/benchmark"
+        docker tag java-ctl $(ContainerRegistryUrl)/javactl/benchmark
+        Write-Host "Executing docker push $(ContainerRegistryUrl)/javactl/benchmark"
+        docker push $(ContainerRegistryUrl)/javactl/benchmark
+      displayName: 'Build and push docker image to registry'
+      
+    # Below will build the image and push it to azure container registry for linkedin workload
+    - pwsh: |
+        cd $(Agent.TempDirectory)/ctl/linkedin
+        Write-Host "Executing docker build . -t java-ctl-linkedin"
+        docker build . -t java-ctl-linkedin
+        Write-Host "Executing az acr login --name $(ContainerRegistryName) -u $(ContainerRegistryUserName) -p $(java-cosmos-container-registry-pwd)"
+        az acr login --name $(ContainerRegistryName) -u $(ContainerRegistryUserName) -p $(java-cosmos-container-registry-pwd)
+        Write-Host "Executing docker tag java-ctl-linkedin $(ContainerRegistryUrl)/javactl/linkedinbenchmark"
+        docker tag java-ctl-linkedin $(ContainerRegistryUrl)/javactl/linkedinbenchmark
+        Write-Host "Executing docker push $(ContainerRegistryUrl)/javactl/linkedinbenchmark"
+        docker push $(ContainerRegistryUrl)/javactl/linkedinbenchmark
+      displayName: 'Build and push docker image to registry for linkedin workload'

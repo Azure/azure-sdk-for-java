@@ -1,0 +1,21 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04</id>
+  <title type="text">connies-bar</title>
+  <published>2020-10-05T23:31:21Z</published>
+  <updated>2020-10-05T23:30:21Z</updated>
+  <link rel="self" href="https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04"/>
+  <content type="application/xml">
+    <RuleDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+      <Filter i:type="TrueFilter">
+        <SqlExpression>1=1</SqlExpression>
+        <CompatibilityLevel>20</CompatibilityLevel>
+      </Filter>
+      <Action i:type="SqlRuleAction">
+        <SqlExpression>SET Label = 'my-label'</SqlExpression>
+        <CompatibilityLevel>20</CompatibilityLevel>
+      </Action>
+      <CreatedAt>2020-10-05T23:34:21.5963322Z</CreatedAt>
+      <Name>connies-bar</Name>
+    </RuleDescription>
+  </content>
+</entry>
