@@ -77,8 +77,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         Iterator<DatabaseAccountLocation> locationIterator = this.databaseAccount.getReadableLocations().iterator();
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
+            logger.info("Database Account location : {}", accountLocation.getEndpoint());
             preferredLocations1.add(accountLocation.getName());
-            regionalSuffix1.add(getRegionalSuffix(accountLocation.getEndpoint(), TestConfigurations.HOST));
+            String regionalSuffix = getRegionalSuffix(accountLocation.getEndpoint(), TestConfigurations.HOST);
+            logger.info("Getting Regional suffix : {}", regionalSuffix);
+            regionalSuffix1.add(regionalSuffix);
         }
 
         //putting preferences in opposite direction than what came from database account api
@@ -172,6 +175,13 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             for (String uri : uris) {
                 uniqueHost.add(uri);
             }
+
+            logger.info("Preferred locations : {}", preferredLocations);
+
+            logger.info("Unique hosts are : {}", uniqueHost);
+
+            logger.info("Regional suffix : {}", regionalSuffix);
+
             // First verify we are retrying in each region
             assertThat(uniqueHost.size()).isEqualTo(preferredLocations.size());
 
@@ -269,9 +279,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 uniqueHost.add(uri);
             }
 
+            logger.info("Preferred locations : {}", preferredLocations);
+
+            logger.info("Unique hosts are : {}", uniqueHost);
+
             String masterOrHubRegionSuffix =
                 getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
                     TestConfigurations.HOST);
+
+            logger.info("Regional suffix : {}", regionalSuffix);
+
+            logger.info("Master or hub region suffix : {}", masterOrHubRegionSuffix);
             // First regional retries in originating region, then retrying in master/hub region and 1 retry at the
             // last from
             // RenameCollectionAwareClientRetryPolicy after clearing session token
@@ -382,12 +400,19 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             for (String uri : uris) {
                 uniqueHost.add(uri);
             }
+
+            logger.info("Preferred locations : {}", preferredLocations);
+
+            logger.info("Unique hosts are : {}", uniqueHost);
+
             // Verifying we are only retrying in masterOrHub region
             assertThat(uniqueHost.size()).isEqualTo(1);
 
             String masterOrHubRegionSuffix =
                 getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
                     TestConfigurations.HOST);
+
+            logger.info("Master or hub region suffix : {}", masterOrHubRegionSuffix);
 
             // First regional retries in originating region , then retrying in master as per clientRetryPolicy and 1
             // retry in the

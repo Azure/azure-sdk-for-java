@@ -29,6 +29,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -43,6 +45,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -358,6 +361,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
         private final Function<OrderByRowResult<T>, String> orderByContinuationTokenCallback;
         private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+        private static final Logger logger = LoggerFactory.getLogger(ItemToPageTransformer.class);
         private volatile FeedResponse<OrderByRowResult<T>> previousPage;
 
         public ItemToPageTransformer(
@@ -409,6 +413,13 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     // Observable<FeedResponsePage<OrderByRowResult<T>>>>
                     .map(orderByRowResults -> {
                         // construct a page from result with request charge
+                        if (orderByRowResults == null) {
+                            logger.info("Result is null");
+                        } else {
+                            List<Object> collect =
+                                orderByRowResults.stream().map(result -> result.getPayload().get("id")).collect(Collectors.toList());
+                            logger.info("Results are : {}", collect);
+                        }
                         FeedResponse<OrderByRowResult<T>> feedResponse = BridgeInternal.createFeedResponse(
                                 orderByRowResults,
                                 headerResponse(tracker.getAndResetCharge()));
@@ -433,6 +444,20 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         ImmutablePair<FeedResponse<OrderByRowResult<T>>, FeedResponse<OrderByRowResult<T>>> previousCurrent = new ImmutablePair<FeedResponse<OrderByRowResult<T>>, FeedResponse<OrderByRowResult<T>>>(
                                 this.previousPage,
                                 orderByRowResults);
+                        if (this.previousPage == null) {
+                            logger.info("Previous page is null");
+                        } else {
+                            List<Object> collect =
+                                this.previousPage.getResults().stream().map(result -> result.getPayload().get("id")).collect(Collectors.toList());
+                            logger.info("Previous page : {}", collect);
+                        }
+                        if (orderByRowResults == null) {
+                            logger.info("Current page is null");
+                        } else {
+                            List<Object> collect =
+                                orderByRowResults.getResults().stream().map(result -> result.getPayload().get("id")).collect(Collectors.toList());
+                            logger.info("Current page : {}", collect);
+                        }
                         this.previousPage = orderByRowResults;
                         return previousCurrent;
                     })
@@ -442,6 +467,21 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     .map(currentNext -> {
                         FeedResponse<OrderByRowResult<T>> current = currentNext.left;
                         FeedResponse<OrderByRowResult<T>> next = currentNext.right;
+
+                        if (current == null) {
+                            logger.info("Current is null");
+                        } else {
+                            List<Object> collect =
+                                current.getResults().stream().map(result -> result.getPayload().get("id")).collect(Collectors.toList());
+                            logger.info("Current page : {}", collect);
+                        }
+                        if (next == null) {
+                            logger.info("Next is null");
+                        } else {
+                            List<Object> collect =
+                                next.getResults().stream().map(result -> result.getPayload().get("id")).collect(Collectors.toList());
+                            logger.info("Next page : {}", collect);
+                        }
 
                         FeedResponse<OrderByRowResult<T>> page;
                         if (next.getResults().size() == 0) {
@@ -463,6 +503,13 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
                         return page;
                     }).map(feedOfOrderByRowResults -> {
+                        if (feedOfOrderByRowResults == null) {
+                            logger.info("Feed of order by results is null");
+                        } else {
+                            List<Object> collect =
+                                feedOfOrderByRowResults.getResults().stream().map(result -> result.getPayload().get("id")).collect(Collectors.toList());
+                            logger.info("Feed of order by results is : {}", collect);
+                        }
                         // FeedResponse<OrderByRowResult<T>> to FeedResponse<T>
                         List<T> unwrappedResults = new ArrayList<T>();
                         for (OrderByRowResult<T> orderByRowResult : feedOfOrderByRowResults.getResults()) {

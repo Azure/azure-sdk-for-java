@@ -185,7 +185,7 @@ public class GatewayAddressCache implements IAddressCache {
         Utils.checkNotNullOrThrow(request, "request", "");
         Utils.checkNotNullOrThrow(partitionKeyRangeIdentity, "partitionKeyRangeIdentity", "");
 
-        logger.debug("PartitionKeyRangeIdentity {}, forceRefreshPartitionAddresses {}",
+        logger.info("PartitionKeyRangeIdentity {}, forceRefreshPartitionAddresses {}",
             partitionKeyRangeIdentity,
             forceRefreshPartitionAddresses);
         if (StringUtils.equals(partitionKeyRangeIdentity.getPartitionKeyRangeId(),
@@ -199,7 +199,7 @@ public class GatewayAddressCache implements IAddressCache {
         Instant suboptimalServerPartitionTimestamp = this.suboptimalServerPartitionTimestamps.get(partitionKeyRangeIdentity);
 
         if (suboptimalServerPartitionTimestamp != null) {
-            logger.debug("suboptimalServerPartitionTimestamp is {}", suboptimalServerPartitionTimestamp);
+            logger.info("suboptimalServerPartitionTimestamp is {}", suboptimalServerPartitionTimestamp);
             boolean forceRefreshDueToSuboptimalPartitionReplicaSet = Duration.between(suboptimalServerPartitionTimestamp, Instant.now()).getSeconds()
                     > this.suboptimalPartitionForceRefreshIntervalInSeconds;
 
@@ -208,16 +208,16 @@ public class GatewayAddressCache implements IAddressCache {
                 // and if they are equal, updates the key with a third value.
                 Instant newValue = this.suboptimalServerPartitionTimestamps.computeIfPresent(partitionKeyRangeIdentity,
                         (key, oldVal) -> {
-                            logger.debug("key = {}, oldValue = {}", key, oldVal);
+                            logger.info("key = {}, oldValue = {}", key, oldVal);
                             if (suboptimalServerPartitionTimestamp.equals(oldVal)) {
                                 return Instant.MAX;
                             } else {
                                 return oldVal;
                             }
                         });
-                logger.debug("newValue is {}", newValue);
+                logger.info("newValue is {}", newValue);
                 if (!suboptimalServerPartitionTimestamp.equals(newValue)) {
-                    logger.debug("setting forceRefreshPartitionAddresses to true");
+                    logger.info("setting forceRefreshPartitionAddresses to true");
                     // the value was replaced;
                     forceRefreshPartitionAddresses = true;
                 }
@@ -227,7 +227,7 @@ public class GatewayAddressCache implements IAddressCache {
         final boolean forceRefreshPartitionAddressesModified = forceRefreshPartitionAddresses;
 
         if (forceRefreshPartitionAddressesModified) {
-            logger.debug("refresh serverPartitionAddressCache for {}", partitionKeyRangeIdentity);
+            logger.info("refresh serverPartitionAddressCache for {}", partitionKeyRangeIdentity);
             this.serverPartitionAddressCache.refresh(
                     partitionKeyRangeIdentity,
                     () -> this.getAddressesForRangeId(
@@ -252,7 +252,7 @@ public class GatewayAddressCache implements IAddressCache {
             addressesValueHolder -> {
                 if (notAllReplicasAvailable(addressesValueHolder.v)) {
                     if (logger.isDebugEnabled()) {
-                        logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
+                        logger.info("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
                     }
                     this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
                 }
@@ -268,13 +268,13 @@ public class GatewayAddressCache implements IAddressCache {
                 }
                 return Mono.error(unwrappedException);
             } else {
-                logger.debug("tryGetAddresses dce", dce);
+                logger.info("tryGetAddresses dce", dce);
                 if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
                     Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
                     Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
                     //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
                     this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
-                    logger.debug("tryGetAddresses: inner onErrorResumeNext return null", dce);
+                    logger.info("tryGetAddresses: inner onErrorResumeNext return null", dce);
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
                 return Mono.error(unwrappedException);

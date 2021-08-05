@@ -324,7 +324,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 20)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 40)
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;
@@ -432,10 +432,9 @@ public class QueryValidationTests extends TestSuiteBase {
 
         for (FeedResponse<TestObject> nodeFeedResponse : orderfeedResponseFlux.toIterable()) {
             orderByResultList.addAll(nodeFeedResponse.getResults());
-        }
-
-        for (TestObject object : orderByResultList) {
-            logger.info("Post Split Object ID : {}", object.getId());
+            for (TestObject testObject : nodeFeedResponse.getResults()) {
+                logger.info("Post Split Object ID : {}", testObject.getId());
+            }
         }
 
         List<String> sourceIds = testObjects.stream().map(TestObject::getId).collect(Collectors.toList());
