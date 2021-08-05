@@ -30,6 +30,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -598,10 +600,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             + "." + duration.toMillis();
     }
 
-    private static String getFormattedTime(long epochNanos) {
-        return Instant.ofEpochMilli(NANOSECONDS.toMillis(epochNanos))
-            .atOffset(ZoneOffset.UTC)
-            .format(DateTimeFormatter.ISO_DATE_TIME);
+    private static OffsetDateTime getFormattedTime(long epochNanos) {
+        return Instant.ofEpochMilli(NANOSECONDS.toMillis(epochNanos)).atOffset(ZoneOffset.UTC);
     }
 
     private static void addLinks(Map<String, String> properties, List<LinkData> links) {

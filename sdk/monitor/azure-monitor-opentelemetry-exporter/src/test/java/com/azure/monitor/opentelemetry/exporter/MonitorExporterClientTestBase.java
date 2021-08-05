@@ -102,7 +102,7 @@ public class MonitorExporterClientTestBase extends TestBase {
             .setInstrumentationKey("{instrumentation-key}")
             .setName("test-event-name")
             .setSampleRate(100.0f)
-            .setTime(time.format(DateTimeFormatter.ISO_DATE_TIME))
+            .setTime(time)
             .setData(monitorBase);
         return telemetryItem;
     }
