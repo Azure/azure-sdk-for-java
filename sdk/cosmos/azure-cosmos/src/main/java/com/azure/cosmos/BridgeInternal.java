@@ -32,7 +32,7 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionContext;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -218,14 +218,14 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> E setChannelAcquisitionContext(E e, RntbdChannelAcquisitionContext channelAcquisitionContext) {
-        e.setChannelAcquisitionContext(channelAcquisitionContext);
+    public static <E extends CosmosException> E setChannelAcquisitionTimeline(E e, RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        e.setChannelAcquisitionTimeline(channelAcquisitionTimeline);
         return e;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> RntbdChannelAcquisitionContext getChannelAcqusitionContext(E e) {
-        return e.getChannelAcquisitionContext();
+    public static <E extends CosmosException> RntbdChannelAcquisitionTimeline getChannelAcqusitionTimeline(E e) {
+        return e.getChannelAcquisitionTimeline();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

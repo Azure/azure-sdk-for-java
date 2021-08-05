@@ -209,8 +209,8 @@ public class StoreResult {
                 storeResult.storeResponse.getRequestTimeline() :
                 storeResult.exception != null ? BridgeInternal.getRequestTimeline(storeResult.exception) : null);
             jsonGenerator.writeObjectField("transportRequestChannelAcquisitionContext", storeResult.storeResponse != null ?
-                storeResult.storeResponse.getChannelAcquisitionContext() :
-                storeResult.exception != null? BridgeInternal.getChannelAcqusitionContext(storeResult.exception) : null);
+                storeResult.storeResponse.getChannelAcquisitionTimeline() :
+                storeResult.exception != null? BridgeInternal.getChannelAcqusitionTimeline(storeResult.exception) : null);
             jsonGenerator.writeObjectField("rntbdRequestLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRntbdRequestLength() : BridgeInternal.getRntbdRequestLength(storeResult.exception));
             jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResult.storeResponse != null ?

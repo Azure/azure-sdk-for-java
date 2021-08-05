@@ -421,11 +421,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
             System.nanoTime() + this.acquisitionTimeoutInNanos));
     }
 
-    public Future<Channel> acquire(RntbdChannelAcquisitionContext channelAcquisitionContext) {
+    public Future<Channel> acquire(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
         return this.acquire(new ChannelPromiseWithExpiryTime(
             this.bootstrap.config().group().next().newPromise(),
             System.nanoTime() + this.acquisitionTimeoutInNanos,
-            channelAcquisitionContext));
+            channelAcquisitionTimeline));
     }
 
     /**
@@ -603,8 +603,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.ensureInEventLoop();
 
         reportIssueUnless(logger, promise != null, this, "Channel promise should not be null");
-        RntbdChannelAcquisitionContext channelAcquisitionContext = promise.getChannelAcquisitionContext();
-        RntbdChannelAcquisitionContext.recordAcquireChannelTime(channelAcquisitionContext);
+        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline = promise.getChannelAcquisitionTimeline();
+        RntbdChannelAcquisitionTimeline.startNewEvent(
+            channelAcquisitionTimeline,
+            RntbdChannelAcquisitionEventType.ATTEMPT_TO_ACQUIRE_CHANNEL);
 
         if (this.isClosed()) {
             promise.setFailure(POOL_CLOSED_ON_ACQUIRE);
@@ -612,7 +614,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         try {
-            Channel candidate = this.pollChannel(channelAcquisitionContext);
+            Channel candidate = this.pollChannel(channelAcquisitionTimeline);
 
             if (candidate != null) {
 
@@ -635,7 +637,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     // If our connection attempt fails, notifyChannelConnect will call us again
 
                     final Promise<Channel> anotherPromise = this.newChannelPromiseForToBeEstablishedChannel(promise);
-                    RntbdChannelAcquisitionContext.recordNewChannelStartTime(channelAcquisitionContext);
+
+                    RntbdChannelAcquisitionTimeline.startNewEvent(
+                        channelAcquisitionTimeline,
+                        RntbdChannelAcquisitionEventType.ATTEMPTED_TO_CREATE_NEW_CHANNEL);
 
                     final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
 
@@ -668,7 +673,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         // balance reasonably
                         if (pendingRequestCount < pendingRequestCountMin) {
                             RntbdChannelState channelState = this.getChannelState(channel);
-                            RntbdChannelAcquisitionContext.recordChannelState(channelAcquisitionContext, channelState);
+                            RntbdChannelAcquisitionTimeline.addDetailsToLastEvent(channelAcquisitionTimeline, channelState);
 
                             if (channelState == RntbdChannelState.OK) {
                                 pendingRequestCountMin = pendingRequestCount;
@@ -688,7 +693,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     // we pick the first available channel to avoid the additional cost of load balancing
                     // as long as the load is lower than the load factor threshold above.
                     RntbdChannelState channelState = this.getChannelState(channel);
-                    RntbdChannelAcquisitionContext.recordChannelState(channelAcquisitionContext, channelState);
+                    RntbdChannelAcquisitionTimeline.addDetailsToLastEvent(channelAcquisitionTimeline, channelState);
 
                     if (channelState == RntbdChannelState.OK) {
                         if (this.availableChannels.remove(channel)) {
@@ -736,7 +741,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
             if (!this.pendingAcquisitions.offer(acquireTask)) {
                 promise.setFailure(TOO_MANY_PENDING_ACQUISITIONS);
             } else {
-                RntbdChannelAcquisitionContext.recordPendingAcquisitionTime(promise.getChannelAcquisitionContext());
+                RntbdChannelAcquisitionTimeline.startNewEvent(
+                    promise.getChannelAcquisitionTimeline(),
+                    RntbdChannelAcquisitionEventType.ADDED_TO_PENDING_QUEUE);
             }
         }
     }
@@ -974,7 +981,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         listener.acquired();
         anotherPromise.addListener(listener);
 
-        return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos(), promise.getChannelAcquisitionContext());
+        return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos(), promise.getChannelAcquisitionTimeline());
     }
 
     private void newTimeout(
@@ -1109,7 +1116,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
         } finally {
             if (promise instanceof ChannelPromiseWithExpiryTime) {
-                RntbdChannelAcquisitionContext.recordNewChannelCompleteTime(((ChannelPromiseWithExpiryTime) promise).getChannelAcquisitionContext());
+                RntbdChannelAcquisitionTimeline.startNewEvent(
+                    ((ChannelPromiseWithExpiryTime) promise).getChannelAcquisitionTimeline(),
+                    RntbdChannelAcquisitionEventType.ATTEMPTED_TO_CREATE_NEW_CHANNEL_COMPLETE
+                );
             }
             this.connecting.set(false);
         }
@@ -1199,15 +1209,18 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * synchronized.
      *
      *
-     * @param channelAcquisitionContext the {@link RntbdChannelAcquisitionContext}.
+     * @param channelAcquisitionTimeline the {@link RntbdChannelAcquisitionTimeline}.
      * @return a value of {@code null}, if no {@link Channel} is ready to be reused
      *
      * @see #acquire(Promise)
      */
-    private Channel pollChannel(RntbdChannelAcquisitionContext channelAcquisitionContext) {
+    private Channel pollChannel(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
         ensureInEventLoop();
 
-        RntbdChannelAcquisitionContext.startNewPollChannelCycle(channelAcquisitionContext);
+        RntbdChannelAcquisitionEvent event =
+            RntbdChannelAcquisitionTimeline.startNewEvent(
+                channelAcquisitionTimeline,
+                RntbdChannelAcquisitionEventType.ATTEMPT_TO_POLL_CHANNEL);
 
         final Channel first = this.availableChannels.pollFirst();
 
@@ -1222,7 +1235,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         // Only return channels as servicable here if less than maxPendingRequests
         // are queued on them
         RntbdChannelState channelState = this.getChannelState(first);
-        RntbdChannelAcquisitionContext.recordChannelState(channelAcquisitionContext, channelState);
+        RntbdChannelAcquisitionEvent.addDetails(event, channelState);
 
         if (channelState == RntbdChannelState.OK) {
             return first;
@@ -1238,7 +1251,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 // Only return channels as serviceable here if less than maxPendingRequests
                 // are queued on them
                 RntbdChannelState state = this.getChannelState(next);
-                RntbdChannelAcquisitionContext.recordChannelState(channelAcquisitionContext, state);
+                RntbdChannelAcquisitionEvent.addDetails(event, channelState);
 
                 if (state == RntbdChannelState.OK) {
                     return next;

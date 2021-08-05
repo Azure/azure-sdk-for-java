@@ -229,7 +229,7 @@ public class RntbdTransportClient extends TransportClient {
                 response.setRequestPayloadLength(request.getContentLength());
                 response.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
                 response.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
-                response.setChannelAcquisitionContext(record.getChannelAcquisitionContext());
+                response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
 
         })).onErrorMap(throwable -> {
@@ -263,7 +263,7 @@ public class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
             BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
             BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
-            BridgeInternal.setChannelAcquisitionContext(cosmosException, record.getChannelAcquisitionContext());
+            BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
 
             return cosmosException;
         });
