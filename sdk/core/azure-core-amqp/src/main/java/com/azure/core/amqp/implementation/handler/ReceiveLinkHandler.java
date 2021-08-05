@@ -19,6 +19,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,7 +46,7 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
-        this.linkName = linkName;
+        this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = entityPath;
     }
 
@@ -68,17 +69,7 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
-        deliveries.emitComplete((signalType, emitResult) -> {
-            logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
-                getConnectionId(), entityPath, linkName);
-            return false;
-        });
-        queuedDeliveries.forEach(delivery -> {
-            // abandon the queued deliveries as the receive link handler is closed
-            delivery.disposition(new Modified());
-            delivery.settle();
-        });
-        queuedDeliveries.clear();
+        clearAndCompleteDeliveries("Could not emit deliveries.close when closing handler.");
 
         onNext(EndpointState.CLOSED);
     }
@@ -197,16 +188,37 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void onLinkRemoteClose(Event event) {
-        if (isTerminated.get()) {
-            return;
-        }
+        clearAndCompleteDeliveries("Could not complete 'deliveries' when remotely closed.");
 
+        super.onLinkRemoteClose(event);
+    }
+
+    @Override
+    public void onLinkFinal(Event event) {
+        // Unlikely though, because RemoteClose() or close() would have been called first.
+        // In the case that we haven't cleared the pending deliveries.
+        close();
+
+        super.onLinkFinal(event);
+    }
+
+    /**
+     * Clears all pending deliveries and completes the delivery flux.
+     *
+     * @param errorMessage Message to output if the close operation fails.
+     */
+    private void clearAndCompleteDeliveries(String errorMessage) {
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.info("connectionId[{}] linkName[{}] signalType[{}] emitResult[{}] Could not complete 'deliveries'.",
-                getConnectionId(), linkName, signalType, emitResult);
+            logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] {}", getConnectionId(), entityPath,
+                linkName, errorMessage);
             return false;
         });
 
-        super.onLinkRemoteClose(event);
+        queuedDeliveries.forEach(delivery -> {
+            // abandon the queued deliveries as the receive link handler is closed
+            delivery.disposition(new Modified());
+            delivery.settle();
+        });
+        queuedDeliveries.clear();
     }
 }

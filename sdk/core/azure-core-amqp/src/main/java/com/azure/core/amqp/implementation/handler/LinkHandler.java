@@ -72,7 +72,10 @@ abstract class LinkHandler extends Handler {
             ? event.getLink().getName()
             : NOT_APPLICABLE;
         logger.info("onLinkFinal connectionId[{}], linkName[{}]", getConnectionId(), linkName);
-        close();
+
+        // Be explicit about wanting to call Handler.close(). When we receive onLinkFinal, the service and proton-j are
+        // releasing this link. So we want to complete the endpoint states.
+        super.close();
     }
 
     public AmqpErrorContext getErrorContext(Link link) {
