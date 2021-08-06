@@ -56,20 +56,12 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/catalog/ListGlossaries.java#L14-L25 -->
+<!-- embedme ./src/samples/java/com/azure/analytics/purview/catalog/ReadmeSamples.java#L7-L10 -->
 ```java
 GlossaryClient client = new PurviewCatalogClientBuilder()
     .endpoint(System.getenv("ATLAS_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildGlossaryClient();
-BinaryData binaryData = client.listGlossaries(null);
-List<?> glossaries = binaryData.toObject(List.class);
-System.out.println(glossaries);
-if (!glossaries.isEmpty()) {
-    Map<?, ?> map = (Map<?, ?>) glossaries.get(0);
-    List<?> terms = (List<?>) map.get("terms");
-    System.out.println(terms);
-}
 ```
 
 ## Key concepts
