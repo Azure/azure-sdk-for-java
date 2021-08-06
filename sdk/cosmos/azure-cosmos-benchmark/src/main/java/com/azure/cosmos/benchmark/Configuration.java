@@ -96,6 +96,18 @@ public class Configuration {
     @Parameter(names = "-preferredRegionsList", description = "Comma separated preferred regions list")
     private String preferredRegionsList;
 
+    @Parameter(names = "-encryptedStringFieldCount", description = "Number of string field that need to be encrypted")
+    private int encryptedStringFieldCount = 1;
+
+    @Parameter(names = "-encryptedLongFieldCount", description = "Number of long field that need to be encrypted")
+    private int encryptedLongFieldCount = 0;
+
+    @Parameter(names = "-encryptedDoubleFieldCount", description = "Number of double field that need to be encrypted")
+    private int encryptedDoubleFieldCount = 0;
+
+    @Parameter(names = "-encryptionEnabled", description = "Control switch to enable the encryption operation")
+    private boolean encryptionEnabled = false;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -461,6 +473,22 @@ public class Configuration {
         return preferredRegions;
     }
 
+    public int getEncryptedStringFieldCount() {
+        return encryptedStringFieldCount;
+    }
+
+    public int getEncryptedLongFieldCount() {
+        return encryptedLongFieldCount;
+    }
+
+    public int getEncryptedDoubleFieldCount() {
+        return encryptedDoubleFieldCount;
+    }
+
+    public boolean isEncryptionEnabled() {
+        return encryptionEnabled;
+    }
+
     public void tryGetValuesFromSystem() {
         serviceEndpoint = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("SERVICE_END_POINT")),
                                                     serviceEndpoint);
@@ -500,7 +528,24 @@ public class Configuration {
                 Strings.emptyToNull(System.getenv().get("THROUGHPUT")), Integer.toString(throughput));
         throughput = Integer.parseInt(throughputValue);
 
-        preferredRegionsList = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("PREFERRED_REGIONS_LIST")), preferredRegionsList);
+        preferredRegionsList = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "PREFERRED_REGIONS_LIST")), preferredRegionsList);
+
+        encryptedStringFieldCount = Integer.parseInt(
+            StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("ENCRYPTED_STRING_FIELD_COUNT")),
+                Integer.toString(encryptedStringFieldCount)));
+
+        encryptedLongFieldCount = Integer.parseInt(
+            StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("ENCRYPTED_LONG_FIELD_COUNT")),
+                Integer.toString(encryptedLongFieldCount)));
+
+        encryptedDoubleFieldCount = Integer.parseInt(
+            StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("ENCRYPTED_DOUBLE_FIELD_COUNT")),
+                Integer.toString(encryptedDoubleFieldCount)));
+
+        encryptionEnabled = Boolean.parseBoolean(StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "ENCRYPTED_ENABLED")),
+            Boolean.toString(encryptionEnabled)));
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {

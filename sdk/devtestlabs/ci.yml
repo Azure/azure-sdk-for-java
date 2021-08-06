@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/devtestlabs/
+      - sdk/devtestlabs/ci.yml
+      - sdk/devtestlabs/azure-resourcemanager-devtestlabs/
+    exclude:
+      - sdk/devtestlabs/pom.xml
+      - sdk/devtestlabs/azure-resourcemanager-devtestlabs/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/devtestlabs/
+      - sdk/devtestlabs/ci.yml
+      - sdk/devtestlabs/azure-resourcemanager-devtestlabs/
+    exclude:
+      - sdk/devtestlabs/pom.xml
+      - sdk/devtestlabs/azure-resourcemanager-devtestlabs/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

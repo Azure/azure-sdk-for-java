@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/operationsmanagement/
+      - sdk/operationsmanagement/ci.mgmt.yml
+      - sdk/operationsmanagement/mgmt-v2015_11_01_preview/
+    exclude:
+      - sdk/operationsmanagement/pom.xml
+      - sdk/operationsmanagement/mgmt-v2015_11_01_preview/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/operationsmanagement/
+      - sdk/operationsmanagement/ci.mgmt.yml
+      - sdk/operationsmanagement/mgmt-v2015_11_01_preview/
+    exclude:
+      - sdk/operationsmanagement/pom.xml
+      - sdk/operationsmanagement/mgmt-v2015_11_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

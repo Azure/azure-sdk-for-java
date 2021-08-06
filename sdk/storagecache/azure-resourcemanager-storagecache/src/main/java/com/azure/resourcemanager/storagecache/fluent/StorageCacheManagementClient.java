@@ -86,4 +86,11 @@ public interface StorageCacheManagementClient {
      * @return the StorageTargetsClient object.
      */
     StorageTargetsClient getStorageTargets();
+
+    /**
+     * Gets the StorageTargetOperationsClient object to access its operations.
+     *
+     * @return the StorageTargetOperationsClient object.
+     */
+    StorageTargetOperationsClient getStorageTargetOperations();
 }

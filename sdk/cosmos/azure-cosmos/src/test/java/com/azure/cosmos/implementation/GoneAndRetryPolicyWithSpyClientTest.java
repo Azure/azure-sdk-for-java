@@ -91,7 +91,8 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
     private Mono<HttpResponse> captureAndLogRequest(
         InvocationOnMock invocation,
         HttpClient originalClient,
-        AtomicBoolean forceRefreshHeaderSeen) {
+        AtomicBoolean forceRefreshHeaderSeen,
+        AtomicBoolean forceCollectionRoutingMapRefreshHeaderSeen) {
 
         final HttpRequest request =
             invocation.getArgument(0, HttpRequest.class);
@@ -100,6 +101,11 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             .headers()
             .toMap()
             .get(HttpConstants.HttpHeaders.FORCE_REFRESH);
+
+        String forceCollectionRoutingMapRefreshHeader = request
+            .headers()
+            .toMap()
+            .get(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH);
 
         Mono<HttpResponse> responseObservable;
         if (invocation.getArguments().length == 2) {
@@ -111,6 +117,12 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
         if ("true".equalsIgnoreCase(forceRefreshAddressHeader)) {
 
             forceRefreshHeaderSeen.set(true);
+
+            if (forceCollectionRoutingMapRefreshHeaderSeen != null &&
+                "true".equalsIgnoreCase(forceCollectionRoutingMapRefreshHeader)) {
+                forceCollectionRoutingMapRefreshHeaderSeen.set(true);
+            }
+
             logger.info(
                 String.format("Force refresh request %s Headers: \n%s", request.uri().toString(), headersToString(request.headers())));
                 return responseObservable;
@@ -126,18 +138,25 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
      * Tests document creation through direct mode
      */
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
-    public void createRecoversFrom410Gone() {
+    public void createRecoversFrom410GoneOnPartitionMigration() {
+
+        // PartitionMigration means there was no split/merge but some replica
+        // of a partition have been moved to another machine (for example during deployments)
+        // in this error condition recovery is possible when forcing a partition address refresh in the Gateway
+
         HttpClient origHttpClient = this.client.getOrigHttpClient();
         HttpClient spyHttpClient = this.client.getSpyHttpClient();
         final AtomicBoolean forceRefreshHeaderSeen = new AtomicBoolean(false);
 
-        doAnswer(invocation -> this.captureAndLogRequest(invocation, origHttpClient, forceRefreshHeaderSeen))
+        doAnswer(invocation -> this.captureAndLogRequest(
+            invocation, origHttpClient, forceRefreshHeaderSeen, null))
         .when(spyHttpClient)
         .send(
             Mockito.any(HttpRequest.class),
             Mockito.any(Duration.class));
 
-        doAnswer(invocation -> this.captureAndLogRequest(invocation, origHttpClient, forceRefreshHeaderSeen))
+        doAnswer(invocation -> this.captureAndLogRequest(
+            invocation, origHttpClient, forceRefreshHeaderSeen, null))
             .when(spyHttpClient)
             .send(
                 Mockito.any(HttpRequest.class));
@@ -160,7 +179,6 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             if (StringUtils.isEmpty(rxServiceRequest.requestContext.resourcePhysicalAddress)) {
                 rxServiceRequest.requestContext.resourcePhysicalAddress = physicalAddress.toString();
             }
-
 
             if (forceRefreshHeaderSeen.get() ||
                 rxServiceRequest.getResourceType() != ResourceType.Document ||
@@ -231,8 +249,174 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
         }
     }
 
+    /**
+     * Tests document creation through direct mode
+     */
+    @Test(groups = { "direct" }, timeOut = TIMEOUT * 10)
+    public void createRecoversFrom410GoneFromServiceOnPartitionSplitDuringIdleTime() throws Exception {
+        executeCreateRecoversFrom410GoneOnPartitionSplitDuringIdleTime(true);
+    }
+
+    /**
+     * Tests document creation through direct mode
+     */
+    @Test(groups = { "direct" }, timeOut = TIMEOUT * 10)
+    public void createRecoversFrom410GoneClientGeneratedOnPartitionSplitDuringIdleTime() throws Exception {
+        executeCreateRecoversFrom410GoneOnPartitionSplitDuringIdleTime(false);
+    }
+
+    private void executeCreateRecoversFrom410GoneOnPartitionSplitDuringIdleTime(
+        boolean isBasedOn410ResponseFromService) throws InterruptedException {
+
+        // Usually on a partition split a 410 with SubStatusCode 1002, 1007 or 1008 is seen and will
+        // trigger a refresh of the PKRangeCache
+        // In cases where the client is idle during the split it is possible that a request is still made to the
+        // parent partition (which doesn't exist anymore)
+        // If the Node has another replica listening on the target endpoint+port it will return a 410/1002 and the
+        // client will recover
+        // If the Node is up but does not have any replica listening on the target endpoint+port a 410/0 is returned.
+        // In this case either the PKRangeCache or the CollectionRoutingMap needs to be refreshed to be able to recover.
+        // If the endpoint+port is down (no-one listening on it) a client-side generated 410/0 is created and would also
+        // require either the PKRangeCache or the CollectionRoutingMap to be refreshed to be able to recover.
+
+        HttpClient origHttpClient = this.client.getOrigHttpClient();
+        HttpClient spyHttpClient = this.client.getSpyHttpClient();
+        final AtomicBoolean forceRefreshHeaderSeen = new AtomicBoolean(false);
+        final AtomicBoolean forceCollectionRoutingMapRefreshHeaderSeen = new AtomicBoolean(false);
+
+        doAnswer(invocation -> this.captureAndLogRequest(
+            invocation, origHttpClient, forceRefreshHeaderSeen, forceCollectionRoutingMapRefreshHeaderSeen))
+            .when(spyHttpClient)
+            .send(
+                Mockito.any(HttpRequest.class),
+                Mockito.any(Duration.class));
+
+        doAnswer(invocation -> this.captureAndLogRequest(
+            invocation, origHttpClient, forceRefreshHeaderSeen, forceCollectionRoutingMapRefreshHeaderSeen))
+            .when(spyHttpClient)
+            .send(
+                Mockito.any(HttpRequest.class));
+
+        ReplicatedResourceClient replicatedResourceClient = ReflectionUtils
+            .getReplicatedResourceClient(
+                ReflectionUtils.getStoreClient(this.client)
+            );
+        ConsistencyWriter writer = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+        TransportClient originalTransportClient = ReflectionUtils.getTransportClient(writer);
+        TransportClient spyTransportClient = spy(originalTransportClient);
+        ReflectionUtils.setTransportClient(writer, spyTransportClient);
+
+        doAnswer(invocation -> {
+            final Uri physicalAddress =
+                invocation.getArgument(0, Uri.class);
+            final RxDocumentServiceRequest rxServiceRequest =
+                invocation.getArgument(1, RxDocumentServiceRequest.class);
+
+            if (StringUtils.isEmpty(rxServiceRequest.requestContext.resourcePhysicalAddress)) {
+                rxServiceRequest.requestContext.resourcePhysicalAddress = physicalAddress.toString();
+            }
+
+            if (forceCollectionRoutingMapRefreshHeaderSeen.get() ||
+                rxServiceRequest.getResourceType() != ResourceType.Document ||
+                rxServiceRequest.getOperationType() != OperationType.Create) {
+
+                return originalTransportClient.invokeResourceOperationAsync(physicalAddress, rxServiceRequest);
+            }
+
+            GoneException gone = new GoneException("Mocked Gone");
+            if (isBasedOn410ResponseFromService) {
+                gone.setIsBasedOn410ResponseFromService();
+            }
+
+            BridgeInternal.setSendingRequestStarted(gone, true);
+            throw gone;
+        })
+            .when(spyTransportClient)
+            .invokeResourceOperationAsync(
+                Mockito.any(Uri.class),
+                Mockito.any(RxDocumentServiceRequest.class));
+
+        final Document docDefinition = getDocumentDefinition();
+        Mono<ResourceResponse<Document>> createObservable = this
+            .client
+            .createDocument(
+                this.getCollectionLink(), docDefinition, null, false);
+
+        ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+            .withId(docDefinition.getId())
+            .build();
+
+        AtomicInteger numberOfRequestsWithForceCollectionRoutingMapRefreshHeader = new AtomicInteger(0);
+
+        int allowedNumberOfFailures = isBasedOn410ResponseFromService ? 1 : 3;
+        boolean durationOverridden = false;
+
+        while (allowedNumberOfFailures > 0) {
+            try {
+                validateSuccess(createObservable, validator, TIMEOUT * 1000);
+                return;
+            } catch (AssertionError error) {
+                logger.info(error.toString());
+                allowedNumberOfFailures--;
+
+                if (!durationOverridden) {
+                    ReflectionUtils.setDefaultMinDurationBeforeEnforcingCollectionRoutingMapRefreshDuration(
+                        Duration.ofSeconds(1));
+                    durationOverridden = true;
+
+                    Thread.sleep(1_500);
+                }
+            }
+        }
+
+        try {
+            validateSuccess(createObservable, validator, TIMEOUT * 1000);
+        } catch (Exception someError) {
+            logger.error(someError.toString());
+
+            client
+                .capturedRequestResponseHeaderPairs()
+                .forEach(
+                    p -> {
+                        HttpRequest request = p.getLeft();
+                        HttpResponse response = null;
+                        try {
+                            response = p.getRight().get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            logger.error("Failed to retrieve response", e);
+                        }
+
+                        String forceRefreshCollectionRoutingMapHeader = request
+                            .headers()
+                            .toMap()
+                            .get(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH);
+
+                        if (forceRefreshCollectionRoutingMapHeader != null) {
+                            int forceRefreshRequestIndex =
+                                numberOfRequestsWithForceCollectionRoutingMapRefreshHeader.incrementAndGet();
+
+                            logger.info(String.format(
+                                "Force Refresh request #%d: Request: %s, Response: %s %s",
+                                forceRefreshRequestIndex,
+                                headersToString(request.headers()),
+                                headersToString(response.headers()),
+                                response.bodyAsString().block()
+                            ));
+                        }
+                    });
+
+            throw someError;
+        } finally {
+            if (durationOverridden) {
+                ReflectionUtils.setDefaultMinDurationBeforeEnforcingCollectionRoutingMapRefreshDuration(
+                    Duration.ofSeconds(30));
+            }
+        }
+    }
+
     @AfterMethod(groups = { "direct" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
+        deleteCollectionIfExists(client, SHARED_DATABASE.getId(), createdCollection.getId());
         safeClose(client);
     }
 

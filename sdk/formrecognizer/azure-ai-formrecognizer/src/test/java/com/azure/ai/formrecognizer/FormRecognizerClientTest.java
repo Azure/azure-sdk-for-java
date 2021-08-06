@@ -1634,10 +1634,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
-                    = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels)
-                        .setPollInterval(durationTestMode);
+                    = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels,
+                        new TrainingOptions().setModelName("model1"),
+                        Context.NONE)
+                    .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
-                CustomFormModel createdModel = syncPoller.getFinalResult();
+                CustomFormModel createdModel1 = syncPoller.getFinalResult();
 
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
                     = formTrainingClient.beginTraining(trainingFilesUrl,
@@ -1646,11 +1648,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                         Context.NONE)
                         .setPollInterval(durationTestMode);
                 syncPoller1.waitForCompletion();
-                CustomFormModel createdModel1 = syncPoller1.getFinalResult();
+                CustomFormModel createdModel2 = syncPoller1.getFinalResult();
 
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
                     = formTrainingClient.beginCreateComposedModel(
-                        Arrays.asList(createdModel.getModelId(), createdModel1.getModelId()),
+                        Arrays.asList(createdModel1.getModelId(), createdModel2.getModelId()),
                         new CreateComposedModelOptions().setModelName("composedModelName"),
                         Context.NONE)
                         .setPollInterval(durationTestMode);
@@ -1677,8 +1679,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 assertNotNull(recognizedForm.getFormTypeConfidence());
 
-                formTrainingClient.deleteModel(createdModel.getModelId());
                 formTrainingClient.deleteModel(createdModel1.getModelId());
+                formTrainingClient.deleteModel(createdModel2.getModelId());
                 formTrainingClient.deleteModel(composedModel.getModelId());
             });
         }, CONTENT_FORM_JPG);
