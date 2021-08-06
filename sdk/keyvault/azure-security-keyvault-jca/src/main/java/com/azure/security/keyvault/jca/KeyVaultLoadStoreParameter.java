@@ -67,11 +67,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param clientSecret the client secret.
      */
     public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret) {
-        this.uri = uri;
-        this.tenantId = tenantId;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.managedIdentity = null;
+        this(uri, tenantId, clientId, clientSecret, null);
     }
 
     /**
