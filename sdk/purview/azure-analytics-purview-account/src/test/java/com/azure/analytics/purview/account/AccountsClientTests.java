@@ -1,7 +1,7 @@
 package com.azure.analytics.purview.account;
 
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 public class AccountsClientTests extends PurviewAccountClientTestBase {
     private AccountsClient client;
@@ -14,7 +14,7 @@ public class AccountsClientTests extends PurviewAccountClientTestBase {
             .buildAccountsClient());
     }
 
-    @Test
+    @Disabled
     public void testGetAccount() {
         BinaryData response = client.get(null);
     }
