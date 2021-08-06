@@ -182,7 +182,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
                 .take(numberOfEvents)
                 .map(PartitionEvent::getData)
                 .collectList()
-                .block(TIMEOUT);
+                .block();
             producer.send(events, options);
             Assertions.assertNotNull(latestEvents);
             Assertions.assertEquals(numberOfEvents, latestEvents.size());

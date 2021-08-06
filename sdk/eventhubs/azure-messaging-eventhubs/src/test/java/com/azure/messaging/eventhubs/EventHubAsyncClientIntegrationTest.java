@@ -159,13 +159,10 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                 .credential(fullyQualifiedNamespace, eventHubName,
                         new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
                 .buildAsyncProducerClient();
-        try {
-            EventDataBatch batch = asyncProducerClient.createBatch().block();
+        asyncProducerClient.createBatch().flatMap(batch -> {
             assertTrue(batch.tryAdd(testData));
-            asyncProducerClient.send(batch).block();
-        } finally {
-            asyncProducerClient.close();
-        }
+            return  asyncProducerClient.send(batch);
+        }).subscribe(consumer -> asyncProducerClient.close());
     }
 
     @Test
