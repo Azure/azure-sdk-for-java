@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation.util;
 
 import com.azure.core.credential.TokenRequestContext;
@@ -7,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 public final class IdentityUtil {
-    private static final ClientLogger logger = new ClientLogger(IdentityUtil.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
 
     private IdentityUtil() { }
     /**
@@ -30,7 +33,7 @@ public final class IdentityUtil {
         if (!options.isMultiTenantAuthenticationAllowed()) {
             if (contextTenantId != null && currentTenantId != contextTenantId
                 && !options.isLegacyTenantSelectionEnabled()) {
-                logger.logExceptionAsError(new RuntimeException("The TenantId received from a challenge did not match "
+                LOGGER.logExceptionAsError(new RuntimeException("The TenantId received from a challenge did not match "
                     + "the configured TenantId and AllowMultiTenantAuthentication is false."));
             }
             return CoreUtils.isNullOrEmpty(currentTenantId) ? contextTenantId : currentTenantId;

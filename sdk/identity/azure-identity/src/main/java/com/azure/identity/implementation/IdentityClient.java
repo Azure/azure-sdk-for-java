@@ -570,16 +570,15 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithConfidentialClient(TokenRequestContext request) {
-        return Mono.defer(() -> {
-            return confidentialClientApplicationAccessor.getValue()
-                .flatMap(confidentialClient -> {
-                    ClientCredentialParameters.ClientCredentialParametersBuilder builder =
-                        ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                            .tenant(IdentityUtil
-                                .resolveTenantId(tenantId, request, options));
-                    return Mono.fromFuture(() -> confidentialClient.acquireToken(builder.build())).map(MsalToken::new);
-                });
-        });
+        return confidentialClientApplicationAccessor.getValue()
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> {
+                ClientCredentialParameters.ClientCredentialParametersBuilder builder =
+                    ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
+                        .tenant(IdentityUtil
+                            .resolveTenantId(tenantId, request, options));
+                return confidentialClient.acquireToken(builder.build());
+            }
+        )).map(MsalToken::new);
     }
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {

@@ -57,7 +57,7 @@ public final class IdentityClientOptions {
         regionalAuthority = RegionalAuthority.fromString(
             configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
         identityLegacyTenantSelection = configuration
-            .get(AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION, false) ;
+            .get(AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION, false);
     }
 
     /**
