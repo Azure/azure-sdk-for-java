@@ -11,24 +11,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.util.Objects;
+
 /**
  * A model that represents the policy rules under which the key can be exported.
  */
 @Fluent
 public final class KeyReleasePolicy {
     /*
-     * Content type and version of key release policy.
-     */
-    @JsonProperty(value = "contentType")
-    private String contentType;
-
-    /*
      * Blob encoding the policy rules under which the key can be released.
      */
     @JsonProperty(value = "data")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    private byte[] data;
+    private final byte[] data;
+
+    /*
+     * Content type and version of key release policy.
+     */
+    @JsonProperty(value = "contentType")
+    private String contentType;
+
+    public KeyReleasePolicy(byte[] data) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
+
+        this.data = ByteExtensions.clone(data);
+    }
+
+    /**
+     * Get a blob encoding the policy rules under which the key can be released.
+     *
+     * @return A blob encoding the policy rules under which the key can be released.
+     */
+    public byte[] getData() {
+        return ByteExtensions.clone(this.data);
+    }
 
     /**
      * Get the content type and version of key release policy.
@@ -50,28 +67,6 @@ public final class KeyReleasePolicy {
      */
     public KeyReleasePolicy setContentType(String contentType) {
         this.contentType = contentType;
-
-        return this;
-    }
-
-    /**
-     * Get a blob encoding the policy rules under which the key can be released.
-     *
-     * @return A blob encoding the policy rules under which the key can be released.
-     */
-    public byte[] getData() {
-        return ByteExtensions.clone(this.data);
-    }
-
-    /**
-     * Set a blob encoding the policy rules under which the key can be released.
-     *
-     * @param data A blob encoding the policy rules under which the key can be released.
-     *
-     * @return The updated {@link KeyReleasePolicy} object.
-     */
-    public KeyReleasePolicy setData(byte[] data) {
-        this.data = ByteExtensions.clone(data);
 
         return this;
     }
