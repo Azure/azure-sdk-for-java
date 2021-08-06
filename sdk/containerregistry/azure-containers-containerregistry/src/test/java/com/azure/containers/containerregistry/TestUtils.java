@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -191,17 +192,17 @@ public class TestUtils {
         return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
     }
 
-    public static String getAuthenticationScope(String endpoint) {
+    public static ContainerRegistryAudience getAudience(String endpoint) {
         String authority = getAuthority(endpoint);
         switch (authority) {
             case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
-                return "https://management.core.windows.net/.default";
+                return ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD;
 
             case AzureAuthorityHosts.AZURE_CHINA:
-                return "https://management.chinacloudapi.cn/.default";
+                return ContainerRegistryAudience.AZURERESOURCEMANAGERCHINA;
 
             case AzureAuthorityHosts.AZURE_GOVERNMENT:
-                return "https://management.usgovcloudapi.net/.default";
+                return ContainerRegistryAudience.AZURERESOURCEMANAGERGOVERNMENT;
 
             default:
                 return null;

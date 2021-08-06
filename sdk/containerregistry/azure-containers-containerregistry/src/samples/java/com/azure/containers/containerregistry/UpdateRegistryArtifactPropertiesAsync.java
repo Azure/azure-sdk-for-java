@@ -4,6 +4,7 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -22,6 +23,7 @@ public class UpdateRegistryArtifactPropertiesAsync {
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(ENDPOINT)
             .credential(defaultCredential)
+            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
             .buildAsyncClient();
 
         RegistryArtifactAsync image = client.getArtifact(REPOSITORY_NAME, DIGEST);

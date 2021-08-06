@@ -3,6 +3,7 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -17,6 +18,7 @@ public class ListRepositoryNamesAsync {
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(ENDPOINT)
             .credential(credential)
+            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
             .buildAsyncClient();
 
         client.listRepositoryNames().subscribe(repository -> System.out.println(repository));

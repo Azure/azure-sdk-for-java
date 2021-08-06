@@ -6,6 +6,7 @@ package com.azure.containers.containerregistry.perf.core;
 import com.azure.containers.containerregistry.ContainerRegistryAsyncClient;
 import com.azure.containers.containerregistry.ContainerRegistryClient;
 import com.azure.containers.containerregistry.ContainerRegistryClientBuilder;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
@@ -72,6 +73,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         tokenCredential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(registryEndpoint)
+            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
             .credential(tokenCredential);
 
         this.containerRegistryClient = builder.buildClient();

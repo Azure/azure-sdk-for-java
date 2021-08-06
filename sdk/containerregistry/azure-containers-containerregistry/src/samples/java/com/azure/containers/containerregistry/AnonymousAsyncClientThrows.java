@@ -3,6 +3,7 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.exception.ClientAuthenticationException;
 
 /**
@@ -16,6 +17,7 @@ public class AnonymousAsyncClientThrows {
     public static void main(String[] args) {
         ContainerRegistryAsyncClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(ENDPOINT)
+            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
             .buildAsyncClient();
 
         anonymousClient.deleteRepository(REPOSITORY_NAME).subscribe(deleteRepositoryResult -> {
