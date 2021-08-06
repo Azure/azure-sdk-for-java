@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-serializer-avro-apache</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+  <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
 
   <name>Microsoft Azure Apache Avro Serializer Library</name>
   <description>This package contains the Apache Avro serializer client plugin for azure-core.</description>
@@ -58,12 +58,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
 
     <dependency>
