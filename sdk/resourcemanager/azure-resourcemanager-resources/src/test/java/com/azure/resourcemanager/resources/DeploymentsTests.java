@@ -3,10 +3,13 @@
 
 package com.azure.resourcemanager.resources;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -414,5 +417,62 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertNotNull(deploymentError);
         Assertions.assertTrue(deploymentError.getDetails().stream()
             .anyMatch(detail -> detail.getMessage().contains("Subnet2")));
+    }
+
+    @Test
+    public void canDeployVirtualNetworkWithContext() {
+        final String dpName = "dpA" + testId;
+        final String rgName1 = generateRandomResourceName("rg", 9);;
+        final String rgName2 = generateRandomResourceName("rg", 9);
+
+        try {
+            String correlationRequestId = generateRandomUuid();
+            System.out.println("x-ms-correlation-request-id: " + correlationRequestId);
+            Context context = new Context(
+                AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
+                new HttpHeaders().set("x-ms-correlation-request-id", correlationRequestId));
+
+            // with context
+            Accepted<Deployment> deployment1 = resourceClient.deployments()
+                .define(dpName)
+                .withNewResourceGroup(rgName1, Region.US_SOUTH_CENTRAL)
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate(context);
+
+            // with context
+            Deployment deployment2 = resourceClient.deployments()
+                .define(dpName)
+                .withNewResourceGroup(rgName2, Region.US_SOUTH_CENTRAL)
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .create(context);
+
+            // without context
+            Deployment deployment3 = resourceClient.deployments()
+                .define(dpName)
+                .withExistingResourceGroup(rgName)
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .create();
+
+            Assertions.assertEquals(correlationRequestId, deployment1.getActivationResponse().getValue().innerModel().properties().correlationId());
+            Assertions.assertEquals(correlationRequestId, deployment2.innerModel().properties().correlationId());
+            Assertions.assertNotEquals(correlationRequestId, deployment3.innerModel().properties().correlationId());
+        } finally {
+            try {
+                resourceGroups.beginDeleteByName(rgName1);
+            } catch (Exception e) {
+                // ignored
+            }
+            try {
+                resourceGroups.beginDeleteByName(rgName2);
+            } catch (Exception e) {
+                // ignored
+            }
+        }
     }
 }
