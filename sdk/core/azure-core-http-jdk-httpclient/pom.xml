@@ -76,13 +76,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.0</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.8.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
