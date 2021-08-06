@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,7 +23,8 @@ public class TimeIntervalTest {
             .withSecond(0)
             .withMinute(0)
             .withHour(0)
-            .withNano(0);
+            .withNano(0)
+            .withOffsetSameLocal(ZoneOffset.UTC);
 
     @Test
     public void testDurationTimeSpan() {
