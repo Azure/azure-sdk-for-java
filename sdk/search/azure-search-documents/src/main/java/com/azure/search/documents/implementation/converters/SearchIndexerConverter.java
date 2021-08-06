@@ -38,6 +38,7 @@ public final class SearchIndexerConverter {
 
         searchIndexer.setOutputFieldMappings(obj.getOutputFieldMappings());
         searchIndexer.setEncryptionKey(obj.getEncryptionKey());
+        searchIndexer.setCache(obj.getCache());
 
         return searchIndexer;
     }
@@ -71,6 +72,7 @@ public final class SearchIndexerConverter {
 
         searchIndexer.setOutputFieldMappings(obj.getOutputFieldMappings());
         searchIndexer.setEncryptionKey(obj.getEncryptionKey());
+        searchIndexer.setCache(obj.getCache());
 
         return searchIndexer;
     }
