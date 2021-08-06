@@ -3,9 +3,11 @@
 
 package com.azure.tools.bomgenerator;
 
+import com.azure.tools.bomgenerator.models.BOMReport;
 import com.azure.tools.bomgenerator.models.BomDependency;
 import com.azure.tools.bomgenerator.models.BomDependencyErrorInfo;
 import com.azure.tools.bomgenerator.models.BomDependencyNoVersion;
+import com.azure.tools.bomgenerator.models.ConflictingDependency;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
@@ -36,6 +38,8 @@ public class DependencyAnalyzer {
     private Set<BomDependency> bomIneligibleDependencies = new HashSet<>();
     private Map<BomDependencyNoVersion, BomDependency> coreDependencyNameToDependency = new HashMap<>();
     private Map<BomDependency, BomDependencyErrorInfo> errorInfo = new HashMap();
+    private Map<BomDependency, List<ConflictingDependency>> dependencyConflicts = new HashMap<>();
+    private final String reportFileName;
 
     private Map<BomDependencyNoVersion, HashMap<String, Collection<BomDependency>>> nameToVersionToChildrenDependencyTree = new TreeMap<>(new Comparator<BomDependencyNoVersion>() {
         @Override
@@ -45,13 +49,14 @@ public class DependencyAnalyzer {
     });
     private static Logger logger = LoggerFactory.getLogger(BomGenerator.class);
 
-    DependencyAnalyzer(Collection<BomDependency> inputDependencies, Collection<BomDependency> externalDependencies) {
+    DependencyAnalyzer(Collection<BomDependency> inputDependencies, Collection<BomDependency> externalDependencies, String reportFileName) {
         if (inputDependencies != null) {
             this.inputDependencies = inputDependencies.stream().collect(Collectors.toMap(Utils::toBomDependencyNoVersion, dependency -> dependency));
         }
         if (externalDependencies != null) {
             this.externalDependencies.addAll(externalDependencies);
         }
+        this.reportFileName = reportFileName;
     }
 
     public Collection<BomDependency> getBomEligibleDependencies() {
@@ -88,16 +93,24 @@ public class DependencyAnalyzer {
             errorInfo.keySet().stream().forEach(key -> {
                 if (droppedDependencies.contains(key)) {
                     var conflictingDependencies = errorInfo.get(key).getConflictingDependencies();
-                    var expectedDependency = errorInfo.get(key).getExpectedDependency();
-                    if (expectedDependency != null) {
-                        logger.info("Dropped dependency {}.", key.toString(), expectedDependency);
+                    var dependencyWithConflict = errorInfo.get(key).getDependencyWithConflict();
+                    if (dependencyWithConflict != null) {
+                        logger.info("Dropped dependency {}.", key.toString());
                     }
 
-                    conflictingDependencies.stream().forEach(conflictingDependency ->
-                        logger.info("\t\tIncludes dependency {}. Expected dependency {}", conflictingDependency.getActualDependency(), conflictingDependency.getExpectedDependency()));
+                    conflictingDependencies.stream().forEach(conflictingDependency -> {
+                        if (!dependencyConflicts.containsKey(key)) {
+                            dependencyConflicts.put(key, new ArrayList<>());
+                        }
+                        dependencyConflicts.get(key).add(conflictingDependency);
+                        logger.info("\t\tIncludes dependency {}. Expected dependency {}", conflictingDependency.getActualDependency(), conflictingDependency.getExpectedDependency());
+                    });
                 }
             });
         }
+
+        var bomReport = new BOMReport(reportFileName, dependencyConflicts);
+        bomReport.generateReport();
     }
 
     private BomDependency getAzureCoreDependencyFromInput() {
