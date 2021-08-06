@@ -26,7 +26,6 @@ public class ServiceBusTopicOperationSendSubscribeTest
 
     private AutoCloseable closeable;
 
-
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);

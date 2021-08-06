@@ -22,7 +22,6 @@ public class TopicTemplateSendTest
 
     private AutoCloseable closeable;
 
-
     @BeforeEach
     @Override
     public void setUp() {
