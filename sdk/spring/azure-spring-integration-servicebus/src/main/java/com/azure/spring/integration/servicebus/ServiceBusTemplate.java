@@ -65,7 +65,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
             String partitionKey = getPartitionKey(partitionSupplier);
             serviceBusMessage.setPartitionKey(partitionKey);
         }
-        Instrumentation instrumentation = new Instrumentation(destination, Instrumentation.Type.SUPPLY);
+        Instrumentation instrumentation = new Instrumentation(destination, Instrumentation.Type.PRODUCE);
         try {
             instrumentationManager.addHealthInstrumentation(instrumentation);
             senderAsyncClient = this.clientFactory.getOrCreateSender(destination);

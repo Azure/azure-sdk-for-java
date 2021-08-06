@@ -11,6 +11,7 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
+import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +80,7 @@ public class AzureServiceBusQueueAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusQueueClientFactory.class)
-    public ServiceBusQueueTemplate queueOperation(ServiceBusQueueClientFactory factory,
+    public ServiceBusQueueOperation queueOperation(ServiceBusQueueClientFactory factory,
                                                    ServiceBusMessageConverter messageConverter) {
         return new ServiceBusQueueTemplate(factory, messageConverter);
     }

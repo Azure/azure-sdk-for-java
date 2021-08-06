@@ -12,6 +12,7 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
+import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +90,7 @@ public class AzureServiceBusTopicAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusTopicClientFactory.class)
-    public ServiceBusTopicTemplate topicOperation(ServiceBusTopicClientFactory factory,
+    public ServiceBusTopicOperation topicOperation(ServiceBusTopicClientFactory factory,
                                                    ServiceBusMessageConverter messageConverter) {
         return new ServiceBusTopicTemplate(factory, messageConverter);
     }

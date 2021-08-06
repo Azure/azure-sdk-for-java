@@ -17,7 +17,7 @@ public class Instrumentation {
 
         CONSUME("consume"),
 
-        SUPPLY("supply");
+        PRODUCE("produce");
 
         private String typeName;
 
