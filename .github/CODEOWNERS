@@ -128,6 +128,10 @@
 /sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
 /sdk/**/mgmt*/                                      @weidongxu-microsoft @yungezz
 
+# Quantum
+# PRLabel: %Azure Quantum
+/sdk/quantum/                                       @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
+
 ###########
 # Eng Sys
 ###########
