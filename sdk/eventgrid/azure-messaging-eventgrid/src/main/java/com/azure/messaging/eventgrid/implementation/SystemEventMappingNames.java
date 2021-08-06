@@ -30,6 +30,7 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
@@ -249,6 +250,13 @@ public final class SystemEventMappingNames {
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ImagePushed event. */
     public static final String CONTAINER_REGISTRY_IMAGE_PUSHED = "Microsoft.ContainerRegistry.ImagePushed";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
+     * event.
+     */
+    public static final String CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE =
+            "Microsoft.ContainerService.NewKubernetesVersionAvailable";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
     public static final String EVENT_HUB_CAPTURE_FILE_CREATED = "Microsoft.EventHub.CaptureFileCreated";
@@ -704,6 +712,9 @@ public final class SystemEventMappingNames {
                     put(CONTAINER_REGISTRY_CHART_PUSHED, ContainerRegistryChartPushedEventData.class);
                     put(CONTAINER_REGISTRY_IMAGE_DELETED, ContainerRegistryImageDeletedEventData.class);
                     put(CONTAINER_REGISTRY_IMAGE_PUSHED, ContainerRegistryImagePushedEventData.class);
+                    put(
+                            CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
+                            ContainerServiceNewKubernetesVersionAvailableEventData.class);
                     put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
                     put(IOT_HUB_DEVICE_CONNECTED, IotHubDeviceConnectedEventData.class);
                     put(IOT_HUB_DEVICE_CREATED, IotHubDeviceCreatedEventData.class);
