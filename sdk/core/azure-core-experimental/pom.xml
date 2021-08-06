@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.19.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -125,6 +125,7 @@
             <configuration>
               <argLine>
                 --add-opens com.azure.core.experimental/com.azure.core.experimental.http=ALL-UNNAMED
+                --add-opens com.azure.core.experimental/com.azure.core.experimental.models=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

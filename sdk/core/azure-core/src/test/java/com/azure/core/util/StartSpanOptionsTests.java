@@ -2,34 +2,43 @@
 // Licensed under the MIT License.
 package com.azure.core.util;
 
+import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StartSpanOptionsTests {
     @Test
-    public void defaultCtor() {
-        StartSpanOptions options = new StartSpanOptions();
+    public void kindCannotBeNull() {
+        assertThrows(NullPointerException.class, () -> new StartSpanOptions(null));
+    }
 
-        assertEquals(StartSpanOptions.Kind.INTERNAL, options.getSpanKind());
+    @Test
+    public void internalSpan() {
+        StartSpanOptions options = new StartSpanOptions(SpanKind.INTERNAL);
+
+        assertEquals(SpanKind.INTERNAL, options.getSpanKind());
         assertNull(options.getAttributes());
     }
 
     @Test
     public void clientSpan() {
-        StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT);
+        StartSpanOptions options = new StartSpanOptions(SpanKind.CLIENT);
 
-        assertEquals(StartSpanOptions.Kind.CLIENT, options.getSpanKind());
+        assertEquals(SpanKind.CLIENT, options.getSpanKind());
         assertNull(options.getAttributes());
     }
 
     @Test
     public void setAttributes() {
-        StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT)
+        StartSpanOptions options = new StartSpanOptions(SpanKind.CLIENT)
             .setAttribute("foo", "bar")
             .setAttribute("1", 1);
 
+        assertEquals(SpanKind.CLIENT, options.getSpanKind());
         assertEquals(2, options.getAttributes().size());
         assertEquals("bar", options.getAttributes().get("foo"));
         assertEquals(1, options.getAttributes().get("1"));
