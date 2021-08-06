@@ -422,7 +422,7 @@ public class DeploymentsTests extends ResourceManagementTest {
     @Test
     public void canDeployVirtualNetworkWithContext() {
         final String dpName = "dpA" + testId;
-        final String rgName1 = generateRandomResourceName("rg", 9);;
+        final String rgName1 = generateRandomResourceName("rg", 9);
         final String rgName2 = generateRandomResourceName("rg", 9);
 
         try {

@@ -3,7 +3,6 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.models.FlowLogSettings;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
