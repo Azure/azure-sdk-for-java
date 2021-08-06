@@ -28,7 +28,6 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -302,7 +301,8 @@ public class CosmosAsyncContainer {
                 database.getClient(),
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Create,
-                ResourceType.Document);
+                ResourceType.Document,
+                options.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options) {
@@ -403,6 +403,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            pagedFluxOptions.setThresholdForDiagnosticsOnTracer(options.getThresholdForDiagnosticsOnTracer());
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
                 response -> prepareFeedResponse(response, false, classType));
         });
@@ -546,6 +547,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
                 this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
+            pagedFluxOptions.setThresholdForDiagnosticsOnTracer(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracer());
 
                 return getDatabase().getDocClientWrapper()
                              .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
@@ -562,6 +564,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
                 this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
+            pagedFluxOptions.setThresholdForDiagnosticsOnTracer(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracer());
 
             return sqlQuerySpecMono.flux()
                 .flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
@@ -805,7 +808,59 @@ public class CosmosAsyncContainer {
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations) {
 
-        return this.processBulkOperations(operations, new BulkProcessingOptions<>());
+        return this.processBulkOperations(operations, new BulkExecutionOptions());
+    }
+
+    /**
+     * Executes flux of operations in Bulk.
+     *
+     * @deprecated forRemoval = true, since = "4.18"
+     * This overload will be removed. Please use one of the following overloads instead
+     * - {@link CosmosAsyncContainer#processBulkOperations(Flux)}
+     * - {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkExecutionOptions)}
+     * - {@link CosmosContainer#processBulkOperations(Iterable)}
+     * - {@link CosmosContainer#processBulkOperations(Iterable, BulkExecutionOptions)}
+     * and to pass in a custom context use one of the {@link BulkOperations} factory methods allowing to provide
+     * an operation specific context
+     *
+     * @param <TContext> The context for the bulk processing.
+     *
+     * @param operations Flux of operation which will be executed by this container.
+     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
+     *                    concurrency, batching size, interval and context.
+     *
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.18"
+    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+        Flux<CosmosItemOperation> operations,
+        BulkProcessingOptions<TContext> bulkOptions) {
+
+        if (bulkOptions == null) {
+            bulkOptions = new BulkProcessingOptions<>();
+        }
+
+        final BulkExecutionOptions options = new BulkExecutionOptions(
+            bulkOptions.getBatchContext(),
+            new BulkExecutionThresholds(bulkOptions.getThresholds().getPartitionScopeThresholds()));
+        options.setTargetedMicroBatchRetryRate(
+            bulkOptions.getMinTargetedMicroBatchRetryRate(),
+            bulkOptions.getMaxTargetedMicroBatchRetryRate());
+
+        return this.processBulkOperations(operations, options);
     }
 
     /**
@@ -831,19 +886,19 @@ public class CosmosAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations,
-        BulkProcessingOptions<TContext> bulkOptions) {
+        BulkExecutionOptions bulkOptions) {
 
         if (bulkOptions == null) {
-            bulkOptions = new BulkProcessingOptions<>();
+            bulkOptions = new BulkExecutionOptions();
         }
 
-        final BulkProcessingOptions<TContext> bulkProcessingOptions = bulkOptions;
+        final BulkExecutionOptions options = bulkOptions;
 
         return Flux.deferContextual(context -> {
-            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, bulkProcessingOptions);
+            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, options);
 
             return executor.execute();
         });
@@ -973,7 +1028,7 @@ public class CosmosAsyncContainer {
         Class<T> classType) {
         final CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         requestOptions.setPartitionKey(partitionKey);
-        
+
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
@@ -1301,7 +1356,8 @@ public class CosmosAsyncContainer {
                 database.getClient(),
                 requestOptions.getConsistencyLevel(),
                 OperationType.Delete,
-                ResourceType.Document);
+                ResourceType.Document,
+                requestOptions.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternal(
@@ -1327,7 +1383,8 @@ public class CosmosAsyncContainer {
                 database.getClient(),
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Replace,
-                ResourceType.Document);
+                ResourceType.Document,
+                options.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
@@ -1354,7 +1411,8 @@ public class CosmosAsyncContainer {
                 database.getClient(),
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Patch,
-                ResourceType.Document);
+                ResourceType.Document,
+                options.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options, Context context) {
@@ -1378,7 +1436,8 @@ public class CosmosAsyncContainer {
                 database.getClient(),
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Upsert,
-                ResourceType.Document);
+                ResourceType.Document,
+                options.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> readItemInternal(
@@ -1401,7 +1460,8 @@ public class CosmosAsyncContainer {
                 database.getClient(),
                 requestOptions.getConsistencyLevel(),
                 OperationType.Read,
-                ResourceType.Document);
+                ResourceType.Document,
+                requestOptions.getThresholdForDiagnosticsOnTracer());
     }
 
     Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {

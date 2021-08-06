@@ -27,6 +27,12 @@ public final class GitHubAccessTokenRequest {
     private String gitHubClientId;
 
     /*
+     * GitHub bring your own app client secret information.
+     */
+    @JsonProperty(value = "gitHubClientSecret")
+    private GitHubClientSecret gitHubClientSecret;
+
+    /*
      * GitHub access token base URL.
      */
     @JsonProperty(value = "gitHubAccessTokenBaseUrl", required = true)
@@ -73,6 +79,26 @@ public final class GitHubAccessTokenRequest {
     }
 
     /**
+     * Get the gitHubClientSecret property: GitHub bring your own app client secret information.
+     *
+     * @return the gitHubClientSecret value.
+     */
+    public GitHubClientSecret gitHubClientSecret() {
+        return this.gitHubClientSecret;
+    }
+
+    /**
+     * Set the gitHubClientSecret property: GitHub bring your own app client secret information.
+     *
+     * @param gitHubClientSecret the gitHubClientSecret value to set.
+     * @return the GitHubAccessTokenRequest object itself.
+     */
+    public GitHubAccessTokenRequest withGitHubClientSecret(GitHubClientSecret gitHubClientSecret) {
+        this.gitHubClientSecret = gitHubClientSecret;
+        return this;
+    }
+
+    /**
      * Get the gitHubAccessTokenBaseUrl property: GitHub access token base URL.
      *
      * @return the gitHubAccessTokenBaseUrl value.
@@ -103,6 +129,9 @@ public final class GitHubAccessTokenRequest {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property gitHubAccessCode in model GitHubAccessTokenRequest"));
+        }
+        if (gitHubClientSecret() != null) {
+            gitHubClientSecret().validate();
         }
         if (gitHubAccessTokenBaseUrl() == null) {
             throw logger

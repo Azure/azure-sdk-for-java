@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/iotcentral/
+      - sdk/iotcentral/ci.yml
+      - sdk/iotcentral/azure-resourcemanager-iotcentral/
+    exclude:
+      - sdk/iotcentral/pom.xml
+      - sdk/iotcentral/azure-resourcemanager-iotcentral/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/iotcentral/
+      - sdk/iotcentral/ci.yml
+      - sdk/iotcentral/azure-resourcemanager-iotcentral/
+    exclude:
+      - sdk/iotcentral/pom.xml
+      - sdk/iotcentral/azure-resourcemanager-iotcentral/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

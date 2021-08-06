@@ -1,10 +1,11 @@
 # Release History
-
 ## 5.2.0-beta.1 (Unreleased)
-
+### Feature Added
+- We are now targeting the service's v3.2-preview.1 API as the default instead of v3.1.
+- Added support for Extractive Summarization actions through the `ExtractSummaryAction` type.
 
 ## 5.1.0 (2021-07-08)
-#### Feature Added
+### Feature Added
 - We are now targeting the service's v3.1 API as the default instead of v3.1-preview.4.
 - Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
 - Added the new types, `ExtractKeyPhrasesAction`, `RecognizeEntitiesAction`, `RecognizePiiEntitiesAction`,

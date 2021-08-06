@@ -65,7 +65,7 @@ class AmqpChannelProcessorTest {
 
         channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
             TestObject::getStates, retryPolicy,
-            new ClientLogger(AmqpChannelProcessor.class + "<TestObject>"));
+            new ClientLogger(AmqpChannelProcessor.class.getName() + "<TestObject>"));
     }
 
     @AfterEach

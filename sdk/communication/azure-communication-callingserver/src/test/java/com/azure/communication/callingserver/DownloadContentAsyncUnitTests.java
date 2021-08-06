@@ -4,7 +4,6 @@
 package com.azure.communication.callingserver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
@@ -16,86 +15,102 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 import java.util.AbstractMap.SimpleEntry;
 
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpRange;
-import com.azure.core.http.rest.Response;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 public class DownloadContentAsyncUnitTests {
+
+    private static final String CONTENTS = "VideoContents";
+    private CallingServerAsyncClient callingServerClient;
+
+    @BeforeEach
+    public void setup() {
+        callingServerClient =
+            CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>(
+                Collections.singletonList(
+                    new SimpleEntry<>(CallingServerResponseMocker.generateDownloadResult(CONTENTS), 200)
+                )));
+    }
     @Test
-    public void downloadStream() throws IOException {
-        String contents = "VideoContents";
-        CallingServerAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateDownloadResult(contents), 200)
-            )));
-        
-        Flux<ByteBuffer> fluxByteBuffer = callingServerClient.downloadStream("https://url.com", new HttpRange(contents.length()));
-        
-        String resultContents = new String(fluxByteBuffer.next().block().array(), StandardCharsets.UTF_8);
-        assertEquals("VideoContents", resultContents);
+    public void downloadStream() {
+        StepVerifier.create(
+            callingServerClient.downloadStream(
+                "https://url.com",
+                new HttpRange(CONTENTS.length()))
+        ).consumeNextWith(byteBuffer -> {
+            String resultContents = new String(byteBuffer.array(), StandardCharsets.UTF_8);
+            assertEquals(CONTENTS, resultContents);
+        }).verifyComplete();
     }
 
     @Test
-    public void downloadStreamWithResponse() throws IOException {
-        String contents = "VideoContents";
-        CallingServerAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateDownloadResult(contents), 200)
-            )));
-        
-        Response<Flux<ByteBuffer>> fluxByteBufferResponse = callingServerClient.downloadStreamWithResponse("https://url.com", new HttpRange(contents.length())).block();
-        assertEquals(200, fluxByteBufferResponse.getStatusCode());
-        Flux<ByteBuffer> fluxByteBuffer = fluxByteBufferResponse.getValue();
-        String resultContents = new String(fluxByteBuffer.next().block().array(), StandardCharsets.UTF_8);
-        assertEquals("VideoContents", resultContents);
+    public void downloadStreamWithResponse() {
+        StepVerifier.create(
+            callingServerClient.downloadStreamWithResponse(
+                "https://url.com",
+                new HttpRange(CONTENTS.length()))
+        ).consumeNextWith(response -> {
+            assertEquals(200, response.getStatusCode());
+            verifyContents(response.getValue());
+        }).verifyComplete();
     }
-    
+
     @Test
-    public void downloadStreamWithResponseThrowException() throws IOException {
-        String contents = "VideoContents";
-        CallingServerAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new SimpleEntry<String, Integer>("", 416)
-            )));
-        
-        Response<Flux<ByteBuffer>> fluxByteBufferResponse = callingServerClient.downloadStreamWithResponse("https://url.com", new HttpRange(contents.length())).block();
-        Flux<ByteBuffer> fluxByteBuffer = fluxByteBufferResponse.getValue();
-        assertThrows(NullPointerException.class, () -> fluxByteBuffer.next().block());
+    public void downloadStreamWithResponseThrowException() {
+        callingServerClient =
+            CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>(
+                Collections.singletonList(
+                    new SimpleEntry<>("", 416)
+                )));
+
+        StepVerifier.create(
+            callingServerClient.downloadStreamWithResponse("https://url.com", new HttpRange(CONTENTS.length()))
+        ).consumeNextWith(response -> {
+            StepVerifier.create(response.getValue())
+                .verifyError(NullPointerException.class);
+        });
     }
 
     @Test
     public void downloadToWithResponse() throws IOException {
-        String contents = "VideoContents";
-        CallingServerAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateDownloadResult(contents), 200)
-            )));
         String fileName = "./" + UUID.randomUUID().toString().replace("-", "") + ".txt";
         Path path = FileSystems.getDefault().getPath(fileName);
         ParallelDownloadOptions options = new ParallelDownloadOptions().setMaxConcurrency(1).setBlockSize(512L);
         File file = null;
 
         try {
-            Response<Void> response = callingServerClient.downloadToWithResponse("https://url.com", path, options, true).block();
-            assertEquals(200, response.getStatusCode());
-            
+            StepVerifier.create(callingServerClient.downloadToWithResponse("https://url.com", path, options, true))
+                .consumeNextWith(response -> {
+                    assertEquals(200, response.getStatusCode());
+                }).verifyComplete();
+
             file = path.toFile();
             assertTrue(file.exists(), "file does not exist");
-            BufferedReader br = new BufferedReader(new FileReader(file));        
-            assertEquals("VideoContents", br.readLine());
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            assertEquals(CONTENTS, br.readLine());
             br.close();
         } finally {
             if (file != null && file.exists()) {
-                file.delete(); 
+                file.delete();
             }
         }
+    }
+
+    private void verifyContents(Flux<ByteBuffer> response) {
+        StepVerifier.create(response)
+            .consumeNextWith(byteBuffer -> {
+                String resultContents = new String(byteBuffer.array(), StandardCharsets.UTF_8);
+                assertEquals(CONTENTS, resultContents);
+            }).verifyComplete();
     }
 }

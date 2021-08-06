@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/billing/
+    exclude:
+      - sdk/billing/pom.xml
+      - sdk/billing/azure-resourcemanager-billing/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/billing/
+    exclude:
+      - sdk/billing/pom.xml
+      - sdk/billing/azure-resourcemanager-billing/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

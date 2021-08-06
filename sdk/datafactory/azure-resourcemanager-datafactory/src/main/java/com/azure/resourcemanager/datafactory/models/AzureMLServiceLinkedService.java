@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureMLServiceLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,214 +17,24 @@ import java.util.Map;
 /** Azure ML Service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMLService")
-@JsonFlatten
 @Fluent
-public class AzureMLServiceLinkedService extends LinkedService {
+public final class AzureMLServiceLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMLServiceLinkedService.class);
 
     /*
-     * Azure ML Service workspace subscription ID. Type: string (or Expression
-     * with resultType string).
+     * Azure ML Service linked service properties.
      */
-    @JsonProperty(value = "typeProperties.subscriptionId", required = true)
-    private Object subscriptionId;
-
-    /*
-     * Azure ML Service workspace resource group name. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.resourceGroupName", required = true)
-    private Object resourceGroupName;
-
-    /*
-     * Azure ML Service workspace name. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.mlWorkspaceName", required = true)
-    private Object mlWorkspaceName;
-
-    /*
-     * The ID of the service principal used to authenticate against the
-     * endpoint of a published Azure ML Service pipeline. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.servicePrincipalId")
-    private Object servicePrincipalId;
-
-    /*
-     * The key of the service principal used to authenticate against the
-     * endpoint of a published Azure ML Service pipeline.
-     */
-    @JsonProperty(value = "typeProperties.servicePrincipalKey")
-    private SecretBase servicePrincipalKey;
-
-    /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.tenant")
-    private Object tenant;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureMLServiceLinkedServiceTypeProperties innerTypeProperties =
+        new AzureMLServiceLinkedServiceTypeProperties();
 
     /**
-     * Get the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
-     * resultType string).
+     * Get the innerTypeProperties property: Azure ML Service linked service properties.
      *
-     * @return the subscriptionId value.
+     * @return the innerTypeProperties value.
      */
-    public Object subscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /**
-     * Set the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param subscriptionId the subscriptionId value to set.
-     * @return the AzureMLServiceLinkedService object itself.
-     */
-    public AzureMLServiceLinkedService withSubscriptionId(Object subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the resourceGroupName property: Azure ML Service workspace resource group name. Type: string (or Expression
-     * with resultType string).
-     *
-     * @return the resourceGroupName value.
-     */
-    public Object resourceGroupName() {
-        return this.resourceGroupName;
-    }
-
-    /**
-     * Set the resourceGroupName property: Azure ML Service workspace resource group name. Type: string (or Expression
-     * with resultType string).
-     *
-     * @param resourceGroupName the resourceGroupName value to set.
-     * @return the AzureMLServiceLinkedService object itself.
-     */
-    public AzureMLServiceLinkedService withResourceGroupName(Object resourceGroupName) {
-        this.resourceGroupName = resourceGroupName;
-        return this;
-    }
-
-    /**
-     * Get the mlWorkspaceName property: Azure ML Service workspace name. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the mlWorkspaceName value.
-     */
-    public Object mlWorkspaceName() {
-        return this.mlWorkspaceName;
-    }
-
-    /**
-     * Set the mlWorkspaceName property: Azure ML Service workspace name. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param mlWorkspaceName the mlWorkspaceName value to set.
-     * @return the AzureMLServiceLinkedService object itself.
-     */
-    public AzureMLServiceLinkedService withMlWorkspaceName(Object mlWorkspaceName) {
-        this.mlWorkspaceName = mlWorkspaceName;
-        return this;
-    }
-
-    /**
-     * Get the servicePrincipalId property: The ID of the service principal used to authenticate against the endpoint of
-     * a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
-     *
-     * @return the servicePrincipalId value.
-     */
-    public Object servicePrincipalId() {
-        return this.servicePrincipalId;
-    }
-
-    /**
-     * Set the servicePrincipalId property: The ID of the service principal used to authenticate against the endpoint of
-     * a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
-     *
-     * @param servicePrincipalId the servicePrincipalId value to set.
-     * @return the AzureMLServiceLinkedService object itself.
-     */
-    public AzureMLServiceLinkedService withServicePrincipalId(Object servicePrincipalId) {
-        this.servicePrincipalId = servicePrincipalId;
-        return this;
-    }
-
-    /**
-     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against the endpoint
-     * of a published Azure ML Service pipeline.
-     *
-     * @return the servicePrincipalKey value.
-     */
-    public SecretBase servicePrincipalKey() {
-        return this.servicePrincipalKey;
-    }
-
-    /**
-     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against the endpoint
-     * of a published Azure ML Service pipeline.
-     *
-     * @param servicePrincipalKey the servicePrincipalKey value to set.
-     * @return the AzureMLServiceLinkedService object itself.
-     */
-    public AzureMLServiceLinkedService withServicePrincipalKey(SecretBase servicePrincipalKey) {
-        this.servicePrincipalKey = servicePrincipalKey;
-        return this;
-    }
-
-    /**
-     * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the tenant value.
-     */
-    public Object tenant() {
-        return this.tenant;
-    }
-
-    /**
-     * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param tenant the tenant value to set.
-     * @return the AzureMLServiceLinkedService object itself.
-     */
-    public AzureMLServiceLinkedService withTenant(Object tenant) {
-        this.tenant = tenant;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AzureMLServiceLinkedService object itself.
-     */
-    public AzureMLServiceLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AzureMLServiceLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -256,6 +66,181 @@ public class AzureMLServiceLinkedService extends LinkedService {
     }
 
     /**
+     * Get the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the subscriptionId value.
+     */
+    public Object subscriptionId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().subscriptionId();
+    }
+
+    /**
+     * Set the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param subscriptionId the subscriptionId value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService withSubscriptionId(Object subscriptionId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSubscriptionId(subscriptionId);
+        return this;
+    }
+
+    /**
+     * Get the resourceGroupName property: Azure ML Service workspace resource group name. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the resourceGroupName value.
+     */
+    public Object resourceGroupName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().resourceGroupName();
+    }
+
+    /**
+     * Set the resourceGroupName property: Azure ML Service workspace resource group name. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param resourceGroupName the resourceGroupName value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService withResourceGroupName(Object resourceGroupName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withResourceGroupName(resourceGroupName);
+        return this;
+    }
+
+    /**
+     * Get the mlWorkspaceName property: Azure ML Service workspace name. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the mlWorkspaceName value.
+     */
+    public Object mlWorkspaceName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().mlWorkspaceName();
+    }
+
+    /**
+     * Set the mlWorkspaceName property: Azure ML Service workspace name. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param mlWorkspaceName the mlWorkspaceName value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService withMlWorkspaceName(Object mlWorkspaceName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withMlWorkspaceName(mlWorkspaceName);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalId property: The ID of the service principal used to authenticate against the endpoint of
+     * a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
+     *
+     * @return the servicePrincipalId value.
+     */
+    public Object servicePrincipalId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalId();
+    }
+
+    /**
+     * Set the servicePrincipalId property: The ID of the service principal used to authenticate against the endpoint of
+     * a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
+     *
+     * @param servicePrincipalId the servicePrincipalId value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService withServicePrincipalId(Object servicePrincipalId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalId(servicePrincipalId);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against the endpoint
+     * of a published Azure ML Service pipeline.
+     *
+     * @return the servicePrincipalKey value.
+     */
+    public SecretBase servicePrincipalKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalKey();
+    }
+
+    /**
+     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against the endpoint
+     * of a published Azure ML Service pipeline.
+     *
+     * @param servicePrincipalKey the servicePrincipalKey value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService withServicePrincipalKey(SecretBase servicePrincipalKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalKey(servicePrincipalKey);
+        return this;
+    }
+
+    /**
+     * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the tenant value.
+     */
+    public Object tenant() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tenant();
+    }
+
+    /**
+     * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param tenant the tenant value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService withTenant(Object tenant) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTenant(tenant);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -263,26 +248,13 @@ public class AzureMLServiceLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (subscriptionId() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property subscriptionId in model AzureMLServiceLinkedService"));
-        }
-        if (resourceGroupName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceGroupName in model AzureMLServiceLinkedService"));
-        }
-        if (mlWorkspaceName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property mlWorkspaceName in model AzureMLServiceLinkedService"));
-        }
-        if (servicePrincipalKey() != null) {
-            servicePrincipalKey().validate();
+                        "Missing required property innerTypeProperties in model AzureMLServiceLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

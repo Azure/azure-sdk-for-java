@@ -60,7 +60,7 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
     private interface VirtualNetworkSubnetUsagesService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/locations/{locationName}"
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}"
                 + "/checkVirtualNetworkSubnetUsage")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

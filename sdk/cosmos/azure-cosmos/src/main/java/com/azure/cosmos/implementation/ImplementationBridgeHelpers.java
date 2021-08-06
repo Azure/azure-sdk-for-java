@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BulkProcessingOptions;
-import com.azure.cosmos.BulkProcessingThresholds;
+import com.azure.cosmos.BulkExecutionOptions;
+import com.azure.cosmos.BulkExecutionThresholds;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 public class ImplementationBridgeHelpers {
-    private static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
+    private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
     public static final class CosmosClientBuilderHelper {
         private static CosmosClientBuilderAccessor accessor;
 
@@ -157,33 +157,38 @@ public class ImplementationBridgeHelpers {
         }
     }
 
-    public static final class CosmosBulkProcessingOptionsHelper {
-        private static CosmosBulkProcessingOptionAccessor accessor;
+    public static final class CosmosBulkExecutionOptionsHelper {
+        private static CosmosBulkExecutionOptionsAccessor accessor;
 
-        private CosmosBulkProcessingOptionsHelper() {}
+        private CosmosBulkExecutionOptionsHelper() {}
         static {
-            ensureClassLoaded(BulkProcessingOptions.class);
+            ensureClassLoaded(BulkExecutionOptions.class);
         }
 
-        public static void setCosmosBulkProcessingOptionAccessor(final CosmosBulkProcessingOptionAccessor newAccessor) {
+        public static void setCosmosBulkExecutionOptionsAccessor(final CosmosBulkExecutionOptionsAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("BulkProcessingOptions accessor already initialized!");
+                throw new IllegalStateException("BulkExecutionOptions accessor already initialized!");
             }
 
             accessor = newAccessor;
         }
 
-        public static CosmosBulkProcessingOptionAccessor getCosmosBulkProcessingOptionAccessor() {
+        public static CosmosBulkExecutionOptionsAccessor getCosmosBulkExecutionOptionsAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("BulkProcessingOptions accessor is not initialized yet!");
+                throw new IllegalStateException("BulkExecutionOptions accessor is not initialized yet!");
             }
 
             return accessor;
         }
 
-        public interface CosmosBulkProcessingOptionAccessor {
-            <T> void setOperationContext(BulkProcessingOptions<T> bulkProcessingOptions, OperationContextAndListenerTuple operationContext);
-            <T> OperationContextAndListenerTuple getOperationContext(BulkProcessingOptions<T> bulkProcessingOptions);
+        public interface CosmosBulkExecutionOptionsAccessor {
+            void setOperationContext(
+                BulkExecutionOptions options,
+                OperationContextAndListenerTuple operationContext);
+
+            OperationContextAndListenerTuple getOperationContext(BulkExecutionOptions options);
+
+            <T> T getLegacyBatchScopedContext(BulkExecutionOptions options);
         }
     }
 
@@ -347,39 +352,38 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosAsyncDatabaseAccessor {
             CosmosAsyncClient getCosmosAsyncClient(CosmosAsyncDatabase cosmosAsyncDatabase);
-
         }
     }
 
-    public static final class BulkProcessingThresholdsHelper {
-        private static BulkProcessingThresholdsAccessor accessor;
+    public static final class BulkExecutionThresholdsHelper {
+        private static BulkExecutionThresholdsAccessor accessor;
 
-        private BulkProcessingThresholdsHelper() {
+        private BulkExecutionThresholdsHelper() {
         }
 
         static {
-            ensureClassLoaded(BulkProcessingThresholds.class);
+            ensureClassLoaded(BulkExecutionThresholds.class);
         }
 
-        public static void setBulkProcessingThresholdsAccessor(final BulkProcessingThresholdsAccessor newAccessor) {
+        public static void setBulkExecutionThresholdsAccessor(final BulkExecutionThresholdsAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("BulkProcessingThresholds accessor already initialized!");
+                throw new IllegalStateException("BulkExecutionThresholds accessor already initialized!");
             }
 
             accessor = newAccessor;
         }
 
-        public static BulkProcessingThresholdsAccessor getBulkProcessingThresholdsAccessor() {
+        public static BulkExecutionThresholdsAccessor getBulkExecutionThresholdsAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("BulkProcessingThresholds accessor is not initialized yet!");
+                throw new IllegalStateException("BulkExecutionThresholds accessor is not initialized yet!");
             }
 
             return accessor;
         }
 
-        public interface BulkProcessingThresholdsAccessor {
-            <T> ConcurrentMap<String, PartitionScopeThresholds<T>> getPartitionScopeThresholds(
-                BulkProcessingThresholds<T> thresholds);
+        public interface BulkExecutionThresholdsAccessor {
+            ConcurrentMap<String, PartitionScopeThresholds> getPartitionScopeThresholds(
+                BulkExecutionThresholds thresholds);
         }
     }
 
@@ -410,6 +414,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosDiagnosticsAccessor {
+            FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics);
             AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
         }
     }

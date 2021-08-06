@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.b2c;
 import com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter;
 import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
 import com.azure.spring.aad.AbstractJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.aad.implementation.constants.AuthorityPrefix;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
@@ -15,8 +16,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_AUTHORITY_PREFIX;
-import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
+import static com.azure.spring.aad.webapi.AADResourceServerProperties.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
 
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
@@ -35,7 +35,7 @@ public class AADB2CJwtBearerTokenAuthenticationConverter extends AbstractJwtBear
      * @param authoritiesClaimName authority claim name
      */
     public AADB2CJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
-        this(authoritiesClaimName, DEFAULT_AUTHORITY_PREFIX);
+        this(authoritiesClaimName, AuthorityPrefix.SCOPE);
     }
 
     /**

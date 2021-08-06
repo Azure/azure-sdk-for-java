@@ -162,6 +162,10 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
     private Object getEntityFieldAsObject(JsonNode parentNode, String fieldName) throws IOException {
         JsonNode valueNode = parentNode.get(fieldName);
+        if (TablesConstants.TIMESTAMP_KEY.equals(fieldName)) {
+            return EntityDataModelType.DATE_TIME.deserialize(valueNode.asText());
+        }
+
         if (TablesConstants.METADATA_KEYS.contains(fieldName)
             || fieldName.endsWith(TablesConstants.ODATA_TYPE_KEY_SUFFIX)) {
             return serializer().treeToValue(valueNode, Object.class);

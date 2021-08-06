@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.19.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.7</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -125,6 +125,7 @@
             <configuration>
               <argLine>
                 --add-opens com.azure.core.experimental/com.azure.core.experimental.http=ALL-UNNAMED
+                --add-opens com.azure.core.experimental/com.azure.core.experimental.models=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

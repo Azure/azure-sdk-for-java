@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/resourcehealth/
+      - sdk/resourcehealth/ci.yml
+      - sdk/resourcehealth/azure-resourcemanager-resourcehealth/
+    exclude:
+      - sdk/resourcehealth/pom.xml
+      - sdk/resourcehealth/azure-resourcemanager-resourcehealth/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/resourcehealth/
+      - sdk/resourcehealth/ci.yml
+      - sdk/resourcehealth/azure-resourcemanager-resourcehealth/
+    exclude:
+      - sdk/resourcehealth/pom.xml
+      - sdk/resourcehealth/azure-resourcemanager-resourcehealth/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

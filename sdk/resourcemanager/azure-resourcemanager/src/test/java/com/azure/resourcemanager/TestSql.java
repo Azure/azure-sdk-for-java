@@ -6,7 +6,6 @@ package com.azure.resourcemanager;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServers;
-import com.google.common.util.concurrent.SettableFuture;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +14,6 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
     public SqlServer createResource(SqlServers resources) throws Exception {
         final String sqlServerName = resources.manager().resourceManager().internalContext().randomResourceName("sql", 10);
         final SqlServer[] sqlServers = new SqlServer[1];
-        final SettableFuture<SqlServer> future = SettableFuture.create();
         Mono<SqlServer> resourceStream =
             resources
                 .define(sqlServerName)
@@ -30,9 +28,8 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
                 .withTag("mytag", "testtag")
                 .createAsync();
 
-        resourceStream.subscribe(sqlServer -> future.set(sqlServer), error -> future.set(null));
 
-        sqlServers[0] = future.get();
+        sqlServers[0] = resourceStream.block();
 
         Assertions.assertNotNull(sqlServers[0].innerModel());
 
