@@ -103,7 +103,7 @@ com.azure:azure-mixedreality-remoterendering;1.0.0;1.1.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-monitor-query;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;11.3.2;11.4.0
+com.azure:azure-search-documents;11.3.2;11.4.1
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-security-confidentialledger;1.0.0-beta.2;1.0.0-beta.3
