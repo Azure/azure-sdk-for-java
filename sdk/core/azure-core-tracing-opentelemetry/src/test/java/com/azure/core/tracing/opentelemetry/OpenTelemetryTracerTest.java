@@ -84,7 +84,7 @@ public class OpenTelemetryTracerTest {
     private Context tracingContext;
     private Span parentSpan;
     private Scope scope;
-    private final HashMap<String, Object> expectedAttributeMap = new HashMap<>() {
+    private final HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
         {
             put(OpenTelemetryTracer.MESSAGE_BUS_DESTINATION, ENTITY_PATH_VALUE);
             put(OpenTelemetryTracer.PEER_ENDPOINT, HOSTNAME_VALUE);
