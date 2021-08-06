@@ -2,6 +2,10 @@
 
 ## 1.0.0-beta.16 (2021-08-05)
 
+### Features Added
+
+- Added `TimeInterval` to support ISO8601 time intervals.
+
 ### Dependency Updates
 
 - Upgraded `azure-core` from `1.18.0` to `1.19.0`.

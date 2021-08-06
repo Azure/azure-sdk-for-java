@@ -12,13 +12,15 @@ import java.util.Objects;
  * Represents span options that are available before span starts and describe it.
  */
 @Fluent
-public class StartSpanOptions {
+public final class StartSpanOptions {
 
     /**
      * Type of Span. Only CLIENT and INTERNAL kinds are supported.
      */
     public enum Kind {
-        /** Default value. Indicates that the span is used internally. */
+        /**
+         * Default value. Indicates that the span is used internally.
+         */
         INTERNAL,
 
         /**
@@ -52,9 +54,8 @@ public class StartSpanOptions {
      * Sets attribute on span before its started. Such attributes may affect sampling decision.
      *
      * @param key attribute key.
-     * @param value attribute value. Note that underlying tracer implementations limit supported value types to
-     * String, int, double, boolean, long and arrays of them.
-     *
+     * @param value attribute value. Note that underlying tracer implementations limit supported value types to String,
+     * int, double, boolean, long and arrays of them.
      * @return this instance for chaining.
      */
     public StartSpanOptions setAttribute(String key, Object value) {
@@ -68,6 +69,7 @@ public class StartSpanOptions {
 
     /**
      * Gets span kind.
+     *
      * @return span kind.
      */
     public Kind getSpanKind() {
@@ -76,6 +78,7 @@ public class StartSpanOptions {
 
     /**
      * Gets all attributes on span that should be set before span is started.
+     *
      * @return attributes to be set on span and used for sampling.
      */
     public Map<String, Object> getAttributes() {
