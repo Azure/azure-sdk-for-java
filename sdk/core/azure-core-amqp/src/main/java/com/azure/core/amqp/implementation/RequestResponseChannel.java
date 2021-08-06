@@ -397,6 +397,10 @@ public class RequestResponseChannel implements AsyncCloseable {
 
         if (remaining == 0) {
             subscriptions.dispose();
+
+            endpointStates.emitComplete(((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                "Could not emit complete signal.")));
+
             closeMono.emitEmpty((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
                 handlerName + ". Error closing mono."));
         }
