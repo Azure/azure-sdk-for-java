@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.DateTimeException;
@@ -17,7 +16,7 @@ import java.util.Locale;
  * Wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization and deserialization.
  */
 public final class DateTimeRfc1123 {
-    private static final ClientLogger logger = new ClientLogger(DateTimeRfc1123.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DateTimeRfc1123.class);
 
     /**
      * The pattern of the datetime used for RFC1123 datetime format.
@@ -75,7 +74,7 @@ public final class DateTimeRfc1123 {
                 parseInt(date, 23, 25),  // second
                 0,                    // nanoOfSecond
                 ZoneOffset.UTC);
-        } catch (Exception e) {
+        } catch (DateTimeException | IllegalArgumentException | IndexOutOfBoundsException e) {
             return OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
         }
     }
@@ -95,7 +94,7 @@ public final class DateTimeRfc1123 {
         for (int i = beginIndex; i < endIndex; i++) {
             final char c = date.charAt(i);
             if (c < '0' || c > '9') {
-                throw logger.logExceptionAsError(new DateTimeException("Invalid date time: " + date));
+                throw LOGGER.logExceptionAsError(new DateTimeException("Invalid date time: " + date));
             }
             num = num * 10 + (c - '0');
         }
@@ -125,10 +124,10 @@ public final class DateTimeRfc1123 {
                         switch (date.charAt(beginIndex + 2)) {
                             case 'n': return 6; // Jun
                             case 'l': return 7; // Jul
-                            default: throw logger.logExceptionAsError(
+                            default: throw LOGGER.logExceptionAsError(
                                 new IllegalArgumentException("Unknown month " + date));
                         }
-                    default: throw logger.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
             case 'F': return 2; // Feb
             case 'M':
@@ -136,20 +135,20 @@ public final class DateTimeRfc1123 {
                 switch (date.charAt(beginIndex + 2)) {
                     case 'r': return 3; // Mar
                     case 'y': return 5; // May
-                    default: throw logger.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
             case 'A':
                 // Apr, Aug
                 switch (date.charAt(beginIndex + 2)) {
                     case 'r': return 4; // Apr
                     case 'g': return 8; // Aug
-                    default: throw logger.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
             case 'S': return 9; //Sep
             case 'O': return 10; // Oct
             case 'N': return 11; // Nov
             case 'D': return 12; // Dec
-            default: throw logger.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
         }
     }
 
