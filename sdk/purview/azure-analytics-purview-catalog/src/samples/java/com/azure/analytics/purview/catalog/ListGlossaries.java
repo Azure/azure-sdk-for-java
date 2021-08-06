@@ -18,8 +18,10 @@ public class ListGlossaries {
         BinaryData binaryData = client.listGlossaries(null);
         List<?> glossaries = binaryData.toObject(List.class);
         System.out.println(glossaries);
-        Map<?, ?> map = (Map<?, ?>) glossaries.get(0);
-        List<?> terms = (List<?>) map.get("terms");
-        System.out.println(terms);
+        if (!glossaries.isEmpty()) {
+            Map<?, ?> map = (Map<?, ?>) glossaries.get(0);
+            List<?> terms = (List<?>) map.get("terms");
+            System.out.println(terms);
+        }
     }
 }
