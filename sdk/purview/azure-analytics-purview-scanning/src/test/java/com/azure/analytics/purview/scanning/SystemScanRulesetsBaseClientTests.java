@@ -28,7 +28,6 @@ public class SystemScanRulesetsBaseClientTests extends PurviewScanningClientTest
     public void testListAll() {
         PagedIterable<BinaryData> response = client.listAll(null);
         List<BinaryData> list = response.stream().collect(Collectors.toList());
-        System.err.println(list);
         Assertions.assertTrue(list.size() > 0);
     }
 }
