@@ -61,12 +61,12 @@ public class TextAnalyticsRequestOptions {
     }
 
     /**
-     * Get the value of {@code disableServiceLogs}.
-     *
-     * @return The value of {@code disableServiceLogs}. The default value of this property is 'false', except at
+     * Gets the value of {@code disableServiceLogs}. The default value of this property is 'false', except at
      * {@link AnalyzeHealthcareEntitiesOptions} and {@link RecognizePiiEntitiesOptions}. This means,
      * Text Analytics service logs your input text for 48 hours, solely to allow for troubleshooting issues. Setting
      * this property to true, disables input logging and may limit our ability to investigate issues that occur.
+     *
+     * @return true if logging input text service are disabled.
      */
     public boolean isServiceLogsDisabled() {
         return disableServiceLogs;

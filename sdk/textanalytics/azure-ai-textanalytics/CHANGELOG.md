@@ -1,4 +1,8 @@
 # Release History
+## 5.1.1 (2021-08-11)
+### Key Bug Fixed
+- Fixed the bug to support the default value `disableServiceLogs = true`, in the option bags, `AnalyzeHealthcareEntitiesOptions`, 
+  `RecognizePiiEntitiesOptions` and `RecognizePiiEntitiesAction`, 
 
 ## 5.1.0 (2021-07-08)
 #### Feature Added
