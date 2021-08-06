@@ -23,6 +23,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
+    public static final String AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION = "AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION";
 
     private String authorityHost;
     private int maxRetry;
@@ -40,6 +41,7 @@ public final class IdentityClientOptions {
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
     private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
+    private boolean identityLegacyTenantSelection;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -54,6 +56,8 @@ public final class IdentityClientOptions {
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
         regionalAuthority = RegionalAuthority.fromString(
             configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
+        identityLegacyTenantSelection = configuration
+            .get(AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION, false) ;
     }
 
     /**
@@ -349,4 +353,16 @@ public final class IdentityClientOptions {
     public RegionalAuthority getRegionalAuthority() {
         return regionalAuthority;
     }
+
+
+    /**
+     * Gets the regional authority, or null if regional authority should not be used.
+     * @return the regional authority value if specified
+     */
+    public boolean isLegacyTenantSelectionEnabled() {
+        return identityLegacyTenantSelection;
+    }
+
+
+
 }

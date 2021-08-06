@@ -576,7 +576,7 @@ public class IdentityClient {
                     ClientCredentialParameters.ClientCredentialParametersBuilder builder =
                         ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                             .tenant(IdentityUtil
-                                .resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
+                                .resolveTenantId(tenantId, request, options));
                     return Mono.fromFuture(() -> confidentialClient.acquireToken(builder.build())).map(MsalToken::new);
                 });
         });
@@ -615,7 +615,7 @@ public class IdentityClient {
                        userNamePasswordParametersBuilder.claims(customClaimRequest);
                    }
                    userNamePasswordParametersBuilder.tenant(
-                       IdentityUtil.resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
+                       IdentityUtil.resolveTenantId(tenantId, request, options));
                    return pc.acquireToken(userNamePasswordParametersBuilder.build());
                }
                )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
@@ -644,7 +644,7 @@ public class IdentityClient {
                     parametersBuilder = parametersBuilder.account(account);
                 }
                 parametersBuilder.tenant(
-                    IdentityUtil.resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
+                    IdentityUtil.resolveTenantId(tenantId, request, options));
                 try {
                     return pc.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -665,6 +665,8 @@ public class IdentityClient {
                     if (account != null) {
                         forceParametersBuilder = forceParametersBuilder.account(account);
                     }
+                    forceParametersBuilder.tenant(
+                        IdentityUtil.resolveTenantId(tenantId, request, options));
                     try {
                         return pc.acquireTokenSilently(forceParametersBuilder.build());
                     } catch (MalformedURLException e) {
@@ -685,7 +687,7 @@ public class IdentityClient {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes()))
                     .tenant(IdentityUtil.resolveTenantId(tenantId, request,
-                        options.getAllowMultiTenantAuthentication()));
+                        options));
                 try {
                     return confidentialClient.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -715,7 +717,7 @@ public class IdentityClient {
                             new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
                                 OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())))
                     .tenant(IdentityUtil
-                        .resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
+                        .resolveTenantId(tenantId, request, options));
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -776,7 +778,7 @@ public class IdentityClient {
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
             .scopes(new HashSet<>(request.getScopes()))
             .tenant(IdentityUtil
-                .resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
+                .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -830,7 +832,7 @@ public class IdentityClient {
                 .scopes(new HashSet<>(request.getScopes()))
                 .prompt(Prompt.SELECT_ACCOUNT)
                 .tenant(IdentityUtil
-                    .resolveTenantId(tenantId, request, options.getAllowMultiTenantAuthentication()));
+                    .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
