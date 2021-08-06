@@ -135,6 +135,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         } else {
             body.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -143,7 +144,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
                         .purge(
                             this.client.getEndpoint(),
                             resourceGroupName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             workspaceName,
                             body,
@@ -196,13 +197,14 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         } else {
             body.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .purge(
                 this.client.getEndpoint(),
                 resourceGroupName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 workspaceName,
                 body,
@@ -320,6 +322,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         if (purgeId == null) {
             return Mono.error(new IllegalArgumentException("Parameter purgeId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -328,7 +331,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
                         .getPurgeStatus(
                             this.client.getEndpoint(),
                             resourceGroupName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             workspaceName,
                             purgeId,
@@ -374,13 +377,14 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         if (purgeId == null) {
             return Mono.error(new IllegalArgumentException("Parameter purgeId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getPurgeStatus(
                 this.client.getEndpoint(),
                 resourceGroupName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 workspaceName,
                 purgeId,

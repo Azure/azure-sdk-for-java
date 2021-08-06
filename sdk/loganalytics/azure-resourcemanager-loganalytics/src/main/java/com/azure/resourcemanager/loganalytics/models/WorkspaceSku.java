@@ -28,13 +28,6 @@ public final class WorkspaceSku {
     private Integer capacityReservationLevel;
 
     /*
-     * The maximum capacity reservation level available for this workspace,
-     * when CapacityReservation sku is selected.
-     */
-    @JsonProperty(value = "maxCapacityReservationLevel", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer maxCapacityReservationLevel;
-
-    /*
      * The last time when the sku was updated.
      */
     @JsonProperty(value = "lastSkuUpdate", access = JsonProperty.Access.WRITE_ONLY)
@@ -80,16 +73,6 @@ public final class WorkspaceSku {
     public WorkspaceSku withCapacityReservationLevel(Integer capacityReservationLevel) {
         this.capacityReservationLevel = capacityReservationLevel;
         return this;
-    }
-
-    /**
-     * Get the maxCapacityReservationLevel property: The maximum capacity reservation level available for this
-     * workspace, when CapacityReservation sku is selected.
-     *
-     * @return the maxCapacityReservationLevel value.
-     */
-    public Integer maxCapacityReservationLevel() {
-        return this.maxCapacityReservationLevel;
     }
 
     /**

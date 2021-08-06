@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * Resource tags. Optional.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -97,7 +99,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * Workspace features.
      */
     @JsonProperty(value = "properties.features")
-    private Map<String, Object> features;
+    private WorkspaceFeatures features;
 
     /**
      * Get the tags property: Resource tags. Optional.
@@ -302,7 +304,7 @@ public class WorkspacePatch extends AzureEntityResource {
      *
      * @return the features value.
      */
-    public Map<String, Object> features() {
+    public WorkspaceFeatures features() {
         return this.features;
     }
 
@@ -312,7 +314,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @param features the features value to set.
      * @return the WorkspacePatch object itself.
      */
-    public WorkspacePatch withFeatures(Map<String, Object> features) {
+    public WorkspacePatch withFeatures(WorkspaceFeatures features) {
         this.features = features;
         return this;
     }
@@ -333,6 +335,9 @@ public class WorkspacePatch extends AzureEntityResource {
         }
         if (privateLinkScopedResources() != null) {
             privateLinkScopedResources().forEach(e -> e.validate());
+        }
+        if (features() != null) {
+            features().validate();
         }
     }
 }

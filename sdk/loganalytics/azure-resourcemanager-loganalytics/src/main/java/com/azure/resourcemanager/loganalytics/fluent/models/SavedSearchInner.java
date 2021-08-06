@@ -20,7 +20,8 @@ public class SavedSearchInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SavedSearchInner.class);
 
     /*
-     * The ETag of the saved search.
+     * The ETag of the saved search. To override an existing saved search, use
+     * "*" or specify the current Etag
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -74,7 +75,8 @@ public class SavedSearchInner extends ProxyResource {
     private List<Tag> tags;
 
     /**
-     * Get the etag property: The ETag of the saved search.
+     * Get the etag property: The ETag of the saved search. To override an existing saved search, use "*" or specify the
+     * current Etag.
      *
      * @return the etag value.
      */
@@ -83,7 +85,8 @@ public class SavedSearchInner extends ProxyResource {
     }
 
     /**
-     * Set the etag property: The ETag of the saved search.
+     * Set the etag property: The ETag of the saved search. To override an existing saved search, use "*" or specify the
+     * current Etag.
      *
      * @param etag the etag value to set.
      * @return the SavedSearchInner object itself.

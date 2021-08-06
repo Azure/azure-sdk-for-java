@@ -12,6 +12,7 @@ import com.azure.resourcemanager.loganalytics.models.PrivateLinkScopedResource;
 import com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceCapping;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceEntityStatus;
+import com.azure.resourcemanager.loganalytics.models.WorkspaceFeatures;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -103,7 +104,7 @@ public class WorkspaceInner extends Resource {
      * Workspace features.
      */
     @JsonProperty(value = "properties.features")
-    private Map<String, Object> features;
+    private WorkspaceFeatures features;
 
     /**
      * Get the etag property: The ETag of the workspace.
@@ -308,7 +309,7 @@ public class WorkspaceInner extends Resource {
      *
      * @return the features value.
      */
-    public Map<String, Object> features() {
+    public WorkspaceFeatures features() {
         return this.features;
     }
 
@@ -318,7 +319,7 @@ public class WorkspaceInner extends Resource {
      * @param features the features value to set.
      * @return the WorkspaceInner object itself.
      */
-    public WorkspaceInner withFeatures(Map<String, Object> features) {
+    public WorkspaceInner withFeatures(WorkspaceFeatures features) {
         this.features = features;
         return this;
     }
@@ -351,6 +352,9 @@ public class WorkspaceInner extends Resource {
         }
         if (privateLinkScopedResources() != null) {
             privateLinkScopedResources().forEach(e -> e.validate());
+        }
+        if (features() != null) {
+            features().validate();
         }
     }
 }

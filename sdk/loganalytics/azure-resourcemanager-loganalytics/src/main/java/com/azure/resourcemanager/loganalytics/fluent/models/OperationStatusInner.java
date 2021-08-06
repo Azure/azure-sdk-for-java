@@ -46,7 +46,7 @@ public final class OperationStatusInner {
     private String status;
 
     /*
-     * The error detail of the operation if any.
+     * Error response The error detail of the operation if any.
      */
     @JsonProperty(value = "error")
     private ManagementError error;
@@ -152,7 +152,7 @@ public final class OperationStatusInner {
     }
 
     /**
-     * Get the error property: The error detail of the operation if any.
+     * Get the error property: Error response The error detail of the operation if any.
      *
      * @return the error value.
      */
@@ -161,7 +161,7 @@ public final class OperationStatusInner {
     }
 
     /**
-     * Set the error property: The error detail of the operation if any.
+     * Set the error property: Error response The error detail of the operation if any.
      *
      * @param error the error value to set.
      * @return the OperationStatusInner object itself.

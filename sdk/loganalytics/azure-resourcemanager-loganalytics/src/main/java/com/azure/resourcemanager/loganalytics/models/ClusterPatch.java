@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -16,6 +17,12 @@ import java.util.Map;
 @Fluent
 public class ClusterPatch {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPatch.class);
+
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /*
      * The sku properties.
@@ -27,6 +34,7 @@ public class ClusterPatch {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -34,6 +42,32 @@ public class ClusterPatch {
      */
     @JsonProperty(value = "properties.keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
+
+    /*
+     * The cluster's billing type.
+     */
+    @JsonProperty(value = "properties.billingType")
+    private BillingType billingType;
+
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the ClusterPatch object itself.
+     */
+    public ClusterPatch withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the sku property: The sku properties.
@@ -96,11 +130,34 @@ public class ClusterPatch {
     }
 
     /**
+     * Get the billingType property: The cluster's billing type.
+     *
+     * @return the billingType value.
+     */
+    public BillingType billingType() {
+        return this.billingType;
+    }
+
+    /**
+     * Set the billingType property: The cluster's billing type.
+     *
+     * @param billingType the billingType value to set.
+     * @return the ClusterPatch object itself.
+     */
+    public ClusterPatch withBillingType(BillingType billingType) {
+        this.billingType = billingType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }

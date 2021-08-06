@@ -137,7 +137,7 @@ public interface Workspace {
      *
      * @return the features value.
      */
-    Map<String, Object> features();
+    WorkspaceFeatures features();
 
     /**
      * Gets the region of the resource.
@@ -333,7 +333,7 @@ public interface Workspace {
              * @param features Workspace features.
              * @return the next definition stage.
              */
-            WithCreate withFeatures(Map<String, Object> features);
+            WithCreate withFeatures(WorkspaceFeatures features);
         }
     }
     /**
@@ -464,7 +464,7 @@ public interface Workspace {
              * @param features Workspace features.
              * @return the next definition stage.
              */
-            Update withFeatures(Map<String, Object> features);
+            Update withFeatures(WorkspaceFeatures features);
         }
     }
     /**

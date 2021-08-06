@@ -12,6 +12,7 @@ import com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.loganalytics.models.Workspace;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceCapping;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceEntityStatus;
+import com.azure.resourcemanager.loganalytics.models.WorkspaceFeatures;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePatch;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
 import java.util.Collections;
@@ -101,13 +102,8 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         }
     }
 
-    public Map<String, Object> features() {
-        Map<String, Object> inner = this.innerModel().features();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public WorkspaceFeatures features() {
+        return this.innerModel().features();
     }
 
     public Region region() {
@@ -309,7 +305,7 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         }
     }
 
-    public WorkspaceImpl withFeatures(Map<String, Object> features) {
+    public WorkspaceImpl withFeatures(WorkspaceFeatures features) {
         if (isInCreateMode()) {
             this.innerModel().withFeatures(features);
             return this;

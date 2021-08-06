@@ -45,7 +45,7 @@ public interface OperationStatus {
     String status();
 
     /**
-     * Gets the error property: The error detail of the operation if any.
+     * Gets the error property: Error response The error detail of the operation if any.
      *
      * @return the error value.
      */

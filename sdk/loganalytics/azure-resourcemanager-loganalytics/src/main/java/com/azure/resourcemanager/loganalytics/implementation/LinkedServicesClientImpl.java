@@ -71,7 +71,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         @Put(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
                 + "/workspaces/{workspaceName}/linkedServices/{linkedServiceName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -88,7 +88,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         @Delete(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
                 + "/workspaces/{workspaceName}/linkedServices/{linkedServiceName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -175,6 +175,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -186,7 +187,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                             workspaceName,
                             linkedServiceName,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -241,6 +242,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -250,7 +252,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                 workspaceName,
                 linkedServiceName,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -474,6 +476,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -484,7 +487,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                             resourceGroupName,
                             workspaceName,
                             linkedServiceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -529,6 +532,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -537,7 +541,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                 resourceGroupName,
                 workspaceName,
                 linkedServiceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -734,6 +738,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -744,7 +749,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                             resourceGroupName,
                             workspaceName,
                             linkedServiceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -789,6 +794,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -797,7 +803,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                 resourceGroupName,
                 workspaceName,
                 linkedServiceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -894,6 +900,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -903,7 +910,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -947,6 +954,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -954,7 +962,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context)
