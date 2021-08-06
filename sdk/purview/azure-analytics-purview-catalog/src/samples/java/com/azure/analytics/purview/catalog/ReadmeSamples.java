@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.analytics.purview.catalog;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
