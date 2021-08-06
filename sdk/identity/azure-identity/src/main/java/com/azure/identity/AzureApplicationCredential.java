@@ -21,12 +21,11 @@ import java.util.List;
 @Immutable
 public final class AzureApplicationCredential extends ChainedTokenCredential {
     /**
-     * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
-     * AZURE_CLIENT_SECRET, and AZURE_TENANT_ID environment variables to create a
-     * ClientSecretCredential.
+     * Creates default AzureApplicationCredential instance to use. This will use environment variables to create
+     * {@link EnvironmentCredential}
      *
-     * If these environment variables are not available, then this will use the Shared MSAL
-     * token cache.
+     * If these environment variables are not available, then this will attempt to use Managed Identity Authentication
+     * via {@link ManagedIdentityCredential}.
      *
      * @param tokenCredentials the list of credentials to execute for authentication.
      */

@@ -17,13 +17,12 @@ public class AzureApplicationCredentialBuilder extends CredentialBuilderBase<Azu
     private String managedIdentityClientId;
 
     /**
-     * Creates an instance of a  AzureApplicationCredentialBuilder.
+     * Creates an instance of a AzureApplicationCredentialBuilder.
      */
     public AzureApplicationCredentialBuilder() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         managedIdentityClientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
     }
-
 
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
