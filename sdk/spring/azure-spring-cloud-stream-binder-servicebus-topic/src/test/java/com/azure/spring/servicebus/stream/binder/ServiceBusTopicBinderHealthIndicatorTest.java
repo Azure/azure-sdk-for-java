@@ -40,7 +40,6 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     private Consumer<Message<?>> consumer = message -> {
     };
 
-
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);

@@ -38,7 +38,6 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     private final AtomicInteger abandonCalledTimes = new AtomicInteger(0);
     private final AtomicInteger completeCalledTimes = new AtomicInteger(0);
 
-
     public ServiceBusTopicTestOperation(ServiceBusTopicClientFactory clientFactory) {
         super(clientFactory);
     }
