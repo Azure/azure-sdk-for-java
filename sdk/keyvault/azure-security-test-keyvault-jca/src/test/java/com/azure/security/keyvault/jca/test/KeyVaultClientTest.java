@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca.test;
 
-import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultClientTest {
@@ -43,13 +41,4 @@ public class KeyVaultClientTest {
         assertNotNull(keyVaultClient.getKey(certificateName, null));
     }
 
-    @Test
-    public void testGetNotExportAbleKey() {
-        assertTrue(keyVaultClient.getKey("myaliasForRSAKeyLess", null) instanceof KeyVaultPrivateKey);
-        assertTrue(keyVaultClient.getKey("myaliasForEC256KeyLess", null) instanceof KeyVaultPrivateKey);
-        assertTrue(keyVaultClient.getKey("myaliasForEC384KeyLess", null) instanceof KeyVaultPrivateKey);
-        assertTrue(keyVaultClient.getKey("myaliasForEC521KeyLess", null) instanceof KeyVaultPrivateKey);
-        assertEquals(keyVaultClient.getKey("myaliasForEC521KeyLess", null).getAlgorithm(), "EC");
-        assertEquals(keyVaultClient.getKey("myaliasForRSAKeyLess", null).getAlgorithm(), "RSA");
-    }
 }
