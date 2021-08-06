@@ -634,6 +634,11 @@
         "old": "field com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY",
         "new": "field com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY",
         "justification": "Old field value spelled incorrectly and was used in preview version of tracing package"
+      },
+      {
+        "code": "java.method.added",
+        "new":"method void com.azure.core.http.HttpHeaders::<init>(int)",
+        "justification": "New HttpHeaders constructor exported from azure-core."
       }
     ]
   }

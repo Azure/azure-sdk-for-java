@@ -15,7 +15,7 @@ Azure Core Jackson JSON Serializer is a plugin for the `azure-core` `JsonSeriali
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-json-jackson</artifactId>
-    <version>1.2.5</version>
+    <version>1.2.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

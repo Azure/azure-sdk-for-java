@@ -12,37 +12,16 @@ import java.util.Objects;
  * Represents span options that are available before span starts and describe it.
  */
 @Fluent
-public class StartSpanOptions {
-
-    /**
-     * Type of Span. Only CLIENT and INTERNAL kinds are supported.
-     */
-    public enum Kind {
-        /** Default value. Indicates that the span is used internally. */
-        INTERNAL,
-
-        /**
-         * Indicates that the span covers the client-side wrapper around an RPC or other remote request.
-         */
-        CLIENT,
-    }
-
-    private final Kind spanKind;
+public final class StartSpanOptions {
+    private final SpanKind spanKind;
     private Map<String, Object> spanAttributes;
-
-    /**
-     * Describes span with given name and INTERNAL kind
-     */
-    public StartSpanOptions() {
-        this(Kind.INTERNAL);
-    }
 
     /**
      * Describes span with given name and kind
      *
-     * @param kind The kind of the span to be created, only INTERNAL and CLIENT are supported.
+     * @param kind The kind of the span to be created.
      */
-    public StartSpanOptions(Kind kind) {
+    public StartSpanOptions(SpanKind kind) {
         Objects.requireNonNull(kind, "'kind' cannot be null.");
         this.spanKind = kind;
         this.spanAttributes = null;
@@ -52,9 +31,15 @@ public class StartSpanOptions {
      * Sets attribute on span before its started. Such attributes may affect sampling decision.
      *
      * @param key attribute key.
-     * @param value attribute value. Note that underlying tracer implementations limit supported value types to
-     * String, int, double, boolean, long and arrays of them.
-     *
+     * @param value attribute value. Note that underlying tracer implementations limit supported value types:
+     * <ul>
+     *     <li>{@link String}</li>
+     *     <li>{@code int}</li>
+     *     <li>{@code double}</li>
+     *     <li>{@code boolean}</li>
+     *     <li>{@code long}</li>
+     *     <li>Arrays of the above</li>
+     * </ul>
      * @return this instance for chaining.
      */
     public StartSpanOptions setAttribute(String key, Object value) {
@@ -68,14 +53,16 @@ public class StartSpanOptions {
 
     /**
      * Gets span kind.
+     *
      * @return span kind.
      */
-    public Kind getSpanKind() {
+    public SpanKind getSpanKind() {
         return this.spanKind;
     }
 
     /**
      * Gets all attributes on span that should be set before span is started.
+     *
      * @return attributes to be set on span and used for sampling.
      */
     public Map<String, Object> getAttributes() {
