@@ -6,11 +6,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 
-public class IdentityUtil {
+public final class IdentityUtil {
     private static final ClientLogger logger = new ClientLogger(IdentityUtil.class);
 
+    private IdentityUtil() { }
     /**
-     * Convert a resource to a list of scopes.
+     * Resolve the Tenant Id to be used in the authentication requests.
      * @param currentTenantId the current tenant Id.
      * @param requestContext the user passed in {@link TokenRequestContext}
      * @param options the identity client options bag.
@@ -26,7 +27,7 @@ public class IdentityUtil {
             return currentTenantId;
         }
 
-        if (!options.getAllowMultiTenantAuthentication()) {
+        if (!options.isMultiTenantAuthenticationAllowed()) {
             if (contextTenantId != null && currentTenantId != contextTenantId
                 && !options.isLegacyTenantSelectionEnabled()) {
                 logger.logExceptionAsError(new RuntimeException("The TenantId received from a challenge did not match "

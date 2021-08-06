@@ -42,4 +42,17 @@ public class TokenRequestContextExperimental extends TokenRequestContext {
     public String getTenantId() {
         return this.tenantId;
     }
+
+
+    @Override
+    public TokenRequestContextExperimental setClaims(String claims) {
+        super.setClaims(claims);
+        return this;
+    }
+
+    @Override
+    public TokenRequestContextExperimental setScopes(List<String> scopes) {
+        super.setScopes(scopes);
+        return this;
+    }
 }

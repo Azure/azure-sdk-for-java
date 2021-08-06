@@ -204,7 +204,7 @@ public final class IdentityClientOptions {
 
     /**
      * Allows to override the tenant being used in the authentication request
-     * via {@link com.azure.core.experimental.credential.TokenRequestContext#setTenantId(String)}.
+     * via {@link com.azure.core.experimental.credential.TokenRequestContextExperimental#setTenantId(String)}.
      *
      * @param allowMultiTenantAuthentication the flag to indicate if multi tenant authentication is enabled or not.
      * @return The updated identity client options.
@@ -224,7 +224,9 @@ public final class IdentityClientOptions {
      *
      * @return the boolean status indicating if multi tenant authentication is enabled or not.
      */
-    public boolean getAllowMultiTenantAuthentication() { return this.allowMultiTenantAuthentication; }
+    public boolean isMultiTenantAuthenticationAllowed() {
+        return this.allowMultiTenantAuthentication;
+    }
 
     /**
      * Specifies the database to extract IntelliJ cached credentials from.
