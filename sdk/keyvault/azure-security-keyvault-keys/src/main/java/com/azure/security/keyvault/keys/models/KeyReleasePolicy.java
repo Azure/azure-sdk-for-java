@@ -4,9 +4,12 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.Base64Url;
-import com.azure.core.util.CoreUtils;
+import com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer;
+import com.azure.security.keyvault.keys.implementation.Base64UrlJsonSerializer;
+import com.azure.security.keyvault.keys.implementation.ByteExtensions;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * A model that represents the policy rules under which the key can be exported.
@@ -23,7 +26,9 @@ public final class KeyReleasePolicy {
      * Blob encoding the policy rules under which the key can be released.
      */
     @JsonProperty(value = "data")
-    private Base64Url data;
+    @JsonSerialize(using = Base64UrlJsonSerializer.class)
+    @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
+    private byte[] data;
 
     /**
      * Get the content type and version of key release policy.
@@ -55,11 +60,7 @@ public final class KeyReleasePolicy {
      * @return A blob encoding the policy rules under which the key can be released.
      */
     public byte[] getData() {
-        if (this.data == null) {
-            return null;
-        }
-
-        return this.data.decodedBytes();
+        return ByteExtensions.clone(this.data);
     }
 
     /**
@@ -70,11 +71,7 @@ public final class KeyReleasePolicy {
      * @return The updated {@link KeyReleasePolicy} object.
      */
     public KeyReleasePolicy setData(byte[] data) {
-        if (data == null) {
-            this.data = null;
-        } else {
-            this.data = Base64Url.encode(CoreUtils.clone(data));
-        }
+        this.data = ByteExtensions.clone(data);
 
         return this;
     }

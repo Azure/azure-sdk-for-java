@@ -29,8 +29,6 @@ class KeyRequestAttributes {
 
         this.enabled = keyProperties.isEnabled();
         this.exportable = keyProperties.isExportable();
-        this.recoverableDays = keyProperties.getRecoverableDays();
-        this.recoveryLevel = keyProperties.getRecoveryLevel();
     }
 
     /**
@@ -51,8 +49,6 @@ class KeyRequestAttributes {
 
         this.enabled = keyOptions.isEnabled();
         this.exportable = keyOptions.isExportable();
-        this.recoverableDays = keyOptions.getRecoverableDays();
-        this.recoveryLevel = keyOptions.getRecoveryLevel();
     }
 
     /**

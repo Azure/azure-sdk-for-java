@@ -32,6 +32,53 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
     }
 
     /**
+     * Set the key size in bits.
+     *
+     * @param keySize The key size to set.
+     *
+     * @return The updated {@link CreateOctKeyOptions} object.
+     */
+    public CreateOctKeyOptions setKeySize(Integer keySize) {
+        this.keySize = keySize;
+
+        return this;
+    }
+
+    /**
+     * Get the key size in bits.
+     *
+     * @return The key size in bits.
+     */
+    public Integer getKeySize() {
+        return this.keySize;
+    }
+
+    /**
+     * Set whether the key being created is of HSM type or not.
+     *
+     * @param hardwareProtected The HSM value to set.
+     *
+     * @return The updated {@link CreateOctKeyOptions} object.
+     */
+    public CreateOctKeyOptions setHardwareProtected(Boolean hardwareProtected) {
+        this.hardwareProtected = hardwareProtected;
+        KeyType keyType = hardwareProtected ? KeyType.OCT_HSM : KeyType.OCT;
+
+        setKeyType(keyType);
+
+        return this;
+    }
+
+    /**
+     * Get the HSM value of the key being created.
+     *
+     * @return the HSM value.
+     */
+    public Boolean isHardwareProtected() {
+        return this.hardwareProtected;
+    }
+
+    /**
      * Set the key operations.
      *
      * @param keyOperations The key operations to set.
@@ -101,49 +148,28 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Set the key size in bits.
+     * Set a flag that indicates if the private key can be exported.
      *
-     * @param keySize The key size to set.
+     * @param exportable A flag that indicates if the private key can be exported.
      *
      * @return The updated {@link CreateOctKeyOptions} object.
      */
-    public CreateOctKeyOptions setKeySize(Integer keySize) {
-        this.keySize = keySize;
+    public CreateOctKeyOptions setExportable(Boolean exportable) {
+        super.setExportable(exportable);
 
         return this;
     }
 
     /**
-     * Get the key size in bits.
+     * Set the policy rules under which the key can be exported.
      *
-     * @return The key size in bits.
-     */
-    public Integer getKeySize() {
-        return this.keySize;
-    }
-
-    /**
-     * Set whether the key being created is of HSM type or not.
-     *
-     * @param hardwareProtected The HSM value to set.
+     * @param releasePolicy The policy rules to set.
      *
      * @return The updated {@link CreateOctKeyOptions} object.
      */
-    public CreateOctKeyOptions setHardwareProtected(Boolean hardwareProtected) {
-        this.hardwareProtected = hardwareProtected;
-        KeyType keyType = hardwareProtected ? KeyType.OCT_HSM : KeyType.OCT;
-
-        setKeyType(keyType);
+    public CreateOctKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        super.setReleasePolicy(releasePolicy);
 
         return this;
-    }
-
-    /**
-     * Get the HSM value of the key being created.
-     *
-     * @return the HSM value.
-     */
-    public Boolean isHardwareProtected() {
-        return this.hardwareProtected;
     }
 }

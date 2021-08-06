@@ -603,7 +603,8 @@ public final class KeyAsyncClient {
             .setKey(importKeyOptions.getKey())
             .setHsm(importKeyOptions.isHardwareProtected())
             .setKeyAttributes(new KeyRequestAttributes(importKeyOptions))
-            .setTags(importKeyOptions.getTags());
+            .setTags(importKeyOptions.getTags())
+            .setReleasePolicy(importKeyOptions.getReleasePolicy());
 
         return service.importKey(vaultUrl, importKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
@@ -1435,7 +1436,7 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Releases a key.
+     * Release the latest version of a key.
      *
      * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
      *
@@ -1449,7 +1450,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReleaseKeyResult> releaseKey(String name, String target) {
         try {
-            return releaseKeyWithResponse(name, null, target, new ReleaseKeyOptions())
+            return releaseKeyWithResponse(name, "", target, new ReleaseKeyOptions())
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -1462,7 +1463,32 @@ public final class KeyAsyncClient {
      * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
      *
      * @param name The name of the key to release.
-     * @param version Version of the key to release.This parameter is optional.
+     * @param version The version of the key to retrieve. If this is empty or {@code null}, this call is equivalent to
+     * calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being released.
+     * @param target The attestation assertion for the target of the key release.
+     *
+     * @return A {@link Mono} containing the {@link ReleaseKeyResult} containing the released key.
+     *
+     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ReleaseKeyResult> releaseKey(String name, String version, String target) {
+        try {
+            return releaseKeyWithResponse(name, version, target, new ReleaseKeyOptions())
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Releases a key.
+     *
+     * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
+     *
+     * @param name The name of the key to release.
+     * @param version The version of the key to retrieve. If this is empty or {@code null}, this call is equivalent to
+     * calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being released.
      * @param target The attestation assertion for the target of the key release.
      * @param options Additional options for releasing a key.
      *

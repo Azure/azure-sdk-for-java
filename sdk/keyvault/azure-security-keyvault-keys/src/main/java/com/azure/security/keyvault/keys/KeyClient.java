@@ -925,7 +925,7 @@ public final class KeyClient {
     }
 
     /**
-     * Releases a key.
+     * Release the latest version of a key.
      *
      * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
      *
@@ -939,6 +939,25 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseKeyResult releaseKey(String name, String target) {
         return client.releaseKey(name, target).block();
+    }
+
+    /**
+     * Releases a key.
+     *
+     * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
+     *
+     * @param name The name of the key to release.
+     * @param version The version of the key to retrieve. If this is empty or {@code null}, this call is equivalent to
+     * calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being released.
+     * @param target The attestation assertion for the target of the key release.
+     *
+     * @return The key release result containing the released key.
+     *
+     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReleaseKeyResult releaseKey(String name, String version, String target) {
+        return client.releaseKey(name, version, target).block();
     }
 
     /**
