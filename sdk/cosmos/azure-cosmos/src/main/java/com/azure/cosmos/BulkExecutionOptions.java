@@ -171,7 +171,7 @@ public final class BulkExecutionOptions {
      * request size exceeds the payload limit) is higher or lower that the targeted range.
      *
      * @return min targeted micro batch retry rate
-     *
+     */
     public double getMinTargetedMicroBatchRetryRate() {
         return this.minMicroBatchRetryRate;
     }
