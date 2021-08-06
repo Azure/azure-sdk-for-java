@@ -7,16 +7,23 @@ package com.azure.resourcemanager.confluent.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Confluent Agreements Resource. */
+/** Agreement Terms definition. */
 @JsonFlatten
 @Fluent
 public class ConfluentAgreementResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfluentAgreementResourceInner.class);
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * Publisher identifier string.
@@ -66,6 +73,15 @@ public class ConfluentAgreementResourceInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.accepted")
     private Boolean accepted;
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the publisher property: Publisher identifier string.

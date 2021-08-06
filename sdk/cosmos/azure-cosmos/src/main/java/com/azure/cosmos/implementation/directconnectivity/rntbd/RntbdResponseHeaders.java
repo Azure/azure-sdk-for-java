@@ -131,6 +131,8 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     private final RntbdToken writesPerformed;
     @JsonProperty
     private final RntbdToken xpRole;
+    @JsonProperty
+    private final RntbdToken backendRequestDurationMilliseconds;
 
     // endregion
 
@@ -187,6 +189,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.transportRequestID = this.get(RntbdResponseHeader.TransportRequestID);
         this.writesPerformed = this.get(RntbdResponseHeader.WritesPerformed);
         this.xpRole = this.get(RntbdResponseHeader.XPRole);
+        this.backendRequestDurationMilliseconds = this.get(RntbdResponseHeader.BackendRequestDurationMilliseconds);
     }
 
     boolean isPayloadPresent() {
@@ -284,6 +287,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.mapValue(this.subStatus, BackendHeaders.SUB_STATUS, Integer::parseInt, headers);
         this.mapValue(this.transportRequestID, HttpHeaders.TRANSPORT_REQUEST_ID, Integer::parseInt, headers);
         this.mapValue(this.xpRole, BackendHeaders.XP_ROLE, Integer::parseInt, headers);
+        this.mapValue(this.backendRequestDurationMilliseconds, BackendHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS, Double::parseDouble, headers);
     }
 
     @Override
@@ -469,6 +473,10 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         collector.accept(this.xpRole, token ->
             toIntegerEntry(BackendHeaders.XP_ROLE, token)
         );
+
+        collector.accept(this.backendRequestDurationMilliseconds, token ->
+            toDoubleEntry(BackendHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS, token)
+        );
     }
 
     private void mapValue(final RntbdToken token, final String name, final Function<String, Object> parse, final Map<String, String> headers) {
@@ -495,6 +503,10 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     private static Map.Entry<String, String> toIntegerEntry(final String name, final RntbdToken token) {
         return new Entry(name, Long.toString(token.getValue(Long.class)));
+    }
+
+    private static Map.Entry<String, String> toDoubleEntry(final String name, final RntbdToken token) {
+        return new Entry(name, Double.toString(token.getValue(Double.class)));
     }
 
     private static Map.Entry<String, String> toLongEntry(final String name, final RntbdToken token) {

@@ -1,7 +1,25 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `start` and `stop` for `KubernetesCluster`.
+- Supported `listOrchestrators` for `KubernetesCluster`.
+
+## 2.6.0 (2021-06-18)
+
+- Updated `api-version` to `2021-05-01`
+- Supported spot virtual machine for agent pool of `KubernetesCluster`.
+
+## 2.5.0 (2021-05-28)
+- Supported system-assigned managed identity and auto-scaler profile for `KubernetesCluster`.
+- Supported auto-scaling, availability zones, node labels and taints for agent pool of `KubernetesCluster`.
+
+## 2.4.0 (2021-04-28)
+
+- Updated `api-version` to `2021-03-01`
+- Supported Private Link in `KubernetesCluster`
 
 ## 2.3.0 (2021-03-30)
 

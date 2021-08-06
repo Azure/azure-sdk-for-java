@@ -10,13 +10,11 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import java.util.Objects;
 
 /**
- * A converter between {@link SearchIndexerDataSource} and
- * {@link SearchIndexerDataSourceConnection}.
+ * A converter between {@link SearchIndexerDataSource} and {@link SearchIndexerDataSourceConnection}.
  */
 public final class SearchIndexerDataSourceConverter {
     /**
-     * Maps from {@link SearchIndexerDataSource} to
-     * {@link SearchIndexerDataSourceConnection}.
+     * Maps from {@link SearchIndexerDataSource} to {@link SearchIndexerDataSourceConnection}.
      */
     public static SearchIndexerDataSourceConnection map(SearchIndexerDataSource obj) {
         if (obj == null) {
@@ -28,30 +26,17 @@ public final class SearchIndexerDataSourceConverter {
         SearchIndexerDataSourceConnection searchIndexerDataSourceConnection = new SearchIndexerDataSourceConnection(
             obj.getName(), obj.getType(), connectionString, obj.getContainer());
 
-
-        if (obj.getDataChangeDetectionPolicy() != null) {
-            searchIndexerDataSourceConnection.setDataChangeDetectionPolicy(obj.getDataChangeDetectionPolicy());
-        }
-
+        searchIndexerDataSourceConnection.setDataChangeDetectionPolicy(obj.getDataChangeDetectionPolicy());
         searchIndexerDataSourceConnection.setDescription(obj.getDescription());
-
-        if (obj.getDataDeletionDetectionPolicy() != null) {
-            searchIndexerDataSourceConnection.setDataDeletionDetectionPolicy(obj.getDataDeletionDetectionPolicy());
-        }
-
+        searchIndexerDataSourceConnection.setDataDeletionDetectionPolicy(obj.getDataDeletionDetectionPolicy());
         searchIndexerDataSourceConnection.setETag(obj.getETag());
-
-        if (obj.getEncryptionKey() != null) {
-            searchIndexerDataSourceConnection
-                .setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
-        }
+        searchIndexerDataSourceConnection.setEncryptionKey(obj.getEncryptionKey());
 
         return searchIndexerDataSourceConnection;
     }
 
     /**
-     * Maps from {@link SearchIndexerDataSourceConnection} to
-     * {@link SearchIndexerDataSource}.
+     * Maps from {@link SearchIndexerDataSourceConnection} to {@link SearchIndexerDataSource}.
      */
     public static SearchIndexerDataSource map(SearchIndexerDataSourceConnection obj) {
         if (obj == null) {
@@ -67,21 +52,11 @@ public final class SearchIndexerDataSourceConverter {
             .setCredentials(credentials)
             .setContainer(obj.getContainer());
 
-        if (obj.getDataChangeDetectionPolicy() != null) {
-            searchIndexerDataSource.setDataChangeDetectionPolicy(obj.getDataChangeDetectionPolicy());
-        }
-
+        searchIndexerDataSource.setDataChangeDetectionPolicy(obj.getDataChangeDetectionPolicy());
         searchIndexerDataSource.setDescription(obj.getDescription());
-
-        if (obj.getDataDeletionDetectionPolicy() != null) {
-            searchIndexerDataSource.setDataDeletionDetectionPolicy(obj.getDataDeletionDetectionPolicy());
-        }
-
+        searchIndexerDataSource.setDataDeletionDetectionPolicy(obj.getDataDeletionDetectionPolicy());
         searchIndexerDataSource.setETag(obj.getETag());
-
-        if (obj.getEncryptionKey() != null) {
-            searchIndexerDataSource.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
-        }
+        searchIndexerDataSource.setEncryptionKey(obj.getEncryptionKey());
 
         return searchIndexerDataSource;
     }

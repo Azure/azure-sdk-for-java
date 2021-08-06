@@ -4,17 +4,17 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceSharedAccessKeysInner;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceSharedAccessKeys;
 
 public final class PartnerNamespaceSharedAccessKeysImpl implements PartnerNamespaceSharedAccessKeys {
     private PartnerNamespaceSharedAccessKeysInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     PartnerNamespaceSharedAccessKeysImpl(
-        PartnerNamespaceSharedAccessKeysInner innerObject, EventGridManager serviceManager) {
+        PartnerNamespaceSharedAccessKeysInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -31,7 +31,7 @@ public final class PartnerNamespaceSharedAccessKeysImpl implements PartnerNamesp
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 }

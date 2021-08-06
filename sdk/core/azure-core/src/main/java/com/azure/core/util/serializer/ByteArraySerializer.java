@@ -15,8 +15,7 @@ import java.io.IOException;
  */
 final class ByteArraySerializer extends JsonSerializer<Byte[]> {
     /**
-     * Gets a module wrapping this serializer as an adapter for the Jackson
-     * ObjectMapper.
+     * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
      *
      * @return a simple module to be plugged onto Jackson ObjectMapper.
      */

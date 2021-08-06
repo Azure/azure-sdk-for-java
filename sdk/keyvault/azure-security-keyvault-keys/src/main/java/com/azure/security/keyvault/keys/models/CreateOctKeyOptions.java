@@ -8,12 +8,12 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * Represents the configurable options to create an AES key.
+ * Represents the configurable options to create a symmetric key.
  */
 @Fluent
 public class CreateOctKeyOptions extends CreateKeyOptions {
     /**
-     * The AES key size.
+     * The key size.
      */
     private Integer keySize;
 
@@ -23,7 +23,7 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
     private boolean hardwareProtected;
 
     /**
-     * Creates a {@link CreateOctKeyOptions} with {@code name} as name of the AES key.
+     * Creates a {@link CreateOctKeyOptions} with {@code name} as name of the key.
      *
      * @param name The name of the key.
      */

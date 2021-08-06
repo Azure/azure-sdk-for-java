@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnection;
@@ -23,9 +22,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     private final PrivateEndpointConnectionsClient innerClient;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    public PrivateEndpointConnectionsImpl(PrivateEndpointConnectionsClient innerClient, IotHubManager serviceManager) {
+    public PrivateEndpointConnectionsImpl(
+        PrivateEndpointConnectionsClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -151,7 +151,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         return this.innerClient;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

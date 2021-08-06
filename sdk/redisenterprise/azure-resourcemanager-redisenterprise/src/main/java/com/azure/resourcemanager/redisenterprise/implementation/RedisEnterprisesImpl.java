@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.fluent.RedisEnterprisesClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
@@ -21,9 +20,11 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
 
     private final RedisEnterprisesClient innerClient;
 
-    private final RedisEnterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    public RedisEnterprisesImpl(RedisEnterprisesClient innerClient, RedisEnterpriseManager serviceManager) {
+    public RedisEnterprisesImpl(
+        RedisEnterprisesClient innerClient,
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -164,7 +165,7 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
         return this.innerClient;
     }
 
-    private RedisEnterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 

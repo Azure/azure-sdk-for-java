@@ -41,7 +41,7 @@ import static com.azure.cosmos.implementation.http.HttpClientConfig.REACTOR_NETW
 /**
  * HttpClient that is implemented using reactor-netty.
  */
-class ReactorNettyClient implements HttpClient {
+public class ReactorNettyClient implements HttpClient {
 
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
 
@@ -131,7 +131,7 @@ class ReactorNettyClient implements HttpClient {
             this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
         }
 
-        this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
+        this.httpClient = this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
             .httpResponseDecoder(httpResponseDecoderSpec ->
                 httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength())
@@ -219,7 +219,7 @@ class ReactorNettyClient implements HttpClient {
         return (conn, state) -> {
             Instant time = Instant.now();
 
-            if (state.equals(HttpClientState.CONNECTED) || state.equals(HttpClientState.ACQUIRED)) {
+            if (state.equals(HttpClientState.CONNECTED)) {
                 if (conn instanceof ConnectionObserver) {
                     ConnectionObserver observer = (ConnectionObserver) conn;
                     ReactorNettyRequestRecord requestRecord =
@@ -228,6 +228,16 @@ class ReactorNettyClient implements HttpClient {
                         throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
                     }
                     requestRecord.setTimeConnected(time);
+                }
+            }else if (state.equals(HttpClientState.ACQUIRED)) {
+                if (conn instanceof ConnectionObserver) {
+                    ConnectionObserver observer = (ConnectionObserver) conn;
+                    ReactorNettyRequestRecord requestRecord =
+                        observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+                    if (requestRecord == null) {
+                        throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
+                    }
+                    requestRecord.setTimeAcquired(time);
                 }
             } else if (state.equals(HttpClientState.CONFIGURED)) {
                 if (conn instanceof HttpClientRequest) {
@@ -368,5 +378,26 @@ class ReactorNettyClient implements HttpClient {
         SUBSCRIBED,
         CANCELLED,
         ERROR;
+    }
+
+    /**
+     * DO NOT USE
+     *
+     * This API is only for testing purposes, don't use it anywhere else in the code.
+     * This changes the logging level of Reactor Netty Http Client.
+     */
+    public void enableNetworkLogging() {
+        Logger logger = LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY);
+        if (logger.isTraceEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.TRACE);
+        } else if (logger.isInfoEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
+        } else if (logger.isDebugEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.DEBUG);
+        } else if (logger.isWarnEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.WARN);
+        } else if (logger.isErrorEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.ERROR);
+        }
     }
 }

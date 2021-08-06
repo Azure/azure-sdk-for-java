@@ -30,14 +30,14 @@ class QueueAPITests extends APISpec {
     String queueName
 
     def setup() {
-        queueName = testResourceName.randomName(methodName, 60)
-        primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
+        queueName = namer.getRandomName(60)
+        primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(queueName)
     }
 
     def "Get queue URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName)
 
         when:
@@ -50,7 +50,7 @@ class QueueAPITests extends APISpec {
     def "IP based endpoint"() {
         when:
         def queueClient = new QueueClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .endpoint("http://127.0.0.1:10001/devstoreaccount1/myqueue")
             .buildClient()
 
@@ -297,7 +297,7 @@ class QueueAPITests extends APISpec {
     def "Enqueue message encoded message"() {
         given:
         queueClient.create()
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
         def expectMsg = BinaryData.fromString("test message")
         when:
         def enqueueMsgResponse = encodingQueueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
@@ -324,7 +324,7 @@ class QueueAPITests extends APISpec {
         def expectMsg = "test message"
         def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
         queueClient.sendMessage(encodedMsg)
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
         when:
         def messageItem = encodingQueueClient.receiveMessage()
         then:
@@ -336,7 +336,7 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg = "test message"
         queueClient.sendMessage(expectMsg)
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
         when:
         encodingQueueClient.receiveMessage()
         then:
@@ -352,7 +352,7 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(expectMsg)
         QueueMessageItem badMessage = null
         String queueUrl = null
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+        def encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getQueueMessageItem()
@@ -378,7 +378,7 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(encodedMsg)
         queueClient.sendMessage(expectMsg)
         QueueMessageItem badMessage = null
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+        def encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getQueueMessageItem()
@@ -402,7 +402,7 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(encodedMsg)
         queueClient.sendMessage(expectMsg)
         QueueMessageItem badMessage = null
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+        def encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingError({ failure ->
                 badMessage = failure.getQueueMessageItem()
@@ -425,7 +425,7 @@ class QueueAPITests extends APISpec {
         def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
         queueClient.sendMessage(encodedMsg)
         queueClient.sendMessage(expectMsg)
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+        def encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ message ->
                 throw new IllegalStateException("KABOOM")
@@ -464,7 +464,7 @@ class QueueAPITests extends APISpec {
     def "Enqueue Dequeue non-UTF message"() {
         given:
         queueClient.create()
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
         byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
         encodingQueueClient.sendMessage(BinaryData.fromBytes(content))
 
@@ -477,7 +477,7 @@ class QueueAPITests extends APISpec {
     def "Enqueue Peek non-UTF message"() {
         given:
         queueClient.create()
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
         byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
         encodingQueueClient.sendMessage(BinaryData.fromBytes(content))
 
@@ -504,7 +504,7 @@ class QueueAPITests extends APISpec {
         def expectMsg = "test message"
         def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
         queueClient.sendMessage(encodedMsg)
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
         when:
         def peekedMessage = encodingQueueClient.peekMessage()
         then:
@@ -516,7 +516,7 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg = "test message"
         queueClient.sendMessage(expectMsg)
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager).messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
+        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
         when:
         encodingQueueClient.peekMessage()
         then:
@@ -533,7 +533,7 @@ class QueueAPITests extends APISpec {
         PeekedMessageItem badMessage = null
         String queueUrl = null
         Exception cause = null
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+        def encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getPeekedMessageItem()
@@ -562,7 +562,7 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(encodedMsg)
         PeekedMessageItem badMessage = null
         Exception cause = null
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+        def encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingError({ failure ->
                 badMessage = failure.getPeekedMessageItem()
@@ -588,7 +588,7 @@ class QueueAPITests extends APISpec {
         def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
         queueClient.sendMessage(expectMsg)
         queueClient.sendMessage(encodedMsg)
-        def encodingQueueClient = queueServiceBuilderHelper(interceptorManager)
+        def encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ message ->
                 throw new IllegalStateException("KABOOM")
@@ -608,7 +608,7 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(expectMsg1)
         queueClient.sendMessage(expectMsg2)
         when:
-        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(1), null).iterator()
+        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(10), null).iterator()
         then:
         expectMsg1 == peekMsgIter.next().getMessageText()
         expectMsg2 == peekMsgIter.next().getMessageText()
@@ -795,7 +795,7 @@ class QueueAPITests extends APISpec {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         given:
-        def queueClient = queueBuilderHelper(interceptorManager)
+        def queueClient = queueBuilderHelper()
             .addPolicy(getPerCallVersionPolicy()).buildClient()
         queueClient.create()
 

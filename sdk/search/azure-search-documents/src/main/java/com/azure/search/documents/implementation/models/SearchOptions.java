@@ -7,6 +7,9 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.Captions;
+import com.azure.search.documents.models.QueryLanguage;
+import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -21,8 +24,8 @@ public final class SearchOptions {
      * Default is false. Setting this value to true may have a performance
      * impact. Note that the count returned is an approximation.
      */
-    @JsonProperty(value = "IncludeTotalResultCount")
-    private Boolean includeTotalResultCount;
+    @JsonProperty(value = "includeTotalCount")
+    private Boolean includeTotalCount;
 
     /*
      * The list of facet expressions to apply to the search query. Each facet
@@ -125,7 +128,7 @@ public final class SearchOptions {
      * Improve search recall by spell-correcting individual search query terms.
      */
     @JsonProperty(value = "speller")
-    private Speller speller;
+    private QuerySpeller speller;
 
     /*
      * This parameter is only valid if the query type is 'semantic'. If set,
@@ -136,7 +139,7 @@ public final class SearchOptions {
      * 'extractive|count-3'. Default count is 1.
      */
     @JsonProperty(value = "answers")
-    private Answers answers;
+    private String answers;
 
     /*
      * A value that specifies whether any or all of the search terms must be
@@ -191,27 +194,44 @@ public final class SearchOptions {
     @JsonProperty(value = "$top")
     private Integer top;
 
+    /*
+     * This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns captions extracted from key passages in the highest
+     * ranked documents. When Captions is set to 'extractive', highlighting is
+     * enabled by default, and can be configured by appending the pipe
+     * character '|' followed by the 'highlight-<true/false>' option, such as
+     * 'extractive|highlight-true'. Defaults to 'None'.
+     */
+    @JsonProperty(value = "captions")
+    private Captions captions;
+
+    /*
+     * The list of field names used for semantic search.
+     */
+    @JsonProperty(value = "semanticFields")
+    private List<String> semanticFields;
+
     /**
-     * Get the includeTotalResultCount property: A value that specifies whether to fetch the total count of results.
-     * Default is false. Setting this value to true may have a performance impact. Note that the count returned is an
+     * Get the includeTotalCount property: A value that specifies whether to fetch the total count of results. Default
+     * is false. Setting this value to true may have a performance impact. Note that the count returned is an
      * approximation.
      *
-     * @return the includeTotalResultCount value.
+     * @return the includeTotalCount value.
      */
-    public Boolean isIncludeTotalResultCount() {
-        return this.includeTotalResultCount;
+    public Boolean isTotalCountIncluded() {
+        return this.includeTotalCount;
     }
 
     /**
-     * Set the includeTotalResultCount property: A value that specifies whether to fetch the total count of results.
-     * Default is false. Setting this value to true may have a performance impact. Note that the count returned is an
+     * Set the includeTotalCount property: A value that specifies whether to fetch the total count of results. Default
+     * is false. Setting this value to true may have a performance impact. Note that the count returned is an
      * approximation.
      *
-     * @param includeTotalResultCount the includeTotalResultCount value to set.
+     * @param includeTotalCount the includeTotalCount value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setIncludeTotalResultCount(Boolean includeTotalResultCount) {
-        this.includeTotalResultCount = includeTotalResultCount;
+    public SearchOptions setIncludeTotalCount(Boolean includeTotalCount) {
+        this.includeTotalCount = includeTotalCount;
         return this;
     }
 
@@ -232,8 +252,8 @@ public final class SearchOptions {
      * @param facets the facets value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setFacets(List<String> facets) {
-        this.facets = facets;
+    public SearchOptions setFacets(String... facets) {
+        this.facets = (facets == null) ? null : java.util.Arrays.asList(facets);
         return this;
     }
 
@@ -274,8 +294,8 @@ public final class SearchOptions {
      * @param highlightFields the highlightFields value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setHighlightFields(List<String> highlightFields) {
-        this.highlightFields = highlightFields;
+    public SearchOptions setHighlightFields(String... highlightFields) {
+        this.highlightFields = (highlightFields == null) ? null : java.util.Arrays.asList(highlightFields);
         return this;
     }
 
@@ -370,8 +390,8 @@ public final class SearchOptions {
      * @param orderBy the orderBy value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setOrderBy(List<String> orderBy) {
-        this.orderBy = orderBy;
+    public SearchOptions setOrderBy(String... orderBy) {
+        this.orderBy = (orderBy == null) ? null : java.util.Arrays.asList(orderBy);
         return this;
     }
 
@@ -462,8 +482,8 @@ public final class SearchOptions {
      * @param searchFields the searchFields value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setSearchFields(List<String> searchFields) {
-        this.searchFields = searchFields;
+    public SearchOptions setSearchFields(String... searchFields) {
+        this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
         return this;
     }
 
@@ -492,7 +512,7 @@ public final class SearchOptions {
      *
      * @return the speller value.
      */
-    public Speller getSpeller() {
+    public QuerySpeller getSpeller() {
         return this.speller;
     }
 
@@ -502,7 +522,7 @@ public final class SearchOptions {
      * @param speller the speller value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setSpeller(Speller speller) {
+    public SearchOptions setSpeller(QuerySpeller speller) {
         this.speller = speller;
         return this;
     }
@@ -515,7 +535,7 @@ public final class SearchOptions {
      *
      * @return the answers value.
      */
-    public Answers getAnswers() {
+    public String getAnswers() {
         return this.answers;
     }
 
@@ -528,7 +548,7 @@ public final class SearchOptions {
      * @param answers the answers value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setAnswers(Answers answers) {
+    public SearchOptions setAnswers(String answers) {
         this.answers = answers;
         return this;
     }
@@ -622,8 +642,8 @@ public final class SearchOptions {
      * @param select the select value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setSelect(List<String> select) {
-        this.select = select;
+    public SearchOptions setSelect(String... select) {
+        this.select = (select == null) ? null : java.util.Arrays.asList(select);
         return this;
     }
 
@@ -672,6 +692,52 @@ public final class SearchOptions {
      */
     public SearchOptions setTop(Integer top) {
         this.top = top;
+        return this;
+    }
+
+    /**
+     * Get the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     *
+     * @return the captions value.
+     */
+    public Captions getCaptions() {
+        return this.captions;
+    }
+
+    /**
+     * Set the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     *
+     * @param captions the captions value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setCaptions(Captions captions) {
+        this.captions = captions;
+        return this;
+    }
+
+    /**
+     * Get the semanticFields property: The list of field names used for semantic search.
+     *
+     * @return the semanticFields value.
+     */
+    public List<String> getSemanticFields() {
+        return this.semanticFields;
+    }
+
+    /**
+     * Set the semanticFields property: The list of field names used for semantic search.
+     *
+     * @param semanticFields the semanticFields value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticFields(List<String> semanticFields) {
+        this.semanticFields = semanticFields;
         return this;
     }
 }

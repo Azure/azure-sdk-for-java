@@ -17,13 +17,13 @@ public final class DomainTopicsListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainTopicsListResult.class);
 
     /*
-     * A collection of Domain Topics
+     * A collection of Domain Topics.
      */
     @JsonProperty(value = "value")
     private List<DomainTopicInner> value;
 
     /*
-     * A link for the next page of domain topics
+     * A link for the next page of domain topics.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

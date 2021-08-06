@@ -9,11 +9,13 @@ import com.azure.search.documents.indexes.models.SearchIndexer;
 import java.util.Objects;
 
 /**
- * A converter between {@link com.azure.search.documents.indexes.implementation.models.SearchIndexer} and {@link SearchIndexer}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SearchIndexer} and {@link
+ * SearchIndexer}.
  */
 public final class SearchIndexerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SearchIndexer} to {@link SearchIndexer}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SearchIndexer} to {@link
+     * SearchIndexer}.
      */
     public static SearchIndexer map(com.azure.search.documents.indexes.implementation.models.SearchIndexer obj) {
         if (obj == null) {
@@ -22,38 +24,22 @@ public final class SearchIndexerConverter {
         SearchIndexer searchIndexer = new SearchIndexer(obj.getName(), obj.getDataSourceName(),
             obj.getTargetIndexName());
 
-        if (obj.getSchedule() != null) {
-            searchIndexer.setSchedule(obj.getSchedule());
-        }
-
-        String skillsetName = obj.getSkillsetName();
-        searchIndexer.setSkillsetName(skillsetName);
-
-        String description = obj.getDescription();
-        searchIndexer.setDescription(description);
-
-        String eTag = obj.getETag();
-        searchIndexer.setETag(eTag);
-
-        if (obj.getFieldMappings() != null) {
-            searchIndexer.setFieldMappings(obj.getFieldMappings());
-        }
-
-        Boolean isDisabled = obj.isDisabled();
-        searchIndexer.setIsDisabled(isDisabled);
+        searchIndexer.setSchedule(obj.getSchedule());
+        searchIndexer.setSkillsetName(obj.getSkillsetName());
+        searchIndexer.setDescription(obj.getDescription());
+        searchIndexer.setETag(obj.getETag());
+        searchIndexer.setFieldMappings(obj.getFieldMappings());
+        searchIndexer.setIsDisabled(obj.isDisabled());
 
         if (obj.getParameters() != null) {
             IndexingParameters parameters = IndexingParametersConverter.map(obj.getParameters());
             searchIndexer.setParameters(parameters);
         }
 
-        if (obj.getOutputFieldMappings() != null) {
-            searchIndexer.setOutputFieldMappings(obj.getOutputFieldMappings());
-        }
+        searchIndexer.setOutputFieldMappings(obj.getOutputFieldMappings());
+        searchIndexer.setEncryptionKey(obj.getEncryptionKey());
+        searchIndexer.setCache(obj.getCache());
 
-        if (obj.getEncryptionKey() != null) {
-            searchIndexer.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
-        }
         return searchIndexer;
     }
 
@@ -71,25 +57,12 @@ public final class SearchIndexerConverter {
                 .setDataSourceName(obj.getDataSourceName())
                 .setTargetIndexName(obj.getTargetIndexName());
 
-        if (obj.getSchedule() != null) {
-            searchIndexer.setSchedule(obj.getSchedule());
-        }
-
-        String skillsetName = obj.getSkillsetName();
-        searchIndexer.setSkillsetName(skillsetName);
-
-        String description = obj.getDescription();
-        searchIndexer.setDescription(description);
-
-        String eTag = obj.getETag();
-        searchIndexer.setETag(eTag);
-
-        if (obj.getFieldMappings() != null) {
-            searchIndexer.setFieldMappings(obj.getFieldMappings());
-        }
-
-        Boolean isDisabled = obj.isDisabled();
-        searchIndexer.setIsDisabled(isDisabled);
+        searchIndexer.setSchedule(obj.getSchedule());
+        searchIndexer.setSkillsetName(obj.getSkillsetName());
+        searchIndexer.setDescription(obj.getDescription());
+        searchIndexer.setETag(obj.getETag());
+        searchIndexer.setFieldMappings(obj.getFieldMappings());
+        searchIndexer.setIsDisabled(obj.isDisabled());
 
         if (obj.getParameters() != null) {
             com.azure.search.documents.indexes.implementation.models.IndexingParameters parameters =
@@ -97,13 +70,10 @@ public final class SearchIndexerConverter {
             searchIndexer.setParameters(parameters);
         }
 
-        if (obj.getOutputFieldMappings() != null) {
-            searchIndexer.setOutputFieldMappings(obj.getOutputFieldMappings());
-        }
+        searchIndexer.setOutputFieldMappings(obj.getOutputFieldMappings());
+        searchIndexer.setEncryptionKey(obj.getEncryptionKey());
+        searchIndexer.setCache(obj.getCache());
 
-        if (obj.getEncryptionKey() != null) {
-            searchIndexer.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
-        }
         return searchIndexer;
     }
 

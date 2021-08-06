@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -60,7 +61,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SubscriptionClientSu")
     private interface SubscriptionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/locations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -68,9 +69,11 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam("includeExtendedLocations") Boolean includeExtendedLocations,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -78,21 +81,28 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubscriptionListResult>> list(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubscriptionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -100,13 +110,15 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @param includeExtendedLocations Whether to include extended locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId) {
+    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(
+        String subscriptionId, Boolean includeExtendedLocations) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -116,16 +128,23 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listLocations(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), context))
+                        .listLocations(
+                            this.client.getEndpoint(),
+                            subscriptionId,
+                            this.client.getApiVersion(),
+                            includeExtendedLocations,
+                            accept,
+                            context))
             .<PagedResponse<LocationInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -133,6 +152,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -140,7 +160,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId, Context context) {
+    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(
+        String subscriptionId, Boolean includeExtendedLocations, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -150,13 +171,36 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listLocations(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), context)
+            .listLocations(
+                this.client.getEndpoint(),
+                subscriptionId,
+                this.client.getApiVersion(),
+                includeExtendedLocations,
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * This operation provides all the locations that are available for resource providers; however, each resource
+     * provider may support a subset of this list.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param includeExtendedLocations Whether to include extended locations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return location list operation response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Boolean includeExtendedLocations) {
+        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, includeExtendedLocations));
     }
 
     /**
@@ -171,7 +215,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LocationInner> listLocationsAsync(String subscriptionId) {
-        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId));
+        final Boolean includeExtendedLocations = null;
+        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, includeExtendedLocations));
     }
 
     /**
@@ -179,6 +224,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -186,8 +232,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Context context) {
-        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, context));
+    private PagedFlux<LocationInner> listLocationsAsync(
+        String subscriptionId, Boolean includeExtendedLocations, Context context) {
+        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, includeExtendedLocations, context));
     }
 
     /**
@@ -202,7 +249,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationInner> listLocations(String subscriptionId) {
-        return new PagedIterable<>(listLocationsAsync(subscriptionId));
+        final Boolean includeExtendedLocations = null;
+        return new PagedIterable<>(listLocationsAsync(subscriptionId, includeExtendedLocations));
     }
 
     /**
@@ -210,6 +258,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -217,8 +266,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LocationInner> listLocations(String subscriptionId, Context context) {
-        return new PagedIterable<>(listLocationsAsync(subscriptionId, context));
+    public PagedIterable<LocationInner> listLocations(
+        String subscriptionId, Boolean includeExtendedLocations, Context context) {
+        return new PagedIterable<>(listLocationsAsync(subscriptionId, includeExtendedLocations, context));
     }
 
     /**
@@ -241,10 +291,13 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.get(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context ->
+                    service
+                        .get(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -268,8 +321,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), context);
+        return service.get(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -338,8 +392,10 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), context))
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
             .<PagedResponse<SubscriptionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -349,7 +405,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -369,9 +425,10 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -450,8 +507,15 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SubscriptionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -461,7 +525,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -479,9 +543,16 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

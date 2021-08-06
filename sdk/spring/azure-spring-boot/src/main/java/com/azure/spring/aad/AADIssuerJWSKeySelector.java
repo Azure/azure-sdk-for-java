@@ -3,7 +3,7 @@
 package com.azure.spring.aad;
 
 
-import com.azure.spring.autoconfigure.aad.AADTokenClaim;
+import com.azure.spring.aad.implementation.constants.AADTokenClaim;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
-    private final AADTrustedIssuerRepository trustedIssuers;
+    private final AADTrustedIssuerRepository trustedIssuerRepo;
 
     private final int connectTimeout;
 
@@ -37,9 +37,10 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
 
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
-    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuers, int connectTimeout,
+    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuerRepo,
+                                   int connectTimeout,
                                    int readTimeout, int sizeLimit) {
-        this.trustedIssuers = trustedIssuers;
+        this.trustedIssuerRepo = trustedIssuerRepo;
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;
         this.sizeLimit = sizeLimit;
@@ -49,7 +50,7 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
     public List<? extends Key> selectKeys(JWSHeader header, JWTClaimsSet claimsSet, SecurityContext context)
         throws KeySourceException {
         String iss = (String) claimsSet.getClaim(AADTokenClaim.ISS);
-        if (trustedIssuers.getTrustedIssuers().contains(iss)) {
+        if (trustedIssuerRepo.isTrusted(iss)) {
             return selectors.computeIfAbsent(iss, this::fromIssuer).selectJWSKeys(header, context);
         }
         throw new IllegalArgumentException("The issuer: '" + iss + "' is not registered in trusted issuer repository,"
@@ -57,18 +58,24 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
     }
 
     private JWSKeySelector<SecurityContext> fromIssuer(String issuer) {
-        Map<String, Object> configurationForOidcIssuerLocation =
-            AADJwtDecoderProviderConfiguration.getConfigurationForOidcIssuerLocation(issuer);
+        Map<String, Object> configurationForOidcIssuerLocation = AADJwtDecoderProviderConfiguration
+            .getConfigurationForOidcIssuerLocation(getOidcIssuerLocation(issuer));
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
-        DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
-            sizeLimit);
+        DefaultResourceRetriever jwkSetRetriever =
+            new DefaultResourceRetriever(connectTimeout, readTimeout, sizeLimit);
         try {
             JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), jwkSetRetriever);
             return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new IllegalArgumentException(ex.getMessage(), ex);
         }
+    }
+
+    private String getOidcIssuerLocation(String issuer) {
+        if (trustedIssuerRepo.hasSpecialOidcIssuerLocation(issuer)) {
+            return trustedIssuerRepo.getSpecialOidcIssuerLocation(issuer);
+        }
+        return issuer;
     }
 
 }

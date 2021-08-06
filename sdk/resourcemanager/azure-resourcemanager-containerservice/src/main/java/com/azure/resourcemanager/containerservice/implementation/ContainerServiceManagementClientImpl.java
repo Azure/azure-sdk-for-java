@@ -12,6 +12,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
+import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
@@ -139,6 +140,18 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.managedClusters;
     }
 
+    /** The MaintenanceConfigurationsClient object to access its operations. */
+    private final MaintenanceConfigurationsClient maintenanceConfigurations;
+
+    /**
+     * Gets the MaintenanceConfigurationsClient object to access its operations.
+     *
+     * @return the MaintenanceConfigurationsClient object.
+     */
+    public MaintenanceConfigurationsClient getMaintenanceConfigurations() {
+        return this.maintenanceConfigurations;
+    }
+
     /** The AgentPoolsClient object to access its operations. */
     private final AgentPoolsClient agentPools;
 
@@ -215,6 +228,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.containerServices = new ContainerServicesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
+        this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);

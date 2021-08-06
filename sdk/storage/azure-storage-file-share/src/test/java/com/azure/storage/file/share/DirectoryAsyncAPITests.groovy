@@ -5,6 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
@@ -23,22 +24,22 @@ class DirectoryAsyncAPITests extends APISpec {
     String directoryPath
     String shareName
     static Map<String, String> testMetadata
-    static FileSmbProperties smbProperties
+    FileSmbProperties smbProperties
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
-        shareName = testResourceName.randomName(methodName, 60)
-        directoryPath = testResourceName.randomName(methodName, 60)
-        shareClient = shareBuilderHelper(interceptorManager, shareName).buildClient()
+        shareName = namer.getRandomName(60)
+        directoryPath = namer.getRandomName(60)
+        shareClient = shareBuilderHelper(shareName).buildClient()
         shareClient.create()
-        primaryDirectoryAsyncClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).buildDirectoryAsyncClient()
+        primaryDirectoryAsyncClient = directoryBuilderHelper(shareName, directoryPath).buildDirectoryAsyncClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
     def "Get directory URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
         when:
         def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl()
@@ -70,9 +71,9 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create directory error"() {
         given:
-        def testShareName = testResourceName.randomName(methodName, 60)
+        def testShareName = namer.getRandomName(60)
         when:
-        def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(interceptorManager, testShareName, directoryPath).buildDirectoryAsyncClient().create())
+        def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(testShareName, directoryPath).buildDirectoryAsyncClient().create())
         then:
         createDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
@@ -105,8 +106,8 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create dir with file perm key"() {
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(smbProperties, null, null))
@@ -191,8 +192,8 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Set properties file permission key"() {
         given:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         primaryDirectoryAsyncClient.createWithResponse(null, null, null).block()
         expect:
@@ -302,12 +303,13 @@ class DirectoryAsyncAPITests extends APISpec {
      *                               -> listOp6 (file)
      *              -> listOp2 (file)
      */
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
     @Unroll
     def "List files and directories args"() {
         given:
         primaryDirectoryAsyncClient.create().block()
         LinkedList<String> nameList = new LinkedList<>()
-        def dirPrefix = testResourceName.randomName(methodName, 60)
+        def dirPrefix = namer.getRandomName(60)
         for (int i = 0; i < 2; i++) {
             def subDirClient = primaryDirectoryAsyncClient.getSubdirectoryClient(dirPrefix + i)
             subDirClient.create().block()
@@ -322,7 +324,8 @@ class DirectoryAsyncAPITests extends APISpec {
         }
 
         when:
-        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix,
+        def listFileAndDirVerifier = StepVerifier.create(primaryDirectoryAsyncClient.listFilesAndDirectories(
+            namer.getResourcePrefix() + extraPrefix,
             maxResults))
 
         then:
@@ -334,10 +337,10 @@ class DirectoryAsyncAPITests extends APISpec {
         }
         nameList.isEmpty()
         where:
-        prefix                                                   | maxResults | numOfResults
-        "directoryasyncapitestslistfilesanddirectoriesargs"      | null       | 3
-        "directoryasyncapitestslistfilesanddirectoriesargs"      | 1          | 3
-        "directoryasyncapitestslistfilesanddirectoriesargsnoops" | 1          | 0
+        extraPrefix | maxResults | numOfResults
+        ""          | null       | 3
+        ""          | 1          | 3
+        "noops"     | 1          | 0
     }
 
     @Unroll
@@ -361,6 +364,7 @@ class DirectoryAsyncAPITests extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close handle min"() {
         given:
         primaryDirectoryAsyncClient.create().block()
@@ -382,6 +386,7 @@ class DirectoryAsyncAPITests extends APISpec {
             .verifyErrorSatisfies({ it instanceof  ShareStorageException })
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
     def "Force close all handles min"() {
         given:
         primaryDirectoryAsyncClient.create().block()
@@ -449,8 +454,8 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Create sub directory file perm key"() {
         given:
         def filePermissionKey = shareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         primaryDirectoryAsyncClient.create().block()
         expect:
@@ -515,8 +520,8 @@ class DirectoryAsyncAPITests extends APISpec {
         primaryDirectoryAsyncClient.create().block()
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
             .setContentType("txt")
-        smbProperties.setFileCreationTime(getUTCNow())
-            .setFileLastWriteTime(getUTCNow())
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata))
@@ -566,7 +571,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
-            null, new ShareRequestConditions().setLeaseId(getRandomUUID()))).verifyError(ShareStorageException)
+            null, new ShareRequestConditions().setLeaseId(namer.getRandomUuid()))).verifyError(ShareStorageException)
     }
 
     def "Delete file"() {
@@ -603,7 +608,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryDirectoryAsyncClient.deleteFileWithResponse(fileName,
-            new ShareRequestConditions().setLeaseId(getRandomUUID())))
+            new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
             .verifyError(ShareStorageException)
     }
 
@@ -612,7 +617,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
             1, 1), ZoneOffset.UTC).toString()
         when:
-        def shareSnapshotClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath).snapshot(snapshot).buildDirectoryAsyncClient()
+        def shareSnapshotClient = directoryBuilderHelper(shareName, directoryPath).snapshot(snapshot).buildDirectoryAsyncClient()
         then:
         snapshot == shareSnapshotClient.getShareSnapshotId()
     }

@@ -8,7 +8,7 @@ parameters:
   PreSteps: []
   PostSteps: []
   TimeoutInMinutes: 60
-  TestMode: 'RECORD'
+  TestMode: 'LIVE'
   TestStepMavenInputs: {}
   TestResultsFiles: ''
   CloudConfig: {}
@@ -22,7 +22,7 @@ parameters:
 jobs:
   - job:
     dependsOn: ${{ parameters.DependsOn }}
-    condition: ne(${{ parameters.Matrix }}, '{}')
+    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:
       maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]
@@ -43,11 +43,19 @@ jobs:
       container: $[ variables['Container'] ]
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+      - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          AgentImage: $(OSVmImage)
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - template: /eng/common/TestResources/build-test-resource-config.yml
+          parameters:
+            SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+            SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
+
         - ${{ if parameters.TestResourceDirectories }}:
           - ${{ each directory in parameters.TestResourceDirectories }}:
             - template: /eng/common/TestResources/deploy-test-resources.yml
@@ -55,7 +63,7 @@ jobs:
                 ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
                   Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
                 ServiceDirectory: '${{ directory }}'
-                SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+                SubscriptionConfiguration: $(SubscriptionConfiguration)
                 ArmTemplateParameters: $(ArmTemplateParameters)
         - ${{ if not(parameters.TestResourceDirectories) }}:
           - template: /eng/common/TestResources/deploy-test-resources.yml
@@ -63,35 +71,10 @@ jobs:
               ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
                 Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
               ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-              SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+              SubscriptionConfiguration: $(SubscriptionConfiguration)
               ArmTemplateParameters: $(ArmTemplateParameters)
 
       - ${{ parameters.PreSteps }}
-
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
-
-      - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
-        inputs:
-          versionSpec: '3.6'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
-
-      - task: PythonScript@0
-        displayName: 'Set versions for source build'
-        inputs:
-          scriptPath: 'eng/versioning/set_versions.py'
-          arguments: '--build-type client --pst'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
-
-      - task: PythonScript@0
-        displayName: 'Update versions for source build'
-        inputs:
-          scriptPath: 'eng/versioning/update_versions.py'
-          arguments: '--update-type library --build-type client --sr'
-        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
       - task: Maven@3
         displayName: 'Build and Install, JDK Version: $(JavaTestVersion)'
@@ -123,12 +106,12 @@ jobs:
             - template: /eng/common/TestResources/remove-test-resources.yml
               parameters:
                 ServiceDirectory: '${{ directory }}'
-                SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+                SubscriptionConfiguration: $(SubscriptionConfiguration)
         - ${{ if not(parameters.TestResourceDirectories) }}:
           - template: /eng/common/TestResources/remove-test-resources.yml
             parameters:
               ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-              SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+              SubscriptionConfiguration: $(SubscriptionConfiguration)
 
       - template: ../steps/upload-repository-on-failure.yml
 
@@ -136,6 +119,6 @@ jobs:
         condition: always()
         inputs:
           mergeTestResults: true
-          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(Agent.JobName)'
+          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} ${{ parameters.CloudConfig.Cloud }} $(Agent.JobName)'
           ${{ if ne(parameters.TestResultsFiles, '') }}:
             testResultsFiles: ${{ parameters.TestResultsFiles }}

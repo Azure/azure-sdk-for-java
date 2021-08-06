@@ -58,7 +58,7 @@ class FileModelFetcher implements ModelFetcher {
 
                 Path path = Paths.get(new File(tryContentPath).getPath());
 
-                logger.info(String.format(StatusStrings.FETCHING_MODEL_CONTENT, path.toString()));
+                logger.info(StatusStrings.FETCHING_MODEL_CONTENT, path);
 
                 if (Files.exists(path)) {
                     try {

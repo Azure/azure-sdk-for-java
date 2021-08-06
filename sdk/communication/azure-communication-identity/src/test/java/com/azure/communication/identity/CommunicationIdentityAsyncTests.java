@@ -25,11 +25,6 @@ import reactor.test.StepVerifier;
 public class CommunicationIdentityAsyncTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityAsyncClient asyncClient;
 
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-    }
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncIdentityClientUsingManagedIdentity(HttpClient httpClient) {

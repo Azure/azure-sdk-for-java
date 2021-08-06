@@ -30,6 +30,12 @@ public class LoadBalancerBackendAddress {
     private SubResource virtualNetwork;
 
     /*
+     * Reference to an existing subnet.
+     */
+    @JsonProperty(value = "properties.subnet")
+    private SubResource subnet;
+
+    /*
      * IP Address belonging to the referenced virtual network.
      */
     @JsonProperty(value = "properties.ipAddress")
@@ -85,6 +91,26 @@ public class LoadBalancerBackendAddress {
      */
     public LoadBalancerBackendAddress withVirtualNetwork(SubResource virtualNetwork) {
         this.virtualNetwork = virtualNetwork;
+        return this;
+    }
+
+    /**
+     * Get the subnet property: Reference to an existing subnet.
+     *
+     * @return the subnet value.
+     */
+    public SubResource subnet() {
+        return this.subnet;
+    }
+
+    /**
+     * Set the subnet property: Reference to an existing subnet.
+     *
+     * @param subnet the subnet value to set.
+     * @return the LoadBalancerBackendAddress object itself.
+     */
+    public LoadBalancerBackendAddress withSubnet(SubResource subnet) {
+        this.subnet = subnet;
         return this;
     }
 

@@ -19,6 +19,9 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
     /** Static value patch for UpgradeChannel. */
     public static final UpgradeChannel PATCH = fromString("patch");
 
+    /** Static value node-image for UpgradeChannel. */
+    public static final UpgradeChannel NODE_IMAGE = fromString("node-image");
+
     /** Static value none for UpgradeChannel. */
     public static final UpgradeChannel NONE = fromString("none");
 

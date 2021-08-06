@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.RecommendationActionInner;
 import com.azure.resourcemanager.mysql.models.RecommendationAction;
 import java.time.OffsetDateTime;
@@ -14,9 +13,10 @@ import java.util.Map;
 public final class RecommendationActionImpl implements RecommendationAction {
     private RecommendationActionInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    RecommendationActionImpl(RecommendationActionInner innerObject, MySqlManager serviceManager) {
+    RecommendationActionImpl(
+        RecommendationActionInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -74,7 +74,7 @@ public final class RecommendationActionImpl implements RecommendationAction {
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

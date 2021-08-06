@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -16,9 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** A skill that analyzes image files. It extracts a rich set of visual features based on the image content. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Vision.ImageAnalysisSkill")
-@JsonFlatten
 @Fluent
 public final class ImageAnalysisSkill extends SearchIndexerSkill {
     /*
@@ -115,17 +113,6 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the details property: A string indicating which domain-specific details to return.
-     *
-     * @param details the details value to set.
-     * @return the ImageAnalysisSkill object itself.
-     */
-    public ImageAnalysisSkill setDetails(ImageDetail... details) {
-        this.details = (details == null) ? null : java.util.Arrays.asList(details);
-        return this;
-    }
-
-    /**
      * Set the visualFeatures property: A list of visual features.
      *
      * @param visualFeatures the visualFeatures value to set.
@@ -133,6 +120,17 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      */
     public ImageAnalysisSkill setVisualFeatures(VisualFeature... visualFeatures) {
         this.visualFeatures = (visualFeatures == null) ? null : java.util.Arrays.asList(visualFeatures);
+        return this;
+    }
+
+    /**
+     * Set the details property: A string indicating which domain-specific details to return.
+     *
+     * @param details the details value to set.
+     * @return the ImageAnalysisSkill object itself.
+     */
+    public ImageAnalysisSkill setDetails(ImageDetail... details) {
+        this.details = (details == null) ? null : java.util.Arrays.asList(details);
         return this;
     }
 }

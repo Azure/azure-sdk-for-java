@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class KeyVaultCertificateIdentifierTest {
     @Test
     void parseWithoutVersion() {
-        String certificateId = "https://test-key-vault.vault.azure.net/certificates/test-certificate";
+        String sourceId = "https://test-key-vault.vault.azure.net/certificates/test-certificate";
         KeyVaultCertificateIdentifier keyVaultCertificateIdentifier =
-            new KeyVaultCertificateIdentifier(certificateId);
+            new KeyVaultCertificateIdentifier(sourceId);
 
-        assertEquals(certificateId, keyVaultCertificateIdentifier.getCertificateId());
+        assertEquals(sourceId, keyVaultCertificateIdentifier.getSourceId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultCertificateIdentifier.getVaultUrl());
         assertEquals("test-certificate", keyVaultCertificateIdentifier.getName());
         assertNull(keyVaultCertificateIdentifier.getVersion());
@@ -24,11 +24,11 @@ class KeyVaultCertificateIdentifierTest {
 
     @Test
     void parseWithVersion() {
-        String certificateId = "https://test-key-vault.vault.azure.net/certificates/test-certificate/version";
+        String sourceId = "https://test-key-vault.vault.azure.net/certificates/test-certificate/version";
         KeyVaultCertificateIdentifier keyVaultCertificateIdentifier =
-            new KeyVaultCertificateIdentifier(certificateId);
+            new KeyVaultCertificateIdentifier(sourceId);
 
-        assertEquals(certificateId, keyVaultCertificateIdentifier.getCertificateId());
+        assertEquals(sourceId, keyVaultCertificateIdentifier.getSourceId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultCertificateIdentifier.getVaultUrl());
         assertEquals("test-certificate", keyVaultCertificateIdentifier.getName());
         assertEquals("version", keyVaultCertificateIdentifier.getVersion());
@@ -36,18 +36,12 @@ class KeyVaultCertificateIdentifierTest {
 
     @Test
     void parseForDeletedCertificate() {
-        String certificateId = "https://test-key-vault.vault.azure.net/deletedcertificates/test-certificate";
-        KeyVaultCertificateIdentifier keyVaultCertificateIdentifier = new KeyVaultCertificateIdentifier(certificateId);
+        String sourceId = "https://test-key-vault.vault.azure.net/deletedcertificates/test-certificate";
+        KeyVaultCertificateIdentifier keyVaultCertificateIdentifier = new KeyVaultCertificateIdentifier(sourceId);
 
-        assertEquals(certificateId, keyVaultCertificateIdentifier.getCertificateId());
+        assertEquals(sourceId, keyVaultCertificateIdentifier.getSourceId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultCertificateIdentifier.getVaultUrl());
         assertEquals("test-certificate", keyVaultCertificateIdentifier.getName());
-    }
-
-    @Test
-    void parseInvalidIdentifierForDeletedCertificate() {
-        String certificateId = "https://test-key-vault.vault.azure.net/deletedcertificates/test-certificate/version";
-        assertThrows(IllegalArgumentException.class, () -> new KeyVaultCertificateIdentifier(certificateId));
     }
 
     @Test
@@ -57,7 +51,7 @@ class KeyVaultCertificateIdentifierTest {
 
     @Test
     void parseInvalidIdentifierWithExtraSegment() {
-        String certificateId = "https://test-key-vault.vault.azure.net/keys/test-certificate/version/extra-segment";
-        assertThrows(IllegalArgumentException.class, () -> new KeyVaultCertificateIdentifier(certificateId));
+        String sourceId = "https://test-key-vault.vault.azure.net/keys/test-certificate/version/extra-segment";
+        assertThrows(IllegalArgumentException.class, () -> new KeyVaultCertificateIdentifier(sourceId));
     }
 }

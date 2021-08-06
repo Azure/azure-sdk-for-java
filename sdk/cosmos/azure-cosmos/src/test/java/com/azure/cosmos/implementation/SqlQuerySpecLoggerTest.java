@@ -79,7 +79,7 @@ public class SqlQuerySpecLoggerTest {
 
         sqlQuerySpecLogger.logQuery(querySpec);
 
-        verify(logger).debug("select * from r where id = @id" + SqlQuerySpecLogger.LINE_SEPARATOR + " > param: @id = id");
+        verify(logger).debug("select * from r where id = @id" + System.getProperty("line.separator") + " > param: @id = id");
         verifyFinalInteractions();
     }
 

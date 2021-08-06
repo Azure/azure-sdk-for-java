@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -21,11 +22,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.ProgressReporter;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.BufferAggregator;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.FilesCreateResponse;
@@ -43,6 +49,7 @@ import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
+import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
@@ -53,22 +60,28 @@ import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
+import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuples;
 import reactor.util.retry.Retry;
 
 import java.io.File;
@@ -85,11 +98,16 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -120,7 +138,9 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 public class ShareFileAsyncClient {
     private final ClientLogger logger = new ClientLogger(ShareFileAsyncClient.class);
     static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
+    static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
     private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
+    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
@@ -721,7 +741,8 @@ public class ShareFileAsyncClient {
                 }
                 return chunks;
             }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
-                downloadWithResponse(chunk, false, requestConditions, context)
+                downloadWithResponse(new ShareFileDownloadOptions().setRange(chunk).setRangeContentMd5(false)
+                    .setRequestConditions(requestConditions), context)
                 .map(ShareFileDownloadAsyncResponse::getValue)
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(fbb -> FluxUtil
@@ -765,8 +786,7 @@ public class ShareFileAsyncClient {
      */
     public Flux<ByteBuffer> download() {
         try {
-            return downloadWithResponse(null, null).flatMapMany(
-                ShareFileDownloadAsyncResponse::getValue);
+            return downloadWithResponse(null).flatMapMany(ShareFileDownloadAsyncResponse::getValue);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
         }
@@ -813,25 +833,110 @@ public class ShareFileAsyncClient {
      */
     public Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileRange range, Boolean rangeGetContentMD5,
         ShareRequestConditions requestConditions) {
+        return downloadWithResponse(new ShareFileDownloadOptions().setRange(range)
+            .setRangeContentMd5(rangeGetContentMD5).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Downloads a file from the system, including its metadata and properties
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Download the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.downloadWithResponse#ShareFileDownloadOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-file">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileDownloadOptions}
+     * true, as long as the range is less than or equal to 4 MB in size.
+     * @return A reactive response containing response data and the file data.
+     */
+    public Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileDownloadOptions options) {
         try {
-            return withContext(context -> downloadWithResponse(range, rangeGetContentMD5,
-                requestConditions, context));
+            return withContext(context -> downloadWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileRange range, Boolean rangeGetContentMD5,
-        ShareRequestConditions requestConditions, Context context) {
-        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        String rangeString = range == null ? null : range.toString();
+    Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileDownloadOptions options, Context context) {
+        options = options == null ? new ShareFileDownloadOptions() : options;
+        ShareFileRange range = options.getRange() == null ? new ShareFileRange(0) : options.getRange();
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        DownloadRetryOptions retryOptions = options.getRetryOptions() == null ? new DownloadRetryOptions()
+            : options.getRetryOptions();
+        Boolean getRangeContentMd5 = options.getRangeContentMd5();
 
-        return azureFileStorageClient.getFiles()
-            .downloadWithResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5,
-                requestConditions.getLeaseId(), context)
-            .map(response -> new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue(),
-                ModelHelper.transformFileDownloadHeaders(response.getHeaders())));
+        return downloadRange(range, getRangeContentMd5, requestConditions, context)
+            .map(response -> {
+                String eTag = ModelHelper.getETag(response.getHeaders());
+                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(response.getHeaders());
+
+                long finalEnd;
+                if (range.getEnd() == null) {
+                    finalEnd = headers.getContentRange() == null ? headers.getContentLength()
+                        : Long.parseLong(headers.getContentRange().split("/")[1]);
+                } else {
+                    finalEnd = range.getEnd();
+                }
+
+                Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(
+                    () -> response.getValue().timeout(TIMEOUT_VALUE),
+                    (throwable, offset) -> {
+                        if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
+                            return Flux.error(throwable);
+                        }
+
+                        long newCount = finalEnd - (offset - range.getStart());
+
+                        /*
+                         It is possible that the network stream will throw an error after emitting all data but before
+                         completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
+                         and offset values. Because we have read the intended amount of data, we can ignore the error at the end
+                         of the stream.
+                         */
+                        if (newCount == 0) {
+                            logger.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                                + "but before stream signaled completion. Returning success as all data was downloaded. "
+                                + "Exception message: " + throwable.getMessage());
+                            return Flux.empty();
+                        }
+
+                        try {
+                            return downloadRange(
+                                new ShareFileRange(offset, range.getEnd()), getRangeContentMd5,
+                                requestConditions, context).flatMapMany(r -> {
+                                    String receivedETag = ModelHelper.getETag(r.getHeaders());
+                                    if (eTag != null && eTag.equals(receivedETag)) {
+                                        return r.getValue().timeout(TIMEOUT_VALUE);
+                                    } else {
+                                        return Flux.<ByteBuffer>error(
+                                            new ConcurrentModificationException(String.format("File has been modified "
+                                                + "concurrently. Expected eTag: %s, Received eTag: %s", eTag,
+                                                receivedETag)));
+                                    }
+                                });
+                        } catch (Exception e) {
+                            return Flux.error(e);
+                        }
+                    },
+                    retryOptions.getMaxRetryRequests(),
+                    range.getStart()
+                ).switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
+
+                return new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), bufferFlux, headers);
+            });
+    }
+
+    private Mono<StreamResponse> downloadRange(ShareFileRange range, Boolean rangeGetContentMD5,
+        ShareRequestConditions requestConditions, Context context) {
+        String rangeString = range == null ? null : range.toHeaderValue();
+        return azureFileStorageClient.getFiles().downloadWithResponseAsync(shareName, filePath, null,
+            rangeString, rangeGetContentMD5, requestConditions.getLeaseId(),  context);
     }
 
     /**
@@ -1248,7 +1353,12 @@ public class ShareFileAsyncClient {
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @return A response that only contains headers and response status code
+     *
+     * @deprecated Use {@link ShareFileAsyncClient#uploadRange(Flux, long)} instead. Or consider
+     * {@link ShareFileAsyncClient#upload(Flux, ParallelTransferOptions)} for an upload that can handle large amounts of
+     * data.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileUploadInfo> upload(Flux<ByteBuffer> data, long length) {
         try {
@@ -1280,15 +1390,20 @@ public class ShareFileAsyncClient {
      * status code.
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
+     *
+     * @deprecated Use {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)} instead. Or
+     * consider {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)} for an upload that can handle
+     * large amounts of data.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset) {
         return this.uploadWithResponse(data, length, offset, null);
     }
 
     /**
-     * Uploads a range of bytes to specific of a file in storage file service. Upload operations performs an in-place
-     * write on the specified file.
+     * Uploads a range of bytes to specific offset of a file in storage file service. Upload operations performs an
+     * in-place write on the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1309,27 +1424,234 @@ public class ShareFileAsyncClient {
      * status code.
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
+     *
+     * @deprecated Use {@link ShareFileAsyncClient#uploadRangeWithResponse(ShareFileUploadRangeOptions)} instead. Or
+     * consider {@link ShareFileAsyncClient#uploadWithResponse(ShareFileUploadOptions)} for an upload that can handle
+     * large amounts of data.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> uploadWithResponse(data, length, offset, requestConditions,
-                context));
+            return withContext(context -> uploadRangeWithResponse(new ShareFileUploadRangeOptions(data, length)
+                .setOffset(offset).setRequestConditions(requestConditions), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
-        ShareRequestConditions requestConditions, Context context) {
-        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        long rangeOffset = (offset == null) ? 0L : offset;
-        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + length - 1);
+    /**
+     * Buffers a range of bytes and uploads sub-ranges in parallel to a file in storage file service. Upload operations
+     * perform an in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.upload#Flux-ParallelTransferOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param data The data which will upload to the storage file.
+     * @param transferOptions {@link ParallelTransferOptions} to use to upload data.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     */
+    public Mono<ShareFileUploadInfo> upload(Flux<ByteBuffer> data, ParallelTransferOptions transferOptions) {
+        try {
+            return uploadWithResponse(new ShareFileUploadOptions(data).setParallelTransferOptions(transferOptions))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Buffers a range of bytes and uploads sub-ranges in parallel to a file in storage file service. Upload operations
+     * perform an in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadWithResponse#ShareFileUploadOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options Argument collection for the upload operation.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     */
+    public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(ShareFileUploadOptions options) {
+        try {
+            return withContext(context -> uploadWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareFileUploadInfo>> uploadWithResponse(ShareFileUploadOptions options, Context context) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
+                ? new ShareRequestConditions()
+                : options.getRequestConditions();
+            final ParallelTransferOptions validatedParallelTransferOptions =
+                ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+            long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
+
+            Function<Flux<ByteBuffer>, Mono<Response<ShareFileUploadInfo>>> uploadInChunks = (stream) ->
+                uploadInChunks(stream, validatedOffset, validatedParallelTransferOptions, validatedRequestConditions, context);
+
+            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull = (stream, length) ->
+                uploadRangeWithResponse(new ShareFileUploadRangeOptions(ProgressReporter.addProgressReporting(
+                    stream, validatedParallelTransferOptions.getProgressReceiver()), length)
+                    .setOffset(options.getOffset()).setRequestConditions(validatedRequestConditions), context);
+
+            Flux<ByteBuffer> data = options.getDataFlux();
+            // no specified length: use azure.core's converter
+            if (data == null && options.getLength() == null) {
+                // We can only buffer up to max int due to restrictions in ByteBuffer.
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    validatedParallelTransferOptions.getBlockSizeLong());
+                data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
+            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
+            } else if (data == null) {
+                // We can only buffer up to max int due to restrictions in ByteBuffer.
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    validatedParallelTransferOptions.getBlockSizeLong());
+                data = Utility.convertStreamToByteBuffer(
+                    options.getDataStream(), options.getLength(), chunkSize, false);
+            }
+
+            return UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions, uploadInChunks, uploadFull);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareFileUploadInfo>> uploadInChunks(Flux<ByteBuffer> data, long offset,
+        ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions, Context context) {
+        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+        AtomicLong totalProgress = new AtomicLong();
+        Lock progressLock = new ReentrantLock();
+
+        // Validation done in the constructor.
+        BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), FILE_MAX_PUT_RANGE_SIZE);
+
+        Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
+
+        /*
+         Write to the staging area and upload the output.
+         maxConcurrency = 1 when writing means only 1 BufferAggregator will be accumulating at a time.
+         parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
+         only concurrency + 1 chunks at a time.
+         */
+        return chunkedSource.flatMapSequential(stagingArea::write, 1, 1)
+            .concatWith(Flux.defer(stagingArea::flush))
+            .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
+            /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
+            /* As an example, data consists of ByteBuffers of length 10-10-5.
+               In the map above we transform the initial ByteBuffer to a tuple3 of buff, 10, 0.
+               Scan will emit that as is, then accumulate the tuple for the next emission.
+               On the second iteration, the middle ByteBuffer gets transformed to buff, 10, 10+0
+               (from previous emission). Scan emits that, and on the last iteration, the last ByteBuffer gets
+               transformed to buff, 5, 10+10 (from previous emission). */
+            .scan((result, source) -> {
+                BufferAggregator bufferAggregator = source.getT1();
+                long currentBufferLength = bufferAggregator.length();
+                long lastBytesWritten = result.getT2();
+                long lastOffset = result.getT3();
+
+                return Tuples.of(bufferAggregator, currentBufferLength, lastBytesWritten + lastOffset);
+            })
+            .flatMapSequential(tuple3 -> {
+                BufferAggregator bufferAggregator = tuple3.getT1();
+                long currentBufferLength = bufferAggregator.length();
+                long currentOffset = tuple3.getT3() + offset;
+                // Report progress as necessary.
+                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
+                    bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
+                    progressLock, totalProgress);
+                return uploadRangeWithResponse(new ShareFileUploadRangeOptions(progressData, currentBufferLength)
+                    .setOffset(currentOffset).setRequestConditions(requestConditions), context)
+                    .flux();
+            }, parallelTransferOptions.getMaxConcurrency(), 1)
+            .last();
+    }
+
+    /**
+     * Uploads a range of bytes to the specified offset of a file in storage file service. Upload operations perform an
+     * in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRange#Flux-long}
+     *
+     * <p>This method does a single Put Range operation. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param data The data which will upload to the storage file.
+     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
+     */
+    public Mono<ShareFileUploadInfo> uploadRange(Flux<ByteBuffer> data, long length) {
+        try {
+            return uploadRangeWithResponse(new ShareFileUploadRangeOptions(data, length)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Uploads a range of bytes to the specified offset of a file in storage file service. Upload operations perform an
+     * in-place write on the specified file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload data "default" to the file in Storage File Service. </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeWithResponse#ShareFileUploadRangeOptions}
+     *
+     * <p>This method does a single Put Range operation. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options Argument collection for the upload operation.
+     * @return The {@link ShareFileUploadInfo file upload info}
+     * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
+     */
+    public Mono<Response<ShareFileUploadInfo>> uploadRangeWithResponse(ShareFileUploadRangeOptions options) {
+        try {
+            return withContext(context -> uploadRangeWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * One-shot upload range.
+     */
+    Mono<Response<ShareFileUploadInfo>> uploadRangeWithResponse(ShareFileUploadRangeOptions options, Context context) {
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        long rangeOffset = (options.getOffset() == null) ? 0L : options.getOffset();
+        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
         context = context == null ? Context.NONE : context;
+
+        Flux<ByteBuffer> data = options.getDataFlux() == null
+            ? Utility.convertStreamToByteBuffer(
+                options.getDataStream(), options.getLength(), (int) FILE_DEFAULT_BLOCK_SIZE, true)
+            : options.getDataFlux();
+
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                length, data, null, null, requestConditions.getLeaseId(),
+                options.getLength(), null, null, requestConditions.getLeaseId(), data,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::uploadResponse);
     }
@@ -1415,28 +1737,57 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
         long destinationOffset, long sourceOffset, String sourceUrl,
         ShareRequestConditions destinationRequestConditions) {
+        return this.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(length, sourceUrl)
+            .setDestinationOffset(destinationOffset).setSourceOffset(sourceOffset)
+            .setDestinationRequestConditions(destinationRequestConditions));
+    }
+
+    /**
+     * Uploads a range of bytes from one file to another file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     *
+     * @param options argument collection
+     * @return A response containing the {@link ShareFileUploadRangeFromUrlInfo file upload range from url info} with
+     * headers and response status code.
+     */
+    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(
+        ShareFileUploadRangeFromUrlOptions options) {
         try {
             return withContext(context ->
-                uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceUrl,
-                    destinationRequestConditions, context));
+                uploadRangeFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
-        long sourceOffset, String sourceUrl, ShareRequestConditions destinationRequestConditions, Context context) {
-        destinationRequestConditions = destinationRequestConditions == null
-            ? new ShareRequestConditions() : destinationRequestConditions;
-        ShareFileRange destinationRange = new ShareFileRange(destinationOffset, destinationOffset + length - 1);
-        ShareFileRange sourceRange = new ShareFileRange(sourceOffset, sourceOffset + length - 1);
+    Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(
+        ShareFileUploadRangeFromUrlOptions options, Context context) {
+        ShareRequestConditions modifiedRequestConditions = options.getDestinationRequestConditions() == null
+            ? new ShareRequestConditions() : options.getDestinationRequestConditions();
+        ShareFileRange destinationRange = new ShareFileRange(options.getDestinationOffset(),
+            options.getDestinationOffset() + options.getLength() - 1);
+        ShareFileRange sourceRange = new ShareFileRange(options.getSourceOffset(),
+            options.getSourceOffset() + options.getLength() - 1);
         context = context == null ? Context.NONE : context;
 
-        final String copySource = Utility.encodeUrlPath(sourceUrl);
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
+
+        final String copySource = Utility.encodeUrlPath(options.getSourceUrl());
 
         return azureFileStorageClient.getFiles()
             .uploadRangeFromURLWithResponseAsync(shareName, filePath, destinationRange.toString(), copySource, 0,
-                null, sourceRange.toString(), null, destinationRequestConditions.getLeaseId(), null,
+                null, sourceRange.toString(), null, modifiedRequestConditions.getLeaseId(), sourceAuth, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::uploadRangeFromUrlResponse);
     }
@@ -1528,7 +1879,7 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
-                0L, null, null, null, requestConditions.getLeaseId(),
+                0L, null, null, requestConditions.getLeaseId(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::uploadResponse);
     }

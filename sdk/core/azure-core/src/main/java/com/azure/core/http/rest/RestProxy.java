@@ -23,6 +23,7 @@ import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
@@ -54,7 +55,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.isReturnTypeDecodable;
+import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -66,14 +68,16 @@ public final class RestProxy implements InvocationHandler {
     private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
     private static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     private static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
+    private static final String MUST_IMPLEMENT_PAGE_ERROR =
+        "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
+
+    private static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
     private final ClientLogger logger = new ClientLogger(RestProxy.class);
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
     private final HttpResponseDecoder decoder;
-
-    private final ResponseConstructorsCache responseConstructorsCache;
 
     /**
      * Create a RestProxy.
@@ -88,7 +92,6 @@ public final class RestProxy implements InvocationHandler {
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
         this.decoder = new HttpResponseDecoder(this.serializer);
-        this.responseConstructorsCache = new ResponseConstructorsCache();
     }
 
     /**
@@ -125,18 +128,24 @@ public final class RestProxy implements InvocationHandler {
             final HttpRequest request = createHttpRequest(methodParser, args);
             Context context = methodParser.setContext(args)
                 .addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", isReturnTypeDecodable(methodParser.getReturnType()));
+                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
             if (request.getBody() != null) {
                 request.setBody(validateLength(request));
             }
 
+            RequestOptions options = methodParser.setRequestOptions(args);
+            if (options != null) {
+                options.getRequestCallback().accept(request);
+            }
+
             final Mono<HttpResponse> asyncResponse = send(request, context);
 
             Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
 
-            return handleRestReturnType(asyncDecodedResponse, methodParser, methodParser.getReturnType(), context);
+            return handleRestReturnType(asyncDecodedResponse, methodParser,
+                methodParser.getReturnType(), context, options);
         } catch (IOException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
@@ -182,13 +191,13 @@ public final class RestProxy implements InvocationHandler {
     /**
      * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
      * additional context information.
+     *
      * @param method Service method being called.
      * @param context Context information about the current service call.
-     *
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        boolean disableTracing =  (boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false);
+        boolean disableTracing = (boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false);
         if (!TracerProxy.isTracingEnabled() || disableTracing) {
             return context;
         }
@@ -227,7 +236,11 @@ public final class RestProxy implements InvocationHandler {
                 if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
                     urlBuilder.setPath(path);
                 } else {
-                    urlBuilder.setPath(hostPath + "/" + path);
+                    if (path.startsWith("/")) {
+                        urlBuilder.setPath(hostPath + path);
+                    } else {
+                        urlBuilder.setPath(hostPath + "/" + path);
+                    }
                 }
             }
         }
@@ -280,7 +293,9 @@ public final class RestProxy implements InvocationHandler {
                 }
             }
 
-            if (isJson) {
+            if (bodyContentObject instanceof BinaryData) {
+                request.setBody(((BinaryData) bodyContentObject).toBytes());
+            } else if (isJson) {
                 ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
                 serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
 
@@ -312,9 +327,9 @@ public final class RestProxy implements InvocationHandler {
     }
 
     private Mono<HttpDecodedResponse> ensureExpectedStatus(final Mono<HttpDecodedResponse> asyncDecodedResponse,
-        final SwaggerMethodParser methodParser) {
+        final SwaggerMethodParser methodParser, RequestOptions options) {
         return asyncDecodedResponse
-            .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser));
+            .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, options));
     }
 
     private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
@@ -359,10 +374,11 @@ public final class RestProxy implements InvocationHandler {
      * @return An async-version of the provided decodedResponse.
      */
     private Mono<HttpDecodedResponse> ensureExpectedStatus(final HttpDecodedResponse decodedResponse,
-        final SwaggerMethodParser methodParser) {
+        final SwaggerMethodParser methodParser, RequestOptions options) {
         final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
         final Mono<HttpDecodedResponse> asyncResult;
-        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
+        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)
+                && (options == null || options.isThrowOnError())) {
             Mono<byte[]> bodyAsBytes = decodedResponse.getSourceResponse().getBodyAsByteArray();
 
             asyncResult = bodyAsBytes.flatMap((Function<byte[], Mono<HttpDecodedResponse>>) responseContent -> {
@@ -432,17 +448,13 @@ public final class RestProxy implements InvocationHandler {
             cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
 
             if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                throw logger.logExceptionAsError(new RuntimeException(
-                    "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class));
+                return monoError(logger, new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR));
             }
         }
 
-        Constructor<? extends Response<?>> ctr = this.responseConstructorsCache.get(cls);
-        if (ctr != null) {
-            return this.responseConstructorsCache.invoke(ctr, response, bodyAsObject);
-        } else {
-            return Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls));
-        }
+        return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(cls))
+            .switchIfEmpty(Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls)))
+            .flatMap(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
     }
 
     private Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
@@ -469,6 +481,9 @@ public final class RestProxy implements InvocationHandler {
         } else if (FluxUtil.isFluxByteBuffer(entityType)) {
             // Mono<Flux<ByteBuffer>>
             asyncResult = Mono.just(response.getSourceResponse().getBody());
+        } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
+            // Mono<BinaryData>
+            asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
             asyncResult = response.getDecodedBody((byte[]) null);
@@ -488,9 +503,10 @@ public final class RestProxy implements InvocationHandler {
     private Object handleRestReturnType(final Mono<HttpDecodedResponse> asyncHttpDecodedResponse,
         final SwaggerMethodParser methodParser,
         final Type returnType,
-        final Context context) {
+        final Context context,
+        final RequestOptions options) {
         final Mono<HttpDecodedResponse> asyncExpectedResponse =
-            ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
+            ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options)
                 .doOnEach(RestProxy::endTracingSpan)
                 .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
 

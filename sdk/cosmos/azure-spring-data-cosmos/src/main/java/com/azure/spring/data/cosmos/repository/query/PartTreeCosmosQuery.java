@@ -59,4 +59,10 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
     protected boolean isExistsQuery() {
         return tree.isExistsProjection();
     }
+
+    @Override
+    protected boolean isCountQuery() {
+        return tree.isCountProjection();
+    }
+
 }

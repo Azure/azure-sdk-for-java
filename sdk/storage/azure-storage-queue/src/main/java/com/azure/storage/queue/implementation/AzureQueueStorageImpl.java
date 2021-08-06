@@ -14,11 +14,11 @@ import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the AzureQueueStorage type. */
 public final class AzureQueueStorageImpl {
-    /** The URL of the service account, queue or message that is the targe of the desired operation. */
+    /** The URL of the service account, queue or message that is the target of the desired operation. */
     private final String url;
 
     /**
-     * Gets The URL of the service account, queue or message that is the targe of the desired operation.
+     * Gets The URL of the service account, queue or message that is the target of the desired operation.
      *
      * @return the url value.
      */
@@ -113,7 +113,7 @@ public final class AzureQueueStorageImpl {
     /**
      * Initializes an instance of AzureQueueStorage client.
      *
-     * @param url The URL of the service account, queue or message that is the targe of the desired operation.
+     * @param url The URL of the service account, queue or message that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
     AzureQueueStorageImpl(String url, String version) {
@@ -130,7 +130,7 @@ public final class AzureQueueStorageImpl {
      * Initializes an instance of AzureQueueStorage client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param url The URL of the service account, queue or message that is the targe of the desired operation.
+     * @param url The URL of the service account, queue or message that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
     AzureQueueStorageImpl(HttpPipeline httpPipeline, String url, String version) {
@@ -142,7 +142,7 @@ public final class AzureQueueStorageImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param url The URL of the service account, queue or message that is the targe of the desired operation.
+     * @param url The URL of the service account, queue or message that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
     AzureQueueStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String version) {

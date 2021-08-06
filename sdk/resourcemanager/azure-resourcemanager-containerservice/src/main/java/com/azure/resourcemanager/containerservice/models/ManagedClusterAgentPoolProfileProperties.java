@@ -18,8 +18,8 @@ public class ManagedClusterAgentPoolProfileProperties {
 
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be
-     * in the range of 0 to 100 (inclusive) for user pools and in the range of
-     * 1 to 100 (inclusive) for system pools. The default value is 1.
+     * in the range of 0 to 1000 (inclusive) for user pools and in the range of
+     * 1 to 1000 (inclusive) for system pools. The default value is 1.
      */
     @JsonProperty(value = "count")
     private Integer count;
@@ -28,7 +28,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Size of agent VMs.
      */
     @JsonProperty(value = "vmSize")
-    private ContainerServiceVMSizeTypes vmSize;
+    private String vmSize;
 
     /*
      * OS Disk Size in GB to be used to specify the disk size for every machine
@@ -40,11 +40,21 @@ public class ManagedClusterAgentPoolProfileProperties {
 
     /*
      * OS disk type to be used for machines in a given agent pool. Allowed
-     * values are 'Ephemeral' and 'Managed'. Defaults to 'Managed'. May not be
-     * changed after creation.
+     * values are 'Ephemeral' and 'Managed'. If unspecified, defaults to
+     * 'Ephemeral' when the VM supports ephemeral OS and has a cache disk
+     * larger than the requested OSDiskSizeGB. Otherwise, defaults to
+     * 'Managed'. May not be changed after creation.
      */
     @JsonProperty(value = "osDiskType")
     private OSDiskType osDiskType;
+
+    /*
+     * KubeletDiskType determines the placement of emptyDir volumes, container
+     * runtime data root, and Kubelet ephemeral storage. Currently allows one
+     * value, OS, resulting in Kubelet using the OS disk for data.
+     */
+    @JsonProperty(value = "kubeletDiskType")
+    private KubeletDiskType kubeletDiskType;
 
     /*
      * VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe
@@ -71,6 +81,13 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     @JsonProperty(value = "osType")
     private OSType osType;
+
+    /*
+     * OsSKU to be used to specify os sku. Choose from Ubuntu(default) and
+     * CBLMariner for Linux OSType. Not applicable to Windows OSType.
+     */
+    @JsonProperty(value = "osSKU")
+    private Ossku osSku;
 
     /*
      * Maximum number of nodes for auto-scaling
@@ -147,6 +164,13 @@ public class ManagedClusterAgentPoolProfileProperties {
     private Boolean enableNodePublicIp;
 
     /*
+     * Public IP Prefix ID. VM nodes use IPs assigned from this Public IP
+     * Prefix.
+     */
+    @JsonProperty(value = "nodePublicIPPrefixID")
+    private String nodePublicIpPrefixId;
+
+    /*
      * ScaleSetPriority to be used to specify virtual machine scale set
      * priority. Default to regular.
      */
@@ -206,10 +230,36 @@ public class ManagedClusterAgentPoolProfileProperties {
     @JsonProperty(value = "linuxOSConfig")
     private LinuxOSConfig linuxOSConfig;
 
+    /*
+     * Whether to enable EncryptionAtHost
+     */
+    @JsonProperty(value = "enableEncryptionAtHost")
+    private Boolean enableEncryptionAtHost;
+
+    /*
+     * Whether to enable UltraSSD
+     */
+    @JsonProperty(value = "enableUltraSSD")
+    private Boolean enableUltraSsd;
+
+    /*
+     * Whether to use FIPS enabled OS
+     */
+    @JsonProperty(value = "enableFIPS")
+    private Boolean enableFips;
+
+    /*
+     * GPUInstanceProfile to be used to specify GPU MIG instance profile for
+     * supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g
+     * and MIG7g.
+     */
+    @JsonProperty(value = "gpuInstanceProfile")
+    private GpuInstanceProfile gpuInstanceProfile;
+
     /**
      * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 0 to 100 (inclusive) for user pools and in the range of 1 to 100 (inclusive) for system pools. The default value
-     * is 1.
+     * 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default
+     * value is 1.
      *
      * @return the count value.
      */
@@ -219,8 +269,8 @@ public class ManagedClusterAgentPoolProfileProperties {
 
     /**
      * Set the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 0 to 100 (inclusive) for user pools and in the range of 1 to 100 (inclusive) for system pools. The default value
-     * is 1.
+     * 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default
+     * value is 1.
      *
      * @param count the count value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -235,7 +285,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      *
      * @return the vmSize value.
      */
-    public ContainerServiceVMSizeTypes vmSize() {
+    public String vmSize() {
         return this.vmSize;
     }
 
@@ -245,7 +295,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * @param vmSize the vmSize value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withVmSize(ContainerServiceVMSizeTypes vmSize) {
+    public ManagedClusterAgentPoolProfileProperties withVmSize(String vmSize) {
         this.vmSize = vmSize;
         return this;
     }
@@ -274,7 +324,9 @@ public class ManagedClusterAgentPoolProfileProperties {
 
     /**
      * Get the osDiskType property: OS disk type to be used for machines in a given agent pool. Allowed values are
-     * 'Ephemeral' and 'Managed'. Defaults to 'Managed'. May not be changed after creation.
+     * 'Ephemeral' and 'Managed'. If unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS and has a
+     * cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after
+     * creation.
      *
      * @return the osDiskType value.
      */
@@ -284,13 +336,39 @@ public class ManagedClusterAgentPoolProfileProperties {
 
     /**
      * Set the osDiskType property: OS disk type to be used for machines in a given agent pool. Allowed values are
-     * 'Ephemeral' and 'Managed'. Defaults to 'Managed'. May not be changed after creation.
+     * 'Ephemeral' and 'Managed'. If unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS and has a
+     * cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after
+     * creation.
      *
      * @param osDiskType the osDiskType value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
     public ManagedClusterAgentPoolProfileProperties withOsDiskType(OSDiskType osDiskType) {
         this.osDiskType = osDiskType;
+        return this;
+    }
+
+    /**
+     * Get the kubeletDiskType property: KubeletDiskType determines the placement of emptyDir volumes, container runtime
+     * data root, and Kubelet ephemeral storage. Currently allows one value, OS, resulting in Kubelet using the OS disk
+     * for data.
+     *
+     * @return the kubeletDiskType value.
+     */
+    public KubeletDiskType kubeletDiskType() {
+        return this.kubeletDiskType;
+    }
+
+    /**
+     * Set the kubeletDiskType property: KubeletDiskType determines the placement of emptyDir volumes, container runtime
+     * data root, and Kubelet ephemeral storage. Currently allows one value, OS, resulting in Kubelet using the OS disk
+     * for data.
+     *
+     * @param kubeletDiskType the kubeletDiskType value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withKubeletDiskType(KubeletDiskType kubeletDiskType) {
+        this.kubeletDiskType = kubeletDiskType;
         return this;
     }
 
@@ -371,6 +449,28 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     public ManagedClusterAgentPoolProfileProperties withOsType(OSType osType) {
         this.osType = osType;
+        return this;
+    }
+
+    /**
+     * Get the osSku property: OsSKU to be used to specify os sku. Choose from Ubuntu(default) and CBLMariner for Linux
+     * OSType. Not applicable to Windows OSType.
+     *
+     * @return the osSku value.
+     */
+    public Ossku osSku() {
+        return this.osSku;
+    }
+
+    /**
+     * Set the osSku property: OsSKU to be used to specify os sku. Choose from Ubuntu(default) and CBLMariner for Linux
+     * OSType. Not applicable to Windows OSType.
+     *
+     * @param osSku the osSku value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withOsSku(Ossku osSku) {
+        this.osSku = osSku;
         return this;
     }
 
@@ -583,6 +683,26 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
+     * Get the nodePublicIpPrefixId property: Public IP Prefix ID. VM nodes use IPs assigned from this Public IP Prefix.
+     *
+     * @return the nodePublicIpPrefixId value.
+     */
+    public String nodePublicIpPrefixId() {
+        return this.nodePublicIpPrefixId;
+    }
+
+    /**
+     * Set the nodePublicIpPrefixId property: Public IP Prefix ID. VM nodes use IPs assigned from this Public IP Prefix.
+     *
+     * @param nodePublicIpPrefixId the nodePublicIpPrefixId value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withNodePublicIpPrefixId(String nodePublicIpPrefixId) {
+        this.nodePublicIpPrefixId = nodePublicIpPrefixId;
+        return this;
+    }
+
+    /**
      * Get the scaleSetPriority property: ScaleSetPriority to be used to specify virtual machine scale set priority.
      * Default to regular.
      *
@@ -770,6 +890,88 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     public ManagedClusterAgentPoolProfileProperties withLinuxOSConfig(LinuxOSConfig linuxOSConfig) {
         this.linuxOSConfig = linuxOSConfig;
+        return this;
+    }
+
+    /**
+     * Get the enableEncryptionAtHost property: Whether to enable EncryptionAtHost.
+     *
+     * @return the enableEncryptionAtHost value.
+     */
+    public Boolean enableEncryptionAtHost() {
+        return this.enableEncryptionAtHost;
+    }
+
+    /**
+     * Set the enableEncryptionAtHost property: Whether to enable EncryptionAtHost.
+     *
+     * @param enableEncryptionAtHost the enableEncryptionAtHost value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withEnableEncryptionAtHost(Boolean enableEncryptionAtHost) {
+        this.enableEncryptionAtHost = enableEncryptionAtHost;
+        return this;
+    }
+
+    /**
+     * Get the enableUltraSsd property: Whether to enable UltraSSD.
+     *
+     * @return the enableUltraSsd value.
+     */
+    public Boolean enableUltraSsd() {
+        return this.enableUltraSsd;
+    }
+
+    /**
+     * Set the enableUltraSsd property: Whether to enable UltraSSD.
+     *
+     * @param enableUltraSsd the enableUltraSsd value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withEnableUltraSsd(Boolean enableUltraSsd) {
+        this.enableUltraSsd = enableUltraSsd;
+        return this;
+    }
+
+    /**
+     * Get the enableFips property: Whether to use FIPS enabled OS.
+     *
+     * @return the enableFips value.
+     */
+    public Boolean enableFips() {
+        return this.enableFips;
+    }
+
+    /**
+     * Set the enableFips property: Whether to use FIPS enabled OS.
+     *
+     * @param enableFips the enableFips value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withEnableFips(Boolean enableFips) {
+        this.enableFips = enableFips;
+        return this;
+    }
+
+    /**
+     * Get the gpuInstanceProfile property: GPUInstanceProfile to be used to specify GPU MIG instance profile for
+     * supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g and MIG7g.
+     *
+     * @return the gpuInstanceProfile value.
+     */
+    public GpuInstanceProfile gpuInstanceProfile() {
+        return this.gpuInstanceProfile;
+    }
+
+    /**
+     * Set the gpuInstanceProfile property: GPUInstanceProfile to be used to specify GPU MIG instance profile for
+     * supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g and MIG7g.
+     *
+     * @param gpuInstanceProfile the gpuInstanceProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withGpuInstanceProfile(GpuInstanceProfile gpuInstanceProfile) {
+        this.gpuInstanceProfile = gpuInstanceProfile;
         return this;
     }
 

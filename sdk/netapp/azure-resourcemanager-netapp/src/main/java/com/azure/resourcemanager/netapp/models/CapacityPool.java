@@ -97,6 +97,13 @@ public interface CapacityPool {
     QosType qosType();
 
     /**
+     * Gets the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
+     *
+     * @return the coolAccess value.
+     */
+    Boolean coolAccess();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -186,7 +193,8 @@ public interface CapacityPool {
          * The stage of the CapacityPool definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithQosType {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithQosType, DefinitionStages.WithCoolAccess {
             /**
              * Executes the create request.
              *
@@ -221,6 +229,16 @@ public interface CapacityPool {
              * @return the next definition stage.
              */
             WithCreate withQosType(QosType qosType);
+        }
+        /** The stage of the CapacityPool definition allowing to specify coolAccess. */
+        interface WithCoolAccess {
+            /**
+             * Specifies the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes..
+             *
+             * @param coolAccess If enabled (true) the pool can contain cool Access enabled volumes.
+             * @return the next definition stage.
+             */
+            WithCreate withCoolAccess(Boolean coolAccess);
         }
     }
     /**

@@ -34,7 +34,13 @@ public enum ResolveStatus {
     ACCESS_TO_KEY_VAULT_DENIED("AccessToKeyVaultDenied"),
 
     /** Enum value OtherReasons. */
-    OTHER_REASONS("OtherReasons");
+    OTHER_REASONS("OtherReasons"),
+
+    /** Enum value FetchTimedOut. */
+    FETCH_TIMED_OUT("FetchTimedOut"),
+
+    /** Enum value UnauthorizedClient. */
+    UNAUTHORIZED_CLIENT("UnauthorizedClient");
 
     /** The actual serialized value for a ResolveStatus instance. */
     private final String value;

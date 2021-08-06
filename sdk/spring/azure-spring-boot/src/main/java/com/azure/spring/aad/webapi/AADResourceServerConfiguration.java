@@ -7,13 +7,14 @@ import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
 import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.autoconfigure.condition.aad.ResourceServerCondition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -36,9 +37,7 @@ import java.util.List;
  * By default, creating a JwtDecoder through JwkKeySetUri will be auto-configured.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnResource(resources = "classpath:aad.enable.config")
-@EnableConfigurationProperties({ AADAuthenticationProperties.class })
-@ConditionalOnClass(BearerTokenAuthenticationToken.class)
+@Conditional(ResourceServerCondition.class)
 public class AADResourceServerConfiguration {
 
     @Autowired
@@ -47,7 +46,7 @@ public class AADResourceServerConfiguration {
     /**
      * Use JwkKeySetUri to create JwtDecoder
      *
-     * @return JwtDecoder bean
+     * @return Get the jwtDecoder instance.
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
@@ -64,10 +63,10 @@ public class AADResourceServerConfiguration {
     public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
-        if (!StringUtils.isEmpty(aadAuthenticationProperties.getAppIdUri())) {
+        if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
-        if (!StringUtils.isEmpty(aadAuthenticationProperties.getClientId())) {
+        if (StringUtils.hasText(aadAuthenticationProperties.getClientId())) {
             validAudiences.add(aadAuthenticationProperties.getClientId());
         }
         if (!validAudiences.isEmpty()) {
@@ -84,7 +83,9 @@ public class AADResourceServerConfiguration {
      */
     @Configuration
     @EnableWebSecurity
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
+    @ConditionalOnExpression("!'${azure.activedirectory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
         AADResourceServerWebSecurityConfigurerAdapter {
 

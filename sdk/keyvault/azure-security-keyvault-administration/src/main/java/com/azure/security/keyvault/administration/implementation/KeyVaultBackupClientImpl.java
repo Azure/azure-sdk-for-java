@@ -7,6 +7,7 @@ package com.azure.security.keyvault.administration.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -79,22 +80,28 @@ public final class KeyVaultBackupClientImpl {
         return this.serializerAdapter;
     }
 
-    /** Initializes an instance of KeyVaultBackupClient client. */
-    KeyVaultBackupClientImpl() {
+    /**
+     * Initializes an instance of KeyVaultBackupClient client.
+     *
+     * @param apiVersion Api Version.
+     */
+    KeyVaultBackupClientImpl(String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
-                JacksonAdapter.createDefaultSerializerAdapter());
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                apiVersion);
     }
 
     /**
      * Initializes an instance of KeyVaultBackupClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param apiVersion Api Version.
      */
-    KeyVaultBackupClientImpl(HttpPipeline httpPipeline) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+    KeyVaultBackupClientImpl(HttpPipeline httpPipeline, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), apiVersion);
     }
 
     /**
@@ -102,11 +109,12 @@ public final class KeyVaultBackupClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param apiVersion Api Version.
      */
-    KeyVaultBackupClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
+    KeyVaultBackupClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.apiVersion = "7.2-preview";
+        this.apiVersion = apiVersion;
         this.service =
                 RestProxy.create(KeyVaultBackupClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -125,6 +133,7 @@ public final class KeyVaultBackupClientImpl {
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SASTokenParameter azureStorageBlobContainerUri,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/backup/{jobId}/pending")
@@ -134,6 +143,7 @@ public final class KeyVaultBackupClientImpl {
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/restore")
@@ -143,6 +153,7 @@ public final class KeyVaultBackupClientImpl {
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RestoreOperationParameters restoreBlobDetails,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/restore/{jobId}/pending")
@@ -152,6 +163,7 @@ public final class KeyVaultBackupClientImpl {
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam("jobId") String jobId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/keys/{keyName}/restore")
@@ -162,13 +174,14 @@ public final class KeyVaultBackupClientImpl {
                 @PathParam("keyName") String keyName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SelectiveKeyRestoreOperationParameters restoreBlobDetails,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
      *
-     * @param vaultBaseUrl simple string.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
      *     container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from
      *     the time of making this call.
@@ -181,13 +194,14 @@ public final class KeyVaultBackupClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FullBackupResponse> fullBackupWithResponseAsync(
             String vaultBaseUrl, SASTokenParameter azureStorageBlobContainerUri, Context context) {
-        return service.fullBackup(vaultBaseUrl, this.getApiVersion(), azureStorageBlobContainerUri, context);
+        final String accept = "application/json";
+        return service.fullBackup(vaultBaseUrl, this.getApiVersion(), azureStorageBlobContainerUri, accept, context);
     }
 
     /**
      * Returns the status of full backup operation.
      *
-     * @param vaultBaseUrl simple string.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The id returned as part of the backup request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,13 +212,14 @@ public final class KeyVaultBackupClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FullBackupOperation>> fullBackupStatusWithResponseAsync(
             String vaultBaseUrl, String jobId, Context context) {
-        return service.fullBackupStatus(vaultBaseUrl, jobId, this.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.fullBackupStatus(vaultBaseUrl, jobId, this.getApiVersion(), accept, context);
     }
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
      *
-     * @param vaultBaseUrl simple string.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
      *     was stored.
      * @param context The context to associate with this operation.
@@ -216,13 +231,14 @@ public final class KeyVaultBackupClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FullRestoreOperationResponse> fullRestoreOperationWithResponseAsync(
             String vaultBaseUrl, RestoreOperationParameters restoreBlobDetails, Context context) {
-        return service.fullRestoreOperation(vaultBaseUrl, this.getApiVersion(), restoreBlobDetails, context);
+        final String accept = "application/json";
+        return service.fullRestoreOperation(vaultBaseUrl, this.getApiVersion(), restoreBlobDetails, accept, context);
     }
 
     /**
      * Returns the status of restore operation.
      *
-     * @param vaultBaseUrl simple string.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param jobId The Job Id returned part of the restore operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,14 +249,15 @@ public final class KeyVaultBackupClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RestoreOperation>> restoreStatusWithResponseAsync(
             String vaultBaseUrl, String jobId, Context context) {
-        return service.restoreStatus(vaultBaseUrl, jobId, this.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.restoreStatus(vaultBaseUrl, jobId, this.getApiVersion(), accept, context);
     }
 
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
      *
-     * @param vaultBaseUrl simple string.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
      *     was stored.
@@ -256,7 +273,8 @@ public final class KeyVaultBackupClientImpl {
             String keyName,
             SelectiveKeyRestoreOperationParameters restoreBlobDetails,
             Context context) {
+        final String accept = "application/json";
         return service.selectiveKeyRestoreOperation(
-                vaultBaseUrl, keyName, this.getApiVersion(), restoreBlobDetails, context);
+                vaultBaseUrl, keyName, this.getApiVersion(), restoreBlobDetails, accept, context);
     }
 }

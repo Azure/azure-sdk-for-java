@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/8453803d8453803d3a705733cce0f0821c51432aae",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "91114b74-5439-4350-97a3-72eaf7e6633e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d1814e2e-2003-00e5-5509-41a763000000",
+      "x-ms-client-request-id" : "91114b74-5439-4350-97a3-72eaf7e6633e",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/8453803d8453803d3a705733cce0f0821c51432aae?comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c7ebe441-1bce-483d-aa67-c1342973d6a5"
+    },
+    "Response" : {
+      "content-length" : "278",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "ddc2fa9c-e003-0053-7409-41d515000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:ddc2fa9c-e003-0053-7409-41d515000000\nTime:2021-05-04T17:18:38.8991329Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "x-ms-client-request-id" : "c7ebe441-1bce-483d-aa67-c1342973d6a5",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "8453803d8453803d3a705733cce0f0821c51432aae" ]
+}

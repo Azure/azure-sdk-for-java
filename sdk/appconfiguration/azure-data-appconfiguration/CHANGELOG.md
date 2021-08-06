@@ -1,8 +1,32 @@
 # Release History
-## 1.2.0-beta.1 (Unreleased)
+
+## 1.3.0-beta.1 (Unreleased)
+
+
+## 1.2.0 (2021-07-08)
+### Bugs Fixed
+- `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting` are able to update the strongly-type
+  properties of setting when changing the setting's `value`, vice versa.
+
+## 1.1.12 (2021-05-18)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+
+## 1.2.0-beta.1 (2021-04-09)
 ### New Features
 - Added updateSyncToken() to be able to provide external synchronization tokens to both
   `ConfigurationAsyncClient` and `ConfigurationClient` clients.
+- Added new `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting`
+  types to represent configuration settings that references KeyVault Secret reference and
+  feature flag respectively.
+- Added new convenience overload APIs that take `ConfigurationSetting`:
+  `addConfigurationSetting(ConfigurationSetting setting)`
+  `getConfigurationSetting(ConfigurationSetting setting)`
+  `setConfigurationSetting(ConfigurationSetting setting)`
+  `deleteConfigurationSetting(ConfigurationSetting setting)`
+  `setReadOnly(ConfigurationSetting setting, boolean isReadOnly)`
+- Added a new method that accepts `ClientOptions` in `ConfigurationClientBuilder`.
 
 ## 1.1.10 (2021-03-09)
 ### Dependency updates
@@ -58,14 +82,6 @@
 ### Breaking changes
 - SettingSelector takes a filter instead of taking a list of strings. Supported `SettingSelector` literal special character and wild card functions. 
 
-## 1.0.0-beta.7 (2019-11-26)
-- Added support for Azure Activity Directory authentication.
-- Added service API version support
-
-### Breaking Changes
-- Removed clearReadOnly API, updated setReadOnly API to support setting and clearing read only based on the flag passed.
-- Removed Range class, SettingSelector no longer supports Range.
-
 ## 1.0.0-preview.6 (2019-10-31)
 - Renamed addSetting, getSetting, deleteSetting, setSetting, listSettings, listSettingRevisions to
   addConfigurationSetting, getConfigurationSetting, deleteConfigurationSetting, setConfigurationSetting,
@@ -78,9 +94,9 @@
 - Added more samples including conditional request, setReadOnly, clearReadOnly, listRevisions, etc.
 
 This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
 and 
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 
 ## 1.0.0-preview.5 (2019-10-11)
 - Fixed a explored bug that ConfigurationClientCredential is already pacakge-private. Using connection String instead.
@@ -91,12 +107,9 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 demonstrate the new API.
 
-## 1.0.0-preview.4 (2019-10-8)
-- Updated addSetting, getSetting, deleteSetting, setSetting to support conditional request.
-- Removed UpdateSetting.
-- Allowed user to define custom equality of configuration setting.
-- No public ConfigurationClientCredential.
-- Removed credential and CredentialPolicy package.
+## 1.0.0-preview.3 (2019-09-10)
+- Removed dependency on Netty.
+- Added logging when throwing `RutimeException`s.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
@@ -104,9 +117,12 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 demonstrate the new API.
 
-## 1.0.0-preview.3 (2019-09-10)
-- Removed dependency on Netty.
-- Added logging when throwing `RutimeException`s.
+## 1.0.0-preview.4 (2019-10-08)
+- Updated addSetting, getSetting, deleteSetting, setSetting to support conditional request.
+- Removed UpdateSetting.
+- Allowed user to define custom equality of configuration setting.
+- No public ConfigurationClientCredential.
+- Removed credential and CredentialPolicy package.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
@@ -143,3 +159,11 @@ and
 demonstrate the new API.
 
 - Initial release. Please see the README and wiki for information on the new design.
+## 1.0.0-beta.7 (2019-11-26)
+- Added support for Azure Activity Directory authentication.
+- Added service API version support
+
+### Breaking Changes
+- Removed clearReadOnly API, updated setReadOnly API to support setting and clearing read only based on the flag passed.
+- Removed Range class, SettingSelector no longer supports Range.
+

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Defines a data change detection policy that captures changes using the Integrated Change Tracking feature of Azure
  * SQL Database.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy")
-@JsonFlatten
 @Immutable
 public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy { }

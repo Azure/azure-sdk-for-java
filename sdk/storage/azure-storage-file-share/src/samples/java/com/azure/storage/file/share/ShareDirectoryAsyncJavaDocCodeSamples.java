@@ -7,6 +7,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -274,6 +275,22 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
             () -> System.out.println("Completed listing the directories and files.")
         );
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.listFilesAndDirectories#string-integer
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#listFilesAndDirectories(
+     *ShareListFilesAndDirectoriesOptions)}
+     */
+    public void listDirectoriesAndFilesAsyncOptionsBagOverload() {
+        ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions
+        shareDirectoryAsyncClient.listFilesAndDirectories(new ShareListFilesAndDirectoriesOptions()
+            .setPrefix("subdir").setMaxResultsPerPage(10))
+            .subscribe(fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
+                fileRef.isDirectory(), fileRef.getName()),
+                error -> System.err.println(error.toString()),
+                () -> System.out.println("Completed listing the directories and files."));
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions
     }
 
     /**

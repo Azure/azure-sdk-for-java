@@ -67,6 +67,13 @@ public interface ContainerServiceManagementClient {
     ManagedClustersClient getManagedClusters();
 
     /**
+     * Gets the MaintenanceConfigurationsClient object to access its operations.
+     *
+     * @return the MaintenanceConfigurationsClient object.
+     */
+    MaintenanceConfigurationsClient getMaintenanceConfigurations();
+
+    /**
      * Gets the AgentPoolsClient object to access its operations.
      *
      * @return the AgentPoolsClient object.

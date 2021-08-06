@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * A concurrent cache of {@link Response} constructors.
@@ -44,14 +42,11 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
     /**
      * Identify the most specific constructor for the given response class.
      *
-     * The most specific constructor is looked up following order:
-     * 1. (httpRequest, statusCode, headers, body, decodedHeaders)
-     * 2. (httpRequest, statusCode, headers, body)
-     * 3. (httpRequest, statusCode, headers)
+     * The most specific constructor is looked up following order: 1. (httpRequest, statusCode, headers, body,
+     * decodedHeaders) 2. (httpRequest, statusCode, headers, body) 3. (httpRequest, statusCode, headers)
      *
-     * Developer Note: This method logic can be easily replaced with Java.Stream
-     * and associated operators but we're using basic sort and loop constructs
-     * here as this method is in hot path and Stream route is consuming a fair
+     * Developer Note: This method logic can be easily replaced with Java.Stream and associated operators but we're
+     * using basic sort and loop constructs here as this method is in hot path and Stream route is consuming a fair
      * amount of resources.
      *
      * @param responseClass the response class
@@ -72,7 +67,7 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
                             ResponseFunc3.METHOD_TYPE,
                             ResponseFunc3.SIGNATURE,
                             ctrMethodHandle,
-                            ctrMethodHandle.type()).getTarget().invoke());
+                            ctrMethodHandle.type()).getTarget());
                     } else if (paramCount == 4) {
                         MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
                         return new ResponseConstructor(4, LambdaMetafactory.metafactory(LOOKUP,
@@ -80,7 +75,7 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
                             ResponseFunc4.METHOD_TYPE,
                             ResponseFunc4.SIGNATURE,
                             ctrMethodHandle,
-                            ctrMethodHandle.type()).getTarget().invoke());
+                            ctrMethodHandle.type()).getTarget());
                     } else {
                         // paramCount == 5
                         MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
@@ -89,8 +84,7 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
                             ResponseFunc5.METHOD_TYPE,
                             ResponseFunc5.SIGNATURE,
                             ctrMethodHandle,
-                            ctrMethodHandle.type())
-                            .getTarget().invoke());
+                            ctrMethodHandle.type()).getTarget());
                     }
                 } catch (Throwable t) {
                     throw logger.logExceptionAsError(new RuntimeException(t));
@@ -101,21 +95,20 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
     }
 
     /**
-     * Type that represent a {@link Response} constructor and can be used to invoke
-     * the same constructor.
+     * Type that represent a {@link Response} constructor and can be used to invoke the same constructor.
      */
     static final class ResponseConstructor {
         private final int parameterCount;
-        private final Object responseFunc;
+        private final MethodHandle responseFunc;
 
         /**
          * Creates ResponseConstructor.
          *
          * @param parameterCount the constructor parameter count
-         * @param responseFunc the functional interface which delegate its abstract method
-         *                 invocation to the invocation of a {@link Response} constructor
+         * @param responseFunc the functional interface which delegate its abstract method invocation to the invocation
+         * of a {@link Response} constructor
          */
-        private ResponseConstructor(int parameterCount, Object responseFunc) {
+        private ResponseConstructor(int parameterCount, MethodHandle responseFunc) {
             this.parameterCount = parameterCount;
             this.responseFunc = responseFunc;
         }
@@ -127,56 +120,21 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
          * @param bodyAsObject the http response content
          * @return an instance of a {@link Response} implementation
          */
-        @SuppressWarnings("unchecked")
         Mono<Response<?>> invoke(final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
-                                 final Object bodyAsObject) {
+            final Object bodyAsObject) {
             final HttpResponse httpResponse = decodedResponse.getSourceResponse();
             final HttpRequest httpRequest = httpResponse.getRequest();
             final int responseStatusCode = httpResponse.getStatusCode();
             final HttpHeaders responseHeaders = httpResponse.getHeaders();
             switch (this.parameterCount) {
                 case 3:
-                    try {
-                        return Mono.just((Response<?>) ((ResponseFunc3) this.responseFunc).apply(httpRequest,
-                            responseStatusCode,
-                            responseHeaders));
-                    } catch (Throwable t) {
-                        throw Exceptions.propagate(t);
-                    }
+                    return callMethodHandle(responseFunc, httpRequest, responseStatusCode, responseHeaders);
                 case 4:
-                    try {
-                        return Mono.just((Response<?>) ((ResponseFunc4) this.responseFunc).apply(httpRequest,
-                            responseStatusCode,
-                            responseHeaders,
-                            bodyAsObject));
-                    } catch (Throwable t) {
-                        throw Exceptions.propagate(t);
-                    }
+                    return callMethodHandle(responseFunc, httpRequest, responseStatusCode, responseHeaders,
+                        bodyAsObject);
                 case 5:
-                    return decodedResponse.getDecodedHeaders()
-                        .map((Function<Object, Response<?>>) decodedHeaders -> {
-                            try {
-                                return (Response<?>) ((ResponseFunc5) this.responseFunc).apply(httpRequest,
-                                    responseStatusCode,
-                                    responseHeaders,
-                                    bodyAsObject,
-                                    decodedHeaders);
-                            } catch (Throwable t) {
-                                throw Exceptions.propagate(t);
-                            }
-                        })
-                        .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
-                            try {
-                                return Mono.just((Response<?>) ((ResponseFunc5) this.responseFunc)
-                                    .apply(httpRequest,
-                                        responseStatusCode,
-                                        responseHeaders,
-                                        bodyAsObject,
-                                        null));
-                            } catch (Throwable t) {
-                                throw Exceptions.propagate(t);
-                            }
-                        }));
+                    return callMethodHandle(responseFunc, httpRequest, responseStatusCode, responseHeaders,
+                        bodyAsObject, decodedResponse.getDecodedHeaders());
                 default:
                     return Mono.error(new IllegalStateException(
                         "Response constructor with expected parameters not found."));
@@ -184,48 +142,38 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
         }
     }
 
+    private static Mono<Response<?>> callMethodHandle(MethodHandle methodHandle, Object... params) {
+        try {
+            return Mono.just((Response<?>) methodHandle.invoke(params));
+        } catch (Throwable t) {
+            throw Exceptions.propagate(t);
+        }
+    }
+
     @FunctionalInterface
     private interface ResponseFunc3 {
-        MethodType SIGNATURE = MethodType.methodType(Object.class,
-            HttpRequest.class,
-            int.class,
-            HttpHeaders.class);
+        MethodType SIGNATURE = MethodType.methodType(Object.class, HttpRequest.class, int.class, HttpHeaders.class);
         MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc3.class);
 
-        Object apply(HttpRequest httpRequest,
-                     int responseStatusCode,
-                     HttpHeaders responseHeaders);
+        Object apply(HttpRequest httpRequest, int responseStatusCode, HttpHeaders responseHeaders);
     }
 
     @FunctionalInterface
     private interface ResponseFunc4 {
-        MethodType SIGNATURE = MethodType.methodType(Object.class,
-            HttpRequest.class,
-            int.class,
-            HttpHeaders.class,
+        MethodType SIGNATURE = MethodType.methodType(Object.class, HttpRequest.class, int.class, HttpHeaders.class,
             Object.class);
         MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc4.class);
 
-        Object apply(HttpRequest httpRequest,
-                     int responseStatusCode,
-                     HttpHeaders responseHeaders,
-                     Object body);
+        Object apply(HttpRequest httpRequest, int responseStatusCode, HttpHeaders responseHeaders, Object body);
     }
 
     @FunctionalInterface
     private interface ResponseFunc5 {
-        MethodType SIGNATURE = MethodType.methodType(Object.class,
-            HttpRequest.class,
-            int.class,
-            HttpHeaders.class,
-            Object.class,
-            Object.class);
+        MethodType SIGNATURE = MethodType.methodType(Object.class, HttpRequest.class, int.class, HttpHeaders.class,
+            Object.class, Object.class);
         MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc5.class);
 
-        Object apply(HttpRequest httpRequest,
-                     int responseStatusCode,
-                     HttpHeaders responseHeaders,
-                     Object body,
-                     Object decodedHeaders);
+        Object apply(HttpRequest httpRequest, int responseStatusCode, HttpHeaders responseHeaders, Object body,
+            Object decodedHeaders);
     }
 }

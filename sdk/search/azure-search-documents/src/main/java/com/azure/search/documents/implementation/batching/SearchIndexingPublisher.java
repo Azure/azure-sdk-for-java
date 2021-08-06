@@ -20,6 +20,7 @@ import com.azure.search.documents.options.OnActionAddedOptions;
 import com.azure.search.documents.options.OnActionErrorOptions;
 import com.azure.search.documents.options.OnActionSentOptions;
 import com.azure.search.documents.options.OnActionSucceededOptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
@@ -156,10 +157,10 @@ public final class SearchIndexingPublisher<T> {
     public Mono<Void> flush(boolean awaitLock, boolean isClose, Context context) {
         if (awaitLock) {
             processingSemaphore.acquireUninterruptibly();
-            return createAndProcessBatch(isClose, context)
+            return flushLoop(isClose, context)
                 .doFinally(ignored -> processingSemaphore.release());
         } else if (processingSemaphore.tryAcquire()) {
-            return createAndProcessBatch(isClose, context)
+            return flushLoop(isClose, context)
                 .doFinally(ignored -> processingSemaphore.release());
         } else {
             logger.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
@@ -167,7 +168,35 @@ public final class SearchIndexingPublisher<T> {
         }
     }
 
-    private Mono<Void> createAndProcessBatch(boolean isClose, Context context) {
+    private Mono<Void> flushLoop(boolean isClosed, Context context) {
+        return createAndProcessBatch(context)
+            .expand(ignored -> Flux.defer(() -> (batchAvailableForProcessing() || isClosed)
+                ? createAndProcessBatch(context)
+                : Flux.empty()))
+            .then();
+    }
+
+    private Mono<IndexBatchResponse> createAndProcessBatch(Context context) {
+        List<TryTrackingIndexAction<T>> batchActions = createBatch();
+
+        // If there are no documents to in the batch to index just return.
+        if (CoreUtils.isNullOrEmpty(batchActions)) {
+            return Mono.empty();
+        }
+
+        List<com.azure.search.documents.implementation.models.IndexAction> convertedActions = batchActions.stream()
+            .map(action -> IndexActionConverter.map(action.getAction(), serializer))
+            .collect(Collectors.toList());
+
+        return sendBatch(convertedActions, batchActions, context)
+            .map(response -> {
+                handleResponse(batchActions, response);
+
+                return response;
+            });
+    }
+
+    private List<TryTrackingIndexAction<T>> createBatch() {
         final List<TryTrackingIndexAction<T>> batchActions;
         final Set<String> keysInBatch;
         synchronized (actionsMutex) {
@@ -192,23 +221,7 @@ public final class SearchIndexingPublisher<T> {
             }
         }
 
-        // If there are no documents to in the batch to index just return.
-        if (CoreUtils.isNullOrEmpty(batchActions)) {
-            return Mono.empty();
-        }
-
-        List<com.azure.search.documents.implementation.models.IndexAction> convertedActions = batchActions.stream()
-            .map(action -> IndexActionConverter.map(action.getAction(), serializer))
-            .collect(Collectors.toList());
-
-        return sendBatch(convertedActions, batchActions, context)
-            .map(response -> {
-                handleResponse(batchActions, response);
-
-                return response;
-            }).then(Mono.defer(() -> (batchAvailableForProcessing() || isClose)
-                ? createAndProcessBatch(isClose, context)
-                : Mono.empty()));
+        return batchActions;
     }
 
     private int fillFromQueue(List<TryTrackingIndexAction<T>> batch, List<TryTrackingIndexAction<T>> queue,

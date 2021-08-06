@@ -132,6 +132,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         output.add(new IntelliJCredential(tenantId, identityClientOptions));
         output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions));
         output.add(new AzureCliCredential(identityClientOptions));
+        output.add(new AzurePowerShellCredential(identityClientOptions));
         return output;
     }
 }

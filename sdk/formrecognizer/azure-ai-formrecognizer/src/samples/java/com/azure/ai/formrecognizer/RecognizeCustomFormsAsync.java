@@ -40,7 +40,7 @@ public class RecognizeCustomFormsAsync {
             .buildAsyncClient();
 
         // The form you are recognizing must be of the same type as the forms the custom model was trained on
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";
@@ -54,7 +54,6 @@ public class RecognizeCustomFormsAsync {
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"

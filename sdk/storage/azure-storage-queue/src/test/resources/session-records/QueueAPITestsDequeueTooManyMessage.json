@@ -1,45 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsdequeuetoomanymessage94838e8de3cd4b9",
+    "Uri" : "https://REDACTED.queue.core.windows.net/bab6f96abab6f96a0ed99420052ec97d93924c0196",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e4edf9a6-80eb-48bb-bafa-fcd945142176"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9513ad94-a9ee-4b4e-a259-83093e02d445"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "37a39ead-3003-009b-1f03-3a8ca5000000",
-      "Date" : "Thu, 04 Jun 2020 00:05:03 GMT",
-      "x-ms-client-request-id" : "e4edf9a6-80eb-48bb-bafa-fcd945142176"
+      "x-ms-request-id" : "c54fcc11-e003-000e-1a09-41df91000000",
+      "x-ms-client-request-id" : "9513ad94-a9ee-4b4e-a259-83093e02d445",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsdequeuetoomanymessage94838e8de3cd4b9/messages?numofmessages=33&visibilitytimeout=30",
+    "Uri" : "https://REDACTED.queue.core.windows.net/bab6f96abab6f96a0ed99420052ec97d93924c0196/messages?numofmessages=33&visibilitytimeout=30",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "89346722-a1a1-48a2-8ad9-c307f3a1cb3c"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e3e88684-410f-4680-a2a9-b7a8ec699a14"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "456",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "OutOfRangeQueryParameterValue",
       "retry-after" : "0",
-      "Content-Length" : "456",
       "StatusCode" : "400",
-      "x-ms-request-id" : "37a39eb4-3003-009b-2503-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:37a39eb4-3003-009b-2503-3a8ca5000000\nTime:2020-06-04T00:05:04.2721437Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>33</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>",
-      "Date" : "Thu, 04 Jun 2020 00:05:03 GMT",
-      "x-ms-client-request-id" : "89346722-a1a1-48a2-8ad9-c307f3a1cb3c",
+      "x-ms-request-id" : "3c7b17ba-c003-0054-4109-41b976000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:3c7b17ba-c003-0054-4109-41b976000000\nTime:2021-05-04T17:18:39.1997108Z</Message><QueryParameterName>numofmessages</QueryParameterName><QueryParameterValue>33</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>32</MaximumAllowed></Error>",
+      "x-ms-client-request-id" : "e3e88684-410f-4680-a2a9-b7a8ec699a14",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsdequeuetoomanymessage94838e8de3cd4b9" ]
+  "variables" : [ "bab6f96abab6f96a0ed99420052ec97d93924c0196" ]
 }

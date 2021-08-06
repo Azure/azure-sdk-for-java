@@ -14,27 +14,87 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
+        <jacoco.min.linecoverage>0.05</jacoco.min.linecoverage>
+    </properties>
+
+    <dependencies>
+        <!-- Apache HttpClient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+        </dependency>
+        <!-- Conscrypt -->
+        <dependency>
+            <groupId>org.conscrypt</groupId>
+            <artifactId>conscrypt-openjdk-uber</artifactId>
+            <scope>provided</scope>
+            <version>2.2.1</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
+        </dependency>
+        <!-- Jackson Databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+            <optional>true</optional>
+        </dependency>
+        <!-- SLF4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
+        </dependency>
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core-test</artifactId>
+            <version>1.6.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+            <scope>test</scope>
+        </dependency>
+        <!-- JUnit -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.4.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-resources-plugin;external_dependency} -->
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <excludes>
+                        <exclude>module-info.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -48,22 +108,34 @@
                         </goals>
                         <configuration>
                             <createSourcesJar>true</createSourcesJar>
+                            <shadeSourcesContent>true</shadeSourcesContent>
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
-                                    <shadedPattern>com.azure.keyvault.jca.com.fasterxml.jackson</shadedPattern>
+                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.com.fasterxml.jackson</shadedPattern>
+                                    <excludes>
+                                        <exclude>com/fasterxml/jackson/databind/jsonFormatVisitors/**</exclude> <!-- Avoid upper case in package name-->
+                                    </excludes>
+                                </relocation>
+                                <relocation>
+                                  <pattern>com.fasterxml.jackson.databind.jsonFormatVisitors</pattern>
+                                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.com.fasterxml.jackson.databind.json.format.visitors</shadedPattern> <!-- Avoid upper case in package name-->
                                 </relocation>
                                 <relocation>
                                     <pattern>org.apache.commons</pattern>
-                                    <shadedPattern>com.azure.keyvault.jca.org.apache.commons</shadedPattern>
+                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.apache.commons</shadedPattern>
                                 </relocation>
+                              <relocation>
+                                <pattern>org.apache.http</pattern>
+                                <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.apache.http</shadedPattern>
+                              </relocation>
                                 <relocation>
                                     <pattern>mozilla</pattern>
-                                    <shadedPattern>com.azure.keyvault.jca.mozilla</shadedPattern>
+                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.mozilla</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.slf4j</pattern>
-                                    <shadedPattern>com.azure.keyvault.jca.org.slf4j</shadedPattern>
+                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
                                 </relocation>
                             </relocations>
                             <transformers>
@@ -74,12 +146,31 @@
                 </executions>
             </plugin>
             <plugin>
+              <groupId>org.moditect</groupId>
+              <artifactId>moditect-maven-plugin</artifactId>
+              <version>1.0.0.RC1</version>  <!-- {x-version-update;org.moditect:moditect-maven-plugin;external_dependency} -->
+              <executions>
+                <execution>
+                  <id>add-module-info</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>add-module-info</goal>
+                  </goals>
+                  <configuration>
+                    <overwriteExistingFiles>true</overwriteExistingFiles>
+                    <module>
+                      <moduleInfoFile>
+                        src/main/resources/module-info.java
+                      </moduleInfoFile>
+                    </module>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -109,10 +200,10 @@
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.2.1]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                                 <include>org.apache.httpcomponents:httpclient:[4.5.13]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-                                <include>org.slf4j:slf4j-nop:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
+                                <include>org.slf4j:slf4j-nop:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>
@@ -120,92 +211,4 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <!-- Apache HttpClient -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-        </dependency>
-        <!-- Conscrypt -->
-        <dependency>
-            <groupId>org.conscrypt</groupId>
-            <artifactId>conscrypt-openjdk-uber</artifactId>
-            <scope>provided</scope>
-            <version>2.2.1</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
-        </dependency>
-        <!-- Jackson Databind -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-            <optional>true</optional>
-        </dependency>
-        <!-- JUnit -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-            <scope>test</scope>
-        </dependency>
-        <!-- SLF4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-nop</artifactId>
-            <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
-        </dependency>
-    </dependencies>
-    <profiles>
-        <profile>
-            <id>it</id>
-            <!--
-
-              To run the integration tests pass in the following system properties
-
-              - azure.keyvault.uri    - the Azure Key Vault URI
-              - azure.keyvault.tenant-id       - your tenant ID
-              - azure.keyvault.client-id       - the (application) client ID
-              - azure.keyvault.client-secret   - the (application) client secret
-
-            -->
-            <activation>
-                <property>
-                    <name>azure.keyvault.uri</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-                        <configuration>
-                            <skip>false</skip>
-                            <systemPropertyVariables>
-                                <azure.keyvault.uri>${azure.keyvault.uri}</azure.keyvault.uri>
-                                <azure.keyvault.tenant-id>${azure.keyvault.tenant-id}</azure.keyvault.tenant-id>
-                                <azure.keyvault.client-id>${azure.keyvault.client-id}</azure.keyvault.client-id>
-                                <azure.keyvault.client-secret>${azure.keyvault.client-secret}</azure.keyvault.client-secret>
-                            </systemPropertyVariables>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 </project>

@@ -1,18 +1,46 @@
 # Release History
 
-## 12.5.0-beta.3 (Unreleased)
+## 12.7.0-beta.2 (Unreleased)
 
+
+## 12.7.0-beta.1 (2021-07-28)
+- Added support for openInputStream to sync data lake file clients
+- Added support for the 2020-10-02 service version.
+- Added support to specify Parquet Input Serialization when querying a file.
+- Updated DownloadRetryOptions.maxRetryRequests to default downloads to retry 5 times.
+
+## 12.6.0 (2021-06-09)
+- GA release
+
+## 12.6.0-beta.1 (2021-05-13)
+- Added support for the 2020-08-04 service version.
+- Added support to undelete a file or directory
+- Added support to list deletedPaths
+- Added support to get/set service properties
+- Deprecated support to undelete a file system to a new name. 
+
+## 12.5.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-storage-blob` to version `12.11.1`
+- Updated `azure-core` to version `1.16.0`
+
+## 12.5.0 (2021-04-29)
+- Fixed a bug where large files would hang when the upload method was called. 
+- DataLakeLeaseClient now remembers the Lease ID after a lease change.
+
+## 12.5.0-beta.3 (2021-04-16)
+- Updated `azure-storage-blob` version to `12.11.0-beta.3` to pickup fixes for blob output stream.
 
 ## 12.5.0-beta.2 (2021-03-29)
 - Fixed a bug where files/directories in root directories could not be renamed.
 - Fixed a bug where more data would be buffered in buffered upload than expected due to Reactor's concatMap operator.
 
+## 12.4.1 (2021-03-19)
+- Updated `azure-storage-blob` version to `12.10.1` to pickup fixes for blob output stream.
+
 ## 12.5.0-beta.1 (2021-02-10)
 - Added support for the 2020-06-12 service version. 
 - Added support to undelete a file system. 
-
-## 12.4.1 (2021-03-19)
-- Updated `azure-storage-blob` version to `12.10.1` to pickup fixes for blob output stream.
 
 ## 12.4.0 (2021-01-14)
 - GA release
@@ -45,11 +73,11 @@
 ## 12.2.0 (2020-08-13)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
 
-## 12.2.0-beta.1 (2019-07-07)
+## 12.2.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
 - Added support to query a file. 
 - Added support to increase the maximum size of data that can be sent via an append.
-- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data. 
+- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data.
 
 ## 12.1.2 (2020-06-12)
 - Updated azure-storage-common and azure-core dependencies.
@@ -102,9 +130,9 @@ and
 
 ## 12.0.0-beta.7 (2019-12-04)
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
 
 - Fixed bug in ClientBuilders that prevented OAuth from functioning.
 - Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
@@ -126,6 +154,7 @@ and
 - Support for DataLakeFileClient: create, delete, rename, get properties, get access control, set metadata, set properties, set access control, append, flush, read
 
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+

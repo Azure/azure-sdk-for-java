@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.redisenterprise.implementation;
 
-import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.fluent.models.OperationInner;
 import com.azure.resourcemanager.redisenterprise.models.ActionType;
 import com.azure.resourcemanager.redisenterprise.models.Operation;
@@ -14,9 +13,10 @@ import com.azure.resourcemanager.redisenterprise.models.Origin;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final RedisEnterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    OperationImpl(OperationInner innerObject, RedisEnterpriseManager serviceManager) {
+    OperationImpl(
+        OperationInner innerObject, com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -45,7 +45,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private RedisEnterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 }

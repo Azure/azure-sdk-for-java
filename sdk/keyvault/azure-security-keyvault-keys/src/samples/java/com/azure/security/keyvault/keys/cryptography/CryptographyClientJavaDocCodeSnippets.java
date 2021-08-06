@@ -7,13 +7,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -27,10 +29,10 @@ import java.util.Random;
  * This class contains code samples for generating javadocs through doclets for {@link KeyClient}.
  */
 public final class CryptographyClientJavaDocCodeSnippets {
-    private String key1 = "key1";
-    private String key2 = "key2";
-    private String value1 = "val1";
-    private String value2 = "val2";
+    private final String key1 = "key1";
+    private final String key2 = "key2";
+    private final String value1 = "val1";
+    private final String value2 = "val2";
 
     /**
      * Generates code sample for creating a {@link CryptographyClient}.
@@ -40,10 +42,11 @@ public final class CryptographyClientJavaDocCodeSnippets {
     public CryptographyClient createClient() {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation
         CryptographyClient cryptographyClient = new CryptographyClientBuilder()
-            .keyIdentifier("<YOUR-KEY-IDENTIFIER>")
+            .keyIdentifier("<your-key-id>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation
+
         return cryptographyClient;
     }
 
@@ -55,11 +58,11 @@ public final class CryptographyClientJavaDocCodeSnippets {
     public CryptographyClient createClientWithJsonWebKey() {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation
         JsonWebKey jsonWebKey = new JsonWebKey().setId("SampleJsonWebKey");
-
         CryptographyClient cryptographyClient = new CryptographyClientBuilder()
             .jsonWebKey(jsonWebKey)
             .buildClient();
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation
+
         return cryptographyClient;
     }
 
@@ -68,9 +71,11 @@ public final class CryptographyClientJavaDocCodeSnippets {
      */
     public void getKeySnippets() {
         CryptographyClient cryptographyClient = createClient();
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.getKey
         KeyVaultKey key = cryptographyClient.getKey();
-        System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId());
+
+        System.out.printf("Key returned with name: %s and id: %s.\n", key.getName(), key.getId());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.getKey
     }
 
@@ -81,7 +86,9 @@ public final class CryptographyClientJavaDocCodeSnippets {
         CryptographyClient cryptographyClient = createClient();
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.getKeyWithResponse#Context
         KeyVaultKey keyWithVersion = cryptographyClient.getKeyWithResponse(new Context(key1, value1)).getValue();
-        System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.getName(), keyWithVersion.getId());
+
+        System.out.printf("Key is returned with name: %s and id %s.\n", keyWithVersion.getName(),
+            keyWithVersion.getId());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.getKeyWithResponse#Context
     }
 
@@ -95,41 +102,38 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte
         byte[] plaintext = new byte[100];
-
         new Random(0x1234567L).nextBytes(plaintext);
 
         EncryptResult encryptResult = cryptographyClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext);
 
-        System.out.printf("Received encrypted content of length %d with algorithm %s \n",
-            encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
+        System.out.printf("Received encrypted content of length: %d, with algorithm: %s.\n",
+            encryptResult.getCipherText().length, encryptResult.getAlgorithm());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context
         byte[] plaintextToEncrypt = new byte[100];
-
         new Random(0x1234567L).nextBytes(plaintextToEncrypt);
 
         EncryptResult encryptionResult = cryptographyClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintextToEncrypt,
             new Context(key1, value1));
 
-        System.out.printf("Received encrypted content of length %d with algorithm %s \n",
-            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
+        System.out.printf("Received encrypted content of length: %d, with algorithm: %s.\n",
+            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context
         byte[] myPlaintext = new byte[100];
-
         new Random(0x1234567L).nextBytes(myPlaintext);
-
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
+
         EncryptParameters encryptParameters = EncryptParameters.createA128CbcParameters(myPlaintext, iv);
         EncryptResult encryptedResult = cryptographyClient.encrypt(encryptParameters, new Context(key1, value1));
 
-        System.out.printf("Received encrypted content of length %d with algorithm %s \n",
-            encryptedResult.getCipherText().length, encryptedResult.getAlgorithm().toString());
+        System.out.printf("Received encrypted content of length: %d, with algorithm: %s.\n",
+            encryptedResult.getCipherText().length, encryptedResult.getAlgorithm());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context
     }
 
@@ -143,38 +147,35 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte
         byte[] ciphertext = new byte[100];
-
         new Random(0x1234567L).nextBytes(ciphertext);
 
         DecryptResult decryptResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, ciphertext);
 
-        System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length);
+        System.out.printf("Received decrypted content of length: %d.\n", decryptResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context
         byte[] ciphertextToDecrypt = new byte[100];
-
         new Random(0x1234567L).nextBytes(ciphertextToDecrypt);
 
         DecryptResult decryptionResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, ciphertextToDecrypt,
             new Context(key1, value1));
 
-        System.out.printf("Received decrypted content of length %d\n", decryptionResult.getPlainText().length);
+        System.out.printf("Received decrypted content of length: %d.\n", decryptionResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context
         byte[] myCiphertext = new byte[100];
-
         new Random(0x1234567L).nextBytes(myCiphertext);
-
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
+
         DecryptParameters decryptParameters = DecryptParameters.createA128CbcParameters(myCiphertext, iv);
         DecryptResult decryptedResult = cryptographyClient.decrypt(decryptParameters, new Context(key1, value1));
 
-        System.out.printf("Received decrypted content of length %d\n", decryptedResult.getPlainText().length);
+        System.out.printf("Received decrypted content of length: %d.\n", decryptedResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context
     }
 
@@ -186,37 +187,63 @@ public final class CryptographyClientJavaDocCodeSnippets {
      */
     public void signVerify() throws NoSuchAlgorithmException {
         CryptographyClient cryptographyClient = createClient();
-        byte[] signature = new byte[100];
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte
         byte[] data = new byte[100];
         new Random(0x1234567L).nextBytes(data);
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(data);
         byte[] digest = md.digest();
+
         SignResult signResult = cryptographyClient.sign(SignatureAlgorithm.ES256, digest);
-        System.out.printf("Received signature of length %d with algorithm %s", signResult.getSignature().length,
-            signResult.getAlgorithm().toString());
+
+        System.out.printf("Received signature of length: %d, with algorithm: %s.\n", signResult.getSignature().length,
+            signResult.getAlgorithm());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-Context
-        byte[] plaintextData = new byte[100];
-        new Random(0x1234567L).nextBytes(plaintextData);
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        messageDigest.update(data);
-        byte[] digetContent = messageDigest.digest();
-        SignResult signResponse = cryptographyClient.sign(SignatureAlgorithm.ES256, digetContent);
-        System.out.printf("Received signature of length %d with algorithm %s", signResponse.getSignature().length,
-            signResponse.getAlgorithm().toString(), new Context(key1, value1));
+        byte[] dataToVerify = new byte[100];
+        new Random(0x1234567L).nextBytes(dataToVerify);
+        MessageDigest myMessageDigest = MessageDigest.getInstance("SHA-256");
+        myMessageDigest.update(dataToVerify);
+        byte[] digestContent = myMessageDigest.digest();
+
+        SignResult signResponse = cryptographyClient.sign(SignatureAlgorithm.ES256, digestContent,
+            new Context(key1, value1));
+
+        System.out.printf("Received signature of length: %d, with algorithm: %s.\n", signResponse.getSignature().length,
+            signResponse.getAlgorithm());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-Context
 
+        byte[] signature = new byte[100];
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte
-        VerifyResult verifyResult = cryptographyClient.verify(SignatureAlgorithm.ES256, digest, signature);
-        System.out.printf("Verification status %s", verifyResult.isValid());
+        byte[] myData = new byte[100];
+        new Random(0x1234567L).nextBytes(myData);
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        messageDigest.update(myData);
+        byte[] myDigest = messageDigest.digest();
+
+        // A signature can be obtained from the SignResult returned by the CryptographyClient.sign() operation.
+        VerifyResult verifyResult = cryptographyClient.verify(SignatureAlgorithm.ES256, myDigest, signature);
+
+        System.out.printf("Verification status: %s.\n", verifyResult.isValid());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte
 
+        byte[] signatureBytes = new byte[100];
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-Context
-        VerifyResult verifyResponse = cryptographyClient.verify(SignatureAlgorithm.ES256, digest, signature);
-        System.out.printf("Verification status %s", verifyResponse.isValid(), new Context(key2, value2));
+        byte[] dataBytes = new byte[100];
+        new Random(0x1234567L).nextBytes(dataBytes);
+        MessageDigest msgDigest = MessageDigest.getInstance("SHA-256");
+        msgDigest.update(dataBytes);
+        byte[] digestBytes = msgDigest.digest();
+
+        // A signature can be obtained from the SignResult returned by the CryptographyClient.sign() operation.
+        VerifyResult verifyResponse = cryptographyClient.verify(SignatureAlgorithm.ES256, digestBytes, signatureBytes,
+            new Context(key1, value1));
+
+        System.out.printf("Verification status: %s.\n", verifyResponse.isValid());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-Context
     }
 
@@ -232,46 +259,47 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte
         byte[] key = new byte[100];
-
         new Random(0x1234567L).nextBytes(key);
 
         WrapResult wrapResult = cryptographyClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, key);
 
-        System.out.printf("Received encypted key of length %d with algorithm %s", wrapResult.getEncryptedKey().length,
-            wrapResult.getAlgorithm().toString());
+        System.out.printf("Received encrypted key of length: %d, with algorithm: %s.\n",
+            wrapResult.getEncryptedKey().length, wrapResult.getAlgorithm());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context
-        byte[] keyContent = new byte[100];
+        byte[] keyToWrap = new byte[100];
+        new Random(0x1234567L).nextBytes(keyToWrap);
 
-        new Random(0x1234567L).nextBytes(keyContent);
-
-        WrapResult keyWrapResponse = cryptographyClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, keyContent,
+        WrapResult keyWrapResult = cryptographyClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, keyToWrap,
             new Context(key1, value1));
 
-        System.out.printf("Received encrypted key of length %d with algorithm %s", keyWrapResponse.getEncryptedKey().length,
-            keyWrapResponse.getAlgorithm().toString());
+        System.out.printf("Received encrypted key of length: %d, with algorithm: %s.\n",
+            keyWrapResult.getEncryptedKey().length, keyWrapResult.getAlgorithm());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte
-        byte[] wrappedKey = new byte[100];
+        byte[] keyContent = new byte[100];
+        new Random(0x1234567L).nextBytes(keyContent);
 
-        new Random(0x1234567L).nextBytes(wrappedKey);
-
-        UnwrapResult unwrapResult = cryptographyClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, wrappedKey);
+        WrapResult wrapKeyResult = cryptographyClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, keyContent,
+            new Context(key1, value1));
+        UnwrapResult unwrapResult = cryptographyClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP,
+            wrapKeyResult.getEncryptedKey());
 
         System.out.printf("Received key of length %d", unwrapResult.getKey().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context
-        byte[] wrappedKeyContent = new byte[100];
+        byte[] keyContentToWrap = new byte[100];
+        new Random(0x1234567L).nextBytes(keyContentToWrap);
 
-        new Random(0x1234567L).nextBytes(wrappedKeyContent);
+        WrapResult wrapKeyContentResult = cryptographyClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, keyContentToWrap,
+            new Context(key1, value1));
+        UnwrapResult unwrapKeyResponse = cryptographyClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP,
+            wrapKeyContentResult.getEncryptedKey(), new Context(key2, value2));
 
-        UnwrapResult keyUnwrapResponse = cryptographyClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, wrappedKeyContent,
-            new Context(key2, value2));
-
-        System.out.printf("Received key of length %d", keyUnwrapResponse.getKey().length);
+        System.out.printf("Received key of length %d", unwrapKeyResponse.getKey().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context
     }
 
@@ -283,30 +311,50 @@ public final class CryptographyClientJavaDocCodeSnippets {
      */
     public void signDataVerifyData() throws NoSuchAlgorithmException {
         CryptographyClient cryptographyClient = createClient();
-        byte[] signature = new byte[100];
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte
         byte[] data = new byte[100];
         new Random(0x1234567L).nextBytes(data);
+
         SignResult signResult = cryptographyClient.sign(SignatureAlgorithm.ES256, data);
-        System.out.printf("Received signature of length %d with algorithm %s", signResult.getSignature().length);
+
+        System.out.printf("Received signature of length: %d, with algorithm: %s.\n", signResult.getSignature().length,
+            signResult.getAlgorithm());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context
         byte[] plainTextData = new byte[100];
         new Random(0x1234567L).nextBytes(plainTextData);
-        SignResult signReponse = cryptographyClient.sign(SignatureAlgorithm.ES256, plainTextData);
-        System.out.printf("Received signature of length %d with algorithm %s", signReponse.getSignature().length,
-            new Context(key1, value1));
+
+        SignResult signingResult = cryptographyClient.sign(SignatureAlgorithm.ES256, plainTextData);
+
+        System.out.printf("Received signature of length: %d, with algorithm: %s.\n",
+            signingResult.getSignature().length, new Context(key1, value1));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context
 
+        byte[] signature = new byte[100];
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte
-        VerifyResult verifyResult = cryptographyClient.verify(SignatureAlgorithm.ES256, data, signature);
-        System.out.printf("Verification status %s", verifyResult.isValid());
+        byte[] myData = new byte[100];
+        new Random(0x1234567L).nextBytes(myData);
+
+        // A signature can be obtained from the SignResult returned by the CryptographyClient.sign() operation.
+        VerifyResult verifyResult = cryptographyClient.verify(SignatureAlgorithm.ES256, myData, signature);
+
+        System.out.printf("Verification status: %s.\n", verifyResult.isValid());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte
 
+        byte[] mySignature = new byte[100];
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-Context
-        VerifyResult verifyResponse = cryptographyClient.verify(SignatureAlgorithm.ES256, data, signature);
-        System.out.printf("Verification status %s", verifyResponse.isValid(), new Context(key2, value2));
+        byte[] dataToVerify = new byte[100];
+        new Random(0x1234567L).nextBytes(dataToVerify);
+
+        // A signature can be obtained from the SignResult returned by the CryptographyClient.sign() operation.
+        VerifyResult verificationResult = cryptographyClient.verify(SignatureAlgorithm.ES256, dataToVerify,
+            mySignature, new Context(key2, value2));
+
+        System.out.printf("Verification status: %s.\n", verificationResult.isValid());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-Context
     }
 

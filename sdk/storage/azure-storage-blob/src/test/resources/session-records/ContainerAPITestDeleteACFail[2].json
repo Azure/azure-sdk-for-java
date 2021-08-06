@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/033cc3030033cc3036f42516498a17c806a2e400484d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2e514a12-aa12-4ffb-9f56-11613b3abb44"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7B51608B3",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:40:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "145e9225-901e-004b-58a0-7936e2000000",
+      "x-ms-client-request-id" : "2e514a12-aa12-4ffb-9f56-11613b3abb44",
+      "Date" : "Thu, 15 Jul 2021 17:40:59 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/033cc3030033cc3036f42516498a17c806a2e400484d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cdb00a0b-b8ef-4238-a3c3-97c75c89a574"
+    },
+    "Response" : {
+      "content-length" : "251",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "76b9bc4c-001e-0076-41a0-7940f9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the container.\nRequestId:76b9bc4c-001e-0076-41a0-7940f9000000\nTime:2021-07-15T17:40:59.3273857Z</Message></Error>",
+      "x-ms-client-request-id" : "cdb00a0b-b8ef-4238-a3c3-97c75c89a574",
+      "Date" : "Thu, 15 Jul 2021 17:40:58 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "033cc3030033cc3036f42516498a17c806a2e400484d", "033cc30338746e40", "033cc30321721113" ]
+}

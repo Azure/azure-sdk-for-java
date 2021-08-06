@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
 import com.azure.resourcemanager.mediaservices.models.Hls;
 import com.azure.resourcemanager.mediaservices.models.LiveOutput;
@@ -16,9 +16,10 @@ import java.time.OffsetDateTime;
 public final class LiveOutputImpl implements LiveOutput, LiveOutput.Definition {
     private LiveOutputInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    LiveOutputImpl(LiveOutputInner innerObject, MediaservicesManager serviceManager) {
+    LiveOutputImpl(
+        LiveOutputInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -33,6 +34,10 @@ public final class LiveOutputImpl implements LiveOutput, LiveOutput.Definition {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String description() {
@@ -79,7 +84,7 @@ public final class LiveOutputImpl implements LiveOutput, LiveOutput.Definition {
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -116,7 +121,7 @@ public final class LiveOutputImpl implements LiveOutput, LiveOutput.Definition {
         return this;
     }
 
-    LiveOutputImpl(String name, MediaservicesManager serviceManager) {
+    LiveOutputImpl(String name, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = new LiveOutputInner();
         this.serviceManager = serviceManager;
         this.liveOutputName = name;

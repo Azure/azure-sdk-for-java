@@ -14,7 +14,7 @@ import java.util.Map;
 @Fluent
 public class CreateRsaKeyOptions extends CreateKeyOptions {
     /**
-     * The AES key size.
+     * The RSA key size.
      */
     private Integer keySize;
 
@@ -158,7 +158,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      *
      * @return The public exponent.
      */
-    public int getPublicExponent() {
+    public Integer getPublicExponent() {
         return publicExponent;
     }
 
@@ -169,7 +169,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
-    public CreateRsaKeyOptions setPublicExponent(int publicExponent) {
+    public CreateRsaKeyOptions setPublicExponent(Integer publicExponent) {
         this.publicExponent = publicExponent;
 
         return this;

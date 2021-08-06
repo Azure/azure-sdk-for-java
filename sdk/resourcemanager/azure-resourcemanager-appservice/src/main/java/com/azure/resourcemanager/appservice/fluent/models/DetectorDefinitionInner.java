@@ -77,6 +77,13 @@ public class DetectorDefinitionInner extends ProxyOnlyResource {
         return this.isEnabled;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DetectorDefinitionInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

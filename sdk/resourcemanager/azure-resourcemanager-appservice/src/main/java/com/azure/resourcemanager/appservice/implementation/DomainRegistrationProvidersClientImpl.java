@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -60,19 +61,25 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     private interface DomainRegistrationProvidersService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.DomainRegistration/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CsmOperationCollection>> listOperations(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CsmOperationCollection>> listOperationsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -91,9 +98,11 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), context))
+                context ->
+                    service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
             .<PagedResponse<CsmOperationDescriptionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -103,7 +112,7 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -124,9 +133,10 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOperations(this.client.getEndpoint(), this.client.getApiVersion(), context)
+            .listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -211,8 +221,15 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listOperationsNext(nextLink, context))
+            .withContext(context -> service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CsmOperationDescriptionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -222,7 +239,7 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -241,9 +258,16 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOperationsNext(nextLink, context)
+            .listOperationsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

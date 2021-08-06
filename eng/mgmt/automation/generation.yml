@@ -3,7 +3,7 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: 'ubuntu-18.04'
+  vmImage: 'ubuntu-20.04'
 
 variables:
 - group: Release Secrets for GitHub
@@ -34,7 +34,7 @@ steps:
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version
-    ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
+    ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
   displayName: Generation
 
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
@@ -43,3 +43,4 @@ steps:
     CommitMsg: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
     PRTitle: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
     PRLabels: 'Mgmt - Track 2'
+    OpenAsDraft: '$(DRAFT_PULL_REQUEST)'

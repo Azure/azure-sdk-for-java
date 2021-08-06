@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import com.azure.spring.aad.AADOAuth2AuthenticatedPrincipal;
 import net.minidev.json.JSONArray;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -18,18 +20,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADB2CUserPrincipalTest {
 
-    private Jwt jwt = mock(Jwt.class);
-    private Map<String, Object> claims = new HashMap<>();
-    private Map<String, Object> headers = new HashMap<>();
+    private Jwt jwt;
+    private Map<String, Object> claims;
+    private Map<String, Object> headers;
     private JSONArray jsonArray = new JSONArray().appendElement("User.read").appendElement("User.write");
 
     @BeforeEach
     public void init() {
+        claims = new HashMap<>();
         claims.put("iss", "fake-issuer");
         claims.put("tid", "fake-tid");
+
+        headers = new HashMap<>();
         headers.put("kid", "kg2LYs2T0CTjIfj4rt6JIynen38");
+
+        jwt = mock(Jwt.class);
         when(jwt.getClaim("scp")).thenReturn("Order.read Order.write");
         when(jwt.getClaim("roles")).thenReturn(jsonArray);
         when(jwt.getTokenValue()).thenReturn("fake-token-value");
@@ -43,96 +51,111 @@ public class AADB2CUserPrincipalTest {
     public void testCreateUserPrincipal() {
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADB2COAuth2AuthenticatedPrincipal.class);
-        AADB2COAuth2AuthenticatedPrincipal principal = (AADB2COAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
-        assertThat(principal.getClaims()).isNotEmpty();
-        assertThat(principal.getIssuer()).isEqualTo(claims.get("iss"));
-        assertThat(principal.getTenantId()).isEqualTo(claims.get("tid"));
+        Assertions.assertFalse(principal.getClaims().isEmpty());
+        Assertions.assertEquals(principal.getIssuer(), claims.get("iss"));
+        Assertions.assertEquals(principal.getTenantId(), claims.get("tid"));
     }
 
     @Test
     public void testNoArgumentsConstructorDefaultScopeAndRoleAuthorities() {
-        when(jwt.containsClaim("scp")).thenReturn(true);
-        when(jwt.containsClaim("roles")).thenReturn(true);
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADB2COAuth2AuthenticatedPrincipal.class);
-        AADB2COAuth2AuthenticatedPrincipal principal = (AADB2COAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
-        assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
-        assertThat(principal.getAuthorities()).hasSize(4);
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
+        Assertions.assertFalse(principal.getAttributes().isEmpty());
+        Assertions.assertTrue(principal.getAttributes().size() == 2);
+        Assertions.assertTrue(principal.getAuthorities().size() == 4);
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
     }
 
     @Test
     public void testNoArgumentsConstructorExtractScopeAuthorities() {
-        when(jwt.containsClaim("scp")).thenReturn(true);
+        when(jwt.getClaim("roles")).thenReturn(null);
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADB2COAuth2AuthenticatedPrincipal.class);
-        AADB2COAuth2AuthenticatedPrincipal principal = (AADB2COAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
-        assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
-        assertThat(principal.getAuthorities()).hasSize(2);
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
-        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
-        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
+        Assertions.assertFalse(principal.getAttributes().isEmpty());
+        Assertions.assertTrue(principal.getAttributes().size() == 2);
+        Assertions.assertTrue(principal.getAuthorities().size() == 2);
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
+        Assertions.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assertions.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
     }
 
     @Test
     public void testNoArgumentsConstructorExtractRoleAuthorities() {
-        when(jwt.containsClaim("roles")).thenReturn(true);
+        when(jwt.getClaim("scp")).thenReturn(null);
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADB2COAuth2AuthenticatedPrincipal.class);
-        AADB2COAuth2AuthenticatedPrincipal principal = (AADB2COAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
+            .getPrincipal();
+        Assertions.assertFalse(principal.getAttributes().isEmpty());
+        Assertions.assertTrue(principal.getAttributes().size() == 2);
+        Assertions.assertTrue(principal.getAuthorities().size() == 2);
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
+        Assertions.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assertions.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
+    }
+
+    @Test
+    public void testConstructorExtractRoleAuthoritiesWithAuthorityPrefixMapParameter() {
+        when(jwt.getClaim("scp")).thenReturn(null);
+        Map<String, String> claimToAuthorityPrefixMap = new HashMap<>();
+        claimToAuthorityPrefixMap.put("roles", "APPROLE_");
+        AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter("sub", claimToAuthorityPrefixMap);
+        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
+        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
         assertThat(principal.getAuthorities()).hasSize(2);
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
-        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
-        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
     }
 
     @Test
     public void testParameterConstructorExtractScopeAuthorities() {
-        when(jwt.containsClaim("scp")).thenReturn(true);
+        when(jwt.getClaim("roles")).thenReturn(null);
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter("scp");
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADB2COAuth2AuthenticatedPrincipal.class);
-        AADB2COAuth2AuthenticatedPrincipal principal = (AADB2COAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
-        assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
-        assertThat(principal.getAuthorities()).hasSize(2);
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
-        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
-        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
+        Assertions.assertFalse(principal.getAttributes().isEmpty());
+        Assertions.assertTrue(principal.getAttributes().size() == 2);
+        Assertions.assertTrue(principal.getAuthorities().size() == 2);
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
+        Assertions.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assertions.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
     }
 
     @Test
     public void testParameterConstructorExtractRoleAuthorities() {
-        when(jwt.containsClaim("roles")).thenReturn(true);
+        when(jwt.getClaim("scp")).thenReturn(null);
         AADB2CJwtBearerTokenAuthenticationConverter converter = new AADB2CJwtBearerTokenAuthenticationConverter("roles",
             "APPROLE_");
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADB2COAuth2AuthenticatedPrincipal.class);
-        AADB2COAuth2AuthenticatedPrincipal principal = (AADB2COAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
-        assertThat(principal.getAttributes()).isNotEmpty();
-        assertThat(principal.getAttributes()).hasSize(2);
-        assertThat(principal.getAuthorities()).hasSize(2);
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
-        Assert.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
-        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
-        Assert.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
+        Assertions.assertFalse(principal.getAttributes().isEmpty());
+        Assertions.assertTrue(principal.getAttributes().size() == 2);
+        Assertions.assertTrue(principal.getAuthorities().size() == 2);
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.read")));
+        Assertions.assertTrue(principal.getAuthorities().contains(new SimpleGrantedAuthority("APPROLE_User.write")));
+        Assertions.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.read")));
+        Assertions.assertFalse(principal.getAuthorities().contains(new SimpleGrantedAuthority("SCOPE_Order.write")));
     }
 }

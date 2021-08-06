@@ -123,6 +123,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayProbe;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRule;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCertificate;
+import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
 import com.azure.resourcemanager.network.models.EffectiveNetworkSecurityRule;
 import com.azure.resourcemanager.network.models.FlowLogSettings;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -145,6 +146,7 @@ import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.NextHop;
 import com.azure.resourcemanager.network.models.PacketCapture;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
+import com.azure.resourcemanager.network.models.PrivateEndpoint;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.SecurityGroupNetworkInterface;
@@ -162,6 +164,7 @@ import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ManagementLock;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -198,6 +201,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoi
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
+import com.jcraft.jsch.JSchException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import reactor.core.publisher.Mono;
@@ -209,6 +213,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
@@ -233,6 +238,8 @@ public final class Utils {
 
     private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
 
+    private static String sshPublicKey;
+
     private Utils() {
     }
 
@@ -241,6 +248,20 @@ public final class Utils {
         String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
         System.out.printf("Password: %s%n", password);
         return password;
+    }
+
+    /**
+     * @return an SSH public key
+     */
+    public static String sshPublicKey() {
+        if (sshPublicKey == null) {
+            try {
+                sshPublicKey = SSHShell.generateSSHKeys(null, null).getSshPublicKey();
+            } catch (UnsupportedEncodingException | JSchException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));
+            }
+        }
+        return sshPublicKey;
     }
 
     /**
@@ -696,6 +717,7 @@ public final class Utils {
         info.append("\n\t\tTraffic allowed from only HTTPS: ").append(storageAccount.innerModel().enableHttpsTrafficOnly());
 
         info.append("\n\tEncryption status: ");
+        info.append("\n\t\tInfrastructure Encryption: ").append(storageAccount.infrastructureEncryptionEnabled() ? "Enabled" : "Disabled");
         for (Map.Entry<StorageService, StorageAccountEncryptionStatus> eStatus : storageAccount.encryptionStatuses().entrySet()) {
             info.append("\n\t\t").append(eStatus.getValue().storageService()).append(": ").append(eStatus.getValue().isEnabled() ? "Enabled" : "Disabled");
         }
@@ -3328,6 +3350,63 @@ public final class Utils {
         }
 
         System.out.println(info.toString());
+    }
+
+    /**
+     * Print private link resource.
+     *
+     * @param privateLinkResource the private link resource
+     */
+    public static void print(PrivateLinkResource privateLinkResource) {
+        StringBuilder info = new StringBuilder("Private Link Resource: ")
+            .append("\n\tGroup ID: ").append(privateLinkResource.groupId())
+            .append("\n\tRequired Member Names: ").append(privateLinkResource.requiredMemberNames())
+            .append("\n\tRequired DNS Zone Names: ").append(privateLinkResource.requiredDnsZoneNames());
+
+        System.out.println(info);
+    }
+
+    /**
+     * Print private endpoint.
+     *
+     * @param privateEndpoint the private endpoint
+     */
+    public static void print(PrivateEndpoint privateEndpoint) {
+        StringBuilder info = new StringBuilder("Private Endpoint: ")
+            .append("\n\tId: ").append(privateEndpoint.id())
+            .append("\n\tName: ").append(privateEndpoint.name());
+
+        if (privateEndpoint.privateLinkServiceConnections() != null && !privateEndpoint.privateLinkServiceConnections().isEmpty()) {
+            for (PrivateEndpoint.PrivateLinkServiceConnection connection : privateEndpoint.privateLinkServiceConnections().values()) {
+                info
+                    .append("\n\t\tPrivate Link Service Connection Name: ").append(connection.name())
+                    .append("\n\t\tPrivate Link Resource ID: ").append(connection.privateLinkResourceId())
+                    .append("\n\t\tSub Resource Names: ").append(connection.subResourceNames())
+                    .append("\n\t\tProvision Status: ").append(connection.state().status());
+            }
+        }
+
+        if (privateEndpoint.privateLinkServiceConnections() != null && !privateEndpoint.privateLinkServiceConnections().isEmpty()) {
+            info.append("\n\tPrivate Link Service Connections:");
+            for (PrivateEndpoint.PrivateLinkServiceConnection connection : privateEndpoint.privateLinkServiceConnections().values()) {
+                info
+                    .append("\n\t\tName: ").append(connection.name())
+                    .append("\n\t\tPrivate Link Resource ID: ").append(connection.privateLinkResourceId())
+                    .append("\n\t\tSub Resource Names: ").append(connection.subResourceNames())
+                    .append("\n\t\tStatus: ").append(connection.state().status());
+            }
+        }
+
+        if (privateEndpoint.customDnsConfigurations() != null && !privateEndpoint.customDnsConfigurations().isEmpty()) {
+            info.append("\n\tCustom DNS Configure:");
+            for (CustomDnsConfigPropertiesFormat customDns : privateEndpoint.customDnsConfigurations()) {
+                info
+                    .append("\n\t\tFQDN: ").append(customDns.fqdn())
+                    .append("\n\t\tIP Address: ").append(customDns.ipAddresses());
+            }
+        }
+
+        System.out.println(info);
     }
 
     /**

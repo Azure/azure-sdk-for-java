@@ -75,8 +75,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
                    + "The Target Azure platform could not be determined from environment variables.")));
         }
         return managedIdentityServiceCredential.authenticate(request)
-            .doOnSuccess((t -> logger.info(String.format("Azure Identity => Managed Identity environment: %s",
-                    managedIdentityServiceCredential.getEnvironment()))))
+            .doOnSuccess(t -> logger.info("Azure Identity => Managed Identity environment: {}",
+                    managedIdentityServiceCredential.getEnvironment()))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }

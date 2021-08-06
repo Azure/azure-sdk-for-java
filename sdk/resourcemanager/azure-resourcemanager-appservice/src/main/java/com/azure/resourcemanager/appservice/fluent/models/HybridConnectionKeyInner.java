@@ -47,6 +47,13 @@ public class HybridConnectionKeyInner extends ProxyOnlyResource {
         return this.sendKeyValue;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public HybridConnectionKeyInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

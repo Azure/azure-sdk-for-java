@@ -2,26 +2,36 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/subscription/
+      - sdk/subscription/ci.mgmt.yml
+      - sdk/subscription/mgmt-v2019_10_01_preview/
+      - sdk/subscription/mgmt-v2020_09_01/
+    exclude:
+      - sdk/subscription/pom.xml
+      - sdk/subscription/mgmt-v2019_10_01_preview/pom.xml
+      - sdk/subscription/mgmt-v2020_09_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/subscription/
+      - sdk/subscription/ci.mgmt.yml
+      - sdk/subscription/mgmt-v2019_10_01_preview/
+      - sdk/subscription/mgmt-v2020_09_01/
+    exclude:
+      - sdk/subscription/pom.xml
+      - sdk/subscription/mgmt-v2019_10_01_preview/pom.xml
+      - sdk/subscription/mgmt-v2020_09_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

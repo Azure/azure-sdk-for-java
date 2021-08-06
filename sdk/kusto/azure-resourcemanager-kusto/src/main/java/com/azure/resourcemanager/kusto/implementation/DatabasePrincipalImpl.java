@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kusto.implementation;
 
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalInner;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipal;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
@@ -13,9 +12,10 @@ import com.azure.resourcemanager.kusto.models.DatabasePrincipalType;
 public final class DatabasePrincipalImpl implements DatabasePrincipal {
     private DatabasePrincipalInner innerObject;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    DatabasePrincipalImpl(DatabasePrincipalInner innerObject, KustoManager serviceManager) {
+    DatabasePrincipalImpl(
+        DatabasePrincipalInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -52,7 +52,7 @@ public final class DatabasePrincipalImpl implements DatabasePrincipal {
         return this.innerObject;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -76,7 +77,7 @@ public final class ContainerGroupsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "ContainerInstanceMan")
     private interface ContainerGroupsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -84,9 +85,10 @@ public final class ContainerGroupsClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups")
@@ -97,9 +99,10 @@ public final class ContainerGroupsClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups/{containerGroupName}")
@@ -111,9 +114,10 @@ public final class ContainerGroupsClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups/{containerGroupName}")
@@ -126,9 +130,10 @@ public final class ContainerGroupsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
             @BodyParam("application/json") ContainerGroupInner containerGroup,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups/{containerGroupName}")
@@ -141,9 +146,10 @@ public final class ContainerGroupsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
             @BodyParam("application/json") Resource resource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups/{containerGroupName}")
@@ -155,9 +161,10 @@ public final class ContainerGroupsClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups/{containerGroupName}/restart")
@@ -169,9 +176,10 @@ public final class ContainerGroupsClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups/{containerGroupName}/stop")
@@ -183,13 +191,14 @@ public final class ContainerGroupsClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups/{containerGroupName}/start")
-        @ExpectedResponses({204})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
             @HostParam("$host") String endpoint,
@@ -197,21 +206,28 @@ public final class ContainerGroupsClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerGroupListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -237,6 +253,7 @@ public final class ContainerGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -245,6 +262,7 @@ public final class ContainerGroupsClientImpl
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<ContainerGroupInner>>map(
                 res ->
@@ -255,7 +273,7 @@ public final class ContainerGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -283,9 +301,15 @@ public final class ContainerGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .list(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -387,6 +411,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -396,6 +421,7 @@ public final class ContainerGroupsClientImpl
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             resourceGroupName,
+                            accept,
                             context))
             .<PagedResponse<ContainerGroupInner>>map(
                 res ->
@@ -406,7 +432,7 @@ public final class ContainerGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -440,6 +466,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
@@ -447,6 +474,7 @@ public final class ContainerGroupsClientImpl
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 resourceGroupName,
+                accept,
                 context)
             .map(
                 res ->
@@ -564,6 +592,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -574,8 +603,9 @@ public final class ContainerGroupsClientImpl
                             this.client.getApiVersion(),
                             resourceGroupName,
                             containerGroupName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -614,6 +644,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -622,6 +653,7 @@ public final class ContainerGroupsClientImpl
                 this.client.getApiVersion(),
                 resourceGroupName,
                 containerGroupName,
+                accept,
                 context);
     }
 
@@ -691,7 +723,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -725,6 +757,7 @@ public final class ContainerGroupsClientImpl
         } else {
             containerGroup.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -736,8 +769,9 @@ public final class ContainerGroupsClientImpl
                             resourceGroupName,
                             containerGroupName,
                             containerGroup,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -745,7 +779,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -780,6 +814,7 @@ public final class ContainerGroupsClientImpl
         } else {
             containerGroup.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -789,6 +824,7 @@ public final class ContainerGroupsClientImpl
                 resourceGroupName,
                 containerGroupName,
                 containerGroup,
+                accept,
                 context);
     }
 
@@ -797,7 +833,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -823,7 +859,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -847,7 +883,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -864,7 +900,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -882,7 +918,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -901,7 +937,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -921,7 +957,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -938,7 +974,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param containerGroup A container group.
+     * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -956,7 +992,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
+     * @param resource The container group resource with just the tags to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -988,6 +1024,7 @@ public final class ContainerGroupsClientImpl
         if (resource == null) {
             return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -999,8 +1036,9 @@ public final class ContainerGroupsClientImpl
                             resourceGroupName,
                             containerGroupName,
                             resource,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1008,7 +1046,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
+     * @param resource The container group resource with just the tags to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1041,6 +1079,7 @@ public final class ContainerGroupsClientImpl
         if (resource == null) {
             return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1050,6 +1089,7 @@ public final class ContainerGroupsClientImpl
                 resourceGroupName,
                 containerGroupName,
                 resource,
+                accept,
                 context);
     }
 
@@ -1058,7 +1098,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
+     * @param resource The container group resource with just the tags to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1083,7 +1123,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
+     * @param resource The container group resource with just the tags to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1099,7 +1139,7 @@ public final class ContainerGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
-     * @param resource The Resource model definition.
+     * @param resource The container group resource with just the tags to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1146,6 +1186,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1156,8 +1197,9 @@ public final class ContainerGroupsClientImpl
                             this.client.getApiVersion(),
                             resourceGroupName,
                             containerGroupName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1195,6 +1237,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1203,6 +1246,7 @@ public final class ContainerGroupsClientImpl
                 this.client.getApiVersion(),
                 resourceGroupName,
                 containerGroupName,
+                accept,
                 context);
     }
 
@@ -1394,6 +1438,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1404,8 +1449,9 @@ public final class ContainerGroupsClientImpl
                             this.client.getApiVersion(),
                             resourceGroupName,
                             containerGroupName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1443,6 +1489,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .restart(
@@ -1451,6 +1498,7 @@ public final class ContainerGroupsClientImpl
                 this.client.getApiVersion(),
                 resourceGroupName,
                 containerGroupName,
+                accept,
                 context);
     }
 
@@ -1630,6 +1678,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1640,8 +1689,9 @@ public final class ContainerGroupsClientImpl
                             this.client.getApiVersion(),
                             resourceGroupName,
                             containerGroupName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1678,6 +1728,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .stop(
@@ -1686,6 +1737,7 @@ public final class ContainerGroupsClientImpl
                 this.client.getApiVersion(),
                 resourceGroupName,
                 containerGroupName,
+                accept,
                 context);
     }
 
@@ -1768,6 +1820,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1778,8 +1831,9 @@ public final class ContainerGroupsClientImpl
                             this.client.getApiVersion(),
                             resourceGroupName,
                             containerGroupName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1816,6 +1870,7 @@ public final class ContainerGroupsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter containerGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .start(
@@ -1824,6 +1879,7 @@ public final class ContainerGroupsClientImpl
                 this.client.getApiVersion(),
                 resourceGroupName,
                 containerGroupName,
+                accept,
                 context);
     }
 
@@ -1976,8 +2032,15 @@ public final class ContainerGroupsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ContainerGroupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1987,7 +2050,7 @@ public final class ContainerGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2005,9 +2068,16 @@ public final class ContainerGroupsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2033,8 +2103,16 @@ public final class ContainerGroupsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ContainerGroupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2044,7 +2122,7 @@ public final class ContainerGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2063,9 +2141,16 @@ public final class ContainerGroupsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

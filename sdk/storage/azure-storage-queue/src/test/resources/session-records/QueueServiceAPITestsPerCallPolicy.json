@@ -4,19 +4,19 @@
     "Uri" : "https://REDACTED.queue.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2017-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "79f54e97-bafd-4f05-8678-42f6f1f91bbf"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "acd3cd3b-729c-4099-974e-065819836e3f"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2017-11-09",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "Cache-Control" : "no-cache",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "0cdd0226-a003-00a1-6b67-9b4aff000000",
+      "x-ms-request-id" : "34fa79a0-1003-0078-6409-4155d9000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><Logging><Version>1.0</Version><Read>false</Read><Write>true</Write><Delete>true</Delete><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></Logging><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Mon, 05 Oct 2020 22:35:51 GMT",
+      "Date" : "Tue, 04 May 2021 17:18:36 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null

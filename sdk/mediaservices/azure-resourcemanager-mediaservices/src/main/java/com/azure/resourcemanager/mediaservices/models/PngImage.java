@@ -26,14 +26,14 @@ public class PngImage extends Image {
      * A collection of output PNG image layers to be produced by the encoder.
      */
     @JsonProperty(value = "layers")
-    private List<Layer> layers;
+    private List<PngLayer> layers;
 
     /**
      * Get the layers property: A collection of output PNG image layers to be produced by the encoder.
      *
      * @return the layers value.
      */
-    public List<Layer> layers() {
+    public List<PngLayer> layers() {
         return this.layers;
     }
 
@@ -43,7 +43,7 @@ public class PngImage extends Image {
      * @param layers the layers value to set.
      * @return the PngImage object itself.
      */
-    public PngImage withLayers(List<Layer> layers) {
+    public PngImage withLayers(List<PngLayer> layers) {
         this.layers = layers;
         return this;
     }

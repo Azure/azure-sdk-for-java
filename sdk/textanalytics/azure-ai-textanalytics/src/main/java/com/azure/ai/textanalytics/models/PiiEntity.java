@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link PiiEntity} model.
  */
+@Immutable
 public final class PiiEntity {
     /*
      * PiiEntity text as appears in the request.
@@ -71,7 +73,7 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the text property: PII entity text as appears in the request.
+     * Gets the text property: PII entity text as appears in the request.
      *
      * @return The {@code text} value.
      */
@@ -80,7 +82,7 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the category property: Categorized entity category, such as Person/Location/Org/SSN etc.
+     * Gets the category property: Categorized entity category, such as Person/Location/Org/SSN etc.
      *
      * @return The {@code category} value.
      */
@@ -89,7 +91,7 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the subcategory property: Categorized entity subcategory, such as Medical/Stock exchange/Sports etc.
+     * Gets the subcategory property: Categorized entity subcategory, such as Medical/Stock exchange/Sports etc.
      *
      * @return The {@code subcategory} value.
      */
@@ -98,7 +100,7 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the score property: Confidence score between 0 and 1 of the recognized entity.
+     * Gets the score property: Confidence score between 0 and 1 of the recognized entity.
      *
      * @return The {@code confidenceScore} value.
      */
@@ -107,7 +109,7 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the offset property: the start position for the entity text.
+     * Gets the offset property: the start position for the entity text.
      *
      * @return The {@code offset} value.
      */
@@ -116,7 +118,7 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the length of entity text.
+     * Gets the length of entity text.
      *
      * @return The length of entity text.
      */

@@ -58,6 +58,7 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     private FeedRangeInternal feedRange;
     private Range<String> effectiveRange;
+    private int numberOfItemsInBatchRequest;
 
     private byte[] contentAsByteArray;
 
@@ -1105,4 +1106,12 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     public String getThroughputControlGroupName() { return this.throughputControlGroupName; }
+
+    public int getNumberOfItemsInBatchRequest() {
+        return numberOfItemsInBatchRequest;
+    }
+
+    public void setNumberOfItemsInBatchRequest(int numberOfItemsInBatchRequest) {
+        this.numberOfItemsInBatchRequest = numberOfItemsInBatchRequest;
+    }
 }

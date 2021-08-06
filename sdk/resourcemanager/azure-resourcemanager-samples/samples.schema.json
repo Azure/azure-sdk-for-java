@@ -16,7 +16,7 @@
         "properties": {
           "filePath": {
             "type": "string",
-            "pattern": "^azure-samples/src/main/java/com/microsoft/azure/management/([a-zA-Z]+)/samples/([a-zA-Z0-9]+).java$",
+            "pattern": "^azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/([a-zA-Z]+)/samples/([a-zA-Z0-9]+).java$",
             "description": "The path to the sample's Java source code, relative to the local azure-sdk-for-java repository."
           },
           "owner": {
@@ -30,7 +30,8 @@
               "lenala",
               "martinsawicki",
               "milismsft",
-              "selvasingh"
+              "selvasingh",
+              "yungezz"
             ],
             "description": "The GitHub username of the owner of this sample."
           },

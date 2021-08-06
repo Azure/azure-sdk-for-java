@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1b9a203811b9a20386d9541857ff3600c17394d0d9e5?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-blob-nio/12.0.0-beta.7 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9ba96add-c757-48d9-adb0-8d70ac7819ca"
+    },
+    "Response" : {
+      "content-length" : "762",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "bb2fcdb5-301e-006d-29b9-417efa000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:bb2fcdb5-301e-006d-29b9-417efa000000\nTime:2021-05-05T14:20:49.3149150Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'WVED/mQs5TAdWcrIk9CPFnnz/GRFTmLZ28kxZQYEJ0U=' is not the same as any computed signature. Server used following string to sign: 'GET\n\n\n\n\n\nWed, 05 May 2021 14:20:48 GMT\n\n\n\n\n\nx-ms-client-request-id:9ba96add-c757-48d9-adb0-8d70ac7819ca\nx-ms-version:2020-06-12\n/kasobolcanadacentral/1b9a203811b9a20386d9541857ff3600c17394d0d9e5\nrestype:container'.</AuthenticationErrorDetail></Error>",
+      "Date" : "Wed, 05 May 2021 14:20:48 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=1b9a2038",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2f28a02e-30df-4c09-ad07-f3b709b703a9"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "b8778595-a01e-0040-2bb9-41cd89000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\"><Prefix>1b9a2038</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "2f28a02e-30df-4c09-ad07-f3b709b703a9",
+      "Date" : "Wed, 05 May 2021 14:20:48 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "1b9a203801b9a20386d957796f1ec6076b7eb4053b95", "1b9a203811b9a20386d9541857ff3600c17394d0d9e5" ]
+}

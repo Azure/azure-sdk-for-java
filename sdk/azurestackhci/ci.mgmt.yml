@@ -2,26 +2,32 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/azurestackhci/
+      - sdk/azurestackhci/ci.mgmt.yml
+      - sdk/azurestackhci/mgmt-v2020_10_01/
+    exclude:
+      - sdk/azurestackhci/pom.xml
+      - sdk/azurestackhci/mgmt-v2020_10_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/azurestackhci/
+      - sdk/azurestackhci/ci.mgmt.yml
+      - sdk/azurestackhci/mgmt-v2020_10_01/
+    exclude:
+      - sdk/azurestackhci/pom.xml
+      - sdk/azurestackhci/mgmt-v2020_10_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

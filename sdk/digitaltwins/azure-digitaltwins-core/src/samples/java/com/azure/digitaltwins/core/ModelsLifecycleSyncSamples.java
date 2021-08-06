@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.policy.HttpLogOptions;
@@ -46,10 +49,14 @@ public class ModelsLifecycleSyncSamples {
         runModelLifecycleSample();
     }
 
-    public static Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> {
-        int randInt = new Random().nextInt(maxLength);
-        return String.valueOf(randInt);
-    };
+    private static Function<Integer, String> randomIntegerStringGenerator;
+
+    static {
+        randomIntegerStringGenerator = (maxLength) -> {
+            int randInt = new Random().nextInt(maxLength);
+            return String.valueOf(randInt);
+        };
+    }
 
     public static void runModelLifecycleSample() {
         // For the purpose of this sample we will create temporary models using random model Ids and then decommission a model.
@@ -70,13 +77,11 @@ public class ModelsLifecycleSyncSamples {
             client.createModels(new ArrayList<>(Arrays.asList(newComponentModelPayload, newModelPayload)));
 
             ConsoleLogger.print("Created models " + componentModelId + " and " + sampleModelId);
-        }
-        catch (ErrorResponseException ex) {
+        } catch (ErrorResponseException ex) {
             if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
                 ConsoleLogger.printWarning("One or more models already existed");
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ConsoleLogger.printFatal("Failed to create models due to: \n" + ex);
             System.exit(0);
         }
@@ -86,8 +91,7 @@ public class ModelsLifecycleSyncSamples {
         try {
             DigitalTwinsModelData sampleModelResponse = client.getModel(sampleModelId);
             ConsoleLogger.print("Retrieved model " + sampleModelResponse.getModelId());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ConsoleLogger.printFatal("Failed to get the model due to:\n" + ex);
             System.exit(0);
         }
@@ -98,9 +102,8 @@ public class ModelsLifecycleSyncSamples {
             client.decommissionModel(sampleModelId);
             client.decommissionModel(componentModelId);
 
-            ConsoleLogger.print("Decommissioned "+ sampleModelId + " and " + componentModelId);
-        }
-        catch (Exception ex) {
+            ConsoleLogger.print("Decommissioned " + sampleModelId + " and " + componentModelId);
+        } catch (Exception ex) {
             ConsoleLogger.printFatal("Failed to decommission models due to:\n" + ex);
             System.exit(0);
         }
@@ -111,9 +114,8 @@ public class ModelsLifecycleSyncSamples {
             client.deleteModel(sampleModelId);
             client.deleteModel(componentModelId);
 
-            ConsoleLogger.print("Deleted "+ sampleModelId + " and " + componentModelId);
-        }
-        catch (Exception ex) {
+            ConsoleLogger.print("Deleted " + sampleModelId + " and " + componentModelId);
+        } catch (Exception ex) {
             ConsoleLogger.printFatal("Failed to deleteModel models due to:\n" + ex);
             System.exit(0);
         }

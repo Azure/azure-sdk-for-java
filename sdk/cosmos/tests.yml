@@ -3,11 +3,17 @@ trigger: none
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
   - name: AdditionalArgs
-    value: ''
+    value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
+      CloudConfig:
+        Cosmos_Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      Clouds: 'Cosmos_Public'
       MatrixConfigs:
         - Name: Cosmos_live_test
           Path: sdk/cosmos/platform-matrix.json
@@ -27,12 +33,18 @@ stages:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       TestStepMavenInputs:
         goals: verify
-        options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
+        options: '$(DefaultTestOptions) $(ProfileFlag) $(AdditionalArgs)'
+        mavenOptions: '$(DefaultTestMavenOptions)'
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       TestName: 'Integration'
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
       MatrixConfigs:
         - Name: Cosmos_live_test_integration
           Path: sdk/cosmos/integration-matrix.json
@@ -48,12 +60,5 @@ stages:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       TestStepMavenInputs:
         goals: clean verify
-        options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
-
-  - ${{ if or(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest')) }}:
-    - template: /sdk/cosmos/ci.spark.databricks.yml
-      parameters:
-        CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
-        CosmosKey: $(spark-databricks-cosmos-key)
-        DatabricksEndpoint: $(spark-databricks-endpoint)
-        DatabricksToken: $(spark-databricks-token)
+        options: '$(DefaultTestOptions) $(ProfileFlag)'
+        mavenOptions: '$(DefaultTestMavenOptions)'

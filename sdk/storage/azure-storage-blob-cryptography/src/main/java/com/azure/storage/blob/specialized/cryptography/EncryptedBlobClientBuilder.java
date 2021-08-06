@@ -32,6 +32,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
@@ -124,6 +125,7 @@ public final class EncryptedBlobClientBuilder {
     private String keyWrapAlgorithm;
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
+    private EncryptionScope encryptionScope;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -172,8 +174,8 @@ public final class EncryptedBlobClientBuilder {
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
-            serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, keyWrapper,
-            keyWrapAlgorithm, versionId);
+            serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
+            keyWrapper, keyWrapAlgorithm, versionId);
     }
 
 
@@ -346,7 +348,8 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
@@ -641,6 +644,22 @@ public final class EncryptedBlobClientBuilder {
                 .setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
+     *
+     * @param encryptionScope Encryption scope containing the encryption key information.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder encryptionScope(String encryptionScope) {
+        if (encryptionScope == null) {
+            this.encryptionScope = null;
+        } else {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
 
         return this;

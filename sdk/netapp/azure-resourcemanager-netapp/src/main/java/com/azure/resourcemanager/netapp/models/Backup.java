@@ -76,11 +76,11 @@ public interface Backup {
     String label();
 
     /**
-     * Gets the backupType property: Type of backup adhoc or scheduled.
+     * Gets the backupType property: Type of backup Manual or Scheduled.
      *
      * @return the backupType value.
      */
-    String backupType();
+    BackupType backupType();
 
     /**
      * Gets the failureReason property: Failure reason.
@@ -95,6 +95,14 @@ public interface Backup {
      * @return the volumeName value.
      */
     String volumeName();
+
+    /**
+     * Gets the useExistingSnapshot property: Manual backup an already existing snapshot. This will always be false for
+     * scheduled backups and true/false for manual backups.
+     *
+     * @return the useExistingSnapshot value.
+     */
+    Boolean useExistingSnapshot();
 
     /**
      * Gets the region of the resource.
@@ -165,7 +173,7 @@ public interface Backup {
          * The stage of the Backup definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithLabel {
+        interface WithCreate extends DefinitionStages.WithLabel, DefinitionStages.WithUseExistingSnapshot {
             /**
              * Executes the create request.
              *
@@ -191,6 +199,18 @@ public interface Backup {
              */
             WithCreate withLabel(String label);
         }
+        /** The stage of the Backup definition allowing to specify useExistingSnapshot. */
+        interface WithUseExistingSnapshot {
+            /**
+             * Specifies the useExistingSnapshot property: Manual backup an already existing snapshot. This will always
+             * be false for scheduled backups and true/false for manual backups.
+             *
+             * @param useExistingSnapshot Manual backup an already existing snapshot. This will always be false for
+             *     scheduled backups and true/false for manual backups.
+             * @return the next definition stage.
+             */
+            WithCreate withUseExistingSnapshot(Boolean useExistingSnapshot);
+        }
     }
     /**
      * Begins update for the Backup resource.
@@ -200,7 +220,7 @@ public interface Backup {
     Backup.Update update();
 
     /** The template for Backup update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithLabel {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithLabel, UpdateStages.WithUseExistingSnapshot {
         /**
          * Executes the update request.
          *
@@ -237,6 +257,18 @@ public interface Backup {
              * @return the next definition stage.
              */
             Update withLabel(String label);
+        }
+        /** The stage of the Backup update allowing to specify useExistingSnapshot. */
+        interface WithUseExistingSnapshot {
+            /**
+             * Specifies the useExistingSnapshot property: Manual backup an already existing snapshot. This will always
+             * be false for scheduled backups and true/false for manual backups.
+             *
+             * @param useExistingSnapshot Manual backup an already existing snapshot. This will always be false for
+             *     scheduled backups and true/false for manual backups.
+             * @return the next definition stage.
+             */
+            Update withUseExistingSnapshot(Boolean useExistingSnapshot);
         }
     }
     /**

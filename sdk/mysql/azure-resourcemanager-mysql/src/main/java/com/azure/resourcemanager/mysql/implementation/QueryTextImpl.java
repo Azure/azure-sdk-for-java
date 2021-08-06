@@ -4,16 +4,15 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.QueryTextInner;
 import com.azure.resourcemanager.mysql.models.QueryText;
 
 public final class QueryTextImpl implements QueryText {
     private QueryTextInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    QueryTextImpl(QueryTextInner innerObject, MySqlManager serviceManager) {
+    QueryTextImpl(QueryTextInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +41,7 @@ public final class QueryTextImpl implements QueryText {
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

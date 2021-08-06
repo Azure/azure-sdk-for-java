@@ -3397,7 +3397,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -3411,7 +3411,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -3425,7 +3425,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -3443,7 +3443,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -3502,7 +3502,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -3517,7 +3517,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -3532,7 +3532,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.
@@ -3551,7 +3551,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     * This operation can only run when the allocation state of the Pool is steady. When this operation runs, the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
      *
      * @param poolId The ID of the Pool from which you want to remove Compute Nodes.
      * @param nodeRemoveParameter The parameters for the request.

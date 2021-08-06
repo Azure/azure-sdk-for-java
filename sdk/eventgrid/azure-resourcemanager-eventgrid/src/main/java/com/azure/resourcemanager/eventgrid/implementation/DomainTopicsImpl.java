@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.DomainTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.DomainTopicInner;
 import com.azure.resourcemanager.eventgrid.models.DomainTopic;
@@ -21,9 +20,10 @@ public final class DomainTopicsImpl implements DomainTopics {
 
     private final DomainTopicsClient innerClient;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public DomainTopicsImpl(DomainTopicsClient innerClient, EventGridManager serviceManager) {
+    public DomainTopicsImpl(
+        DomainTopicsClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -96,7 +96,7 @@ public final class DomainTopicsImpl implements DomainTopics {
         return this.innerClient;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 }

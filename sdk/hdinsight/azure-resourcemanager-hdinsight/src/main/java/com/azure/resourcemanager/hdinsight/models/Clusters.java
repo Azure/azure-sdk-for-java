@@ -250,6 +250,64 @@ public interface Clusters {
         String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, Context context);
 
     /**
+     * The the async operation status.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param operationId The long running operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the azure async operation response.
+     */
+    AsyncOperationResult getAzureAsyncOperationStatus(String resourceGroupName, String clusterName, String operationId);
+
+    /**
+     * The the async operation status.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param operationId The long running operation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the azure async operation response.
+     */
+    Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(
+        String resourceGroupName, String clusterName, String operationId, Context context);
+
+    /**
+     * Updates the cluster identity certificate.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void updateIdentityCertificate(
+        String resourceGroupName, String clusterName, UpdateClusterIdentityCertificateParameters parameters);
+
+    /**
+     * Updates the cluster identity certificate.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The cluster configurations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void updateIdentityCertificate(
+        String resourceGroupName,
+        String clusterName,
+        UpdateClusterIdentityCertificateParameters parameters,
+        Context context);
+
+    /**
      * Executes script actions on the specified HDInsight cluster.
      *
      * @param resourceGroupName The name of the resource group.

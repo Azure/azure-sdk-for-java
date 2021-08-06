@@ -142,6 +142,12 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties.canonicalName")
     private String canonicalName;
 
+    /*
+     * Method of domain validation for free cert
+     */
+    @JsonProperty(value = "properties.domainValidationMethod")
+    private String domainValidationMethod;
+
     /**
      * Get the friendlyName property: Friendly name of the certificate.
      *
@@ -401,6 +407,33 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      */
     public CertificatePatchResource withCanonicalName(String canonicalName) {
         this.canonicalName = canonicalName;
+        return this;
+    }
+
+    /**
+     * Get the domainValidationMethod property: Method of domain validation for free cert.
+     *
+     * @return the domainValidationMethod value.
+     */
+    public String domainValidationMethod() {
+        return this.domainValidationMethod;
+    }
+
+    /**
+     * Set the domainValidationMethod property: Method of domain validation for free cert.
+     *
+     * @param domainValidationMethod the domainValidationMethod value to set.
+     * @return the CertificatePatchResource object itself.
+     */
+    public CertificatePatchResource withDomainValidationMethod(String domainValidationMethod) {
+        this.domainValidationMethod = domainValidationMethod;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CertificatePatchResource withKind(String kind) {
+        super.withKind(kind);
         return this;
     }
 

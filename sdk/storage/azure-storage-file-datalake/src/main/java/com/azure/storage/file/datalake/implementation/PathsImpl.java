@@ -44,6 +44,7 @@ import com.azure.storage.file.datalake.implementation.models.PathsLeaseResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsSetExpiryResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsUndeleteResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsUpdateResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
@@ -239,9 +240,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsSetAccessControlResponse> setAccessControl(
                 @HostParam("url") String url,
-                @QueryParam("action") String action,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-owner") String owner,
@@ -262,9 +263,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursive(
                 @HostParam("url") String url,
-                @QueryParam("action") String action,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @QueryParam("continuation") String continuation,
                 @QueryParam("mode") PathSetAccessControlRecursiveMode mode,
@@ -281,9 +282,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsFlushDataResponse> flushData(
                 @HostParam("url") String url,
-                @QueryParam("action") String action,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @QueryParam("position") Long position,
                 @QueryParam("retainUncommittedData") Boolean retainUncommittedData,
@@ -310,9 +311,9 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsAppendDataResponse> appendData(
                 @HostParam("url") String url,
-                @QueryParam("action") String action,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("action") String action,
                 @QueryParam("position") Long position,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("Content-Length") Long contentLength,
@@ -330,14 +331,29 @@ public final class PathsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<PathsSetExpiryResponse> setExpiry(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions,
                 @HeaderParam("x-ms-expiry-time") String expiresOn,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{filesystem}/{path}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        Mono<PathsUndeleteResponse> undelete(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @PathParam("path") String path,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-undelete-source") String undeleteSource,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -524,9 +540,9 @@ public final class PathsImpl {
 
     /**
      * Uploads data to be appended to a file, flushes (writes) previously uploaded data to a file, sets properties for a
-     * file or directory, or sets access control for a file or directory. Data can only be appended to a file. This
-     * operation supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob
-     * Service
+     * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
+     * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
+     * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
      * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
@@ -551,7 +567,7 @@ public final class PathsImpl {
      * @param continuation Optional. The number of paths processed with each invocation is limited. If the number of
      *     paths to be processed exceeds this limit, a continuation token is returned in the response header
      *     x-ms-continuation. When a continuation token is returned in the response, it must be percent-encoded and
-     *     specified in a subsequent invocation of setAcessControlRecursive operation.
+     *     specified in a subsequent invocation of setAccessControlRecursive operation.
      * @param forceFlag Optional. Valid for "SetAccessControlRecursive" operation. If set to false, the operation will
      *     terminate quickly on encountering user errors (4XX). If true, the operation will ignore user errors and
      *     proceed with the operation on other sub-entities of the directory. Continuation token will only be returned
@@ -1130,9 +1146,9 @@ public final class PathsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.setAccessControl(
                 this.client.getUrl(),
-                action,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                action,
                 timeout,
                 leaseId,
                 owner,
@@ -1150,7 +1166,7 @@ public final class PathsImpl {
     }
 
     /**
-     * Set the access control list for a path and subpaths.
+     * Set the access control list for a path and sub-paths.
      *
      * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
      *     POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX
@@ -1193,9 +1209,9 @@ public final class PathsImpl {
         final String accept = "application/json";
         return service.setAccessControlRecursive(
                 this.client.getUrl(),
-                action,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                action,
                 timeout,
                 continuation,
                 mode,
@@ -1322,9 +1338,9 @@ public final class PathsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.flushData(
                 this.client.getUrl(),
-                action,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                action,
                 timeout,
                 position,
                 retainUncommittedData,
@@ -1400,9 +1416,9 @@ public final class PathsImpl {
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.appendData(
                 this.client.getUrl(),
-                action,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                action,
                 position,
                 timeout,
                 contentLength,
@@ -1439,14 +1455,48 @@ public final class PathsImpl {
         final String accept = "application/json";
         return service.setExpiry(
                 this.client.getUrl(),
-                comp,
                 this.client.getFileSystem(),
                 this.client.getPath(),
+                comp,
                 timeout,
                 this.client.getVersion(),
                 requestId,
                 expiryOptions,
                 expiresOn,
+                accept,
+                context);
+    }
+
+    /**
+     * Undelete a path that was previously soft deleted.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
+     *     blob to undelete.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsUndeleteResponse> undeleteWithResponseAsync(
+            Integer timeout, String undeleteSource, String requestId, Context context) {
+        final String comp = "undelete";
+        final String accept = "application/json";
+        return service.undelete(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                this.client.getPath(),
+                comp,
+                timeout,
+                undeleteSource,
+                this.client.getVersion(),
+                requestId,
                 accept,
                 context);
     }

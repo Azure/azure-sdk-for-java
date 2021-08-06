@@ -13,9 +13,9 @@ import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.PageList
 import com.azure.storage.blob.sas.BlobSasPermission
-import com.azure.storage.blob.sas.BlobSasServiceVersion
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.Utility
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.implementation.SasImplUtils
 import com.azure.storage.common.sas.CommonSasQueryParameters
 import reactor.test.StepVerifier
@@ -68,7 +68,7 @@ class HelperTest extends APISpec {
 
     def "URLParser"() {
         when:
-        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + BlobSasServiceVersion.getLatest().getVersion() + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
 
         then:
         parts.getScheme() == "http"
@@ -77,7 +77,7 @@ class HelperTest extends APISpec {
         parts.getBlobName() == finalBlobName
         parts.getSnapshot() == "snapshot"
         parts.getCommonSasQueryParameters().getPermissions() == "r"
-        parts.getCommonSasQueryParameters().getVersion() == BlobSasServiceVersion.getLatest().getVersion()
+        parts.getCommonSasQueryParameters().getVersion() == Constants.SAS_SERVICE_VERSION
         parts.getCommonSasQueryParameters().getResource() == "c"
         parts.getCommonSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
 
@@ -103,7 +103,7 @@ class HelperTest extends APISpec {
         def sasValues = new BlobServiceSasSignatureValues(e, p)
 
         def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null)
-        def sas = implUtil.generateSas(primaryCredential, Context.NONE)
+        def sas = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
         parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true))
 
@@ -173,7 +173,6 @@ class HelperTest extends APISpec {
 
         then:
         StepVerifier.create(flux)
-            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data, 0, 9)) == 0}
             .verifyError(IllegalStateException.class)
     }
 

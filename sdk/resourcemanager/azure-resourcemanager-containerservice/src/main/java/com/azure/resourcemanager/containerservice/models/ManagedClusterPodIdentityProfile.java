@@ -22,6 +22,13 @@ public final class ManagedClusterPodIdentityProfile {
     private Boolean enabled;
 
     /*
+     * Customer consent for enabling AAD pod identity addon in cluster using
+     * Kubenet network plugin.
+     */
+    @JsonProperty(value = "allowNetworkPluginKubenet")
+    private Boolean allowNetworkPluginKubenet;
+
+    /*
      * User assigned pod identity settings.
      */
     @JsonProperty(value = "userAssignedIdentities")
@@ -50,6 +57,28 @@ public final class ManagedClusterPodIdentityProfile {
      */
     public ManagedClusterPodIdentityProfile withEnabled(Boolean enabled) {
         this.enabled = enabled;
+        return this;
+    }
+
+    /**
+     * Get the allowNetworkPluginKubenet property: Customer consent for enabling AAD pod identity addon in cluster using
+     * Kubenet network plugin.
+     *
+     * @return the allowNetworkPluginKubenet value.
+     */
+    public Boolean allowNetworkPluginKubenet() {
+        return this.allowNetworkPluginKubenet;
+    }
+
+    /**
+     * Set the allowNetworkPluginKubenet property: Customer consent for enabling AAD pod identity addon in cluster using
+     * Kubenet network plugin.
+     *
+     * @param allowNetworkPluginKubenet the allowNetworkPluginKubenet value to set.
+     * @return the ManagedClusterPodIdentityProfile object itself.
+     */
+    public ManagedClusterPodIdentityProfile withAllowNetworkPluginKubenet(Boolean allowNetworkPluginKubenet) {
+        this.allowNetworkPluginKubenet = allowNetworkPluginKubenet;
         return this;
     }
 

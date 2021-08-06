@@ -7,6 +7,7 @@ package com.azure.resourcemanager.iothub.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.iothub.models.ArmIdentity;
 import com.azure.resourcemanager.iothub.models.IotHubProperties;
 import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +38,12 @@ public final class IotHubDescriptionInner extends Resource {
      */
     @JsonProperty(value = "sku", required = true)
     private IotHubSkuInfo sku;
+
+    /*
+     * The managed identities for the IotHub.
+     */
+    @JsonProperty(value = "identity")
+    private ArmIdentity identity;
 
     /**
      * Get the etag property: The Etag field is *not* required. If it is provided in the response body, it must also be
@@ -100,6 +107,26 @@ public final class IotHubDescriptionInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the identity property: The managed identities for the IotHub.
+     *
+     * @return the identity value.
+     */
+    public ArmIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed identities for the IotHub.
+     *
+     * @param identity the identity value to set.
+     * @return the IotHubDescriptionInner object itself.
+     */
+    public IotHubDescriptionInner withIdentity(ArmIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public IotHubDescriptionInner withLocation(String location) {
@@ -129,6 +156,9 @@ public final class IotHubDescriptionInner extends Resource {
                     new IllegalArgumentException("Missing required property sku in model IotHubDescriptionInner"));
         } else {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

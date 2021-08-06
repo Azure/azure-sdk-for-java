@@ -4,16 +4,15 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.AdvisorInner;
 import com.azure.resourcemanager.mysql.models.Advisor;
 
 public final class AdvisorImpl implements Advisor {
     private AdvisorInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    AdvisorImpl(AdvisorInner innerObject, MySqlManager serviceManager) {
+    AdvisorImpl(AdvisorInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -38,7 +37,7 @@ public final class AdvisorImpl implements Advisor {
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

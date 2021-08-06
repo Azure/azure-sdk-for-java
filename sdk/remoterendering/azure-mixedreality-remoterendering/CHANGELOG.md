@@ -13,5 +13,5 @@ This is the initial release of Azure Mixed Reality RemoteRendering library. For 
 This is a Public Preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for Java GitHub repo](https://github.com/Azure/azure-sdk-for-java/issues).
 
 <!-- LINKS -->
-[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/remoterendering/azure-mixedreality-remoterendering/README.md
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/remoterendering/azure-mixedreality-remoterendering/src/samples/java/com/azure/mixedreality/remoterendering
+[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/remoterendering/azure-mixedreality-remoterendering/README.md
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/remoterendering/azure-mixedreality-remoterendering/src/samples/java/com/azure/mixedreality/remoterendering

@@ -63,6 +63,7 @@ class EventHubConnectionProcessorTest {
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         when(connection.getShutdownSignals()).thenReturn(shutdownSignalProcessor);
+        when(connection.closeAsync()).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -125,10 +126,9 @@ class EventHubConnectionProcessorTest {
         connection2Endpoint.next(AmqpEndpointState.ACTIVE);
 
         when(connection2.getEndpointStates()).thenReturn(connection2EndpointProcessor);
+        when(connection2.closeAsync()).thenReturn(Mono.empty());
 
         // Act & Assert
-
-        // Verify that we get the first connection.
         StepVerifier.create(processor)
             .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
             .expectNext(connection)

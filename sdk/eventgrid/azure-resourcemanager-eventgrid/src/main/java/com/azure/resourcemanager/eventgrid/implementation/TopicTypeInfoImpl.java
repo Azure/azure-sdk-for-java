@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeInfo;
@@ -16,9 +15,10 @@ import java.util.List;
 public final class TopicTypeInfoImpl implements TopicTypeInfo {
     private TopicTypeInfoInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    TopicTypeInfoImpl(TopicTypeInfoInner innerObject, EventGridManager serviceManager) {
+    TopicTypeInfoImpl(
+        TopicTypeInfoInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -81,7 +81,7 @@ public final class TopicTypeInfoImpl implements TopicTypeInfo {
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 }

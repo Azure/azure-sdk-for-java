@@ -14,9 +14,9 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
-  <name>Microsoft Azure SDK for Azure Table</name>
-  <description>This package contains the Microsoft Azure Table storage client library.</description>
+  <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+  <name>Microsoft Azure client library for Azure Tables</name>
+  <description>This package contains the client library for Microsoft Azure Tables.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -32,55 +32,57 @@ Licensed under the MIT License.
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common</artifactId>
-      <version>12.10.1</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.3</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.6.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -99,7 +101,6 @@ Licensed under the MIT License.
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
-                --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
                 --add-opens com.azure.data.tables/com.azure.data.tables=ALL-UNNAMED
                 --add-opens com.azure.data.tables/com.azure.data.tables.implementation=ALL-UNNAMED
                 --add-opens com.azure.data.tables/com.azure.data.tables.implementation.models=ALL-UNNAMED

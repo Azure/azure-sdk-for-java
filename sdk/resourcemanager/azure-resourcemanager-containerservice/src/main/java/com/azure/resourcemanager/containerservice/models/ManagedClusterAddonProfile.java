@@ -31,7 +31,7 @@ public final class ManagedClusterAddonProfile {
      * Information of user assigned identity used by this add-on.
      */
     @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
-    private UserAssignedIdentity identity;
+    private ManagedClusterAddonProfileIdentity identity;
 
     /**
      * Get the enabled property: Whether the add-on is enabled or not.
@@ -78,7 +78,7 @@ public final class ManagedClusterAddonProfile {
      *
      * @return the identity value.
      */
-    public UserAssignedIdentity identity() {
+    public ManagedClusterAddonProfileIdentity identity() {
         return this.identity;
     }
 

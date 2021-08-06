@@ -1,6 +1,81 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.4.0-beta.1 (Unreleased)
+
+### Bug Fixes
+
+- Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering
+  threads when a send link was remotely closed.
+
+## 2.3.0 (2021-07-01)
+
+### Features Added
+
+- Added `AmqpTransactionCoordinator` interface for transactions support.
+- Added support for sequence and value AMQP types in `AmqpMessageBody`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
+## 2.2.0 (2021-06-11)
+
+### New Features
+
+- Exposing CbsAuthorizationType.
+- Exposing ManagementNode that can perform management and metadata operations on an AMQP message broker.
+- AmqpConnection, AmqpSession, AmqpSendLink, and AmqpReceiveLink extend from AsyncCloseable.
+- Delivery outcomes and delivery states are added.
+
+### Bug Fixes
+
+- Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
+- Fixed a bug where ReactorExecutor did not dispose of its scheduler when "IO Sink was interrupted".
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.16.0` to `1.17.0`.
+- Upgraded `proton-j` from `0.33.4` to `0.33.8`.
+- Upgraded `qpid-proton-j-extensions` from `1.2.3` to `1.2.4`.
+
+## 2.0.6 (2021-05-24)
+### Bug Fixes
+- Fixed a bug that caused amqp connection not to retry when network error happened.
+
+## 2.0.5 (2021-05-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
+- Upgraded Reactor from `3.4.3` to `3.4.5`.
+
+## 2.2.0-beta.1 (2021-04-14)
+### New Features
+- Adding support for AMQP data types SEQUENCE and VALUE.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.15.0`.
+
+## 2.1.0-beta.1 (2021-03-26)
+### New Features
+- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
+
+## 2.0.4 (2021-04-12)
+
+### Bug Fixes
+
+- Fixed recovery of AMQP connection and receiver after a disconnect or a transient error occurs.
+- Closing AMQP sender/receiver when it is no longer authorized.
+- Fixed bug where the same endpoint state would not be emitted.
+- Decreased the number of duplicated and verbose logs.
+- Fixed NullPointerExceptions where there is no connection to initialize.
+- Fixed issue with contending threads trying to use the same drain loop via 'wip' in ReactorDispatcher.
+
+## 2.1.0-beta.1 (2021-03-26)
+
+### New Features
+- Exposes 'AmqpTransactionCoordinator' via AmqpSession.
+- Added API in interface 'AmqpSession.getOrCreateTransactionCoordinator()'.
 
 ## 2.0.3 (2021-03-09)
 
@@ -118,7 +193,7 @@
 - Fixes AMQP link handlers not to close associated sessions when they are closed.
 - Move to use Schedulers.single() because pushing to Qpid's reactor is not thread-safe.
 
-## 1.0.0-beta.8 (12-03-2019)
+## 1.0.0-beta.8 (2019-12-03)
 
 - Changed preview to beta.
 - Fixes authorization when using client credentials.
@@ -141,6 +216,7 @@
 - Updated CBS -> Cbs.
 - Added `AmqpEndpointStateUtil`.
 - Closed ReactorReceiver on errors or closures in link.
+
 
 ## 1.0.0-preview.7 (2019-11-04)
 

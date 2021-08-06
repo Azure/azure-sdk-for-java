@@ -4,12 +4,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
 /**
  * The name of sub resource for private link.
+ *
+ * It can be converted from {@link PrivateLinkResource#groupId()} via {@link #fromString(String)}.
  */
 public class PrivateLinkSubResourceName extends ExpandableStringEnum<PrivateLinkSubResourceName> {
 
@@ -57,6 +60,9 @@ public class PrivateLinkSubResourceName extends ExpandableStringEnum<PrivateLink
 
     /** Static value searchService (of cognitive search) for PrivateLinkSubResourceName. */
     public static final PrivateLinkSubResourceName SEARCH = fromString("searchService");
+
+    /** Static value redisCache (of Redis) for PrivateLinkSubResourceName. */
+    public static final PrivateLinkSubResourceName REDIS_CACHE = fromString("redisCache");
 
     /**
      * Creates or finds a PrivateLinkSubResourceName from its string representation.

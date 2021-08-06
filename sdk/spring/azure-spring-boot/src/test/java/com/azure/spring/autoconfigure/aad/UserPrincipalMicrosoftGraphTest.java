@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -37,14 +37,17 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserPrincipalMicrosoftGraphTest {
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(9519);
+
+    private WireMockRule wireMockRule;
 
     private String clientId;
     private String clientSecret;
@@ -65,17 +68,26 @@ public class UserPrincipalMicrosoftGraphTest {
             e.printStackTrace();
             userGroupsJson = null;
         }
-        Assert.assertNotNull(userGroupsJson);
+        assertNotNull(userGroupsJson);
     }
 
-    @Before
+    @BeforeAll
     public void setup() {
         accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
         properties = new AADAuthenticationProperties();
-        properties.setGraphMembershipUri("http://localhost:9519/memberOf");
+        properties.setGraphMembershipUri("http://localhost:8080/memberOf");
         endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
         clientId = "client";
         clientSecret = "pass";
+        wireMockRule = new WireMockRule(8080);
+        wireMockRule.start();
+    }
+
+    @AfterAll
+    public void close() {
+        if (wireMockRule.isRunning()) {
+            wireMockRule.shutdown();
+        }
     }
 
     @Test
@@ -83,7 +95,6 @@ public class UserPrincipalMicrosoftGraphTest {
         properties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         AzureADGraphClient graphClientMock = new AzureADGraphClient(clientId, clientSecret, properties,
             endpoints);
-
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
             .willReturn(aResponse()
@@ -118,12 +129,10 @@ public class UserPrincipalMicrosoftGraphTest {
 
             final UserPrincipal serializedPrincipal = (UserPrincipal) objectInputStream.readObject();
 
-            Assert.assertNotNull("Serialized UserPrincipal not null", serializedPrincipal);
-            Assert.assertFalse("Serialized UserPrincipal kid not empty",
-                StringUtils.isEmpty(serializedPrincipal.getKid()));
-            Assert.assertNotNull("Serialized UserPrincipal claims not null.", serializedPrincipal.getClaims());
-            Assert.assertTrue("Serialized UserPrincipal claims not empty.",
-                serializedPrincipal.getClaims().size() > 0);
+            assertNotNull(serializedPrincipal, "Serialized UserPrincipal not null");
+            assertTrue(StringUtils.hasText(serializedPrincipal.getKid()), "Serialized UserPrincipal kid not empty");
+            assertNotNull(serializedPrincipal.getClaims(), "Serialized UserPrincipal claims not null.");
+            assertTrue(serializedPrincipal.getClaims().size() > 0, "Serialized UserPrincipal claims not empty.");
         } finally {
             Files.deleteIfExists(tmpOutputFile.toPath());
         }

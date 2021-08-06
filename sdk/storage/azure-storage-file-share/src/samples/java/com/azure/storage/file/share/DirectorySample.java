@@ -13,7 +13,7 @@ import java.util.UUID;
  *  and how to get and set properties.
  */
 public class DirectorySample {
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_FILE_ENDPOINT");
     private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
 
     // This is the helper method to generate random name.

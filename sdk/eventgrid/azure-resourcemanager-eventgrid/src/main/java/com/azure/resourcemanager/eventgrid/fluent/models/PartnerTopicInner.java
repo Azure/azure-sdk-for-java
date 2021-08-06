@@ -7,11 +7,11 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicActivationState;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicProvisioningState;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -24,16 +24,16 @@ public class PartnerTopicInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerTopicInner.class);
 
     /*
-     * Identity information for the resource.
-     */
-    @JsonProperty(value = "identity")
-    private IdentityInfo identity;
-
-    /*
      * The system metadata relating to Partner Topic resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Identity information for the Partner Topic resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
 
     /*
      * Source associated with this partner topic. This represents a unique
@@ -73,7 +73,16 @@ public class PartnerTopicInner extends Resource {
     private String partnerTopicFriendlyDescription;
 
     /**
-     * Get the identity property: Identity information for the resource.
+     * Get the systemData property: The system metadata relating to Partner Topic resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the identity property: Identity information for the Partner Topic resource.
      *
      * @return the identity value.
      */
@@ -82,7 +91,7 @@ public class PartnerTopicInner extends Resource {
     }
 
     /**
-     * Set the identity property: Identity information for the resource.
+     * Set the identity property: Identity information for the Partner Topic resource.
      *
      * @param identity the identity value to set.
      * @return the PartnerTopicInner object itself.
@@ -90,15 +99,6 @@ public class PartnerTopicInner extends Resource {
     public PartnerTopicInner withIdentity(IdentityInfo identity) {
         this.identity = identity;
         return this;
-    }
-
-    /**
-     * Get the systemData property: The system metadata relating to Partner Topic resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -218,9 +218,6 @@ public class PartnerTopicInner extends Resource {
     public void validate() {
         if (identity() != null) {
             identity().validate();
-        }
-        if (systemData() != null) {
-            systemData().validate();
         }
     }
 }

@@ -20,7 +20,7 @@ process change events that occur in your Blob Storage account at a low cost.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-changefeed</artifactId>
-    <version>12.0.0-beta.5</version>
+    <version>12.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -240,7 +240,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source]: src
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-blob-changefeed/src/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-changefeed/src/samples/README.md
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
@@ -250,7 +250,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
+[identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [samples]: src/samples
 [cla]: https://cla.microsoft.com

@@ -14,7 +14,7 @@ import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
 import com.azure.security.attestation.models.PolicyCertificatesResponse;
 
-/** Initializes a new instance of the synchronous AttestationClient type. */
+/** Initializes a new instance of the synchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class PolicyCertificatesClient {
     private final PolicyCertificatesImpl serviceClient;
@@ -37,7 +37,7 @@ public final class PolicyCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyCertificatesResponse get() {
-        return this.serviceClient.get();
+        return PolicyCertificatesResponse.fromGenerated(serviceClient.get());
     }
 
     /**
@@ -51,7 +51,8 @@ public final class PolicyCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyCertificatesResponse> getWithResponse(Context context) {
-        return this.serviceClient.getWithResponse(context);
+        Response<com.azure.security.attestation.implementation.models.PolicyCertificatesResponse> response = serviceClient.getWithResponse(context);
+        return Utilities.generateResponseFromModelType(response, PolicyCertificatesResponse.fromGenerated(response.getValue()));
     }
 
     /**
@@ -65,7 +66,7 @@ public final class PolicyCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyCertificatesModifyResponse add(String policyCertificateToAdd) {
-        return this.serviceClient.add(policyCertificateToAdd);
+        return PolicyCertificatesModifyResponse.fromGenerated(serviceClient.add(policyCertificateToAdd));
     }
 
     /**
@@ -80,7 +81,8 @@ public final class PolicyCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyCertificatesModifyResponse> addWithResponse(String policyCertificateToAdd, Context context) {
-        return this.serviceClient.addWithResponse(policyCertificateToAdd, context);
+        Response<com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse> response = this.serviceClient.addWithResponse(policyCertificateToAdd, context);
+        return Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue()));
     }
 
     /**
@@ -95,7 +97,7 @@ public final class PolicyCertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyCertificatesModifyResponse remove(String policyCertificateToRemove) {
-        return this.serviceClient.remove(policyCertificateToRemove);
+        return PolicyCertificatesModifyResponse.fromGenerated(serviceClient.remove(policyCertificateToRemove));
     }
 
     /**
@@ -112,6 +114,8 @@ public final class PolicyCertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyCertificatesModifyResponse> removeWithResponse(
             String policyCertificateToRemove, Context context) {
-        return this.serviceClient.removeWithResponse(policyCertificateToRemove, context);
+        Response<com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse> response = this.serviceClient.removeWithResponse(policyCertificateToRemove, context);
+        return Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue()));
+
     }
 }

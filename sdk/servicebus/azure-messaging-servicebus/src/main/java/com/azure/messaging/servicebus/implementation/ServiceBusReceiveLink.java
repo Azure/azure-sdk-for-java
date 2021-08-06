@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.util.AsyncCloseable;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;
 
@@ -12,7 +13,7 @@ import java.time.OffsetDateTime;
 /**
  * Represents an AMQP receive link.
  */
-public interface ServiceBusReceiveLink extends AmqpReceiveLink {
+public interface ServiceBusReceiveLink extends AmqpReceiveLink, AsyncCloseable {
     /**
      * Gets the session id associated with the link.
      *

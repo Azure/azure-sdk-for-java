@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Specifies information about the operating system disk used by the virtual machine. &lt;br&gt;&lt;br&gt; For more
  * information about disks, see [About disks and VHDs for Azure virtual
- * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+ * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
  */
 @Fluent
 public final class OSDisk {
@@ -101,6 +101,18 @@ public final class OSDisk {
      */
     @JsonProperty(value = "managedDisk")
     private ManagedDiskParameters managedDisk;
+
+    /*
+     * Specifies whether OS Disk should be deleted or detached upon VM
+     * deletion. <br><br> Possible values: <br><br> **Delete** If this value is
+     * used, the OS disk is deleted when VM is deleted.<br><br> **Detach** If
+     * this value is used, the os disk is retained after VM is deleted.
+     * <br><br> The default value is set to **detach**. For an ephemeral OS
+     * Disk, the default value is set to **Delete**. User cannot change the
+     * delete option for ephemeral OS Disk.
+     */
+    @JsonProperty(value = "deleteOption")
+    private DiskDeleteOptionTypes deleteOption;
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk if
@@ -349,6 +361,34 @@ public final class OSDisk {
      */
     public OSDisk withManagedDisk(ManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion.
+     * &lt;br&gt;&lt;br&gt; Possible values: &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the OS disk is
+     * deleted when VM is deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the os disk is retained after
+     * VM is deleted. &lt;br&gt;&lt;br&gt; The default value is set to **detach**. For an ephemeral OS Disk, the default
+     * value is set to **Delete**. User cannot change the delete option for ephemeral OS Disk.
+     *
+     * @return the deleteOption value.
+     */
+    public DiskDeleteOptionTypes deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion.
+     * &lt;br&gt;&lt;br&gt; Possible values: &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the OS disk is
+     * deleted when VM is deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the os disk is retained after
+     * VM is deleted. &lt;br&gt;&lt;br&gt; The default value is set to **detach**. For an ephemeral OS Disk, the default
+     * value is set to **Delete**. User cannot change the delete option for ephemeral OS Disk.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withDeleteOption(DiskDeleteOptionTypes deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 

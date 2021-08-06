@@ -10,23 +10,24 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
-/** Specifies information about the gallery Image Definition that you want to update. */
+/** Specifies information about the gallery image definition that you want to update. */
 @JsonFlatten
 @Fluent
 public class GalleryImageUpdate extends UpdateResourceDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageUpdate.class);
 
     /*
-     * The description of this gallery Image Definition resource. This property
+     * The description of this gallery image definition resource. This property
      * is updatable.
      */
     @JsonProperty(value = "properties.description")
     private String description;
 
     /*
-     * The Eula agreement for the gallery Image Definition.
+     * The Eula agreement for the gallery image definition.
      */
     @JsonProperty(value = "properties.eula")
     private String eula;
@@ -66,14 +67,14 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     private HyperVGeneration hyperVGeneration;
 
     /*
-     * The end of life date of the gallery Image Definition. This property can
+     * The end of life date of the gallery image definition. This property can
      * be used for decommissioning purposes. This property is updatable.
      */
     @JsonProperty(value = "properties.endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * This is the gallery Image Definition identifier.
+     * This is the gallery image definition identifier.
      */
     @JsonProperty(value = "properties.identifier")
     private GalleryImageIdentifier identifier;
@@ -92,7 +93,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     private Disallowed disallowed;
 
     /*
-     * Describes the gallery Image Definition purchase plan. This is used by
+     * Describes the gallery image definition purchase plan. This is used by
      * marketplace images.
      */
     @JsonProperty(value = "properties.purchasePlan")
@@ -104,8 +105,14 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryImagePropertiesProvisioningState provisioningState;
 
+    /*
+     * A list of gallery image features.
+     */
+    @JsonProperty(value = "properties.features")
+    private List<GalleryImageFeature> features;
+
     /**
-     * Get the description property: The description of this gallery Image Definition resource. This property is
+     * Get the description property: The description of this gallery image definition resource. This property is
      * updatable.
      *
      * @return the description value.
@@ -115,7 +122,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the description property: The description of this gallery Image Definition resource. This property is
+     * Set the description property: The description of this gallery image definition resource. This property is
      * updatable.
      *
      * @param description the description value to set.
@@ -127,7 +134,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the eula property: The Eula agreement for the gallery Image Definition.
+     * Get the eula property: The Eula agreement for the gallery image definition.
      *
      * @return the eula value.
      */
@@ -136,7 +143,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the eula property: The Eula agreement for the gallery Image Definition.
+     * Set the eula property: The Eula agreement for the gallery image definition.
      *
      * @param eula the eula value to set.
      * @return the GalleryImageUpdate object itself.
@@ -253,7 +260,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the endOfLifeDate property: The end of life date of the gallery Image Definition. This property can be used
+     * Get the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
      * for decommissioning purposes. This property is updatable.
      *
      * @return the endOfLifeDate value.
@@ -263,7 +270,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the endOfLifeDate property: The end of life date of the gallery Image Definition. This property can be used
+     * Set the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
      * for decommissioning purposes. This property is updatable.
      *
      * @param endOfLifeDate the endOfLifeDate value to set.
@@ -275,7 +282,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the identifier property: This is the gallery Image Definition identifier.
+     * Get the identifier property: This is the gallery image definition identifier.
      *
      * @return the identifier value.
      */
@@ -284,7 +291,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the identifier property: This is the gallery Image Definition identifier.
+     * Set the identifier property: This is the gallery image definition identifier.
      *
      * @param identifier the identifier value to set.
      * @return the GalleryImageUpdate object itself.
@@ -337,7 +344,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the purchasePlan property: Describes the gallery Image Definition purchase plan. This is used by marketplace
+     * Get the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
      * images.
      *
      * @return the purchasePlan value.
@@ -347,7 +354,7 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the purchasePlan property: Describes the gallery Image Definition purchase plan. This is used by marketplace
+     * Set the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
      * images.
      *
      * @param purchasePlan the purchasePlan value to set.
@@ -365,6 +372,26 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      */
     public GalleryImagePropertiesProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the features property: A list of gallery image features.
+     *
+     * @return the features value.
+     */
+    public List<GalleryImageFeature> features() {
+        return this.features;
+    }
+
+    /**
+     * Set the features property: A list of gallery image features.
+     *
+     * @param features the features value to set.
+     * @return the GalleryImageUpdate object itself.
+     */
+    public GalleryImageUpdate withFeatures(List<GalleryImageFeature> features) {
+        this.features = features;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -393,6 +420,9 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
         }
         if (purchasePlan() != null) {
             purchasePlan().validate();
+        }
+        if (features() != null) {
+            features().forEach(e -> e.validate());
         }
     }
 }

@@ -74,7 +74,8 @@ public class FluentMethodNameCheck extends AbstractCheck {
                 // logs error if the @Fluent method has 'throws' at the method declaration.
                 if (token.findFirstToken(TokenTypes.LITERAL_THROWS) != null) {
                     log(token, String.format(
-                        "Fluent Method ''%s'' must not be declared to throw any checked exceptions"));
+                        "Fluent Method ''%s'' must not be declared to throw any checked exceptions.",
+                        token.findFirstToken(TokenTypes.IDENT).getText()));
                 }
                 break;
             default:

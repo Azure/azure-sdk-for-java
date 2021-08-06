@@ -6,6 +6,9 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -21,8 +24,11 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface StorageAccount
     extends GroupableResource<StorageManager, StorageAccountInner>,
-        Refreshable<StorageAccount>,
-        Updatable<StorageAccount.Update> {
+    Refreshable<StorageAccount>,
+    Updatable<StorageAccount.Update>,
+    SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection,
+    SupportsUpdatingPrivateEndpointConnection {
 
     /**
      * @return the status indicating whether the primary and secondary location of the storage account is available or
@@ -66,6 +72,9 @@ public interface StorageAccount
 
     /** @return the encryption statuses indexed by storage service type. */
     Map<StorageService, StorageAccountEncryptionStatus> encryptionStatuses();
+
+    /** @return whether infrastructure encryption for Azure Storage data is enabled. */
+    boolean infrastructureEncryptionEnabled();
 
     /**
      * @return access tier used for billing. Access tier cannot be changed more than once every 7 days (168 hours).
@@ -276,35 +285,75 @@ public interface StorageAccount
         /** The stage of a storage account definition allowing to specify encryption settings. */
         interface WithEncryption {
             /**
-             * Specifies that encryption needs be enabled for blob service.
+             * Enables the infrastructure encryption for double encryption of Azure Storage data.
              *
              * @return the next stage of storage account definition
              */
+            WithCreate withInfrastructureEncryption();
+
+            /**
+             * Specifies that encryption needs be enabled for blob service.
+             *
+             * @deprecated Azure Storage encryption cannot be disabled.
+             * @return the next stage of storage account definition
+             */
+            @Deprecated
             WithCreate withBlobEncryption();
 
             /**
              * Disables encryption for blob service.
              *
+             * @deprecated Azure Storage encryption cannot be disabled.
              * @return the next stage of storage account definition
              */
+            @Deprecated
             WithCreate withoutBlobEncryption();
 
             /**
              * Specifies that encryption needs be enabled for file service.
              *
+             * @deprecated Azure Storage encryption cannot be disabled.
              * @return the next stage of storage account definition
              */
+            @Deprecated
             WithCreate withFileEncryption();
 
             /**
              * Disables encryption for file service.
              *
+             * @deprecated Azure Storage encryption cannot be disabled.
              * @return he next stage of storage account definition
              */
+            @Deprecated
             WithCreate withoutFileEncryption();
 
             /**
+             * Specifies that table service uses an encryption key that is scoped to the account.
+             * Customer-managed key can then be enabled for table service.
+             *
+             * Refer to {@link Update#withEncryptionKeyFromKeyVault(String, String, String)} to enable customer-managed
+             * key.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate withTableAccountScopedEncryptionKey();
+
+            /**
+             * Specifies that queue service uses an encryption key that is scoped to the account.
+             * Customer-managed key can then be enabled for queue service.
+             *
+             * Refer to {@link Update#withEncryptionKeyFromKeyVault(String, String, String)} to enable customer-managed
+             * key.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate withQueueAccountScopedEncryptionKey();
+
+            /**
              * Specifies the KeyVault key to be used as encryption key.
+             *
+             * This requires managed service identity on storage account
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
              *
              * @param keyVaultUri the uri to KeyVault
              * @param keyName the KeyVault key name
@@ -582,33 +631,45 @@ public interface StorageAccount
             /**
              * Enables encryption for blob service.
              *
+             * @deprecated Azure Storage encryption cannot be disabled.
              * @return the next stage of storage account update
              */
+            @Deprecated
             Update withBlobEncryption();
 
             /**
              * Enables encryption for file service.
              *
+             * @deprecated Azure Storage encryption cannot be disabled.
              * @return he next stage of storage account update
              */
+            @Deprecated
             Update withFileEncryption();
 
             /**
              * Disables encryption for blob service.
              *
+             * @deprecated Azure Storage encryption cannot be disabled.
              * @return the next stage of storage account update
              */
+            @Deprecated
             Update withoutBlobEncryption();
 
             /**
              * Disables encryption for file service.
              *
+             * @deprecated Azure Storage encryption cannot be disabled.
              * @return he next stage of storage account update
              */
+            @Deprecated
             Update withoutFileEncryption();
 
             /**
              * Specifies the KeyVault key to be used as key for encryption.
+             *
+             * This requires managed service identity on storage account
+             * (via {@link WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()}),
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
              *
              * @param keyVaultUri the uri to KeyVault
              * @param keyName the KeyVault key name

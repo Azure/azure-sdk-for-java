@@ -34,9 +34,11 @@ public class HandlerTest {
         // Act & Assert
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> handler.onNext(EndpointState.ACTIVE))
+            .then(() -> {
+                handler.onNext(EndpointState.ACTIVE);
+                handler.onNext(EndpointState.ACTIVE);
+            })
             .expectNext(EndpointState.ACTIVE)
-            .then(() -> handler.onNext(EndpointState.ACTIVE))
             .then(handler::close)
             .expectNext(EndpointState.CLOSED)
             .verifyComplete();

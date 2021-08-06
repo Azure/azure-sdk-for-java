@@ -25,9 +25,9 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
   "Bulk Writer" can "upsert item" in  {
     val container = getContainer
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 5, bulkEnabled = true, Some(900))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-    val bulkWriter = new BulkWriter(container, writeConfig)
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -49,10 +49,127 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     }
   }
 
+  "Bulk Writer" can "delete items" in  {
+    val container = getContainer
+
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+
+    val items = mutable.Map[String, ObjectNode]()
+    for(_ <- 0 until 5000) {
+      val item = getItem(UUID.randomUUID().toString)
+      val id = item.get("id").textValue()
+      items += (id -> item)
+      bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    bulkWriter.flushAndClose()
+    val allItems = readAllItems()
+
+    allItems should have size items.size
+
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+    }
+
+    val deleteConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemDelete,
+      5,
+      bulkEnabled = true,
+      bulkMaxPendingOperations = Some(900))
+
+    val bulkDeleter = new BulkWriter(container, deleteConfig, DiagnosticsConfig(Option.empty))
+
+    for(i <- 0 until 5000) {
+      val item = allItems(i)
+      bulkDeleter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    bulkDeleter.flushAndClose()
+    val allItemsAfterDelete = readAllItems()
+
+    allItemsAfterDelete should have size 0
+  }
+
+  "Bulk Writer" can "delete only unmodified items" in  {
+    val container = getContainer
+
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+
+    val items = mutable.Map[String, ObjectNode]()
+    for(_ <- 0 until 5000) {
+      val item = getItem(UUID.randomUUID().toString)
+      val id = item.get("id").textValue()
+      items += (id -> item)
+      bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    bulkWriter.flushAndClose()
+    val allItems = readAllItems()
+
+    allItems should have size items.size
+
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+    }
+
+    val bulkUpdater = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+    }
+
+    for(i <- 0 until 10) {
+      val item = allItems(i)
+      item.put("propString", UUID.randomUUID().toString)
+      val id = item.get("id").textValue()
+      items.put(id, item)
+      bulkUpdater.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    bulkUpdater.flushAndClose()
+    val allItemsAfterUpdate = readAllItems()
+
+    allItemsAfterUpdate should have size items.size
+
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+    }
+
+    val deleteConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemDeleteIfNotModified,
+      5,
+      bulkEnabled = true,
+      bulkMaxPendingOperations = Some(900))
+
+    val bulkDeleter = new BulkWriter(container, deleteConfig, DiagnosticsConfig(Option.empty))
+
+    for(i <- 0 until 5000) {
+      val item = allItems(i)
+      bulkDeleter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    bulkDeleter.flushAndClose()
+    val allItemsAfterDelete = readAllItems()
+
+    allItemsAfterDelete should have size 10
+  }
+
   "Bulk Writer" can "create item with duplicates" in {
     val container = getContainer
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, Some(900))
-    val bulkWriter = new BulkWriter(container, writeConfig)
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
     for(i <- 0 until 5000) {

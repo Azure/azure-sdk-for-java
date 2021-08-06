@@ -13,6 +13,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
@@ -67,6 +68,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfluentAgreementResourceListResponse>> list(
             @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -77,6 +79,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfluentAgreementResourceInner>> create(
             @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ConfluentAgreementResourceInner body,
             @HeaderParam("Accept") String accept,
@@ -117,7 +120,14 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), accept, context))
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
             .<PagedResponse<ConfluentAgreementResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -127,7 +137,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -156,7 +166,12 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), accept, context)
+            .list(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -222,13 +237,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
     }
 
     /**
-     * Accept marketplace terms.
+     * Create Confluent Marketplace agreement in the subscription.
      *
-     * @param body Confluent Agreement resource.
+     * @param body Confluent Marketplace Agreement resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent Agreements Resource.
+     * @return agreement Terms definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfluentAgreementResourceInner>> createWithResponseAsync(
@@ -252,19 +267,26 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         return FluxUtil
             .withContext(
                 context ->
-                    service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                    service
+                        .create(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            body,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Accept marketplace terms.
+     * Create Confluent Marketplace agreement in the subscription.
      *
-     * @param body Confluent Agreement resource.
+     * @param body Confluent Marketplace Agreement resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent Agreements Resource.
+     * @return agreement Terms definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfluentAgreementResourceInner>> createWithResponseAsync(
@@ -286,17 +308,24 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), body, accept, context);
+        return service
+            .create(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                body,
+                accept,
+                context);
     }
 
     /**
-     * Accept marketplace terms.
+     * Create Confluent Marketplace agreement in the subscription.
      *
-     * @param body Confluent Agreement resource.
+     * @param body Confluent Marketplace Agreement resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent Agreements Resource.
+     * @return agreement Terms definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfluentAgreementResourceInner> createAsync(ConfluentAgreementResourceInner body) {
@@ -312,11 +341,11 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
     }
 
     /**
-     * Accept marketplace terms.
+     * Create Confluent Marketplace agreement in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent Agreements Resource.
+     * @return agreement Terms definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfluentAgreementResourceInner> createAsync() {
@@ -333,11 +362,11 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
     }
 
     /**
-     * Accept marketplace terms.
+     * Create Confluent Marketplace agreement in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent Agreements Resource.
+     * @return agreement Terms definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfluentAgreementResourceInner create() {
@@ -346,14 +375,14 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
     }
 
     /**
-     * Accept marketplace terms.
+     * Create Confluent Marketplace agreement in the subscription.
      *
-     * @param body Confluent Agreement resource.
+     * @param body Confluent Marketplace Agreement resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confluent Agreements Resource.
+     * @return agreement Terms definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfluentAgreementResourceInner> createWithResponse(
@@ -393,7 +422,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

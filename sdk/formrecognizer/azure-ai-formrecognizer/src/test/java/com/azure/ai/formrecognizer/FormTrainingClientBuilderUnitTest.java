@@ -14,6 +14,7 @@ import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Set;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.HTTPS_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
@@ -22,6 +23,7 @@ import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTP_LOCALHOST;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for Form Recognizer client builder
@@ -107,5 +109,35 @@ public class FormTrainingClientBuilderUnitTest {
         Exception exception = assertThrows(RuntimeException.class, () ->
             clientBuilder.buildClient().beginRecognizeContentFromUrl(VALID_URL).getFinalResult());
         assertEquals(exception.getMessage(), HTTPS_EXCEPTION_MESSAGE);
+    }
+
+    @Test
+    public void getDefaultLogOptions() {
+        final HttpLogOptions recognizerClientDefaultLogOptions = FormRecognizerClientBuilder.getDefaultLogOptions();
+        final HttpLogOptions trainingClientDefaultLogOptions = FormTrainingClientBuilder.getDefaultLogOptions();
+        assertEquals(HttpLogDetailLevel.NONE, recognizerClientDefaultLogOptions.getLogLevel());
+
+        final Set<String> allowedHeaderNames = recognizerClientDefaultLogOptions.getAllowedHeaderNames();
+        assertTrue(allowedHeaderNames.contains("Operation-Location"));
+        assertTrue(allowedHeaderNames.contains("Location"));
+        assertTrue(allowedHeaderNames.contains("x-envoy-upstream-service-time"));
+        assertTrue(allowedHeaderNames.contains("apim-request-id"));
+        assertTrue(allowedHeaderNames.contains("Strict-Transport-Security"));
+        assertTrue(allowedHeaderNames.contains("x-content-type-options"));
+        assertTrue(allowedHeaderNames.contains("ms-azure-ai-errorcode"));
+        assertTrue(allowedHeaderNames.contains("x-ms-cs-error-code"));
+
+        final Set<String> allowedQueryParamNames = recognizerClientDefaultLogOptions.getAllowedQueryParamNames();
+        assertTrue(allowedQueryParamNames.contains("includeTextDetails"));
+        assertTrue(allowedQueryParamNames.contains("locale"));
+        assertTrue(allowedQueryParamNames.contains("language"));
+        assertTrue(allowedQueryParamNames.contains("includeKeys"));
+        assertTrue(allowedQueryParamNames.contains("op"));
+        assertTrue(allowedQueryParamNames.contains("pages"));
+        assertTrue(allowedQueryParamNames.contains("readingOrder"));
+
+        assertEquals(recognizerClientDefaultLogOptions.getLogLevel(), trainingClientDefaultLogOptions.getLogLevel());
+        assertEquals(allowedHeaderNames, trainingClientDefaultLogOptions.getAllowedHeaderNames());
+        assertEquals(allowedQueryParamNames, trainingClientDefaultLogOptions.getAllowedQueryParamNames());
     }
 }

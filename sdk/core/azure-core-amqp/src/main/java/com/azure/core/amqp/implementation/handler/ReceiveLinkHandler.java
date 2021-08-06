@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
@@ -136,8 +137,16 @@ public class ReceiveLinkHandler extends LinkHandler {
                         logger.warning("connectionId[{}], entityPath[{}], linkName[{}], emitResult[{}] "
                                 + "Could not emit delivery. {}",
                             getConnectionId(), entityPath, linkName, emitResult, delivery);
+                        if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW
+                            && link.getLocalState() != EndpointState.CLOSED) {
+                            link.setCondition(new ErrorCondition(Symbol.getSymbol("delivery-buffer-overflow"),
+                                "Deliveries are not processed fast enough. Closing local link."));
+                            link.close();
 
-                        return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
+                            return true;
+                        } else {
+                            return false;
+                        }
                     });
                 }
             }

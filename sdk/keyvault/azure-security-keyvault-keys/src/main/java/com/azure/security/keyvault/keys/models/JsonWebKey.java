@@ -4,6 +4,9 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer;
+import com.azure.security.keyvault.keys.implementation.Base64UrlJsonSerializer;
+import com.azure.security.keyvault.keys.implementation.ByteExtensions;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

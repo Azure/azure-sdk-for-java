@@ -96,7 +96,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 final String continuationToken = documentFeedResponse.getContinuationToken();
-                final ChangeFeedState continuationState = ChangeFeedState.fromString(documentFeedResponse.getContinuationToken());
+                final ChangeFeedState continuationState = ChangeFeedState.fromString(continuationToken);
                 checkNotNull(continuationState, "Argument 'continuationState' must not be null.");
                 checkArgument(
                     continuationState

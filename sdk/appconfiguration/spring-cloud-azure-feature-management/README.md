@@ -1,4 +1,4 @@
-# Azure Spring cloud azure feature management client library for Java
+# Spring Cloud for Azure feature management client library for Java
 
 ## Key concepts
 
@@ -34,20 +34,18 @@ The feature management library supports application.yml or bootstrap.yml as a fe
 
 ```yaml
 feature-management:
-  feature-set:
-    features:
-      feature-t: false
-      feature-u:
-        enabled-for:
-          -
-            name: Random
-      feature-v:
-        enabled-for:
-          -
-            name: TimeWindow
-            parameters:
-              start: "Wed, 01 May 2019 13:59:59 GMT",
-              end: "Mon, 01 July 2019 00:00:00 GMT"
+  feature-t: false
+  feature-u:
+    enabled-for:
+      -
+        name: Random
+  feature-v:
+    enabled-for:
+      -
+        name: TimeWindow
+        parameters:
+          start: "Wed, 01 May 2019 13:59:59 GMT",
+          end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
 The `feature-management` section of the YAML document is used by convention to load feature flags. In the section above, we see that we have provided three different features. Features define their filters using the `enabled-for`  property. We can see that feature `feature-t` is set to false with no filters set. `feature-t` will always return false, this can also be done for true. `feature-u` which has only one feature filter `Random` which does not require any configuration so it only has the name property. `feature-v` it specifies a feature filter named `TimeWindow`. This is an example of a configurable feature filter. We can see in the example that the filter has a parameter's property. This is used to configure the filter. In this case, the start and end times for the feature to be active are configured.

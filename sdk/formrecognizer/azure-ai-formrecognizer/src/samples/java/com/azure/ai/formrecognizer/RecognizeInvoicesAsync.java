@@ -44,7 +44,7 @@ public class RecognizeInvoicesAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File invoice = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+        File invoice = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/invoices/sample_invoice.jpg");
         byte[] fileContent = Files.readAllBytes(invoice.toPath());
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeInvoicesPoller;
@@ -57,7 +57,6 @@ public class RecognizeInvoicesAsync {
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"

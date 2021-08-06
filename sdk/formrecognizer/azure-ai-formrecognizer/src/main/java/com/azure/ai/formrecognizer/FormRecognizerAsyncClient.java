@@ -20,7 +20,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
-import com.azure.ai.formrecognizer.models.RecognizeIdDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.implementation.Utility.detectContentType;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOperation;
@@ -54,8 +55,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt, business card, invoice and ID document data from input
- * documents, extracting layout information, analyzing custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
+ * input documents, extracting layout information, analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
@@ -237,16 +238,16 @@ public final class FormRecognizerAsyncClient {
 
             final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
                 = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
-            final boolean isFieldElementsIncluded = recognizeCustomFormsOptions.isFieldElementsIncluded();
+            final boolean isFieldElementsIncluded = finalRecognizeCustomFormsOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
                 finalRecognizeCustomFormsOptions.getPollInterval(),
                 streamActivationOperation(
                     contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
                         ContentType.fromString(contentType.toString()),
-                        form,
-                        length,
                         isFieldElementsIncluded,
                         finalRecognizeCustomFormsOptions.getPages(),
+                        form,
+                        length,
                         context)
                         .map(response ->
                             new FormRecognizerOperationResult(
@@ -334,7 +335,7 @@ public final class FormRecognizerAsyncClient {
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
                         finalRecognizeContentOptions.getReadingOrder() != null
                             ? com.azure.ai.formrecognizer.implementation.models.ReadingOrder.fromString(
-                                recognizeContentOptions.getReadingOrder().toString())
+                            finalRecognizeContentOptions.getReadingOrder().toString())
                             : null,
                         new SourcePath().setSource(formUrl),
                         context)
@@ -420,15 +421,15 @@ public final class FormRecognizerAsyncClient {
                 finalRecognizeContentOptions.getPollInterval(),
                 streamActivationOperation(
                     contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType,
-                        form,
-                        length,
                         finalRecognizeContentOptions.getPages(),
                         finalRecognizeContentOptions.getLanguage() == null
                             ? null : Language.fromString(finalRecognizeContentOptions.getLanguage().toString()),
                         finalRecognizeContentOptions.getReadingOrder() != null
                             ? com.azure.ai.formrecognizer.implementation.models.ReadingOrder.fromString(
-                            recognizeContentOptions.getReadingOrder().toString())
+                            finalRecognizeContentOptions.getReadingOrder().toString())
                             : null,
+                        form,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
@@ -603,11 +604,11 @@ public final class FormRecognizerAsyncClient {
                 streamActivationOperation(
                     (contentType -> service.analyzeReceiptAsyncWithResponseAsync(
                         contentType,
-                        receipt,
-                        length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         finalRecognizeReceiptsOptions.getPages(),
+                        receipt,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -686,7 +687,7 @@ public final class FormRecognizerAsyncClient {
             final boolean isFieldElementsIncluded = finalRecognizeBusinessCardsOptions.isFieldElementsIncluded();
             final FormRecognizerLocale localeInfo = finalRecognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
-                finalRecognizeBusinessCardsOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 urlActivationOperation(
                     () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
@@ -778,15 +779,15 @@ public final class FormRecognizerAsyncClient {
             final boolean isFieldElementsIncluded = finalRecognizeBusinessCardsOptions.isFieldElementsIncluded();
             final FormRecognizerLocale localeInfo = finalRecognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
-                recognizeBusinessCardsOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 streamActivationOperation(
                     (contentType -> service.analyzeBusinessCardAsyncWithResponseAsync(
                         contentType,
-                        businessCard,
-                        length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         finalRecognizeBusinessCardsOptions.getPages(),
+                        businessCard,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -806,70 +807,72 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
-     * model to extract key information from passports and US driver licenses.
-     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
      *
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string}
      *
-     * @param idDocumentUrl The source URL to the input ID Document.
+     * @param identityDocumentUrl The source URL to the input identity document.
      *
-     * @return A {@link PollerFlux} that polls the recognize ID document operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @return A {@link PollerFlux} that polls the recognize identity document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code idDocumentUrl} is null.
+     * @throws NullPointerException If {@code identityDocumentUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocumentsFromUrl(
-        String idDocumentUrl) {
-        return beginRecognizeIdDocumentsFromUrl(idDocumentUrl, null);
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl) {
+        return beginRecognizeIdentityDocumentsFromUrl(identityDocumentUrl, null);
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
-     * model to extract key information from passports and US driver licenses.
-     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string-RecognizeIdDocumentOptions}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions}
      *
-     * @param idDocumentUrl The source URL to the input ID Document.
-     * @param recognizeIdDocumentOptions The additional configurable {@link RecognizeIdDocumentOptions options}
-     * that may be passed when analyzing an ID document.
+     * @param identityDocumentUrl The source URL to the input identity document.
+     * @param recognizeIdentityDocumentOptions The additional configurable
+     * {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
      *
-     * @return A {@link PollerFlux} that polls the analyze ID document operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @return A {@link PollerFlux} that polls the analyze identity document operation until it has completed, has
+     * failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code idDocumentUrl} is null.
+     * @throws NullPointerException If {@code identityDocumentUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocumentsFromUrl(
-        String idDocumentUrl, RecognizeIdDocumentOptions recognizeIdDocumentOptions) {
-        return beginRecognizeIdDocumentsFromUrl(idDocumentUrl, recognizeIdDocumentOptions, Context.NONE);
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions) {
+        return beginRecognizeIdentityDocumentsFromUrl(identityDocumentUrl, recognizeIdentityDocumentOptions,
+            Context.NONE);
     }
 
-    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocumentsFromUrl(
-        String idDocumentUrl, RecognizeIdDocumentOptions recognizeIdDocumentOptions, Context context) {
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions,
+        Context context) {
         try {
-            Objects.requireNonNull(idDocumentUrl, "'idDocumentUrl' is required and cannot be null.");
+            Objects.requireNonNull(identityDocumentUrl, "'identityDocumentUrl' is required and cannot be null.");
 
-            final RecognizeIdDocumentOptions finalRecognizeIdDocumentOptions
-                = getRecognizeIDDocumentOptions(recognizeIdDocumentOptions);
-            final boolean isFieldElementsIncluded = finalRecognizeIdDocumentOptions.isFieldElementsIncluded();
+            final RecognizeIdentityDocumentOptions finalRecognizeIdentityDocumentOptions
+                = getRecognizeIdentityDocumentOptions(recognizeIdentityDocumentOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeIdentityDocumentOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                finalRecognizeIdDocumentOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 urlActivationOperation(
                     () -> service.analyzeIdDocumentAsyncWithResponseAsync(isFieldElementsIncluded,
-                        finalRecognizeIdDocumentOptions.getPages(),
-                        new SourcePath().setSource(idDocumentUrl),
+                        finalRecognizeIdentityDocumentOptions.getPages(),
+                        new SourcePath().setSource(identityDocumentUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
@@ -889,84 +892,86 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
-     * model to extract key information from passports and US driver licenses.
-     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
-     * Note that the {@code idDocument} passed must be replayable if retries are enabled (the default).
+     * Note that the {@code identityDocument} passed must be replayable if retries are enabled (the default).
      * In other words, the {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long}
      *
-     * @param idDocument The data of the document to recognize ID Document information from.
+     * @param identityDocument The data of the document to recognize identity document information from.
      * @param length The exact length of the data.
      *
-     * @return A {@link PollerFlux} that polls the recognize ID Document operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @return A {@link PollerFlux} that polls the recognize identity document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code idDocument} is null.
+     * @throws NullPointerException If {@code identityDocument} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocuments(
-        Flux<ByteBuffer> idDocument, long length) {
-        return beginRecognizeIdDocuments(idDocument, length, null);
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        Flux<ByteBuffer> identityDocument, long length) {
+        return beginRecognizeIdentityDocuments(identityDocument, length, null);
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
-     * model to extract key information from passports and US driver licenses.
-     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
-     * Note that the {@code idDocument} passed must be replayable if retries are enabled (the default).
+     * Note that the {@code identityDocument} passed must be replayable if retries are enabled (the default).
      * In other words, the {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long-RecognizeIdDocumentOptions}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long-RecognizeIdentityDocumentOptions}
      *
-     * @param idDocument The data of the document to recognize ID Document information from.
+     * @param identityDocument The data of the document to recognize identity document information from.
      * @param length The exact length of the data.
-     * @param recognizeIdDocumentOptions The additional configurable {@link RecognizeIdDocumentOptions options}
-     * that may be passed when analyzing an ID Document.
+     * @param recognizeIdentityDocumentOptions The additional configurable
+     * {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
      *
-     * @return A {@link PollerFlux} that polls the recognize ID Document operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @return A {@link PollerFlux} that polls the recognize identity document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code idDocument} is null.
+     * @throws NullPointerException If {@code identityDocument} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocuments(
-        Flux<ByteBuffer> idDocument, long length, RecognizeIdDocumentOptions recognizeIdDocumentOptions) {
-        return beginRecognizeIdDocuments(idDocument, length, recognizeIdDocumentOptions, Context.NONE);
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        Flux<ByteBuffer> identityDocument, long length,
+        RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions) {
+        return beginRecognizeIdentityDocuments(identityDocument, length, recognizeIdentityDocumentOptions,
+            Context.NONE);
     }
 
-    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocuments(
-        Flux<ByteBuffer> idDocument, long length, RecognizeIdDocumentOptions recognizeIdDocumentOptions,
-        Context context) {
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        Flux<ByteBuffer> identityDocument, long length,
+        RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions, Context context) {
         try {
-            Objects.requireNonNull(idDocument, "'idDocument' is required and cannot be null.");
-            final RecognizeIdDocumentOptions finalRecognizeIdDocumentOptions
-                = getRecognizeIDDocumentOptions(recognizeIdDocumentOptions);
-            final boolean isFieldElementsIncluded = finalRecognizeIdDocumentOptions.isFieldElementsIncluded();
+            Objects.requireNonNull(identityDocument, "'identityDocument' is required and cannot be null.");
+            final RecognizeIdentityDocumentOptions finalRecognizeIdentityDocumentOptions
+                = getRecognizeIdentityDocumentOptions(recognizeIdentityDocumentOptions);
+            final boolean isFieldElementsIncluded = finalRecognizeIdentityDocumentOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                finalRecognizeIdDocumentOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 streamActivationOperation(
                     (contentType -> service.analyzeIdDocumentAsyncWithResponseAsync(
                         contentType,
-                        idDocument,
-                        length,
                         isFieldElementsIncluded,
-                        finalRecognizeIdDocumentOptions.getPages(),
+                        finalRecognizeIdentityDocumentOptions.getPages(),
+                        identityDocument,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
-                    idDocument, finalRecognizeIdDocumentOptions.getContentType()),
+                    identityDocument, finalRecognizeIdentityDocumentOptions.getContentType()),
                 pollingOperation(resultId -> service.getAnalyzeIdDocumentResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
@@ -1129,7 +1134,7 @@ public final class FormRecognizerAsyncClient {
             final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
             final FormRecognizerLocale localeInfo  = finalRecognizeInvoicesOptions.getLocale();
             return new PollerFlux<>(
-                finalRecognizeInvoicesOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 urlActivationOperation(
                     () -> service.analyzeInvoiceAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
@@ -1223,15 +1228,15 @@ public final class FormRecognizerAsyncClient {
             final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
             final FormRecognizerLocale localeInfo  = finalRecognizeInvoicesOptions.getLocale();
             return new PollerFlux<>(
-                finalRecognizeInvoicesOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 streamActivationOperation(
                     (contentType -> service.analyzeInvoiceAsyncWithResponseAsync(
                         contentType,
-                        invoice,
-                        length,
                         isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
                         finalRecognizeInvoicesOptions.getPages(),
+                        invoice,
+                        length,
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -1275,8 +1280,8 @@ public final class FormRecognizerAsyncClient {
         return userProvidedOptions == null ? new RecognizeInvoicesOptions() : userProvidedOptions;
     }
 
-    private static RecognizeIdDocumentOptions getRecognizeIDDocumentOptions(
-        RecognizeIdDocumentOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new RecognizeIdDocumentOptions() : userProvidedOptions;
+    private static RecognizeIdentityDocumentOptions getRecognizeIdentityDocumentOptions(
+        RecognizeIdentityDocumentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeIdentityDocumentOptions() : userProvidedOptions;
     }
 }

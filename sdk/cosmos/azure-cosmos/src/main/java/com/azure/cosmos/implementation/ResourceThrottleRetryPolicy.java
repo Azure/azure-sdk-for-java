@@ -27,16 +27,41 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     // should we make this atomic int?
     private int currentAttemptCount;
     private Duration cumulativeRetryDelay;
+    private RetryContext retryContext;
+    private final boolean retryOnClientSideThrottledBatchRequests;
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime) {
-        this(maxAttemptCount, maxWaitTime, 1);
+    public ResourceThrottleRetryPolicy(
+        int maxAttemptCount,
+        Duration maxWaitTime,
+        RetryContext retryContext,
+        boolean retryOnClientSideThrottledBatchRequests) {
+
+        this(maxAttemptCount, maxWaitTime, retryOnClientSideThrottledBatchRequests);
+        this.retryContext = retryContext;
     }
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount) {
-        this(maxAttemptCount, DEFAULT_MAX_WAIT_TIME_IN_SECONDS, 1);
+    public ResourceThrottleRetryPolicy(
+        int maxAttemptCount,
+        Duration maxWaitTime,
+        boolean retryOnClientSideThrottledBatchRequests) {
+
+        this(maxAttemptCount, maxWaitTime, 1, retryOnClientSideThrottledBatchRequests);
     }
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, int backoffDelayFactor) {
+    public ResourceThrottleRetryPolicy(int maxAttemptCount, boolean retryOnClientSideThrottledBatchRequests) {
+        this(
+            maxAttemptCount,
+            DEFAULT_MAX_WAIT_TIME_IN_SECONDS,
+            1,
+            retryOnClientSideThrottledBatchRequests);
+    }
+
+    public ResourceThrottleRetryPolicy(
+        int maxAttemptCount,
+        Duration maxWaitTime,
+        int backoffDelayFactor,
+        boolean retryOnClientSideThrottledBatchRequests) {
+
         Utils.checkStateOrThrow(maxWaitTime.getSeconds() <= Integer.MAX_VALUE / 1000, "maxWaitTime", "maxWaitTime must not be larger than " + Integer.MAX_VALUE / 1000);
 
         this.maxAttemptCount = maxAttemptCount;
@@ -44,14 +69,30 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         this.maxWaitTime = maxWaitTime;
         this.currentAttemptCount = 0;
         this.cumulativeRetryDelay = Duration.ZERO;
+        this.retryOnClientSideThrottledBatchRequests = retryOnClientSideThrottledBatchRequests;
     }
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         Duration retryDelay = Duration.ZERO;
 
+        CosmosException dce = Utils.as(exception, CosmosException.class);
+        if (dce == null || !Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.TOO_MANY_REQUESTS)) {
+            logger.debug(
+                "Operation will NOT be retried - not a throttled request. Current attempt {}",
+                this.currentAttemptCount,
+                exception);
+            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
+        }
+
+        if (!retryOnClientSideThrottledBatchRequests &&
+            dce.getSubStatusCode() == HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE) {
+
+            return Mono.just(ShouldRetryResult.noRetry());
+        }
+
         if (this.currentAttemptCount < this.maxAttemptCount &&
-                (retryDelay = checkIfRetryNeeded(exception)) != null) {
+                (retryDelay = checkIfRetryNeeded(dce)) != null) {
             this.currentAttemptCount++;
             logger.debug(
                     "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {}",
@@ -82,6 +123,11 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         // no op
     }
 
+    @Override
+    public RetryContext getRetryContext() {
+        return this.retryContext;
+    }
+
     // if retry not needed reaturns null
     /// <summary>
     /// Returns True if the given exception <paramref name="exception"/> is retriable
@@ -89,13 +135,9 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     /// <param name="exception">Exception to examine</param>
     /// <param name="retryDelay">retryDelay</param>
     /// <returns>True if the exception is retriable; False otherwise</returns>
-    private Duration checkIfRetryNeeded(Exception exception) {
+    private Duration checkIfRetryNeeded(CosmosException dce) {
         Duration retryDelay = Duration.ZERO;
-
-        CosmosException dce = Utils.as(exception, CosmosException.class);
-
         if (dce != null){
-
             if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.TOO_MANY_REQUESTS))  {
                 retryDelay = dce.getRetryAfterDuration();
                 if (this.backoffDelayFactor > 1) {
@@ -107,7 +149,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                 {
                     if (retryDelay == Duration.ZERO){
                         // we should never reach here as BE should turn non-zero of retryDelay
-                        logger.trace("Received retryDelay of 0 with Http 429", exception);
+                        logger.trace("Received retryDelay of 0 with Http 429", dce);
                         retryDelay = DEFAULT_RETRY_IN_SECONDS;
                     }
 

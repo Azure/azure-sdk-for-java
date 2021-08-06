@@ -11,7 +11,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>spring-cloud-azure-feature-management-web</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-feature-management-web;current} -->
+  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-feature-management-web;current} -->
   <name>Spring Cloud Azure Feature Management Web</name>
   <description>Adds Feature Management into Spring Web</description>
 
@@ -19,18 +19,18 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.4.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.3.4</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-feature-management</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-feature-management;current} -->
+      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-feature-management;current} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
     Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -70,10 +70,10 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-feature-management:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-feature-management;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-feature-management:[1.4.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-feature-management;current} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-webmvc:[5.3.4]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-webmvc:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

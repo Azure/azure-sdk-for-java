@@ -20,8 +20,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalUtils;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import org.apache.commons.io.IOUtils;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import org.apache.commons.io.IOUtils;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -38,11 +38,10 @@ import java.util.UUID;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyMapOf;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public class FeedRangeTest {
@@ -262,11 +261,11 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         when(
             routingMapProviderMock.tryGetOverlappingRangesAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 eq(range),
                 anyBoolean(),
-                anyMapOf(String.class, Object.class)))
+                any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
         DocumentCollection collection = new DocumentCollection();
@@ -304,11 +303,11 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         when(
             routingMapProviderMock.tryGetOverlappingRangesAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 eq(range),
                 anyBoolean(),
-                anyMapOf(String.class, Object.class)))
+                any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
         DocumentCollection collection = new DocumentCollection();
@@ -377,11 +376,11 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         when(
             routingMapProviderMock.tryGetOverlappingRangesAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 eq(range),
                 anyBoolean(),
-                anyMapOf(String.class, Object.class)))
+                any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
         RxDocumentServiceRequest request = createMockRequest();
@@ -408,11 +407,11 @@ public class FeedRangeTest {
         Mockito
             .verify(routingMapProviderMock, Mockito.times(1))
             .tryGetOverlappingRangesAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 eq(range),
                 eq(false),
-                anyMapOf(String.class, Object.class));
+                any());
     }
 
     @Test(groups = "unit")
@@ -465,11 +464,11 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         when(
             routingMapProviderMock.tryGetPartitionKeyRangeByIdAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
-                anyMapOf(String.class, Object.class)))
+                any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
 
         DocumentCollection collection = new DocumentCollection();
@@ -498,11 +497,11 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         when(
             routingMapProviderMock.tryGetPartitionKeyRangeByIdAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
-                anyMapOf(String.class, Object.class)))
+                any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
 
         StepVerifier
@@ -551,11 +550,11 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         when(
             routingMapProviderMock.tryGetPartitionKeyRangeByIdAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
-                anyMapOf(String.class, Object.class)))
+                any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)));
 
@@ -592,11 +591,11 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         when(
             routingMapProviderMock.tryGetPartitionKeyRangeByIdAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
-                anyMapOf(String.class, Object.class)))
+                any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
 
@@ -622,11 +621,11 @@ public class FeedRangeTest {
         Mockito
             .verify(routingMapProviderMock, Mockito.times(2))
             .tryGetPartitionKeyRangeByIdAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
-                anyMapOf(String.class, Object.class));
+                any());
     }
 
     @Test(groups = "unit")
@@ -785,11 +784,11 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         when(
             routingMapProviderMock.tryGetOverlappingRangesAsync(
-                any(MetadataDiagnosticsContext.class),
-                anyString(),
+                any(),
+                any(),
                 any(),
                 anyBoolean(),
-                anyMapOf(String.class, Object.class)))
+                any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
         DocumentCollection collection = new DocumentCollection();

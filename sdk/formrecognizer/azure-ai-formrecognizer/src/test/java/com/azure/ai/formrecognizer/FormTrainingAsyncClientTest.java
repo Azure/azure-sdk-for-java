@@ -70,7 +70,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    void getFormRecognizerClientAndValidate(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void getFormRecognizerClientAndValidate(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         FormRecognizerAsyncClient formRecognizerClient = getFormTrainingAsyncClient(httpClient, serviceVersion)
             .getFormRecognizerAsyncClient();
         blankPdfDataRunner((data, dataLength) -> {
@@ -388,8 +388,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                     () -> client.beginCopyModel(actualModel.getModelId(), target, durationTestMode)
                         .getSyncPoller().getFinalResult());
-                FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                // assertTrue(formRecognizerException.getMessage().startsWith(COPY_OPERATION_FAILED_STATUS_MESSAGE));
+                assertTrue(formRecognizerException.getMessage().startsWith(
+                    FormRecognizerClientTestBase.COPY_OPERATION_FAILED_STATUS_MESSAGE));
             });
         });
     }
@@ -601,11 +601,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
 
-            CustomFormModel composedModel
-                = client.beginCreateComposedModel(
-                modelIdList,
-                    new CreateComposedModelOptions().setPollInterval(durationTestMode))
-                .getSyncPoller().getFinalResult();
+            CustomFormModel composedModel = client.beginCreateComposedModel(modelIdList,
+                new CreateComposedModelOptions()).setPollInterval(durationTestMode)
+                                                .getSyncPoller().getFinalResult();
 
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
@@ -644,13 +642,10 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
 
-            CustomFormModel composedModel
-                = client.beginCreateComposedModel(
-                modelIdList,
-                    new CreateComposedModelOptions()
-                    .setModelName("composedModelDisplayName")
-                    .setPollInterval(durationTestMode))
-                .getSyncPoller().getFinalResult();
+            CustomFormModel composedModel = client.beginCreateComposedModel(modelIdList,
+                new CreateComposedModelOptions().setModelName("composedModelDisplayName"))
+                                                .setPollInterval(durationTestMode)
+                                                .getSyncPoller().getFinalResult();
 
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
@@ -691,8 +686,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.beginCreateComposedModel(
                 modelIdList,
-                new CreateComposedModelOptions()
-                    .setPollInterval(durationTestMode)))
+                new CreateComposedModelOptions()).setPollInterval(durationTestMode))
                 .thenAwait()
                 .verifyErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
@@ -721,10 +715,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model1.getModelId());
             HttpResponseException httpResponseException
                 = assertThrows(HttpResponseException.class,
-                    () -> client.beginCreateComposedModel(
-                        modelIdList,
-                        new CreateComposedModelOptions()
-                            .setPollInterval(durationTestMode)).getSyncPoller().waitForCompletion());
+                    () -> client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions())
+                              .setPollInterval(durationTestMode)
+                              .getSyncPoller().waitForCompletion());
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId()).block();
@@ -781,9 +774,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     //     });
     // }
 
-    // /**
-    //  * Verifies the result contains the user defined model display name for unlabeled model.
-    //  */
+    /**
+     * Verifies the result contains the user defined model display name for unlabeled model.
+     */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginTrainingUnlabeledModelName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {

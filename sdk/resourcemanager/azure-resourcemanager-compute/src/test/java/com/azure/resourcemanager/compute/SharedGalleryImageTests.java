@@ -330,7 +330,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk-1")
                 .withNewVhd(30)
@@ -345,7 +345,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         //
-        deprovisionAgentInLinuxVM(virtualMachine.getPrimaryPublicIPAddress().fqdn(), 22, uname, password);
+        deprovisionAgentInLinuxVM(virtualMachine);
         virtualMachine.deallocate();
         virtualMachine.generalize();
         return virtualMachine;

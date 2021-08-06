@@ -9,12 +9,14 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
+import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** App Service plan. */
 @JsonFlatten
@@ -147,10 +149,17 @@ public class AppServicePlanInner extends Resource {
     private Integer targetWorkerSizeId;
 
     /*
-     * Provisioning state of the App Service Environment.
+     * Provisioning state of the App Service Plan.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Specification for the Kubernetes Environment to use for the App Service
+     * plan.
+     */
+    @JsonProperty(value = "properties.kubeEnvironmentProfile")
+    private KubeEnvironmentProfile kubeEnvironmentProfile;
 
     /*
      * Kind of resource.
@@ -490,12 +499,34 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the App Service Environment.
+     * Get the provisioningState property: Provisioning state of the App Service Plan.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
+     * plan.
+     *
+     * @return the kubeEnvironmentProfile value.
+     */
+    public KubeEnvironmentProfile kubeEnvironmentProfile() {
+        return this.kubeEnvironmentProfile;
+    }
+
+    /**
+     * Set the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
+     * plan.
+     *
+     * @param kubeEnvironmentProfile the kubeEnvironmentProfile value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withKubeEnvironmentProfile(KubeEnvironmentProfile kubeEnvironmentProfile) {
+        this.kubeEnvironmentProfile = kubeEnvironmentProfile;
+        return this;
     }
 
     /**
@@ -518,6 +549,20 @@ public class AppServicePlanInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AppServicePlanInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AppServicePlanInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -529,6 +574,9 @@ public class AppServicePlanInner extends Resource {
         }
         if (hostingEnvironmentProfile() != null) {
             hostingEnvironmentProfile().validate();
+        }
+        if (kubeEnvironmentProfile() != null) {
+            kubeEnvironmentProfile().validate();
         }
     }
 }

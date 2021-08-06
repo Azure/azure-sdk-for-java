@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.VirtualNetworkRulesClient;
 import com.azure.resourcemanager.mysql.fluent.models.VirtualNetworkRuleInner;
 import com.azure.resourcemanager.mysql.models.VirtualNetworkRule;
@@ -21,9 +20,10 @@ public final class VirtualNetworkRulesImpl implements VirtualNetworkRules {
 
     private final VirtualNetworkRulesClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public VirtualNetworkRulesImpl(VirtualNetworkRulesClient innerClient, MySqlManager serviceManager) {
+    public VirtualNetworkRulesImpl(
+        VirtualNetworkRulesClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -62,14 +62,14 @@ public final class VirtualNetworkRulesImpl implements VirtualNetworkRules {
 
     public PagedIterable<VirtualNetworkRule> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<VirtualNetworkRuleInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new VirtualNetworkRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VirtualNetworkRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VirtualNetworkRule> listByServer(
         String resourceGroupName, String serverName, Context context) {
         PagedIterable<VirtualNetworkRuleInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new VirtualNetworkRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VirtualNetworkRuleImpl(inner1, this.manager()));
     }
 
     public VirtualNetworkRule getById(String id) {
@@ -188,7 +188,7 @@ public final class VirtualNetworkRulesImpl implements VirtualNetworkRules {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 

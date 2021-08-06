@@ -6,6 +6,7 @@ package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Request payload for updating a chat message. */
 @Fluent
@@ -15,6 +16,12 @@ public final class UpdateChatMessageOptions {
      */
     @JsonProperty(value = "content")
     private String content;
+
+    /*
+     * Message metadata.
+     */
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /**
      * Get the content property: Chat message content.
@@ -33,6 +40,26 @@ public final class UpdateChatMessageOptions {
      */
     public UpdateChatMessageOptions setContent(String content) {
         this.content = content;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Message metadata.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Message metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the UpdateChatMessageOptions object itself.
+     */
+    public UpdateChatMessageOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

@@ -22,7 +22,7 @@ The identity package is used for managing users and tokens for Azure Communicati
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-identity</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.1</version>
 </dependency>
 ```
 
@@ -169,7 +169,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-identity
 [api_documentation]: https://aka.ms/java-docs
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-identity/src/samples/java/com/azure/communication/identity/ReadmeSamples.java
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-identity/src
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-identity/src/samples/java/com/azure/communication/identity/ReadmeSamples.java
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-identity/src
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-identity%2FREADME.png)

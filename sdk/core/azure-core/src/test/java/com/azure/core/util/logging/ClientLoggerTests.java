@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -76,7 +77,7 @@ public class ClientLoggerTests {
 
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = logCaptureStream.toString("UTF-8");
+        String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(logMessage));
     }
 
@@ -99,9 +100,9 @@ public class ClientLoggerTests {
 
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = logCaptureStream.toString("UTF-8");
+        String logValues = byteArraySteamToString(logCaptureStream);
         System.out.println(logValues);
-        assertEquals(true, logValues.contains(expectedMessage));
+        assertTrue(logValues.contains(expectedMessage));
     }
 
     @ParameterizedTest
@@ -117,7 +118,7 @@ public class ClientLoggerTests {
 
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = logCaptureStream.toString("UTF-8");
+        String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(logMessage));
     }
 
@@ -138,7 +139,7 @@ public class ClientLoggerTests {
         logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logMessage, runtimeException);
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = logCaptureStream.toString("UTF-8");
+        String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(logMessage + System.lineSeparator() + runtimeException.getMessage()));
         assertEquals(logContainsStackTrace, logValues.contains(runtimeException.getStackTrace()[0].toString()));
     }
@@ -163,7 +164,7 @@ public class ClientLoggerTests {
         }
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = logCaptureStream.toString("UTF-8");
+        String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage + System.lineSeparator()));
         assertEquals(logContainsStackTrace, logValues.contains(illegalStateException.getStackTrace()[0].toString()));
     }
@@ -188,7 +189,7 @@ public class ClientLoggerTests {
         }
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = logCaptureStream.toString("UTF-8");
+        String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage + System.lineSeparator()));
         assertEquals(logContainsStackTrace, logValues.contains(ioException.getStackTrace()[0].toString()));
     }
@@ -213,7 +214,7 @@ public class ClientLoggerTests {
         }
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = logCaptureStream.toString("UTF-8");
+        String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage + System.lineSeparator()));
         assertEquals(logContainsStackTrace, logValues.contains(illegalStateException.getStackTrace()[0].toString()));
     }
@@ -238,7 +239,7 @@ public class ClientLoggerTests {
         }
         setPropertyToOriginalOrClear(originalLogLevel);
 
-        String logValues = logCaptureStream.toString("UTF-8");
+        String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage + System.lineSeparator()));
         assertEquals(logContainsStackTrace, logValues.contains(ioException.getStackTrace()[0].toString()));
     }
@@ -323,6 +324,10 @@ public class ClientLoggerTests {
         throwable.setStackTrace(stackTraceElements);
 
         return throwable;
+    }
+
+    private static String byteArraySteamToString(ByteArrayOutputStream stream) throws UnsupportedEncodingException {
+        return stream.toString(StandardCharsets.UTF_8.name());
     }
 
     private static Stream<Arguments> singleLevelCheckSupplier() {

@@ -46,11 +46,6 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     private CommunicationUserIdentifier secondThreadMember;
 
     @Override
-    protected void beforeTest() {
-        super.beforeTest();
-    }
-
-    @Override
     protected void afterTest() {
         super.afterTest();
     }

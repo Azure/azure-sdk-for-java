@@ -10,19 +10,21 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesIdentityProfileValue;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
-import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -39,6 +41,12 @@ public class ManagedClusterInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private ManagedClusterSku sku;
+
+    /*
+     * The extended location of the Virtual Machine.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The identity of the managed cluster, if configured.
@@ -78,6 +86,13 @@ public class ManagedClusterInner extends Resource {
     private String dnsPrefix;
 
     /*
+     * FQDN subdomain specified when creating private cluster with custom
+     * private dns zone.
+     */
+    @JsonProperty(value = "properties.fqdnSubdomain")
+    private String fqdnSubdomain;
+
+    /*
      * FQDN for the master pool.
      */
     @JsonProperty(value = "properties.fqdn", access = JsonProperty.Access.WRITE_ONLY)
@@ -88,6 +103,12 @@ public class ManagedClusterInner extends Resource {
      */
     @JsonProperty(value = "properties.privateFQDN", access = JsonProperty.Access.WRITE_ONLY)
     private String privateFqdn;
+
+    /*
+     * FQDN for the master pool which used by proxy config.
+     */
+    @JsonProperty(value = "properties.azurePortalFQDN", access = JsonProperty.Access.WRITE_ONLY)
+    private String azurePortalFqdn;
 
     /*
      * Properties of the agent pool.
@@ -187,7 +208,26 @@ public class ManagedClusterInner extends Resource {
      * Identities associated with the cluster.
      */
     @JsonProperty(value = "properties.identityProfile")
-    private Map<String, UserAssignedIdentity> identityProfile;
+    private Map<String, ManagedClusterPropertiesIdentityProfileValue> identityProfile;
+
+    /*
+     * Private link resources associated with the cluster.
+     */
+    @JsonProperty(value = "properties.privateLinkResources")
+    private List<PrivateLinkResourceInner> privateLinkResources;
+
+    /*
+     * If set to true, getting static credential will be disabled for this
+     * cluster. Expected to only be used for AAD clusters.
+     */
+    @JsonProperty(value = "properties.disableLocalAccounts")
+    private Boolean disableLocalAccounts;
+
+    /*
+     * Configurations for provisioning the cluster with HTTP proxy servers.
+     */
+    @JsonProperty(value = "properties.httpProxyConfig")
+    private ManagedClusterHttpProxyConfig httpProxyConfig;
 
     /**
      * Get the sku property: The managed cluster SKU.
@@ -206,6 +246,26 @@ public class ManagedClusterInner extends Resource {
      */
     public ManagedClusterInner withSku(ManagedClusterSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: The extended location of the Virtual Machine.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the Virtual Machine.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -298,6 +358,28 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the fqdnSubdomain property: FQDN subdomain specified when creating private cluster with custom private dns
+     * zone.
+     *
+     * @return the fqdnSubdomain value.
+     */
+    public String fqdnSubdomain() {
+        return this.fqdnSubdomain;
+    }
+
+    /**
+     * Set the fqdnSubdomain property: FQDN subdomain specified when creating private cluster with custom private dns
+     * zone.
+     *
+     * @param fqdnSubdomain the fqdnSubdomain value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withFqdnSubdomain(String fqdnSubdomain) {
+        this.fqdnSubdomain = fqdnSubdomain;
+        return this;
+    }
+
+    /**
      * Get the fqdn property: FQDN for the master pool.
      *
      * @return the fqdn value.
@@ -313,6 +395,15 @@ public class ManagedClusterInner extends Resource {
      */
     public String privateFqdn() {
         return this.privateFqdn;
+    }
+
+    /**
+     * Get the azurePortalFqdn property: FQDN for the master pool which used by proxy config.
+     *
+     * @return the azurePortalFqdn value.
+     */
+    public String azurePortalFqdn() {
+        return this.azurePortalFqdn;
     }
 
     /**
@@ -627,7 +718,7 @@ public class ManagedClusterInner extends Resource {
      *
      * @return the identityProfile value.
      */
-    public Map<String, UserAssignedIdentity> identityProfile() {
+    public Map<String, ManagedClusterPropertiesIdentityProfileValue> identityProfile() {
         return this.identityProfile;
     }
 
@@ -637,8 +728,71 @@ public class ManagedClusterInner extends Resource {
      * @param identityProfile the identityProfile value to set.
      * @return the ManagedClusterInner object itself.
      */
-    public ManagedClusterInner withIdentityProfile(Map<String, UserAssignedIdentity> identityProfile) {
+    public ManagedClusterInner withIdentityProfile(
+        Map<String, ManagedClusterPropertiesIdentityProfileValue> identityProfile) {
         this.identityProfile = identityProfile;
+        return this;
+    }
+
+    /**
+     * Get the privateLinkResources property: Private link resources associated with the cluster.
+     *
+     * @return the privateLinkResources value.
+     */
+    public List<PrivateLinkResourceInner> privateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
+     * Set the privateLinkResources property: Private link resources associated with the cluster.
+     *
+     * @param privateLinkResources the privateLinkResources value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withPrivateLinkResources(List<PrivateLinkResourceInner> privateLinkResources) {
+        this.privateLinkResources = privateLinkResources;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAccounts property: If set to true, getting static credential will be disabled for this
+     * cluster. Expected to only be used for AAD clusters.
+     *
+     * @return the disableLocalAccounts value.
+     */
+    public Boolean disableLocalAccounts() {
+        return this.disableLocalAccounts;
+    }
+
+    /**
+     * Set the disableLocalAccounts property: If set to true, getting static credential will be disabled for this
+     * cluster. Expected to only be used for AAD clusters.
+     *
+     * @param disableLocalAccounts the disableLocalAccounts value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withDisableLocalAccounts(Boolean disableLocalAccounts) {
+        this.disableLocalAccounts = disableLocalAccounts;
+        return this;
+    }
+
+    /**
+     * Get the httpProxyConfig property: Configurations for provisioning the cluster with HTTP proxy servers.
+     *
+     * @return the httpProxyConfig value.
+     */
+    public ManagedClusterHttpProxyConfig httpProxyConfig() {
+        return this.httpProxyConfig;
+    }
+
+    /**
+     * Set the httpProxyConfig property: Configurations for provisioning the cluster with HTTP proxy servers.
+     *
+     * @param httpProxyConfig the httpProxyConfig value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withHttpProxyConfig(ManagedClusterHttpProxyConfig httpProxyConfig) {
+        this.httpProxyConfig = httpProxyConfig;
         return this;
     }
 
@@ -664,6 +818,9 @@ public class ManagedClusterInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
         if (identity() != null) {
             identity().validate();
@@ -720,6 +877,12 @@ public class ManagedClusterInner extends Resource {
                             e.validate();
                         }
                     });
+        }
+        if (privateLinkResources() != null) {
+            privateLinkResources().forEach(e -> e.validate());
+        }
+        if (httpProxyConfig() != null) {
+            httpProxyConfig().validate();
         }
     }
 }

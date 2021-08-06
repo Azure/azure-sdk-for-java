@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * The Azure Key Vault variant of the TrustManagerFactory.
  */
-public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
+public final class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
 
     /**
      * Stores the logger.
@@ -33,8 +33,10 @@ public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
     }
 
     @Override
+    //TODO: enable create KeyVaultTrustManager with ManagerFactoryParameters
     protected void engineInit(ManagerFactoryParameters spec) {
         LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", spec);
+        trustManagers.add(new KeyVaultTrustManager());
     }
 
     @Override

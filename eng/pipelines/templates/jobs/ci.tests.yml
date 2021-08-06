@@ -19,10 +19,10 @@ parameters:
     default: []
   - name: BuildOptions
     type: string
-    default: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
+    default: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
   - name: TestOptions
     type: string
-    default: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
+    default: '$(DefaultTestOptions) -Dparallel-test-playback -DAZURE_TEST_DEBUG=$(IsDebug)'
   - name: Matrix
     type: object
   - name: CloudConfig
@@ -55,43 +55,17 @@ jobs:
       - template: ../variables/globals.yml
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+      - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          AgentImage: $(OSVmImage)
-
-      - template: ../steps/cache-maven-repository.yml
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          CheckoutRecordings: true
+          SDKType: ${{ parameters.SDKType }}
 
       - template: ../steps/install-reporting-tools.yml
-        parameters:
-          Options: --batch-mode
-          MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
       - ${{ parameters.PreTestSteps }}
-
-      - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
-        inputs:
-          versionSpec: '3.6'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
-
-      - task: PythonScript@0
-        displayName: 'Set versions for source build'
-        inputs:
-          scriptPath: 'eng/versioning/set_versions.py'
-          arguments: '--build-type client --pst'
-        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
-
-      - task: PythonScript@0
-        displayName: 'Update versions for source build'
-        inputs:
-          scriptPath: 'eng/versioning/update_versions.py'
-          arguments: '--update-type library --build-type client --sr'
-        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
-
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: PythonScript@0
         # The root pom.xml contains both track 1, data, and track 2, client libraries.
@@ -110,7 +84,7 @@ jobs:
         displayName: 'Build for non-From Source run'
         inputs:
           mavenPomFile: pom.xml
-          options: ${{ parameters.BuildOptions }} -pl $(PLSkipOptions)$(ProjectList) -am
+          options: ${{ parameters.BuildOptions }} -pl $(ProjectList) -am
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
@@ -124,7 +98,7 @@ jobs:
         displayName: 'Run tests'
         inputs:
           mavenPomFile: pom.xml
-          options: ${{ parameters.TestOptions }} $(TestOptions) -pl $(PLSkipOptions)$(ProjectList) $(AdditionalOptions)
+          options: ${{ parameters.TestOptions }} $(TestOptions) $(AdditionalOptions)
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
@@ -174,7 +148,7 @@ jobs:
           mavenPomFile: ClientFromSourcePom.xml
           # For the From Source runs we don't want the -am switch as we don't care about running tests for our dependencies
           # but we do want the -amd switch because we want to run tests on things that depend on us.
-          options: ${{ parameters.TestOptions }} $(TestOptions) -pl $(PLSkipOptions)$(ProjectList) -amd -T 1C
+          options: ${{ parameters.TestOptions }} $(TestOptions) -amd -T 1C
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)

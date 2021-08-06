@@ -8,7 +8,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureContextAutoConfigurationTest {
 
@@ -33,14 +34,15 @@ public class AzureContextAutoConfigurationTest {
     @Test
     public void testWithoutAzureClass() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(AzureResourceManager.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AzureProperties.class));
+                          .run(context -> assertThat(context).doesNotHaveBean(AzureProperties.class));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testLocationRequiredWhenAutoCreateResources() {
         this.contextRunner.withPropertyValues(AZURE_PROPERTY_PREFIX + "resourceGroup=group1")
-            .withPropertyValues(AZURE_PROPERTY_PREFIX + "auto-create-resources=true")
-            .run(context -> context.getBean(AzureProperties.class));
+                          .withPropertyValues(AZURE_PROPERTY_PREFIX + "auto-create-resources=true")
+                          .run(context -> assertThrows(IllegalStateException.class,
+                              () -> context.getBean(AzureProperties.class)));
     }
 
     @Test
@@ -69,11 +71,11 @@ public class AzureContextAutoConfigurationTest {
     @Test
     public void testAutoConfigureEnabled() {
         this.contextRunner.withPropertyValues(AZURE_PROPERTY_PREFIX + "resource-group=rg1")
-            .withUserConfiguration(TestConfigurationWithResourceManager.class)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureProperties.class);
-                assertThat(context).hasSingleBean(AzureProfile.class);
-            });
+                          .withUserConfiguration(TestConfigurationWithResourceManager.class)
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(AzureProperties.class);
+                              assertThat(context).hasSingleBean(AzureProfile.class);
+                          });
     }
 
     @Configuration

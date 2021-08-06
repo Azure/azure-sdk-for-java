@@ -41,7 +41,7 @@ public class RecognizeBusinessCardAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/businessCards/businessCard.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
@@ -55,7 +55,6 @@ public class RecognizeBusinessCardAsync {
                 .flatMap(pollResponse -> {
                     if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED.equals(pollResponse.getStatus())) {
                         System.out.println("Polling completed successfully");
-                        // training completed successfully, retrieving final result.
                         return pollResponse.getFinalResult();
                     } else {
                         return Mono.error(

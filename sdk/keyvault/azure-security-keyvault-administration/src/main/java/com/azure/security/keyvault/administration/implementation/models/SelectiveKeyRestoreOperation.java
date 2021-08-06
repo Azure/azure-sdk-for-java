@@ -7,7 +7,7 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SelectiveKeyRestoreOperation model. */
+/** Selective Key Restore operation. */
 @Fluent
 public final class SelectiveKeyRestoreOperation {
     /*
