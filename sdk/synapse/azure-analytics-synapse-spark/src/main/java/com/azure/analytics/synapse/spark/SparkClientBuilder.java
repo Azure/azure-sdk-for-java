@@ -233,6 +233,9 @@ public final class SparkClientBuilder {
      * @return an instance of SparkClientImpl.
      */
     private SparkClientImpl buildInnerClient() {
+        if (livyApiVersion == null) {
+            this.livyApiVersion = "2019-11-01-preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }

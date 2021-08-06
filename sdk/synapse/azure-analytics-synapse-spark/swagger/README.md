@@ -42,3 +42,12 @@ required-parameter-client-methods: true
 credential-types: tokencredential
 credential-scopes: https://dev.azuresynapse.net/.default
 ```
+
+### Add x-ms-client-default to livyApiVersion
+```yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LivyApiVersion
+  transform: >
+    $["x-ms-client-default"] = $.default;
+```
