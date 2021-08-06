@@ -3,7 +3,7 @@
 Azure Confidential Ledger provides a service for logging to an immutable, tamper-proof ledger. As part of the [Azure Confidential Computing][azure_confidential_computing]
 portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Microsoft Research's [Confidential Consortium Framework][ccf].
 
-**Please rely heavily on the javadocs and our [Low-Level client docs][low_level_client] to use this library**
+**Please rely heavily on the javadocs and our [Http client docs][http_client] to use this library**
 
 [Source code][source_code] | [Package (Maven)][package] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -150,7 +150,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-security-confidentialledger
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/README.md
-[low_level_client]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
+[http_client]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [azure_resource_manager]: https://docs.microsoft.com/azure/azure-resource-manager/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
