@@ -1,5 +1,8 @@
 # Release History
 
+## 3.2.0-beta.1 (Unreleased)
+
+
 ## 3.1.2 (2021-07-08)
 ### Other changes
 - Updated test infrastructure to remove dependency on network call recorded data.

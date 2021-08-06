@@ -23,11 +23,18 @@
 /sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 /sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 
+
+# PRLabel: %Attestation
+/sdk/attestation/                                   @azure-sdk-write-attestation @larryosterman
+/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @larryosterman
+/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @larryosterman
+
 # PRLabel: %Batch
-/sdk/batch/                                         @xingwu1 @bgklein @matthchr
+/sdk/batch/                                         @xingwu1 @bgklein @gingi @paterasMSFT @dpwatrous
 
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/azure-communication-identity/    @petrsvihlik @martinbarnas-ms
 
 # PRLabel: %Container Registry
 /sdk/containerregistry/                             @pallavit @alzimmermsft @jianghaolu
@@ -49,10 +56,10 @@
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @saragluna @yiliuTo @chenrujun @backwind1233 @mbhaskar @stliu
 
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
+/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum @digimaun
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum @digimaun
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @srnagar @yijunxiems
@@ -74,7 +81,7 @@
 # PRLabel: %azure-spring
 /sdk/keyvault/azure-security-keyvault-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 
-/sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
+/sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @geneh @alongafni
 
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @joshfree @srnagar @lmolkova
@@ -98,7 +105,7 @@
 /sdk/servicebus/                                    @yvgopal @nemakam @ki1729 @conniey @yijunxiems
 
 # PRLabel: %Storage
-/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft
 
 # PRLabel: %Tables
 /sdk/tables/                                        @vcolin7 @conniey
@@ -118,9 +125,13 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz
-/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz
-/sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz
+/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
+/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
+/sdk/**/mgmt*/                                      @weidongxu-microsoft @yungezz
+
+# Quantum
+# PRLabel: %Azure Quantum
+/sdk/quantum/                                       @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
 
 ###########
 # Eng Sys
@@ -136,3 +147,6 @@
 
 /**/tests.yml                                       @benbp
 /**/ci.yml                                          @benbp
+
+# Add owners for notifications for specific pipelines
+/eng/pipelines/aggregate-reports.yml                @joshfree

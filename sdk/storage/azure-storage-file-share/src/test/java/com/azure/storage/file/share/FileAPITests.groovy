@@ -415,7 +415,6 @@ class FileAPITests extends APISpec {
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getContentLength() != null
         headers.getContentType() != null
-        headers.getContentRange() != null
         headers.getContentMd5() == null
         headers.getContentEncoding() == null
         headers.getCacheControl() == null
@@ -423,9 +422,10 @@ class FileAPITests extends APISpec {
         headers.getContentLanguage() == null
     }
 
+    @Unroll
     def "Download empty file"() {
         setup:
-        primaryFileClient.create(1)
+        primaryFileClient.create(fileSize)
 
         when:
         def outStream = new ByteArrayOutputStream()
@@ -434,8 +434,15 @@ class FileAPITests extends APISpec {
 
         then:
         notThrown(ShareStorageException)
-        result.length == 1
-        !result[0]
+        result.length == fileSize
+        if (fileSize > 0) {
+            assert !result[0]
+        }
+
+        where:
+        fileSize | _
+        0        | _
+        1        | _
     }
 
     /*

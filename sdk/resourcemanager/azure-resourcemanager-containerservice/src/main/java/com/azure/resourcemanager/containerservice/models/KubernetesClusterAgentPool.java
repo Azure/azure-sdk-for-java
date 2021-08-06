@@ -16,6 +16,9 @@ import java.util.Map;
 public interface KubernetesClusterAgentPool
     extends ChildResource<KubernetesCluster>, HasInnerModel<ManagedClusterAgentPoolProfile> {
 
+    /** @return the provisioning state of the agent pool */
+    String provisioningState();
+
     /** @return the number of agents (virtual machines) to host docker containers */
     int count();
 

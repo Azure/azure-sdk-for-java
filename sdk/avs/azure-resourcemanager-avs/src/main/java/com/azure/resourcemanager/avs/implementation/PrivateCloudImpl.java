@@ -117,6 +117,15 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         return this.innerModel().nsxtCertificateThumbprint();
     }
 
+    public List<String> externalCloudLinks() {
+        List<String> inner = this.innerModel().externalCloudLinks();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -218,6 +227,22 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         return this;
     }
 
+    public void rotateVcenterPassword() {
+        serviceManager.privateClouds().rotateVcenterPassword(resourceGroupName, privateCloudName);
+    }
+
+    public void rotateVcenterPassword(Context context) {
+        serviceManager.privateClouds().rotateVcenterPassword(resourceGroupName, privateCloudName, context);
+    }
+
+    public void rotateNsxtPassword() {
+        serviceManager.privateClouds().rotateNsxtPassword(resourceGroupName, privateCloudName);
+    }
+
+    public void rotateNsxtPassword(Context context) {
+        serviceManager.privateClouds().rotateNsxtPassword(resourceGroupName, privateCloudName, context);
+    }
+
     public AdminCredentials listAdminCredentials() {
         return serviceManager.privateClouds().listAdminCredentials(resourceGroupName, privateCloudName);
     }
@@ -240,11 +265,6 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
 
     public PrivateCloudImpl withSku(Sku sku) {
         this.innerModel().withSku(sku);
-        return this;
-    }
-
-    public PrivateCloudImpl withNetworkBlock(String networkBlock) {
-        this.innerModel().withNetworkBlock(networkBlock);
         return this;
     }
 
@@ -290,6 +310,11 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
 
     public PrivateCloudImpl withCircuit(Circuit circuit) {
         this.innerModel().withCircuit(circuit);
+        return this;
+    }
+
+    public PrivateCloudImpl withNetworkBlock(String networkBlock) {
+        this.innerModel().withNetworkBlock(networkBlock);
         return this;
     }
 

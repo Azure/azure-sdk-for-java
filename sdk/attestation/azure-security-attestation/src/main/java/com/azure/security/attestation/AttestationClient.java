@@ -9,27 +9,75 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
+import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.TpmAttestationRequest;
-import com.azure.security.attestation.models.TpmAttestationResponse;
 
-/** Initializes a new instance of the synchronous AttestationClient type. */
+/** Initializes a new instance of the synchronous AttestationClient object. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class AttestationClient {
-    private final AttestationsImpl serviceClient;
+    private final AttestationAsyncClient asyncClient;
 
     /**
      * Initializes an instance of Attestations client.
      *
      * @param serviceClient the service client implementation.
      */
-    AttestationClient(AttestationsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    AttestationClient(AttestationAsyncClient serviceClient) {
+        this.asyncClient = serviceClient;
     }
+
+    /**
+     * Retrieves the OpenId Metadata for this AttestationClient instance.
+     * @return Object containing the OpenId metadata configuration for this instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object getOpenIdMetadata() {
+        return asyncClient.getOpenIdMetadataWithResponse(Context.NONE)
+            .map(Response::getValue).block();
+    }
+
+    /**
+     * Retrieves the OpenId Metadata for this AttestationClient instance.
+     *
+     * @param context - Context for this operation.
+     * @return Object containing the OpenId metadata configuration for this instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> getOpenIdMetadataWithResponse(Context context) {
+        return asyncClient.getOpenIdMetadataWithResponse(context).block();
+    }
+
+    /**
+     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
+     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     * to validate an attestation token returned by the service.
+     *
+     * @return Returns an array of {@link AttestationSigner} objects.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttestationSigner[] getAttestationSigners() {
+        return asyncClient.getAttestationSignersWithResponse(Context.NONE)
+            .map(Response::getValue).block();
+    }
+
+    /**
+     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
+     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     * to validate an attestation token returned by the service.
+     *
+     * @param context Context for the operation.
+     *
+     * @return Returns an array of {@link AttestationSigner} objects.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AttestationSigner[]> getAttestationSignersWithResponse(Context context) {
+        return asyncClient.getAttestationSignersWithResponse(context).block();
+    }
+
+
 
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
@@ -43,7 +91,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationResponse attestOpenEnclave(AttestOpenEnclaveRequest request) {
-        return this.serviceClient.attestOpenEnclave(request);
+        return asyncClient.attestOpenEnclave(request).block();
     }
 
     /**
@@ -60,7 +108,7 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResponse> attestOpenEnclaveWithResponse(
             AttestOpenEnclaveRequest request, Context context) {
-        return this.serviceClient.attestOpenEnclaveWithResponse(request, context);
+        return asyncClient.attestOpenEnclaveWithResponse(request, context).block();
     }
 
     /**
@@ -75,7 +123,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationResponse attestSgxEnclave(AttestSgxEnclaveRequest request) {
-        return this.serviceClient.attestSgxEnclave(request);
+        return asyncClient.attestSgxEnclave(request).block();
     }
 
     /**
@@ -92,7 +140,7 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResponse> attestSgxEnclaveWithResponse(
             AttestSgxEnclaveRequest request, Context context) {
-        return this.serviceClient.attestSgxEnclaveWithResponse(request, context);
+        return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }
 
     /**
@@ -106,8 +154,8 @@ public final class AttestationClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TpmAttestationResponse attestTpm(TpmAttestationRequest request) {
-        return this.serviceClient.attestTpm(request);
+    public String attestTpm(String request) {
+        return asyncClient.attestTpm(request).block();
     }
 
     /**
@@ -122,7 +170,7 @@ public final class AttestationClient {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TpmAttestationResponse> attestTpmWithResponse(TpmAttestationRequest request, Context context) {
-        return this.serviceClient.attestTpmWithResponse(request, context);
+    public Response<String> attestTpmWithResponse(String request, Context context) {
+        return asyncClient.attestTpmWithResponse(request, context).block();
     }
 }

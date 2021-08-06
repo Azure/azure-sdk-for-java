@@ -58,7 +58,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
     @ServiceInterface(name = "PostgreSqlManagement")
     private interface CheckNameAvailabilitiesService {
         @Headers({"Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/checkNameAvailability")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailabilityInner>> execute(

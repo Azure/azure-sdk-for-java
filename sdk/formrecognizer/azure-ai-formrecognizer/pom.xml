@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-formrecognizer</artifactId>
-  <version>3.1.2</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+  <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
 
   <name>Microsoft Azure client library for Form Recognizer</name>
   <description>This package contains the Microsoft Azure Cognitive Services Form Recognizer SDK.</description>
@@ -78,7 +78,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.3.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

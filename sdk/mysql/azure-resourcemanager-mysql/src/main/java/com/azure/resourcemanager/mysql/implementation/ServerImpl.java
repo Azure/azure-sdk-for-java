@@ -17,6 +17,7 @@ import com.azure.resourcemanager.mysql.models.ServerPrivateEndpointConnection;
 import com.azure.resourcemanager.mysql.models.ServerPropertiesForCreate;
 import com.azure.resourcemanager.mysql.models.ServerState;
 import com.azure.resourcemanager.mysql.models.ServerUpdateParameters;
+import com.azure.resourcemanager.mysql.models.ServerUpgradeParameters;
 import com.azure.resourcemanager.mysql.models.ServerVersion;
 import com.azure.resourcemanager.mysql.models.Sku;
 import com.azure.resourcemanager.mysql.models.SslEnforcementEnum;
@@ -231,6 +232,38 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
                 .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
                 .getValue();
         return this;
+    }
+
+    public void restart() {
+        serviceManager.servers().restart(resourceGroupName, serverName);
+    }
+
+    public void restart(Context context) {
+        serviceManager.servers().restart(resourceGroupName, serverName, context);
+    }
+
+    public void start() {
+        serviceManager.servers().start(resourceGroupName, serverName);
+    }
+
+    public void start(Context context) {
+        serviceManager.servers().start(resourceGroupName, serverName, context);
+    }
+
+    public void stop() {
+        serviceManager.servers().stop(resourceGroupName, serverName);
+    }
+
+    public void stop(Context context) {
+        serviceManager.servers().stop(resourceGroupName, serverName, context);
+    }
+
+    public void upgrade(ServerUpgradeParameters parameters) {
+        serviceManager.servers().upgrade(resourceGroupName, serverName, parameters);
+    }
+
+    public void upgrade(ServerUpgradeParameters parameters, Context context) {
+        serviceManager.servers().upgrade(resourceGroupName, serverName, parameters, context);
     }
 
     public ServerImpl withRegion(Region location) {

@@ -13,4 +13,6 @@ public interface CosmosItemOperation {
     CosmosItemOperationType getOperationType();
 
     <T> T getItem();
+
+    <T> T getContext();
 }

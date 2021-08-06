@@ -60,7 +60,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
     private interface LogFilesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSQL"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/servers/{serverName}/logFiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

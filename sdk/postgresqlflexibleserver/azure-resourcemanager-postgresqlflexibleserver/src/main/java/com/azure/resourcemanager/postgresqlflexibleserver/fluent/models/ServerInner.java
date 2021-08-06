@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
@@ -20,6 +19,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -29,12 +29,6 @@ import java.util.Map;
 @Fluent
 public class ServerInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerInner.class);
-
-    /*
-     * The Azure Active Directory identity of the server.
-     */
-    @JsonProperty(value = "identity")
-    private Identity identity;
 
     /*
      * The SKU (pricing tier) of the server.
@@ -145,27 +139,8 @@ public class ServerInner extends Resource {
      * Application-specific metadata in the form of key-value pairs.
      */
     @JsonProperty(value = "properties.tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tagsPropertiesTags;
-
-    /**
-     * Get the identity property: The Azure Active Directory identity of the server.
-     *
-     * @return the identity value.
-     */
-    public Identity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The Azure Active Directory identity of the server.
-     *
-     * @param identity the identity value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withIdentity(Identity identity) {
-        this.identity = identity;
-        return this;
-    }
 
     /**
      * Get the sku property: The SKU (pricing tier) of the server.
@@ -509,9 +484,6 @@ public class ServerInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
         if (sku() != null) {
             sku().validate();
         }

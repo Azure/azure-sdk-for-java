@@ -21,7 +21,6 @@ import java.util.Map;
 public abstract class AbstractJwtBearerTokenAuthenticationConverter implements Converter<Jwt,
     AbstractAuthenticationToken> {
 
-    public static final String DEFAULT_PRINCIPAL_CLAIM_NAME = "sub";
     protected Converter<Jwt, Collection<GrantedAuthority>> converter;
     protected String principalClaimName;
 

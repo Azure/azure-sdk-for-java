@@ -4,13 +4,11 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +35,7 @@ public class CosmosQueryRequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
+    private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
 
     /**
@@ -455,6 +454,32 @@ public class CosmosQueryRequestOptions {
     @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
+        return this;
+    }
+
+    /**
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms.
+     *
+     * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     */
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return thresholdForDiagnosticsOnTracer;
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms
+     *
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
         return this;
     }
 
