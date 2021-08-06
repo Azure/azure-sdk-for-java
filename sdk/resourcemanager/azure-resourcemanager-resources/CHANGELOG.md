@@ -8,6 +8,8 @@
 
 ### Features Added
 
+- Added overload of `create(Context)` for `Creatable`.
+- Added overload of `apply(Context)` for `Appliable`.
 - Added support for `resourceProviderName` and `featureName` in `Feature`.
 
 ## 2.6.0 (2021-06-18)

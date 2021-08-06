@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.models.FlowLogSettings;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.fluent.models.FlowLogInformationInner;
@@ -28,12 +31,23 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public Mono<FlowLogSettings> applyAsync() {
+        return applyAsync(Context.NONE);
+    }
+
+    @Override
+    public FlowLogSettings apply(Context context) {
+        return applyAsync(context).block();
+    }
+
+    @Override
+    public Mono<FlowLogSettings> applyAsync(Context context) {
         return this
             .parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()
             .setFlowLogConfigurationAsync(parent().resourceGroupName(), parent().name(), this.innerModel())
+            .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
             .map(
                 flowLogInformationInner ->
                     new FlowLogSettingsImpl(FlowLogSettingsImpl.this.parent, flowLogInformationInner, nsgId));
