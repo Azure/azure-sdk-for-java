@@ -494,7 +494,8 @@ public class IdentityClient {
         PowershellManager legacyPowerShellManager = Platform.isWindows()
             ? new PowershellManager(LEGACY_WINDOWS_PS_EXECUTABLE) : null;
 
-        List<PowershellManager> powershellManagers = Arrays.asList(defaultPowerShellManager);
+        List<PowershellManager> powershellManagers = new ArrayList<>();
+        powershellManagers.add(defaultPowerShellManager);
         if (legacyPowerShellManager != null) {
             powershellManagers.add(legacyPowerShellManager);
         }
