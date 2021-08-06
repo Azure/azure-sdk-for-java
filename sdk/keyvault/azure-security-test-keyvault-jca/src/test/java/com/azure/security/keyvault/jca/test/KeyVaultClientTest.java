@@ -40,5 +40,4 @@ public class KeyVaultClientTest {
     public void testGetKey() {
         assertNotNull(keyVaultClient.getKey(certificateName, null));
     }
-
 }

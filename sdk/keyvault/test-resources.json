@@ -397,7 +397,7 @@
         param(
     [string] [Parameter(Mandatory=$true)] $vaultName,
     [string] [Parameter(Mandatory=$true)] $certificateName,
-    [string] [Parameter(Mandatory=$true)] $subjectName,
+    [string] [Parameter(Mandatory=$true)] $subjectName
     )
 
     $ErrorActionPreference = 'Stop'
@@ -416,11 +416,11 @@
       $operation = Get-AzKeyVaultCertificateOperation -VaultName $vaultName -Name $certificateName
       $tries++
 
-      if (($operation.Status -eq 'failed') -or ($operationRSA.Status -eq 'failed') -or ($operationEC256.Status -eq 'failed') -or ($operationEC384.Status -eq 'failed') -or ($operationEC521.Status -eq 'failed')) {
+      if ($operation.Status -eq 'failed') {
         throw 'Creating certificate $certificateName in vault $vaultName failed with error $($operation.ErrorMessage)'
       }
 
-      if ($operation.Status -eq 'failed') {
+      if ($tries -gt 120) {
         throw 'Timed out waiting for creation of certificate $certificateName in vault $vaultName'
       }
     } while ($operation.Status -ne 'completed')
