@@ -71,12 +71,12 @@ public class TimeIntervalTest {
         assertEquals(REFERENCE_TIME.plusDays(5), timeInterval.getEndTime());
 
         timeInterval = TimeInterval.parse("PT24H/2021-07-01T00:00Z");
-        assertEquals(Duration.ofDays(1), timeInterval.getStartDuration());
+        assertEquals(Duration.ofDays(1), timeInterval.getDuration());
         assertEquals(REFERENCE_TIME, timeInterval.getEndTime());
 
         timeInterval = TimeInterval.parse("2021-07-01T00:00Z/PT24H");
         assertEquals(REFERENCE_TIME, timeInterval.getStartTime());
-        assertEquals(Duration.ofDays(1), timeInterval.getEndDuration());
+        assertEquals(Duration.ofDays(1), timeInterval.getDuration());
 
         timeInterval = TimeInterval.parse("PT24H");
         assertEquals(Duration.ofDays(1), timeInterval.getDuration());

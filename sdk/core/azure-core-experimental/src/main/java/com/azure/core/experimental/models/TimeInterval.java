@@ -35,19 +35,16 @@ public final class TimeInterval {
             + "startTime/endTime, startTime/endDuration";
 
     private final Duration duration;
-    private final Duration startDuration;
-    private final Duration endDuration;
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
 
     /**
-     * Creates an instance of {@link TimeInterval} using the provided duration.
+     * Creates an instance of {@link TimeInterval} using the provided duration. The duration is the interval that
+     * starts from the provided duration and ends at the current time.
      * @param duration the duration for this query time span.
      */
     public TimeInterval(Duration duration) {
         this.duration = Objects.requireNonNull(duration, "'duration' cannot be null");
-        this.startDuration = null;
-        this.endDuration = null;
         this.startTime = null;
         this.endTime = null;
     }
@@ -61,34 +58,28 @@ public final class TimeInterval {
         this.startTime = Objects.requireNonNull(startTime, "'startTime' cannot be null");
         this.endTime = Objects.requireNonNull(endTime, "'endTime' cannot be null");
         this.duration = null;
-        this.startDuration = null;
-        this.endDuration = null;
     }
 
     /**
      * Creates an instance of {@link TimeInterval} using the start and end duration of the interval.
      * @param startTime The start time of the interval.
-     * @param endDuration The end duration of the interval.
+     * @param duration The end duration of the interval.
      */
-    public TimeInterval(OffsetDateTime startTime, Duration endDuration) {
+    public TimeInterval(OffsetDateTime startTime, Duration duration) {
         this.startTime = Objects.requireNonNull(startTime, "'startTime' cannot be null");
-        this.endDuration = Objects.requireNonNull(endDuration, "'endDuration' cannot be null");
-        this.duration = null;
+        this.duration = Objects.requireNonNull(duration, "'duration' cannot be null");
         this.endTime = null;
-        this.startDuration = null;
     }
 
     /**
      * Creates an instance of {@link TimeInterval} using the start and end duration of the interval.
-     * @param startDuration The duration of the interval.
+     * @param duration The duration of the interval.
      * @param endTime The end time of the interval.
      */
-    public TimeInterval(Duration startDuration, OffsetDateTime endTime) {
+    TimeInterval(Duration duration, OffsetDateTime endTime) {
         this.endTime = Objects.requireNonNull(endTime, "'endTime' cannot be null");
-        this.startDuration = Objects.requireNonNull(startDuration, "'startDuration' cannot be null");
-        this.duration = null;
+        this.duration = Objects.requireNonNull(duration, "'duration' cannot be null");
         this.startTime = null;
-        this.endDuration = null;
     }
 
     /**
@@ -100,27 +91,19 @@ public final class TimeInterval {
     }
 
     /**
-     * Returns the start duration of this {@link TimeInterval} instance.
-     * @return the start duration of this {@link TimeInterval} instance.
-     */
-    public Duration getStartDuration() {
-        return startDuration;
-    }
-
-    /**
-     * Returns the end duration of this {@link TimeInterval} instance.
-     * @return the end duration of this {@link TimeInterval} instance.
-     */
-    public Duration getEndDuration() {
-        return endDuration;
-    }
-
-    /**
      * Returns the start time of this {@link TimeInterval} instance.
      * @return the start time of this {@link TimeInterval} instance.
      */
     public OffsetDateTime getStartTime() {
-        return startTime;
+        if (startTime != null) {
+            return startTime;
+        }
+        // This check is not required as the constructor would not allow duration and endtime to be null if
+        // startTime is null. But spotbugs raises an error for not checking null here.
+        if (duration != null && endTime != null) {
+            return endTime.minusNanos(duration.toNanos());
+        }
+        return null;
     }
 
     /**
@@ -128,7 +111,13 @@ public final class TimeInterval {
      * @return the end time of this {@link TimeInterval} instance.
      */
     public OffsetDateTime getEndTime() {
-        return endTime;
+        if (endTime != null) {
+            return endTime;
+        }
+        if (startTime != null && duration != null) {
+            return startTime.plusNanos(duration.toNanos());
+        }
+        return null;
     }
 
     /**
@@ -140,19 +129,15 @@ public final class TimeInterval {
             return startTime + "/" + endTime;
         }
 
-        if (startTime != null && endDuration != null) {
-            return startTime + "/" + endDuration;
+        if (startTime != null && duration != null) {
+            return startTime + "/" + duration;
         }
 
-        if (startDuration != null && endTime != null) {
-            return startDuration + "/" + endTime;
+        if (duration != null && endTime != null) {
+            return duration + "/" + endTime;
         }
 
-        if (duration != null) {
-            return duration.toString();
-        }
-        // should not reach here
-        throw LOGGER.logExceptionAsError(new IllegalStateException("Invalid date time range"));
+        return duration == null ? null : duration.toString();
     }
 
     /**
@@ -203,22 +188,26 @@ public final class TimeInterval {
 
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        if (duration != null) {
-            return sb.append("duration: ").append(duration).append("]").toString();
-        }
-
-        if (startTime != null) {
-            sb.append("start time: ").append(startTime);
-        }
-        if (startDuration != null) {
-            sb.append("start duration: ").append(startDuration);
-        }
-        sb.append(", ");
-        if (endTime != null) {
-            sb.append("end time: ").append(endTime);
-        }
-        if (endDuration != null) {
-            sb.append("end duration: ").append(endDuration);
+        if (duration != null && endTime != null) {
+            sb.append("duration: ")
+                .append(duration)
+                .append(", ")
+                .append("end time: ")
+                .append(endTime);
+        } else if (startTime != null && endTime != null) {
+            sb.append("start time: ")
+                .append(startTime)
+                .append(", ")
+                .append("end time: ")
+                .append(endTime);
+        } else if (startTime != null && duration != null) {
+            sb.append("start time: ")
+                .append(startTime)
+                .append(", ")
+                .append("duration: ")
+                .append(duration);
+        } else {
+            sb.append("duration: ").append(duration);
         }
         sb.append("]");
         return sb.toString();
@@ -235,15 +224,13 @@ public final class TimeInterval {
         TimeInterval that = (TimeInterval) o;
 
         return Objects.equals(this.duration, that.duration)
-                && Objects.equals(this.startDuration, that.startDuration)
-                && Objects.equals(this.endDuration, that.endDuration)
                 && Objects.equals(this.startTime, that.startTime)
                 && Objects.equals(this.endTime, that.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(duration, startDuration, endDuration, startTime, endTime);
+        return Objects.hash(duration, startTime, endTime);
     }
 
     private static OffsetDateTime parseTime(String value) {
