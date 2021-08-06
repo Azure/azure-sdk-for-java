@@ -3,13 +3,10 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.util.Beta;
-
 /**
  * Encapsulates options that can be specified for an operation used in Bulk execution. It can be passed while
  * creating bulk request using {@link BulkOperations}.
  */
-@Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class BulkItemRequestOptions
         extends BulkItemRequestOptionsBase {
 
@@ -19,7 +16,6 @@ public final class BulkItemRequestOptions
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;
@@ -31,7 +27,6 @@ public final class BulkItemRequestOptions
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
@@ -56,7 +51,6 @@ public final class BulkItemRequestOptions
      *
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;

@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
-import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
@@ -24,7 +23,6 @@ import java.time.Duration;
  * no affect.
  */
 @SuppressWarnings("DeprecatedIsStillUsed")
-@Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 @Deprecated() //forRemoval = true, since = "4.18"
 public final class BulkProcessingOptions<TContext> {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
@@ -50,7 +48,6 @@ public final class BulkProcessingOptions<TContext> {
      * @param batchContext batch context
      * @param thresholds thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated() //forRemoval = true, since = "4.18"
     public BulkProcessingOptions(TContext batchContext, BulkProcessingThresholds<TContext> thresholds) {
         this.batchContext = batchContext;
@@ -74,7 +71,6 @@ public final class BulkProcessingOptions<TContext> {
      * Constructor
      * @param batchContext batch context
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated() //forRemoval = true, since = "4.18"
     public BulkProcessingOptions(TContext batchContext) {
         this(batchContext, null);
@@ -92,7 +88,6 @@ public final class BulkProcessingOptions<TContext> {
      *
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated() //forRemoval = true, since = "4.18"
     public BulkProcessingOptions() {
         this(null);
@@ -102,7 +97,6 @@ public final class BulkProcessingOptions<TContext> {
      * Returns micro batch size
      * @return micro batch size
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
@@ -123,7 +117,6 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingOptions<TContext> setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
@@ -133,7 +126,6 @@ public final class BulkProcessingOptions<TContext> {
      * Returns max micro batch concurrency
      * @return max micro batch concurrency
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxMicroBatchConcurrency() {
         return maxMicroBatchConcurrency;
     }
@@ -145,7 +137,6 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingOptions<TContext> setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
         this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
         return this;
@@ -155,7 +146,6 @@ public final class BulkProcessingOptions<TContext> {
      * Returns max micro batch interval
      * @return max micro batch interval
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getMaxMicroBatchInterval() {
         return maxMicroBatchInterval;
     }
@@ -167,7 +157,6 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingOptions<TContext> setMaxMicroBatchInterval(Duration maxMicroBatchInterval) {
         this.maxMicroBatchInterval = maxMicroBatchInterval;
         return this;
@@ -177,7 +166,6 @@ public final class BulkProcessingOptions<TContext> {
      * Returns max targeted micro batch retry rate
      * @return max targeted micro batch retry rate
      */
-    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getMaxTargetedMicroBatchRetryRate() {
         return this.maxMicroBatchRetryRate;
     }
@@ -194,7 +182,6 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingOptions<TContext> setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
         if (minRetryRate < 0) {
             throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
@@ -213,7 +200,6 @@ public final class BulkProcessingOptions<TContext> {
      * Returns min targeted micro batch retry rate
      * @return min targeted micro batch retry rate
      */
-    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getMinTargetedMicroBatchRetryRate() {
         return this.minMicroBatchRetryRate;
     }
@@ -222,7 +208,6 @@ public final class BulkProcessingOptions<TContext> {
      * Returns batch context
      * @return batch context
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TContext getBatchContext() {
         return batchContext;
     }
@@ -231,7 +216,6 @@ public final class BulkProcessingOptions<TContext> {
      * Returns thresholds
      * @return thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingThresholds<TContext> getThresholds() {
         return this.thresholds;
     }

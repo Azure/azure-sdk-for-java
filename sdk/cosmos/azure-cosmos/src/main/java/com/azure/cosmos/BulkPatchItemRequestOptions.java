@@ -4,13 +4,11 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.util.Beta;
 
 /**
  * Encapsulates options that can be specified for an patch operation used in Bulk execution. It can be passed while
  * creating bulk patch request using {@link BulkOperations}.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class BulkPatchItemRequestOptions
         extends BulkItemRequestOptionsBase {
     private String filterPredicate;
@@ -20,7 +18,6 @@ public final class BulkPatchItemRequestOptions
      *
      * @return the FilterPredicate associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -31,7 +28,6 @@ public final class BulkPatchItemRequestOptions
      * @param filterPredicate the filterPredicate associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;
@@ -56,7 +52,6 @@ public final class BulkPatchItemRequestOptions
      *
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;
@@ -68,7 +63,6 @@ public final class BulkPatchItemRequestOptions
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
@@ -80,7 +74,6 @@ public final class BulkPatchItemRequestOptions
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;

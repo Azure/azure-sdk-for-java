@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -801,7 +802,6 @@ public class CosmosAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations) {
 
@@ -840,7 +840,6 @@ public class CosmosAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated() //forRemoval = true, since = "4.18"
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations,
@@ -883,7 +882,6 @@ public class CosmosAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations,
         BulkExecutionOptions bulkOptions) {

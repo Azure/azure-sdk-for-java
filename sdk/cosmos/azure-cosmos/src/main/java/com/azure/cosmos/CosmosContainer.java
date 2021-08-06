@@ -644,7 +644,6 @@ public class CosmosContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Iterable<CosmosItemOperation> operations) {
 
@@ -683,7 +682,6 @@ public class CosmosContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated() //forRemoval = true, since = "4.18"
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Iterable<CosmosItemOperation> operations,
@@ -715,7 +713,6 @@ public class CosmosContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Iterable<CosmosItemOperation> operations,
         BulkExecutionOptions bulkOptions) {

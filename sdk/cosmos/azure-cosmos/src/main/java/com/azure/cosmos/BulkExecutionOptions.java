@@ -6,11 +6,9 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 
-@Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class BulkExecutionOptions {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
@@ -39,7 +37,6 @@ public final class BulkExecutionOptions {
      * Constructor
      * @param thresholds thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkExecutionOptions(BulkExecutionThresholds thresholds) {
         this(null, thresholds);
     }
@@ -47,7 +44,6 @@ public final class BulkExecutionOptions {
     /**
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkExecutionOptions() {
         this(null);
     }
@@ -65,7 +61,6 @@ public final class BulkExecutionOptions {
      * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
      * @return micro batch size
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
@@ -86,7 +81,6 @@ public final class BulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
@@ -97,7 +91,6 @@ public final class BulkExecutionOptions {
      *
      * @return max micro batch concurrency
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxMicroBatchConcurrency() {
         return maxMicroBatchConcurrency;
     }
@@ -109,7 +102,6 @@ public final class BulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
         this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
         return this;
@@ -120,7 +112,6 @@ public final class BulkExecutionOptions {
      *
      * @return max micro batch interval
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getMaxMicroBatchInterval() {
         return maxMicroBatchInterval;
     }
@@ -132,7 +123,6 @@ public final class BulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkExecutionOptions setMaxMicroBatchInterval(Duration maxMicroBatchInterval) {
         this.maxMicroBatchInterval = maxMicroBatchInterval;
         return this;
@@ -145,7 +135,6 @@ public final class BulkExecutionOptions {
      *
      * @return max targeted micro batch retry rate
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getMaxTargetedMicroBatchRetryRate() {
         return this.maxMicroBatchRetryRate;
     }
@@ -162,7 +151,6 @@ public final class BulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkExecutionOptions setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
         if (minRetryRate < 0) {
             throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
@@ -183,8 +171,7 @@ public final class BulkExecutionOptions {
      * request size exceeds the payload limit) is higher or lower that the targeted range.
      *
      * @return min targeted micro batch retry rate
-     */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+     *
     public double getMinTargetedMicroBatchRetryRate() {
         return this.minMicroBatchRetryRate;
     }
@@ -201,7 +188,6 @@ public final class BulkExecutionOptions {
      * Returns thresholds
      * @return thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkExecutionThresholds getThresholds() {
         return this.thresholds;
     }

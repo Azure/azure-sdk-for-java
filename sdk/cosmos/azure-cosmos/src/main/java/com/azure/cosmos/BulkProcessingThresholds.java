@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
-import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +23,6 @@ import java.util.concurrent.ConcurrentMap;
  * It allows passing this state for one `BulkProcessingOptions` to another in case bulk operations are
  * expected to have similar characteristics and the context for determining the micro batch size should be preserved.
  */
-@Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 @Deprecated() //forRemoval = true, since = "4.18"
 public final class BulkProcessingThresholds<TContext> {
     private final ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholds;
@@ -41,7 +39,6 @@ public final class BulkProcessingThresholds<TContext> {
      *
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated() //forRemoval = true, since = "4.18"
     public BulkProcessingThresholds() {
         this.partitionScopeThresholds = new ConcurrentHashMap<>();
