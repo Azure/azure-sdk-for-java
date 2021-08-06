@@ -3,128 +3,7 @@
 
 package com.azure.messaging.eventgrid;
 
-import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedInThreadEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMessageEditedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMessageEditedInThreadEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMessageReceivedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatMessageReceivedInThreadEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantAddedToThreadEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantAddedToThreadWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantRemovedFromThreadEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatParticipantRemovedFromThreadWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatThreadCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatThreadCreatedWithUserEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatThreadDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
-import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
-import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
-import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
-import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
-import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDisconnectedEventData;
-import com.azure.messaging.eventgrid.systemevents.IotHubDeviceTelemetryEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultAccessPolicyChangedEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultCertificateExpiredEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultCertificateNearExpiryEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultCertificateNewVersionCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultKeyExpiredEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultKeyNearExpiryEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultKeyNewVersionCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultSecretExpiredEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultSecretNearExpiryEventData;
-import com.azure.messaging.eventgrid.systemevents.KeyVaultSecretNewVersionCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesDatasetDriftDetectedEventData;
-import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesModelDeployedEventData;
-import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesModelRegisteredEventData;
-import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesRunCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesRunStatusChangedEventData;
-import com.azure.messaging.eventgrid.systemevents.MapsGeofenceEnteredEventData;
-import com.azure.messaging.eventgrid.systemevents.MapsGeofenceExitedEventData;
-import com.azure.messaging.eventgrid.systemevents.MapsGeofenceResultEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobCanceledEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobCancelingEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobErroredEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobFinishedEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobOutputCanceledEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobOutputCancelingEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobOutputErroredEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobOutputFinishedEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobOutputProcessingEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobOutputProgressEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobOutputScheduledEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobOutputStateChangeEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobProcessingEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobScheduledEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaJobStateChangeEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaLiveEventConnectionRejectedEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderConnectedEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderDisconnectedEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingDataChunkDroppedEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamReceivedEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamsOutOfSyncEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIngestHeartbeatEventData;
-import com.azure.messaging.eventgrid.systemevents.MediaLiveEventTrackDiscontinuityDetectedEventData;
-import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateChangedEventData;
-import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.RedisExportRdbCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.RedisImportRdbCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.RedisPatchingCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.RedisScalingCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceActionCancelEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceActionFailureEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceActionSuccessEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceDeleteCancelEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceDeleteFailureEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureEventData;
-import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessEventData;
-import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData;
-import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailableWithNoListenersEventData;
-import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData;
-import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
-import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnectionConnectedEventData;
-import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnectionDisconnectedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageAsyncOperationInitiatedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobInventoryPolicyCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageBlobTierChangedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageDirectoryDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageDirectoryRenamedEventData;
-import com.azure.messaging.eventgrid.systemevents.StorageLifecyclePolicyCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
-import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
-import com.azure.messaging.eventgrid.systemevents.WebAppServicePlanUpdatedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebAppUpdatedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebBackupOperationCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebBackupOperationFailedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebBackupOperationStartedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebRestoreOperationCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebRestoreOperationFailedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebRestoreOperationStartedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebSlotSwapCompletedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebSlotSwapFailedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebSlotSwapStartedEventData;
-import com.azure.messaging.eventgrid.systemevents.WebSlotSwapWithPreviewCancelledEventData;
-import com.azure.messaging.eventgrid.systemevents.WebSlotSwapWithPreviewStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -462,6 +341,13 @@ public final class SystemEventNames {
         "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
+     * event.
+     */
+    public static final String CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE =
+            "Microsoft.ContainerService.NewKubernetesVersionAvailable";
+
+    /**
      * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD}.
      */
     @Deprecated
@@ -695,6 +581,10 @@ public final class SystemEventNames {
             put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
             put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
             put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
+
+            // Container Service
+            put(CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
+                    ContainerServiceNewKubernetesVersionAvailableEventData.class);
         }
     };
 
