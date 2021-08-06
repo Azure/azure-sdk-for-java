@@ -373,9 +373,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         if (connected.isSuccess()) {
             final Channel channel = (Channel) connected.getNow();
             assert channel != null : "impossible";
+            this.releaseToPool(channel);
             requestRecord.channelTaskQueueLength(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()));
             channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
-            this.releaseToPool(channel);
             return requestRecord;
         }
 
