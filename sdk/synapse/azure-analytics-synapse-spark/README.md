@@ -14,7 +14,7 @@ Maven dependency for the Azure Synapse Spark client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-analytics-synapse-spark</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -72,6 +72,7 @@ import com.azure.analytics.synapse.spark.SparkClientBuilder;
 
 SparkBatchClient batchClient = new SparkClientBuilder()
     .endpoint("https://{YOUR_WORKSPACE_NAME}.dev.azuresynapse.net")
+    .sparkPoolName("{SPARK_POOL_NAME}")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildSparkBatchClient();
 ```
