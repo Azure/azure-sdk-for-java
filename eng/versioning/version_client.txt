@@ -59,7 +59,7 @@ com.azure:azure-communication-identity;1.1.1;1.2.0-beta.1
 com.azure:azure-communication-phonenumbers;1.0.3;1.1.0-beta.1
 com.azure:azure-containers-containerregistry;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core;1.18.0;1.19.0
+com.azure:azure-core;1.19.0;1.20.0-beta.1
 com.azure:azure-core-amqp;2.3.0;2.4.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.15;1.0.0-beta.16
