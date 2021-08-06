@@ -1,8 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.security.attestation.models;
 
-import com.azure.security.attestation.implementation.models.AttestOpenEnclaveOptionsImpl;
 import com.azure.security.attestation.implementation.models.AttestSgxEnclaveOptionsImpl;
 
+/**
+ * An AttestOpenEnclaveRequest represents the parameters sent to the {@link com.azure.security.attestation.AttestationClient#attestSgxEnclave(AttestSgxEnclaveOptions)}
+ * API.
+ */
 public interface AttestSgxEnclaveOptions {
 
     /**

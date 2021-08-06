@@ -6,14 +6,14 @@
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.9; Windows 10; 10.0)"
     },
     "Response" : {
-      "content-length" : "954",
+      "content-length" : "751",
       "Server" : "Kestrel",
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-47888cfad728292da5c78404c7572e8e-0000000000000000-00",
-      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsImtpZCI6InJQdEJHUldUbFBtenM1dTM1TDBRUkQ5V2R5bWVLUFJ4dGVUZVRsd04wRWM9IiwidHlwIjoiSldUIn0.eyJleHAiOjE2MjgyOTU5NDUsImlhdCI6MTYyODI5MjM0NSwiaXNzIjoiaHR0cHM6Ly9qYWxhcnJ5b2F0dGVzdGF0aW9uYWFkLnd1cy5hdHRlc3QuYXp1cmUubmV0IiwibmJmIjoxNjI4MjkyMzQ1LCJ4LW1zLXBvbGljeSI6ImV5SmhiR2NpT2lKdWIyNWxJbjAuZXlKQmRIUmxjM1JoZEdsdmJsQnZiR2xqZVNJNkltUnRWbmxqTW14Mlltb3dlRXhxUVRkSlIwWXhaRWRvZG1OdGJEWlpXRkp3WWpJMWVXUlhlR3hqZVVJM1NVUXdMVWxJUW14amJURndaRU5uY0U5NVFqbFBlVUp3WXpOT01WbFhOV3BhV0VveFlrZFdla2xJZERsUGR5SjkuIn0.LnOU2JwJoMsMFLeCfLlRe3TfqwcxsiVWbidjvx4gk0pH06TGDv6XQXJHnK50yWae_opgGs0hzsUNxItM0WNKOON8bizR63O0KkwcPtJ5pnoZ8nWAA5KWrfTZgLBtpI1LD_20xwvetsNNOxpIgNQh2J2P0xWL4a1_vHQuok1eBf0vOfXIe9QUbKyOdn9zMYJ5D5PYX9PG2-fsb9dnfRZCu7F0jUfbRGWUQ7fWfVm3_cZhyEr4QtSs1P7Zp3KiAyTegTSLq1WEMfcp1mnASGtGpoSlztiJRJzyWVQplyLMOrL6Wa9QvKcpxFQ2kLwFfgxx2td7EXQD1oeMco2o923lcA\"}",
-      "Date" : "Fri, 06 Aug 2021 23:25:44 GMT",
+      "x-ms-request-id" : "00-d289d85bf4e00d376521dd73cf846627-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsImtpZCI6InJQdEJHUldUbFBtenM1dTM1TDBRUkQ5V2R5bWVLUFJ4dGVUZVRsd04wRWM9IiwidHlwIjoiSldUIn0.eyJleHAiOjE2MjgyOTc3NTYsImlhdCI6MTYyODI5NDE1NiwiaXNzIjoiaHR0cHM6Ly9qYWxhcnJ5b2F0dGVzdGF0aW9uYWFkLnd1cy5hdHRlc3QuYXp1cmUubmV0IiwibmJmIjoxNjI4Mjk0MTU2LCJ4LW1zLXBvbGljeSI6ImV5SmhiR2NpT2lKdWIyNWxJbjAuLiJ9.iiYeHsTVpfsNiCMv5KHF1PBL_Gwno_4QmG9Pg9kxPE15QY4o7wDiYRgpebpH2SHt79qQlXSI3pMjBU-R2LBtxj_xM7qnXGYdzOhoJNsAdsPGA46x30qEdxGHrlADpiAhdOMR8ttNj5TrSQRNAbLMxT-_jqJZ14HWAoAB34VuV4dfwLa5r65Pl0oEao-QcelxsqMbhl5Kq6Mc0jBl6ENXZLiaKwa38uP4Zfw3SFlv0HKKnimNcJ80YPxYYZHMJUHu__oLTj3hjBJoW0qZUtwazPmrqnmIL5iV2TWSxYEcDrntNLs6D1_o3_ixCHVW5NrLXPyY_69nk_cb03hfTYvTag\"}",
+      "Date" : "Fri, 06 Aug 2021 23:55:55 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

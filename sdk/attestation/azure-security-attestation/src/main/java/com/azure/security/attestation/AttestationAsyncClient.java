@@ -20,9 +20,6 @@ import com.azure.security.attestation.implementation.models.AttestOpenEnclaveOpt
 import com.azure.security.attestation.implementation.models.AttestSgxEnclaveOptionsImpl;
 import com.azure.security.attestation.implementation.models.AttestationSignerImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
-import com.azure.security.attestation.implementation.models.DataType;
-import com.azure.security.attestation.implementation.models.InitTimeData;
-import com.azure.security.attestation.implementation.models.RuntimeData;
 import com.azure.security.attestation.models.AttestOpenEnclaveOptions;
 import com.azure.security.attestation.models.AttestSgxEnclaveOptions;
 import com.azure.security.attestation.models.AttestationResult;
@@ -45,7 +42,7 @@ public final class AttestationAsyncClient {
     private final AttestationsImpl attestImpl;
     private final MetadataConfigurationsImpl metadataImpl;
     private final SigningCertificatesImpl signerImpl;
-    private ClientLogger logger;
+    private final ClientLogger logger;
 
     /**
      * Initializes an instance of Attestations client.
@@ -142,6 +139,7 @@ public final class AttestationAsyncClient {
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
+     * @param report - OpenEnclave report to attest.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -178,7 +176,6 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(byte[] report, Context context) {
         return this.attestOpenEnclaveWithResponse(new AttestOpenEnclaveOptionsImpl().setReport(report), context);
     }
@@ -284,7 +281,6 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote, Context context) {
         return attestSgxEnclaveWithResponse(new AttestSgxEnclaveOptionsImpl().setQuote(quote), context);
     }

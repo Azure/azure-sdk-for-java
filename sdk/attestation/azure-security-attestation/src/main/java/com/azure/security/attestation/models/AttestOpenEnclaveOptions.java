@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.security.attestation.models;
 
 import com.azure.security.attestation.implementation.models.AttestOpenEnclaveOptionsImpl;
