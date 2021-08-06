@@ -208,14 +208,15 @@ public class RequestResponseChannel implements AsyncCloseable {
             .timeout(retryOptions.getTryTimeout())
             .onErrorResume(TimeoutException.class, error -> {
                 return Mono.fromRunnable(() -> {
-                    logger.info("connectionId[{}] linkName[{}] Timed out waiting for RequestResponseChannel to complete "
+                    logger.info("connectionId[{}] linkName[{}] Timed out waiting for RequestResponseChannel to complete"
                             + "closing. Manually closing.",
                         connectionId, linkName, error);
 
                     onTerminalState("SendLinkHandler");
                     onTerminalState("ReceiveLinkHandler");
                 });
-            });
+            })
+            .subscribeOn(Schedulers.boundedElastic());
 
         if (isDisposed.getAndSet(true)) {
             logger.verbose("connectionId[{}] linkName[{}] Channel already closed.", connectionId, linkName);
@@ -239,7 +240,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 sendLink.close();
                 receiveLink.close();
             }
-        }).publishOn(Schedulers.boundedElastic()).then(closeOperationWithTimeout);
+        }).subscribeOn(Schedulers.boundedElastic()).then(closeOperationWithTimeout);
     }
 
     public boolean isDisposed() {
