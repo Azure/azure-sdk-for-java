@@ -71,7 +71,7 @@ net.minidev:json-smart;2.4.7
 org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.10.1
 org.apache.avro:avro-maven-plugin;1.10.1
-org.apache.commons:commons-compress;1.20
+org.apache.commons:commons-compress;1.21
 org.apache.commons:commons-lang3;3.12.0
 org.apache.httpcomponents:httpclient;4.5.13
 org.apache.logging.log4j:log4j-api;2.14.1

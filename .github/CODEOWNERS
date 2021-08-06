@@ -34,6 +34,7 @@
 
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/azure-communication-identity/    @petrsvihlik @martinbarnas-ms
 
 # PRLabel: %Container Registry
 /sdk/containerregistry/                             @pallavit @alzimmermsft @jianghaolu
@@ -80,7 +81,7 @@
 # PRLabel: %azure-spring
 /sdk/keyvault/azure-security-keyvault-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
 
-/sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
+/sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @geneh @alongafni
 
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @joshfree @srnagar @lmolkova
@@ -127,6 +128,10 @@
 /sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
 /sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
 /sdk/**/mgmt*/                                      @weidongxu-microsoft @yungezz
+
+# Quantum
+# PRLabel: %Azure Quantum
+/sdk/quantum/                                       @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
 
 ###########
 # Eng Sys
