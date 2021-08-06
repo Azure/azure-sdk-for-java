@@ -7,6 +7,7 @@ import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Implementation of a {@link AbstractHealthIndicator} returning status information for service bus topic.
@@ -21,7 +22,7 @@ public class ServiceBusTopicHealthIndicator extends AbstractHealthIndicator {
 
     @Override
     protected void doHealthCheck(Health.Builder builder) {
-        if (instrumentationManager.getHealthInstrumentations().isEmpty()) {
+        if (ObjectUtils.isEmpty(instrumentationManager) || instrumentationManager.getHealthInstrumentations().isEmpty()) {
             builder.unknown();
             return;
         }
