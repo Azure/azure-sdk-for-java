@@ -482,7 +482,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     private Tracer getMockTracer() {
         Tracer mockTracer = Mockito.mock(Tracer.class);
-        Mockito.when(mockTracer.start(ArgumentMatchers.any(), ArgumentMatchers.any(Context.class))).thenReturn(Context.NONE);
+        Mockito.when(mockTracer.start(ArgumentMatchers.any(String.class), ArgumentMatchers.any(Context.class))).thenReturn(Context.NONE);
         return mockTracer;
     }
 

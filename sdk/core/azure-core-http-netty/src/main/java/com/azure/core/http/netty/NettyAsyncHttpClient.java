@@ -52,10 +52,11 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
  */
 class NettyAsyncHttpClient implements HttpClient {
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
-    private final boolean disableBufferCopy;
-    private final long readTimeout;
-    private final long writeTimeout;
-    private final long responseTimeout;
+
+    final boolean disableBufferCopy;
+    final long readTimeout;
+    final long writeTimeout;
+    final long responseTimeout;
 
     final reactor.netty.http.client.HttpClient nettyClient;
 

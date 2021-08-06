@@ -580,17 +580,20 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         Assert.assertTrue(x509Certificate.getSubjectX500Principal().getName().equals("CN=KeyVaultTest"));
         Assert.assertTrue(x509Certificate.getIssuerX500Principal().getName().equals("CN=Root Agency"));
 
-        // Retrieve the secret backing the certificate
-        SecretIdentifier secretIdentifier = certificateBundle.secretIdentifier();
-        SecretBundle secret = keyVaultClient.getSecret(secretIdentifier.baseIdentifier());
-        Assert.assertTrue(secret.managed());
+        // Skip retrieving secret in playback mode because the cert in response body is redacted in the playback file.
+        if (interceptorManager.isRecordMode()) {
+            // Retrieve the secret backing the certificate
+            SecretIdentifier secretIdentifier = certificateBundle.secretIdentifier();
+            SecretBundle secret = keyVaultClient.getSecret(secretIdentifier.baseIdentifier());
+            Assert.assertTrue(secret.managed());
 
-        // Load the secret into a KeyStore
-        String secretPassword = "";
-        KeyStore keyStore = loadSecretToKeyStore(secret, secretPassword);
+            // Load the secret into a KeyStore
+            String secretPassword = "";
+            KeyStore keyStore = loadSecretToKeyStore(secret, secretPassword);
 
-        // Validate the certificate and key in the KeyStore
-        validateCertificateKeyInKeyStore(keyStore, x509Certificate, secretPassword);
+            // Validate the certificate and key in the KeyStore
+            validateCertificateKeyInKeyStore(keyStore, x509Certificate, secretPassword);
+        }
 
         CertificateBundle deletedCertificateBundle = keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
         pollOnCertificateDeletion(getVaultUri(), certificateName);
