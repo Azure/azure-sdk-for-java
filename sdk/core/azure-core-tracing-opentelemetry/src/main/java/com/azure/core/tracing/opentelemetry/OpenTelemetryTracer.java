@@ -346,8 +346,23 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     /*
      * Converts our SpanKind to OpenTelemetry SpanKind.
      */
-    private SpanKind convertToOtelKind(StartSpanOptions.Kind kind) {
-        return kind == StartSpanOptions.Kind.CLIENT ? SpanKind.CLIENT : SpanKind.INTERNAL;
+    private SpanKind convertToOtelKind(com.azure.core.util.tracing.SpanKind kind) {
+        switch (kind) {
+            case CLIENT:
+                return SpanKind.CLIENT;
+
+            case SERVER:
+                return SpanKind.SERVER;
+
+            case CONSUMER:
+                return SpanKind.CONSUMER;
+
+            case PRODUCER:
+                return SpanKind.PRODUCER;
+
+            default:
+                return SpanKind.INTERNAL;
+        }
     }
 
     /**

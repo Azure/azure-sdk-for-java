@@ -125,6 +125,7 @@
             <configuration>
               <argLine>
                 --add-opens com.azure.core.experimental/com.azure.core.experimental.http=ALL-UNNAMED
+                --add-opens com.azure.core.experimental/com.azure.core.experimental.models=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>
