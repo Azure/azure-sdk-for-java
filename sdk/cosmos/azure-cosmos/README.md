@@ -10,7 +10,8 @@ This project provides SDK library in Java for interacting with [SQL API][sql_api
 ### Include the package
 #### Include the BOM file
 
-Please include the azure-sdk-bom to your project to take dependency on the latest GA version of the library.
+Please include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
 <dependencyManagement>
@@ -18,7 +19,7 @@ Please include the azure-sdk-bom to your project to take dependency on the lates
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-sdk-bom</artifactId>
-            <version>1.0.3</version>
+            <version>{bom_version_to_target}</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -29,10 +30,10 @@ and then include the direct dependency in the dependencies section without the v
 
 ```xml
 <dependencies>
-<dependency>
+  <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-cosmos</artifactId>
-</dependency>
+  </dependency>
 </dependencies>
 ```
 
