@@ -3,20 +3,20 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/alert/anomaly/configurations/204a211a-c5f4-45f3-a30e-512fb25d1d2c/alerts/175434e3400/incidents?$maxpagesize=10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "b1a9649f-bc2d-4410-aebe-4e2c2720c137"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "59335534-ceed-43ca-95f2-0323cd3b9337"
     },
     "Response" : {
-      "x-request-id" : "ea1a4294-b7d2-49ef-8502-8fac2f4f6b4f",
+      "x-request-id" : "baf7d888-6c87-46e7-93be-e3ede1a1f502",
       "content-length" : "1020",
-      "x-envoy-upstream-service-time" : "215",
+      "x-envoy-upstream-service-time" : "497",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ea1a4294-b7d2-49ef-8502-8fac2f4f6b4f",
+      "apim-request-id" : "baf7d888-6c87-46e7-93be-e3ede1a1f502",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[{\"dataFeedId\":\"9860df01-e740-40ec-94a2-6351813552ba\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"anomalyDetectionConfigurationId\":\"fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c\",\"incidentId\":\"51d849d03277901eadfa9a0e7665b4ad-175434e3400\",\"startTime\":\"2020-10-20T00:00:00Z\",\"lastTime\":\"2020-10-20T00:00:00Z\",\"rootNode\":{\"dimension\":{\"city\":\"Delhi\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"property\":{\"incidentStatus\":\"Resolved\",\"valueOfRootNode\":5079001.4,\"expectedValueOfRootNode\":5142673.035323909}},{\"dataFeedId\":\"9860df01-e740-40ec-94a2-6351813552ba\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"anomalyDetectionConfigurationId\":\"fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c\",\"incidentId\":\"daceb039d9ec34d28f04654dd61aee57-175434e3400\",\"startTime\":\"2020-10-20T00:00:00Z\",\"lastTime\":\"2020-10-20T00:00:00Z\",\"rootNode\":{\"dimension\":{\"city\":\"Karachi\",\"category\":\"Handmade\"}},\"property\":{\"maxSeverity\":\"Medium\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":3724747.4,\"expectedValueOfRootNode\":3579278.2792707016}}]}",
-      "Date" : "Mon, 24 May 2021 21:32:13 GMT",
+      "Date" : "Tue, 06 Jul 2021 19:51:20 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

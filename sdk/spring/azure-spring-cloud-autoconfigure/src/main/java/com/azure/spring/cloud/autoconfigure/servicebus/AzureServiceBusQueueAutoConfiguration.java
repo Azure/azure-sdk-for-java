@@ -7,7 +7,6 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
-import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
@@ -26,10 +25,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
-
-import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils.getNamespace;
-
 /**
  * An auto-configuration for Service Bus Queue.
  *
@@ -42,14 +37,6 @@ import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils.ge
 public class AzureServiceBusQueueAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusQueueAutoConfiguration.class);
-
-    private static final String SERVICE_BUS_QUEUE = "ServiceBusQueue";
-    private static final String NAMESPACE = "Namespace";
-
-    @PostConstruct
-    public void collectTelemetry() {
-        TelemetryCollector.getInstance().addService(SERVICE_BUS_QUEUE);
-    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -75,12 +62,11 @@ public class AzureServiceBusQueueAutoConfiguration {
 
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 
-        DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString);
+        DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString, properties.getTransportType());
+        clientFactory.setRetryOptions(properties.getRetryOptions());
         clientFactory.setNamespace(properties.getNamespace());
         clientFactory.setServiceBusNamespaceManager(namespaceManager);
         clientFactory.setServiceBusQueueManager(queueManager);
-
-        TelemetryCollector.getInstance().addProperty(SERVICE_BUS_QUEUE, NAMESPACE, getNamespace(connectionString));
 
         return clientFactory;
     }

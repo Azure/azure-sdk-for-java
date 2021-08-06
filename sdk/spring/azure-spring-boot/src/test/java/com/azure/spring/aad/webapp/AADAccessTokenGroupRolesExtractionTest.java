@@ -4,7 +4,6 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -14,7 +13,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,13 +26,11 @@ public class AADAccessTokenGroupRolesExtractionTest {
     private static final String GROUP_ID_1 = "d07c0bd6-4aab-45ac-b87c-23e8d00194ab";
     private static final String GROUP_ID_2 = "6eddcc22-a24a-4459-b036-b9d9fc0f0bc7";
 
-    private final AADAuthenticationProperties properties = new AADAuthenticationProperties();
-    private final AADAuthenticationProperties.UserGroupProperties userGroup =
-        new AADAuthenticationProperties.UserGroupProperties();
     private AutoCloseable autoCloseable;
 
     @Mock
     private OAuth2AccessToken accessToken;
+
     @Mock
     private GraphClient graphClient;
 
@@ -50,19 +46,10 @@ public class AADAccessTokenGroupRolesExtractionTest {
         groupIdsFromGraph.add(GROUP_ID_2);
         groupInformationFromGraph.setGroupsIds(groupIdsFromGraph);
         groupInformationFromGraph.setGroupsNames(groupNamesFromGraph);
-        properties.setUserGroup(userGroup);
-        properties.setGraphMembershipUri("https://graph.microsoft.com/v1.0/me/memberOf");
         Mockito.lenient().when(accessToken.getTokenValue())
                          .thenReturn("fake-access-token");
         Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
                          .thenReturn(groupInformationFromGraph);
-    }
-
-    @AfterEach
-    public void reset() {
-        userGroup.setAllowedGroupNames(Collections.emptyList());
-        userGroup.setAllowedGroupIds(Collections.emptySet());
-        userGroup.setEnableFullList(false);
     }
 
     @AfterAll
@@ -70,11 +57,23 @@ public class AADAccessTokenGroupRolesExtractionTest {
         this.autoCloseable.close();
     }
 
+    private AADAuthenticationProperties getProperties() {
+        AADAuthenticationProperties properties = new AADAuthenticationProperties();
+        AADAuthenticationProperties.UserGroupProperties userGroup =
+            new AADAuthenticationProperties.UserGroupProperties();
+        properties.setUserGroup(userGroup);
+        properties.setGraphMembershipUri("https://graph.microsoft.com/v1.0/me/memberOf");
+        return properties;
+    }
+
     @Test
     public void testAllowedGroupsNames() {
         List<String> allowedGroupNames = new ArrayList<>();
         allowedGroupNames.add("group1");
-        userGroup.setAllowedGroupNames(allowedGroupNames);
+
+        AADAuthenticationProperties properties = getProperties();
+        properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
+
         AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(1);
@@ -86,7 +85,10 @@ public class AADAccessTokenGroupRolesExtractionTest {
     public void testAllowedGroupsIds() {
         Set<String> allowedGroupIds = new HashSet<>();
         allowedGroupIds.add(GROUP_ID_1);
-        userGroup.setAllowedGroupIds(allowedGroupIds);
+
+        AADAuthenticationProperties properties = getProperties();
+        properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
+
         AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(1);
@@ -100,8 +102,12 @@ public class AADAccessTokenGroupRolesExtractionTest {
         allowedGroupIds.add(GROUP_ID_1);
         List<String> allowedGroupNames = new ArrayList<>();
         allowedGroupNames.add("group1");
-        userGroup.setAllowedGroupIds(allowedGroupIds);
-        userGroup.setAllowedGroupNames(allowedGroupNames);
+
+
+        AADAuthenticationProperties properties = getProperties();
+        properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
+        properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
+
         AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(2);
@@ -117,9 +123,12 @@ public class AADAccessTokenGroupRolesExtractionTest {
         allowedGroupIds.add(GROUP_ID_1);
         List<String> allowedGroupNames = new ArrayList<>();
         allowedGroupNames.add("group1");
-        userGroup.setAllowedGroupIds(allowedGroupIds);
-        userGroup.setAllowedGroupNames(allowedGroupNames);
-        userGroup.setEnableFullList(true);
+
+        AADAuthenticationProperties properties = getProperties();
+        properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
+        properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
+        properties.getUserGroup().setEnableFullList(true);
+
         AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(3);
@@ -134,9 +143,12 @@ public class AADAccessTokenGroupRolesExtractionTest {
         Set<String> allowedGroupIds = new HashSet<>();
         allowedGroupIds.add(GROUP_ID_1);
         allowedGroupNames.add("group1");
-        userGroup.setEnableFullList(false);
-        userGroup.setAllowedGroupIds(allowedGroupIds);
-        userGroup.setAllowedGroupNames(allowedGroupNames);
+
+        AADAuthenticationProperties properties = getProperties();
+        properties.getUserGroup().setEnableFullList(false);
+        properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
+        properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
+
         AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(2);
@@ -152,9 +164,12 @@ public class AADAccessTokenGroupRolesExtractionTest {
         allowedGroupIds.add("all");
         List<String> allowedGroupNames = new ArrayList<>();
         allowedGroupNames.add("group1");
-        userGroup.setAllowedGroupIds(allowedGroupIds);
-        userGroup.setAllowedGroupNames(allowedGroupNames);
-        userGroup.setEnableFullList(false);
+
+        AADAuthenticationProperties properties = getProperties();
+        properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
+        properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
+        properties.getUserGroup().setEnableFullList(false);
+
         AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(3);

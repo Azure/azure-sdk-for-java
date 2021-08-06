@@ -10,11 +10,16 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.util.Assert;
 
+/**
+ * Properties for Monitoring an Azure App Configuratin Store.
+ */
 public class AppConfigurationStoreMonitoring {
 
     private boolean enabled = false;
 
-    private Duration cacheExpiration = Duration.ofSeconds(30);
+    private Duration refreshInterval = Duration.ofSeconds(30);
+
+    private Duration featureFlagRefreshInterval = Duration.ofSeconds(30);
 
     private List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
 
@@ -35,19 +40,34 @@ public class AppConfigurationStoreMonitoring {
     }
 
     /**
-     * @return the cacheExpiration
+     * @return the refreshInterval
      */
-    public Duration getCacheExpiration() {
-        return cacheExpiration;
+    public Duration getRefreshInterval() {
+        return refreshInterval;
     }
 
     /**
-     * The minimum time between checks. The minimum valid cache time is 1s. The default cache time is 30s.
+     * The minimum time between checks. The minimum valid time is 1s. The default refresh interval is 30s.
      *
-     * @param cacheExpiration minimum time between refresh checks
+     * @param refreshInterval minimum time between refresh checks
      */
-    public void setCacheExpiration(Duration cacheExpiration) {
-        this.cacheExpiration = cacheExpiration;
+    public void setRefreshInterval(Duration refreshInterval) {
+        this.refreshInterval = refreshInterval;
+    }
+
+    /**
+     * @return the featureFlagRefreshInterval
+     */
+    public Duration getFeatureFlagRefreshInterval() {
+        return featureFlagRefreshInterval;
+    }
+
+    /**
+     * The minimum time between checks of feature flags. The minimum valid time is 1s. The default refresh interval is 30s.
+     * @param featureFlagRefreshInterval minimum time between refresh checks for feature flags
+     */
+    public void setFeatureFlagRefreshInterval(Duration featureFlagRefreshInterval) {
+        this.featureFlagRefreshInterval = featureFlagRefreshInterval;
     }
 
     /**
@@ -86,9 +106,13 @@ public class AppConfigurationStoreMonitoring {
                 trigger.validateAndInit();
             }
         }
-        Assert.isTrue(cacheExpiration.getSeconds() >= 1, "Minimum Watch time is 1 Second.");
+        Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
+        Assert.isTrue(featureFlagRefreshInterval.getSeconds() >= 1, "Minimum Feature Flag refresh interval time is 1 Second.");
     }
 
+    /**
+     * Push Notification tokens for setting watch interval to 0.
+     */
     public static class PushNotification {
 
         private AccessToken primaryToken = new AccessToken();
@@ -124,6 +148,9 @@ public class AppConfigurationStoreMonitoring {
         }
     }
 
+    /**
+     * Token used to verifying Push Refresh Requests
+     */
     public static class AccessToken {
 
         private String name;

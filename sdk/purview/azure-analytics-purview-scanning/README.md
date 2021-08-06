@@ -90,16 +90,22 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [samples]: src/samples/java/com/azure/analytics/purview/scanning
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-scanning/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-scanning/src/samples/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-scanning/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-scanning/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://azure.github.io/azure-sdk-for-java
 [product_documentation]: https://azure.microsoft.com/services/purview/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
-[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md#defaultazurecredential
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
+[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-analytics-purview-scanning
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/purview/azure-analytics-purview-scanning/src/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/purview/azure-analytics-purview-scanning/src/samples/README.md
 [low_level_client]: https://github.com/Azure/azure-sdk-for-java/wiki/Low-Level-Client
+[create_azure_purview_account]: https://docs.microsoft.com/azure/purview/
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[cla]: https://cla.opensource.microsoft.com/
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fpurview%2Fazure-analytics-purview-scanning%2FREADME.png)

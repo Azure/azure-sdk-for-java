@@ -11,9 +11,11 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.blob.models.BlockListType
+import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
+import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
@@ -978,7 +980,7 @@ class FileAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy())
+        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
@@ -1101,6 +1103,21 @@ class FileAPITest extends APISpec {
         contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes()))
     }
 
+    def "Read retry default"() {
+        setup:
+        fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
+        def failureFileClient = getFileClient(env.dataLakeAccount.credential, fc.getFileUrl(), new MockFailureResponsePolicy(5))
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        failureFileClient.read(outStream)
+        String bodyStr = outStream.toString()
+
+        then:
+        bodyStr == data.defaultText
+    }
+
     def "Read error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())
@@ -1220,6 +1237,7 @@ class FileAPITest extends APISpec {
 
     @LiveOnly
     @Unroll
+    @IgnoreIf({ getEnv().httpClientType == TestHttpClientType.OK_HTTP}) // https://github.com/Azure/azure-sdk-for-java/issues/23243
     def "Download file"() {
         setup:
         def file = getRandomFile(fileSize)
@@ -2890,6 +2908,49 @@ class FileAPITest extends APISpec {
         compareFiles(file, outFile, 0, file.size())
     }
 
+    def "Upload InputStream no length"() {
+        when:
+        fc.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload InputStream bad length"() {
+        when:
+        fc.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream, length), null, null)
+
+        then:
+        thrown(Exception)
+
+        where:
+        _ | length
+        _ | 0
+        _ | -100
+        _ | data.defaultDataSize - 1
+        _ | data.defaultDataSize + 1
+    }
+
+    def "Upload successful retry"() {
+        given:
+        def clientWithFailure = getFileClient(
+            env.dataLakeAccount.credential,
+            fc.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
     /* Quick Query Tests. */
 
     // Generates and uploads a CSV file
@@ -3009,13 +3070,19 @@ class FileAPITest extends APISpec {
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query csv serialization separator"() {
         setup:
-        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
+        FileQueryDelimitedSerialization serIn = new FileQueryDelimitedSerialization()
             .setRecordSeparator(recordSeparator as char)
             .setColumnSeparator(columnSeparator as char)
             .setEscapeChar('\0' as char)
             .setFieldQuote('\0' as char)
-            .setHeadersPresent(headersPresent)
-        uploadCsv(ser, 32)
+            .setHeadersPresent(headersPresentIn)
+        FileQueryDelimitedSerialization serOut = new FileQueryDelimitedSerialization()
+            .setRecordSeparator(recordSeparator as char)
+            .setColumnSeparator(columnSeparator as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(headersPresentOut)
+        uploadCsv(serIn, 32)
         def expression = "SELECT * from BlobStorage"
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
@@ -3024,12 +3091,12 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue()
+        InputStream qqStream = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression).setInputSerialization(serIn).setOutputSerialization(serOut)).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
         notThrown(IOException)
-        if (headersPresent) {
+        if (headersPresentIn && !headersPresentOut) {
             /* Account for 16 bytes of header. */
             for (int j = 16; j < downloadedData.length; j++) {
                 assert queryData[j - 16] == downloadedData[j]
@@ -3045,12 +3112,12 @@ class FileAPITest extends APISpec {
         when:
         OutputStream os = new ByteArrayOutputStream()
         fc.queryWithResponse(new FileQueryOptions(expression, os)
-            .setInputSerialization(ser).setOutputSerialization(ser), null, null)
+            .setInputSerialization(serIn).setOutputSerialization(serOut), null, null)
         byte[] osData = os.toByteArray()
 
         then:
         notThrown(DataLakeStorageException)
-        if (headersPresent) {
+        if (headersPresentIn && !headersPresentOut) {
             assert osData.length == downloadedData.length - 16
             /* Account for 16 bytes of header. */
             for (int j = 16; j < downloadedData.length; j++) {
@@ -3061,24 +3128,25 @@ class FileAPITest extends APISpec {
         }
 
         where:
-        recordSeparator | columnSeparator | headersPresent || _
-        '\n'            | ','             | false          || _ /* Default. */
-        '\n'            | ','             | true           || _ /* Headers. */
-        '\t'            | ','             | false          || _ /* Record separator. */
-        '\r'            | ','             | false          || _
-        '<'             | ','             | false          || _
-        '>'             | ','             | false          || _
-        '&'             | ','             | false          || _
-        '\\'            | ','             | false          || _
-        ','             | '.'             | false          || _ /* Column separator. */
-//        ','             | '\n'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
-        ','             | ';'             | false          || _
-        '\n'            | '\t'            | false          || _
-//        '\n'            | '\r'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
-        '\n'            | '<'             | false          || _
-        '\n'            | '>'             | false          || _
-        '\n'            | '&'             | false          || _
-        '\n'            | '\\'            | false          || _
+        recordSeparator | columnSeparator | headersPresentIn | headersPresentOut || _
+        '\n'            | ','             | false            | false             || _ /* Default. */
+        '\n'            | ','             | true             | true             || _ /* Headers. */
+        '\n'            | ','             | true             | false             || _ /* Headers. */
+        '\t'            | ','             | false            | false             || _ /* Record separator. */
+        '\r'            | ','             | false            | false             || _
+        '<'             | ','             | false            | false             || _
+        '>'             | ','             | false            | false             || _
+        '&'             | ','             | false            | false             || _
+        '\\'            | ','             | false            | false             || _
+        ','             | '.'             | false            | false             || _ /* Column separator. */
+//        ','             | '\n'            | false          | false               || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        ','             | ';'             | false            | false             || _
+        '\n'            | '\t'            | false            | false             || _
+//        '\n'            | '\r'            | false          | false               || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        '\n'            | '<'             | false            | false             || _
+        '\n'            | '>'             | false            | false             || _
+        '\n'            | '&'             | false            | false             || _
+        '\n'            | '\\'            | false            | false             || _
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
@@ -3167,8 +3235,7 @@ class FileAPITest extends APISpec {
         1000      | '\n'            || _
     }
 
-    @Unroll
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input parquet"() {
         setup:
@@ -3555,7 +3622,7 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query parquet output IA"() {
         setup:

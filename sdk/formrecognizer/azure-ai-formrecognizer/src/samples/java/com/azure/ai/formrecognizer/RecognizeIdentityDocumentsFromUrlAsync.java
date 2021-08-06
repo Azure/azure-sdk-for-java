@@ -36,7 +36,7 @@ public class RecognizeIdentityDocumentsFromUrlAsync {
             .buildAsyncClient();
 
         String licenseDocumentUrl =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/"
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer/"
                 + "azure-ai-formrecognizer/src/samples/resources/sample-forms/IdentityDocuments/license.jpg";
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeIdentityDocumentPoller =
             client.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl);

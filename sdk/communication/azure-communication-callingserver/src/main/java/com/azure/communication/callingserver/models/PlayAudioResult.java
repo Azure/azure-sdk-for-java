@@ -9,9 +9,9 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class PlayAudioResult {
     /*
-     * The identifier.
+     * The operation id.
      */
-    private final String id;
+    private final String operationId;
 
     /*
      * The status of the operation
@@ -29,12 +29,12 @@ public final class PlayAudioResult {
     private final ResultInfo resultInfo;
 
     /**
-     * Get the id property: Gets or sets the identifier.
+     * Get the operationId property: The operation id.
      *
-     * @return the id value.
+     * @return the operationId value.
      */
-    public String getId() {
-        return this.id;
+    public String getOperationId() {
+        return this.operationId;
     }
 
     /**
@@ -67,13 +67,13 @@ public final class PlayAudioResult {
     /**
      * Initializes a new instance of PlayAudioResult.
      *
-     * @param id the id value.
+     * @param operationId the operationId value.
      * @param status the status value.
      * @param operationContext the operationContext value.
      * @param resultInfo the resultInfo value.
      */
-    public PlayAudioResult(String id, OperationStatus status, String operationContext, ResultInfo resultInfo) {
-        this.id = id;
+    public PlayAudioResult(String operationId, OperationStatus status, String operationContext, ResultInfo resultInfo) {
+        this.operationId = operationId;
         this.status = status;
         this.operationContext = operationContext;
         this.resultInfo = resultInfo;

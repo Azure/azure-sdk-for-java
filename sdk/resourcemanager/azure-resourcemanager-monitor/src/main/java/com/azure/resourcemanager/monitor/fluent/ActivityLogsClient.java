@@ -82,19 +82,13 @@ public interface ActivityLogsClient {
      *     correlation Id*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
      *     '2014-07-20T04:36:37.6407898Z' and correlationId eq 'correlationID'.&lt;br&gt;&lt;br&gt;**NOTE**: No other
      *     syntax is allowed.
-     * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
-     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
-     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
-     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
-     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventDataInner> list(String filter, String select, Context context);
+    PagedIterable<EventDataInner> list(String filter);
 
     /**
      * Provides the list of records from the activity logs.
@@ -112,11 +106,17 @@ public interface ActivityLogsClient {
      *     correlation Id*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
      *     '2014-07-20T04:36:37.6407898Z' and correlationId eq 'correlationID'.&lt;br&gt;&lt;br&gt;**NOTE**: No other
      *     syntax is allowed.
+     * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
+     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
+     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
+     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
+     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventDataInner> list(String filter);
+    PagedIterable<EventDataInner> list(String filter, String select, Context context);
 }

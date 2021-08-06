@@ -2,26 +2,36 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/datalakeanalytics/
+      - sdk/datalakeanalytics/ci.mgmt.yml
+      - sdk/datalakeanalytics/mgmt-v2015_10_01_preview/
+      - sdk/datalakeanalytics/mgmt-v2016_11_01/
+    exclude:
+      - sdk/datalakeanalytics/pom.xml
+      - sdk/datalakeanalytics/mgmt-v2015_10_01_preview/pom.xml
+      - sdk/datalakeanalytics/mgmt-v2016_11_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/datalakeanalytics/
+      - sdk/datalakeanalytics/ci.mgmt.yml
+      - sdk/datalakeanalytics/mgmt-v2015_10_01_preview/
+      - sdk/datalakeanalytics/mgmt-v2016_11_01/
+    exclude:
+      - sdk/datalakeanalytics/pom.xml
+      - sdk/datalakeanalytics/mgmt-v2015_10_01_preview/pom.xml
+      - sdk/datalakeanalytics/mgmt-v2016_11_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

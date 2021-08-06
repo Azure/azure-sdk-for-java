@@ -1,7 +1,35 @@
 # Release History
 
-## 1.18.0-beta.1 (Unreleased)
+## 1.19.0-beta.2 (Unreleased)
 
+### Feature Added
+ - Added a new constructor `HttpHeaders(int initialCapacity)` which allows configuration of the initial backing map 
+   capacity may allow short-circuiting scenarios where the map would need to be resized and copied in memory.
+
+### Fixed
+
+- Fixed a bug with context propagation through EventHub and ServiceBus between Java and other languages.
+
+## 1.19.0-beta.1 (2021-07-07)
+
+### Features Added
+
+ - Added `RequestOptions` for protocol methods
+ - Added support for `BinaryData` type as the request body or response body in `RestProxy`
+
+## 1.18.0 (2021-07-01)
+
+### Features Added
+
+- Added additional configurations of `maximumConnectionPoolSize` and `connectionIdleTimeout` to `HttpClientOptions`.
+- Added new `addEvent` overload to `Tracer`. 
+- Added new constants to `Configuration`.
+
+### Fixed
+
+- Fixed a bug where a negative delay could be used when retrying a request with a delay.
+- Fixed a bug where `JsonFlatten` on a property didn't flatten properties annotated with `JsonFlatten`.
+- Fixed error messages that didn't properly format format-able message strings.
 
 ## 1.17.0 (2021-06-07)
 
@@ -269,8 +297,8 @@
 ## 1.0.0 (2019-10-29)
 
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core/src/samples/java/com/azure/core)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core/src/samples/java/com/azure/core)
 
 - Initial release. Please see the README and wiki for information on the new design.

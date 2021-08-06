@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,7 @@ public class FeedResponseDiagnostics {
     private final static String EQUALS = "=";
     private final static String QUERY_PLAN = "QueryPlan";
     private final static String SPACE = " ";
+    private static final ObjectMapper mapper = new ObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedResponseDiagnostics.class);
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
@@ -33,7 +35,7 @@ public class FeedResponseDiagnostics {
         this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
     }
 
-    Map<String, QueryMetrics> getQueryMetricsMap() {
+    public Map<String, QueryMetrics> getQueryMetricsMap() {
         return queryMetricsMap;
     }
 
@@ -65,6 +67,17 @@ public class FeedResponseDiagnostics {
                     .append(EQUALS)
                     .append(Duration.between(diagnosticsContext.getStartTimeUTC(),
                         diagnosticsContext.getEndTimeUTC()).toMillis()).append(System.lineSeparator());
+                if (diagnosticsContext.getRequestTimeline() != null) {
+                    try {
+                        stringBuilder.append(QUERY_PLAN + SPACE + "RequestTimeline ")
+                            .append(EQUALS)
+                            .append(mapper.writeValueAsString(diagnosticsContext.getRequestTimeline()))
+                            .append(System.lineSeparator())
+                            .append(System.lineSeparator());
+                    } catch (JsonProcessingException e) {
+                        LOGGER.error("Error while parsing diagnostics ", e);
+                    }
+                }
             }
         }
 
@@ -76,7 +89,7 @@ public class FeedResponseDiagnostics {
         }
         try {
             stringBuilder
-                .append(Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatisticsList));
+                .append(mapper.writeValueAsString(clientSideRequestStatisticsList));
         } catch (JsonProcessingException e) {
             LOGGER.error("Error while parsing diagnostics ", e);
         }
@@ -86,6 +99,10 @@ public class FeedResponseDiagnostics {
 
     public void setDiagnosticsContext(QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
         this.diagnosticsContext = diagnosticsContext;
+    }
+
+    public QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
+        return diagnosticsContext;
     }
 
     /**

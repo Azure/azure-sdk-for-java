@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 
 import org.springframework.util.Assert;
 
+/**
+ * Connection information for connecting to a Azure APp Configuration Store.
+ */
 public class Connection {
 
     public static final String NON_EMPTY_MSG =

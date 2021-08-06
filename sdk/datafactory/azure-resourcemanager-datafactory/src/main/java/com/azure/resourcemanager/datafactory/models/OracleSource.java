@@ -181,6 +181,13 @@ public final class OracleSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public OracleSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

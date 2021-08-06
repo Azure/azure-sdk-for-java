@@ -18,7 +18,7 @@ public final class TestConstants {
     public static final String CLIENT_ID = "spring.cloud.azure.appconfiguration.managed-identity.client-id";
     public static final String DEFAULT_CONTEXT_PROP = "spring.cloud.azure.appconfiguration.default-context";
     public static final String CONFIG_ENABLED_PROP = "spring.cloud.azure.appconfiguration.enabled";
-    public static final String CACHE_EXPIRATION_PROP = "spring.cloud.azure.appconfiguration.cache-expiration";
+    public static final String REFRESH_INTERVAL_PROP = "spring.cloud.azure.appconfiguration.refresh-interval";
     public static final String FAIL_FAST_PROP = "spring.cloud.azure.appconfiguration.failFast";
     public static final String KEY_VAULT_STORE_1_CONNECTION =
         "spring.cloud.azure.appconfiguration.key_vault_stores[0].connection_url";
@@ -36,7 +36,6 @@ public final class TestConstants {
     public static final String TEST_ENDPOINT = "https://fake.test.config.io";
     public static final String TEST_KV_API = TEST_ENDPOINT + "/kv?key=fake-key*&label=fake-label";
     public static final String TEST_ID = "fake-conn-id";
-    public static final String TEST_SECRET = "ZmFrZS1jb25uLXNlY3JldA=="; // Base64 encoded
     public static final String TEST_ACCESS_TOKEN = "fake_token";
     // from
     // fake-conn-secret

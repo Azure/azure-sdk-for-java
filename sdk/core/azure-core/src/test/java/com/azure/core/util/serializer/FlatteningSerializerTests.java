@@ -4,36 +4,53 @@
 package com.azure.core.util.serializer;
 
 
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.implementation.TypeUtil;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.implementation.models.jsonflatten.ClassWithFlattenedProperties;
+import com.azure.core.implementation.models.jsonflatten.FlattenedProduct;
+import com.azure.core.implementation.models.jsonflatten.FlattenedPropertiesAndJsonAnyGetter;
+import com.azure.core.implementation.models.jsonflatten.JsonFlattenNestedInner;
+import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnArrayType;
+import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnCollectionType;
+import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnJsonIgnoredProperty;
+import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnPrimitiveType;
+import com.azure.core.implementation.models.jsonflatten.JsonFlattenWithJsonInfoDiscriminator;
+import com.azure.core.implementation.models.jsonflatten.School;
+import com.azure.core.implementation.models.jsonflatten.Student;
+import com.azure.core.implementation.models.jsonflatten.Teacher;
+import com.azure.core.implementation.models.jsonflatten.VirtualMachineIdentity;
+import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSet;
+import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetNetworkConfiguration;
+import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetNetworkProfile;
+import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetVMProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import wiremock.com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FlatteningSerializerTests {
     private static final JacksonAdapter ADAPTER = new JacksonAdapter();
 
     @Test
-    public void canFlatten() throws Exception {
+    public void canFlatten() {
         Foo foo = new Foo();
         foo.bar("hello.world");
         //
-        List<String> baz = new ArrayList<>();
-        baz.add("hello");
-        baz.add("hello.world");
+        List<String> baz = Arrays.asList("hello", "hello.world");
         foo.baz(baz);
 
         HashMap<String, String> qux = new HashMap<>();
@@ -44,11 +61,11 @@ public class FlatteningSerializerTests {
         foo.qux(qux);
 
         // serialization
-        String serialized = ADAPTER.serialize(foo, SerializerEncoding.JSON);
+        String serialized = serialize(foo);
         assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}}}", serialized);
 
         // deserialization
-        Foo deserialized = ADAPTER.deserialize(serialized, Foo.class, SerializerEncoding.JSON);
+        Foo deserialized = deserialize(serialized, Foo.class);
         assertEquals("hello.world", deserialized.bar());
         Assertions.assertArrayEquals(new String[]{"hello", "hello.world"}, deserialized.baz().toArray());
         assertNotNull(deserialized.qux());
@@ -59,8 +76,8 @@ public class FlatteningSerializerTests {
     }
 
     @Test
-    public void canSerializeMapKeysWithDotAndSlash() throws Exception {
-        String serialized = ADAPTER.serialize(prepareSchoolModel(), SerializerEncoding.JSON);
+    public void canSerializeMapKeysWithDotAndSlash() {
+        String serialized = serialize(prepareSchoolModel());
         assertEquals("{\"teacher\":{\"students\":{\"af.B/D\":{},\"af.B/C\":{}}},\"tags\":{\"foo.aa\":\"bar\",\"x.y\":\"zz\"},\"properties\":{\"name\":\"school1\"}}", serialized);
     }
 
@@ -69,17 +86,16 @@ public class FlatteningSerializerTests {
      * and encoding base type will be used.
      */
     @Test
-    public void canHandleTypeWithTypeIdContainingDotAndNoProperties() throws IOException {
+    public void canHandleTypeWithTypeIdContainingDotAndNoProperties() {
         String rabbitSerialized = "{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}";
         String shelterSerialized = "{\"properties\":{\"animalsInfo\":[{\"animal\":{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}},{\"animal\":{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}}]}}";
 
-        AnimalWithTypeIdContainingDot rabbitDeserialized = ADAPTER.deserialize(rabbitSerialized,
-            AnimalWithTypeIdContainingDot.class, SerializerEncoding.JSON);
+        AnimalWithTypeIdContainingDot rabbitDeserialized = deserialize(rabbitSerialized,
+            AnimalWithTypeIdContainingDot.class);
         assertTrue(rabbitDeserialized instanceof RabbitWithTypeIdContainingDot);
         assertNotNull(rabbitDeserialized);
 
-        AnimalShelter shelterDeserialized = ADAPTER.deserialize(shelterSerialized, AnimalShelter.class,
-            SerializerEncoding.JSON);
+        AnimalShelter shelterDeserialized = deserialize(shelterSerialized, AnimalShelter.class);
         assertNotNull(shelterDeserialized);
         assertEquals(2, shelterDeserialized.animalsInfo().size());
         for (FlattenableAnimalInfo animalInfo : shelterDeserialized.animalsInfo()) {
@@ -93,15 +109,11 @@ public class FlatteningSerializerTests {
      * encoding base type will be used.
      */
     @Test
-    public void canHandleTypeWithTypeIdContainingDot0() throws IOException {
-        // Serialize
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+    public void canHandleTypeWithTypeIdContainingDot0() {
+        List<String> meals = Arrays.asList("carrot", "apple");
         //
         AnimalWithTypeIdContainingDot animalToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
-        String serialized = ADAPTER.serialize(animalToSerialize, SerializerEncoding.JSON);
+        String serialized = serialize(animalToSerialize);
         //
         String[] results = {
             "{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}",
@@ -112,8 +124,7 @@ public class FlatteningSerializerTests {
 
         // De-Serialize
         //
-        AnimalWithTypeIdContainingDot animalDeserialized = ADAPTER.deserialize(serialized,
-            AnimalWithTypeIdContainingDot.class, SerializerEncoding.JSON);
+        AnimalWithTypeIdContainingDot animalDeserialized = deserialize(serialized, AnimalWithTypeIdContainingDot.class);
         assertTrue(animalDeserialized instanceof RabbitWithTypeIdContainingDot);
         RabbitWithTypeIdContainingDot rabbit = (RabbitWithTypeIdContainingDot) animalDeserialized;
         assertNotNull(rabbit.meals());
@@ -125,15 +136,11 @@ public class FlatteningSerializerTests {
      * encoding concrete type will be used.
      */
     @Test
-    public void canHandleTypeWithTypeIdContainingDot1() throws IOException {
-        // Serialize
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+    public void canHandleTypeWithTypeIdContainingDot1() {
+        List<String> meals = Arrays.asList("carrot", "apple");
         //
         RabbitWithTypeIdContainingDot rabbitToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
-        String serialized = ADAPTER.serialize(rabbitToSerialize, SerializerEncoding.JSON);
+        String serialized = serialize(rabbitToSerialize);
         //
         String[] results = {
             "{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}",
@@ -144,9 +151,7 @@ public class FlatteningSerializerTests {
 
         // De-Serialize
         //
-        RabbitWithTypeIdContainingDot rabbitDeserialized = ADAPTER.deserialize(serialized,
-            RabbitWithTypeIdContainingDot.class,
-            SerializerEncoding.JSON);
+        RabbitWithTypeIdContainingDot rabbitDeserialized = deserialize(serialized, RabbitWithTypeIdContainingDot.class);
         assertNotNull(rabbitDeserialized);
         assertNotNull(rabbitDeserialized.meals());
         assertEquals(rabbitDeserialized.meals().size(), 2);
@@ -158,11 +163,13 @@ public class FlatteningSerializerTests {
      * done. For decoding and encoding base type will be used.
      */
     @Test
-    public void canHandleTypeWithFlattenablePropertyAndTypeIdContainingDot0() throws IOException {
-        AnimalWithTypeIdContainingDot animalToSerialize = new DogWithTypeIdContainingDot().withBreed("AKITA").withCuteLevel(10);
+    public void canHandleTypeWithFlattenablePropertyAndTypeIdContainingDot0() {
+        AnimalWithTypeIdContainingDot animalToSerialize = new DogWithTypeIdContainingDot()
+            .withBreed("AKITA")
+            .withCuteLevel(10);
 
         // serialization
-        String serialized = ADAPTER.serialize(animalToSerialize, SerializerEncoding.JSON);
+        String serialized = serialize(animalToSerialize);
         String[] results = {
             "{\"breed\":\"AKITA\",\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"properties\":{\"cuteLevel\":10}}",
             "{\"breed\":\"AKITA\",\"properties\":{\"cuteLevel\":10},\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\"}",
@@ -175,8 +182,7 @@ public class FlatteningSerializerTests {
         assertTrue(Arrays.asList(results).contains(serialized));
 
         // de-serialization
-        AnimalWithTypeIdContainingDot animalDeserialized = ADAPTER.deserialize(serialized,
-            AnimalWithTypeIdContainingDot.class, SerializerEncoding.JSON);
+        AnimalWithTypeIdContainingDot animalDeserialized = deserialize(serialized, AnimalWithTypeIdContainingDot.class);
         assertTrue(animalDeserialized instanceof DogWithTypeIdContainingDot);
         DogWithTypeIdContainingDot dogDeserialized = (DogWithTypeIdContainingDot) animalDeserialized;
         assertNotNull(dogDeserialized);
@@ -189,11 +195,11 @@ public class FlatteningSerializerTests {
      * done. For decoding and encoding concrete type will be used.
      */
     @Test
-    public void canHandleTypeWithFlattenablePropertyAndTypeIdContainingDot1() throws IOException {
+    public void canHandleTypeWithFlattenablePropertyAndTypeIdContainingDot1() {
         DogWithTypeIdContainingDot dogToSerialize = new DogWithTypeIdContainingDot().withBreed("AKITA").withCuteLevel(10);
 
         // serialization
-        String serialized = ADAPTER.serialize(dogToSerialize, SerializerEncoding.JSON);
+        String serialized = serialize(dogToSerialize);
         String[] results = {
             "{\"breed\":\"AKITA\",\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\",\"properties\":{\"cuteLevel\":10}}",
             "{\"breed\":\"AKITA\",\"properties\":{\"cuteLevel\":10},\"@odata.type\":\"#Favourite.Pet.DogWithTypeIdContainingDot\"}",
@@ -206,8 +212,7 @@ public class FlatteningSerializerTests {
         assertTrue(Arrays.asList(results).contains(serialized));
 
         // de-serialization
-        DogWithTypeIdContainingDot dogDeserialized = ADAPTER.deserialize(serialized, DogWithTypeIdContainingDot.class,
-            SerializerEncoding.JSON);
+        DogWithTypeIdContainingDot dogDeserialized = deserialize(serialized, DogWithTypeIdContainingDot.class);
         assertNotNull(dogDeserialized);
         assertEquals(dogDeserialized.breed(), "AKITA");
         assertEquals(dogDeserialized.cuteLevel(), (Integer) 10);
@@ -218,17 +223,13 @@ public class FlatteningSerializerTests {
      * and encoding base type will be used.
      */
     @Test
-    public void canHandleArrayOfTypeWithTypeIdContainingDot0() throws IOException {
-        // Serialize
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+    public void canHandleArrayOfTypeWithTypeIdContainingDot0() {
+        List<String> meals = Arrays.asList("carrot", "apple");
         //
         AnimalWithTypeIdContainingDot animalToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         List<AnimalWithTypeIdContainingDot> animalsToSerialize = new ArrayList<>();
         animalsToSerialize.add(animalToSerialize);
-        String serialized = ADAPTER.serialize(animalsToSerialize, SerializerEncoding.JSON);
+        String serialized = serialize(animalsToSerialize);
         String[] results = {
             "[{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}]",
             "[{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}]",
@@ -238,8 +239,8 @@ public class FlatteningSerializerTests {
 
         // De-serialize
         //
-        List<AnimalWithTypeIdContainingDot> animalsDeserialized = ADAPTER.deserialize(serialized,
-            TypeUtil.createParameterizedType(List.class, AnimalWithTypeIdContainingDot.class), SerializerEncoding.JSON);
+        List<AnimalWithTypeIdContainingDot> animalsDeserialized = deserialize(serialized,
+            TypeUtil.createParameterizedType(List.class, AnimalWithTypeIdContainingDot.class));
         assertNotNull(animalsDeserialized);
         assertEquals(1, animalsDeserialized.size());
         AnimalWithTypeIdContainingDot animalDeserialized = animalsDeserialized.get(0);
@@ -254,17 +255,13 @@ public class FlatteningSerializerTests {
      * and encoding concrete type will be used.
      */
     @Test
-    public void canHandleArrayOfTypeWithTypeIdContainingDot1() throws IOException {
-        // Serialize
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+    public void canHandleArrayOfTypeWithTypeIdContainingDot1() {
+        List<String> meals = Arrays.asList("carrot", "apple");
         //
         RabbitWithTypeIdContainingDot rabbitToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         List<RabbitWithTypeIdContainingDot> rabbitsToSerialize = new ArrayList<>();
         rabbitsToSerialize.add(rabbitToSerialize);
-        String serialized = ADAPTER.serialize(rabbitsToSerialize, SerializerEncoding.JSON);
+        String serialized = serialize(rabbitsToSerialize);
         String[] results = {
             "[{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}]",
             "[{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}]",
@@ -274,8 +271,8 @@ public class FlatteningSerializerTests {
 
         // De-serialize
         //
-        List<RabbitWithTypeIdContainingDot> rabbitsDeserialized = ADAPTER.deserialize(serialized,
-            TypeUtil.createParameterizedType(List.class, RabbitWithTypeIdContainingDot.class), SerializerEncoding.JSON);
+        List<RabbitWithTypeIdContainingDot> rabbitsDeserialized = deserialize(serialized,
+            TypeUtil.createParameterizedType(List.class, RabbitWithTypeIdContainingDot.class));
         assertNotNull(rabbitsDeserialized);
         assertEquals(1, rabbitsDeserialized.size());
         RabbitWithTypeIdContainingDot rabbitDeserialized = rabbitsDeserialized.get(0);
@@ -288,17 +285,13 @@ public class FlatteningSerializerTests {
      * Validates that decoding and encoding of a composed type with type id containing dot and can be done.
      */
     @Test
-    public void canHandleComposedTypeWithTypeIdContainingDot0() throws IOException {
-        // serialization
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+    public void canHandleComposedTypeWithTypeIdContainingDot0() {
+        List<String> meals = Arrays.asList("carrot", "apple");
         AnimalWithTypeIdContainingDot animalToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         FlattenableAnimalInfo animalInfoToSerialize = new FlattenableAnimalInfo().withAnimal(animalToSerialize);
         List<FlattenableAnimalInfo> animalsInfoSerialized = ImmutableList.of(animalInfoToSerialize);
         AnimalShelter animalShelterToSerialize = new AnimalShelter().withAnimalsInfo(animalsInfoSerialized);
-        String serialized = ADAPTER.serialize(animalShelterToSerialize, SerializerEncoding.JSON);
+        String serialized = serialize(animalShelterToSerialize);
         String[] results = {
             "{\"properties\":{\"animalsInfo\":[{\"animal\":{\"meals\":[\"carrot\",\"apple\"],\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\"}}]}}",
             "{\"properties\":{\"animalsInfo\":[{\"animal\":{\"@odata.type\":\"#Favourite.Pet.RabbitWithTypeIdContainingDot\",\"meals\":[\"carrot\",\"apple\"]}}]}}",
@@ -308,8 +301,7 @@ public class FlatteningSerializerTests {
 
         // de-serialization
         //
-        AnimalShelter shelterDeserialized = ADAPTER.deserialize(serialized, AnimalShelter.class,
-            SerializerEncoding.JSON);
+        AnimalShelter shelterDeserialized = deserialize(serialized, AnimalShelter.class);
         assertNotNull(shelterDeserialized.animalsInfo());
         assertEquals(shelterDeserialized.animalsInfo().size(), 1);
         FlattenableAnimalInfo animalsInfoDeserialized = shelterDeserialized.animalsInfo().get(0);
@@ -323,94 +315,87 @@ public class FlatteningSerializerTests {
     }
 
     @Test
-    public void canHandleComposedSpecificPolymorphicTypeWithTypeId() throws IOException {
+    public void canHandleComposedSpecificPolymorphicTypeWithTypeId() {
         //
         // -- Validate vector property
         //
         String serializedCollectionWithTypeId = "{\"turtlesSet1\":[{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"},{\"age\":200,\"size\":20,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"}]}";
         // de-serialization
         //
-        ComposeTurtles composedTurtleDeserialized = ADAPTER.deserialize(serializedCollectionWithTypeId,
-            ComposeTurtles.class,
-            SerializerEncoding.JSON);
+        ComposeTurtles composedTurtleDeserialized = deserialize(serializedCollectionWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet1());
         assertEquals(2, composedTurtleDeserialized.turtlesSet1().size());
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
         //
         // -- Validate scalar property
         //
         String serializedScalarWithTypeId = "{\"turtlesSet1Lead\":{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"}}";
         // de-serialization
         //
-        composedTurtleDeserialized = ADAPTER.deserialize(serializedScalarWithTypeId, ComposeTurtles.class,
-            SerializerEncoding.JSON);
+        composedTurtleDeserialized = deserialize(serializedScalarWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet1Lead());
         assertEquals(10, (long) composedTurtleDeserialized.turtlesSet1Lead().size());
         assertEquals(100, (long) composedTurtleDeserialized.turtlesSet1Lead().age());
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
     }
 
     @Test
-    public void canHandleComposedSpecificPolymorphicTypeWithoutTypeId() throws IOException {
+    public void canHandleComposedSpecificPolymorphicTypeWithoutTypeId() {
         //
         // -- Validate vector property
         //
         String serializedCollectionWithTypeId = "{\"turtlesSet1\":[{\"age\":100,\"size\":10 },{\"age\":200,\"size\":20 }]}";
         // de-serialization
         //
-        ComposeTurtles composedTurtleDeserialized = ADAPTER.deserialize(serializedCollectionWithTypeId,
-            ComposeTurtles.class, SerializerEncoding.JSON);
+        ComposeTurtles composedTurtleDeserialized = deserialize(serializedCollectionWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet1());
         assertEquals(2, composedTurtleDeserialized.turtlesSet1().size());
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
         //
         // -- Validate scalar property
         //
         String serializedScalarWithTypeId = "{\"turtlesSet1Lead\":{\"age\":100,\"size\":10 }}";
         // de-serialization
         //
-        composedTurtleDeserialized = ADAPTER.deserialize(serializedScalarWithTypeId, ComposeTurtles.class,
-            SerializerEncoding.JSON);
+        composedTurtleDeserialized = deserialize(serializedScalarWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet1Lead());
         assertEquals(100, (long) composedTurtleDeserialized.turtlesSet1Lead().age());
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
     }
 
     @Test
-    public void canHandleComposedSpecificPolymorphicTypeWithAndWithoutTypeId() throws IOException {
+    public void canHandleComposedSpecificPolymorphicTypeWithAndWithoutTypeId() {
         //
         // -- Validate vector property
         //
         String serializedCollectionWithTypeId = "{\"turtlesSet1\":[{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"},{\"age\":200,\"size\":20 }]}";
         // de-serialization
         //
-        ComposeTurtles composedTurtleDeserialized = ADAPTER.deserialize(serializedCollectionWithTypeId,
-            ComposeTurtles.class, SerializerEncoding.JSON);
+        ComposeTurtles composedTurtleDeserialized = deserialize(serializedCollectionWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet1());
         assertEquals(2, composedTurtleDeserialized.turtlesSet1().size());
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
     }
 
     @Test
-    public void canHandleComposedGenericPolymorphicTypeWithTypeId() throws IOException {
+    public void canHandleComposedGenericPolymorphicTypeWithTypeId() {
         //
         // -- Validate vector property
         //
         String serializedCollectionWithTypeId = "{\"turtlesSet2\":[{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"},{\"age\":200,\"size\":20,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"}]}";
         // de-serialization
         //
-        ComposeTurtles composedTurtleDeserialized = ADAPTER.deserialize(serializedCollectionWithTypeId,
-            ComposeTurtles.class, SerializerEncoding.JSON);
+        ComposeTurtles composedTurtleDeserialized = deserialize(serializedCollectionWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet2());
         assertEquals(2, composedTurtleDeserialized.turtlesSet2().size());
@@ -418,34 +403,32 @@ public class FlatteningSerializerTests {
         assertTrue(composedTurtleDeserialized.turtlesSet2().get(0) instanceof TurtleWithTypeIdContainingDot);
         assertTrue(composedTurtleDeserialized.turtlesSet2().get(1) instanceof TurtleWithTypeIdContainingDot);
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
         //
         // -- Validate scalar property
         //
         String serializedScalarWithTypeId = "{\"turtlesSet2Lead\":{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"}}";
         // de-serialization
         //
-        composedTurtleDeserialized = ADAPTER.deserialize(serializedScalarWithTypeId, ComposeTurtles.class,
-            SerializerEncoding.JSON);
+        composedTurtleDeserialized = deserialize(serializedScalarWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet2Lead());
         assertTrue(composedTurtleDeserialized.turtlesSet2Lead() instanceof TurtleWithTypeIdContainingDot);
         assertEquals(10, (long) ((TurtleWithTypeIdContainingDot) composedTurtleDeserialized.turtlesSet2Lead()).size());
         assertEquals(100, (long) composedTurtleDeserialized.turtlesSet2Lead().age());
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
     }
 
     @Test
-    public void canHandleComposedGenericPolymorphicTypeWithoutTypeId() throws IOException {
+    public void canHandleComposedGenericPolymorphicTypeWithoutTypeId() {
         //
         // -- Validate vector property
         //
         String serializedCollectionWithTypeId = "{\"turtlesSet2\":[{\"age\":100,\"size\":10 },{\"age\":200,\"size\":20 }]}";
         // de-serialization
         //
-        ComposeTurtles composedTurtleDeserialized = ADAPTER.deserialize(serializedCollectionWithTypeId,
-            ComposeTurtles.class, SerializerEncoding.JSON);
+        ComposeTurtles composedTurtleDeserialized = deserialize(serializedCollectionWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet2());
         assertEquals(2, composedTurtleDeserialized.turtlesSet2().size());
@@ -455,29 +438,27 @@ public class FlatteningSerializerTests {
         //
         // -- Validate scalar property
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
         //
         String serializedScalarWithTypeId = "{\"turtlesSet2Lead\":{\"age\":100,\"size\":10 }}";
         // de-serialization
         //
-        composedTurtleDeserialized = ADAPTER.deserialize(serializedScalarWithTypeId, ComposeTurtles.class,
-            SerializerEncoding.JSON);
+        composedTurtleDeserialized = deserialize(serializedScalarWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet2Lead());
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
     }
 
     @Test
-    public void canHandleComposedGenericPolymorphicTypeWithAndWithoutTypeId() throws IOException {
+    public void canHandleComposedGenericPolymorphicTypeWithAndWithoutTypeId() {
         //
         // -- Validate vector property
         //
         String serializedCollectionWithTypeId = "{\"turtlesSet2\":[{\"age\":100,\"size\":10,\"@odata.type\":\"#Favourite.Pet.TurtleWithTypeIdContainingDot\"},{\"age\":200,\"size\":20 }]}";
         // de-serialization
         //
-        ComposeTurtles composedTurtleDeserialized = ADAPTER.deserialize(serializedCollectionWithTypeId,
-            ComposeTurtles.class, SerializerEncoding.JSON);
+        ComposeTurtles composedTurtleDeserialized = deserialize(serializedCollectionWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet2());
         assertEquals(2, composedTurtleDeserialized.turtlesSet2().size());
@@ -485,18 +466,18 @@ public class FlatteningSerializerTests {
         assertTrue(composedTurtleDeserialized.turtlesSet2().get(0) instanceof TurtleWithTypeIdContainingDot);
         assertNotNull(composedTurtleDeserialized.turtlesSet2().get(1));
         //
-        ADAPTER.serialize(composedTurtleDeserialized, SerializerEncoding.JSON);
+        serialize(composedTurtleDeserialized);
     }
 
     @Test
-    public void canHandleEscapedProperties() throws IOException {
-        FlattenedProduct productToSerialize = new FlattenedProduct();
-        productToSerialize.setProductName("drink");
-        productToSerialize.setProductType("chai");
+    public void canHandleEscapedProperties() {
+        FlattenedProduct productToSerialize = new FlattenedProduct()
+            .setProductName("drink")
+            .setProductType("chai");
 
         // serialization
         //
-        String serialized = ADAPTER.serialize(productToSerialize, SerializerEncoding.JSON);
+        String serialized = serialize(productToSerialize);
         String[] results = {
             "{\"properties\":{\"p.name\":\"drink\",\"type\":\"chai\"}}",
             "{\"properties\":{\"type\":\"chai\",\"p.name\":\"drink\"}}",
@@ -506,18 +487,17 @@ public class FlatteningSerializerTests {
 
         // de-serialization
         //
-        FlattenedProduct productDeserialized = ADAPTER.deserialize(serialized, FlattenedProduct.class,
-            SerializerEncoding.JSON);
+        FlattenedProduct productDeserialized = deserialize(serialized, FlattenedProduct.class);
         assertNotNull(productDeserialized);
         assertEquals(productDeserialized.getProductName(), "drink");
-        assertEquals(productDeserialized.productType, "chai");
+        assertEquals(productDeserialized.getProductType(), "chai");
     }
 
     @Test
-    public void canHandleSinglePropertyBeingFlattened() throws IOException {
+    public void canHandleSinglePropertyBeingFlattened() {
         ClassWithFlattenedProperties classWithFlattenedProperties = new ClassWithFlattenedProperties("random", "E24JJxztP");
 
-        String serialized = ADAPTER.serialize(classWithFlattenedProperties, SerializerEncoding.JSON);
+        String serialized = serialize(classWithFlattenedProperties);
         String[] results = {
             "{\"@odata\":{\"type\":\"random\"},\"@odata.etag\":\"E24JJxztP\"}",
             "{\"@odata.etag\":\"E24JJxztP\",\"@odata\":{\"type\":\"random\"}}"
@@ -525,54 +505,191 @@ public class FlatteningSerializerTests {
 
         assertTrue(Arrays.asList(results).contains(serialized));
 
-        ClassWithFlattenedProperties deserialized = ADAPTER.deserialize(serialized, ClassWithFlattenedProperties.class,
-            SerializerEncoding.JSON);
+        ClassWithFlattenedProperties deserialized = deserialize(serialized, ClassWithFlattenedProperties.class);
         assertNotNull(deserialized);
         assertEquals(classWithFlattenedProperties.getOdataType(), deserialized.getOdataType());
         assertEquals(classWithFlattenedProperties.getOdataETag(), deserialized.getOdataETag());
     }
 
-    @SuppressWarnings({"unused", "UnusedReturnValue", "FieldCanBeLocal"})
-    @JsonFlatten
-    private class School {
-        @JsonProperty(value = "teacher")
-        private Teacher teacher;
+    @Test
+    public void canHandleMultiLevelPropertyFlattening() {
+        VirtualMachineScaleSet virtualMachineScaleSet = new VirtualMachineScaleSet()
+            .setVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
+                .setNetworkProfile(new VirtualMachineScaleSetNetworkProfile()
+                    .setNetworkInterfaceConfigurations(Collections.singletonList(
+                        new VirtualMachineScaleSetNetworkConfiguration().setName("name").setPrimary(true)))));
 
-        @JsonProperty(value = "properties.name")
-        private String name;
+        String serialized = serialize(virtualMachineScaleSet);
+        String expected = "{\"properties\":{\"virtualMachineProfile\":{\"networkProfile\":{\"networkInterfaceConfigurations\":[{\"name\":\"name\",\"properties\":{\"primary\":true}}]}}}}";
+        assertEquals(expected, serialized);
 
-        @JsonProperty(value = "tags")
-        private Map<String, String> tags;
+        VirtualMachineScaleSet deserialized = deserialize(serialized, VirtualMachineScaleSet.class);
+        assertNotNull(deserialized);
 
-        public School setTeacher(Teacher teacher) {
-            this.teacher = teacher;
-            return this;
-        }
+        VirtualMachineScaleSetNetworkConfiguration expectedConfig = virtualMachineScaleSet.getVirtualMachineProfile()
+            .getNetworkProfile()
+            .getNetworkInterfaceConfigurations()
+            .get(0);
 
-        public School setName(String name) {
-            this.name = name;
-            return this;
-        }
+        VirtualMachineScaleSetNetworkConfiguration actualConfig = deserialized.getVirtualMachineProfile()
+            .getNetworkProfile()
+            .getNetworkInterfaceConfigurations()
+            .get(0);
 
-        public School setTags(Map<String, String> tags) {
-            this.tags = tags;
-            return this;
+        assertEquals(expectedConfig.getName(), actualConfig.getName());
+        assertEquals(expectedConfig.getPrimary(), actualConfig.getPrimary());
+    }
+
+    @Test
+    public void jsonFlattenOnArrayType() {
+        JsonFlattenOnArrayType expected = new JsonFlattenOnArrayType()
+            .setJsonFlattenArray(new String[]{"hello", "goodbye", null});
+
+        String expectedSerialization = "{\"jsonflatten\":{\"array\":[\"hello\",\"goodbye\",null]}}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        JsonFlattenOnArrayType deserialized = deserialize(actualSerialization, JsonFlattenOnArrayType.class);
+        assertArrayEquals(expected.getJsonFlattenArray(), deserialized.getJsonFlattenArray());
+    }
+
+    @Test
+    public void jsonFlattenOnCollectionTypeList() {
+        final List<String> listCollection = Arrays.asList("hello", "goodbye", null);
+        JsonFlattenOnCollectionType expected = new JsonFlattenOnCollectionType()
+            .setJsonFlattenCollection(Collections.unmodifiableList(listCollection));
+
+        String expectedSerialization = "{\"jsonflatten\":{\"collection\":[\"hello\",\"goodbye\",null]}}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        JsonFlattenOnCollectionType deserialized = deserialize(actualSerialization, JsonFlattenOnCollectionType.class);
+        assertEquals(expected.getJsonFlattenCollection().size(), deserialized.getJsonFlattenCollection().size());
+        for (int i = 0; i < expected.getJsonFlattenCollection().size(); i++) {
+            assertEquals(expected.getJsonFlattenCollection().get(i), deserialized.getJsonFlattenCollection().get(i));
         }
     }
 
-    @SuppressWarnings("InnerClassMayBeStatic")
-    private class Student {
+    @Test
+    public void jsonFlattenOnJsonIgnoredProperty() {
+        JsonFlattenOnJsonIgnoredProperty expected = new JsonFlattenOnJsonIgnoredProperty()
+            .setName("name")
+            .setIgnored("ignored");
 
+        String expectedSerialization = "{\"name\":\"name\"}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        JsonFlattenOnJsonIgnoredProperty deserialized = deserialize(actualSerialization,
+            JsonFlattenOnJsonIgnoredProperty.class);
+        assertEquals(expected.getName(), deserialized.getName());
+        assertNull(deserialized.getIgnored());
     }
 
-    @SuppressWarnings({"unused", "UnusedReturnValue", "FieldCanBeLocal"})
-    private class Teacher {
-        @JsonProperty(value = "students")
-        private Map<String, Student> students;
+    @Test
+    public void jsonFlattenOnPrimitiveType() {
+        JsonFlattenOnPrimitiveType expected = new JsonFlattenOnPrimitiveType()
+            .setJsonFlattenBoolean(true)
+            .setJsonFlattenDecimal(1.25D)
+            .setJsonFlattenNumber(2)
+            .setJsonFlattenString("string");
 
-        public Teacher setStudents(Map<String, Student> students) {
-            this.students = students;
-            return this;
+        String expectedSerialization = "{\"jsonflatten\":{\"boolean\":true,\"decimal\":1.25,\"number\":2,\"string\":\"string\"}}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        JsonFlattenOnPrimitiveType deserialized = deserialize(actualSerialization, JsonFlattenOnPrimitiveType.class);
+        assertEquals(expected.isJsonFlattenBoolean(), deserialized.isJsonFlattenBoolean());
+        assertEquals(expected.getJsonFlattenDecimal(), deserialized.getJsonFlattenDecimal());
+        assertEquals(expected.getJsonFlattenNumber(), deserialized.getJsonFlattenNumber());
+        assertEquals(expected.getJsonFlattenString(), deserialized.getJsonFlattenString());
+    }
+
+    @Test
+    public void jsonFlattenWithJsonInfoDiscriminator() {
+        JsonFlattenWithJsonInfoDiscriminator expected = new JsonFlattenWithJsonInfoDiscriminator()
+            .setJsonFlattenDiscriminator("discriminator");
+
+        String expectedSerialization = "{\"type\":\"JsonFlattenWithJsonInfoDiscriminator\",\"jsonflatten\":{\"discriminator\":\"discriminator\"}}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        JsonFlattenWithJsonInfoDiscriminator deserialized = deserialize(actualSerialization,
+            JsonFlattenWithJsonInfoDiscriminator.class);
+        assertEquals(expected.getJsonFlattenDiscriminator(), deserialized.getJsonFlattenDiscriminator());
+    }
+
+    @Test
+    public void flattenedPropertiesAndJsonAnyGetter() {
+        FlattenedPropertiesAndJsonAnyGetter expected = new FlattenedPropertiesAndJsonAnyGetter()
+            .setString("string")
+            .addAdditionalProperty("key1", "value1")
+            .addAdditionalProperty("key2", "value2");
+
+        String expectedSerialization = "{\"flattened\":{\"string\":\"string\"},\"key1\":\"value1\",\"key2\":\"value2\"}";
+        String actualSerialization = serialize(expected);
+
+        assertEquals(expectedSerialization, actualSerialization);
+
+        FlattenedPropertiesAndJsonAnyGetter deserialized = deserialize(actualSerialization,
+            FlattenedPropertiesAndJsonAnyGetter.class);
+        assertEquals(expected.getString(), deserialized.getString());
+        assertEquals(expected.additionalProperties().size(), deserialized.additionalProperties().size());
+        for (String key : expected.additionalProperties().keySet()) {
+            assertEquals(expected.additionalProperties().get(key), deserialized.additionalProperties().get(key));
+        }
+    }
+
+    @Test
+    public void jsonFlattenFinalMap() {
+        final HashMap<String, String> mapProperties = new HashMap<String, String>() {{
+                put("/subscriptions/0-0-0-0-0/resourcegroups/0/providers/Microsoft.ManagedIdentity/0", "value");
+                }};
+        School school = new School().setTags(mapProperties);
+
+        String actualSerialization = serialize(school);
+        String expectedSerialization = "{\"tags\":{\"/subscriptions/0-0-0-0-0/resourcegroups"
+            + "/0/providers/Microsoft.ManagedIdentity/0\":\"value\"}}";
+        Assertions.assertEquals(expectedSerialization, actualSerialization);
+    }
+
+    @Test
+    public void jsonFlattenNestedInner() {
+        JsonFlattenNestedInner expected = new JsonFlattenNestedInner();
+        VirtualMachineIdentity identity = new VirtualMachineIdentity();
+        final Map<String, Object> map = new HashMap<>();
+        map.put("/subscriptions/0-0-0-0-0/resourcegroups/0/providers/Microsoft.ManagedIdentity/userAssignedIdentities/0",
+            new Object());
+        identity.setType(Arrays.asList("SystemAssigned, UserAssigned"));
+        identity.setUserAssignedIdentities(map);
+        expected.setIdentity(identity);
+
+        String expectedSerialization = "{\"identity\":{\"type\":[\"SystemAssigned, UserAssigned\"],"
+            + "\"userAssignedIdentities\":{\"/subscriptions/0-0-0-0-0/resourcegroups/0/providers/"
+            + "Microsoft.ManagedIdentity/userAssignedIdentities/0\":{}}}}";
+        String actualSerialization = serialize(expected);
+
+        Assertions.assertEquals(expectedSerialization, actualSerialization);
+    }
+
+    private static String serialize(Object object) {
+        try {
+            return ADAPTER.serialize(object, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    private static <T> T deserialize(String json, Type type) {
+        try {
+            return ADAPTER.deserialize(json, type, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
     }
 
@@ -595,60 +712,6 @@ public class FlatteningSerializerTests {
         school.setTags(schoolTags);
 
         return school;
-    }
-
-    @SuppressWarnings({"unused", "UnusedReturnValue", "FieldCanBeLocal"})
-    @JsonFlatten
-    public static class FlattenedProduct {
-        // Flattened and escaped property
-        @JsonProperty(value = "properties.p\\.name")
-        private String productName;
-
-        @JsonProperty(value = "properties.type")
-        private String productType;
-
-        public String getProductName() {
-            return this.productName;
-        }
-
-        public FlattenedProduct setProductName(String productName) {
-            this.productName = productName;
-            return this;
-        }
-
-        public String getProductType() {
-            return this.productType;
-        }
-
-        public FlattenedProduct setProductType(String productType) {
-            this.productType = productType;
-            return this;
-        }
-    }
-
-    @SuppressWarnings({"unused", "UnusedReturnValue", "FieldCanBeLocal", "FieldMayBeFinal"})
-    public static final class ClassWithFlattenedProperties {
-        @JsonFlatten
-        @JsonProperty(value = "@odata.type")
-        private String odataType;
-
-        @JsonProperty(value = "@odata.etag")
-        private String odataETag;
-
-        @JsonCreator
-        public ClassWithFlattenedProperties(@JsonProperty(value = "@odata.type") String odataType,
-            @JsonProperty(value = "@odata.etag") String odataETag) {
-            this.odataType = odataType;
-            this.odataETag = odataETag;
-        }
-
-        public String getOdataType() {
-            return odataType;
-        }
-
-        public String getOdataETag() {
-            return odataETag;
-        }
     }
 }
 

@@ -4,9 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertSnoozeCondition;
-import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
-import com.azure.ai.metricsadvisor.administration.models.TopNGroupScope;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.ParquetDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,61 +17,23 @@ import java.util.Map;
 /** Parquet dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Parquet")
-@JsonFlatten
 @Fluent
-public class ParquetDataset extends Dataset {
+public final class ParquetDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ParquetDataset.class);
 
     /*
-     * The location of the parquet storage.
+     * Parquet dataset properties.
      */
-    @JsonProperty(value = "typeProperties.location")
-    private DatasetLocation location;
-
-    /*
-     * The compressionCodec property.
-     */
-    @JsonProperty(value = "typeProperties.compressionCodec")
-    private CompressionCodec compressionCodec;
+    @JsonProperty(value = "typeProperties")
+    private ParquetDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the location property: The location of the parquet storage.
+     * Get the innerTypeProperties property: Parquet dataset properties.
      *
-     * @return the location value.
+     * @return the innerTypeProperties value.
      */
-    public DatasetLocation location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location of the parquet storage.
-     *
-     * @param location the location value to set.
-     * @return the ParquetDataset object itself.
-     */
-    public ParquetDataset withLocation(DatasetLocation location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the compressionCodec property: The compressionCodec property.
-     *
-     * @return the compressionCodec value.
-     */
-    public CompressionCodec compressionCodec() {
-        return this.compressionCodec;
-    }
-
-    /**
-     * Set the compressionCodec property: The compressionCodec property.
-     *
-     * @param compressionCodec the compressionCodec value to set.
-     * @return the ParquetDataset object itself.
-     */
-    public ParquetDataset withCompressionCodec(CompressionCodec compressionCodec) {
-        this.compressionCodec = compressionCodec;
-        return this;
+    private ParquetDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -124,6 +86,54 @@ public class ParquetDataset extends Dataset {
     }
 
     /**
+     * Get the location property: The location of the parquet storage.
+     *
+     * @return the location value.
+     */
+    public DatasetLocation location() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().location();
+    }
+
+    /**
+     * Set the location property: The location of the parquet storage.
+     *
+     * @param location the location value to set.
+     * @return the ParquetDataset object itself.
+     */
+    public ParquetDataset withLocation(DatasetLocation location) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ParquetDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withLocation(location);
+        return this;
+    }
+
+    /**
+     * Get the compressionCodec property: The data compressionCodec. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the compressionCodec value.
+     */
+    public Object compressionCodec() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().compressionCodec();
+    }
+
+    /**
+     * Set the compressionCodec property: The data compressionCodec. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param compressionCodec the compressionCodec value to set.
+     * @return the ParquetDataset object itself.
+     */
+    public ParquetDataset withCompressionCodec(Object compressionCodec) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ParquetDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCompressionCodec(compressionCodec);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -131,8 +141,8 @@ public class ParquetDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (location() != null) {
-            location().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

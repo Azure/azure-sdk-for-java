@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.config.web.pushbusrefresh;
 
 import static com.azure.spring.cloud.config.web.Constants.APPCONFIGURATION_REFRESH_BUS;
@@ -33,14 +30,17 @@ import com.azure.spring.cloud.config.web.AppConfigurationEndpoint;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Endpoint for requesting new configurations to be loaded in all registered instances on the Bus.
+ */
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH_BUS)
 public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBusRefreshEndpoint.class);
 
-    private ObjectMapper objectmapper = new ObjectMapper();
+    private final ObjectMapper objectmapper = new ObjectMapper();
 
-    private AppConfigurationProperties appConfiguration;
+    private final AppConfigurationProperties appConfiguration;
 
     public AppConfigurationBusRefreshEndpoint(ApplicationEventPublisher context, String appId,
         Destination.Factory destinationFactory,
@@ -49,6 +49,16 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
         this.appConfiguration = appConfiguration;
     }
 
+    /**
+     * Checks a HttpServletRequest to see if it is a refresh event. Validates token information. If request is a
+     * validation request returns validation code.
+     * 
+     * @param request Request checked for refresh.
+     * @param response Response for request.
+     * @param allRequestParams request parameters needs to contain validation token. 
+     * @return 200 if refresh event triggered. 500 if invalid for any reason. Validation response if requested.
+     * @throws IOException Unable to parse request info for validation.
+     */
     @PostMapping(value = "/")
     @ResponseBody
     public String refresh(HttpServletRequest request, HttpServletResponse response,

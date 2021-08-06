@@ -6,6 +6,8 @@ package com.azure.communication.callingserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /** The options for join call. */
 @Fluent
 public final class JoinCallOptions {
@@ -25,13 +27,13 @@ public final class JoinCallOptions {
      * The requested MediaTypes.
      */
     @JsonProperty(value = "requestedMediaTypes", required = true)
-    private CallModality[] requestedMediaTypes;
+    private List<MediaType> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents", required = true)
-    private EventSubscriptionType[] requestedCallEvents;
+    private List<EventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the subject property: The subject.
@@ -78,8 +80,8 @@ public final class JoinCallOptions {
      *
      * @return the requestedMediaTypes value.
      */
-    public CallModality[] getRequestedMediaTypes() {
-        return requestedMediaTypes == null ? new CallModality[0] : requestedMediaTypes.clone();
+    public List<MediaType> getRequestedMediaTypes() {
+        return requestedMediaTypes;
     }
 
     /**
@@ -88,8 +90,8 @@ public final class JoinCallOptions {
      * @param requestedMediaTypes the requestedModalities value to set.
      * @return the JoinCallOptions object itself.
      */
-    public JoinCallOptions setRequestedMediaTypes(CallModality[] requestedMediaTypes) {
-        this.requestedMediaTypes = requestedMediaTypes == null ? new CallModality[0] : requestedMediaTypes.clone();
+    public JoinCallOptions setRequestedMediaTypes(List<MediaType> requestedMediaTypes) {
+        this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
 
@@ -99,8 +101,8 @@ public final class JoinCallOptions {
      *
      * @return the requestedCallEvents value.
      */
-    public EventSubscriptionType[] getRequestedCallEvents() {
-        return requestedCallEvents == null ? new EventSubscriptionType[0] : requestedCallEvents.clone();
+    public List<EventSubscriptionType> getRequestedCallEvents() {
+        return requestedCallEvents;
     }
 
     /**
@@ -110,8 +112,8 @@ public final class JoinCallOptions {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the JoinCallOptions object itself.
      */
-    public JoinCallOptions setRequestedCallEvents(EventSubscriptionType[] requestedCallEvents) {
-        this.requestedCallEvents = requestedCallEvents == null ? new EventSubscriptionType[0] : requestedCallEvents.clone();
+    public JoinCallOptions setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+        this.requestedCallEvents = requestedCallEvents;
         return this;
     }
 
@@ -123,23 +125,21 @@ public final class JoinCallOptions {
      * @param requestedCallEvents the requested call events to subscribe to.
      * @throws IllegalArgumentException if any parameters are null.
      */
-    public JoinCallOptions(String callbackUri,
-                                 CallModality[] requestedMediaTypes,
-                                 EventSubscriptionType[] requestedCallEvents) {
+    public JoinCallOptions(
+        String callbackUri,
+        List<MediaType> requestedMediaTypes,
+        List<EventSubscriptionType> requestedCallEvents) {
         if (callbackUri == null) {
             throw new IllegalArgumentException("object callbackUri cannot be null");
         }
-
         if (requestedMediaTypes == null) {
             throw new IllegalArgumentException("object requestedMediaTypes cannot be null");
         }
         if (requestedCallEvents == null) {
             throw new IllegalArgumentException("object requestedCallEvents cannot be null");
         }
-
         this.callbackUri = callbackUri;
-
-        this.requestedMediaTypes = requestedMediaTypes.clone();
-        this.requestedCallEvents = requestedCallEvents.clone();
+        this.requestedMediaTypes = requestedMediaTypes;
+        this.requestedCallEvents = requestedCallEvents;
     }
 }

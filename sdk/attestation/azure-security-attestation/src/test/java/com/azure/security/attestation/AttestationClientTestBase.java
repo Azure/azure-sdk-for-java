@@ -13,14 +13,15 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationType;
-import com.azure.security.attestation.models.JsonWebKey;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
@@ -30,10 +31,6 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -45,6 +42,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+//import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * Specialization of the TestBase class for the attestation tests.
@@ -64,6 +63,12 @@ public class AttestationClientTestBase extends TestBase {
         AAD,
     }
 
+    @BeforeAll
+    public static void beforeAll() {
+        TestBase.setupClass();
+//        Dotenv.configure().ignoreIfMissing().systemProperties().load();
+    }
+
     /**
      * Determine the Attestation instance type based on the client URI provided.
      * @param clientUri - URI for the attestation client.
@@ -72,7 +77,7 @@ public class AttestationClientTestBase extends TestBase {
     ClientTypes classifyClient(String clientUri) {
         assertNotNull(clientUri);
         String regionShortName = getLocationShortName();
-        String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net";
+        String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".attest.azure.net";
         if (sharedUri.equals(clientUri)) {
             return ClientTypes.SHARED;
         } else if (getIsolatedUrl().equals(clientUri)) {
@@ -100,7 +105,7 @@ public class AttestationClientTestBase extends TestBase {
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
     AttestationClientBuilder getBuilder(HttpClient httpClient, String clientUri) {
-        return new AttestationClientBuilder().pipeline(getHttpPipeline(httpClient)).instanceUrl(clientUri);
+        return new AttestationClientBuilder().pipeline(getHttpPipeline(httpClient)).endpoint(clientUri);
     }
 
     /**
@@ -150,8 +155,8 @@ public class AttestationClientTestBase extends TestBase {
 
         SignedJWT finalToken = token;
         return getSigningCertificateByKeyId(token, httpClient, clientUri)
-            .handle((cert, sink) -> {
-                final PublicKey key = cert.getPublicKey();
+            .handle((signer, sink) -> {
+                final PublicKey key = signer.getCertificates()[0].getPublicKey();
                 final RSAPublicKey rsaKey = (RSAPublicKey) key;
 
                 final RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
@@ -210,33 +215,17 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Base URI for the attestation client.
      * @return X509Certificate which will have been used to sign the token.
      */
-    Mono<X509Certificate> getSigningCertificateByKeyId(SignedJWT token, HttpClient client, String clientUri) {
+    Mono<AttestationSigner> getSigningCertificateByKeyId(SignedJWT token, HttpClient client, String clientUri) {
         AttestationClientBuilder builder = getBuilder(client, clientUri);
-        return builder.buildSigningCertificatesAsyncClient().get()
-            .handle((keySet, sink) -> {
-                final CertificateFactory cf;
-                try {
-                    cf = CertificateFactory.getInstance("X.509");
-                } catch (CertificateException e) {
-                    sink.error(logger.logThrowableAsError(e));
-                    return;
-                }
-
+        return builder.buildAttestationAsyncClient().getAttestationSigners()
+            .handle((signers, sink) -> {
                 final String keyId = token.getHeader().getKeyID();
                 boolean foundKey = false;
-                for (JsonWebKey key : keySet.getKeys()) {
-                    if (keyId.equals(key.getKid())) {
-                        final Certificate cert;
-                        try {
-                            cert = cf.generateCertificate(base64ToStream(key.getX5C().get(0)));
-                            foundKey = true;
-                        } catch (CertificateException e) {
-                            sink.error(logger.logThrowableAsError(e));
-                            return;
-                        }
 
-                        assertTrue(cert instanceof X509Certificate);
-                        sink.next((X509Certificate) cert);
+                for (AttestationSigner signer : signers) {
+                    if (keyId.equals(signer.getKeyId())) {
+                        foundKey = true;
+                        sink.next(signer);
                     }
                 }
                 if (!foundKey) {
@@ -367,7 +356,7 @@ public class AttestationClientTestBase extends TestBase {
 
         final String regionShortName = getLocationShortName();
         return getHttpClients().flatMap(httpClient -> Stream.of(
-            Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net"),
+            Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".attest.azure.net"),
             Arguments.of(httpClient, getIsolatedUrl()),
             Arguments.of(httpClient, getAadUrl())));
     }

@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca.test;
 
-import com.azure.security.keyvault.jca.KeyVaultCertificates;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -54,7 +53,7 @@ public class KeyVaultCertificatesTest {
 
     @BeforeAll
     public static void setEnvironmentProperty() {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca(PropertyConvertorUtils.SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
@@ -94,14 +93,4 @@ public class KeyVaultCertificatesTest {
         assertNotNull(keyStore.getCertificate(certificateName));
     }
 
-    @Test
-    public void testUpdateLastForceRefreshTime() throws Exception {
-        KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
-        assertNotNull(keyStore.getCertificate(certificateName));
-        keyStore.deleteEntry(certificateName);
-        assertNull(keyStore.getCertificate(certificateName));
-        Thread.sleep(10);
-        KeyVaultCertificates.updateLastForceRefreshTime();
-        assertNotNull(keyStore.getCertificate(certificateName));
-    }
 }

@@ -59,6 +59,27 @@ public final class SqlDWSink extends CopySink {
     @JsonProperty(value = "tableOption")
     private Object tableOption;
 
+    /*
+     * Whether to use table lock during bulk copy. Type: boolean (or Expression
+     * with resultType boolean).
+     */
+    @JsonProperty(value = "sqlWriterUseTableLock")
+    private Object sqlWriterUseTableLock;
+
+    /*
+     * Write behavior when copying data into azure SQL DW. Type:
+     * SqlDWWriteBehaviorEnum (or Expression with resultType
+     * SqlDWWriteBehaviorEnum)
+     */
+    @JsonProperty(value = "writeBehavior")
+    private Object writeBehavior;
+
+    /*
+     * SQL DW upsert settings.
+     */
+    @JsonProperty(value = "upsertSettings")
+    private SqlDWUpsertSettings upsertSettings;
+
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
      *
@@ -185,6 +206,70 @@ public final class SqlDWSink extends CopySink {
         return this;
     }
 
+    /**
+     * Get the sqlWriterUseTableLock property: Whether to use table lock during bulk copy. Type: boolean (or Expression
+     * with resultType boolean).
+     *
+     * @return the sqlWriterUseTableLock value.
+     */
+    public Object sqlWriterUseTableLock() {
+        return this.sqlWriterUseTableLock;
+    }
+
+    /**
+     * Set the sqlWriterUseTableLock property: Whether to use table lock during bulk copy. Type: boolean (or Expression
+     * with resultType boolean).
+     *
+     * @param sqlWriterUseTableLock the sqlWriterUseTableLock value to set.
+     * @return the SqlDWSink object itself.
+     */
+    public SqlDWSink withSqlWriterUseTableLock(Object sqlWriterUseTableLock) {
+        this.sqlWriterUseTableLock = sqlWriterUseTableLock;
+        return this;
+    }
+
+    /**
+     * Get the writeBehavior property: Write behavior when copying data into azure SQL DW. Type: SqlDWWriteBehaviorEnum
+     * (or Expression with resultType SqlDWWriteBehaviorEnum).
+     *
+     * @return the writeBehavior value.
+     */
+    public Object writeBehavior() {
+        return this.writeBehavior;
+    }
+
+    /**
+     * Set the writeBehavior property: Write behavior when copying data into azure SQL DW. Type: SqlDWWriteBehaviorEnum
+     * (or Expression with resultType SqlDWWriteBehaviorEnum).
+     *
+     * @param writeBehavior the writeBehavior value to set.
+     * @return the SqlDWSink object itself.
+     */
+    public SqlDWSink withWriteBehavior(Object writeBehavior) {
+        this.writeBehavior = writeBehavior;
+        return this;
+    }
+
+    /**
+     * Get the upsertSettings property: SQL DW upsert settings.
+     *
+     * @return the upsertSettings value.
+     */
+    public SqlDWUpsertSettings upsertSettings() {
+        return this.upsertSettings;
+    }
+
+    /**
+     * Set the upsertSettings property: SQL DW upsert settings.
+     *
+     * @param upsertSettings the upsertSettings value to set.
+     * @return the SqlDWSink object itself.
+     */
+    public SqlDWSink withUpsertSettings(SqlDWUpsertSettings upsertSettings) {
+        this.upsertSettings = upsertSettings;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public SqlDWSink withWriteBatchSize(Object writeBatchSize) {
@@ -220,6 +305,13 @@ public final class SqlDWSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -233,6 +325,9 @@ public final class SqlDWSink extends CopySink {
         }
         if (copyCommandSettings() != null) {
             copyCommandSettings().validate();
+        }
+        if (upsertSettings() != null) {
+            upsertSettings().validate();
         }
     }
 }

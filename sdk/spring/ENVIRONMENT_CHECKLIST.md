@@ -13,7 +13,7 @@ We **highly recommend** you refer to the `README.md` files of the released versi
 Here are the steps to get `README.md` files of the released version:  
   
 1. On GitHub, navigate to the main page of the repository.  
-1. Click the `master` button, then click `Tags`.   
+1. Click the `main` button, then click `Tags`.   
 1. In the "Find a tag" text box, input and enter the module name you want to search, such as `azure-spring-boot-starter-xxx`.  
 ![Search for tag](images/search-for-tag.png "Search for a tag")  
 1. Click one of the searched tags. (You will find that the address in your browser bar changes to that specific version. You can manually edit the address with other versions, then quickly switch to other versions.)  
@@ -29,11 +29,11 @@ git clone -b <replace-the-tag> --depth 1 https://github.com/Azure/azure-sdk-for-
 
 ### Use development version
 
-#### Clone project from master branch
-It means cloning the master branch, all the code, dependencies, and readme files are up to date.
+#### Clone project from main branch
+It means cloning the main branch, all the code, dependencies, and readme files are up to date.
 
 ```shell script
-git clone -b master --depth 1 https://github.com/Azure/azure-sdk-for-java.git
+git clone -b main --depth 1 https://github.com/Azure/azure-sdk-for-java.git
 ```
 
 #### Build module

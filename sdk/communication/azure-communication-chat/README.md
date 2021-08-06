@@ -353,10 +353,15 @@ readReceiptsResponse.iterableByPage().forEach(resp -> {
 #### Send typing notification
 
 Use `sendTypingNotification` method to post a typing notification event to a chat thread, on behalf of a user.
+`typingNotificationOptions` is used to describe the typing notification request.
 
-<!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L275-L275 -->
+- Use `senderDisplayName` to set the display name of the notification sender;
+
+<!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L276-L278 -->
 ```Java
-chatThreadClient.sendTypingNotification();
+TypingNotificationOptions options = new TypingNotificationOptions();
+options.setSenderDisplayName("Sender Display Name");
+chatThreadClient.sendTypingNotification(options);
 ```
 
 
@@ -377,4 +382,4 @@ Check out other client libraries for Azure communication service
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-chat
 [api_documentation]: https://aka.ms/java-docs
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-chat/src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-chat/src

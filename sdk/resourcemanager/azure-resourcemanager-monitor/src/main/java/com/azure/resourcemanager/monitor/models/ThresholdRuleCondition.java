@@ -133,6 +133,13 @@ public class ThresholdRuleCondition extends RuleCondition {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ThresholdRuleCondition withDataSource(RuleDataSource dataSource) {
+        super.withDataSource(dataSource);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

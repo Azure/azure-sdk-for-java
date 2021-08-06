@@ -94,6 +94,13 @@ public final class HdfsSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public HdfsSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

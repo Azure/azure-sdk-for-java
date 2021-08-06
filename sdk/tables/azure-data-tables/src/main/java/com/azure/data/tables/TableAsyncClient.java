@@ -58,6 +58,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,6 +69,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
@@ -718,10 +720,10 @@ public final class TableAsyncClient {
             token -> withContext(context -> listEntitiesNextPage(token, context, options, TableEntity.class)));
     }
 
-    PagedFlux<TableEntity> listEntities(ListEntitiesOptions options, Context context) {
+    PagedFlux<TableEntity> listEntities(ListEntitiesOptions options, Context context, Duration timeout) {
         return new PagedFlux<>(
-            () -> listEntitiesFirstPage(context, options, TableEntity.class),
-            token -> listEntitiesNextPage(token, context, options, TableEntity.class));
+            () -> applyOptionalTimeout(listEntitiesFirstPage(context, options, TableEntity.class), timeout),
+            token -> applyOptionalTimeout(listEntitiesNextPage(token, context, options, TableEntity.class), timeout));
     }
 
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesFirstPage(Context context,
@@ -861,7 +863,6 @@ public final class TableAsyncClient {
      * empty.
      * @throws TableServiceException If no {@link TableEntity entity} with the provided {@code partitionKey} and
      * {@code rowKey} exists within the table.
-     * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableEntity> getEntity(String partitionKey, String rowKey) {
@@ -937,12 +938,16 @@ public final class TableAsyncClient {
      * Retrieves details about any stored {@link TableAccessPolicies access policies} specified on the table that may
      * be used with Shared Access Signatures.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the retrieved
      * {@link TableAccessPolicies access policies}.</p>
      * {@codesnippet com.azure.data.tables.tableAsyncClient.getAccessPolicies}
      *
      * @return A {@link Mono} containing the table's {@link TableAccessPolicies access policies}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableAccessPolicies> getAccessPolicies() {
@@ -954,6 +959,8 @@ public final class TableAsyncClient {
      * Retrieves details about any stored {@link TableAccessPolicies access policies} specified on the table that may be
      * used with Shared Access Signatures.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the
      * {@link Response HTTP response} and the retrieved {@link TableAccessPolicies access policies}.</p>
@@ -961,6 +968,8 @@ public final class TableAsyncClient {
      *
      * @return A {@link Mono} containing an {@link Response HTTP response} that in turn contains the table's
      * {@link TableAccessPolicies access policies}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableAccessPolicies>> getAccessPoliciesWithResponse() {
@@ -973,6 +982,7 @@ public final class TableAsyncClient {
         try {
             return tablesImplementation.getTables()
                 .getAccessPolicyWithResponseAsync(tableName, null, null, context)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response,
                     new TableAccessPolicies(response.getValue() == null ? null : response.getValue().stream()
                         .map(this::toTableSignedIdentifier)
@@ -1006,6 +1016,8 @@ public final class TableAsyncClient {
      * Sets stored {@link TableAccessPolicies access policies} for the table that may be used with Shared Access
      * Signatures.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets stored {@link TableAccessPolicies access policies} on a table.</p>
      * {@codesnippet com.azure.data.tables.tableAsyncClient.setAccessPolicies#List}
@@ -1013,6 +1025,8 @@ public final class TableAsyncClient {
      * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
      *
      * @return An empty {@link Mono}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setAccessPolicies(List<TableSignedIdentifier> tableSignedIdentifiers) {
@@ -1023,6 +1037,8 @@ public final class TableAsyncClient {
      * Sets stored {@link TableAccessPolicies access policies} for the table that may be used with Shared Access
      * Signatures.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets stored {@link TableAccessPolicies access policies} on a table. Prints out details of the
      * {@link Response HTTP response}.</p>
@@ -1031,6 +1047,8 @@ public final class TableAsyncClient {
      * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
      *
      * @return A {@link Mono} containing the {@link Response HTTP response}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers) {
@@ -1079,6 +1097,7 @@ public final class TableAsyncClient {
         try {
             return tablesImplementation.getTables()
                 .setAccessPolicyWithResponseAsync(tableName, null, null, signedIdentifiers, context)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, response.getValue()));
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -1130,6 +1149,7 @@ public final class TableAsyncClient {
      * correspond to each {@link TableTransactionAction action} in the transaction.
      *
      * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
+     * @throws TableServiceException If the request is rejected by the service.
      * @throws TableTransactionFailedException If any {@link TableTransactionResult action} within the transaction
      * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
      * may cause a given {@link TableTransactionAction action} to fail.
@@ -1166,6 +1186,7 @@ public final class TableAsyncClient {
      * correspond to each {@link TableTransactionAction action} in the transaction.
      *
      * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
+     * @throws TableServiceException If the request is rejected by the service.
      * @throws TableTransactionFailedException If any {@link TableTransactionAction action} within the transaction
      * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
      * may cause a given {@link TableTransactionAction action} to fail.
@@ -1178,8 +1199,8 @@ public final class TableAsyncClient {
     Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
 
-        if (transactionActions.size() == 0) {
-            throw logger.logExceptionAsError(
+        if (transactionActions.isEmpty()) {
+            return monoError(logger,
                 new IllegalArgumentException("A transaction must contain at least one operation."));
         }
 
@@ -1222,18 +1243,23 @@ public final class TableAsyncClient {
             }
         }
 
-        return Flux.fromIterable(operations)
-            .flatMapSequential(op -> op.prepareRequest(transactionalBatchClient).zipWith(Mono.just(op)))
-            .collect(TransactionalBatchRequestBody::new, (body, pair) ->
-                body.addChangeOperation(new TransactionalBatchSubRequest(pair.getT2(), pair.getT1())))
-            .publishOn(Schedulers.boundedElastic())
-            .flatMap(body ->
-                transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null,
-                    finalContext).zipWith(Mono.just(body)))
-            .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()))
-            .map(response ->
-                new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    new TableTransactionResult(transactionActions, response.getValue())));
+        try {
+            return Flux.fromIterable(operations)
+                .flatMapSequential(op -> op.prepareRequest(transactionalBatchClient).zipWith(Mono.just(op)))
+                .collect(TransactionalBatchRequestBody::new, (body, pair) ->
+                    body.addChangeOperation(new TransactionalBatchSubRequest(pair.getT2(), pair.getT1())))
+                .publishOn(Schedulers.boundedElastic())
+                .flatMap(body ->
+                    transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null,
+                        finalContext).zipWith(Mono.just(body)))
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
+                .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()))
+                .map(response ->
+                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        new TableTransactionResult(transactionActions, response.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
     }
 
     private Mono<Response<List<TableTransactionActionResponse>>> parseResponse(TransactionalBatchRequestBody requestBody,

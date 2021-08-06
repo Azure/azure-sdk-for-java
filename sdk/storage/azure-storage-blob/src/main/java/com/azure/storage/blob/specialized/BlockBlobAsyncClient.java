@@ -20,6 +20,7 @@ import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -27,10 +28,12 @@ import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -118,6 +121,44 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         EncryptionScope encryptionScope, String versionId) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
+    }
+
+    /**
+     * Creates a new {@link BlockBlobAsyncClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link BlockBlobAsyncClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public BlockBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope) {
+        EncryptionScope finalEncryptionScope = null;
+        if (encryptionScope != null) {
+            finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+        return new BlockBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
+            getVersionId());
+    }
+
+    /**
+     * Creates a new {@link BlockBlobAsyncClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link BlockBlobAsyncClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public BlockBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new BlockBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
+            getVersionId());
     }
 
     /**
@@ -261,14 +302,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
+        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
         return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
             options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -368,17 +412,18 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             options.getSourceRequestConditions() == null ? new BlobRequestConditions()
             : options.getSourceRequestConditions();
         context = context == null ? Context.NONE : context;
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
 
-        URL url;
         try {
-            url = new URL(options.getSourceUrl());
+            new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
 
         // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
         return this.azureBlobStorage.getBlockBlobs().putBlobFromUrlWithResponseAsync(
-            containerName, blobName, 0, url, null, null, null,
+            containerName, blobName, 0, options.getSourceUrl(), null, null, null,
             destinationRequestConditions.getLeaseId(), options.getTier(),
             destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
             destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
@@ -387,7 +432,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getTagsConditions(),
             null, options.getContentMd5(), tagsToString(options.getTags()),
-            options.isCopySourceBlobProperties(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+            options.isCopySourceBlobProperties(), sourceAuth, options.getHeaders(),
+            getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
@@ -530,33 +576,55 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
         try {
-            return withContext(context -> stageBlockFromUrlWithResponse(base64BlockId, sourceUrl,
-                sourceRange, sourceContentMd5, leaseId, sourceRequestConditions, context));
+            return this.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
+                .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
+                .setSourceRequestConditions(sourceRequestConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
-        byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Context context) {
-        sourceRange = (sourceRange == null) ? new BlobRange(0) : sourceRange;
-        sourceRequestConditions = (sourceRequestConditions == null)
-            ? new BlobRequestConditions() : sourceRequestConditions;
-
-        URL url;
+    /**
+     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-from-url">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions}
+     *
+     * @param options parameters for the operation.
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options) {
         try {
-            url = new URL(sourceUrl);
+            return withContext(context -> stageBlockFromUrlWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Context context) {
+        BlobRange sourceRange = (options.getSourceRange() == null) ? new BlobRange(0) : options.getSourceRange();
+        BlobRequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
+            ? new BlobRequestConditions() : options.getSourceRequestConditions();
+
+        try {
+            new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
         context = context == null ? Context.NONE : context;
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
 
-        return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName, base64BlockId, 0,
-            url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
-            sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
-            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName,
+            options.getBase64BlockId(), 0, options.getSourceUrl(), sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
+            options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
+            sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
+            sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -752,14 +820,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
+        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
         return this.azureBlobStorage.getBlockBlobs().commitBlockListWithResponseAsync(containerName, blobName,
             new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

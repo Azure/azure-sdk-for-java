@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
  *
  * For this sample, you can use the training forms found in
- * <a href="https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/sample-forms/training">here</a>
+ * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/sample-forms/training">here</a>
  * to create your own custom models.
  *
  * Further, see RecognizeCustomForms.java to recognize forms with your custom built model.

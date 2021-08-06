@@ -3,11 +3,15 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallModality;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -47,16 +51,15 @@ public class ReadmeSamples {
         CommunicationIdentifier firstCallee = new CommunicationUserIdentifier("<acs-user-identity-1>");
         CommunicationIdentifier secondCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
 
-        CommunicationIdentifier[] targets = new CommunicationIdentifier[] { firstCallee, secondCallee };
+        List<CommunicationIdentifier> targets = Arrays.asList(firstCallee, secondCallee);
 
         String callbackUri = "<callback-uri-for-notification>";
 
-        CallModality[] requestedMediaTypes = new CallModality[] { CallModality.AUDIO, CallModality.VIDEO };
+        List<MediaType> requestedMediaTypes = Arrays.asList(MediaType.AUDIO, MediaType.VIDEO);
 
-        EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[] {
+        List<EventSubscriptionType> requestedCallEvents = Arrays.asList(
             EventSubscriptionType.DTMF_RECEIVED,
-            EventSubscriptionType.PARTICIPANTS_UPDATED
-        };
+            EventSubscriptionType.PARTICIPANTS_UPDATED);
 
         CreateCallOptions createCallOptions = new CreateCallOptions(
             callbackUri,
@@ -85,5 +88,20 @@ public class ReadmeSamples {
         CallConnection callConnection = callingServerClient.getCallConnection(callConnectionId);
         CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
         callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
+    }
+
+    /**
+     * Sample code for downloading a recording into a file.
+     */
+    public void getRecordingStream() {
+        String recordingUrl = "https://ams.skype.com/objects/v1/document_id/video";
+        String filePath = "filePath.mp4";
+        CallingServerClient callingServerClient = createCallingServerClient();
+        callingServerClient.downloadTo(
+            recordingUrl,
+            Paths.get(filePath),
+            null,
+            true
+        );
     }
 }

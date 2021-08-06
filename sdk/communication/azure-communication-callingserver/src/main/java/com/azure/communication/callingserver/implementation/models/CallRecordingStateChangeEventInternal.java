@@ -19,15 +19,15 @@ public final class CallRecordingStateChangeEventInternal {
     private String recordingId;
 
     /*
-     * The recording state of the recording
+     * The state of the recording
      */
-    @JsonProperty(value = "state")
+    @JsonProperty(value = "state", required = true)
     private CallRecordingState state;
 
     /*
      * The time of the recording started
      */
-    @JsonProperty(value = "startDateTime")
+    @JsonProperty(value = "startDateTime", required = true)
     private OffsetDateTime startDateTime;
 
     /*
@@ -57,7 +57,7 @@ public final class CallRecordingStateChangeEventInternal {
     }
 
     /**
-     * Get the state property: The recording state of the recording.
+     * Get the state property: The state of the recording.
      *
      * @return the state value.
      */
@@ -66,7 +66,7 @@ public final class CallRecordingStateChangeEventInternal {
     }
 
     /**
-     * Set the state property: The recording state of the recording.
+     * Set the state property: The state of the recording.
      *
      * @param state the state value to set.
      * @return the CallRecordingStateChangeEventInternal object itself.

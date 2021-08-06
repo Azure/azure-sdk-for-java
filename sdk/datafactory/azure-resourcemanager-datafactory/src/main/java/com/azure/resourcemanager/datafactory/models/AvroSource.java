@@ -95,6 +95,13 @@ public final class AvroSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AvroSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

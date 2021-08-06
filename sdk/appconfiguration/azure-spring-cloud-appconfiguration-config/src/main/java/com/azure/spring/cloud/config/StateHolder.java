@@ -61,7 +61,7 @@ final class StateHolder {
         State oldState = STATE.get(key);
         SecureRandom random = new SecureRandom();
         long wait = (long) (random.nextDouble() * MAX_JITTER);
-        long timeLeft = (int) ((oldState.getNotCachedTime().getTime() - (new Date().getTime())) / 1000);
+        long timeLeft = (int) ((oldState.getNextRefreshCheck().getTime() - (new Date().getTime())) / 1000);
         if (wait < timeLeft) {
             STATE.put(key, new State(oldState.getWatchKeys(), (int) wait));
         }

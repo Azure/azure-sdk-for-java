@@ -45,14 +45,14 @@ If you would like to become an active contributor to this project please refer t
 Guidelines][SDK_README_CONTRIBUTING] for more information.
 
 <!-- LINKS -->
-[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query
-[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query
-[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query
-[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query
-[SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query
-[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query
-[get_logs]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/LogsQuerySample.java
-[get_batch_logs]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/LogsQueryBatchSample.java
-[get_servertimeout_logs]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/ServerTimeoutSample.java
-[get_metrics]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/MetricsQuerySample.java
+[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query
+[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query
+[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query
+[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query
+[SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query
+[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query
+[get_logs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/LogsQuerySample.java
+[get_batch_logs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/LogsQueryBatchSample.java
+[get_servertimeout_logs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/ServerTimeoutSample.java
+[get_metrics]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/MetricsQuerySample.java
 

@@ -13,7 +13,7 @@ public enum RequestType {
     private final String text;
 
     /**
-     * @param text
+     * @param text Request Type Startup or Watch
      */
     RequestType(final String text) {
         this.text = text;

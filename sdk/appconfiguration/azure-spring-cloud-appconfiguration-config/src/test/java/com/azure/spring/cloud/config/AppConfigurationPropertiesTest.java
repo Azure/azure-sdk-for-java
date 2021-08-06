@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.TestConstants.CACHE_EXPIRATION_PROP;
+import static com.azure.spring.cloud.config.TestConstants.REFRESH_INTERVAL_PROP;
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP;
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP_NEW;
 import static com.azure.spring.cloud.config.TestConstants.DEFAULT_CONTEXT_PROP;
@@ -169,7 +169,7 @@ public class AppConfigurationPropertiesTest {
     public void minValidWatchTime() {
         this.contextRunner
             .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
-            .withPropertyValues(propPair(CACHE_EXPIRATION_PROP, "1s"))
+            .withPropertyValues(propPair(REFRESH_INTERVAL_PROP, "1s"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
     }
 

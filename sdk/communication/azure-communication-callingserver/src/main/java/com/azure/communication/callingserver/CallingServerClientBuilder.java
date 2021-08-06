@@ -5,6 +5,7 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImplBuilder;
+import com.azure.communication.callingserver.implementation.RedirectPolicy;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -33,7 +34,7 @@ import java.util.Objects;
 
 
 /**
- * CallingServerClientBuilder that creates CallingServerAsyncClient and CallingServerClient.
+ * Client builder that creates CallingServerAsyncClient and CallingServerClient.
  *
  * <p><strong>Instantiating synchronous and asynchronous Calling Server Clients</strong></p>
  *
@@ -60,10 +61,10 @@ public final class CallingServerClientBuilder {
     private RetryPolicy retryPolicy;
 
     /**
-     * Set endpoint of the service
+     * Set endpoint of the service.
      *
-     * @param endpoint url of the service
-     * @return CallingServerClientBuilder
+     * @param endpoint url of the service.
+     * @return CallingServerClientBuilder object.
      */
     public CallingServerClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
@@ -71,11 +72,11 @@ public final class CallingServerClientBuilder {
     }
 
     /**
-     * Set endpoint of the service
+     * Set endpoint of the service.
      *
      * @param pipeline HttpPipeline to use, if a pipeline is not supplied, the
-     * credential and httpClient fields must be set
-     * @return CallingServerClientBuilder
+     * credential and httpClient fields must be set.
+     * @return CallingServerClientBuilder object.
      */
     public CallingServerClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
@@ -87,10 +88,10 @@ public final class CallingServerClientBuilder {
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP
      * requests.
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallingServerClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    public CallingServerClientBuilder credential(TokenCredential tokenCredential) {
+    CallingServerClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
@@ -100,19 +101,19 @@ public final class CallingServerClientBuilder {
      *
      * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP
      *                      requests.
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallingServerClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
-    public CallingServerClientBuilder credential(AzureKeyCredential keyCredential) {
+    CallingServerClientBuilder credential(AzureKeyCredential keyCredential) {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
     /**
-     * Set connectionString to use
+     * Set connectionString to use.
      *
-     * @param connectionString connection string to set
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @param connectionString connection string to set.
+     * @return Updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
@@ -124,7 +125,7 @@ public final class CallingServerClientBuilder {
      * Sets the retry policy to use (using the RetryPolicy type).
      *
      * @param retryPolicy object to be applied
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
@@ -137,7 +138,7 @@ public final class CallingServerClientBuilder {
      *
      * @param configuration Configuration store used to retrieve environment
      * configurations.
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder configuration(Configuration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
@@ -157,22 +158,18 @@ public final class CallingServerClientBuilder {
     }
 
     /**
-     * Sets the {@link CallingServerClientBuilder} that is used when making API requests.
+     * Sets the {@link CallingServerServiceVersion} that is used when making API requests.
      * <p>
-     * If a service version is not provided, the service version that will be used
-     * will be the latest known service version based on the version of the client
-     * library being used. If no service version is specified, updating to a newer
-     * version of the client library will have the result of potentially moving to a
-     * newer service version.
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version of the client library will have the result of potentially moving to a newer service version.
      * <p>
-     * Targeting a specific service version may also mean that the service will
-     * return an error for newer APIs.
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version {@link CallingServerClientBuilder} of the service to be used when
-     * making requests.
-     * @return the updated CallingServerClientBuilder object
+     * @param version {@link CallingServerServiceVersion} of the service to be used when making requests.
+     * @return Updated CallingServerClientBuilder object
      */
-    public CallingServerClientBuilder serviceVersion(CallingServerClientBuilder version) {
+    public CallingServerClientBuilder serviceVersion(CallingServerServiceVersion version) {
         return this;
     }
 
@@ -180,7 +177,7 @@ public final class CallingServerClientBuilder {
      * Set httpClient to use
      *
      * @param httpClient httpClient to use, overridden by the pipeline field.
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
@@ -191,8 +188,8 @@ public final class CallingServerClientBuilder {
      * Apply additional HttpPipelinePolicy
      *
      * @param customPolicy HttpPipelinePolicy object to be applied after
-     *                     AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
-     * @return The updated {@link CallingServerClientBuilder} object.
+     *                     AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy.
+     * @return Updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
@@ -213,9 +210,9 @@ public final class CallingServerClientBuilder {
     /**
      * Create synchronous client applying HmacAuthenticationPolicy, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy. Additional HttpPolicies specified by
-     * additionalPolicies will be applied after them
+     * additionalPolicies will be applied after them.
      *
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClient buildClient() {
         return new CallingServerClient(buildAsyncClient());
@@ -274,8 +271,8 @@ public final class CallingServerClientBuilder {
      * Allows the user to set a variety of client-related options, such as
      * user-agent string, headers, etc.
      *
-     * @param clientOptions object to be applied
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @param clientOptions object to be applied.
+     * @return Updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -321,6 +318,7 @@ public final class CallingServerClientBuilder {
         policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policyList.add(new RequestIdPolicy());
         policyList.add((retryPolicy == null) ? new RetryPolicy() : retryPolicy);
+        policyList.add(new RedirectPolicy());
         policyList.add(createHttpPipelineAuthPolicy());
         policyList.add(new CookiePolicy());
 

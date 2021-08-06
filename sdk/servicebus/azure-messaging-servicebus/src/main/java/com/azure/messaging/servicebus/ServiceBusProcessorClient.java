@@ -280,7 +280,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             try {
                 close.close();
             } catch (Exception exception) {
-                logger.error("endTracingSpan().close() failed with an error %s", exception);
+                logger.error("endTracingSpan().close() failed with an error {}", exception);
             }
 
         } else {

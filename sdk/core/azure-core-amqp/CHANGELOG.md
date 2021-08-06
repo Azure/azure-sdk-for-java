@@ -1,6 +1,22 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.4.0-beta.1 (Unreleased)
+
+### Bug Fixes
+
+- Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering
+  threads when a send link was remotely closed.
+
+## 2.3.0 (2021-07-01)
+
+### Features Added
+
+- Added `AmqpTransactionCoordinator` interface for transactions support.
+- Added support for sequence and value AMQP types in `AmqpMessageBody`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
 
 ## 2.2.0 (2021-06-11)
 
@@ -39,6 +55,10 @@
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.15.0`.
+
+## 2.1.0-beta.1 (2021-03-26)
+### New Features
+- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
 
 ## 2.0.4 (2021-04-12)
 

@@ -1,25 +1,4 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=9dbb11e1&include=",
-    "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ca248a26-3b1a-4f17-9b4d-825745169417"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2020-06-12",
-      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-request-id" : "6daf093c-201a-003c-6ceb-41e376000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>9dbb11e1</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "x-ms-client-request-id" : "ca248a26-3b1a-4f17-9b4d-825745169417",
-      "Date" : "Wed, 05 May 2021 20:19:37 GMT",
-      "Content-Type" : "application/xml"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "9dbb11e19dbb11e1fde430860dd1d7ba4637499b83" ]
+  "networkCallRecords" : [ ],
+  "variables" : [ "9dbb11e19dbb11e186a944029a375bd76cd24d289c" ]
 }

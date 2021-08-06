@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/databoxedge/
+      - sdk/databoxedge/ci.yml
+      - sdk/databoxedge/azure-resourcemanager-databoxedge/
+    exclude:
+      - sdk/databoxedge/pom.xml
+      - sdk/databoxedge/azure-resourcemanager-databoxedge/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/databoxedge/
+      - sdk/databoxedge/ci.yml
+      - sdk/databoxedge/azure-resourcemanager-databoxedge/
+    exclude:
+      - sdk/databoxedge/pom.xml
+      - sdk/databoxedge/azure-resourcemanager-databoxedge/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

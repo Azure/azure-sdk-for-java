@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
-import com.azure.spring.cloud.config.web.pullrefresh.AppConfigurationEventListener;
 
 public class AppConfigurationEventListenerTest {
 

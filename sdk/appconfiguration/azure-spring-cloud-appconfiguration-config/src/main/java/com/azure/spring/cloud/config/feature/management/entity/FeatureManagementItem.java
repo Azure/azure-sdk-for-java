@@ -4,6 +4,9 @@ package com.azure.spring.cloud.config.feature.management.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Feature Flag, used for converting from Azure App Configuration format to Client format.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureManagementItem {
 

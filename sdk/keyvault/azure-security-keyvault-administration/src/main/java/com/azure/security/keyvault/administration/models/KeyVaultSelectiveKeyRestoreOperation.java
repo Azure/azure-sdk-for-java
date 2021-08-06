@@ -20,10 +20,10 @@ public final class KeyVaultSelectiveKeyRestoreOperation extends KeyVaultLongRunn
      * @param error Error encountered, if any, during the {@link KeyVaultSelectiveKeyRestoreOperation}.
      * @param startTime The start time of the {@link KeyVaultSelectiveKeyRestoreOperation}.
      * @param endTime The end time of the {@link KeyVaultSelectiveKeyRestoreOperation}.
-     * @param jobId Identifier for the full {@link KeyVaultSelectiveKeyRestoreOperation}.
+     * @param operationId Identifier for the full {@link KeyVaultSelectiveKeyRestoreOperation}.
      */
-    public KeyVaultSelectiveKeyRestoreOperation(String status, String statusDetails, KeyVaultError error, String jobId,
-                                                OffsetDateTime startTime, OffsetDateTime endTime) {
-        super(status, statusDetails, error, jobId, startTime, endTime);
+    public KeyVaultSelectiveKeyRestoreOperation(String status, String statusDetails, KeyVaultAdministrationError error,
+                                                String operationId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        super(status, statusDetails, error, operationId, startTime, endTime);
     }
 }

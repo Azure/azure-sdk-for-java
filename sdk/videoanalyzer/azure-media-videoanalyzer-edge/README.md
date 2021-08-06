@@ -204,7 +204,7 @@ additional questions or comments.
 [coc_contact]: mailto:opencode@microsoft.com
 [package]: https://aka.ms/ava/sdk/client/java
 [samples]: https://aka.ms/video-analyzer-sample
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/videoanalyzer
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/videoanalyzer
 [doc_direct_methods]: https://go.microsoft.com/fwlink/?linkid=2162396
 [doc_pipelines]: https://go.microsoft.com/fwlink/?linkid=2162396
 [doc_product]: https://go.microsoft.com/fwlink/?linkid=2162396

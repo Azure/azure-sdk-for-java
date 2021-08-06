@@ -9,9 +9,9 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class CancelAllMediaOperationsResult {
     /*
-     * The identifier.
+     * The operation id.
      */
-    private final String id;
+    private final String operationId;
 
     /*
      * The status of the operation
@@ -29,12 +29,12 @@ public final class CancelAllMediaOperationsResult {
     private final ResultInfo resultInfo;
 
     /**
-     * Get the id property: Gets the identifier.
+     * Get the operationId property: The operation id.
      *
-     * @return the id value.
+     * @return the operationId value.
      */
-    public String getId() {
-        return id;
+    public String getOperationId() {
+        return this.operationId;
     }
 
     /**
@@ -67,17 +67,17 @@ public final class CancelAllMediaOperationsResult {
     /**
      * Initializes a new instance of CancelAllMediaOperationsResult.
      *
-     * @param id the id value.
+     * @param operationId the operationId value.
      * @param status the status value.
      * @param operationContext the operationContext value.
      * @param resultInfo the resultInfo value.
      */
     public CancelAllMediaOperationsResult(
-        String id,
+        String operationId,
         OperationStatus status,
         String operationContext,
         ResultInfo resultInfo) {
-        this.id = id;
+        this.operationId = operationId;
         this.status = status;
         this.operationContext = operationContext;
         this.resultInfo = resultInfo;

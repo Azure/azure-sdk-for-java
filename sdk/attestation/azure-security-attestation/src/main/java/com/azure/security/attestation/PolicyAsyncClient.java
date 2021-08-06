@@ -14,7 +14,7 @@ import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.PolicyResponse;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AttestationClient type. */
+/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class PolicyAsyncClient {
     private final PoliciesImpl serviceClient;
@@ -39,7 +39,8 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> getWithResponse(AttestationType attestationType) {
-        return this.serviceClient.getWithResponseAsync(attestationType);
+        return this.serviceClient.getWithResponseAsync(attestationType)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -53,7 +54,9 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> get(AttestationType attestationType) {
-        return this.serviceClient.getAsync(attestationType);
+        return serviceClient.getAsync(attestationType)
+            .map(PolicyResponse::fromGenerated);
+
     }
 
     /**
@@ -69,7 +72,8 @@ public final class PolicyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> setWithResponse(
             AttestationType attestationType, String newAttestationPolicy) {
-        return this.serviceClient.setWithResponseAsync(attestationType, newAttestationPolicy);
+        return serviceClient.setWithResponseAsync(attestationType, newAttestationPolicy)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -84,7 +88,8 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> set(AttestationType attestationType, String newAttestationPolicy) {
-        return this.serviceClient.setAsync(attestationType, newAttestationPolicy);
+        return this.serviceClient.setAsync(attestationType, newAttestationPolicy)
+            .map(PolicyResponse::fromGenerated);
     }
 
     /**
@@ -99,7 +104,8 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> resetWithResponse(AttestationType attestationType, String policyJws) {
-        return this.serviceClient.resetWithResponseAsync(attestationType, policyJws);
+        return this.serviceClient.resetWithResponseAsync(attestationType, policyJws)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -114,6 +120,7 @@ public final class PolicyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> reset(AttestationType attestationType, String policyJws) {
-        return this.serviceClient.resetAsync(attestationType, policyJws);
+        return this.serviceClient.resetAsync(attestationType, policyJws)
+            .map(PolicyResponse::fromGenerated);
     }
 }

@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.validation.annotation.Validated;
 
+/**
+ * Properties defining connection to Azure App Configuration.
+ */
 @Configuration
 @Validated
 @PropertySource("classpath:appConfiguration.yaml")

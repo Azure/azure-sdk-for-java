@@ -44,8 +44,8 @@ A few important properties defined at the level of the container, among them are
 ## Examples
 The following section provides several code snippets covering some of the most common Cosmos Encryption API tasks, including:
 * [Create Cosmos Encryption Client](#create-cosmos-encryption-client "Create Cosmos Encryption Client")
-* [Create Cosmos Encryption Database](#create-encryption-database "Create Encryption Database")
-* [Create Encryption Container](#create-encryption-container "Create Encryption Container")
+* [Create Cosmos Encryption Database](#create-cosmos-encryption-database "Create Encryption Database")
+* [Create Encryption Container](#create-cosmos-encryption-container "Create Encryption Container")
 * [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
 
 ### Create Cosmos Encryption Client
@@ -201,7 +201,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[encryption_source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-encryption/src
+[encryption_source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-encryption/src
 [cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
 [api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
 [encryption_api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos-encryption/latest/index.html
@@ -217,7 +217,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [troubleshooting]: https://docs.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://docs.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos
+[getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos
 [quickstart]: https://docs.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-encryption%2FREADME.png)

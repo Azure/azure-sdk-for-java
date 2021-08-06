@@ -47,7 +47,9 @@ import java.time.OffsetDateTime
 @ResourceLock("ServiceProperties")
 class ServiceAPITest extends APISpec {
 
-    BlobServiceClient anonymousClient;
+    BlobServiceClient anonymousClient
+    String tagKey
+    String tagValue
 
     def setup() {
         setup:
@@ -67,6 +69,9 @@ class ServiceAPITest extends APISpec {
             .setLogging(new BlobAnalyticsLogging().setVersion("1.0")
                 .setRetentionPolicy(disabled))
             .setDefaultServiceVersion("2018-03-28"))
+
+        tagKey = namer.getRandomName(20)
+        tagValue = namer.getRandomName(20)
     }
 
     def cleanup() {
@@ -370,7 +375,7 @@ class ServiceAPITest extends APISpec {
     def "Find blobs marker"() {
         setup:
         def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        def tags = Collections.singletonMap("tag", "value")
+        def tags = Collections.singletonMap(tagKey, tagValue)
         for (int i = 0; i < 10; i++) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
                 new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
@@ -378,14 +383,14 @@ class ServiceAPITest extends APISpec {
 
         sleepIfRecord(10 * 1000) // To allow tags to index
 
-        def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
+        def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
             .setMaxResultsPerPage(5), null, Context.NONE)
             .iterableByPage().iterator().next()
         def marker = firstPage.getContinuationToken()
         def firstBlobName = firstPage.getValue().first().getName()
 
         def secondPage = primaryBlobServiceClient.findBlobsByTags(
-            new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(5), null, Context.NONE)
+            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null, Context.NONE)
             .iterableByPage(marker).iterator().next()
 
         expect:
@@ -402,7 +407,7 @@ class ServiceAPITest extends APISpec {
         def NUM_BLOBS = 7
         def PAGE_RESULTS = 3
         def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        def tags = Collections.singletonMap("tag", "value")
+        def tags = Collections.singletonMap(tagKey, tagValue)
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
@@ -412,7 +417,7 @@ class ServiceAPITest extends APISpec {
         expect:
         for (ContinuablePage page :
             primaryBlobServiceClient.findBlobsByTags(
-                new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
                 .iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
@@ -427,7 +432,7 @@ class ServiceAPITest extends APISpec {
         def NUM_BLOBS = 7
         def PAGE_RESULTS = 3
         def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        def tags = Collections.singletonMap("tag", "value")
+        def tags = Collections.singletonMap(tagKey, tagValue)
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
@@ -437,7 +442,7 @@ class ServiceAPITest extends APISpec {
         expect:
         for (ContinuablePage page :
             primaryBlobServiceClient.findBlobsByTags(
-                new FindBlobsOptions("\"tag\"='value'"), null, Context.NONE)
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
                 .iterableByPage(PAGE_RESULTS)) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
@@ -469,7 +474,7 @@ class ServiceAPITest extends APISpec {
         def NUM_BLOBS = 5
         def PAGE_RESULTS = 3
         def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        def tags = Collections.singletonMap("tag", "value")
+        def tags = Collections.singletonMap(tagKey, tagValue)
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
@@ -477,7 +482,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
+        primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
             .setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10), Context.NONE)
             .streamByPage().count()
 

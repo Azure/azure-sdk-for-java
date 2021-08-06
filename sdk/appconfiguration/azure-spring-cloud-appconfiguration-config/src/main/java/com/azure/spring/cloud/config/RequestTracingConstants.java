@@ -18,7 +18,7 @@ public enum RequestTracingConstants {
     private final String text;
 
     /**
-     * @param text
+     * @param text Request Tracing Constant Type
      */
     RequestTracingConstants(final String text) {
         this.text = text;

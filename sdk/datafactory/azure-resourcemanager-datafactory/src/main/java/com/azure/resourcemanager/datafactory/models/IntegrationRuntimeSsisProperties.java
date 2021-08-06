@@ -63,6 +63,12 @@ public final class IntegrationRuntimeSsisProperties {
     private List<PackageStore> packageStores;
 
     /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "credential")
+    private CredentialReference credential;
+
+    /*
      * SSIS properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -215,6 +221,26 @@ public final class IntegrationRuntimeSsisProperties {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the IntegrationRuntimeSsisProperties object itself.
+     */
+    public IntegrationRuntimeSsisProperties withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: SSIS properties for managed integration runtime.
      *
      * @return the additionalProperties value.
@@ -263,6 +289,9 @@ public final class IntegrationRuntimeSsisProperties {
         }
         if (packageStores() != null) {
             packageStores().forEach(e -> e.validate());
+        }
+        if (credential() != null) {
+            credential().validate();
         }
     }
 }

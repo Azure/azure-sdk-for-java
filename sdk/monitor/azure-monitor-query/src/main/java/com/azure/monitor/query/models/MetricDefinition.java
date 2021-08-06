@@ -23,6 +23,12 @@ public final class MetricDefinition {
     private String resourceId;
 
     /*
+     * the namespace the metric belongs to.
+     */
+    @JsonProperty(value = "namespace")
+    private String namespace;
+
+    /*
      * the name and the display name of the metric, i.e. it is a localizable
      * string.
      */
@@ -42,7 +48,13 @@ public final class MetricDefinition {
     private String category;
 
     /*
-     * the unit of the metric.
+     * The class of the metric.
+     */
+    @JsonProperty(value = "metricClass")
+    private MetricClass metricClass;
+
+    /*
+     * The unit of the metric.
      */
     @JsonProperty(value = "unit")
     private MetricUnit unit;
@@ -53,6 +65,12 @@ public final class MetricDefinition {
      */
     @JsonProperty(value = "primaryAggregationType")
     private AggregationType primaryAggregationType;
+
+    /*
+     * the collection of what aggregation types are supported.
+     */
+    @JsonProperty(value = "supportedAggregationTypes")
+    private List<AggregationType> supportedAggregationTypes;
 
     /*
      * the collection of what aggregation intervals are available to be
@@ -111,6 +129,26 @@ public final class MetricDefinition {
      */
     public MetricDefinition setResourceId(String resourceId) {
         this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Get the namespace property: the namespace the metric belongs to.
+     *
+     * @return the namespace value.
+     */
+    public String getNamespace() {
+        return this.namespace;
+    }
+
+    /**
+     * Set the namespace property: the namespace the metric belongs to.
+     *
+     * @param namespace the namespace value to set.
+     * @return the MetricDefinition object itself.
+     */
+    public MetricDefinition setNamespace(String namespace) {
+        this.namespace = namespace;
         return this;
     }
 
@@ -175,7 +213,27 @@ public final class MetricDefinition {
     }
 
     /**
-     * Get the unit property: the unit of the metric.
+     * Get the metricClass property: The class of the metric.
+     *
+     * @return the metricClass value.
+     */
+    public MetricClass getMetricClass() {
+        return this.metricClass;
+    }
+
+    /**
+     * Set the metricClass property: The class of the metric.
+     *
+     * @param metricClass the metricClass value to set.
+     * @return the MetricDefinition object itself.
+     */
+    public MetricDefinition setMetricClass(MetricClass metricClass) {
+        this.metricClass = metricClass;
+        return this;
+    }
+
+    /**
+     * Get the unit property: The unit of the metric.
      *
      * @return the unit value.
      */
@@ -184,7 +242,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Set the unit property: the unit of the metric.
+     * Set the unit property: The unit of the metric.
      *
      * @param unit the unit value to set.
      * @return the MetricDefinition object itself.
@@ -213,6 +271,26 @@ public final class MetricDefinition {
      */
     public MetricDefinition setPrimaryAggregationType(AggregationType primaryAggregationType) {
         this.primaryAggregationType = primaryAggregationType;
+        return this;
+    }
+
+    /**
+     * Get the supportedAggregationTypes property: the collection of what aggregation types are supported.
+     *
+     * @return the supportedAggregationTypes value.
+     */
+    public List<AggregationType> getSupportedAggregationTypes() {
+        return this.supportedAggregationTypes;
+    }
+
+    /**
+     * Set the supportedAggregationTypes property: the collection of what aggregation types are supported.
+     *
+     * @param supportedAggregationTypes the supportedAggregationTypes value to set.
+     * @return the MetricDefinition object itself.
+     */
+    public MetricDefinition setSupportedAggregationTypes(List<AggregationType> supportedAggregationTypes) {
+        this.supportedAggregationTypes = supportedAggregationTypes;
         return this;
     }
 

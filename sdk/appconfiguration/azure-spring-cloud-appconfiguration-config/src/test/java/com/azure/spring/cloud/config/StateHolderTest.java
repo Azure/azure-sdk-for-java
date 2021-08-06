@@ -22,7 +22,7 @@ public class StateHolderTest {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
-        StateHolder.setState(endpoint, watchKeys, monitoring.getCacheExpiration());
+        StateHolder.setState(endpoint, watchKeys, monitoring.getRefreshInterval());
         State state = StateHolder.getState(endpoint);
         StateHolder.expireState(endpoint);
         State currentState = StateHolder.getState(endpoint);
@@ -36,8 +36,8 @@ public class StateHolderTest {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
-        monitoring.setCacheExpiration(Duration.ofSeconds(-30));
-        StateHolder.setState(endpoint, watchKeys, monitoring.getCacheExpiration());
+        monitoring.setRefreshInterval(Duration.ofSeconds(-30));
+        StateHolder.setState(endpoint, watchKeys, monitoring.getRefreshInterval());
         State state = StateHolder.getState(endpoint);
         StateHolder.expireState(endpoint);
         State currentState = StateHolder.getState(endpoint);

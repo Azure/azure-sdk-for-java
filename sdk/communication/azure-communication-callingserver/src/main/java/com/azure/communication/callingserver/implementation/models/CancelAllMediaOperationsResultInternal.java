@@ -12,51 +12,51 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CancelAllMediaOperationsResultInternal {
     /*
-     * Gets or sets the identifier.
+     * The operation id.
      */
-    @JsonProperty(value = "id")
-    private String id;
+    @JsonProperty(value = "operationId")
+    private String operationId;
 
     /*
-     * Gets or sets the status of the operation
+     * The status of the operation
      */
-    @JsonProperty(value = "status")
+    @JsonProperty(value = "status", required = true)
     private OperationStatus status;
 
     /*
-     * Gets or sets the operation context
+     * The operation context provided by client.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Gets or sets the result info
+     * The result info for the operation.
      */
     @JsonProperty(value = "resultInfo")
     private ResultInfoInternal resultInfo;
 
     /**
-     * Get the id property: Gets or sets the identifier.
+     * Get the operationId property: The operation id.
      *
-     * @return the id value.
+     * @return the operationId value.
      */
-    public String getId() {
-        return this.id;
+    public String getOperationId() {
+        return this.operationId;
     }
 
     /**
-     * Set the id property: Gets or sets the identifier.
+     * Set the operationId property: The operation id.
      *
-     * @param id the id value to set.
+     * @param operationId the operationId value to set.
      * @return the CancelAllMediaOperationsResultInternal object itself.
      */
-    public CancelAllMediaOperationsResultInternal setId(String id) {
-        this.id = id;
+    public CancelAllMediaOperationsResultInternal setOperationId(String operationId) {
+        this.operationId = operationId;
         return this;
     }
 
     /**
-     * Get the status property: Gets or sets the status of the operation.
+     * Get the status property: The status of the operation.
      *
      * @return the status value.
      */
@@ -65,7 +65,7 @@ public final class CancelAllMediaOperationsResultInternal {
     }
 
     /**
-     * Set the status property: Gets or sets the status of the operation.
+     * Set the status property: The status of the operation.
      *
      * @param status the status value to set.
      * @return the CancelAllMediaOperationsResultInternal object itself.
@@ -76,7 +76,7 @@ public final class CancelAllMediaOperationsResultInternal {
     }
 
     /**
-     * Get the operationContext property: Gets or sets the operation context.
+     * Get the operationContext property: The operation context provided by client.
      *
      * @return the operationContext value.
      */
@@ -85,7 +85,7 @@ public final class CancelAllMediaOperationsResultInternal {
     }
 
     /**
-     * Set the operationContext property: Gets or sets the operation context.
+     * Set the operationContext property: The operation context provided by client.
      *
      * @param operationContext the operationContext value to set.
      * @return the CancelAllMediaOperationsResultInternal object itself.
@@ -96,7 +96,7 @@ public final class CancelAllMediaOperationsResultInternal {
     }
 
     /**
-     * Get the resultInfo property: Gets or sets the result info.
+     * Get the resultInfo property: The result info for the operation.
      *
      * @return the resultInfo value.
      */
@@ -105,7 +105,7 @@ public final class CancelAllMediaOperationsResultInternal {
     }
 
     /**
-     * Set the resultInfo property: Gets or sets the result info.
+     * Set the resultInfo property: The result info for the operation.
      *
      * @param resultInfo the resultInfo value to set.
      * @return the CancelAllMediaOperationsResultInternal object itself.

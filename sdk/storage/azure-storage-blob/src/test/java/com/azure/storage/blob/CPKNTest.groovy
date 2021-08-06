@@ -1,6 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob
 
-import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.BlobContainerEncryptionScope
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobStorageException
@@ -10,6 +12,7 @@ import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.AppendBlobClient
+import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
@@ -370,6 +373,47 @@ class CPKNTest extends APISpec {
         def key = new byte[32] // 256 bit key
         new Random(seed).nextBytes(key)
         return key
+    }
+
+    def "getEncryptionScopeClient"() {
+        setup:
+        def newEncryptionScope = "newtestscope"
+
+        when: "AppendBlob"
+        def newCpknAppendBlob = cpknAppendBlob.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknAppendBlob instanceof AppendBlobClient
+        newCpknAppendBlob.getEncryptionScope() != cpknAppendBlob.getEncryptionScope()
+
+        when: "BlockBlob"
+        def newCpknBlockBlob = cpknBlockBlob.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknBlockBlob instanceof BlockBlobClient
+        newCpknBlockBlob.getEncryptionScope() != cpknBlockBlob.getEncryptionScope()
+
+        when: "PageBlob"
+        def newCpknPageBlob = cpknPageBlob.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknPageBlob instanceof PageBlobClient
+        newCpknPageBlob.getEncryptionScope() != cpknPageBlob.getEncryptionScope()
+
+        when: "BlobClient"
+        def cpkBlobClient = cpknContainer.getBlobClient(generateBlobName()) // Inherits container's CPK
+        def newCpknBlobClient = cpkBlobClient.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknBlobClient instanceof BlobClient
+        newCpknBlobClient.getEncryptionScope() != cpkBlobClient.getEncryptionScope()
+
+        when: "BlobClientBase"
+        def newCpknBlobClientBase = ((BlobClientBase) cpkBlobClient).getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknBlobClientBase instanceof BlobClientBase
+        newCpknBlobClientBase.getEncryptionScope() != cpkBlobClient.getEncryptionScope()
     }
 
 }

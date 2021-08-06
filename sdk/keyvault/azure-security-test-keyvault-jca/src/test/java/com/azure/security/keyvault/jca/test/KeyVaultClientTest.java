@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.jca.test;
 
-import com.azure.security.keyvault.jca.KeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -19,7 +19,7 @@ public class KeyVaultClientTest {
     @BeforeAll
     public static void setEnvironmentProperty() {
         keyVaultClient = new KeyVaultClient(
-            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
             System.getenv("AZURE_KEYVAULT_TENANT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));

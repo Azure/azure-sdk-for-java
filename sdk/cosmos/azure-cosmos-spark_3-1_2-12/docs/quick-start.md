@@ -58,7 +58,7 @@ spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.oltp TBLP
 
 When creating containers with the Catalog API you can set the throughput and [partition key path](https://docs.microsoft.com/azure/cosmos-db/partitioning-overview#choose-partitionkey) for the container to be created.
 
-For more details, see the full [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md) documentation.
+For more details, see the full [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md) documentation.
 
 ### Ingesting data
 
@@ -76,7 +76,7 @@ spark.createDataFrame((("cat-alive", "Schrodinger cat", 2, True), ("cat-dead", "
 
 Note that `id` is a mandatory field for Cosmos DB.
 
-For more details related to ingesting data, see the full [write configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#write-config) documentation.
+For more details related to ingesting data, see the full [write configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#write-config) documentation.
 
 ### Querying data
 
@@ -93,7 +93,7 @@ df.filter(col("isAlive") == True)\
  .show()
 ```
 
-For more details related to querying data, see the full [query configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#query-config) documentation.
+For more details related to querying data, see the full [query configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#query-config) documentation.
 
 ### Schema inference
 
@@ -133,4 +133,4 @@ df = spark.read.format("cosmos.oltp").options(**cfg)\
 df.printSchema()
 ```
 
-For more details related to schema inference, see the full [schema inference configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#schema-inference-config) documentation.
+For more details related to schema inference, see the full [schema inference configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#schema-inference-config) documentation.

@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.databricks.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.databricks.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.databricks.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.databricks.models.CreatedBy;
 import com.azure.resourcemanager.databricks.models.ManagedIdentityConfiguration;
+import com.azure.resourcemanager.databricks.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.databricks.models.ProvisioningState;
+import com.azure.resourcemanager.databricks.models.PublicNetworkAccess;
+import com.azure.resourcemanager.databricks.models.RequiredNsgRules;
 import com.azure.resourcemanager.databricks.models.Sku;
 import com.azure.resourcemanager.databricks.models.Workspace;
 import com.azure.resourcemanager.databricks.models.WorkspaceCustomParameters;
+import com.azure.resourcemanager.databricks.models.WorkspacePropertiesEncryption;
 import com.azure.resourcemanager.databricks.models.WorkspaceProviderAuthorization;
 import com.azure.resourcemanager.databricks.models.WorkspaceUpdate;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class WorkspaceImpl implements Workspace, Workspace.Definition, Workspace.Update {
     private WorkspaceInner innerObject;
 
-    private final com.azure.resourcemanager.databricks.DatabricksManager serviceManager;
+    private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -52,6 +59,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public Sku sku() {
         return this.innerModel().sku();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String managedResourceGroupId() {
@@ -103,6 +114,32 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().storageAccountIdentity();
     }
 
+    public WorkspacePropertiesEncryption encryption() {
+        return this.innerModel().encryption();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public RequiredNsgRules requiredNsgRules() {
+        return this.innerModel().requiredNsgRules();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -115,7 +152,7 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.databricks.DatabricksManager manager() {
+    private com.azure.resourcemanager.databricks.AzureDatabricksManager manager() {
         return this.serviceManager;
     }
 
@@ -148,7 +185,7 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
-    WorkspaceImpl(String name, com.azure.resourcemanager.databricks.DatabricksManager serviceManager) {
+    WorkspaceImpl(String name, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = new WorkspaceInner();
         this.serviceManager = serviceManager;
         this.workspaceName = name;
@@ -177,7 +214,8 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
-    WorkspaceImpl(WorkspaceInner innerObject, com.azure.resourcemanager.databricks.DatabricksManager serviceManager) {
+    WorkspaceImpl(
+        WorkspaceInner innerObject, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -261,6 +299,21 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public WorkspaceImpl withStorageAccountIdentity(ManagedIdentityConfiguration storageAccountIdentity) {
         this.innerModel().withStorageAccountIdentity(storageAccountIdentity);
+        return this;
+    }
+
+    public WorkspaceImpl withEncryption(WorkspacePropertiesEncryption encryption) {
+        this.innerModel().withEncryption(encryption);
+        return this;
+    }
+
+    public WorkspaceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    public WorkspaceImpl withRequiredNsgRules(RequiredNsgRules requiredNsgRules) {
+        this.innerModel().withRequiredNsgRules(requiredNsgRules);
         return this;
     }
 

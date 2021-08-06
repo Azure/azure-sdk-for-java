@@ -25,6 +25,10 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
+/**
+ * Enables checking of Configuration updates.
+ *
+ */
 @Component
 public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
@@ -50,7 +54,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     }
 
     /**
-     * Checks configurations to see if they are no longer cached. If they are no longer cached they are updated.
+     * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a trigger has been updated configuration are reloaded.
      *
      * @return Future with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
      * elsewhere this method will return right away as <b>false</b>.
@@ -60,10 +64,10 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         return new AsyncResult<>(refreshStores());
     }
 
-    public void resetCache(String endpoint) {
+    public void expireRefreshInterval(String endpoint) {
         for (ConfigStore configStore : configStores) {
             if (configStore.getEndpoint().equals(endpoint)) {
-                LOGGER.debug("Expiring Cache for " + configStore.getEndpoint());
+                LOGGER.debug("Expiring refresh interval for " + configStore.getEndpoint());
                 StateHolder.expireState(configStore.getEndpoint());
                 break;
             }
@@ -86,7 +90,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                         AppConfigurationStoreMonitoring monitor = configStore.getMonitoring();
 
                         if (StateHolder.getLoadState(endpoint) && monitor.isEnabled()
-                            && refresh(StateHolder.getState(endpoint), endpoint, monitor.getCacheExpiration())) {
+                            && refresh(StateHolder.getState(endpoint), endpoint, monitor.getRefreshInterval())) {
                             didRefresh = true;
                             break;
                         } else {
@@ -96,7 +100,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                         FeatureFlagStore featureStore = configStore.getFeatureFlags();
 
                         if (featureStore.getEnabled() && StateHolder.getLoadStateFeatureFlag(endpoint) && refresh(
-                            StateHolder.getStateFeatureFlag(endpoint), endpoint, featureStore.getCacheExpiration())) {
+                            StateHolder.getStateFeatureFlag(endpoint), endpoint, monitor.getFeatureFlagRefreshInterval())) {
                             didRefresh = true;
                             break;
                         } else {
@@ -113,16 +117,16 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     }
 
     /**
-     * Checks un-cached items for etag changes. If they have changed a RefreshEventData is published.
+     * Checks refresh trigger for etag changes. If they have changed a RefreshEventData is published.
      *
      * @param state The refresh state of the endpoint being checked.
      * @param endpoint The App Config Endpoint being checked for refresh.
-     * @param cacheTime Amount of time to wait until next check of this endpoint.
+     * @param refreshInterval Amount of time to wait until next check of this endpoint.
      * @return Refresh event was triggered. No other sources need to be checked.
      */
-    private boolean refresh(State state, String endpoint, Duration cacheTime) {
+    private boolean refresh(State state, String endpoint, Duration refreshInterval) {
         Date date = new Date();
-        if (date.after(state.getNotCachedTime())) {
+        if (date.after(state.getNextRefreshCheck())) {
             for (ConfigurationSetting watchKey : state.getWatchKeys()) {
                 SettingSelector settingSelector = new SettingSelector().setKeyFilter(watchKey.getKey())
                     .setLabelFilter(watchKey.getLabel());
@@ -154,7 +158,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     return true;
                 }
             }
-            StateHolder.setState(endpoint, state.getWatchKeys(), cacheTime);
+            StateHolder.setState(endpoint, state.getWatchKeys(), refreshInterval);
         }
 
         return false;

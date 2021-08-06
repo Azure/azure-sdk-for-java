@@ -13,6 +13,7 @@ import com.azure.identity.ClientSecretCredentialBuilder
 import com.azure.security.keyvault.keys.KeyClient
 import com.azure.security.keyvault.keys.KeyClientBuilder
 import com.azure.security.keyvault.keys.KeyServiceVersion
+import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion
 import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions
 import com.azure.security.keyvault.keys.models.KeyVaultKey
@@ -23,7 +24,8 @@ import java.time.Duration
 import java.time.OffsetDateTime
 
 class KeyvaultKeyTest extends APISpec {
-
+    KeyServiceVersion keyServiceVersion = KeyServiceVersion.V7_2;
+    CryptographyServiceVersion cryptographyServiceVersion = CryptographyServiceVersion.V7_2;
     BlobContainerClient cc
     EncryptedBlobClient bec // encrypted client for download
     KeyClient keyClient
@@ -36,9 +38,10 @@ class KeyvaultKeyTest extends APISpec {
         }
 
         keyClient = new KeyClientBuilder()
-            .pipeline(getHttpPipeline(KeyServiceVersion.V7_2))
+            .pipeline(getHttpPipeline(keyServiceVersion))
             .httpClient(getHttpClient())
             .vaultUrl(keyVaultUrl)
+            .serviceVersion(keyServiceVersion)
             .buildClient()
 
         keyId = namer.getRandomName(50)
@@ -48,8 +51,9 @@ class KeyvaultKeyTest extends APISpec {
             .setKeySize(2048))
 
         AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .pipeline(getHttpPipeline(KeyServiceVersion.V7_2))
+            .pipeline(getHttpPipeline(keyServiceVersion))
             .httpClient(getHttpClient())
+            .serviceVersion(cryptographyServiceVersion)
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block()
 

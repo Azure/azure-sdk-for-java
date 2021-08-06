@@ -87,6 +87,13 @@ public final class ActiveDirectory {
     private List<String> backupOperators;
 
     /*
+     * Users to be added to the Built-in Administrators active directory group.
+     * A list of unique usernames without domain specifier
+     */
+    @JsonProperty(value = "administrators")
+    private List<String> administrators;
+
+    /*
      * kdc server IP addresses for the active directory machine. This optional
      * parameter is used only while creating kerberos volume.
      */
@@ -345,6 +352,28 @@ public final class ActiveDirectory {
      */
     public ActiveDirectory withBackupOperators(List<String> backupOperators) {
         this.backupOperators = backupOperators;
+        return this;
+    }
+
+    /**
+     * Get the administrators property: Users to be added to the Built-in Administrators active directory group. A list
+     * of unique usernames without domain specifier.
+     *
+     * @return the administrators value.
+     */
+    public List<String> administrators() {
+        return this.administrators;
+    }
+
+    /**
+     * Set the administrators property: Users to be added to the Built-in Administrators active directory group. A list
+     * of unique usernames without domain specifier.
+     *
+     * @param administrators the administrators value to set.
+     * @return the ActiveDirectory object itself.
+     */
+    public ActiveDirectory withAdministrators(List<String> administrators) {
+        this.administrators = administrators;
         return this;
     }
 

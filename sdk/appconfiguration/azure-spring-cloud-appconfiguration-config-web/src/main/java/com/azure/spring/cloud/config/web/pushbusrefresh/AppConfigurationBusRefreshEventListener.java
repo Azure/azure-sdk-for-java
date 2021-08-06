@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.config.web.pushbusrefresh;
 
 import org.slf4j.Logger;
@@ -12,11 +9,14 @@ import org.springframework.stereotype.Component;
 
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
 
+/**
+ * Listens for AppConfigurationBusRefreshEvents and sets the App Configuration watch interval to zero.
+ */
 @Component
 public class AppConfigurationBusRefreshEventListener implements ApplicationListener<AppConfigurationBusRefreshEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBusRefreshEventListener.class);
 
-    private AppConfigurationRefresh appConfigurationRefresh;
+    private final AppConfigurationRefresh appConfigurationRefresh;
 
     public AppConfigurationBusRefreshEventListener(AppConfigurationRefresh appConfigurationRefresh) {
         this.appConfigurationRefresh = appConfigurationRefresh;
@@ -25,7 +25,7 @@ public class AppConfigurationBusRefreshEventListener implements ApplicationListe
     @Override
     public void onApplicationEvent(AppConfigurationBusRefreshEvent event) {
         try {
-            appConfigurationRefresh.resetCache(event.getEndpoint());
+            appConfigurationRefresh.expireRefreshInterval(event.getEndpoint());
         } catch (Exception e) {
             LOGGER.error("Refresh failed with unexpected exception.", e);
         }

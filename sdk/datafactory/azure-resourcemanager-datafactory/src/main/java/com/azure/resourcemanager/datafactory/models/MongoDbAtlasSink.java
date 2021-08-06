@@ -86,6 +86,13 @@ public final class MongoDbAtlasSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

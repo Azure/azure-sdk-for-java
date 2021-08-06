@@ -72,7 +72,7 @@ For each release we need to go over the OSS compliance steps:
 2) Check for "legal alerts" and "security alerts". If you do not see a "legal alert" 
    nor "unsupported component" banner for OSS in your “Components” list in CG,
    that means those components are "auto-approved" and do not need CELA review.
-3) As we are shipping an uber jar, we need to keep https://github.com/Azure/azure-sdk-for-java/blob/master/NOTICE.txt is up to date with all the new dependencies repackaged in the spark connector.
+3) As we are shipping an uber jar, we need to keep https://github.com/Azure/azure-sdk-for-java/blob/main/NOTICE.txt is up to date with all the new dependencies repackaged in the spark connector.
 
 #### Tracking third party library used in the uber jar.
 
@@ -90,4 +90,4 @@ It generates a file containing the list of third party libraries with their lice
 compare target/generated-sources/license/THIRD-PARTY.txt with sdk/cosmos/azure-cosmos-spark_3-1_2-12/dev/THIRD-PARTY.txt if there is no difference nothing else needs to be done.
 
 If there are new entries you need to update sdk/cosmos/azure-cosmos-spark_3-1_2-12/dev/THIRD-PARTY.txt and also add new entries in 
-https://github.com/Azure/azure-sdk-for-java/blob/master/NOTICE.txt.
+https://github.com/Azure/azure-sdk-for-java/blob/main/NOTICE.txt.

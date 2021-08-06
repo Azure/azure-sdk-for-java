@@ -3,18 +3,20 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/videoanalyzer/
+    exclude:
+      - sdk/videoanalyzer/pom.xml
+      - sdk/videoanalyzer/azure-media-videoanalyzer-edge/pom.xml
+      - sdk/videoanalyzer/azure-resourcemanager-videoanalyzer/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -22,6 +24,10 @@ pr:
   paths:
     include:
       - sdk/videoanalyzer/
+    exclude:
+      - sdk/videoanalyzer/pom.xml
+      - sdk/videoanalyzer/azure-media-videoanalyzer-edge/pom.xml
+      - sdk/videoanalyzer/azure-resourcemanager-videoanalyzer/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -31,7 +37,7 @@ extends:
       - name: azure-resourcemanager-videoanalyzer
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagervideoanalyzer
-        
+
       - name: azure-media-videoanalyzer-edge
         groupId: com.azure
         safeName: azuremediavideoanalyzeredge

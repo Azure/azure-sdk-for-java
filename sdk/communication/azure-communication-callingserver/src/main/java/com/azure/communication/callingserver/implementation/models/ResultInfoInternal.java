@@ -11,71 +11,65 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ResultInfoInternal {
     /*
-     * Gets or sets the result code
-     * For synchronous failures, this maps one-to-one with HTTP responses. For
-     * asynchronous failures or messages, it is contextual.
+     * The result code associated with the operation.
      */
-    @JsonProperty(value = "code")
-    private Integer code;
+    @JsonProperty(value = "code", required = true)
+    private int code;
 
     /*
-     * Gets or sets the result subcode.
-     * The subcode further classifies a failure. For example.
+     * The subcode that further classifies the result.
      */
-    @JsonProperty(value = "subcode")
-    private Integer subcode;
+    @JsonProperty(value = "subcode", required = true)
+    private int subcode;
 
     /*
-     * Gets or sets the message
      * The message is a detail explanation of subcode.
      */
     @JsonProperty(value = "message")
     private String message;
 
     /**
-     * Get the code property: Gets or sets the result code For synchronous failures, this maps one-to-one with HTTP
-     * responses. For asynchronous failures or messages, it is contextual.
+     * Get the code property: The result code associated with the operation.
      *
      * @return the code value.
      */
-    public Integer getCode() {
+    public int getCode() {
         return this.code;
     }
 
     /**
-     * Set the code property: Gets or sets the result code For synchronous failures, this maps one-to-one with HTTP
-     * responses. For asynchronous failures or messages, it is contextual.
+     * Set the code property: The result code associated with the operation.
      *
      * @param code the code value to set.
      * @return the ResultInfoInternal object itself.
      */
-    public ResultInfoInternal setCode(Integer code) {
+    public ResultInfoInternal setCode(int code) {
         this.code = code;
         return this;
     }
 
     /**
-     * Get the subcode property: Gets or sets the result subcode. The subcode further classifies a failure. For example.
+     * Get the subcode property: The subcode that further classifies the result.
      *
      * @return the subcode value.
      */
-    public Integer getSubcode() {
+    public int getSubcode() {
         return this.subcode;
     }
 
     /**
-     * Set the subcode property: Gets or sets the result subcode. The subcode further classifies a failure. For example.
+     * Set the subcode property: The subcode that further classifies the result.
      *
      * @param subcode the subcode value to set.
      * @return the ResultInfoInternal object itself.
      */
-    public ResultInfoInternal setSubcode(Integer subcode) {
+    public ResultInfoInternal setSubcode(int subcode) {
         this.subcode = subcode;
         return this;
     }
 
     /**
-     * Get the message property: Gets or sets the message The message is a detail explanation of subcode.
+     * Get the message property: The message is a detail explanation of subcode.
      *
      * @return the message value.
      */
@@ -84,7 +78,7 @@ public final class ResultInfoInternal {
     }
 
     /**
-     * Set the message property: Gets or sets the message The message is a detail explanation of subcode.
+     * Set the message property: The message is a detail explanation of subcode.
      *
      * @param message the message value to set.
      * @return the ResultInfoInternal object itself.

@@ -22,6 +22,9 @@ import com.azure.spring.cloud.config.web.pushbusrefresh.AppConfigurationBusRefre
 import com.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEndpoint;
 import com.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEventListener;
 
+/**
+ * Sets up refresh methods based on dependencies.
+ */
 @Configuration
 @EnableConfigurationProperties(AppConfigurationProperties.class)
 @RemoteApplicationEventScan
@@ -29,14 +32,15 @@ import com.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEven
 public class AppConfigurationWebAutoConfiguration {
 
     // Refresh from appconfiguration-refresh
-
     @Bean
     @ConditionalOnClass(RefreshEndpoint.class)
     public AppConfigurationEventListener configListener(AppConfigurationRefresh appConfigurationRefresh) {
         return new AppConfigurationEventListener(appConfigurationRefresh);
     }
 
-    // Pull based Refresh
+    /**
+     * Refresh from Pull Requests
+     */
 
     @Configuration
     @ConditionalOnClass(name = {
@@ -58,7 +62,9 @@ public class AppConfigurationWebAutoConfiguration {
         }
     }
 
-    // Refresh from appconfiguration-refresh-bus
+    /**
+     * Refresh from appconfiguration-refresh-bus
+     */
     @Configuration
     @ConditionalOnClass(name = {
         "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",

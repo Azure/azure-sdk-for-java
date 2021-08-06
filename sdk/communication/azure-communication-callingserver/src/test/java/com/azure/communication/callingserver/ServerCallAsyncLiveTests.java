@@ -3,39 +3,41 @@
 
 package com.azure.communication.callingserver;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallRecordingState;
-import com.azure.communication.callingserver.models.CallRecordingStateResult;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.MediaType;
+import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
-    private final String groupId = getGroupId();
-    private final String fromUser = getNewUserId();
-    private final String toUser = getNewUserId();
+    private final String fromUser = getRandomUserId();
+    private final String toUser = getRandomUserId();
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsAsync(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctionsAsync");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runAllClientFunctionsAsync");
@@ -76,6 +78,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponseAsync(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctionsWithResponseAsync");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runAllClientFunctionsWithResponseAsync");
@@ -125,6 +128,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionAsync(HttpClient httpClient) {
+        String groupId = getGroupId("runPlayAudioFunctionAsync");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runPlayAudioFunctionAsync");
@@ -152,6 +156,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionWithResponseAsync(HttpClient httpClient) {
+        String groupId = getGroupId("runPlayAudioFunctionWithResponseAsync");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runPlayAudioFunctionWithResponseAsync");
@@ -164,12 +169,15 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             callConnections = createAsyncCall(callingServerAsyncClient, groupId, fromUser, toUser, CALLBACK_URI);
             serverCallAsync = callingServerAsyncClient.initializeServerCall(groupId);
 
+            PlayAudioOptions options = new PlayAudioOptions();
+            options.setAudioFileId(UUID.randomUUID().toString());
+            options.setCallbackUri(CALLBACK_URI);
+            options.setOperationContext(operationContext);
+
             Response<PlayAudioResult> playAudioResult =
                 serverCallAsync.playAudioWithResponse(
                     AUDIO_FILE_URI,
-                    operationContext,
-                    CALLBACK_URI,
-                    operationContext).block();
+                    options).block();
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResult);
 
         } catch (Exception e) {
@@ -200,6 +208,10 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runAddRemoveScenarioAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
@@ -209,14 +221,14 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnectionAsync callConnectionAsync = callingServerAsyncClient.createCallConnection(
                 new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
                 options).block();
 
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
@@ -226,12 +238,12 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3NXdWxkazBmMEVpdnAxWjhiU2NuUHc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L19JbTJUcm1MejBpLWlaYkZRREtxaGc_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3";
             ServerCallAsync serverCallAsync = callingServerAsyncClient.initializeServerCall(serverCallId);
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            serverCallAsync
+            AddParticipantResult addParticipantResult = serverCallAsync
                 .addParticipant(
                     new CommunicationUserIdentifier(toUser),
                     null,
@@ -239,14 +251,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
                     CALLBACK_URI)
                 .block();
 
-            // Remove User
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              value needs to be used.
-             */
-            String participantId = "206ac04a-1aae-4d82-9015-9c30cb174888";
+            assert addParticipantResult != null;
+            String participantId = addParticipantResult.getParticipantId();
             serverCallAsync.removeParticipant(participantId).block();
 
             // Hang up
@@ -260,6 +266,10 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runAddRemoveScenarioWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAddRemoveScenarioWithResponseAsync");
@@ -268,14 +278,14 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnectionAsync callConnectionAsync = callingServerAsyncClient.createCallConnection(
                 new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
                 options).block();
 
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
@@ -285,12 +295,12 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L0NUT014YmNIRmttZ1BqbE5kYjExNlE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L0pndHZNTW5mYUU2N3ViU3FKb19ndFE_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3";
             ServerCallAsync serverCallAsync = callingServerAsyncClient.initializeServerCall(serverCallId);
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            Response<Void> addResponse =
+            Response<AddParticipantResult> addParticipantResultResponse =
                 serverCallAsync
                     .addParticipantWithResponse(
                         new CommunicationUserIdentifier(toUser),
@@ -298,16 +308,10 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
                         operationContext,
                         CALLBACK_URI)
                     .block();
-            CallingServerTestUtils.validateResponse(addResponse);
+            CallingServerTestUtils.validateAddParticipantResponse(addParticipantResultResponse);
 
-            // Remove User
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              value needs to be used.
-             */
-            String participantId = "b133b1f3-4a11-49e4-abe0-ac9fdd660634";
+            assert addParticipantResultResponse != null;
+            String participantId = addParticipantResultResponse.getValue().getParticipantId();
             Response<Void> removeResponse = serverCallAsync.removeParticipantWithResponse(participantId).block();
             CallingServerTestUtils.validateResponse(removeResponse);
 
@@ -341,7 +345,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         // against a live service.
         sleepIfRunningAgainstService(6000);
 
-        CallRecordingStateResult callRecordingStateResult = serverCallAsync.getRecordingState(recordingId).block();
+        CallRecordingProperties callRecordingStateResult = serverCallAsync.getRecordingState(recordingId).block();
         assert callRecordingStateResult != null;
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
@@ -360,7 +364,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         // against a live service.
         sleepIfRunningAgainstService(6000);
 
-        Response<CallRecordingStateResult> response =
+        Response<CallRecordingProperties> response =
             serverCallAsync.getRecordingStateWithResponse(recordingId).block();
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);

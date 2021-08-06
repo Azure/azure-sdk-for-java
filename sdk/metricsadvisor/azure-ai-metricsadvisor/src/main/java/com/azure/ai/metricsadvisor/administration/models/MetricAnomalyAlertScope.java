@@ -98,10 +98,7 @@ public final class MetricAnomalyAlertScope {
      * @return The MetricAnomalyAlertScope.
      */
     public static MetricAnomalyAlertScope forTopNGroup(int top, int period, int minTopCount) {
-        return new MetricAnomalyAlertScope(new TopNGroupScope()
-            .setTop(top)
-            .setPeriod(period)
-            .setMinTopCount(minTopCount));
+        return new MetricAnomalyAlertScope(new TopNGroupScope(top, period, minTopCount));
     }
 
     /**

@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.sas;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -19,7 +18,7 @@ import java.time.OffsetDateTime;
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
  */
 public final class AccountSasSignatureValues {
-    private String version;
+    private static final String VERSION = Constants.SAS_SERVICE_VERSION;
 
     private SasProtocol protocol;
 
@@ -70,7 +69,7 @@ public final class AccountSasSignatureValues {
      * library will be used.
      */
     public String getVersion() {
-        return version;
+        return VERSION;
     }
 
     /**
@@ -79,9 +78,12 @@ public final class AccountSasSignatureValues {
      *
      * @param version Target version to set
      * @return the updated AccountSasSignatureValues object.
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
+    @Deprecated
     public AccountSasSignatureValues setVersion(String version) {
-        this.version = version;
+        // no-op
         return this;
     }
 
@@ -272,14 +274,10 @@ public final class AccountSasSignatureValues {
         StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
         StorageImplUtils.assertNotNull("permissions", this.permissions);
 
-        if (CoreUtils.isNullOrEmpty(version)) {
-            version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        }
-
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(storageSharedKeyCredentials));
 
-        return new AccountSasQueryParameters(this.version, this.services, resourceTypes,
+        return new AccountSasQueryParameters(VERSION, this.services, resourceTypes,
             this.protocol, this.startTime, this.expiryTime, this.sasIpRange, this.permissions, signature);
     }
 
@@ -293,7 +291,7 @@ public final class AccountSasSignatureValues {
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            this.version,
+            VERSION,
             "" // Account SAS requires an additional newline character
         );
     }

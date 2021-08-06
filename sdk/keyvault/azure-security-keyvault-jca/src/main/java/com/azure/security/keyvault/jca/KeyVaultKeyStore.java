@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.certificates.AzureCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.ClasspathCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
+import com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
@@ -11,17 +16,18 @@ import java.security.KeyStoreSpi;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Optional;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 
 /**
@@ -50,14 +56,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final JreCertificates jreCertificates;
 
     /**
-     * Store well Know certificates loaded from file system.
+     * Store well Know certificates loaded from specific path.
      */
-    private final FileSystemCertificates wellKnowCertificates;
+    private final SpecificPathCertificates wellKnowCertificates;
 
     /**
-     * Store custom certificates loaded from file system.
+     * Store custom certificates loaded from specific path.
      */
-    private final FileSystemCertificates customCertificates;
+    private final SpecificPathCertificates customCertificates;
 
     /**
      * Store certificates loaded from KeyVault.
@@ -79,24 +85,19 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private final Date creationDate;
 
-    /**
-     * Stores the key vault client.
-     */
-    private KeyVaultClient keyVaultClient;
-
     private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
 
     /**
      * Store the path where the well know certificate is placed
      */
     final String wellKnowPath = Optional.ofNullable(System.getProperty("azure.cert-path.well-known"))
-        .orElse("/etc/certs/well-known/");
+                                        .orElse("/etc/certs/well-known/");
 
     /**
      * Store the path where the custom certificate is placed
      */
     final String customPath = Optional.ofNullable(System.getProperty("azure.cert-path.custom"))
-        .orElse("/etc/certs/custom/");
+                                      .orElse("/etc/certs/custom/");
 
     /**
      * Constructor.
@@ -119,23 +120,23 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        if (clientId != null) {
-            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
-        } else {
-            keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
-        }
-        long refreshInterval = Optional.ofNullable(System.getProperty("azure.keyvault.jca.certificates-refresh-interval"))
-            .map(Long::valueOf)
-            .orElse(0L);
-        refreshCertificatesWhenHaveUnTrustCertificate = Optional.ofNullable(System.getProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate"))
-            .map(Boolean::parseBoolean)
-            .orElse(false);
+        long refreshInterval = Optional.of("azure.keyvault.jca.certificates-refresh-interval")
+                                       .map(System::getProperty)
+                                       .map(Long::valueOf)
+                                       .orElse(0L);
+        refreshCertificatesWhenHaveUnTrustCertificate =
+            Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
+                    .map(System::getProperty)
+                    .map(Boolean::parseBoolean)
+                    .orElse(false);
         jreCertificates = JreCertificates.getInstance();
-        wellKnowCertificates = FileSystemCertificates.FileSystemCertificatesFactory.getWellKnownFileSystemCertificates(wellKnowPath);
-        customCertificates = FileSystemCertificates.FileSystemCertificatesFactory.getCustomFileSystemCertificates(customPath);
-        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
+        wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(wellKnowPath);
+        customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
+        keyVaultCertificates = new KeyVaultCertificates(
+            refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
         classpathCertificates = new ClasspathCertificates();
-        allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
+        allCertificates = Arrays.asList(
+            jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
     }
 
     @Override
@@ -161,14 +162,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Certificate engineGetCertificate(String alias) {
         Certificate certificate = allCertificates.stream()
-            .map(AzureCertificates::getCertificates)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(certificates -> certificates.get(alias))
-            .orElse(null);
+                                                 .map(AzureCertificates::getCertificates)
+                                                 .filter(a -> a.containsKey(alias))
+                                                 .findFirst()
+                                                 .map(certificates -> certificates.get(alias))
+                                                 .orElse(null);
 
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificate == null) {
-            KeyVaultCertificates.updateLastForceRefreshTime();
+            keyVaultCertificates.refreshCertificates();
             certificate = keyVaultCertificates.getCertificates().get(alias);
         }
         return certificate;
@@ -218,11 +219,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Key engineGetKey(String alias, char[] password) {
         return allCertificates.stream()
-                        .map(AzureCertificates::getCertificateKeys)
-                        .filter(a -> a.containsKey(alias))
-                        .findFirst()
-                        .map(certificateKeys -> certificateKeys.get(alias))
-                        .orElse(null);
+                              .map(AzureCertificates::getCertificateKeys)
+                              .filter(a -> a.containsKey(alias))
+                              .findFirst()
+                              .map(certificateKeys -> certificateKeys.get(alias))
+                              .orElse(null);
     }
 
     @Override
@@ -239,54 +240,32 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
-            if (parameter.getClientId() != null) {
-                keyVaultClient = new KeyVaultClient(
-                        parameter.getUri(),
-                        parameter.getTenantId(),
-                        parameter.getClientId(),
-                        parameter.getClientSecret());
-            } else if (parameter.getManagedIdentity() != null) {
-                keyVaultClient = new KeyVaultClient(
-                        parameter.getUri(),
-                        parameter.getManagedIdentity()
-                );
-            } else {
-                keyVaultClient = new KeyVaultClient(parameter.getUri());
-            }
-            keyVaultCertificates.setKeyVaultClient(keyVaultClient);
+            keyVaultCertificates.updateKeyVaultClient(parameter.getUri(), parameter.getTenantId(),
+                parameter.getClientId(), parameter.getClientSecret(), parameter.getManagedIdentity());
         }
-        loadCertificates();
+        classpathCertificates.loadCertificatesFromClasspath();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
-        loadCertificates();
-    }
-
-    private void loadCertificates() {
-        wellKnowCertificates.loadCertificatesFromFileSystem();
-        customCertificates.loadCertificatesFromFileSystem();
         classpathCertificates.loadCertificatesFromClasspath();
     }
 
     private List<String> getAllAliases() {
-        List<String> allAliases = new ArrayList<>();
-        allAliases.addAll(jreCertificates.getAliases());
+        List<String> allAliases = new ArrayList<>(jreCertificates.getAliases());
         Map<String, List<String>> aliasLists = new HashMap<>();
         aliasLists.put("well known certificates", wellKnowCertificates.getAliases());
         aliasLists.put("custom certificates", customCertificates.getAliases());
         aliasLists.put("key vault certificates", keyVaultCertificates.getAliases());
         aliasLists.put("class path certificates", classpathCertificates.getAliases());
 
-        aliasLists.forEach((key, value) -> {
-            value.forEach(a -> {
-                if (allAliases.contains(a)) {
-                    LOGGER.log(WARNING, String.format("The certificate with alias %s under %s already exists", a, key));
-                } else {
-                    allAliases.add(a);
-                }
-            });
-        });
+        aliasLists.forEach((certificatesType, certificates) -> certificates.forEach(alias -> {
+            if (allAliases.contains(alias)) {
+                LOGGER.log(FINE, String.format("The certificate %s under %s already exists", alias, certificatesType));
+            } else {
+                allAliases.add(alias);
+            }
+        }));
         return allAliases;
     }
 

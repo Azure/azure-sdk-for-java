@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.communication.azure.com/calling/serverCalls/aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=/recordings?api-version=2021-06-15-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (11.0.11; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5cd22ad4-75f7-41f2-b55c-f8236308916a",
+      "x-ms-client-request-id" : "02b47e10-71be-437a-b516-66fb4d65b59e",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "content-length" : "83",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0HLXDYAAAAACKjLlzpwOwT6tuxNe9RifSV1NURURHRTA4MTIAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0lAbJYAAAAADKsF2gSIiuS4I8gZjUYsjtV1NURURHRTA4MDgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "400",
-      "X-Microsoft-Skype-Chain-ID" : "6ae47b8c-882f-4944-af44-7324d076eb5c",
+      "X-Microsoft-Skype-Chain-ID" : "672949a2-10a7-4f3d-b3b5-c8b9e295ff84",
       "Body" : "{\"code\":\"8501\",\"message\":\"Action is invalid when call is not in Established state\"}",
-      "Date" : "Fri, 11 Jun 2021 19:10:20 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Client-Request-Id" : "8d977355-a1f3-4bdb-81a5-81046073d41a"
+      "x-ms-client-request-id" : "02b47e10-71be-437a-b516-66fb4d65b59e",
+      "Date" : "Tue, 15 Jun 2021 19:59:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],

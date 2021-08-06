@@ -91,6 +91,13 @@ public final class BinarySource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public BinarySource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -4,8 +4,8 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.MediaType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -35,7 +35,7 @@ public final class JoinCallRequest {
      * The requested modalities.
      */
     @JsonProperty(value = "requestedMediaTypes")
-    private List<CallModality> requestedMediaTypes;
+    private List<MediaType> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
@@ -108,7 +108,7 @@ public final class JoinCallRequest {
      *
      * @return the requestedMediaTypes value.
      */
-    public List<CallModality> getRequestedMediaTypes() {
+    public List<MediaType> getRequestedMediaTypes() {
         return this.requestedMediaTypes;
     }
 
@@ -118,7 +118,7 @@ public final class JoinCallRequest {
      * @param requestedMediaTypes the requestedMediaTypes value to set.
      * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequest setRequestedMediaTypes(List<CallModality> requestedMediaTypes) {
+    public JoinCallRequest setRequestedMediaTypes(List<MediaType> requestedMediaTypes) {
         this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }

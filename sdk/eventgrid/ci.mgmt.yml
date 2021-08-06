@@ -2,30 +2,60 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/eventgrid/
+      - sdk/eventgrid/ci.mgmt.yml
+      - sdk/eventgrid/mgmt-v2018_01_01/
+      - sdk/eventgrid/mgmt-v2018_05_01_preview/
+      - sdk/eventgrid/mgmt-v2018_09_15_preview/
+      - sdk/eventgrid/mgmt-v2019_01_01/
+      - sdk/eventgrid/mgmt-v2019_06_01/
+      - sdk/eventgrid/mgmt-v2020_01_01_preview/
+      - sdk/eventgrid/mgmt-v2020_04_01_preview/
+      - sdk/eventgrid/mgmt-v2020_06_01/
     exclude:
-      - sdk/eventgrid/microsoft-azure-eventgrid
+      - sdk/eventgrid/pom.xml
+      - sdk/eventgrid/mgmt-v2018_01_01/pom.xml
+      - sdk/eventgrid/mgmt-v2018_05_01_preview/pom.xml
+      - sdk/eventgrid/mgmt-v2018_09_15_preview/pom.xml
+      - sdk/eventgrid/mgmt-v2019_01_01/pom.xml
+      - sdk/eventgrid/mgmt-v2019_06_01/pom.xml
+      - sdk/eventgrid/mgmt-v2020_01_01_preview/pom.xml
+      - sdk/eventgrid/mgmt-v2020_04_01_preview/pom.xml
+      - sdk/eventgrid/mgmt-v2020_06_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/eventgrid/
+      - sdk/eventgrid/ci.mgmt.yml
+      - sdk/eventgrid/mgmt-v2018_01_01/
+      - sdk/eventgrid/mgmt-v2018_05_01_preview/
+      - sdk/eventgrid/mgmt-v2018_09_15_preview/
+      - sdk/eventgrid/mgmt-v2019_01_01/
+      - sdk/eventgrid/mgmt-v2019_06_01/
+      - sdk/eventgrid/mgmt-v2020_01_01_preview/
+      - sdk/eventgrid/mgmt-v2020_04_01_preview/
+      - sdk/eventgrid/mgmt-v2020_06_01/
     exclude:
-      - sdk/eventgrid/microsoft-azure-eventgrid
+      - sdk/eventgrid/pom.xml
+      - sdk/eventgrid/mgmt-v2018_01_01/pom.xml
+      - sdk/eventgrid/mgmt-v2018_05_01_preview/pom.xml
+      - sdk/eventgrid/mgmt-v2018_09_15_preview/pom.xml
+      - sdk/eventgrid/mgmt-v2019_01_01/pom.xml
+      - sdk/eventgrid/mgmt-v2019_06_01/pom.xml
+      - sdk/eventgrid/mgmt-v2020_01_01_preview/pom.xml
+      - sdk/eventgrid/mgmt-v2020_04_01_preview/pom.xml
+      - sdk/eventgrid/mgmt-v2020_06_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.web;
 
+/**
+ * Constants used for validating refresh requests.
+ */
 public class Constants {
 
     public static final String VALIDATION_CODE_KEY = "validationCode";

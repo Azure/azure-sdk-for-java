@@ -18,6 +18,9 @@ import org.springframework.validation.annotation.Validated;
 
 import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
 
+/**
+ * Properties for all Azure App Configuration stores that are loaded.
+ */
 @Validated
 @ConfigurationProperties(prefix = AppConfigurationProperties.CONFIG_PREFIX)
 @Import({ AppConfigurationProviderProperties.class })

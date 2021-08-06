@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
@@ -141,6 +142,7 @@ public class CallingServerClientBuilderUnitTests {
             .addPolicy(new HmacAuthenticationPolicy(credential))
             .httpClient(new NoOpHttpClient())
             .pipeline(new HttpPipelineBuilder().build())
+            .retryPolicy(new RetryPolicy())
             .buildAsyncClient();
         assertNotNull(callAsyncClient);
     }
@@ -151,6 +153,15 @@ public class CallingServerClientBuilderUnitTests {
             () -> builder
                 .connectionString(MOCK_CONNECTION_STRING)
                 .endpoint(MOCK_URL)
+                .httpClient(new NoOpHttpClient())
+                .buildAsyncClient());
+    }
+
+    @Test
+    public void argumentExceptionOnEmptyConnectionString() {
+        assertThrows(NullPointerException.class,
+            () -> builder
+                .connectionString("")
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient());
     }

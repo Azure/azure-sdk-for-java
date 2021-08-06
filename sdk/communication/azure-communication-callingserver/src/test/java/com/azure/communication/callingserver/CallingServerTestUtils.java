@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioResult;
@@ -64,8 +65,8 @@ public class CallingServerTestUtils {
 
     protected static void validatePlayAudioResult(PlayAudioResult playAudioResponse) {
         assertNotNull(playAudioResponse);
-        assertNotNull(playAudioResponse.getId());
-        assertFalse(playAudioResponse.getId().isEmpty());
+        assertNotNull(playAudioResponse.getOperationId());
+        assertFalse(playAudioResponse.getOperationId().isEmpty());
         assertNotNull(playAudioResponse.getStatus());
         assertSame(playAudioResponse.getStatus(), OperationStatus.RUNNING);
     }
@@ -79,8 +80,8 @@ public class CallingServerTestUtils {
 
     protected static void validateCancelAllMediaOperations(CancelAllMediaOperationsResult result) {
         assertNotNull(result);
-        assertNotNull(result.getId());
-        assertFalse(result.getId().isEmpty());
+        assertNotNull(result.getOperationId());
+        assertFalse(result.getOperationId().isEmpty());
         assertNotNull(result.getStatus());
         assertSame(result.getStatus(), OperationStatus.COMPLETED);
     }
@@ -88,5 +89,18 @@ public class CallingServerTestUtils {
     protected static void validateResponse(Response<Void> response) {
         assertNotNull(response);
         Assertions.assertEquals(202, response.getStatusCode());
+    }
+
+    protected static void validateAddParticipantResponse(Response<AddParticipantResult> response) {
+        assertNotNull(response);
+        Assertions.assertEquals(202, response.getStatusCode());
+        assertNotNull(response.getValue());
+        validateAddParticipantResult(response.getValue());
+    }
+
+    protected static void validateAddParticipantResult(AddParticipantResult result) {
+        assertNotNull(result);
+        assertNotNull(result.getParticipantId());
+        assertFalse(result.getParticipantId().isEmpty());
     }
 }

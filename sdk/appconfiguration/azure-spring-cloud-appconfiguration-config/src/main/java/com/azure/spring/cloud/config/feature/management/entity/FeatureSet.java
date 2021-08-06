@@ -7,6 +7,9 @@ import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Set of Feature Flag Key pairs.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureSet {
 

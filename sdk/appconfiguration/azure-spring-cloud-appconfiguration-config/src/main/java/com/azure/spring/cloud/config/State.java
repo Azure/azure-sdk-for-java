@@ -13,11 +13,11 @@ class State {
 
     private final List<ConfigurationSetting> watchKeys;
 
-    private final Date notCachedTime;
+    private final Date nextRefreshCheck;
 
-    State(List<ConfigurationSetting> watchKeys, int cacheExpirationTime) {
+    State(List<ConfigurationSetting> watchKeys, int refreshInterval) {
         this.watchKeys = watchKeys;
-        notCachedTime = DateUtils.addSeconds(new Date(), cacheExpirationTime);
+        nextRefreshCheck = DateUtils.addSeconds(new Date(), refreshInterval);
     }
 
     /**
@@ -28,10 +28,10 @@ class State {
     }
 
     /**
-     * @return the notCachedTime
+     * @return the nextRefreshCheck
      */
-    public Date getNotCachedTime() {
-        return notCachedTime;
+    public Date getNextRefreshCheck() {
+        return nextRefreshCheck;
     }
 
 }

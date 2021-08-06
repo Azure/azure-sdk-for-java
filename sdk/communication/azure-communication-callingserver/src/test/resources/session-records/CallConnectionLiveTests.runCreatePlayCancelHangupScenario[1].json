@@ -33,7 +33,7 @@
       "X-Azure-Ref" : "0oKXBYAAAAABNU3kdFjmNT5xy3dN4K86zQ0hHRURHRTE2MTEAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "202",
       "X-Microsoft-Skype-Chain-ID" : "e636a27a-7f61-4fc1-9ec4-9590a86b2bf5",
-      "Body" : "{\"id\":\"d7e0adb0-4270-40ec-9765-3ea36333d117\",\"status\":\"running\",\"operationContext\":\"ac794123-3820-4979-8e2d-50c7d3e07b12\"}",
+      "Body" : "{\"operationId\":\"d7e0adb0-4270-40ec-9765-3ea36333d117\",\"status\":\"running\",\"operationContext\":\"ac794123-3820-4979-8e2d-50c7d3e07b12\"}",
       "Date" : "Thu, 10 Jun 2021 05:39:44 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Client-Request-Id" : "2f98ae53-872d-42a7-aea1-25c8d2229fc3"
@@ -53,7 +53,7 @@
       "X-Azure-Ref" : "0paXBYAAAAAAMod1Bg9TxT4yzrPIy9p8dQ0hHRURHRTE2MTEAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "200",
       "X-Microsoft-Skype-Chain-ID" : "0fc01f99-334d-4897-82a5-fb92e4260e1d",
-      "Body" : "{\"id\":\"1e448fc0-d041-4cb6-9631-55fc8baa88d9\",\"status\":\"completed\",\"operationContext\":\"ac794123-3820-4979-8e2d-50c7d3e07b13\"}",
+      "Body" : "{\"operationId\":\"1e448fc0-d041-4cb6-9631-55fc8baa88d9\",\"status\":\"completed\",\"operationContext\":\"ac794123-3820-4979-8e2d-50c7d3e07b13\"}",
       "Date" : "Thu, 10 Jun 2021 05:39:48 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Client-Request-Id" : "87982420-e99e-49d9-8e1f-6f7989e4248b"

@@ -12,6 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -104,6 +105,29 @@ public class BlobClient extends BlobClientBase {
     @Override
     public BlobClient getVersionClient(String versionId) {
         return new BlobClient(client.getVersionClient(versionId));
+    }
+
+    /**
+     * Creates a new {@link BlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link BlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public BlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new BlobClient(client.getEncryptionScopeAsyncClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link BlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link BlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public BlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new BlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**

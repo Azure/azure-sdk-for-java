@@ -4,7 +4,7 @@
 package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.CommunicationError;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
+import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.models.CallingServerError;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 
@@ -44,12 +44,12 @@ public final class CallingServerErrorConverter {
     }
 
     /**
-     * Maps from {@link CommunicationErrorException} to {@link CallingServerErrorException}.
+     * Maps from {@link CommunicationErrorResponseException} to {@link CallingServerErrorException}.
      */
-    public static CallingServerErrorException translateException(CommunicationErrorException exception) {
+    public static CallingServerErrorException translateException(CommunicationErrorResponseException exception) {
         CallingServerError error = null;
         if (exception.getValue() != null) {
-            error = CallingServerErrorConverter.convert(exception.getValue());
+            error = CallingServerErrorConverter.convert(exception.getValue().getError());
         }
         return new CallingServerErrorException(exception.getMessage(), exception.getResponse(), error);
     }
