@@ -189,8 +189,8 @@ def resolve_dependent_project(pom_identifier: str, dependent_modules: list, depe
         for dependency in dependency_to_project_mapping[pom_identifier]:
             # Only continue if the project's dependents haven't already been resolved.
             if not dependency in dependent_modules:
-                dependent_modules = resolve_dependent_project(dependency, dependent_modules, dependency_to_project_mapping)
                 dependent_modules.append(dependency)
+                dependent_modules = resolve_dependent_project(dependency, dependent_modules, dependency_to_project_mapping)
 
     return dependent_modules
 
@@ -200,8 +200,8 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: list, 
         for dependency in project_dependencies_mapping[pom_identifier]:
             # Only continue if the project's dependencies haven't already been resolved.
             if not dependency in dependency_modules:
-                dependency_modules = resolve_project_dependencies(dependency, dependency_modules, project_dependencies_mapping)
                 dependency_modules.append(dependency)
+                dependency_modules = resolve_project_dependencies(dependency, dependency_modules, project_dependencies_mapping)
 
     return dependency_modules
 

@@ -3,26 +3,36 @@
 
 package com.azure.storage.common.test.shared
 
+import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpClient
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.util.ServiceVersion
+import com.azure.core.util.logging.ClientLogger
+import com.azure.identity.EnvironmentCredentialBuilder
 import spock.lang.Specification
+
+import java.time.Duration
+import java.util.function.Predicate
+import java.util.function.Supplier
 
 class StorageSpec extends Specification {
     private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
     private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
+    private static final ClientLogger LOGGER = new ClientLogger(StorageSpec.class)
 
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
 
     def setup() {
-        def testName = getTestName()
+        def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
         interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
         namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
-        System.out.printf("========================= %s =========================%n", testName)
+        LOGGER.info("Test {} will use {} resource prefix.", testName, namer.resourcePrefix)
     }
 
     def cleanup() {
@@ -57,6 +67,10 @@ class StorageSpec extends Specification {
             builder."addPolicy"(new ServiceVersionValidationPolicy(parsedServiceVersion.version))
         }
 
+        HttpLogOptions httpLogOptions = builder."getDefaultHttpLogOptions"()
+        httpLogOptions.setLogLevel(HttpLogDetailLevel.HEADERS)
+        builder."httpLogOptions"(httpLogOptions)
+
         return builder
     }
 
@@ -76,18 +90,30 @@ class StorageSpec extends Specification {
         }
     }
 
-    private String getTestName() {
-        def iterationInfo = specificationContext.currentIteration
-        def featureInfo = iterationInfo.getParent()
-        def specInfo = featureInfo.getParent()
-        def fullName = specInfo.getName() + featureInfo.getName().split(" ").collect { it.capitalize() }.join("")
-
-        if (iterationInfo.getDataValues().length == 0) {
-            return fullName
+    private static String getAuthToken() {
+        if (env.testMode == TestMode.PLAYBACK) {
+            // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
+            return "recordingBearerToken"
         }
-        def prefix = fullName
-        def suffix = "[" + iterationInfo.getIterationIndex() + "]"
+        return new EnvironmentCredentialBuilder().build()
+            .getToken(new TokenRequestContext().setScopes(["https://storage.azure.com/.default"]))
+            .map { it.getToken() }
+            .block()
+    }
 
-        return prefix + suffix
+    protected <T, E extends Exception> T retry(
+        Supplier<T> action, Predicate<E> retryPredicate,
+        int times=6, Duration delay=Duration.ofSeconds(10)) {
+        for (i in 0..<times) {
+            try {
+                return action.get()
+            } catch (Exception e) {
+                if (!retryPredicate(e)) {
+                    throw e
+                } else {
+                    Thread.sleep(delay.toMillis())
+                }
+            }
+        }
     }
 }

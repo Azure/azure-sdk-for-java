@@ -29,11 +29,18 @@ public class ExcelDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The sheet of excel file. Type: string (or Expression with resultType
-     * string).
+     * The sheet name of excel file. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.sheetName")
     private Object sheetName;
+
+    /*
+     * The sheet index of excel file and default value is 0. Type: integer (or
+     * Expression with resultType integer)
+     */
+    @JsonProperty(value = "typeProperties.sheetIndex")
+    private Object sheetIndex;
 
     /*
      * The partial data of one sheet. Type: string (or Expression with
@@ -85,7 +92,7 @@ public class ExcelDataset extends Dataset {
     }
 
     /**
-     * Get the sheetName property: The sheet of excel file. Type: string (or Expression with resultType string).
+     * Get the sheetName property: The sheet name of excel file. Type: string (or Expression with resultType string).
      *
      * @return the sheetName value.
      */
@@ -94,13 +101,35 @@ public class ExcelDataset extends Dataset {
     }
 
     /**
-     * Set the sheetName property: The sheet of excel file. Type: string (or Expression with resultType string).
+     * Set the sheetName property: The sheet name of excel file. Type: string (or Expression with resultType string).
      *
      * @param sheetName the sheetName value to set.
      * @return the ExcelDataset object itself.
      */
     public ExcelDataset withSheetName(Object sheetName) {
         this.sheetName = sheetName;
+        return this;
+    }
+
+    /**
+     * Get the sheetIndex property: The sheet index of excel file and default value is 0. Type: integer (or Expression
+     * with resultType integer).
+     *
+     * @return the sheetIndex value.
+     */
+    public Object sheetIndex() {
+        return this.sheetIndex;
+    }
+
+    /**
+     * Set the sheetIndex property: The sheet index of excel file and default value is 0. Type: integer (or Expression
+     * with resultType integer).
+     *
+     * @param sheetIndex the sheetIndex value to set.
+     * @return the ExcelDataset object itself.
+     */
+    public ExcelDataset withSheetIndex(Object sheetIndex) {
+        this.sheetIndex = sheetIndex;
         return this;
     }
 

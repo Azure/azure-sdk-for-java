@@ -293,7 +293,7 @@ public class OpenTelemetryTracerTest {
     @Test
     public void addLinkTest() {
         // Arrange
-        SpanBuilder span = tracer.spanBuilder("parent-span");
+        SpanBuilder span = tracer.spanBuilder(PARENT_SPAN_KEY);
         Span toLinkSpan = tracer.spanBuilder("new test span").startSpan();
 
         Context spanContext = new Context(
@@ -317,7 +317,7 @@ public class OpenTelemetryTracerTest {
     @Test
     public void addLinkNoSpanContextTest() {
         // Arrange
-        SpanBuilder span = tracer.spanBuilder("parent-span");
+        SpanBuilder span = tracer.spanBuilder(PARENT_SPAN_KEY);
 
         // Act
         openTelemetryTracer.addLink(new Context(SPAN_BUILDER_KEY, span));
@@ -331,7 +331,7 @@ public class OpenTelemetryTracerTest {
     @Test
     public void addLinkNoSpanToLinkTest() {
         // Arrange
-        SpanBuilder span = tracer.spanBuilder("parent-span");
+        SpanBuilder span = tracer.spanBuilder(PARENT_SPAN_KEY);
 
         // Act
         openTelemetryTracer.addLink(Context.NONE);
@@ -489,10 +489,11 @@ public class OpenTelemetryTracerTest {
         final String eventName = "event-0";
 
         // Act
-        openTelemetryTracer.addEvent(eventName, null, null);
+        openTelemetryTracer.addEvent(eventName, null, null, tracingContext);
 
         // Assert
         final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        assertEquals(PARENT_SPAN_KEY, recordEventsSpan.getName());
         List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
         assertNotNull(eventData);
         assertEquals(1, eventData.size());
@@ -513,10 +514,11 @@ public class OpenTelemetryTracerTest {
             }};
 
         // Act
-        openTelemetryTracer.addEvent(eventName, input, null);
+        openTelemetryTracer.addEvent(eventName, input, null, tracingContext);
 
         // Assert
         final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        assertEquals(PARENT_SPAN_KEY, recordEventsSpan.getName());
         List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
         assertNotNull(eventData);
         assertEquals(1, eventData.size());
@@ -541,10 +543,11 @@ public class OpenTelemetryTracerTest {
         OffsetDateTime eventTime = OffsetDateTime.parse("2021-01-01T18:35:24.00Z");
 
         // Act
-        openTelemetryTracer.addEvent(eventName, null, eventTime);
+        openTelemetryTracer.addEvent(eventName, null, eventTime, tracingContext);
 
         // Assert
         final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        assertEquals(PARENT_SPAN_KEY, recordEventsSpan.getName());
         List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
         assertNotNull(eventData);
         assertEquals(1, eventData.size());
@@ -560,7 +563,7 @@ public class OpenTelemetryTracerTest {
 
         // Act
         parentSpan.end();
-        openTelemetryTracer.addEvent(eventName, null, null);
+        openTelemetryTracer.addEvent(eventName, null, null, tracingContext);
 
         // Assert
         final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
@@ -568,6 +571,44 @@ public class OpenTelemetryTracerTest {
         assertNotNull(eventData);
         // no event associated once span has ended and the user tries to add an event.
         assertEquals(0, eventData.size());
+    }
+
+    @Test
+    public void addEventWithChildSpan() {
+        // Arrange
+        tracingContext = openTelemetryTracer.start("child-span-1", tracingContext);
+        final String eventName = "event-0";
+        OffsetDateTime eventTime = OffsetDateTime.parse("2021-01-01T18:35:24.00Z");
+
+        // Act
+        openTelemetryTracer.addEvent(eventName, null, eventTime, tracingContext);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        assertEquals("child-span-1", recordEventsSpan.getName());
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        assertEquals(1, eventData.size());
+        assertEquals(eventName, eventData.get(0).getName());
+        assertEquals(eventTime,
+            OffsetDateTime.ofInstant(Instant.ofEpochMilli(eventData.get(0).getEpochNanos() / 1000000), ZoneOffset.UTC));
+    }
+
+    @Test
+    public void addEventWithoutEventSpanContext() {
+        // Arrange
+        final String eventName = "event-0";
+        OffsetDateTime eventTime = OffsetDateTime.parse("2021-01-01T18:35:24.00Z");
+
+        // Act
+        openTelemetryTracer.addEvent(eventName, null, eventTime);
+
+        // Assert
+        final ReadableSpan recordEventsSpan = (ReadableSpan) tracingContext.getData(PARENT_SPAN_KEY).get();
+        assertEquals(PARENT_SPAN_KEY, recordEventsSpan.getName());
+        List<EventData> eventData = recordEventsSpan.toSpanData().getEvents();
+        assertNotNull(eventData);
+        assertEquals(1, eventData.size());
     }
 
     private static void assertSpanWithExplicitParent(Context updatedContext, String parentSpanId) {

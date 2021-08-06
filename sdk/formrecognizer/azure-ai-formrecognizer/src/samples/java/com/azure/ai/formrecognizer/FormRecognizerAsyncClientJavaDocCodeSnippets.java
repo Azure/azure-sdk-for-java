@@ -266,7 +266,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length(),
             new RecognizeContentOptions()
-                .setContentType(FormContentType.APPLICATION_PDF)
+                .setContentType(FormContentType.IMAGE_JPEG)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .flatMap(Flux::fromIterable)

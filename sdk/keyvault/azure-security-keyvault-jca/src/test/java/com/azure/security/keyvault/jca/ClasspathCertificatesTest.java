@@ -27,20 +27,4 @@ public class ClasspathCertificatesTest {
         Assertions.assertEquals(classpathCertificates.getCertificates().get("myalias"), certificate);
     }
 
-    @Test
-    public void testRemoveCertificate() {
-        classpathCertificates = new ClasspathCertificates();
-        classpathCertificates.setCertificateEntry("myalias", certificate);
-        classpathCertificates.removeCertificate("myalias");
-        Assertions.assertNull(classpathCertificates.getCertificates().get("myalias"));
-    }
-
-    @Test
-    public void testRemoveAlias() {
-        classpathCertificates = new ClasspathCertificates();
-        classpathCertificates.setCertificateEntry("myalias", certificate);
-        classpathCertificates.removeAlias("myalias");
-        Assertions.assertFalse(classpathCertificates.getAliases().contains("myalias"));
-    }
-
 }

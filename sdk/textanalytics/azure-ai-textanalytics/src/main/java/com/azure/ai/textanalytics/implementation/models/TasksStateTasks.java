@@ -12,12 +12,6 @@ import java.util.List;
 @Fluent
 public final class TasksStateTasks {
     /*
-     * The details property.
-     */
-    @JsonProperty(value = "details")
-    private TasksStateTasksDetails details;
-
-    /*
      * The completed property.
      */
     @JsonProperty(value = "completed", required = true)
@@ -70,26 +64,6 @@ public final class TasksStateTasks {
      */
     @JsonProperty(value = "sentimentAnalysisTasks")
     private List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks;
-
-    /**
-     * Get the details property: The details property.
-     *
-     * @return the details value.
-     */
-    public TasksStateTasksDetails getDetails() {
-        return this.details;
-    }
-
-    /**
-     * Set the details property: The details property.
-     *
-     * @param details the details value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setDetails(TasksStateTasksDetails details) {
-        this.details = details;
-        return this;
-    }
 
     /**
      * Get the completed property: The completed property.

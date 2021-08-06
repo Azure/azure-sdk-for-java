@@ -6,10 +6,10 @@ and includes six main functions:
 - Language Detection
 - Key Phrase Extraction
 - Named Entity Recognition
-- Personally Identifiable Information Entity Recognition 
+- Personally Identifiable Information (PII) Entity Recognition 
 - Linked Entity Recognition
-- Support Analyze Healthcare Entity <sup>beta</sup>
-- Support Multiple Actions Per Document <sup>beta</sup>
+- Healthcare Entity Recognition
+- Multiple Actions Analysis Per Document
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -19,6 +19,26 @@ and includes six main functions:
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Text Analytics account][text_analytics_account] to use this package.
+
+### Include the Package
+
+[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-ai-textanalytics</artifactId>
+    <version>5.1.0</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+**Note:** This version of the client library defaults to the `v3.1` version of the service.
+
+This table shows the relationship between SDK services and supported API versions of the service:
+
+|SDK version|Supported API version of service
+|-|-
+|5.1.x | 3.0, 3.1 (default)
+|5.0.x | 3.0
 
 #### Create a Cognitive Services or Text Analytics resource
 Text Analytics supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
@@ -36,32 +56,20 @@ Below is an example of how you can create a Text Analytics resource using the CL
 ```bash
 # Create a new resource group to hold the text analytics resource -
 # if using an existing resource group, skip this step
-az group create --name my-resource-group --location westus2
+az group create --name <your-resource-group> --location <location>
 ```
 
 ```bash
 # Create text analytics
 az cognitiveservices account create \
-    --name text-analytics-resource \
-    --resource-group my-resource-group \
+    --name <your-resource-name> \
+    --resource-group <your-resource-group-name> \
     --kind TextAnalytics \
-    --sku F0 \
-    --location westus2 \
+    --sku <sku> \
+    --location <location> \
     --yes
 ```
-
-### Include the Package
-**Note:** This version targets Azure Text Analytics service API version v3.0.
-
-[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.1.0-beta.7</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+For more information about creating the resource or how to get the location and sku information see [here][azure_cli]
 
 ### Authenticate the client
 In order to interact with the Text Analytics service, you will need to create an instance of the Text Analytics client,
@@ -88,7 +96,7 @@ az cognitiveservices account keys list --resource-group <your-resource-group-nam
 ```
 
 Use the key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L63-L66 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L62-L65 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -97,7 +105,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 The Azure Text Analytics client library provides a way to **rotate the existing key**.
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L94-L100 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L93-L99 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -119,7 +127,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -135,7 +143,7 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Text Analytics, please
 refer to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L83-L87 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L82-L86 -->
 ```java
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -191,19 +199,21 @@ The following sections provide several code snippets covering some of the most c
 * [Recognize Entities](#recognize-entities "Recognize entities")
 * [Recognize Personally Identifiable Information Entities](#recognize-personally-identifiable-information-entities "Recognize Personally Identifiable Information entities")
 * [Recognize Linked Entities](#recognize-linked-entities "Recognize linked entities")
+* [Analyze Healthcare Entities](#analyze-healthcare-entities "Analyze healthcare entities")
+* [Analyze Multiple Actions](#analyze-multiple-actions "Analyze multiple actions")
 
 ### Text Analytics Client
 Text analytics support both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L63-L66 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L62-L65 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L73-L76 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L72-L75 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -215,7 +225,7 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 Run a Text Analytics predictive model to identify the positive, negative, neutral or mixed sentiment contained in the 
 provided document or batch of documents.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L123-L127 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L122-L126 -->
 ```java
 String document = "The hotel was dark and unclean. I like microsoft.";
 DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(document);
@@ -234,7 +244,7 @@ Please refer to the service documentation for a conceptual discussion of [sentim
 ### Detect language
 Run a Text Analytics predictive model to determine the language that the provided document or batch of documents are written in.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L134-L137 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L133-L136 -->
 ```java
 String document = "Bonjour tout le monde";
 DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document);
@@ -247,7 +257,7 @@ Please refer to the service documentation for a conceptual discussion of [langua
 ### Extract key phrases
 Run a model to identify a collection of significant phrases found in the provided document or batch of documents.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L168-L170 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L167-L169 -->
 ```java
 String document = "My cat might need to see a veterinarian.";
 System.out.println("Extracted phrases:");
@@ -261,7 +271,7 @@ Run a predictive model to identify a collection of named entities in the provide
 categorize those entities into categories such as person, location, or organization.  For more information on available
 categories, see [Text Analytics Named Entity Categories][named_entities_categories].
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L144-L147 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L143-L146 -->
 ```java
 String document = "Satya Nadella is the CEO of Microsoft";
 textAnalyticsClient.recognizeEntities(document).forEach(entity ->
@@ -277,7 +287,7 @@ document. It recognizes and categorizes PII entities in its input text, such as
 Social Security Numbers, bank account information, credit card numbers, and more. This endpoint is only supported for
 API versions v3.1-preview.1 and above.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L177-L183 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L176-L182 -->
 ```java
 String document = "My SSN is 859-98-0987";
 PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(document);
@@ -295,7 +305,7 @@ Please refer to the service documentation for [supported PII entity types][pii_e
 Run a predictive model to identify a collection of entities found in the provided document or batch of documents, 
 and include information linking the entities to their corresponding entries in a well-known knowledge base.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L154-L161 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L153-L160 -->
 
 ```java
 String document = "Old Faithful is a geyser at Yellowstone Park.";
@@ -313,9 +323,8 @@ Please refer to the service documentation for a conceptual discussion of [entity
 ### Analyze healthcare entities
 Text Analytics for health is a containerized service that extracts and labels relevant medical information from 
 unstructured texts such as doctor's notes, discharge summaries, clinical documents, and electronic health records.
-Currently, Azure Active Directory (AAD) is not supported in the Healthcare recognition feature. In order to use this 
-functionality, request to access public preview is required. For more information see [How to: Use Text Analytics for health][healthcare].
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L190-L236 -->
+For more information see [How to: Use Text Analytics for health][healthcare].
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L189-L236 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(new TextDocumentInput("0",
     "RECORD #333582770390100 | MH | 85986313 | | 054351 | 2/14/2001 12:00:00 AM | "
@@ -335,41 +344,42 @@ List<TextDocumentInput> documents = Arrays.asList(new TextDocumentInput("0",
         + " for revascularization with open heart surgery."
 ));
 AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
-SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
     syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 syncPoller.waitForCompletion();
-syncPoller.getFinalResult().forEach(healthcareTaskResult -> healthcareTaskResult.forEach(
-    healthcareEntitiesResult -> {
-        System.out.println("Document entities: ");
-        AtomicInteger ct = new AtomicInteger();
-        healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-            System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
-                healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
-            IterableStream<EntityDataSource> healthcareEntityDataSources =
-                healthcareEntity.getDataSources();
-            if (healthcareEntityDataSources != null) {
-                healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
-                    "\t\tEntity ID in data source: %s, data source: %s.%n",
-                    healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
-            }
-        });
-        // Healthcare entity relation groups
-        healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
-            System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
-            entityRelation.getRoles().forEach(role -> {
-                final HealthcareEntity entity = role.getEntity();
-                System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
-                    entity.getText(), entity.getCategory(), role.getName());
+syncPoller.getFinalResult().forEach(
+    analyzeHealthcareEntitiesResultCollection -> analyzeHealthcareEntitiesResultCollection.forEach(
+        healthcareEntitiesResult -> {
+            System.out.println("Document entities: ");
+            AtomicInteger ct = new AtomicInteger();
+            healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+                    ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                    healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
+                IterableStream<EntityDataSource> healthcareEntityDataSources =
+                    healthcareEntity.getDataSources();
+                if (healthcareEntityDataSources != null) {
+                    healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                        "\t\tEntity ID in data source: %s, data source: %s.%n",
+                        healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
+                }
             });
-        });
-    }));
+            // Healthcare entity relation groups
+            healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                entityRelation.getRoles().forEach(role -> {
+                    final HealthcareEntity entity = role.getEntity();
+                    System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                        entity.getText(), entity.getCategory(), role.getName());
+                });
+            });
+        }));
 ```
 
 ### Analyze multiple actions
 The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same
 set of documents. Currently, the supported features are: `entity recognition`, `linked entity recognition`,
-`key phrase extraction`, and `Personally Identifiable Information (PII) recognition`. 
+`Personally Identifiable Information (PII) entity recognition`, `key phrase extraction`, and `sentiment analysis`. 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L243-L291 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(
@@ -383,20 +393,20 @@ List<TextDocumentInput> documents = Arrays.asList(
             + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
 );
 
-SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
     textAnalyticsClient.beginAnalyzeActions(documents,
         new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-            .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
-            .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()),
+            .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+            .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction()),
         new AnalyzeActionsOptions().setIncludeStatistics(false),
         Context.NONE);
 syncPoller.waitForCompletion();
 syncPoller.getFinalResult().forEach(analyzeActionsResult -> {
     System.out.println("Key phrases extraction action results:");
-    analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
+    analyzeActionsResult.getExtractKeyPhrasesResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
         if (!actionResult.isError()) {
-            for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getResult()) {
+            for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getDocumentsResults()) {
                 System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                 System.out.println("Extracted phrases:");
                 extractKeyPhraseResult.getKeyPhrases()
@@ -405,10 +415,10 @@ syncPoller.getFinalResult().forEach(analyzeActionsResult -> {
         }
     });
     System.out.println("PII entities recognition action results:");
-    analyzeActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
+    analyzeActionsResult.getRecognizePiiEntitiesResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
         if (!actionResult.isError()) {
-            for (RecognizePiiEntitiesResult entitiesResult : actionResult.getResult()) {
+            for (RecognizePiiEntitiesResult entitiesResult : actionResult.getDocumentsResults()) {
                 System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                 PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
                 System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
@@ -430,7 +440,7 @@ Text Analytics clients raise exceptions. For example, if you try to detect the l
 document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L107-L116 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L106-L115 -->
 ```java
 List<DetectLanguageInput> documents = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),
@@ -478,9 +488,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
-[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
-[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [azure_portal]: https://ms.portal.azure.com
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
@@ -507,21 +517,21 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_input_limitation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits
 [sentiment_analysis]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-sentiment-analysis
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/textanalytics/azure-ai-textanalytics/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/textanalytics/azure-ai-textanalytics/src
 [supported_languages]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support#language-detection
 [text_analytics_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[text_analytics_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsAsyncClient.java
-[text_analytics_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsClient.java
+[text_analytics_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsAsyncClient.java
+[text_analytics_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsClient.java
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
-[LogLevels]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[LogLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/README.md
-[detect_language_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
-[analyze_sentiment_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
-[analyze_sentiment_with_opinion_mining_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMining.java
-[extract_key_phrases_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
-[recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
-[recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
-[recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/README.md
+[detect_language_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
+[analyze_sentiment_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
+[analyze_sentiment_with_opinion_mining_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMining.java
+[extract_key_phrases_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
+[recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
+[recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
+[recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

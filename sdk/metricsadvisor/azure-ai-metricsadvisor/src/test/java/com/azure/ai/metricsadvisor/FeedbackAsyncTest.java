@@ -16,7 +16,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -107,47 +106,6 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         });
     }
 
-    /**
-     * Verifies the result of the list metric feedback  method to return only 3 results using
-     * {@link ListMetricFeedbackOptions#setMaxPageSize(int)}.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
-    void testListMetricFeedbackTop3(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-
-        // Act & Assert
-        StepVerifier.create(client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setMaxPageSize(3)).byPage())
-            .thenConsumeWhile(metricFeedbackPagedResponse -> 3 >= metricFeedbackPagedResponse.getValue().size())
-            // page size should be less than or equal to 3
-            .verifyComplete();
-    }
-
-    // /**
-    //  * Verifies the result of the list metric feedback  method using skip options.
-    //  */
-    // TODO (savaity) Need a better way of testing Skip
-    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    // void testListMetricFeedbackSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-    //     // Arrange
-    //     client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-    //     final ArrayList<MetricFeedback> actualMetricFeedbackList = new ArrayList<>();
-    //     final ArrayList<MetricFeedback> expectedList = new ArrayList<>();
-    //
-    //     StepVerifier.create(client.listFeedback())
-    //         .thenConsumeWhile(expectedList::add)
-    //         .verifyComplete();
-    //
-    //     // Act & Assert
-    //     StepVerifier.create(client.listFeedback(new ListMetricFeedbackOptions().setSkip(3)))
-    //         .thenConsumeWhile(actualMetricFeedbackList::add)
-    //         .verifyComplete();
-    //
-    //     assertEquals(expectedList.size() - 3, actualMetricFeedbackList.size());
-    // }
 
     /**
      * Verifies the result of the list metric feedback  method to filter results using
@@ -155,21 +113,23 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
     void testListMetricFeedbackFilterByDimensionFilter(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         creatMetricFeedbackRunner(inputMetricFeedback -> {
-            final MetricFeedback feedbackAdded = client.addFeedback(METRIC_ID, inputMetricFeedback).block();
-            final OffsetDateTime firstFeedbackCreatedTime = feedbackAdded.getCreatedTime();
+            final MetricFeedback feedbackAdded = client.addFeedback(METRIC_ID, inputMetricFeedback
+                .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)))
+                .block();
+            final OffsetDateTime feedbackCreatedTime = feedbackAdded.getCreatedTime();
 
             // Act & Assert
             StepVerifier.create(client.listFeedback(METRIC_ID,
                 new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
                     .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
-                    .setStartTime(firstFeedbackCreatedTime.minusDays(1))
-                    .setEndTime(firstFeedbackCreatedTime.plusDays(1))
-                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setMaxPageSize(10)))
+                    .setStartTime(feedbackCreatedTime.minusDays(1))
+                    .setEndTime(feedbackCreatedTime.plusDays(1))
+                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)))
+                    .setMaxPageSize(10)))
                 .thenConsumeWhile(metricFeedback ->
                     metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey))
                 .verifyComplete();

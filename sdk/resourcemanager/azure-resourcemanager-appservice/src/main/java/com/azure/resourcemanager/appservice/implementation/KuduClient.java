@@ -40,6 +40,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import reactor.core.Exceptions;
@@ -148,6 +149,9 @@ class KuduClient {
             @QueryParam("path") String path,
             @QueryParam("restart") Boolean restart,
             @QueryParam("clean") Boolean clean);
+
+        @Get("api/settings")
+        Mono<Map<String, String>> settings(@HostParam("$host") String host);
     }
 
     Flux<String> streamApplicationLogsAsync() {
@@ -310,6 +314,10 @@ class KuduClient {
                     logger.logThrowableAsError(e);
                 }
             });
+    }
+
+    Mono<Map<String, String>> settings() {
+        return retryOnError(service.settings(host));
     }
 
 //    private InputStreamFlux fluxFromInputStream(InputStream inputStream) {

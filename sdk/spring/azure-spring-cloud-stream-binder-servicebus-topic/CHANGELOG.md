@@ -1,6 +1,14 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
+### Key Bug Fixes
+- Fix bug of setting message headers repeatedly with different value types. ([#22939](https://github.com/Azure/azure-sdk-for-java/pull/22939))
+### New Features
+- Support configuration of `AmqpTransportType` for ServiceBusClientBuilder with property of `spring.cloud.azure.servicebus.transportType`, supported values are `AMQP` and `AMQP_WEB_SOCKETS`.
+
+## 2.6.0 (2021-06-23)
+### Breaking Changes
+- Removed `TelemetryCollector` usage.
 
 
 ## 2.5.0 (2021-05-24)

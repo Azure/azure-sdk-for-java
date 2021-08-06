@@ -330,6 +330,18 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
      */
     Mono<Void> zipDeployAsync(InputStream zipFile, long length);
 
+    /**
+     * Gets the App Settings on site from Kudu client. It might lag after App Setting update to the site.
+     * @return the App Settings on site from Kudu client
+     */
+    Map<String, String> getSiteAppSettings();
+
+    /**
+     * Gets the App Settings on site from Kudu client. It might lag after App Setting update to the site.
+     * @return the App Settings on site from Kudu client
+     */
+    Mono<Map<String, String>> getSiteAppSettingsAsync();
+
     /**************************************************************
      * Fluent interfaces to provision a Web App or deployment slot.
      **************************************************************/

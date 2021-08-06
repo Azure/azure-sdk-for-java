@@ -20,19 +20,19 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.administration.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
-import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.administration.models.SmartDetectionCondition;
 import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 import com.azure.ai.metricsadvisor.administration.models.SuppressCondition;
@@ -41,6 +41,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.SQL_SERVER_DB;
@@ -113,12 +114,12 @@ public class ReadmeSamples {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("cost"),
-                    new DataFeedMetric().setName("revenue")
+                    new DataFeedMetric("cost"),
+                    new DataFeedMetric("revenue")
                 )).setDimensions(
                 Arrays.asList(
-                    new DataFeedDimension().setName("city"),
-                    new DataFeedDimension().setName("category")
+                    new DataFeedDimension("city"),
+                    new DataFeedDimension("category")
                 ))
             )
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -171,25 +172,25 @@ public class ReadmeSamples {
     public void configureAnomalyDetection() {
         String metricId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
-        ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition()
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-            .setChangePercentage(20)
-            .setShiftPoint(10)
-            .setWithinRange(true)
-            .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
+        ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition(
+            20,
+            10,
+            true,
+            AnomalyDetectorDirection.BOTH,
+            new SuppressCondition(1, 2));
 
-        HardThresholdCondition hardThresholdCondition = new HardThresholdCondition()
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.DOWN)
-            .setLowerBound(5.0)
-            .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(1));
+        HardThresholdCondition hardThresholdCondition = new HardThresholdCondition(
+            AnomalyDetectorDirection.DOWN,
+            new SuppressCondition(1, 1))
+            .setLowerBound(5.0);
 
-        SmartDetectionCondition smartDetectionCondition = new SmartDetectionCondition()
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-            .setSensitivity(10.0)
-            .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
+        SmartDetectionCondition smartDetectionCondition = new SmartDetectionCondition(
+            10.0,
+            AnomalyDetectorDirection.UP,
+            new SuppressCondition(1, 2));
 
         final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
-            metricsAdvisorAdminClient.createMetricAnomalyDetectionConfig(
+            metricsAdvisorAdminClient.createDetectionConfig(
                 metricId,
                 new AnomalyDetectionConfiguration("My dataPoint anomaly detection configuration")
                     .setDescription("anomaly detection config description")
@@ -198,7 +199,7 @@ public class ReadmeSamples {
                             .setChangeThresholdCondition(changeThresholdCondition)
                             .setHardThresholdCondition(hardThresholdCondition)
                             .setSmartDetectionCondition(smartDetectionCondition)
-                            .setCrossConditionOperator(DetectionConditionsOperator.OR))
+                            .setConditionOperator(DetectionConditionOperator.OR))
             );
     }
 
@@ -208,7 +209,7 @@ public class ReadmeSamples {
     public void createHook() {
         NotificationHook emailNotificationHook = new EmailNotificationHook("email Hook")
             .setDescription("my email Hook")
-            .addEmailToAlert("alertme@alertme.com")
+            .setEmailsToAlert(new ArrayList<String>() {{ add("alertme@alertme.com"); }})
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
         final NotificationHook notificationHook = metricsAdvisorAdminClient.createHook(emailNotificationHook);
@@ -231,21 +232,21 @@ public class ReadmeSamples {
         String hookId2 = "8i48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         final AnomalyAlertConfiguration anomalyAlertConfiguration
-            = metricsAdvisorAdminClient.createAnomalyAlertConfig(
+            = metricsAdvisorAdminClient.createAlertConfig(
                 new AnomalyAlertConfiguration("My anomaly alert config name")
                     .setDescription("alert config description")
                     .setMetricAlertConfigurations(
                         Arrays.asList(
-                            new MetricAnomalyAlertConfiguration(detectionConfigurationId1,
+                            new MetricAlertConfiguration(detectionConfigurationId1,
                                 MetricAnomalyAlertScope.forWholeSeries()),
-                            new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
+                            new MetricAlertConfiguration(detectionConfigurationId2,
                                 MetricAnomalyAlertScope.forWholeSeries())
                                 .setAlertConditions(new MetricAnomalyAlertConditions()
-                                    .setSeverityRangeCondition(new SeverityCondition()
-                                        .setMaxAlertSeverity(AnomalySeverity.HIGH)))
+                                    .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.HIGH,
+                                        AnomalySeverity.HIGH)))
                         ))
-                    .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
-                    .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
+                    .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
+                    .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)));
     }
 
     /**
@@ -263,7 +264,7 @@ public class ReadmeSamples {
                 System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());
 
                 // List anomalies for returned alerts
-                metricsAdvisorClient.listAnomalies(
+                metricsAdvisorClient.listAnomaliesForAlert(
                     alertConfigurationId,
                     alert.getId())
                     .forEach(anomaly -> {

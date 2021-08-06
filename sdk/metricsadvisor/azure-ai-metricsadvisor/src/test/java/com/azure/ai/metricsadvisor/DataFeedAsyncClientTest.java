@@ -8,10 +8,10 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeed;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.CoreUtils;
@@ -80,23 +80,27 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
 
             listDataFeedRunner(inputDataFeedList -> {
+                DataFeed[] dataFeedList  = new DataFeed[2];
+                dataFeedList[0] = client.createDataFeed(inputDataFeedList.get(0)).block();
+                dataFeedList[1] = client.createDataFeed(inputDataFeedList.get(1)).block();
                 List<DataFeed> actualDataFeedList = new ArrayList<>();
-                List<DataFeed> expectedDataFeedList =
-                    inputDataFeedList.stream().map(dataFeed -> client.createDataFeed(dataFeed).block())
-                        .collect(Collectors.toList());
+                List<DataFeed> expectedDataFeedList = new ArrayList<>();
+                expectedDataFeedIdList.set(Arrays.asList(dataFeedList[0].getId(), dataFeedList[1].getId()));
 
                 // Act
-                StepVerifier.create(client.listDataFeeds())
+                StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
+                    .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedGranularityType(DAILY)
+                        .setName("java_"))))
                     .thenConsumeWhile(actualDataFeedList::add)
                     .verifyComplete();
 
-                expectedDataFeedIdList.set(expectedDataFeedList.stream().map(DataFeed::getId)
-                    .collect(Collectors.toList()));
-                final List<DataFeed> actualList =
-                    actualDataFeedList.stream().filter(dataFeed -> expectedDataFeedIdList.get().contains(dataFeed.getId()))
-                        .collect(Collectors.toList());
+                assertNotNull(actualDataFeedList);
+                final List<DataFeed> actualList = actualDataFeedList.stream()
+                    .filter(dataFeed -> expectedDataFeedIdList.get().contains(dataFeed.getId()))
+                    .collect(Collectors.toList());
 
                 // Assert
+                assertNotNull(actualList);
                 assertEquals(inputDataFeedList.size(), actualList.size());
                 expectedDataFeedList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
                 actualList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
@@ -124,7 +128,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3)).byPage())
+        StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3)).byPage().take(4))
             .thenConsumeWhile(dataFeedPagedResponse -> 3 >= dataFeedPagedResponse.getValue().size())
             // page size should be less than or equal to 3
             .verifyComplete();

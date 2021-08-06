@@ -132,27 +132,37 @@ final class Utils {
      * @return The exception returned by the public methods.
      */
     static Throwable mapException(Throwable exception) {
-        if (!(exception instanceof AcrErrorsException)) {
+        AcrErrorsException acrException = null;
+
+        if (exception instanceof AcrErrorsException) {
+            acrException = ((AcrErrorsException) exception);
+        } else if (exception instanceof RuntimeException) {
+            RuntimeException runtimeException = (RuntimeException) exception;
+            Throwable throwable = runtimeException.getCause();
+            if (throwable instanceof AcrErrorsException) {
+                acrException = (AcrErrorsException) throwable;
+            }
+        }
+
+        if (acrException == null) {
             return exception;
         }
 
-        final AcrErrorsException errorsException = ((AcrErrorsException) exception);
-        final HttpResponse errorHttpResponse = errorsException.getResponse();
-
+        final HttpResponse errorHttpResponse = acrException.getResponse();
         final int statusCode = errorHttpResponse.getStatusCode();
-        final String errorDetail = errorsException.getMessage();
+        final String errorDetail = acrException.getMessage();
 
         switch (statusCode) {
             case 401:
-                return new ClientAuthenticationException(errorDetail, errorsException.getResponse(), exception);
+                return new ClientAuthenticationException(errorDetail, acrException.getResponse(), exception);
             case 404:
-                return new ResourceNotFoundException(errorDetail, errorsException.getResponse(), exception);
+                return new ResourceNotFoundException(errorDetail, acrException.getResponse(), exception);
             case 409:
-                return new ResourceExistsException(errorDetail, errorsException.getResponse(), exception);
+                return new ResourceExistsException(errorDetail, acrException.getResponse(), exception);
             case 412:
-                return new ResourceModifiedException(errorDetail, errorsException.getResponse(), exception);
+                return new ResourceModifiedException(errorDetail, acrException.getResponse(), exception);
             default:
-                return new HttpResponseException(errorDetail, errorsException.getResponse(), exception);
+                return new HttpResponseException(errorDetail, acrException.getResponse(), exception);
         }
     }
 

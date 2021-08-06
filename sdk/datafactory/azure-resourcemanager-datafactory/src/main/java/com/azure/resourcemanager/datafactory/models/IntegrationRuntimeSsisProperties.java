@@ -63,6 +63,12 @@ public final class IntegrationRuntimeSsisProperties {
     private List<PackageStore> packageStores;
 
     /*
+     * The user-assigned managed identity reference.
+     */
+    @JsonProperty(value = "managedCredential")
+    private EntityReference managedCredential;
+
+    /*
      * SSIS properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -215,6 +221,26 @@ public final class IntegrationRuntimeSsisProperties {
     }
 
     /**
+     * Get the managedCredential property: The user-assigned managed identity reference.
+     *
+     * @return the managedCredential value.
+     */
+    public EntityReference managedCredential() {
+        return this.managedCredential;
+    }
+
+    /**
+     * Set the managedCredential property: The user-assigned managed identity reference.
+     *
+     * @param managedCredential the managedCredential value to set.
+     * @return the IntegrationRuntimeSsisProperties object itself.
+     */
+    public IntegrationRuntimeSsisProperties withManagedCredential(EntityReference managedCredential) {
+        this.managedCredential = managedCredential;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: SSIS properties for managed integration runtime.
      *
      * @return the additionalProperties value.
@@ -263,6 +289,9 @@ public final class IntegrationRuntimeSsisProperties {
         }
         if (packageStores() != null) {
             packageStores().forEach(e -> e.validate());
+        }
+        if (managedCredential() != null) {
+            managedCredential().validate();
         }
     }
 }

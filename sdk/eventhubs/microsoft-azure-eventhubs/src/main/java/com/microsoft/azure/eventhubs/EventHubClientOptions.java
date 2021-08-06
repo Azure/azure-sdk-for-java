@@ -107,7 +107,7 @@ public class EventHubClientOptions {
      * @return The updated options object.
      */
     public EventHubClientOptions setMaximumSilentTime(Duration maximumSilentTime) {
-        if (maximumSilentTime.compareTo(EventHubClientOptions.SILENT_MINIMUM) < 0) {
+        if (!maximumSilentTime.equals(EventHubClientOptions.SILENT_OFF) && (maximumSilentTime.compareTo(EventHubClientOptions.SILENT_MINIMUM) < 0)) {
             throw new IllegalArgumentException("Maximum silent time must be at least " + EventHubClientOptions.SILENT_MINIMUM.toMillis() + " milliseconds");
         }
         this.maximumSilentTime = maximumSilentTime;

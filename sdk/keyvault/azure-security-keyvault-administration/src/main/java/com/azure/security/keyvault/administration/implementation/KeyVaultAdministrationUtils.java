@@ -4,7 +4,9 @@
 package com.azure.security.keyvault.administration.implementation;
 
 import com.azure.security.keyvault.administration.implementation.models.Error;
-import com.azure.security.keyvault.administration.models.KeyVaultError;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultError;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
+import com.azure.security.keyvault.administration.models.KeyVaultAdministrationError;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 
 /**
@@ -16,18 +18,13 @@ public final class KeyVaultAdministrationUtils {
     }
 
     /**
-     * Convert an implementation
-     * {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException} to a public
-     * {@link KeyVaultAdministrationException}.
+     * Convert a {@link KeyVaultErrorException} to a {@link KeyVaultAdministrationException}.
      *
-     * @param exception The implementation
-     * {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException}.
+     * @param exception The {@link KeyVaultErrorException}.
      *
      * @return An instance of the public {@link KeyVaultAdministrationException}.
      */
-    public static KeyVaultAdministrationException toKeyVaultAdministrationException(
-        com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException exception) {
-
+    public static KeyVaultAdministrationException toKeyVaultAdministrationException(KeyVaultErrorException exception) {
         if (exception == null) {
             return null;
         }
@@ -37,16 +34,13 @@ public final class KeyVaultAdministrationUtils {
     }
 
     /**
-     * Convert an implementation {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultError}
-     * to a public {@link KeyVaultError}.
+     * Convert an implementation {@link KeyVaultError} to a public {@link KeyVaultAdministrationError}.
      *
-     * @param keyVaultError The {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultError}
-     * returned by the service.
+     * @param keyVaultError The {@link KeyVaultError} returned by the service.
      *
-     * @return An instance of the public {@link KeyVaultError}.
+     * @return An instance of the public {@link KeyVaultAdministrationError}.
      */
-    public static KeyVaultError toKeyVaultError(
-        com.azure.security.keyvault.administration.implementation.models.KeyVaultError keyVaultError) {
+    public static KeyVaultAdministrationError toKeyVaultError(KeyVaultError keyVaultError) {
 
         if (keyVaultError == null) {
             return null;
@@ -56,28 +50,25 @@ public final class KeyVaultAdministrationUtils {
     }
 
     /**
-     * Convert an error {@link Error} internal to an implementation
-     * {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultError} to a public
-     * {@link KeyVaultError}.
+     * Convert an error {@link Error} internal to an implementation {@link KeyVaultError} to a public
+     * {@link KeyVaultAdministrationError}.
      *
-     * @param error The {@link Error} internal to an implementation
-     * {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultError} returned by the service.
+     * @param error The {@link Error} internal to an implementation {@link KeyVaultError} returned by the service.
      *
-     * @return An instance of the public {@link KeyVaultError}.
+     * @return An instance of the public {@link KeyVaultAdministrationError}.
      */
-    public static KeyVaultError createKeyVaultErrorFromError(Error error) {
+    public static KeyVaultAdministrationError createKeyVaultErrorFromError(Error error) {
         if (error == null) {
             return null;
         }
 
-        return new KeyVaultError(error.getCode(), error.getMessage(),
+        return new KeyVaultAdministrationError(error.getCode(), error.getMessage(),
             createKeyVaultErrorFromError(error.getInnerError()));
     }
 
     /**
      * Maps a {@link Throwable} to {@link KeyVaultAdministrationException} if it's an instance of
-     * {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException}, else it returns
-     * the original throwable.
+     * {@link KeyVaultErrorException}, else it returns the original throwable.
      *
      * @param throwable A {@link Throwable}.
      *
@@ -85,11 +76,8 @@ public final class KeyVaultAdministrationUtils {
      * original {@link Throwable}.
      */
     public static Throwable mapThrowableToKeyVaultAdministrationException(Throwable throwable) {
-        if (throwable
-            instanceof com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException) {
-
-            return toKeyVaultAdministrationException(
-                (com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException) throwable);
+        if (throwable instanceof KeyVaultErrorException) {
+            return toKeyVaultAdministrationException((KeyVaultErrorException) throwable);
         } else {
             return throwable;
         }

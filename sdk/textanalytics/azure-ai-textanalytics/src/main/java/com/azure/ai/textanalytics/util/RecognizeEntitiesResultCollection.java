@@ -15,7 +15,7 @@ public class RecognizeEntitiesResultCollection extends IterableStream<RecognizeE
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
     /**
-     * Create a {@link RecognizeEntitiesResultCollection} model that maintains a list of {@link RecognizeEntitiesResult}
+     * Creates a {@link RecognizeEntitiesResultCollection} model that maintains a list of {@link RecognizeEntitiesResult}
      * along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link RecognizeEntitiesResult}.
@@ -30,7 +30,7 @@ public class RecognizeEntitiesResultCollection extends IterableStream<RecognizeE
     }
 
     /**
-     * Get the model version trained in service for the request.
+     * Gets the model version trained in service for the request.
      *
      * @return The model version trained in service for the request.
      */
@@ -39,7 +39,7 @@ public class RecognizeEntitiesResultCollection extends IterableStream<RecognizeE
     }
 
     /**
-     * Get the batch statistics of response.
+     * Gets the batch statistics of response.
      *
      * @return The batch statistics of response.
      */

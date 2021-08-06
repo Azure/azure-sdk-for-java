@@ -33,9 +33,9 @@ public final class TableSasPermission {
      * Creates a {@link TableSasPermission} from the specified permissions string. This method will throw an
      * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@link String} which represents the {@link TableSasPermission}.
+     * @param permString A {@code String} which represents the {@link TableSasPermission}.
      *
-     * @return A {@link TableSasPermission} generated from the given {@link String}.
+     * @return A {@link TableSasPermission} generated from the given {@code String}.
      *
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, u, or d.
      */
@@ -172,10 +172,10 @@ public final class TableSasPermission {
     }
 
     /**
-     * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
+     * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service. If all permissions are set to false, an empty string is returned from this method.
      *
-     * @return A {@link String} which represents the {@link TableSasPermission}.
+     * @return A {@code String} which represents the {@link TableSasPermission}.
      */
     @Override
     public String toString() {

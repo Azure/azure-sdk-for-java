@@ -220,6 +220,13 @@ public final class SqlDWSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

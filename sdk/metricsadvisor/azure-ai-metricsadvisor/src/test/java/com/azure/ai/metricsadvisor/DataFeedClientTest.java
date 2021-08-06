@@ -11,11 +11,11 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.PostgreSqlDataFeedSource;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -24,7 +24,6 @@ import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -81,7 +80,6 @@ public class DataFeedClientTest extends DataFeedTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
     void testListDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<List<String>> expectedDataFeedIdList = new AtomicReference<List<String>>();
         try {
@@ -94,7 +92,10 @@ public class DataFeedClientTest extends DataFeedTestBase {
                         .collect(Collectors.toList());
 
                 // Act & Assert
-                client.listDataFeeds().forEach(actualDataFeedList::add);
+                client.listDataFeeds(new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
+                    .setDataFeedGranularityType(DAILY)
+                    .setName("java_")), Context.NONE)
+                    .forEach(actualDataFeedList::add);
 
                 expectedDataFeedIdList.set(expectedDataFeedList.stream()
                     .map(DataFeed::getId)
@@ -122,7 +123,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
     /**
      * Verifies the result of the list data feed method to return only 3 results using
-     * {@link ListDataFeedOptions#setMaxPageSize(int)}.
+     * {@link ListDataFeedOptions#setMaxPageSize(Integer)}}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -131,10 +132,16 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
+        int pageCount = 0;
         for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3),
             Context.NONE)
             .iterableByPage()) {
             assertTrue(3 >= dataFeedPagedResponse.getValue().size());
+            pageCount++;
+            if (pageCount > 4) {
+                // Stop after 4 pages since there can be large number of feeds.
+                break;
+            }
         }
     }
 
@@ -678,14 +685,14 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))));
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric("name"))))));
             assertEquals("'dataFeedGranularity.granularityType' is required and cannot be null.", ex.getMessage());
 
             ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric("name"))))
                     .setGranularity(new DataFeedGranularity().setGranularityType(DAILY))));
             assertEquals("'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null.",
                 ex.getMessage());
@@ -773,8 +780,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-            DataFeedMetric dataFeedMetric = new DataFeedMetric().setName("cost");
-            DataFeedMetric dataFeedMetric2 = new DataFeedMetric().setName("cost");
+            DataFeedMetric dataFeedMetric = new DataFeedMetric("cost");
+            DataFeedMetric dataFeedMetric2 = new DataFeedMetric("cost");
 
             creatDataFeedRunner(expectedDataFeed -> {
                 expectedDataFeed.setSchema(new DataFeedSchema(Arrays.asList(dataFeedMetric, dataFeedMetric2)));

@@ -7,11 +7,11 @@
 # Hierarchy of Spring yaml is organized as : Service -> Feature -> Package. Taking Cosmos DB starter as example, it is described as Cosmos DB -> Spring Data Cosmos -> azure-spring-boot-starter-cosmos.
 
 - name: Azure Spring Boot Bom                                                                       # Name of Azure service which the spring library relies on.
-                                                                                                    #    - For Spring library of which the underpinning package is covered by [java-packages.csv](https://github.com/Azure/azure-sdk/blob/master/_data/releases/latest/java-packages.csv), we use its underpinning library's ServiceName as the service name.
+                                                                                                    #    - For Spring library of which the underpinning package is covered by [java-packages.csv](https://github.com/Azure/azure-sdk/blob/main/_data/releases/latest/java-packages.csv), we use its underpinning library's ServiceName as the service name.
                                                                                                     #    - For the rest like AAD starter, we create the service name ourselves, and try to follow the specification of java-packages.csv.
   content:                                                                                          # Features under an Azure Service.
     - name: Azure Spring Boot Bom                                                                   # Name of a feature under the associated Azure service which the spring library relies on.
-                                                                                                    #    - For Spring library of which the underpinning package is covered by [java-packages.csv](https://github.com/Azure/azure-sdk/blob/master/_data/releases/latest/java-packages.csv), we use its underpinning library's DisplayName as the feature name.
+                                                                                                    #    - For Spring library of which the underpinning package is covered by [java-packages.csv](https://github.com/Azure/azure-sdk/blob/main/_data/releases/latest/java-packages.csv), we use its underpinning library's DisplayName as the feature name.
                                                                                                     #    - For the rest, we create the feature name ourselves, and try to follow the specification of java-packages.csv.
       description: BOM for Microsoft Azure Spring Boot support.                                     # Introduction of a feature.
       artifacts:                                                                                    # Package list of a service feature.
@@ -23,7 +23,7 @@
           type: spring                                                                              # To mark if the package is Spring library, Azure service client library or management library, supported values are spring, client and mgmt.
           links:                                                                                    # Link list of each package. For below link properties, we refer values in https://azure.github.io/azure-sdk/releases/latest/all/java.html.
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-bom                          # Maven repository url.
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/boms/azure-spring-boot-bom              # Github repository url.
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/boms/azure-spring-boot-bom              # Github repository url.
           dependencyPattern:                                                                        # For Bom libraries, we need to provide their own formats of dependency management.
             maven: |-
               <dependencyManagement>
@@ -67,7 +67,7 @@
           type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-dependencies
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/boms/azure-spring-cloud-dependencies
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/boms/azure-spring-cloud-dependencies
           dependencyPattern:
             maven: |-
               <dependencyManagement>
@@ -109,7 +109,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-readme?view=azure-java-stable           # Documentation url of repository azure-docs-for-java.
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory
           springProperties:
             starter: true
             bom: azure-spring-boot-bom                                                              # To map the bom package of each Spring library, we use this property to index the `artifactId` property of a library's bom.
@@ -138,7 +138,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-b2c-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -170,7 +170,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-cosmos
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-cosmos-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-cosmos
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-cosmos
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -201,7 +201,7 @@
             repopath: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca
             msdocs: https://docs.microsoft.com/java/api/overview/azure/security-keyvault-jca-readme?view=azure-java-preview
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/1.0.0-beta.6/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-jca
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca
         - artifactId: azure-spring-boot-starter-keyvault-certificates
           groupId: com.azure.spring
           versionPreview: 3.0.0-beta.6
@@ -211,7 +211,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-certificates
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-certificates-readme?view=azure-java-preview
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-boot-starter-keyvault-certificates/3.0.0-beta.4/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-keyvault-certificates
           springProperties:
             starter: true
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
@@ -236,7 +236,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-secrets
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-keyvault-secrets-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-keyvault-secrets
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -268,7 +268,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-storage
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-storage-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-storage
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-storage
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -298,7 +298,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-storage-queue
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-storage-queue-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-storage-queue
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-storage-queue
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies
@@ -331,7 +331,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-topic
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-servicebus-topic-readme?view=azure-java-stable
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-topic/2.3.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
@@ -354,7 +354,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-queue
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-servicebus-queue-readme?view=azure-java-stable
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-queue/2.3.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.4.0-M1,2.4.5]"
@@ -376,7 +376,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-servicebus
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-servicebus-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-servicebus
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-servicebus
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies
@@ -406,7 +406,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-servicebus-jms-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-servicebus-jms
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-servicebus-jms
           springProperties:
             starter: true
             bom: azure-spring-boot-bom
@@ -438,7 +438,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies
@@ -462,7 +462,7 @@
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-eventhubs
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-stream-binder-eventhubs-readme?view=azure-java-stable
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-eventhubs/2.3.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-eventhubs
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-eventhubs
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
@@ -488,7 +488,7 @@
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs
             msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-cloud-starter-eventhubs-kafka-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies

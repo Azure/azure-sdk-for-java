@@ -8,6 +8,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
@@ -23,7 +24,9 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -506,6 +509,33 @@ public class ShareFileJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareFileClient#downloadWithResponse(OutputStream, ShareFileDownloadOptions, Duration, Context)}
+     */
+    public void downloadWithOptions() {
+        ShareFileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.downloadWithResponse#OutputStream-ShareFileDownloadOptions-Duration-Context
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+            ShareFileRange range = new ShareFileRange(1024, 2047L);
+            DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(3);
+            ShareFileDownloadOptions options = new ShareFileDownloadOptions().setRange(range)
+                .setRequestConditions(requestConditions)
+                .setRangeContentMd5(false)
+                .setRetryOptions(retryOptions);
+            Response<Void> response = fileClient.downloadWithResponse(stream, options, Duration.ofSeconds(30),
+                new Context(key1, value1));
+
+            System.out.printf("Completed downloading file with status code %d%n", response.getStatusCode());
+            System.out.printf("Content of the file is: %n%s%n",
+                new String(stream.toByteArray(), StandardCharsets.UTF_8));
+        } catch (Throwable throwable) {
+            System.err.printf("Downloading failed with exception. Message: %s%n", throwable.getMessage());
+        }
+        // END: com.azure.storage.file.share.ShareFileClient.downloadWithResponse#OutputStream-ShareFileDownloadOptions-Duration-Context
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileClient#downloadToFile(String)}
      */
     public void downloadFile() {
@@ -573,6 +603,20 @@ public class ShareFileJavaDocCodeSamples {
             fileClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl", Duration.ofSeconds(1), Context.NONE);
         System.out.println("Completed upload range from url!");
         // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#uploadRangeFromUrlWithResponse(ShareFileUploadRangeFromUrlOptions,
+     * Duration, Context)}
+     */
+    public void uploadFileFromURLOptionsBagWithResponseAsync() {
+        ShareFileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions-Duration-Context
+        Response<ShareFileUploadRangeFromUrlInfo> response =
+            fileClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(6, "sourceUrl")
+                .setDestinationOffset(8), Duration.ofSeconds(1), Context.NONE);
+        System.out.println("Completed upload range from url!");
+        // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions-Duration-Context
     }
 
     /**

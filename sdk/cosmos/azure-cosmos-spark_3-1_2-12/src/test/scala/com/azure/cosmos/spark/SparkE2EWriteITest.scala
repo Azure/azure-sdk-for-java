@@ -3,11 +3,8 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.spark.ItemWriteStrategy.
-{
-  ItemAppend, ItemOverwrite, ItemDelete, ItemDeleteIfNotModified, ItemWriteStrategy
-}
-
+import com.azure.cosmos.spark.ItemWriteStrategy.{ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwrite, ItemWriteStrategy}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.scalatest.Succeeded
 
 class SparkE2EWriteITest
@@ -15,7 +12,7 @@ class SparkE2EWriteITest
     with Spark
     with CosmosClient
     with AutoCleanableCosmosContainer
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number

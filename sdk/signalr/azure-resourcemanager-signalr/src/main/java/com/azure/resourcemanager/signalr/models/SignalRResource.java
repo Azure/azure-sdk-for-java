@@ -176,6 +176,31 @@ public interface SignalRResource {
     SignalRNetworkACLs networkACLs();
 
     /**
+     * Gets the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
+     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
+     * you set in network ACLs.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    String publicNetworkAccess();
+
+    /**
+     * Gets the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as
+     * true, connection with AccessKey=xxx won't work.
+     *
+     * @return the disableLocalAuth value.
+     */
+    Boolean disableLocalAuth();
+
+    /**
+     * Gets the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true, connection with
+     * AuthType=aad won't work.
+     *
+     * @return the disableAadAuth value.
+     */
+    Boolean disableAadAuth();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -250,7 +275,10 @@ public interface SignalRResource {
                 DefinitionStages.WithFeatures,
                 DefinitionStages.WithCors,
                 DefinitionStages.WithUpstream,
-                DefinitionStages.WithNetworkACLs {
+                DefinitionStages.WithNetworkACLs,
+                DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithDisableLocalAuth,
+                DefinitionStages.WithDisableAadAuth {
             /**
              * Executes the create request.
              *
@@ -366,6 +394,44 @@ public interface SignalRResource {
              */
             WithCreate withNetworkACLs(SignalRNetworkACLs networkACLs);
         }
+        /** The stage of the SignalRResource definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Enable or disable public network access. Default to
+             * "Enabled". When it's Enabled, network ACLs still apply. When it's Disabled, public network access is
+             * always disabled no matter what you set in network ACLs..
+             *
+             * @param publicNetworkAccess Enable or disable public network access. Default to "Enabled". When it's
+             *     Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no
+             *     matter what you set in network ACLs.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(String publicNetworkAccess);
+        }
+        /** The stage of the SignalRResource definition allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey
+             * When set as true, connection with AccessKey=xxx won't work..
+             *
+             * @param disableLocalAuth DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
+             *     connection with AccessKey=xxx won't work.
+             * @return the next definition stage.
+             */
+            WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
+        }
+        /** The stage of the SignalRResource definition allowing to specify disableAadAuth. */
+        interface WithDisableAadAuth {
+            /**
+             * Specifies the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true,
+             * connection with AuthType=aad won't work..
+             *
+             * @param disableAadAuth disableAadAuth Enable or disable aad auth When set as true, connection with
+             *     AuthType=aad won't work.
+             * @return the next definition stage.
+             */
+            WithCreate withDisableAadAuth(Boolean disableAadAuth);
+        }
     }
     /**
      * Begins update for the SignalRResource resource.
@@ -383,7 +449,10 @@ public interface SignalRResource {
             UpdateStages.WithFeatures,
             UpdateStages.WithCors,
             UpdateStages.WithUpstream,
-            UpdateStages.WithNetworkACLs {
+            UpdateStages.WithNetworkACLs,
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithDisableLocalAuth,
+            UpdateStages.WithDisableAadAuth {
         /**
          * Executes the update request.
          *
@@ -489,6 +558,44 @@ public interface SignalRResource {
              * @return the next definition stage.
              */
             Update withNetworkACLs(SignalRNetworkACLs networkACLs);
+        }
+        /** The stage of the SignalRResource update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Enable or disable public network access. Default to
+             * "Enabled". When it's Enabled, network ACLs still apply. When it's Disabled, public network access is
+             * always disabled no matter what you set in network ACLs..
+             *
+             * @param publicNetworkAccess Enable or disable public network access. Default to "Enabled". When it's
+             *     Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no
+             *     matter what you set in network ACLs.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(String publicNetworkAccess);
+        }
+        /** The stage of the SignalRResource update allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey
+             * When set as true, connection with AccessKey=xxx won't work..
+             *
+             * @param disableLocalAuth DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
+             *     connection with AccessKey=xxx won't work.
+             * @return the next definition stage.
+             */
+            Update withDisableLocalAuth(Boolean disableLocalAuth);
+        }
+        /** The stage of the SignalRResource update allowing to specify disableAadAuth. */
+        interface WithDisableAadAuth {
+            /**
+             * Specifies the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true,
+             * connection with AuthType=aad won't work..
+             *
+             * @param disableAadAuth disableAadAuth Enable or disable aad auth When set as true, connection with
+             *     AuthType=aad won't work.
+             * @return the next definition stage.
+             */
+            Update withDisableAadAuth(Boolean disableAadAuth);
         }
     }
     /**

@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.util.BinaryData;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
@@ -83,22 +85,21 @@ public class EventDataTest {
         // Assert
         Assertions.assertNotNull(eventData.getBody());
         Assertions.assertEquals(PAYLOAD, new String(eventData.getBody(), UTF_8));
-    }
 
-    @Test
-    public void testSystemProperties() {
-        EventData eventData = constructMessage(5);
-        Assertions.assertEquals(3, eventData.getSystemProperties().size());
-        Assertions.assertEquals(OFFSET, eventData.getSystemProperties().get(OFFSET_ANNOTATION_NAME.getValue()));
-        Assertions.assertEquals(5L, eventData.getSystemProperties().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-        Assertions.assertEquals(ENQUEUED_TIME,
-            eventData.getSystemProperties().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+        // These ones are never set.
+        Assertions.assertNull(eventData.getContentType());
+        Assertions.assertNull(eventData.getCorrelationId());
+        Assertions.assertNull(eventData.getMessageId());
     }
 
     /**
-     * Creates an event with the sequence number set.
+     * Tests that the system properties are properly populated. In addition, partition key is removed because it is not
+     * a system property.
      */
-    private static EventData constructMessage(long sequenceNumber) {
+    @Test
+    public void testSystemProperties() {
+        // Act
+        final long sequenceNumber = 5L;
         final HashMap<Symbol, Object> properties = new HashMap<>();
         properties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
         properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), String.valueOf(OFFSET));
@@ -110,6 +111,46 @@ public class EventDataTest {
         message.setMessageAnnotations(new MessageAnnotations(properties));
         message.setBody(new Data(new Binary(contents)));
 
-        return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
+        // Act
+        final EventData eventData = MESSAGE_SERIALIZER.deserialize(message, EventData.class);
+
+        // Assert
+        final Map<String, Object> systemProperties = eventData.getSystemProperties();
+
+        Assertions.assertEquals(properties.size(), systemProperties.size());
+        Assertions.assertEquals(OFFSET, systemProperties.get(OFFSET_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(sequenceNumber, systemProperties.get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(ENQUEUED_TIME, systemProperties.get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+
+        Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
+        Assertions.assertEquals(OFFSET, eventData.getOffset());
+        Assertions.assertEquals(sequenceNumber, eventData.getSequenceNumber());
+        Assertions.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
+    }
+
+    /**
+     * Tests that the properties are set. In addition, checks the raw AMQP message to see that it has been added there.
+     */
+    @Test
+    public void setAmqpProperties() {
+        // Arrange
+        final BinaryData binaryData = BinaryData.fromBytes(PAYLOAD_BYTES);
+        final String messageId = "a-message-id";
+        final String contentType = "content-type=json";
+        final String correlationId = "my-correlation";
+
+        // Act
+        final EventData eventData = new EventData(binaryData)
+            .setContentType(contentType)
+            .setCorrelationId(correlationId)
+            .setMessageId(messageId);
+
+        // Assert
+        Assertions.assertNotNull(eventData.getBody());
+        Assertions.assertEquals(PAYLOAD, new String(eventData.getBody(), UTF_8));
+
+        final BinaryData actualBinary = eventData.getBodyAsBinaryData();
+        Assertions.assertNotNull(actualBinary);
+        Assertions.assertArrayEquals(PAYLOAD_BYTES, actualBinary.toBytes());
     }
 }

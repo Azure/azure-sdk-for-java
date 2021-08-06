@@ -1,7 +1,20 @@
 # Release History
 
-## 3.6.0-beta.1 (Unreleased)
+## 3.7.0-beta.1 (Unreleased)
 
+## 3.6.1 (2021-07-02)
+### New Features
+- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
+### Key Bug Fixes
+- Fix [cve-2021-22119](https://tanzu.vmware.com/security/cve-2021-22119).
+
+## 3.6.0 (2021-06-23)
+### Breaking Changes
+- Remove class `AADB2COAuth2AuthenticatedPrincipal`, use class `AADOAuth2AuthenticatedPrincipal` instead.
+
+### Deprecations
+- Deprecate `allowTelemetry` configuration item.
 
 ## 3.5.0 (2021-05-24)
 ### New Features

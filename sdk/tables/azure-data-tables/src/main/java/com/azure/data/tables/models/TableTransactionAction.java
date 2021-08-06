@@ -5,7 +5,7 @@ package com.azure.data.tables.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * Defines an action to be included as part of a transactional batch operation.
+ * Defines an action to be included as part of a transactional operation.
  */
 @Immutable
 public final class TableTransactionAction {

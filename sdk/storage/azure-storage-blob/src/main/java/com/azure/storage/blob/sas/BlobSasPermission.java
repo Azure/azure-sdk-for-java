@@ -35,6 +35,8 @@ public final class BlobSasPermission {
 
     private boolean executePermission;
 
+    private boolean immutabilityPolicyPermission;
+
     /**
      * Initializes a {@code BlobSasPermission} object with all fields set to false.
      */
@@ -47,8 +49,8 @@ public final class BlobSasPermission {
      *
      * @param permissionString A {@code String} which represents the {@code BlobSasPermission}.
      * @return A {@code BlobSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permissionString} contains a character other than r, a, c, w, d, x, l, t,
-     * m, or e.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x, l, t,
+     * m, e or i.
      */
     public static BlobSasPermission parse(String permissionString) {
         BlobSasPermission permissions = new BlobSasPermission();
@@ -85,6 +87,9 @@ public final class BlobSasPermission {
                     break;
                 case 'e':
                     permissions.executePermission = true;
+                    break;
+                case 'i':
+                    permissions.immutabilityPolicyPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -275,6 +280,23 @@ public final class BlobSasPermission {
         return this;
     }
 
+    /**
+     * @return the set immutability policy permission status.
+     */
+    public boolean hasImmutabilityPolicyPermission() {
+        return immutabilityPolicyPermission;
+    }
+
+    /**
+     * Sets the set immutability policy permission status.
+     *
+     * @param immutabilityPolicyPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setImmutabilityPolicyPermission(boolean immutabilityPolicyPermission) {
+        this.immutabilityPolicyPermission = immutabilityPolicyPermission;
+        return this;
+    }
 
     /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
@@ -327,6 +349,10 @@ public final class BlobSasPermission {
 
         if (this.executePermission) {
             builder.append('e');
+        }
+
+        if (this.immutabilityPolicyPermission) {
+            builder.append('i');
         }
 
         return builder.toString();

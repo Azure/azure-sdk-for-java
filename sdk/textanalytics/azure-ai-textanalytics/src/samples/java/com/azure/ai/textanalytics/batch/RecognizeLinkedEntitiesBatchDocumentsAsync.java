@@ -5,8 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
@@ -39,7 +39,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
             new TextDocumentInput("B", "Mount Shasta has lenticular clouds.").setLanguage("en")
         );
 
-        RecognizeLinkedEntitiesOptions requestOptions = new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true).setModelVersion("latest");
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing linked entities for each document in a batch of documents
         client.recognizeLinkedEntitiesBatchWithResponse(documents, requestOptions).subscribe(

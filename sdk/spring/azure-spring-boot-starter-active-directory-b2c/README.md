@@ -14,15 +14,14 @@ while protecting the identities of your customers at the same time.
 - [Tutorial create Active Directory B2C tenant][tutorial_create_tenant]
 
 ### Include the package
-[//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>3.5.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
 </dependency>
 ```
-[//]: # "{x-version-update-end}"
 
 ### Configurable properties
 This starter provides following properties to be customized:
@@ -50,7 +49,7 @@ accept or deny access after validating access_token obtained from Azure AD. We w
 1. Accessing a resource server.
 1. Resource server accessing other resource servers.
 
-![B2C Web application & Web Api Overall](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/b2c-webapp-webapi-overall.png)
+![B2C Web application & Web Api Overall](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/b2c-webapp-webapi-overall.png)
 
 ### Accessing a web application
 
@@ -72,16 +71,14 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
    select **Delegated permissions**, check **offline_access** and **openid** permissions, select **Add permission** to complete the process.
 
 1. Grant admin consent for ***Graph*** permissions.
-   ![Add Graph permissions](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/add-graph-permissions.png)
+   ![Add Graph permissions](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/add-graph-permissions.png)
    
 1. Add the following dependencies in your *pom.xml*.
 
-   [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
    ```xml
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-      <version>3.5.0</version>
     </dependency>
 
     <dependency>
@@ -104,7 +101,6 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
       <artifactId>thymeleaf-extras-springsecurity5</artifactId>
     </dependency>
    ```
-   [//]: # "{x-version-update-end}"
 
 1. Add properties in *application.yml* using the values you created earlier, for example:
 
@@ -176,7 +172,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
     }
     ```
     
-    Copy the *home.html* from [Azure AD B2C Spring Boot Sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
+    Copy the *home.html* from [Azure AD B2C Spring Boot Sample](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
     `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` with your user flow name
     respectively that completed earlier.
     
@@ -220,13 +216,13 @@ This scenario is based on **Accessing a web application** scenario to allow appl
     }
     ```
    
-   ![Configure WebApiA appRoles](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/configure-app-roles.png)
+   ![Configure WebApiA appRoles](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/configure-app-roles.png)
 
 1. Select **API permissions** > **Add a permission** > **My APIs**, select ***WebApiA*** application name, 
    select **Application Permissions**, select **WebApiA.SampleScope** permission, select **Add permission** to complete the process.
    
 1. Grant admin consent for ***WebApiA*** permissions.
-   ![Add WebApiA permission](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/add-webapia-permission.png)
+   ![Add WebApiA permission](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/add-webapia-permission.png)
    
 1. Add the following dependency on the basis of **Accessing a web application** scenario.
 
@@ -253,7 +249,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
 1. Write your `Webapp` Java code.
 
    Controller code can refer to the following:
-    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceController.java#L25-L43 -->
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceController.java#L25-L43 -->
     ```java
     /**
      * Access to protected data from Webapp to WebApiA through client credential flow. The access token is obtained by webclient, or
@@ -277,7 +273,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
     ```
 
    Security configuration code is the same with **Accessing a web application** scenario, another bean `webClient`is added as follows:
-    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceConfiguration.java#33-L40 -->
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceConfiguration.java#33-L40 -->
     ```java
     @Bean
     public WebClient webClient(OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
@@ -306,12 +302,10 @@ This scenario not support login. Just protect the server by validating the acces
 
 1. Add the following dependencies in your *pom.xml*.
 
-   [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
    ```xml
    <dependency>
      <groupId>com.azure.spring</groupId>
      <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-     <version>3.5.0</version>
    </dependency>
 
    <dependency>
@@ -319,7 +313,6 @@ This scenario not support login. Just protect the server by validating the acces
      <artifactId>spring-boot-starter-web</artifactId>
    </dependency>
    ```
-   [//]: # "{x-version-update-end}"
 
 1. Add the following configuration.
 
@@ -335,7 +328,7 @@ This scenario not support login. Just protect the server by validating the acces
 1. Write your Java code.
 
    Controller code can refer to the following:
-    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L25-L34 -->
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L25-L34 -->
     ```java
     /**
      * webApiA resource api for web app
@@ -350,7 +343,7 @@ This scenario not support login. Just protect the server by validating the acces
     ```
 
    Security configuration code can refer to the following:
-    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerConfiguration.java#L11-L22 -->
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerConfiguration.java#L11-L22 -->
     ```java
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -393,10 +386,10 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
     }
     ```
 
-   ![Configure WebApiB appRoles](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/expose-web-api-b-approle.png)
+   ![Configure WebApiB appRoles](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/expose-web-api-b-approle.png)
    
 1. Grant admin consent for ***WebApiB*** permissions.
-   ![Add WebApiB permission](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/add-webapib-permission-to-webapia.png)
+   ![Add WebApiB permission](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/add-webapib-permission-to-webapia.png)
 
 1. On the basis of **Accessing a resource server**, add a dependency in your *pom.xml*.
    
@@ -423,7 +416,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
 1. Write your Java code.
 
    WebApiA controller code can refer to the following:
-    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L47-L66 -->
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L47-L66 -->
     ```java
     /**
      * Access to protected data from WebApiA to WebApiB through client credential flow. The access token is obtained by webclient, or
@@ -448,7 +441,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
     ```
    
    WebApiB controller code can refer to the following:
-    <!-- embedme ..azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L36-L45 -->
+    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L36-L45 -->
     ```java
     /**
      * webApiB resource api for other web application
@@ -494,26 +487,43 @@ logging.level.org.hibernate=ERROR
 ```
 
 For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
- 
+
+### Enable authority logging.
+
+Add the following logging settings:
+
+```properties
+# logging settings for resource server scenario.
+logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
+```
+
+Then you will see logs like this:
+
+```text
+...
+DEBUG .a.s.a.AADJwtGrantedAuthoritiesConverter : User TestUser's authorities created from jwt token: [SCOPE_Test.Read, APPROLE_WebApi.ExampleScope].
+...
+```
+
 ## Next steps
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
-
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
 [tutorial_create_tenant]: https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-tenant
 [The OAuth 2.0 authorization code grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow
 [The OAuth 2.0 client credentials grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow
-[web_application_accessing_resource_servers]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c#web-application-accessing-resource-servers
-[azure-spring-boot-sample-active-directory-b2c-oidc]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
-[azure-spring-boot-sample-active-directory-b2c-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-resource-server
+[web_application_accessing_resource_servers]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c#web-application-accessing-resource-servers
+[azure-spring-boot-sample-active-directory-b2c-oidc]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-b2c-oidc
+[azure-spring-boot-sample-active-directory-b2c-resource-server]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/azure-spring-boot_3.7/aad/azure-spring-boot-sample-active-directory-b2c-resource-server
 [ms-identity-java-spring-tutorial]:https://github.com/Azure-Samples/ms-identity-java-spring-tutorial

@@ -6,13 +6,13 @@ package com.azure.security.keyvault.jca;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Date;
-import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Store certificates loaded from KeyVault.
@@ -39,17 +39,18 @@ public class KeyVaultCertificates implements AzureCertificates {
      */
     private Date lastRefreshTime;
 
-    /**
-     * Stores the last force refresh time.
-     */
-    private static volatile Date lastForceRefreshTime = new Date();
-
     private KeyVaultClient keyVaultClient;
 
     private final long refreshInterval;
 
-    void setKeyVaultClient(KeyVaultClient keyVaultClient) {
-        this.keyVaultClient = keyVaultClient;
+    KeyVaultCertificates(long refreshInterval,
+                         String keyVaultUri,
+                         String tenantId,
+                         String clientId,
+                         String clientSecret,
+                         String managedIdentity) {
+        this.refreshInterval = refreshInterval;
+        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
     }
 
     KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
@@ -57,18 +58,40 @@ public class KeyVaultCertificates implements AzureCertificates {
         this.keyVaultClient = keyVaultClient;
     }
 
+    /**
+     * Update KeyVaultClient
+     *
+     * @param keyVaultUri keyVault uri
+     * @param tenantId tenant id
+     * @param clientId client id
+     * @param clientSecret client secret
+     * @param managedIdentity managed identity
+     */
+    public void updateKeyVaultClient(String keyVaultUri,
+                                     String tenantId,
+                                     String clientId,
+                                     String clientSecret,
+                                     String managedIdentity) {
+        if (keyVaultUri != null) {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+        } else {
+            keyVaultClient = null;
+        }
+    }
+
     boolean certificatesNeedRefresh() {
-        if (lastRefreshTime == null || lastForceRefreshTime.after(lastRefreshTime)) {
+        if (keyVaultClient == null) {
+            return false;
+        }
+        if (lastRefreshTime == null) {
             return true;
         }
-        if (refreshInterval > 0) {
-            return lastRefreshTime.getTime() + refreshInterval < new Date().getTime();
-        }
-        return false;
+        return refreshInterval > 0 && lastRefreshTime.getTime() + refreshInterval < new Date().getTime();
     }
 
     /**
      * Get certificate aliases.
+     *
      * @return certificate aliases
      */
     @Override
@@ -79,6 +102,7 @@ public class KeyVaultCertificates implements AzureCertificates {
 
     /**
      * Get certificates.
+     *
      * @return certificates
      */
     @Override
@@ -89,6 +113,7 @@ public class KeyVaultCertificates implements AzureCertificates {
 
     /**
      * Get certificates.
+     *
      * @return certificate keys
      */
     @Override
@@ -98,37 +123,47 @@ public class KeyVaultCertificates implements AzureCertificates {
     }
 
     private void refreshCertificatesIfNeeded() {
-        if (certificatesNeedRefresh()) {
-            refreshCertificates();
+        if (certificatesNeedRefresh()) { // Avoid acquiring the lock as much as possible.
+            synchronized (this) {
+                if (certificatesNeedRefresh()) { // After obtaining the lock, avoid doing too many operations.
+                    refreshCertificates();
+                }
+            }
         }
     }
 
-    private void refreshCertificates() {
+    /**
+     * Refresh certificates. Including certificates, aliases, certificate keys.
+     *
+     */
+    public synchronized void refreshCertificates() {
+        // When refreshing certificates, the update of the 3 variables should be an atomic operation.
         aliases = keyVaultClient.getAliases();
         certificateKeys.clear();
         certificates.clear();
         Optional.ofNullable(aliases)
-            .orElse(Collections.emptyList())
-            .forEach(alias -> {
-                Key key = keyVaultClient.getKey(alias, null);
-                if (!Objects.isNull(key)) {
-                    certificateKeys.put(alias, key);
-                }
-                Certificate certificate = keyVaultClient.getCertificate(alias);
-                if (!Objects.isNull(certificate)) {
-                    certificates.put(alias, certificate);
-                }
-            });
+                .orElse(Collections.emptyList())
+                .forEach(alias -> {
+                    Key key = keyVaultClient.getKey(alias, null);
+                    if (!Objects.isNull(key)) {
+                        certificateKeys.put(alias, key);
+                    }
+                    Certificate certificate = keyVaultClient.getCertificate(alias);
+                    if (!Objects.isNull(certificate)) {
+                        certificates.put(alias, certificate);
+                    }
+                });
         lastRefreshTime = new Date();
     }
 
     /**
      * Get latest alias by certificate which in portal
+     *
      * @param certificate certificate got
      * @return certificate' alias if exist.
      */
     String refreshAndGetAliasByCertificate(Certificate certificate) {
-        updateLastForceRefreshTime();
+        refreshCertificates();
         return getCertificates().entrySet()
                                 .stream()
                                 .filter(entry -> certificate.equals(entry.getValue()))
@@ -140,6 +175,7 @@ public class KeyVaultCertificates implements AzureCertificates {
 
     /**
      * Delete certificate info by alias if exits
+     *
      * @param alias deleted certificate
      */
     @Override
@@ -149,13 +185,6 @@ public class KeyVaultCertificates implements AzureCertificates {
         }
         certificates.remove(alias);
         certificateKeys.remove(alias);
-    }
-
-    /**
-     * Overall refresh certificates' info
-     */
-    public static void updateLastForceRefreshTime() {
-        lastForceRefreshTime = new Date();
     }
 
 }

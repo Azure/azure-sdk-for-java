@@ -160,4 +160,26 @@ public class KubernetesClustersImpl
             .listClusterUserCredentialsAsync(resourceGroupName, kubernetesClusterName)
             .map(CredentialResultsInner::kubeconfigs);
     }
+
+    @Override
+    public void start(String resourceGroupName, String kubernetesClusterName) {
+        this.startAsync(resourceGroupName, kubernetesClusterName).block();
+    }
+
+    @Override
+    public Mono<Void> startAsync(String resourceGroupName, String kubernetesClusterName) {
+        return this.manager().serviceClient().getManagedClusters()
+            .startAsync(resourceGroupName, kubernetesClusterName);
+    }
+
+    @Override
+    public void stop(String resourceGroupName, String kubernetesClusterName) {
+        this.stopAsync(resourceGroupName, kubernetesClusterName).block();
+    }
+
+    @Override
+    public Mono<Void> stopAsync(String resourceGroupName, String kubernetesClusterName) {
+        return this.manager().serviceClient().getManagedClusters()
+            .stopAsync(resourceGroupName, kubernetesClusterName);
+    }
 }

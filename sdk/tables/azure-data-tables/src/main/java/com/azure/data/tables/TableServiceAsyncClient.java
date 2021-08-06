@@ -52,22 +52,29 @@ import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 
 /**
  * Provides an asynchronous service client for accessing the Azure Tables service.
  *
- * The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
+ * <p>The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
- * invoke REST API operations to make the requests and obtain the results that are returned.
+ * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildAsyncClient()} method on a
- * {@link TableServiceClientBuilder} object.
+ * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildAsyncClient()} method
+ * on a {@link TableServiceClientBuilder} object.</p>
+ *
+ * <p><strong>Samples to construct an async client</strong></p>
+ * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.instantiation}
+ *
+ * @see TableServiceClientBuilder
  */
 @ServiceClient(builder = TableServiceClientBuilder.class, isAsync = true)
 public final class TableServiceAsyncClient {
@@ -77,7 +84,7 @@ public final class TableServiceAsyncClient {
     private final HttpPipeline pipeline;
 
     TableServiceAsyncClient(HttpPipeline pipeline, String url, TableServiceVersion serviceVersion,
-        SerializerAdapter serializerAdapter) {
+                            SerializerAdapter serializerAdapter) {
 
         try {
             final URI uri = URI.create(url);
@@ -155,12 +162,12 @@ public final class TableServiceAsyncClient {
      * Generates an account SAS for the Azure Storage account using the specified
      * {@link TableAccountSasSignatureValues}.
      *
-     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}.
+     * <p><strong>Note:</strong> The client must be authenticated via {@link AzureNamedKeyCredential}.</p>
      * <p>See {@link TableAccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * @param tableAccountSasSignatureValues {@link TableAccountSasSignatureValues}.
      *
-     * @return A {@link String} representing the SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      *
      * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
      * {@link AzureNamedKeyCredential}.
@@ -177,11 +184,11 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Gets a {@link TableAsyncClient} instance for the provided table in the account.
+     * Gets a {@link TableAsyncClient} instance for the table in the account with the provided {@code tableName}.
      *
      * @param tableName The name of the table.
      *
-     * @return A {@link TableAsyncClient} instance for the provided table in the account.
+     * @return A {@link TableAsyncClient} instance for the table in the account with the provided {@code tableName}.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
@@ -197,9 +204,13 @@ public final class TableServiceAsyncClient {
     /**
      * Creates a table within the Tables service.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table. Prints out the details of the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.createTable#String}
+     *
      * @param tableName The name of the table to create.
      *
-     * @return A reactive result containing a {@link TableClient} for the created table.
+     * @return A {@link Mono} containing a {@link TableAsyncClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      * @throws TableServiceException If a table with the same name already exists within the service.
@@ -212,9 +223,14 @@ public final class TableServiceAsyncClient {
     /**
      * Creates a table within the Tables service.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table. Prints out the details of the {@link Response HTTP response} and the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.createTableWithResponse#String}
+     *
      * @param tableName The name of the table to create.
      *
-     * @return A reactive result containing the HTTP response and a {@link TableClient} for the created table.
+     * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains a
+     * {@link TableAsyncClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      * @throws TableServiceException If a table with the same name already exists within the service.
@@ -241,9 +257,13 @@ public final class TableServiceAsyncClient {
     /**
      * Creates a table within the Tables service if the table does not already exist.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.createTableIfNotExists#String}
+     *
      * @param tableName The name of the table to create.
      *
-     * @return A reactive result containing a {@link TableClient} for the created table.
+     * @return A {@link Mono} containing a {@link TableAsyncClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
@@ -255,9 +275,14 @@ public final class TableServiceAsyncClient {
     /**
      * Creates a table within the Tables service if the table does not already exist.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.createTableIfNotExistsWithResponse#String}
+     *
      * @param tableName The name of the table to create.
      *
-     * @return A reactive result containing the HTTP response and a {@link TableClient} for the created table.
+     * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains a
+     * {@link TableAsyncClient} for the created table.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
@@ -280,9 +305,13 @@ public final class TableServiceAsyncClient {
     /**
      * Deletes a table within the Tables service.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.deleteTable#String}
+     *
      * @param tableName The name of the table to delete.
      *
-     * @return An empty reactive result.
+     * @return An empty {@link Mono}.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      * @throws TableServiceException If the request is rejected by the service.
@@ -295,9 +324,13 @@ public final class TableServiceAsyncClient {
     /**
      * Deletes a table within the Tables service.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a table.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.deleteTableWithResponse#String}
+     *
      * @param tableName The name of the table to delete.
      *
-     * @return A reactive result containing the HTTP response.
+     * @return A {@link Mono} containing the {@link Response HTTP response}.
      *
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      * @throws TableServiceException If the request is rejected by the service.
@@ -323,7 +356,13 @@ public final class TableServiceAsyncClient {
     /**
      * Lists all tables within the account.
      *
-     * @return A paged reactive result containing all tables within the account.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Lists all tables. Prints out the details of the retrieved tables.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.listTables}
+     *
+     * @return A {@link PagedFlux} containing all tables within the account.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableItem> listTables() {
@@ -333,12 +372,16 @@ public final class TableServiceAsyncClient {
     /**
      * Lists tables using the parameters in the provided options.
      *
-     * If the 'filter' parameter in the options is set, only tables matching the filter will be returned. If the 'top'
-     * parameter is set, the number of returned tables will be limited to that value.
+     * If the {@code filter} parameter in the options is set, only tables matching the filter will be returned. If the
+     * {@code top} parameter is set, the maximum number of returned tables per page will be limited to that value.
      *
-     * @param options The 'filter' and 'top' OData query options to apply to this operation.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Lists all tables that match the filter. Prints out the details of the retrieved tables.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions}
      *
-     * @return A paged reactive result containing matching tables within the account.
+     * @param options The {@code filter} and {@code top} OData query options to apply to this operation.
+     *
+     * @return A {@link PagedFlux} containing matching tables within the account.
      *
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
      * @throws TableServiceException If the request is rejected by the service.
@@ -350,24 +393,10 @@ public final class TableServiceAsyncClient {
             token -> withContext(context -> listTablesNextPage(token, context, options)));
     }
 
-    /**
-     * Lists tables using the parameters in the provided options.
-     *
-     * If the 'filter' parameter in the options is set, only tables matching the filter will be returned. If the 'top'
-     * parameter is set, the number of returned tables will be limited to that value.
-     *
-     * @param options The 'filter' and 'top' OData query options to apply to this operation.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     *
-     * @return A paged reactive result containing matching tables within the account.
-     *
-     * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
-     * @throws TableServiceException If the request is rejected by the service.
-     */
-    PagedFlux<TableItem> listTables(ListTablesOptions options, Context context) {
+    PagedFlux<TableItem> listTables(ListTablesOptions options, Context context, Duration timeout) {
         return new PagedFlux<>(
-            () -> listTablesFirstPage(context, options),
-            token -> listTablesNextPage(token, context, options));
+            () -> applyOptionalTimeout(listTablesFirstPage(context, options), timeout),
+            token -> applyOptionalTimeout(listTablesNextPage(token, context, options), timeout));
     }
 
     private Mono<PagedResponse<TableItem>> listTablesFirstPage(Context context, ListTablesOptions options) {
@@ -465,10 +494,14 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
-     * @return A reactive result containing the {@link TableServiceProperties properties} of an account's Table service.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the properties of the account's Table service.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getProperties}
+     *
+     * @return A {@link Mono} containing the {@link TableServiceProperties properties} of the account's Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableServiceProperties> getProperties() {
@@ -476,11 +509,16 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
-     * @return A reactive result containing the HTTP response and the {@link TableServiceProperties properties} of an
-     * account's Table service.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the properties of the account's Table service. Prints out the details of the
+     * {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getPropertiesWithResponse}
+     *
+     * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains the
+     * {@link TableServiceProperties properties} of the account's Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableServiceProperties>> getPropertiesWithResponse() {
@@ -501,16 +539,25 @@ public final class TableServiceAsyncClient {
     private TableServiceProperties toTableServiceProperties(
         com.azure.data.tables.implementation.models.TableServiceProperties tableServiceProperties) {
 
+        if (tableServiceProperties == null) {
+            return null;
+        }
+
         return new TableServiceProperties()
             .setLogging(toTableServiceLogging(tableServiceProperties.getLogging()))
             .setHourMetrics(toTableServiceMetrics(tableServiceProperties.getHourMetrics()))
             .setMinuteMetrics(toTableServiceMetrics(tableServiceProperties.getMinuteMetrics()))
-            .setCorsRules(tableServiceProperties.getCors().stream()
+            .setCorsRules(tableServiceProperties.getCors() == null ? null
+                : tableServiceProperties.getCors().stream()
                 .map(this::toTablesServiceCorsRule)
                 .collect(Collectors.toList()));
     }
 
     private TableServiceLogging toTableServiceLogging(Logging logging) {
+        if (logging == null) {
+            return null;
+        }
+
         return new TableServiceLogging()
             .setAnalyticsVersion(logging.getVersion())
             .setDeleteLogged(logging.isDelete())
@@ -520,12 +567,20 @@ public final class TableServiceAsyncClient {
     }
 
     private TableServiceRetentionPolicy toTableServiceRetentionPolicy(RetentionPolicy retentionPolicy) {
+        if (retentionPolicy == null) {
+            return null;
+        }
+
         return new TableServiceRetentionPolicy()
             .setEnabled(retentionPolicy.isEnabled())
             .setDaysToRetain(retentionPolicy.getDays());
     }
 
     private TableServiceMetrics toTableServiceMetrics(Metrics metrics) {
+        if (metrics == null) {
+            return null;
+        }
+
         return new TableServiceMetrics()
             .setVersion(metrics.getVersion())
             .setEnabled(metrics.isEnabled())
@@ -534,6 +589,10 @@ public final class TableServiceAsyncClient {
     }
 
     private TableServiceCorsRule toTablesServiceCorsRule(CorsRule corsRule) {
+        if (corsRule == null) {
+            return null;
+        }
+
         return new TableServiceCorsRule()
             .setAllowedOrigins(corsRule.getAllowedOrigins())
             .setAllowedMethods(corsRule.getAllowedMethods())
@@ -543,26 +602,34 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Sets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Sets the properties of the account's Table service.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties}
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      *
-     * @return An empty reactive result.
+     * @return An empty {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(TableServiceProperties tableServiceProperties) {
         return this.setPropertiesWithResponse(tableServiceProperties).flatMap(FluxUtil::toMono);
     }
 
-
     /**
      * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Sets the properties of the account's Table service. Prints out the details of the
+     * {@link Response HTTP response}.</p></p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.setPropertiesWithResponse#TableServiceProperties}
+     *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      *
-     * @return A reactive result containing the HTTP response.
+     * @return A {@link Mono} containing the {@link Response HTTP response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesWithResponse(TableServiceProperties tableServiceProperties) {
@@ -589,12 +656,17 @@ public final class TableServiceAsyncClient {
             .setLogging(toLogging(tableServiceProperties.getLogging()))
             .setHourMetrics(toMetrics(tableServiceProperties.getHourMetrics()))
             .setMinuteMetrics(toMetrics(tableServiceProperties.getMinuteMetrics()))
-            .setCors(tableServiceProperties.getCorsRules().stream()
+            .setCors(tableServiceProperties.getCorsRules() == null ? null
+                : tableServiceProperties.getCorsRules().stream()
                 .map(this::toCorsRule)
                 .collect(Collectors.toList()));
     }
 
     private Logging toLogging(TableServiceLogging tableServiceLogging) {
+        if (tableServiceLogging == null) {
+            return null;
+        }
+
         return new Logging()
             .setVersion(tableServiceLogging.getAnalyticsVersion())
             .setDelete(tableServiceLogging.isDeleteLogged())
@@ -604,12 +676,20 @@ public final class TableServiceAsyncClient {
     }
 
     private RetentionPolicy toRetentionPolicy(TableServiceRetentionPolicy tableServiceRetentionPolicy) {
+        if (tableServiceRetentionPolicy == null) {
+            return null;
+        }
+
         return new RetentionPolicy()
             .setEnabled(tableServiceRetentionPolicy.isEnabled())
             .setDays(tableServiceRetentionPolicy.getDaysToRetain());
     }
 
     private Metrics toMetrics(TableServiceMetrics tableServiceMetrics) {
+        if (tableServiceMetrics == null) {
+            return null;
+        }
+
         return new Metrics()
             .setVersion(tableServiceMetrics.getVersion())
             .setEnabled(tableServiceMetrics.isEnabled())
@@ -618,6 +698,10 @@ public final class TableServiceAsyncClient {
     }
 
     private CorsRule toCorsRule(TableServiceCorsRule corsRule) {
+        if (corsRule == null) {
+            return null;
+        }
+
         return new CorsRule()
             .setAllowedOrigins(corsRule.getAllowedOrigins())
             .setAllowedMethods(corsRule.getAllowedMethods())
@@ -627,10 +711,14 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
-     * endpoint when read-access geo-redundant replication is enabled for the account.
+     * Retrieves statistics related to replication for the account's Table service. It is only available on the
+     * secondary location endpoint when read-access geo-redundant replication is enabled for the account.
      *
-     * @return A reactive result containing statistics for the Table service.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the replication statistics of the account's Table service.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getStatistics}
+     *
+     * @return A {@link Mono} containing {@link TableServiceStatistics statistics} for the account's Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableServiceStatistics> getStatistics() {
@@ -638,10 +726,16 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
-     * endpoint when read-access geo-redundant replication is enabled for the account.
+     * Retrieves statistics related to replication for the account's Table service. It is only available on the
+     * secondary location endpoint when read-access geo-redundant replication is enabled for the account.
      *
-     * @return A reactive result containing the HTTP response and statistics for the Table service.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the replication statistics of the account's Table service. Prints out the details of the
+     * {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getStatisticsWithResponse}
+     *
+     * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains
+     * {@link TableServiceStatistics statistics} for the account's Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableServiceStatistics>> getStatisticsWithResponse() {
@@ -660,10 +754,18 @@ public final class TableServiceAsyncClient {
     }
 
     private TableServiceStatistics toTableServiceStatistics(TableServiceStats tableServiceStats) {
+        if (tableServiceStats == null) {
+            return null;
+        }
+
         return new TableServiceStatistics(toTableServiceGeoReplication(tableServiceStats.getGeoReplication()));
     }
 
     private TableServiceGeoReplication toTableServiceGeoReplication(GeoReplication geoReplication) {
+        if (geoReplication == null) {
+            return null;
+        }
+
         return new TableServiceGeoReplication(
             TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
             geoReplication.getLastSyncTime());

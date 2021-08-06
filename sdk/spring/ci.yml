@@ -3,7 +3,6 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -15,7 +14,6 @@ trigger:
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -70,9 +68,6 @@ extends:
       - name: azure-spring-cloud-context
         groupId: com.azure.spring
         safeName: azurespringcloudcontext
-      - name: azure-spring-cloud-telemetry
-        groupId: com.azure.spring
-        safeName: azurespringcloudtelemetry
       - name: azure-spring-integration-core
         groupId: com.azure.spring
         safeName: azurespringintegrationcore
@@ -132,72 +127,3 @@ extends:
       - name: azure-spring-cloud-stream-binder-eventhubs
         groupId: com.azure.spring
         safeName: azurespringcloudeventhubsstreambinder
-    AdditionalModules:
-      - name: azure-spring-boot-sample-active-directory-resource-server
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-b2c-oidc
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-webapp
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-obo
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-cosmos
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-keyvault-secrets
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-mediaservices
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-servicebus
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-servicebus-jms-queue
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-servicebus-jms-topic
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-storage-resource
-        groupId: com.azure.spring
-      - name: spring-cloud-azure-appconfiguration-convert-sample-complete
-        groupId: com.azure.spring
-      - name: azure-appconfiguration-convert-sample-initial
-        groupId: com.azure.spring
-      - name: azure-appconfiguration-sample
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-cache
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-binder
-        groupId: com.azure.spring
-      - name: azure-spring-integration-sample-eventhubs
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-kafka
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-multibinders
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-operation
-        groupId: com.azure.spring
-      - name: feature-management-sample
-        groupId: com.azure.spring
-      - name: feature-management-web-sample
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-messaging-eventhubs
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-messaging-servicebus
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-multibinders
-        groupId: com.azure.spring
-      - name: azure-spring-integration-sample-servicebus
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-servicebus-operation
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-servicebus-queue-binder
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-servicebus-queue-multibinders
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-servicebus-topic-binder
-        groupId: com.azure.spring
-      - name: azure-spring-integration-sample-storage-queue
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-storage-queue-operation
-        groupId: com.azure.spring

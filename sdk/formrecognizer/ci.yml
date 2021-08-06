@@ -3,19 +3,17 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/formrecognizer/
-  
+
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*

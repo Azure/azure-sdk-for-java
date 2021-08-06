@@ -25,7 +25,7 @@ public class ListIncidentsAlertedSample {
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
             .setMaxPageSize(10);
 
-        PagedIterable<AnomalyIncident> incidentsIterable = advisorClient.listIncidents(
+        PagedIterable<AnomalyIncident> incidentsIterable = advisorClient.listIncidentsForAlert(
             alertConfigurationId,
             alertId,
             options,

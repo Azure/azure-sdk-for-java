@@ -163,11 +163,11 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
         }
 
         testRunner.accept(dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost").setDisplayName("cost"),
-            new DataFeedMetric().setName("revenue").setDisplayName("revenue")))
+            new DataFeedMetric("cost").setDisplayName("cost"),
+            new DataFeedMetric("revenue").setDisplayName("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension().setName("city").setDisplayName("city"),
-                new DataFeedDimension().setName("category").setDisplayName("category"))))
+                new DataFeedDimension("city").setDisplayName("city"),
+                new DataFeedDimension("category").setDisplayName("category"))))
             .setName("java_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME)));
@@ -310,8 +310,8 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
         if (expectedOptions != null) {
             assertEquals(expectedOptions.getDescription(), actualOptions.getDescription());
             assertEquals(expectedOptions.getActionLinkTemplate(), actualOptions.getActionLinkTemplate());
-            assertIterableEquals(expectedOptions.getAdminEmails(), actualOptions.getAdminEmails());
-            assertIterableEquals(expectedOptions.getViewerEmails(), actualOptions.getViewerEmails());
+            assertIterableEquals(expectedOptions.getAdmins(), actualOptions.getAdmins());
+            assertIterableEquals(expectedOptions.getViewers(), actualOptions.getViewers());
             assertNotNull(actualOptions.getAccessMode());
             if (expectedOptions.getAccessMode() != null) {
                 assertEquals(expectedOptions.getAccessMode(), actualOptions.getAccessMode());

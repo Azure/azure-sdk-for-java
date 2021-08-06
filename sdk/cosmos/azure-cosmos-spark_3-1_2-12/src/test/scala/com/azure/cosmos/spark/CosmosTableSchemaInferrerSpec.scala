@@ -50,7 +50,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     schema.fields(1).name shouldBe "otherProperty"
     schema.fields(0).dataType shouldBe StringType
     schema.fields(1).dataType shouldBe StringType
-    schema.fields(0).nullable shouldBe true
+    schema.fields(0).nullable shouldBe false
     schema.fields(1).nullable shouldBe true
   }
 

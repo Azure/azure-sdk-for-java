@@ -127,7 +127,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     public void setAttribute(String key, String value, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null");
         if (CoreUtils.isNullOrEmpty(value)) {
-            logger.warning("Failed to set span attribute since value is null or empty.");
+            logger.verbose("Failed to set span attribute since value is null or empty.");
             return;
         }
 
@@ -135,7 +135,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (span != null) {
             span.setAttribute(key, value);
         } else {
-            logger.warning("Failed to find span to add attribute.");
+            logger.verbose("Failed to find span to add attribute.");
         }
     }
 
@@ -154,7 +154,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     public void end(String statusMessage, Throwable throwable, Context context) {
         Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (span == null) {
-            logger.warning("Failed to find span to end it.");
+            logger.verbose("Failed to find span to end it.");
             return;
         }
 
@@ -169,13 +169,13 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     public void addLink(Context context) {
         final SpanBuilder spanBuilder = getOrDefault(context, SPAN_BUILDER_KEY, null, SpanBuilder.class);
         if (spanBuilder == null) {
-            logger.warning("Failed to find spanBuilder to link it.");
+            logger.verbose("Failed to find spanBuilder to link it.");
             return;
         }
 
         final SpanContext spanContext = getOrDefault(context, SPAN_CONTEXT_KEY, null, SpanContext.class);
         if (spanContext == null) {
-            logger.warning("Failed to find span context to link it.");
+            logger.verbose("Failed to find span context to link it.");
             return;
         }
         spanBuilder.addLink(spanContext);
@@ -198,12 +198,22 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("deprecation")
     public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp) {
+        addEvent(eventName, traceEventAttributes, timestamp, new Context(PARENT_SPAN_KEY, Span.current()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp,
+                         Context context) {
         Objects.requireNonNull(eventName, "'eventName' cannot be null.");
 
-        Span currentSpan = Span.current();
+        Span currentSpan = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (currentSpan == null) {
-            logger.info("Failed to find a starting span to associate the %s with.", eventName);
+            logger.verbose("Failed to find a starting span to associate the {} with.", eventName);
             return;
         }
 

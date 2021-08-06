@@ -9,6 +9,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -177,5 +179,22 @@ public class ReadmeSamples {
         return null;
     }
 
+    public void authenticationScopeSample() {
+        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_US_GOVERNMENT);
+        TokenCredential credentials = new DefaultAzureCredentialBuilder()
+            .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+            .build();
+
+        final String authenticationScope = "https://management.usgovcloudapi.net/.default";
+        ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
+            .endpoint(getEndpoint())
+            .credential(credentials)
+            .authenticationScope(authenticationScope)
+            .buildClient();
+
+        containerRegistryClient
+            .listRepositoryNames()
+            .forEach(name -> System.out.println(name));
+    }
 }
 

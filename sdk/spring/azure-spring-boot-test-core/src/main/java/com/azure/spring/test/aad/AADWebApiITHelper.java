@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -68,6 +69,10 @@ public class AADWebApiITHelper {
         return httpGetStringByToken(endpoint, oAuth2ROPCResponse.getAccessToken());
     }
 
+    public String httpGetStringWithoutAccessToken(String endpoint) {
+        return httpGetStringByToken(endpoint, null);
+    }
+
     public String httpGetStringByIdToken(String endpoint) {
         return httpGetStringByToken(endpoint, oAuth2ROPCResponse.getIdToken());
     }
@@ -78,7 +83,9 @@ public class AADWebApiITHelper {
 
     public ResponseEntity<String> httpGetResponseByToken(String endpoint, String token) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", String.format("Bearer %s", token));
+        if (StringUtils.hasText(token)) {
+            headers.set("Authorization", String.format("Bearer %s", token));
+        }
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         return httpGetResponseByEntity(endpoint, entity);
     }

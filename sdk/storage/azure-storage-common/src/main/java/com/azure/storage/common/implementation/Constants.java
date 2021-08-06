@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.util.Configuration;
 import com.azure.storage.common.sas.SasProtocol;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -73,6 +74,11 @@ public final class Constants {
     public static final String STORAGE_SCOPE = "https://storage.azure.com/.default";
 
     public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
+
+    public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
+
+    public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
+        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-08-04");
 
     private Constants() {
     }
@@ -197,8 +203,10 @@ public final class Constants {
 
         /**
          * The current storage version header value.
+         * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
-        public static final String TARGET_STORAGE_VERSION = "2020-08-04";
+        @Deprecated
+        public static final String TARGET_STORAGE_VERSION = "2020-10-02";
 
         /**
          * Error code returned from the service.

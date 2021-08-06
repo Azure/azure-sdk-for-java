@@ -4,11 +4,11 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b29b18d6-35bc-498e-80dd-eb4c8066cabd"
+      "x-ms-client-request-id" : "923f376e-aff3-4277-abf0-b9e511bb4cd1"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "d9584696-c19c-407a-a717-04737b2f5f4a",
+      "X-Ms-Correlation-Request-Id" : "62962b2d-aab4-495c-b87e-eb5dab8d826d",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -17,7 +17,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Thu, 27 May 2021 17:50:42 GMT",
+      "Date" : "Thu, 10 Jun 2021 20:56:08 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
@@ -26,11 +26,11 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e848afe9-9739-4201-ab6f-e58645682eb8"
+      "x-ms-client-request-id" : "5b1733e4-799e-4cc1-bd2a-d80f6b123b41"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "18deec3d-d3b8-49b3-beed-17d4448ea4c9",
+      "X-Ms-Correlation-Request-Id" : "7dcb59bf-85c1-4263-b70c-1c5266c9982f",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -39,7 +39,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Thu, 27 May 2021 17:50:42 GMT",
+      "Date" : "Thu, 10 Jun 2021 20:56:08 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
@@ -48,11 +48,11 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5871fbd7-2a9c-4bd0-958d-2d3491c33faf"
+      "x-ms-client-request-id" : "fcc54c8a-3ee7-4dab-b192-d106b1ff894f"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "a9ddabe5-15c0-4861-975a-2c4ee8090440",
+      "X-Ms-Correlation-Request-Id" : "d754983e-61bc-4f42-b36d-8642921ab661",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -61,7 +61,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Thu, 27 May 2021 17:50:42 GMT",
+      "Date" : "Thu, 10 Jun 2021 20:56:08 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
@@ -70,11 +70,11 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "20d558d9-61dc-40dc-8b76-f061fbb5e1a2"
+      "x-ms-client-request-id" : "9775f6af-daf4-4181-89ad-3d9aa1f4a632"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "8e280a17-145c-4cb2-b62c-448bbc0abf55",
+      "X-Ms-Correlation-Request-Id" : "2790a9c9-9bf0-45e6-8c2e-ecccb36d26ad",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -83,7 +83,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Thu, 27 May 2021 17:50:42 GMT",
+      "Date" : "Thu, 10 Jun 2021 20:56:08 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null

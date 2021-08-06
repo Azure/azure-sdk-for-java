@@ -1329,10 +1329,12 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
 
         StringBuilder sb = new StringBuilder();
 
-        PagedIterable<Location> locations =
+        List<Location> locations =
             azureResourceManager
                 .getCurrentSubscription()
-                .listLocations(); // note the region is not complete since it depends on current subscription
+                .listLocations()
+                .stream().collect(Collectors.toList());
+        // note the region is not complete since it depends on current subscription
 
         List<Location> locationGroupByGeography = new ArrayList<>();
         List<String> geographies = Arrays.asList(

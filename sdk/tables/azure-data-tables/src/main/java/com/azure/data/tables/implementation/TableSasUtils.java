@@ -26,7 +26,7 @@ public class TableSasUtils {
      * Shared helper method to append a SAS query parameter.
      *
      * @param sb The {@link StringBuilder} to append to.
-     * @param param The {@link String} parameter to append.
+     * @param param The {@code String} parameter to append.
      * @param value The value of the parameter to append.
      */
     public static void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {

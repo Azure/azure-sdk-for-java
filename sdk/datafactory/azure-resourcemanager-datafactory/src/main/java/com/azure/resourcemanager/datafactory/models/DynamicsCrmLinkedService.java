@@ -28,7 +28,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * Ifd. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.deploymentType", required = true)
-    private DynamicsDeploymentType deploymentType;
+    private Object deploymentType;
 
     /*
      * The host name of the on-premises Dynamics CRM server. The property is
@@ -70,7 +70,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * scenario. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType", required = true)
-    private DynamicsAuthenticationType authenticationType;
+    private Object authenticationType;
 
     /*
      * User name to access the Dynamics CRM instance. Type: string (or
@@ -100,7 +100,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalCredentialType")
-    private DynamicsServicePrincipalCredentialType servicePrincipalCredentialType;
+    private Object servicePrincipalCredentialType;
 
     /*
      * The credential of the service principal object in Azure Active
@@ -128,7 +128,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      *
      * @return the deploymentType value.
      */
-    public DynamicsDeploymentType deploymentType() {
+    public Object deploymentType() {
         return this.deploymentType;
     }
 
@@ -140,7 +140,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param deploymentType the deploymentType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
-    public DynamicsCrmLinkedService withDeploymentType(DynamicsDeploymentType deploymentType) {
+    public DynamicsCrmLinkedService withDeploymentType(Object deploymentType) {
         this.deploymentType = deploymentType;
         return this;
     }
@@ -242,7 +242,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      *
      * @return the authenticationType value.
      */
-    public DynamicsAuthenticationType authenticationType() {
+    public Object authenticationType() {
         return this.authenticationType;
     }
 
@@ -254,7 +254,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
-    public DynamicsCrmLinkedService withAuthenticationType(DynamicsAuthenticationType authenticationType) {
+    public DynamicsCrmLinkedService withAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }
@@ -330,7 +330,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      *
      * @return the servicePrincipalCredentialType value.
      */
-    public DynamicsServicePrincipalCredentialType servicePrincipalCredentialType() {
+    public Object servicePrincipalCredentialType() {
         return this.servicePrincipalCredentialType;
     }
 
@@ -342,8 +342,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
-    public DynamicsCrmLinkedService withServicePrincipalCredentialType(
-        DynamicsServicePrincipalCredentialType servicePrincipalCredentialType) {
+    public DynamicsCrmLinkedService withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
     }

@@ -39,7 +39,7 @@ public class RecognizeInvoicesFromUrlAsync {
                                                .buildAsyncClient();
 
         String invoiceUrl =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/formrecognizer/"
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/formrecognizer/"
                 + "azure-ai-formrecognizer/samples/sample_forms/forms/sample_invoice.jpg";
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeInvoicesPoller
             = client.beginRecognizeInvoicesFromUrl(invoiceUrl);

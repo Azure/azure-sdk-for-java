@@ -5,13 +5,14 @@ package com.azure.cosmos.spark
 import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.sql.types.{BooleanType, IntegerType, StringType, StructField, StructType}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
     with Spark
     with CosmosClient
     with CosmosContainerWithRetention
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number

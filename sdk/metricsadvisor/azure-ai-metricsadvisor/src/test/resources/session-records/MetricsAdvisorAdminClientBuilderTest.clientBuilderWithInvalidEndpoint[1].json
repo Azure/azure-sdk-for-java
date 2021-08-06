@@ -3,8 +3,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "0ef01506-8f91-4a91-894e-ec2e66c8a89a"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "0f076db4-e67b-4833-b319-5e61505e9228"
     },
     "Response" : null,
     "Exception" : {
@@ -15,8 +15,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "0ef01506-8f91-4a91-894e-ec2e66c8a89a"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "0f076db4-e67b-4833-b319-5e61505e9228"
     },
     "Response" : null,
     "Exception" : {
@@ -27,8 +27,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "0ef01506-8f91-4a91-894e-ec2e66c8a89a"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "0f076db4-e67b-4833-b319-5e61505e9228"
     },
     "Response" : null,
     "Exception" : {
@@ -39,8 +39,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "0ef01506-8f91-4a91-894e-ec2e66c8a89a"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "0f076db4-e67b-4833-b319-5e61505e9228"
     },
     "Response" : null,
     "Exception" : {

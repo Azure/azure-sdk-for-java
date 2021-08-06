@@ -15,17 +15,21 @@ public final class LogsQueryResult {
     private final List<LogsTable> logsTables;
     private final LogsQueryStatistics statistics;
     private final LogsQueryError error;
+    private final LogsQueryVisualization visualization;
 
     /**
      * Creates an instance {@link LogsQueryResult} with a list of {@link LogsTable}.
      * @param logsTables The list of {@link LogsTable} returned as query result.
      * @param statistics The query execution statistics.
      * @param error The error details if there was an error executing the query.
+     * @param visualization The visualization information for the logs query.
      */
-    public LogsQueryResult(List<LogsTable> logsTables, LogsQueryStatistics statistics, LogsQueryError error) {
+    public LogsQueryResult(List<LogsTable> logsTables, LogsQueryStatistics statistics,
+                           LogsQueryVisualization visualization, LogsQueryError error) {
         this.logsTables = logsTables;
         this.statistics = statistics;
         this.error = error;
+        this.visualization = visualization;
     }
 
     /**
@@ -50,5 +54,13 @@ public final class LogsQueryResult {
      */
     public LogsQueryError getError() {
         return error;
+    }
+
+    /**
+     * Returns the visualization information for the logs query.
+     * @return the visualization information for the logs query.
+     */
+    public LogsQueryVisualization getVisualization() {
+        return visualization;
     }
 }

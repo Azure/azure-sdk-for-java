@@ -63,6 +63,12 @@ public class CapacityPoolInner extends Resource {
     @JsonProperty(value = "properties.qosType")
     private QosType qosType;
 
+    /*
+     * If enabled (true) the pool can contain cool Access enabled volumes.
+     */
+    @JsonProperty(value = "properties.coolAccess")
+    private Boolean coolAccess;
+
     /**
      * Get the poolId property: UUID v4 used to identify the Pool.
      *
@@ -158,6 +164,26 @@ public class CapacityPoolInner extends Resource {
      */
     public CapacityPoolInner withQosType(QosType qosType) {
         this.qosType = qosType;
+        return this;
+    }
+
+    /**
+     * Get the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
+     *
+     * @return the coolAccess value.
+     */
+    public Boolean coolAccess() {
+        return this.coolAccess;
+    }
+
+    /**
+     * Set the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
+     *
+     * @param coolAccess the coolAccess value to set.
+     * @return the CapacityPoolInner object itself.
+     */
+    public CapacityPoolInner withCoolAccess(Boolean coolAccess) {
+        this.coolAccess = coolAccess;
         return this;
     }
 

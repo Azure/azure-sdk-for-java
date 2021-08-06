@@ -105,6 +105,13 @@ public final class AzureDataLakeStoreSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

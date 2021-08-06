@@ -601,6 +601,10 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
+        "STORAGE_DATA_LAKE_CONNECTION_STRING": {
+            "type": "string",
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('dataLakeAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+        },
         "STORAGE_DATA_LAKE_SOFT_DELETE_ACCOUNT_NAME": {
           "type": "string",
           "value": "[variables('dataLakeSoftDeleteAccountName')]"

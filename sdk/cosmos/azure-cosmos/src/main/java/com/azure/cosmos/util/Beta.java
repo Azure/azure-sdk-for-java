@@ -10,13 +10,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 
 @Documented
 @Retention(RetentionPolicy.CLASS)
-@Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR })
+@Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR, FIELD })
 @Inherited
 /**
  * Indicates functionality that is in preview and as such is subject to change in non-backwards compatible ways in future releases,
@@ -64,6 +65,8 @@ public @interface Beta {
         /** v4.15.0 */
         V4_15_0,
         /** v4.16.0 */
-        V4_16_0;
+        V4_16_0,
+        /** v4.17.0 */
+        V4_17_0;
     }
 }

@@ -85,4 +85,38 @@ public interface KubernetesClusters
      * @return a future representation of the Kube.config content which can be used with a Kubernetes client
      */
     Mono<List<CredentialResult>> listUserKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName);
+
+    /**
+     * Starts a stopped Kubernetes cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param kubernetesClusterName The name of the managed cluster resource.
+     */
+    void start(String resourceGroupName, String kubernetesClusterName);
+
+    /**
+     * Starts a stopped Kubernetes cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param kubernetesClusterName The name of the managed cluster resource.
+     * @return the completion.
+     */
+    Mono<Void> startAsync(String resourceGroupName, String kubernetesClusterName);
+
+    /**
+     * Stops a running Kubernetes cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param kubernetesClusterName The name of the managed cluster resource.
+     */
+    void stop(String resourceGroupName, String kubernetesClusterName);
+
+    /**
+     * Stops a running Kubernetes cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param kubernetesClusterName The name of the managed cluster resource.
+     * @return the completion.
+     */
+    Mono<Void> stopAsync(String resourceGroupName, String kubernetesClusterName);
 }

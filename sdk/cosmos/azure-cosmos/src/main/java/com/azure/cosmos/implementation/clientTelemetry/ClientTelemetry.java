@@ -7,6 +7,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -44,7 +45,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class ClientTelemetry {
     public final static int ONE_KB_TO_BYTES = 1024;
@@ -70,10 +71,11 @@ public class ClientTelemetry {
     private final static String MEMORY_UNIT = "MB";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private final static AtomicLong instanceCount = new AtomicLong(0);
     private ClientTelemetryInfo clientTelemetryInfo;
     private final HttpClient httpClient;
     private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
-        new DaemonThreadFactory());
+        new CosmosDaemonThreadFactory("ClientTelemetry-" + instanceCount.incrementAndGet()));
     private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private volatile boolean isClosed;
@@ -192,7 +194,7 @@ public class ClientTelemetry {
                             this.globalDatabaseAccountName);
                         httpHeaders.set(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
                         String envName = Configs.getEnvironmentName();
-                        if (StringUtils.isEmpty(envName)) {
+                        if (StringUtils.isNotEmpty(envName)) {
                             httpHeaders.set(HttpConstants.HttpHeaders.ENVIRONMENT_NAME, envName);
                         }
 
@@ -317,14 +319,5 @@ public class ClientTelemetry {
         percentile.put(PERCENTILE_99, copyHistogram.getValueAtPercentile(PERCENTILE_99));
         percentile.put(PERCENTILE_999, copyHistogram.getValueAtPercentile(PERCENTILE_999));
         payload.getMetricInfo().setPercentiles(percentile);
-    }
-
-    private static class DaemonThreadFactory implements ThreadFactory {
-        @Override
-        public Thread newThread(Runnable r) {
-            Thread t = new Thread(r);
-            t.setDaemon(true);
-            return t;
-        }
     }
 }

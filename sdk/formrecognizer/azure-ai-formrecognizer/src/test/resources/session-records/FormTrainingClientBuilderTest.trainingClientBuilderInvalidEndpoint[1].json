@@ -1,55 +1,55 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1/layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b22c1623-0570-4997-82ef-04b1b4c4d4d6",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8b4e1364-cc98-4e82-a108-ec7cd3209baf",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
       "ClassName" : "java.net.UnknownHostException",
-      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 9 queries "
+      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 6 queries "
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1/layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b22c1623-0570-4997-82ef-04b1b4c4d4d6",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8b4e1364-cc98-4e82-a108-ec7cd3209baf",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
       "ClassName" : "java.net.UnknownHostException",
-      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 9 queries "
+      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 6 queries "
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1/layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b22c1623-0570-4997-82ef-04b1b4c4d4d6",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8b4e1364-cc98-4e82-a108-ec7cd3209baf",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
       "ClassName" : "java.net.UnknownHostException",
-      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 9 queries "
+      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 6 queries "
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1//layout/analyze",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1/layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b22c1623-0570-4997-82ef-04b1b4c4d4d6",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8b4e1364-cc98-4e82-a108-ec7cd3209baf",
       "Content-Type" : "application/json"
     },
     "Response" : null,
     "Exception" : {
       "ClassName" : "java.net.UnknownHostException",
-      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 9 queries "
+      "ErrorMessage" : "failed to resolve 'notreal.azure.com' after 6 queries "
     }
   } ],
   "variables" : [ ]

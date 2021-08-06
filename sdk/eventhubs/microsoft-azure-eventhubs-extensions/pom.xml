@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-extensions</artifactId>
-  <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
+  <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
 
   <name>Microsoft Azure SDK for Event Hubs Extensions</name>
   <description>Extensions built on Microsoft Azure Event Hubs${line.separator}
@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs</artifactId>
-      <version>3.2.3</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
+      <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -62,7 +62,7 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+        <version>1.7.31</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
         <scope>test</scope>
       </dependency>
       <dependency>

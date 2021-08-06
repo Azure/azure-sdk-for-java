@@ -206,6 +206,26 @@ public class KubernetesClusterImpl
         return objectId;
     }
 
+    @Override
+    public void start() {
+        this.startAsync().block();
+    }
+
+    @Override
+    public Mono<Void> startAsync() {
+        return manager().kubernetesClusters().startAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void stop() {
+        this.stopAsync().block();
+    }
+
+    @Override
+    public Mono<Void> stopAsync() {
+        return manager().kubernetesClusters().stopAsync(this.resourceGroupName(), this.name());
+    }
+
     private Mono<List<CredentialResult>> listAdminConfig(final KubernetesClusterImpl self) {
         return this
             .manager()

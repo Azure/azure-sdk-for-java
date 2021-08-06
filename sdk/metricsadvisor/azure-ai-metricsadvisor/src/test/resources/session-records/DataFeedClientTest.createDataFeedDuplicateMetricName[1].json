@@ -3,21 +3,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "17718a23-47ac-4d08-ab03-2f4b4652489f",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "be63d50d-b166-47dd-9241-185dbe7a5f48",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "8aac9e7f-9e3f-4dd0-a69b-156988ec6570",
+      "x-request-id" : "b23d4cbe-f4ff-4b51-b1df-6cdd30544476",
       "content-length" : "92",
-      "x-envoy-upstream-service-time" : "28",
+      "x-envoy-upstream-service-time" : "84",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8aac9e7f-9e3f-4dd0-a69b-156988ec6570",
+      "apim-request-id" : "b23d4cbe-f4ff-4b51-b1df-6cdd30544476",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"code\":\"ERROR_DUP_NAME\",\"message\":\"The metric name 'cost' is duplicate,please remove one.\"}",
-      "Date" : "Mon, 24 May 2021 21:32:21 GMT",
+      "Date" : "Tue, 06 Jul 2021 19:51:36 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

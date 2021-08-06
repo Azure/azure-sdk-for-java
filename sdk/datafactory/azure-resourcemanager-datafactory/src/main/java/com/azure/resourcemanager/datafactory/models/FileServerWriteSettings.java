@@ -26,6 +26,13 @@ public final class FileServerWriteSettings extends StoreWriteSettings {
 
     /** {@inheritDoc} */
     @Override
+    public FileServerWriteSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public FileServerWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
         return this;

@@ -15,6 +15,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -22,8 +23,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
+import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,8 +40,8 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.Prompt;
+import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
@@ -74,8 +77,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -237,6 +240,13 @@ public class IdentityClient {
                 } catch (Throwable t) {
                     return  Mono.error(logger.logExceptionAsError(new ClientAuthenticationException(
                         "Shared token cache is unavailable in this environment.", null, t)));
+                }
+            }
+            if (options.getRegionalAuthority() != null) {
+                if (options.getRegionalAuthority() == RegionalAuthority.AUTO_DISCOVER_REGION) {
+                    applicationBuilder.autoDetectRegion(true);
+                } else {
+                    applicationBuilder.azureRegion(options.getRegionalAuthority().toString());
                 }
             }
             ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
@@ -767,10 +777,12 @@ public class IdentityClient {
      *
      * @param request the details of the token request
      * @param port the port on which the HTTP server is listening
+     * @param redirectUrl the redirect URL to listen on and receive security code
+     * @param loginHint the username suggestion to pre-fill the login page's username/email address field
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, Integer port,
-                                                              String redirectUrl) {
+                                                              String redirectUrl, String loginHint) {
         URI redirectUri;
         String redirect;
 
@@ -795,6 +807,10 @@ public class IdentityClient {
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
             builder.claims(customClaimRequest);
+        }
+
+        if (loginHint != null) {
+            builder.loginHint(loginHint);
         }
 
         Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
@@ -1106,15 +1122,18 @@ public class IdentityClient {
             return Mono.error(exception);
         }
 
-        return checkIMDSAvailable().flatMap(available -> Mono.fromCallable(() -> {
+        String endpoint = Configuration.getGlobalConfiguration().get(
+            Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
+            IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+
+        return checkIMDSAvailable(endpoint).flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;
             while (retry <= options.getMaxRetry()) {
                 URL url = null;
                 HttpURLConnection connection = null;
                 try {
                     url =
-                            new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
-                                    payload.toString()));
+                            new URL(String.format("%s?%s", endpoint, payload.toString()));
 
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
@@ -1181,7 +1200,7 @@ public class IdentityClient {
         }));
     }
 
-    private Mono<Boolean> checkIMDSAvailable() {
+    private Mono<Boolean> checkIMDSAvailable(String endpoint) {
         StringBuilder payload = new StringBuilder();
 
         try {
@@ -1192,8 +1211,7 @@ public class IdentityClient {
         }
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
-            URL url = new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
-                            payload.toString()));
+            URL url = new URL(String.format("%s?%s", endpoint, payload.toString()));
 
             try {
                 connection = (HttpURLConnection) url.openConnection();

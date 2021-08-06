@@ -29,7 +29,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.deploymentType", required = true)
-    private DynamicsDeploymentType deploymentType;
+    private Object deploymentType;
 
     /*
      * The host name of the on-premises Common Data Service for Apps server.
@@ -71,7 +71,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * online scenario. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType", required = true)
-    private DynamicsAuthenticationType authenticationType;
+    private Object authenticationType;
 
     /*
      * User name to access the Common Data Service for Apps instance. Type:
@@ -101,7 +101,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalCredentialType")
-    private DynamicsServicePrincipalCredentialType servicePrincipalCredentialType;
+    private Object servicePrincipalCredentialType;
 
     /*
      * The credential of the service principal object in Azure Active
@@ -129,7 +129,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      *
      * @return the deploymentType value.
      */
-    public DynamicsDeploymentType deploymentType() {
+    public Object deploymentType() {
         return this.deploymentType;
     }
 
@@ -141,7 +141,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * @param deploymentType the deploymentType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
-    public CommonDataServiceForAppsLinkedService withDeploymentType(DynamicsDeploymentType deploymentType) {
+    public CommonDataServiceForAppsLinkedService withDeploymentType(Object deploymentType) {
         this.deploymentType = deploymentType;
         return this;
     }
@@ -245,7 +245,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      *
      * @return the authenticationType value.
      */
-    public DynamicsAuthenticationType authenticationType() {
+    public Object authenticationType() {
         return this.authenticationType;
     }
 
@@ -257,7 +257,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
-    public CommonDataServiceForAppsLinkedService withAuthenticationType(DynamicsAuthenticationType authenticationType) {
+    public CommonDataServiceForAppsLinkedService withAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }
@@ -333,7 +333,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      *
      * @return the servicePrincipalCredentialType value.
      */
-    public DynamicsServicePrincipalCredentialType servicePrincipalCredentialType() {
+    public Object servicePrincipalCredentialType() {
         return this.servicePrincipalCredentialType;
     }
 
@@ -346,7 +346,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
     public CommonDataServiceForAppsLinkedService withServicePrincipalCredentialType(
-        DynamicsServicePrincipalCredentialType servicePrincipalCredentialType) {
+        Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
     }

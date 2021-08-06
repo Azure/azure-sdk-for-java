@@ -81,7 +81,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             // The script to install Java8, Maven3 and Git on a virtual machine using Azure Custom Script Extension
             //
-            final String javaMvnGitInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_jva_mvn_git.sh";
+            final String javaMvnGitInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_jva_mvn_git.sh";
             final String invokeScriptCommand = "bash install_jva_mvn_git.sh";
             List<String> fileUris = new ArrayList<>();
             fileUris.add(javaMvnGitInstallScript);

@@ -153,6 +153,13 @@ public final class DocumentDbCollectionSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DocumentDbCollectionSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

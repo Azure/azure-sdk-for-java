@@ -26,6 +26,13 @@ public final class AzureFileStorageWriteSettings extends StoreWriteSettings {
 
     /** {@inheritDoc} */
     @Override
+    public AzureFileStorageWriteSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureFileStorageWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
         return this;

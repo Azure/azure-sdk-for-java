@@ -64,7 +64,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
     @ServiceInterface(name = "MySqlManagementClien")
     private interface LocationBasedPerformanceTiersService {
         @Headers({"Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBForMySQL/locations/{locationName}/performanceTiers")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/performanceTiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PerformanceTierListResult>> list(

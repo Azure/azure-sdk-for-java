@@ -105,6 +105,13 @@ public final class AvroSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AvroSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

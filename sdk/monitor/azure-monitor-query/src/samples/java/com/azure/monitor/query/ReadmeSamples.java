@@ -3,9 +3,9 @@
 
 package com.azure.monitor.query;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
@@ -36,14 +36,14 @@ public class ReadmeSamples {
      * Sample for creating sync and async clients for querying logs.
      */
     public void createLogsClients() {
-        TokenCredential tokenCredential = null;
+
 
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
     }
 
@@ -51,14 +51,14 @@ public class ReadmeSamples {
      * Sample for creating sync and async clients for querying metrics.
      */
     public void createMetricsClients() {
-        TokenCredential tokenCredential = null;
+
 
         MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
     }
 
@@ -66,10 +66,10 @@ public class ReadmeSamples {
      * Sample to demonstrate executing a Kusto query for logs.
      */
     public void getLogsQuery() {
-        TokenCredential tokenCredential = null;
+
 
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",
@@ -88,10 +88,10 @@ public class ReadmeSamples {
      * Sample to demonstrate executing a batch of Kusto queries for logs.
      */
     public void getLogsQueryBatch() {
-        TokenCredential tokenCredential = null;
+
 
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
@@ -123,10 +123,10 @@ public class ReadmeSamples {
      * requires extending server timeout.
      */
     public void getLogsWithServerTimeout() {
-        TokenCredential tokenCredential = null;
+
 
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // set request options: server timeout, rendering, statistics
@@ -152,10 +152,10 @@ public class ReadmeSamples {
      * Sample to demonstrate querying Azure Monitor for metrics.
      */
     public void getMetrics() {
-        TokenCredential tokenCredential = null;
+
 
         MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         Response<MetricsQueryResult> metricsResponse = metricsQueryClient
@@ -192,10 +192,10 @@ public class ReadmeSamples {
      *
      */
     public void getLogsQueryWithColumnNameAccess() {
-        TokenCredential tokenCredential = null;
+
 
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",

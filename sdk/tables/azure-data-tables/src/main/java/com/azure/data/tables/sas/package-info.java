@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing SAS (shared access signature) classes used by Azure Data Tables.
+ * Package containing SAS (shared access signature) classes used by Azure Tables.
  */
 package com.azure.data.tables.sas;

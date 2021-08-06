@@ -13,8 +13,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
 import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.TableTransactionActionType;
@@ -27,7 +29,6 @@ import com.azure.data.tables.sas.TableSasSignatureValues;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -35,6 +36,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,10 +52,34 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TableAsyncClientTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
+    private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
 
     private TableAsyncClient tableClient;
     private HttpPipelinePolicy recordPolicy;
     private HttpClient playbackClient;
+
+    private TableClientBuilder getClientBuilder(String tableName, String connectionString) {
+        final TableClientBuilder builder = new TableClientBuilder()
+            .connectionString(connectionString)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .tableName(tableName);
+
+        if (interceptorManager.isPlaybackMode()) {
+            playbackClient = interceptorManager.getPlaybackClient();
+
+            builder.httpClient(playbackClient);
+        } else {
+            builder.httpClient(DEFAULT_HTTP_CLIENT);
+
+            if (!interceptorManager.isLiveMode()) {
+                recordPolicy = interceptorManager.getRecordPolicy();
+
+                builder.addPolicy(recordPolicy);
+            }
+        }
+
+        return builder;
+    }
 
     @BeforeAll
     static void beforeAll() {
@@ -69,29 +95,8 @@ public class TableAsyncClientTest extends TestBase {
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
+        tableClient = getClientBuilder(tableName, connectionString).buildAsyncClient();
 
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName);
-
-        if (interceptorManager.isPlaybackMode()) {
-            playbackClient = interceptorManager.getPlaybackClient();
-
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(HttpClient.createDefault());
-            if (!interceptorManager.isLiveMode()) {
-                recordPolicy = interceptorManager.getRecordPolicy();
-
-                builder.addPolicy(recordPolicy);
-            }
-
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
-        }
-
-        tableClient = builder.buildAsyncClient();
         tableClient.createTable().block(TIMEOUT);
     }
 
@@ -100,23 +105,7 @@ public class TableAsyncClientTest extends TestBase {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName2);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(HttpClient.createDefault());
-            if (!interceptorManager.isLiveMode()) {
-                builder.addPolicy(recordPolicy);
-            }
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
-        }
-
-        final TableAsyncClient tableClient2 = builder.buildAsyncClient();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, connectionString).buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(tableClient2.createTable())
@@ -130,23 +119,7 @@ public class TableAsyncClientTest extends TestBase {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName2);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(HttpClient.createDefault());
-            if (!interceptorManager.isLiveMode()) {
-                builder.addPolicy(recordPolicy);
-            }
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
-        }
-
-        final TableAsyncClient tableClient2 = builder.buildAsyncClient();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, connectionString).buildAsyncClient();
         final int expectedStatusCode = 204;
 
         // Act & Assert
@@ -221,7 +194,7 @@ public class TableAsyncClientTest extends TestBase {
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
                 final TableEntity entity = response.getValue();
-                Map<String, Object> properties = entity.getProperties();
+                final Map<String, Object> properties = entity.getProperties();
                 assertTrue(properties.get("BinaryTypeProperty") instanceof byte[]);
                 assertTrue(properties.get("BooleanTypeProperty") instanceof Boolean);
                 assertTrue(properties.get("DateTypeProperty") instanceof OffsetDateTime);
@@ -490,7 +463,7 @@ public class TableAsyncClientTest extends TestBase {
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
 
-        Map<String, Object> props = new HashMap<>();
+        final Map<String, Object> props = new HashMap<>();
         props.put("ByteField", bytes);
         props.put("BooleanField", b);
         props.put("DateTimeField", dateTime);
@@ -604,7 +577,7 @@ public class TableAsyncClientTest extends TestBase {
 
         StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
             .assertNext(entity -> {
-                Map<String, Object> properties = entity.getProperties();
+                final Map<String, Object> properties = entity.getProperties();
                 assertTrue(properties.containsKey("SubclassProperty"));
                 assertEquals("UpdatedValue", properties.get("SubclassProperty"));
             })
@@ -612,7 +585,6 @@ public class TableAsyncClientTest extends TestBase {
     }*/
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -630,7 +602,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesWithFilterAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -653,7 +624,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesWithSelectAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -680,7 +650,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesWithTopAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -702,7 +671,6 @@ public class TableAsyncClientTest extends TestBase {
 
     // Will not be supporting subclasses of TableEntity for the time being.
     /*@Test
-    @Tag("ListEntities")
     void listEntitiesSubclassAsync() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -720,7 +688,6 @@ public class TableAsyncClientTest extends TestBase {
     }*/
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsync() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -762,7 +729,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncAllActions() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValueCreate = testResourceNamer.randomName("rowKey", 20);
@@ -822,7 +788,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncWithFailingAction() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -837,7 +802,7 @@ public class TableAsyncClientTest extends TestBase {
         // Act & Assert
         StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
             .expectErrorMatches(e -> e instanceof TableTransactionFailedException
-                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("An action within the operation failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("DeleteEntity")
                 && e.getMessage().contains("partitionKey='" + partitionKeyValue)
@@ -846,7 +811,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncWithSameRowKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -860,7 +824,7 @@ public class TableAsyncClientTest extends TestBase {
         // Act & Assert
         StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
             .expectErrorMatches(e -> e instanceof TableTransactionFailedException
-                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("An action within the operation failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("CreateEntity")
                 && e.getMessage().contains("partitionKey='" + partitionKeyValue)
@@ -869,7 +833,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncWithDifferentPartitionKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String partitionKeyValue2 = testResourceNamer.randomName("partitionKey", 20);
@@ -885,7 +848,7 @@ public class TableAsyncClientTest extends TestBase {
         // Act & Assert
         StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
             .expectErrorMatches(e -> e instanceof TableTransactionFailedException
-                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("An action within the operation failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("CreateEntity")
                 && e.getMessage().contains("partitionKey='" + partitionKeyValue2)
@@ -894,7 +857,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("r");
@@ -920,7 +882,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("raud");
@@ -965,7 +926,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
@@ -987,7 +947,7 @@ public class TableAsyncClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             tableClientBuilder.httpClient(playbackClient);
         } else {
-            tableClientBuilder.httpClient(HttpClient.createDefault());
+            tableClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 tableClientBuilder.addPolicy(recordPolicy);
@@ -1006,6 +966,88 @@ public class TableAsyncClientTest extends TestBase {
 
         StepVerifier.create(tableAsyncClient.createEntityWithResponse(entity))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    public void setAndListAccessPolicies() {
+        OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        String permissions = "r";
+        TableAccessPolicy tableAccessPolicy = new TableAccessPolicy()
+            .setStartsOn(startTime)
+            .setExpiresOn(expiryTime)
+            .setPermissions(permissions);
+        String id = "testPolicy";
+        TableSignedIdentifier tableSignedIdentifier = new TableSignedIdentifier(id).setAccessPolicy(tableAccessPolicy);
+
+        StepVerifier.create(tableClient.setAccessPoliciesWithResponse(Collections.singletonList(tableSignedIdentifier)))
+            .assertNext(response -> assertEquals(204, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(tableClient.getAccessPolicies())
+            .assertNext(tableAccessPolicies -> {
+                assertNotNull(tableAccessPolicies);
+                assertNotNull(tableAccessPolicies.getIdentifiers());
+
+                TableSignedIdentifier signedIdentifier = tableAccessPolicies.getIdentifiers().get(0);
+
+                assertNotNull(signedIdentifier);
+
+                TableAccessPolicy accessPolicy = signedIdentifier.getAccessPolicy();
+
+                assertNotNull(accessPolicy);
+                assertEquals(startTime, accessPolicy.getStartsOn());
+                assertEquals(expiryTime, accessPolicy.getExpiresOn());
+                assertEquals(permissions, accessPolicy.getPermissions());
+                assertEquals(id, signedIdentifier.getId());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    public void setAndListMultipleAccessPolicies() {
+        OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        String permissions = "r";
+        TableAccessPolicy tableAccessPolicy = new TableAccessPolicy()
+            .setStartsOn(startTime)
+            .setExpiresOn(expiryTime)
+            .setPermissions(permissions);
+        String id1 = "testPolicy1";
+        String id2 = "testPolicy2";
+        List<TableSignedIdentifier> tableSignedIdentifiers = new ArrayList<>();
+        tableSignedIdentifiers.add(new TableSignedIdentifier(id1).setAccessPolicy(tableAccessPolicy));
+        tableSignedIdentifiers.add(new TableSignedIdentifier(id2).setAccessPolicy(tableAccessPolicy));
+
+        StepVerifier.create(tableClient.setAccessPoliciesWithResponse(tableSignedIdentifiers))
+            .assertNext(response -> assertEquals(204, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(tableClient.getAccessPolicies())
+            .assertNext(tableAccessPolicies -> {
+                assertNotNull(tableAccessPolicies);
+                assertNotNull(tableAccessPolicies.getIdentifiers());
+
+                assertEquals(2, tableAccessPolicies.getIdentifiers().size());
+                assertEquals(id1, tableAccessPolicies.getIdentifiers().get(0).getId());
+                assertEquals(id2, tableAccessPolicies.getIdentifiers().get(1).getId());
+
+                for (TableSignedIdentifier signedIdentifier : tableAccessPolicies.getIdentifiers()) {
+                    assertNotNull(signedIdentifier);
+
+                    TableAccessPolicy accessPolicy = signedIdentifier.getAccessPolicy();
+
+                    assertNotNull(accessPolicy);
+                    assertEquals(startTime, accessPolicy.getStartsOn());
+                    assertEquals(expiryTime, accessPolicy.getExpiresOn());
+                    assertEquals(permissions, accessPolicy.getPermissions());
+                }
+            })
             .expectComplete()
             .verify();
     }

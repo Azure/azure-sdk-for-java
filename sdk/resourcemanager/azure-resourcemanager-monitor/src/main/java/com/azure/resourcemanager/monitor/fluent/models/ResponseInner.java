@@ -17,7 +17,7 @@ public final class ResponseInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResponseInner.class);
 
     /*
-     * The integer value representing the cost of the query, for data case.
+     * The integer value representing the relative cost of the query.
      */
     @JsonProperty(value = "cost")
     private Integer cost;
@@ -40,13 +40,13 @@ public final class ResponseInner {
     private Duration interval;
 
     /*
-     * The namespace of the metrics been queried
+     * The namespace of the metrics being queried
      */
     @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
-     * The region of the resource been queried for metrics.
+     * The region of the resource being queried for metrics.
      */
     @JsonProperty(value = "resourceregion")
     private String resourceRegion;
@@ -58,7 +58,7 @@ public final class ResponseInner {
     private List<MetricInner> value;
 
     /**
-     * Get the cost property: The integer value representing the cost of the query, for data case.
+     * Get the cost property: The integer value representing the relative cost of the query.
      *
      * @return the cost value.
      */
@@ -67,7 +67,7 @@ public final class ResponseInner {
     }
 
     /**
-     * Set the cost property: The integer value representing the cost of the query, for data case.
+     * Set the cost property: The integer value representing the relative cost of the query.
      *
      * @param cost the cost value to set.
      * @return the ResponseInner object itself.
@@ -126,7 +126,7 @@ public final class ResponseInner {
     }
 
     /**
-     * Get the namespace property: The namespace of the metrics been queried.
+     * Get the namespace property: The namespace of the metrics being queried.
      *
      * @return the namespace value.
      */
@@ -135,7 +135,7 @@ public final class ResponseInner {
     }
 
     /**
-     * Set the namespace property: The namespace of the metrics been queried.
+     * Set the namespace property: The namespace of the metrics being queried.
      *
      * @param namespace the namespace value to set.
      * @return the ResponseInner object itself.
@@ -146,7 +146,7 @@ public final class ResponseInner {
     }
 
     /**
-     * Get the resourceRegion property: The region of the resource been queried for metrics.
+     * Get the resourceRegion property: The region of the resource being queried for metrics.
      *
      * @return the resourceRegion value.
      */
@@ -155,7 +155,7 @@ public final class ResponseInner {
     }
 
     /**
-     * Set the resourceRegion property: The region of the resource been queried for metrics.
+     * Set the resourceRegion property: The region of the resource being queried for metrics.
      *
      * @param resourceRegion the resourceRegion value to set.
      * @return the ResponseInner object itself.

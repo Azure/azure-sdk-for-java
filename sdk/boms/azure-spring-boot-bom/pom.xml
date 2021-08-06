@@ -5,7 +5,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-bom</artifactId>
-  <version>3.5.0</version>
+  <version>3.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-bom;current} -->
   <packaging>pom</packaging>
 
   <name>Azure Spring Boot BOM</name>
@@ -39,14 +39,14 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.boot.version>${project.version}</azure.spring.boot.version>
     <azure.spring.boot.integration.version>${project.version}</azure.spring.boot.integration.version>
-    <azure.core.version>1.17.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    <azure.identity.version>1.3.0</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-    <azure.keyvault.secret.version>4.2.8</azure.keyvault.secret.version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
-    <azure.msal.version>1.9.1</azure.msal.version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+    <azure.core.version>1.18.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    <azure.identity.version>1.3.3</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    <azure.keyvault.secret.version>4.3.1</azure.keyvault.secret.version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+    <azure.msal.version>1.10.1</azure.msal.version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     <azure.servicebus.jms.version>0.0.7</azure.servicebus.jms.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-    <azure.spring.data.cosmos.version>3.7.0</azure.spring.data.cosmos.version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
-    <azure.storage.blob.version>12.11.1</azure.storage.blob.version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
-    <azure.storage.fileshare.version>12.9.1</azure.storage.fileshare.version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+    <azure.spring.data.cosmos.version>3.9.0</azure.spring.data.cosmos.version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+    <azure.storage.blob.version>12.12.0</azure.storage.blob.version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+    <azure.storage.fileshare.version>12.10.0</azure.storage.fileshare.version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
   </properties>
 
   <issueManagement>

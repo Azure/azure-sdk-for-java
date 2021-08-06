@@ -5,7 +5,6 @@ stages:
     parameters:
       ServiceDirectory: formrecognizer
       timeoutInMinutes: 120 # how long to run the job before automatically cancelling
-      TestMode: RECORD # to make sure recordedData is not null but still testing LIVE mode
       Artifacts:
         - name: azure-ai-formrecognizer
           groupId: com.azure

@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
@@ -52,30 +52,30 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
-                                    <shadedPattern>com.azure.keyvault.jca.com.fasterxml.jackson</shadedPattern>
+                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.com.fasterxml.jackson</shadedPattern>
                                     <excludes>
                                         <exclude>com/fasterxml/jackson/databind/jsonFormatVisitors/**</exclude> <!-- Avoid upper case in package name-->
                                     </excludes>
                                 </relocation>
                                 <relocation>
                                   <pattern>com.fasterxml.jackson.databind.jsonFormatVisitors</pattern>
-                                  <shadedPattern>com.azure.keyvault.jca.com.fasterxml.jackson.databind.json.format.visitors</shadedPattern> <!-- Avoid upper case in package name-->
+                                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.com.fasterxml.jackson.databind.json.format.visitors</shadedPattern> <!-- Avoid upper case in package name-->
                                 </relocation>
                                 <relocation>
                                     <pattern>org.apache.commons</pattern>
-                                    <shadedPattern>com.azure.keyvault.jca.org.apache.commons</shadedPattern>
+                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.apache.commons</shadedPattern>
                                 </relocation>
                               <relocation>
                                 <pattern>org.apache.http</pattern>
-                                <shadedPattern>com.azure.keyvault.jca.org.apache.http</shadedPattern>
+                                <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.apache.http</shadedPattern>
                               </relocation>
                                 <relocation>
                                     <pattern>mozilla</pattern>
-                                    <shadedPattern>com.azure.keyvault.jca.mozilla</shadedPattern>
+                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.mozilla</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.slf4j</pattern>
-                                    <shadedPattern>com.azure.keyvault.jca.org.slf4j</shadedPattern>
+                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
                                 </relocation>
                             </relocations>
                             <transformers>
@@ -143,7 +143,7 @@
                                 <include>com.fasterxml.jackson.core:jackson-databind:[2.12.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.2.1]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                                 <include>org.apache.httpcomponents:httpclient:[4.5.13]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-                                <include>org.slf4j:slf4j-nop:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
+                                <include>org.slf4j:slf4j-nop:[1.7.31]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>
@@ -195,7 +195,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
+            <version>1.7.31</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
         </dependency>
         <dependency>
           <groupId>org.mockito</groupId>
@@ -206,7 +206,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+          <version>1.6.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
           <scope>test</scope>
         </dependency>
     </dependencies>

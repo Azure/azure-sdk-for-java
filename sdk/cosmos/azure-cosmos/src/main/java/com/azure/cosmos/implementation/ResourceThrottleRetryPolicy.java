@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,21 +28,40 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     private int currentAttemptCount;
     private Duration cumulativeRetryDelay;
     private RetryContext retryContext;
+    private final boolean retryOnClientSideThrottledBatchRequests;
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, RetryContext retryContext) {
-        this(maxAttemptCount, maxWaitTime);
+    public ResourceThrottleRetryPolicy(
+        int maxAttemptCount,
+        Duration maxWaitTime,
+        RetryContext retryContext,
+        boolean retryOnClientSideThrottledBatchRequests) {
+
+        this(maxAttemptCount, maxWaitTime, retryOnClientSideThrottledBatchRequests);
         this.retryContext = retryContext;
     }
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime) {
-        this(maxAttemptCount, maxWaitTime, 1);
+    public ResourceThrottleRetryPolicy(
+        int maxAttemptCount,
+        Duration maxWaitTime,
+        boolean retryOnClientSideThrottledBatchRequests) {
+
+        this(maxAttemptCount, maxWaitTime, 1, retryOnClientSideThrottledBatchRequests);
     }
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount) {
-        this(maxAttemptCount, DEFAULT_MAX_WAIT_TIME_IN_SECONDS, 1);
+    public ResourceThrottleRetryPolicy(int maxAttemptCount, boolean retryOnClientSideThrottledBatchRequests) {
+        this(
+            maxAttemptCount,
+            DEFAULT_MAX_WAIT_TIME_IN_SECONDS,
+            1,
+            retryOnClientSideThrottledBatchRequests);
     }
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, int backoffDelayFactor) {
+    public ResourceThrottleRetryPolicy(
+        int maxAttemptCount,
+        Duration maxWaitTime,
+        int backoffDelayFactor,
+        boolean retryOnClientSideThrottledBatchRequests) {
+
         Utils.checkStateOrThrow(maxWaitTime.getSeconds() <= Integer.MAX_VALUE / 1000, "maxWaitTime", "maxWaitTime must not be larger than " + Integer.MAX_VALUE / 1000);
 
         this.maxAttemptCount = maxAttemptCount;
@@ -52,6 +69,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         this.maxWaitTime = maxWaitTime;
         this.currentAttemptCount = 0;
         this.cumulativeRetryDelay = Duration.ZERO;
+        this.retryOnClientSideThrottledBatchRequests = retryOnClientSideThrottledBatchRequests;
     }
 
     @Override
@@ -65,6 +83,12 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                 this.currentAttemptCount,
                 exception);
             return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
+        }
+
+        if (!retryOnClientSideThrottledBatchRequests &&
+            dce.getSubStatusCode() == HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE) {
+
+            return Mono.just(ShouldRetryResult.noRetry());
         }
 
         if (this.currentAttemptCount < this.maxAttemptCount &&

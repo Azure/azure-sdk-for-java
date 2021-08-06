@@ -19,5 +19,12 @@ function Run-Scenario {
     }
 }
 
-Run-Scenario "700m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
-Run-Scenario "700m" "uploadblob --warmup 0 --duration 1 --size 1048576000"
+$env:STORAGE_CONNECTION_STRING=$env:PRIMARY_STORAGE_CONNECTION_STRING
+Run-Scenario "600m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
+Run-Scenario "600m" "uploadblob --warmup 0 --duration 1 --size 1048576000"
+Run-Scenario "400m" "uploadblob --warmup 0 --duration 1 --size 1048576000 --sync"
+Run-Scenario "400m" "uploadblobnolength --warmup 0 --duration 1 --size 1048576000 --sync"
+
+$env:STORAGE_CONNECTION_STRING=$env:STORAGE_DATA_LAKE_CONNECTION_STRING
+Run-Scenario "200m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000 --sync"
+Run-Scenario "300m" "uploadfiledatalake --warmup 0 --duration 1 --size 1048576000"

@@ -6,7 +6,7 @@
 # 1. Update ROOT_POMS' version manually.
 # 2. Run command "python .\sdk\spring\scripts\update_spring_managed_external_dependencies.py".
 # 3. Run command "python .\eng\versioning\update_versions.py --ut external_dependency --sr".
-# 4. Fix errors reported by command ".\eng\versioning\pom_file_version_scanner.ps1".
+# 4. Run command ".\eng\versioning\pom_file_version_scanner.ps1 -Debug". If there is error, fix it.
 
 import argparse
 import os
@@ -24,9 +24,9 @@ from pom import Pom
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 ROOT_POMS = [
-    'org.springframework.boot:spring-boot-starter-parent;2.5.0',
-    'org.springframework.boot:spring-boot-dependencies;2.5.0',
-    'org.springframework.cloud:spring-cloud-dependencies;2020.0.2'
+    'org.springframework.boot:spring-boot-starter-parent;2.5.2',
+    'org.springframework.boot:spring-boot-dependencies;2.5.2',
+    'org.springframework.cloud:spring-cloud-dependencies;2020.0.3'
 ]
 SKIP_IDS = [
     'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271

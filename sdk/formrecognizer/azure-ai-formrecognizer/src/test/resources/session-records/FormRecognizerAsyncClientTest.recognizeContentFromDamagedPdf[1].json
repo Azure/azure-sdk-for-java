@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//layout/analyze",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fb8de674-9b8d-4450-932f-5c59b3fa5ced",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4b60cb39-0b0b-4456-81e5-1ccc91009888",
       "Content-Type" : "application/pdf"
     },
     "Response" : {
       "content-length" : "270",
-      "x-envoy-upstream-service-time" : "4",
+      "x-envoy-upstream-service-time" : "8",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4cd08549-7859-4298-9336-4bb36796024e",
+      "apim-request-id" : "611a989e-ac9a-497a-a4d9-ef53a18e4f46",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidImage\",\"message\":\"The file submitted couldn't be parsed. This can be due to one of the following reasons: the file format is not supported ( Supported formats include JPEG, PNG, BMP, PDF and TIFF), the file is corrupted or password protected.\"}}",
-      "Date" : "Tue, 11 May 2021 21:16:58 GMT",
+      "Date" : "Wed, 07 Jul 2021 06:31:30 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -8,6 +8,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -43,7 +44,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withBootDiagnostics()
                 .create();
 
@@ -69,7 +70,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withBootDiagnostics(creatableStorageAccount)
                 .create();
         Assertions.assertNotNull(virtualMachine);
@@ -100,7 +101,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withBootDiagnostics(storageAccount)
                 .create();
 
@@ -123,7 +124,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withBootDiagnostics()
                 .create();
 
@@ -151,7 +152,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks() // The implicit storage account for OS disk should be used for boot diagnostics as
                                       // well
                 .withBootDiagnostics()
@@ -191,7 +192,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withBootDiagnostics()
                 .withExistingStorageAccount(
@@ -217,7 +218,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .create();
 
@@ -267,7 +268,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withBootDiagnostics(
                     creatableStorageAccount) // This storage account should be used for BDiagnostics not OS disk storage
@@ -284,5 +285,36 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
                     .osUnmanagedDiskVhdUri()
                     .toLowerCase()
                     .startsWith(virtualMachine.bootDiagnosticsStorageUri().toLowerCase()));
+    }
+
+    @Test
+    public void canEnableBootDiagnosticsOnManagedStorageAccount() {
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("jvuser")
+                .withSsh(sshPublicKey())
+                .withBootDiagnosticsOnManagedStorageAccount()
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .create();
+
+        Assertions.assertNotNull(virtualMachine);
+        Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());
+        Assertions.assertNull(virtualMachine.bootDiagnosticsStorageUri());
+
+        virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
+        virtualMachine.update()
+            .withNewDataDisk(10)
+            .apply();
+
+        Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());
+        Assertions.assertNull(virtualMachine.bootDiagnosticsStorageUri());
     }
 }

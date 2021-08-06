@@ -24,8 +24,8 @@ import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import reactor.util.context.Context;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link KeyAsyncClient}
@@ -146,8 +146,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#beginDeleteKey(String)} and
-     * {@link KeyAsyncClient#beginDeleteKey(String, Duration)}.
+     * Generates a code sample for using {@link KeyAsyncClient#beginDeleteKey(String)}.
      */
     public void deleteKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
@@ -159,15 +158,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                 System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
         // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#String
-
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKey#String-Duration
-        keyAsyncClient.beginDeleteKey("keyName", Duration.ofSeconds(1))
-            .subscribe(pollResponse -> {
-                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
-                System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
-                System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
-            });
-        // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#String-Duration
     }
 
     /**
@@ -394,8 +384,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#beginRecoverDeletedKey(String)} and
-     * {@link KeyAsyncClient#beginRecoverDeletedKey(String, Duration)}.
+     * Generates a code sample for using {@link KeyAsyncClient#beginRecoverDeletedKey(String)}.
      */
     public void recoverDeletedKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
@@ -407,15 +396,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                 System.out.println("Recover Key Type: " + pollResponse.getValue().getKeyType());
             });
         // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String
-
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String-Duration
-        keyAsyncClient.beginRecoverDeletedKey("deletedKeyName", Duration.ofSeconds(1))
-            .subscribe(pollResponse -> {
-                System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
-                System.out.println("Recover Key Name: " + pollResponse.getValue().getName());
-                System.out.println("Recover Key Type: " + pollResponse.getValue().getKeyType());
-            });
-        // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String-Duration
     }
 
     /**
@@ -516,6 +496,28 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                         keyResponse.getName(),
                         keyResponse.getKeyType(), keyResponse.getProperties().getVersion())));
         // END: com.azure.security.keyvault.keys.async.keyclient.listKeyVersions
+    }
+
+    /**
+     * Generates code samples for using {@link KeyAsyncClient#getRandomBytes(int)} and
+     * {@link KeyAsyncClient#getRandomBytesWithResponse(int)}.
+     */
+    public void getRandomBytes() {
+        KeyAsyncClient keyAsyncClient = createAsyncClient();
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int
+        int amount = 16;
+        keyAsyncClient.getRandomBytes(amount)
+            .subscribe(randomBytes ->
+                System.out.printf("Retrieved %d random bytes: %s%n", amount, Arrays.toString(randomBytes.getBytes())));
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int
+
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
+        int amountOfBytes = 16;
+        keyAsyncClient.getRandomBytesWithResponse(amountOfBytes).subscribe(response ->
+            System.out.printf("Response received successfully with status code: %d. Retrieved %d random bytes: %s%n",
+                response.getStatusCode(), amountOfBytes, Arrays.toString(response.getValue().getBytes())));
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
     }
 
     /**

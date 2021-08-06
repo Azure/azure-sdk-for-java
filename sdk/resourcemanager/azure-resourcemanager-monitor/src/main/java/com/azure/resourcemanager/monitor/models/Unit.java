@@ -4,77 +4,64 @@
 
 package com.azure.resourcemanager.monitor.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for Unit. */
-public enum Unit {
-    /** Enum value Count. */
-    COUNT("Count"),
+public final class Unit extends ExpandableStringEnum<Unit> {
+    /** Static value Count for Unit. */
+    public static final Unit COUNT = fromString("Count");
 
-    /** Enum value Bytes. */
-    BYTES("Bytes"),
+    /** Static value Bytes for Unit. */
+    public static final Unit BYTES = fromString("Bytes");
 
-    /** Enum value Seconds. */
-    SECONDS("Seconds"),
+    /** Static value Seconds for Unit. */
+    public static final Unit SECONDS = fromString("Seconds");
 
-    /** Enum value CountPerSecond. */
-    COUNT_PER_SECOND("CountPerSecond"),
+    /** Static value CountPerSecond for Unit. */
+    public static final Unit COUNT_PER_SECOND = fromString("CountPerSecond");
 
-    /** Enum value BytesPerSecond. */
-    BYTES_PER_SECOND("BytesPerSecond"),
+    /** Static value BytesPerSecond for Unit. */
+    public static final Unit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
-    /** Enum value Percent. */
-    PERCENT("Percent"),
+    /** Static value Percent for Unit. */
+    public static final Unit PERCENT = fromString("Percent");
 
-    /** Enum value MilliSeconds. */
-    MILLI_SECONDS("MilliSeconds"),
+    /** Static value MilliSeconds for Unit. */
+    public static final Unit MILLI_SECONDS = fromString("MilliSeconds");
 
-    /** Enum value ByteSeconds. */
-    BYTE_SECONDS("ByteSeconds"),
+    /** Static value ByteSeconds for Unit. */
+    public static final Unit BYTE_SECONDS = fromString("ByteSeconds");
 
-    /** Enum value Unspecified. */
-    UNSPECIFIED("Unspecified"),
+    /** Static value Unspecified for Unit. */
+    public static final Unit UNSPECIFIED = fromString("Unspecified");
 
-    /** Enum value Cores. */
-    CORES("Cores"),
+    /** Static value Cores for Unit. */
+    public static final Unit CORES = fromString("Cores");
 
-    /** Enum value MilliCores. */
-    MILLI_CORES("MilliCores"),
+    /** Static value MilliCores for Unit. */
+    public static final Unit MILLI_CORES = fromString("MilliCores");
 
-    /** Enum value NanoCores. */
-    NANO_CORES("NanoCores"),
+    /** Static value NanoCores for Unit. */
+    public static final Unit NANO_CORES = fromString("NanoCores");
 
-    /** Enum value BitsPerSecond. */
-    BITS_PER_SECOND("BitsPerSecond");
-
-    /** The actual serialized value for a Unit instance. */
-    private final String value;
-
-    Unit(String value) {
-        this.value = value;
-    }
+    /** Static value BitsPerSecond for Unit. */
+    public static final Unit BITS_PER_SECOND = fromString("BitsPerSecond");
 
     /**
-     * Parses a serialized value to a Unit instance.
+     * Creates or finds a Unit from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed Unit object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding Unit.
      */
     @JsonCreator
-    public static Unit fromString(String value) {
-        Unit[] items = Unit.values();
-        for (Unit item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static Unit fromString(String name) {
+        return fromString(name, Unit.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known Unit values. */
+    public static Collection<Unit> values() {
+        return values(Unit.class);
     }
 }
