@@ -10,6 +10,7 @@ import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_INPUTFILE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_MODE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OUTPUTFILE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_POMFILE;
+import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_REPORTFILE;
 import static com.azure.tools.bomgenerator.Utils.GENERATE_MODE;
 import static com.azure.tools.bomgenerator.Utils.validateNotNullOrEmpty;
 import static com.azure.tools.bomgenerator.Utils.validateValues;
@@ -49,6 +50,11 @@ public class Main {
                         case COMMANDLINE_POMFILE:
                             validateNotNullOrEmpty(argName, argValue);
                             generator.setPomFileName(argValue);
+                            break;
+
+                        case COMMANDLINE_REPORTFILE:
+                            validateNotNullOrEmpty(argName, argValue);
+                            generator.setReportFileName(argValue);
                             break;
 
                         case COMMANDLINE_MODE:

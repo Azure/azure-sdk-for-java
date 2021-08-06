@@ -861,7 +861,7 @@ public final class SearchAsyncClient {
         }
 
         // Answer and count, format it as the service expects.
-        return String.format("%s|count-%d", answer, answersCount);
+        return answer + "|count-" + answersCount;
     }
 
     /**

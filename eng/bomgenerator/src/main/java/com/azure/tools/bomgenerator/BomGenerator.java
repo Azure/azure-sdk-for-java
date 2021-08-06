@@ -46,6 +46,7 @@ public class BomGenerator {
     private String inputFileName;
     private String pomFileName;
     private String overriddenInputDependenciesFileName;
+    private String reportFileName;
     private String mode;
 
     private static Logger logger = LoggerFactory.getLogger(BomGenerator.class);
@@ -86,6 +87,14 @@ public class BomGenerator {
         this.pomFileName = pomFileName;
     }
 
+    public String getReportFileName() {
+        return this.reportFileName;
+    }
+
+    public void setReportFileName(String reportFileName) {
+        this.reportFileName = reportFileName;
+    }
+
     public String getMode() {
         return this.mode;
     }
@@ -112,7 +121,7 @@ public class BomGenerator {
 
     private void validate() {
         var inputDependencies = parsePomFileContent(this.pomFileName);
-        DependencyAnalyzer analyzer = new DependencyAnalyzer(inputDependencies, null);
+        DependencyAnalyzer analyzer = new DependencyAnalyzer(inputDependencies, null, this.reportFileName);
         analyzer.validate();
     }
 
@@ -122,12 +131,12 @@ public class BomGenerator {
 
         // 1. Create the initial tree and reduce conflicts.
         // 2. And pick only those dependencies. that were in the input set, since they become the new roots of n-ary tree.
-        DependencyAnalyzer analyzer = new DependencyAnalyzer(inputDependencies, externalDependencies);
+        DependencyAnalyzer analyzer = new DependencyAnalyzer(inputDependencies, externalDependencies, this.reportFileName);
         analyzer.reduce();
         Collection<BomDependency> outputDependencies = analyzer.getBomEligibleDependencies();
 
         // 2. Create the new tree for the BOM.
-        analyzer = new DependencyAnalyzer(outputDependencies, externalDependencies);
+        analyzer = new DependencyAnalyzer(outputDependencies, externalDependencies, this.reportFileName);
         boolean validationFailed = analyzer.validate();
         outputDependencies = analyzer.getBomEligibleDependencies();
 
