@@ -62,7 +62,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-okhttp</artifactId>
-          <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+          <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
