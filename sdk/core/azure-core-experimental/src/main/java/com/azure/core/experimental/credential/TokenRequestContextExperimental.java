@@ -5,10 +5,8 @@ package com.azure.core.experimental.credential;
 
 import com.azure.core.credential.TokenRequestContext;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Contains details of a request to get a token.
@@ -29,7 +27,7 @@ public class TokenRequestContextExperimental extends TokenRequestContext {
      * @param tenantId the tenant to be used when retrieving the token.
      * @return the updated TokenRequestContext itself
      */
-    public TokenRequestContext setTenantId(String tenantId) {
+    public TokenRequestContextExperimental setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -43,13 +41,26 @@ public class TokenRequestContextExperimental extends TokenRequestContext {
         return this.tenantId;
     }
 
-
+    /**
+     * Set the additional claims to be included in the token.
+     *
+     * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
+     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
+     *
+     * @param claims the additional claims to be included in the token.
+     * @return the updated TokenRequestContext itself
+     */
     @Override
     public TokenRequestContextExperimental setClaims(String claims) {
         super.setClaims(claims);
         return this;
     }
 
+    /**
+     * Sets the scopes required for the token.
+     * @param scopes the scopes required for the token
+     * @return the TokenRequestContext itself
+     */
     @Override
     public TokenRequestContextExperimental setScopes(List<String> scopes) {
         super.setScopes(scopes);
