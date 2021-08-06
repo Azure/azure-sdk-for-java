@@ -1,5 +1,6 @@
 # Azure Identity client library for Java
 The Azure Identity library provides [Azure Active Directory (AAD)](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) token authentication through a set of convenient [TokenCredential](https://docs.microsoft.com/en-us/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations. It enables Azure SDK clients to authenticate with AAD, while also allowing other Java apps to authenticate with AAD work and school accounts, Microsoft personal accounts (MSA), and other Identity providers through the [AAD B2C](https://docs.microsoft.com/azure/active-directory-b2c/overview) service.
+
   [Source code][source] | [API reference documentation][javadoc] | [Azure Active Directory documentation][aad_doc]
 
 ## Getting started
