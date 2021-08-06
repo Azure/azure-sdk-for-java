@@ -43,6 +43,7 @@ private case class ItemsPartitionReader
     Some(cosmosClientStateHandle))
 
   private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
+  cosmosAsyncContainer.openConnectionsAndInitCaches().block()
 
   private val queryOptions = new CosmosQueryRequestOptions()
 
