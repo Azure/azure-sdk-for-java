@@ -61,7 +61,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
+      <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

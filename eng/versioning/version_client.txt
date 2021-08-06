@@ -62,7 +62,7 @@ com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.19.0;1.20.0-beta.1
 com.azure:azure-core-amqp;2.3.0;2.4.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-experimental;1.0.0-beta.15;1.0.0-beta.16
+com.azure:azure-core-experimental;1.0.0-beta.16;1.0.0-beta.17
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-http-netty;1.10.1;1.10.2
 com.azure:azure-core-http-okhttp;1.7.1;1.7.2
