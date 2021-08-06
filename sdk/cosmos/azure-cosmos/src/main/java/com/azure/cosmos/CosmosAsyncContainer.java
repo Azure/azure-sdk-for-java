@@ -445,7 +445,7 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
-        String times = System.getProperty("COSMOS.OPEN_ASYNC_RETIES_COUNT");
+        String times = System.getProperty("COSMOS.OPEN_ASYNC_RETRIES_COUNT");
         int count = 10;
         if (!StringUtils.isEmpty(times)) {
             count = Integer.parseInt(times);
