@@ -22,7 +22,7 @@ import java.util.Objects;
  * Signing Key used to sign requests to the attestation service.
  */
 @Fluent
-public class AttestationSigningKey {
+final public class AttestationSigningKey {
 
     /**
      * Creates a new instance of an AttestationSigningKey.

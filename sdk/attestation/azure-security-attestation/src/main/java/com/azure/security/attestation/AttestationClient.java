@@ -10,8 +10,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
-import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
+import com.azure.security.attestation.implementation.models.AttestOpenEnclaveOptionsImpl;
+import com.azure.security.attestation.models.AttestOpenEnclaveOptions;
+import com.azure.security.attestation.models.AttestSgxEnclaveOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 
@@ -83,22 +84,37 @@ public final class AttestationClient {
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param report - OpenEnclave generated report.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResult attestOpenEnclave(AttestOpenEnclaveRequest request) {
-        return asyncClient.attestOpenEnclave(request).block();
+    public AttestationResult attestOpenEnclave(byte[] report) {
+        return asyncClient.attestOpenEnclave(new AttestOpenEnclaveOptionsImpl().setReport(report)).block();
     }
 
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param options Attestation options for Intel SGX enclaves.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttestationResult attestOpenEnclave(AttestOpenEnclaveOptions options) {
+        return asyncClient.attestOpenEnclave(options).block();
+    }
+
+    /**
+     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param report OpenEnclave generated report.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -107,23 +123,73 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResult> attestOpenEnclaveWithResponse(
-            AttestOpenEnclaveRequest request, Context context) {
-        return asyncClient.attestOpenEnclaveWithResponse(request, context).block();
+        byte[] report, Context context) {
+        return asyncClient.attestOpenEnclaveWithResponse(report, context).block();
     }
 
     /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param options Attestation request for Intel SGX enclaves.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResult attestSgxEnclave(AttestSgxEnclaveRequest request) {
-        return asyncClient.attestSgxEnclave(request).block();
+    public Response<AttestationResult> attestOpenEnclaveWithResponse(
+        AttestOpenEnclaveOptions options, Context context) {
+        return asyncClient.attestOpenEnclaveWithResponse(options, context).block();
+    }
+
+    /**
+     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param quote SGX Quote to attest.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttestationResult attestSgxEnclave(byte[] quote) {
+        return asyncClient.attestSgxEnclave(quote).block();
+    }
+
+
+    /**
+     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param options Attestation options for Intel SGX enclaves.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttestationResult attestSgxEnclave(AttestSgxEnclaveOptions options) {
+        return asyncClient.attestSgxEnclave(options).block();
+    }
+
+    /**
+     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param quote Intel SGX Quote to validate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AttestationResult> attestSgxEnclaveWithResponse(
+        byte[] quote, Context context) {
+        return asyncClient.attestSgxEnclaveWithResponse(quote, context).block();
     }
 
     /**
@@ -139,7 +205,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResult> attestSgxEnclaveWithResponse(
-            AttestSgxEnclaveRequest request, Context context) {
+        AttestSgxEnclaveOptions request, Context context) {
         return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }
 

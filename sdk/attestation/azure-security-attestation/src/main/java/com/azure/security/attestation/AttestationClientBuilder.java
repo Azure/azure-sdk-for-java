@@ -89,7 +89,6 @@ public final class AttestationClientBuilder {
         return this;
     }
 
-
     /**
      * Sets The HTTP pipeline to send requests through.
      *

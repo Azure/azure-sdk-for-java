@@ -11,33 +11,41 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.implementation.SigningCertificatesImpl;
+import com.azure.security.attestation.implementation.models.AttestOpenEnclaveOptionsImpl;
+import com.azure.security.attestation.implementation.models.AttestSgxEnclaveOptionsImpl;
 import com.azure.security.attestation.implementation.models.AttestationSignerImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.azure.security.attestation.implementation.models.DataType;
 import com.azure.security.attestation.implementation.models.InitTimeData;
 import com.azure.security.attestation.implementation.models.RuntimeData;
-import com.azure.security.attestation.models.AttestOpenEnclaveRequest;
-import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
+import com.azure.security.attestation.models.AttestOpenEnclaveOptions;
+import com.azure.security.attestation.models.AttestSgxEnclaveOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationToken;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidParameterException;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
-/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
+/**
+ * The AttestationAsyncClient implements the functionality required by the "Attest" family of APIs.
+ *
+ */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class AttestationAsyncClient {
     private final AttestationsImpl attestImpl;
     private final MetadataConfigurationsImpl metadataImpl;
     private final SigningCertificatesImpl signerImpl;
+    private ClientLogger logger;
 
     /**
      * Initializes an instance of Attestations client.
@@ -48,6 +56,7 @@ public final class AttestationAsyncClient {
         this.attestImpl = clientImpl.getAttestations();
         this.metadataImpl = clientImpl.getMetadataConfigurations();
         this.signerImpl = clientImpl.getSigningCertificates();
+        this.logger = new ClientLogger(AttestationAsyncClient.class);
     }
 
     /**
@@ -95,7 +104,6 @@ public final class AttestationAsyncClient {
      *
      * @return Returns an array of {@link AttestationSigner} objects.
      */
-
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationSigner[]> getAttestationSigners() {
         return withContext(context -> this.getAttestationSignersWithResponse(context))
@@ -110,6 +118,7 @@ public final class AttestationAsyncClient {
      *
      * @return Returns an array of {@link AttestationSigner} objects.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationSigner[]>> getAttestationSignersWithResponse() {
         return withContext(context -> this.getAttestationSignersWithResponse(context));
     }
@@ -128,19 +137,50 @@ public final class AttestationAsyncClient {
             .map(response -> Utilities.generateResponseFromModelType(response, AttestationSignerImpl.attestationSignersFromJwks(response.getValue())));
     }
 
+
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request) {
-        return withContext(context -> this.attestOpenEnclaveWithResponse(request, context));
+    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(byte[] report) {
+        return this.attestOpenEnclaveWithResponse(new AttestOpenEnclaveOptionsImpl().setReport(report));
+    }
+
+    /**
+     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param options Attestation options for attesting SGX enclaves.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestOpenEnclaveOptions options) {
+        return withContext(context -> this.attestOpenEnclaveWithResponse(options, context));
+    }
+
+    /**
+     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param report OpenEnclave generated SGX report.
+     * @param context Context for request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(byte[] report, Context context) {
+        return this.attestOpenEnclaveWithResponse(new AttestOpenEnclaveOptionsImpl().setReport(report), context);
     }
 
 
@@ -148,18 +188,23 @@ public final class AttestationAsyncClient {
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param options Attestation options for Intel SGX enclaves.
      * @param context - Context for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestOpenEnclaveRequest request, Context context) {
+    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestOpenEnclaveOptions options, Context context) {
         // Ensure that the incoming request makes sense.
-        request.validate();
+        AttestOpenEnclaveOptionsImpl optionsImpl = null;
+        options.validate();
+        if (!(options instanceof AttestOpenEnclaveOptionsImpl)) {
+            logger.logExceptionAsError(new InvalidParameterException("AttestOpenEnclaveOptions must be an instance of AttestOpenEnclaveOptionsImpl"));
+        }
+        optionsImpl = (AttestOpenEnclaveOptionsImpl) options;
 
-        return this.attestImpl.attestOpenEnclaveWithResponseAsync(openEnclaveRequestToInternal(request), context)
+        return this.attestImpl.attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestRequest(), context)
             // Create an AttestationToken from the raw response from the service.
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             // Extract the AttestationResult from the AttestationToken.
@@ -167,35 +212,34 @@ public final class AttestationAsyncClient {
     }
 
     /**
-     * Returns an internal type from a public type.
-     * @return implementation type.
-     */
-    private com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest openEnclaveRequestToInternal(AttestOpenEnclaveRequest request) {
-
-        return new com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest()
-            .setDraftPolicyForAttestation(request.getDraftPolicyForAttestation())
-            .setRuntimeData(request.getRuntimeData() != null ? new RuntimeData()
-                .setData(request.getRuntimeData())
-                .setDataType(DataType.fromString(request.getRunTimeDataType())) : null)
-            .setInitTimeData(request.getInitTimeData() != null ? new InitTimeData()
-                .setData(request.getInitTimeData())
-                .setDataType(DataType.fromString(request.getInitTimeDataType())) : null)
-            .setReport(request.getReport());
-    }
-
-    /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param report OpenEnclave generated report.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResult> attestOpenEnclave(AttestOpenEnclaveRequest request) {
-        return withContext(context -> attestOpenEnclaveWithResponse(request, context))
+    public Mono<AttestationResult> attestOpenEnclave(byte[] report) {
+        return withContext(context -> attestOpenEnclaveWithResponse(report, context))
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param options Attestation options for Intel SGX enclaves.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AttestationResult> attestOpenEnclave(AttestOpenEnclaveOptions options) {
+        return withContext(context -> attestOpenEnclaveWithResponse(options, context))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -203,30 +247,69 @@ public final class AttestationAsyncClient {
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param quote Attestation options for Intel SGX enclaves.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request) {
-        return withContext(context -> attestSgxEnclaveWithResponse(request, context));
+    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote) {
+        return attestSgxEnclaveWithResponse(new AttestSgxEnclaveOptionsImpl().setQuote(quote));
     }
 
     /**
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param options Attestation options for Intel SGX enclaves.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestSgxEnclaveOptions options) {
+        return withContext(context -> attestSgxEnclaveWithResponse(options, context));
+    }
+
+    /**
+     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param quote Attestation options for Intel SGX enclaves.
+     * @param context Context for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote, Context context) {
+        return attestSgxEnclaveWithResponse(new AttestSgxEnclaveOptionsImpl().setQuote(quote), context);
+    }
+
+    /**
+     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param options Attestation request for Intel SGX enclaves.
      * @param context - Context for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestSgxEnclaveRequest request, Context context) {
-        return this.attestImpl.attestSgxEnclaveWithResponseAsync(sgxEnclaveRequestToInternal(request), context)
+    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestSgxEnclaveOptions options, Context context) {
+        // Ensure that the incoming request makes sense.
+        AttestSgxEnclaveOptionsImpl optionsImpl = null;
+        options.validate();
+        if (!(options instanceof AttestSgxEnclaveOptionsImpl)) {
+            logger.logExceptionAsError(new InvalidParameterException("AttestSgxEnclaveRequest must be an instance of AttestSgxEnclaveRequestImpl"));
+        }
+        optionsImpl = (AttestSgxEnclaveOptionsImpl) options;
+
+        return this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestRequest(), context)
             .map(response -> {
                 AttestationToken token = new AttestationTokenImpl(response.getValue().getToken());
                 return Utilities.generateAttestationResponseFromModelType(response, token, token.getBody(AttestationResult.class));
@@ -237,32 +320,31 @@ public final class AttestationAsyncClient {
      * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
-     * @param request Attestation request for Intel SGX enclaves.
+     * @param options Attestation options for Intel SGX enclaves.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResult> attestSgxEnclave(AttestSgxEnclaveRequest request) {
-        return withContext(context -> attestSgxEnclaveWithResponse(request, context))
+    public Mono<AttestationResult> attestSgxEnclave(AttestSgxEnclaveOptions options) {
+        return withContext(context -> attestSgxEnclaveWithResponse(options, context))
             .flatMap(FluxUtil::toMono);
     }
-
     /**
-     * Returns an internal type from a public type.
-     * @return implementation type.
+     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param quote SGX Quote to attest.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
      */
-    private com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest sgxEnclaveRequestToInternal(AttestSgxEnclaveRequest request) {
-        return new com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest()
-            .setDraftPolicyForAttestation(request.getDraftPolicyForAttestation())
-            .setRuntimeData(request.getRuntimeData() != null ? new RuntimeData()
-                .setData(request.getRuntimeData())
-                .setDataType(DataType.fromString(request.getRuntimeDataType())) : null)
-            .setInitTimeData(request.getInitTimeData() != null ? new InitTimeData()
-                .setData(request.getInitTimeData())
-                .setDataType(DataType.fromString(request.getInitTimeDataType())) : null)
-            .setQuote(request.getQuote());
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AttestationResult> attestSgxEnclave(byte[] quote) {
+        return withContext(context -> attestSgxEnclaveWithResponse(quote, context))
+            .flatMap(FluxUtil::toMono);
     }
 
 

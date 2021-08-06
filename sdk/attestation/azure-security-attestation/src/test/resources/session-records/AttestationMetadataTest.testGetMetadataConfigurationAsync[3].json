@@ -11,9 +11,9 @@
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-a8f629c78d162f93488ec3ffb773b4ea-0000000000000000-00",
+      "x-ms-request-id" : "00-5ae9f6f46640c703e214fabdb868b470-0000000000000000-00",
       "Body" : "{\"response_types_supported\":[\"token\",\"none\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"revocation_endpoint\":\"https://jalarryoattestationaad.wus.attest.azure.net/revoke\",\"issuer\":\"https://jalarryoattestationaad.wus.attest.azure.net\",\"jwks_uri\":\"https://jalarryoattestationaad.wus.attest.azure.net/certs\",\"claims_supported\":[\"cnf\",\"nonce\",\"x-ms-ver\",\"x-ms-attestation-type\",\"x-ms-policy-hash\",\"x-ms-policy-signer\",\"x-ms-sgx-is-debuggable\",\"x-ms-sgx-mrenclave\",\"x-ms-sgx-mrsigner\",\"x-ms-sgx-svn\",\"x-ms-sgx-ehd\",\"x-ms-sgx-collateral\",\"is-debuggable\",\"sgx-mrsigner\",\"sgx-mrenclave\",\"product-id\",\"svn\",\"tee\"]}",
-      "Date" : "Wed, 04 Aug 2021 00:25:36 GMT",
+      "Date" : "Fri, 06 Aug 2021 23:25:41 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
