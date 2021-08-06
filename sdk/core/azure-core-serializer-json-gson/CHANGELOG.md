@@ -1,5 +1,8 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+
 ## 1.1.5 (2021-08-06)
 
 ### Dependency Updates
