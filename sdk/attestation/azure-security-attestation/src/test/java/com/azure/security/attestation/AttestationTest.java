@@ -17,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
@@ -147,6 +148,7 @@ public class AttestationTest extends AttestationClientTestBase {
             .fromQuote(decodedOpenEnclaveReport)
             .setInitTimeData(decodedRuntimeData)
             .setInitTimeData(decodedOpenEnclaveReport)
+            .setRunTimeJson("{ \"xxx\": 123 }".getBytes(StandardCharsets.UTF_8))
             .setRunTimeData(new byte[] { 1, 2, 3, 4, 5});
 
         assertArrayEquals(decodedOpenEnclaveReport, request2.getInitTimeData());

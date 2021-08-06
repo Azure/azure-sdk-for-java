@@ -21,6 +21,21 @@
     `InitTime` data as JSON.
    * Similarly, `setRunTimeData` was changed to accept a `byte[]`.
    * And `setRunTimeJson` was added to set the `RunTimeData` as JSON.
+ * Renamed `AttestOpenEnclaveRequest` to `AttestOpenEnclaveOptions` and `AttestSgxEnclaveRequest` to `AttestSgxEnclaveOptions`.
+ * Instead of being directly instantiated, `AttestOpenEnclaveOptions` and `AttestSgxEnclaveOptions` are instantiated via a
+factory method:
+```java
+AttestSgxEnclaveOptions options = AttestSgxEnclaveOptions
+    .fromQuote(decodedOpenEnclaveReport)
+    .setRunTimeData(new byte[] { 1, 2, 3, 4, 5});
+```
+or
+```java
+AttestOpenEnclaveOptions options = AttestOpenEnclaveOptions
+    .fromQuote(decodedOpenEnclaveReport)
+    .setRunTimeJson("{ \"xxx\": 123 }".getBytes(StandardCharsets.UTF_8))
+```
+
  * `attestSgxEnclave` and `attestOpenEnclave` return an `AttestationResponse` type instead of
 a `Response` type to get access to the `AttestationToken` returned from the attestation service.
  * Converted the `AttestationToken` and `AttestationSigner` types to interfaces since there are no scenarios where customers
