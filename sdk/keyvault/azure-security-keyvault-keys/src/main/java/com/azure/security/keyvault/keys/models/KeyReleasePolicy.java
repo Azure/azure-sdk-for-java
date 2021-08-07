@@ -24,13 +24,17 @@ public final class KeyReleasePolicy {
     @JsonProperty(value = "data")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    private final byte[] data;
+    private byte[] data;
 
     /*
      * Content type and version of key release policy.
      */
     @JsonProperty(value = "contentType")
     private String contentType;
+
+    KeyReleasePolicy(){
+        // Empty constructor for Jackson Deserialization
+    }
 
     public KeyReleasePolicy(byte[] data) {
         Objects.requireNonNull(data, "'data' cannot be null.");

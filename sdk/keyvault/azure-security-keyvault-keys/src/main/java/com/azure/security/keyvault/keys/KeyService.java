@@ -245,16 +245,16 @@ interface KeyService {
     @Post("rng")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<RandomBytes>> getRandomBytes(@HostParam("url") String vaultBaseUrl,
+    Mono<Response<RandomBytes>> getRandomBytes(@HostParam("url") String url,
                                                @QueryParam("api-version") String apiVersion,
                                                @BodyParam("application/json") GetRandomBytesRequest parameters,
                                                @HeaderParam("Accept") String accept,
                                                Context context);
 
-    @Post("/keys/{key-name}/{key-version}/release")
+    @Post("keys/{key-name}/{key-version}/release")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<ReleaseKeyResult>> release(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+    Mono<Response<ReleaseKeyResult>> release(@HostParam("url") String url,
                                              @PathParam("key-name") String keyName,
                                              @PathParam("key-version") String keyVersion,
                                              @QueryParam("api-version") String apiVersion,
