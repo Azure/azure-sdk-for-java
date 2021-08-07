@@ -22,6 +22,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -186,5 +187,89 @@ public class ReceiveLinkHandlerTest {
 
         verify(delivery).disposition(argThat(state -> state.getType() == DeliveryState.DeliveryStateType.Modified));
         verify(delivery).settle();
+    }
+
+    /**
+     * Verifies {@link NullPointerException}.
+     */
+    @Test
+    public void constructor() {
+        // Act
+        assertThrows(NullPointerException.class,
+            () -> new ReceiveLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH));
+        assertThrows(NullPointerException.class,
+            () -> new ReceiveLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH));
+        assertThrows(NullPointerException.class,
+            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH));
+        assertThrows(NullPointerException.class,
+            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null));
+    }
+
+    /**
+     * Tests that the close operation completes the fluxes and then emits a close.
+     */
+    @Test
+    public void close() {
+        // Act & Assert
+        StepVerifier.create(handler.getDeliveredMessages())
+            .then(() -> handler.close())
+            .verifyComplete();
+
+        // The only thing we should be doing here is emitting a close state. We are waiting for
+        // the remote close event.
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.CLOSED)
+            .expectNoEvent(Duration.ofMillis(500))
+            .thenCancel()
+            .verify();
+
+        assertEquals(LINK_NAME, handler.getLinkName());
+    }
+
+    /**
+     * Tests that if the link was never active, then it will be immediately closed.
+     */
+    @Test
+    public void onLinkLocalCloseNotRemoteOpened() {
+        when(receiver.getLocalState()).thenReturn(EndpointState.CLOSED);
+
+        StepVerifier.create(handler.getEndpointStates())
+            .then(() -> handler.onLinkLocalClose(event))
+            .expectNext(EndpointState.UNINITIALIZED, EndpointState.CLOSED)
+            .verifyComplete();
+
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.CLOSED)
+            .expectComplete()
+            .verify();
+    }
+
+    /**
+     * Tests the normal case where the link was active and then the user called sender.close().
+     */
+    @Test
+    public void onLinkLocalClose() {
+        when(receiver.getRemoteSource()).thenReturn(source);
+
+        final Event closeEvent = mock(Event.class);
+        final Receiver closedReceiver = mock(Receiver.class);
+        when(closeEvent.getLink()).thenReturn(closedReceiver);
+        when(closedReceiver.getLocalState()).thenReturn(EndpointState.CLOSED);
+        when(closedReceiver.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+
+        final Event remoteCloseEvent = mock(Event.class);
+        final Receiver remoteClosedReceiver = mock(Receiver.class);
+        when(remoteCloseEvent.getLink()).thenReturn(closedReceiver);
+        when(remoteClosedReceiver.getLocalState()).thenReturn(EndpointState.CLOSED);
+        when(remoteClosedReceiver.getRemoteState()).thenReturn(EndpointState.CLOSED);
+
+        StepVerifier.create(handler.getEndpointStates())
+            .then(() -> handler.onLinkRemoteOpen(event))
+            .expectNext(EndpointState.UNINITIALIZED, EndpointState.ACTIVE)
+            .then(() -> handler.onLinkLocalClose(closeEvent))
+            .expectNoEvent(Duration.ofMillis(500))
+            .then(() -> handler.onLinkRemoteClose(remoteCloseEvent))
+            .expectNext(EndpointState.CLOSED)
+            .verifyComplete();
     }
 }
