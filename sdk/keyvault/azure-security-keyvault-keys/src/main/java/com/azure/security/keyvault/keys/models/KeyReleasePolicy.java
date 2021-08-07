@@ -32,10 +32,15 @@ public final class KeyReleasePolicy {
     @JsonProperty(value = "contentType")
     private String contentType;
 
-    KeyReleasePolicy(){
+    KeyReleasePolicy() {
         // Empty constructor for Jackson Deserialization
     }
 
+    /**
+     * Creates an instance of {@link KeyReleasePolicy}.
+     *
+     * @param data A blob encoding the policy rules under which the key can be released.
+     */
     public KeyReleasePolicy(byte[] data) {
         Objects.requireNonNull(data, "'data' cannot be null.");
 

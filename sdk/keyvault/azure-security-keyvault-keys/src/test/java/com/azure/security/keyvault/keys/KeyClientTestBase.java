@@ -5,7 +5,12 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -24,7 +29,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.security.keyvault.keys.models.*;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -39,6 +43,12 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
+import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Test;
 
@@ -403,21 +413,21 @@ public abstract class KeyClientTestBase extends TestBase {
         final String attestationUrl = Configuration.getGlobalConfiguration()
             .get("AZURE_KEYVAULT_ATTESTATION_URL", "http://localhost:8080");
         final String releasePolicyContents =
-            "{" +
-                "\"anyOf\": [" +
-                    "{" +
-                        "\"anyOf\": [" +
-                            "{" +
-                                "\"claim\": \"sdk-test\"," +
-                                "\"condition\": \"equals\"," +
-                                "\"value\": \"true\"" +
-                            "}" +
-                        "]," +
-                        "\"authority\": \"" + attestationUrl + "\"" +
-                    "}" +
-                "]," +
-                "\"version\": \"1.0\"" +
-            "}";
+            "{"
+                + "\"anyOf\": ["
+                    + "{"
+                        + "\"anyOf\": ["
+                            + "{"
+                                + "\"claim\": \"sdk-test\","
+                                + "\"condition\": \"equals\","
+                                + "\"value\": \"true\""
+                            + "}"
+                        + "],"
+                        + "\"authority\": \"" + attestationUrl + "\""
+                    + "}"
+                + "],"
+                + "\"version\": \"1.0\""
+            + "}";
 
         final CreateRsaKeyOptions keyToRelease =
             new CreateRsaKeyOptions(testResourceNamer.randomName("keyToRelease", 20))
