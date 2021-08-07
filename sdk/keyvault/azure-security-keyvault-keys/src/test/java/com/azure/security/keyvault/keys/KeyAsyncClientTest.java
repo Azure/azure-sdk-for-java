@@ -8,6 +8,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -16,11 +17,13 @@ import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -28,9 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -506,6 +507,41 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 return actualKey;
             }).blockLast();
             assertEquals(0, keys.size());
+        });
+    }
+
+    /**
+     * Tests that an existing key can be released.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // TODO: Remove assumption once Key Vault allows for creating exportable keys.
+        Assumptions.assumeTrue(isManagedHsmTest);
+
+        createKeyAsyncClient(httpClient, serviceVersion);
+        releaseKeyRunner((keyToRelease, attestationUrl) -> {
+            StepVerifier.create(client.createRsaKey(keyToRelease))
+                .assertNext(keyResponse -> assertKeyEquals(keyToRelease, keyResponse)).verifyComplete();
+
+            String target = "testAttestationToken";
+
+            if (getTestMode() != TestMode.PLAYBACK) {
+                if (!attestationUrl.endsWith("/")) {
+                    attestationUrl = attestationUrl + "/";
+                }
+
+                try {
+                    target = getAttestationToken(attestationUrl + "generate-test-token");
+                } catch (IOException e) {
+                    fail("Found error when deserializing attestation token.", e);
+                }
+            }
+
+            StepVerifier.create(client.releaseKey(keyToRelease.getName(), target))
+                .assertNext(releaseKeyResult -> assertNotNull(releaseKeyResult.getValue()))
+                .expectComplete()
+                .verify();
         });
     }
 
