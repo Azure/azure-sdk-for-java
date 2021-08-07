@@ -3,8 +3,11 @@
 
 package com.azure.spring.utils;
 
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.Properties;
 
 /**
@@ -36,5 +39,20 @@ public class PropertyLoader {
 
     public static String getProjectVersion() {
         return getProperty(PROJECT_PROPERTY_FILE, "project.version");
+    }
+
+    /**
+     * To load a {@link Properties} Object from the properties file under classpath
+     *
+     * @param file The source file to load properties from.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @return The {@link Properties} Object.
+     */
+    public static Properties loadPropertiesFromClassPath(String file) {
+        try {
+            return PropertiesLoaderUtils.loadAllProperties(file);
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Fail to load " + file, exception);
+        }
     }
 }

@@ -1,1 +1,2 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessor,\
+com.azure.spring.keyvault.PostLegacyPropertyEnvironmentPostProcessor

@@ -193,8 +193,8 @@ public class KeyVaultEnvironmentPostProcessorTest {
         testProperties.put("spring.cloud.azure.environment.authority-host", "host1");
         testProperties.put("spring.cloud.azure.keyvault.environment.authority-host", "host2");
 
-        testProperties.put("spring.cloud.azure.credential.certificate-path", "cert1");
-        testProperties.put("spring.cloud.azure.keyvault.mykeyvault.credential.certificate-path", "cert2");
+        testProperties.put("spring.cloud.azure.credential.client-certificate-path", "cert1");
+        testProperties.put("spring.cloud.azure.keyvault.mykeyvault.credential.client-certificate-path", "cert2");
 
         testProperties.put("spring.cloud.azure.keyvault.uri", "uri1");
 

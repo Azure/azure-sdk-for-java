@@ -96,7 +96,7 @@ public class PremiumServiceBusJMSAutoConfigurationTest {
             context -> {
                 assertThat(context).hasBean(AZURE_PROPERTY_BEAN_NAME);
 
-                assertThat(((AzureProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME)).getCredential().getCertificatePassword())
+                assertThat(((AzureProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME)).getCredential().getClientCertificatePassword())
                     .isEqualTo("for-test-purpose");
                 assertThat(((AzureProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME)).getEnvironment().getAuthorityHost())
                     .isEqualTo("for-test-purpose");
@@ -126,7 +126,7 @@ public class PremiumServiceBusJMSAutoConfigurationTest {
                 "spring.jms.servicebus.pricing-tier=premium",
                 "spring.jms.servicebus.credential.client-secret=for-test-purpose",
                 "spring.jms.servicebus.environment.cloud=AzureGermany",
-                "spring.cloud.azure.credential.certificate-password=for-test-purpose",
+                "spring.cloud.azure.credential.client-certificate-password=for-test-purpose",
                 "spring.cloud.azure.environment.authority-host=for-test-purpose"
             );
     }

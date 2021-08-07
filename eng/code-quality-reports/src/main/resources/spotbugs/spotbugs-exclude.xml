@@ -2329,6 +2329,14 @@
     <Field name="azureProperties"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
+
+  <!-- Field is initialized in postProcessEnvironment function -->
+  <Match>
+    <Class name="com.azure.spring.autoconfigure.unity.AbstractLegacyPropertyEnvironmentPostProcessor"/>
+    <Field name="environment"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
   <!-- The transient fields are not used if deserialization happens. -->
   <Match>
     <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>
