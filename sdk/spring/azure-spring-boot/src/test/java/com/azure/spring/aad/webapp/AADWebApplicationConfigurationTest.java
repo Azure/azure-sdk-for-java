@@ -446,35 +446,63 @@ public class AADWebApplicationConfigurationTest {
     }
 
     @Test
-    public void groupsNameConfiguration() {
+    public void testNoGroupIdAndGroupNameConfigured() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
-            .withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2")
             .run(context -> {
                 AADClientRegistrationRepository clientRepo =
                     context.getBean(AADClientRegistrationRepository.class);
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
-                    "openid", "profile", "https://graph.microsoft.com/User.Read",
-                    "https://graph.microsoft.com/Directory.Read.All"
+                    "openid", "profile"
                 );
             });
     }
 
     @Test
-    public void groupsIdConfiguration() {
+    public void testGroupNameConfigured() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
-            .withPropertyValues(
-                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718, "
-                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9")
+            .withPropertyValues("azure.activedirectory.user-group.allowed-group-names = group1, group2")
             .run(context -> {
                 AADClientRegistrationRepository clientRepo =
                     context.getBean(AADClientRegistrationRepository.class);
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
-                    "openid", "profile", "https://graph.microsoft.com/User.Read",
-                    "https://graph.microsoft.com/Directory.Read.All"
+                    "openid", "profile", "https://graph.microsoft.com/Directory.Read.All"
+                );
+            });
+    }
+
+    @Test
+    public void testGroupIdConfigured() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
+            .run(context -> {
+                AADClientRegistrationRepository clientRepo =
+                    context.getBean(AADClientRegistrationRepository.class);
+                assertDefaultScopes(
+                    clientRepo.getAzureClient(),
+                    "openid", "profile", "https://graph.microsoft.com/User.Read"
+                );
+            });
+    }
+
+    @Test
+    public void testGroupNameAndGroupIdConfigured() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.user-group.allowed-group-names = group1, group2",
+                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
+            .run(context -> {
+                AADClientRegistrationRepository clientRepo =
+                    context.getBean(AADClientRegistrationRepository.class);
+                assertDefaultScopes(
+                    clientRepo.getAzureClient(),
+                    "openid", "profile", "https://graph.microsoft.com/Directory.Read.All"
                 );
             });
     }

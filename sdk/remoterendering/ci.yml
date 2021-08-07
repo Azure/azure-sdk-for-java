@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/remoterendering/
+    exclude:
+      - sdk/remoterendering/pom.xml
+      - sdk/remoterendering/azure-mixedreality-remoterendering/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/remoterendering/
+    exclude:
+      - sdk/remoterendering/pom.xml
+      - sdk/remoterendering/azure-mixedreality-remoterendering/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

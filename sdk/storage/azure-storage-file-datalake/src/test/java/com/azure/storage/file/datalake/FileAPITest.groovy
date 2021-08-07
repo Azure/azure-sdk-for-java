@@ -3070,13 +3070,19 @@ class FileAPITest extends APISpec {
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query csv serialization separator"() {
         setup:
-        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
+        FileQueryDelimitedSerialization serIn = new FileQueryDelimitedSerialization()
             .setRecordSeparator(recordSeparator as char)
             .setColumnSeparator(columnSeparator as char)
             .setEscapeChar('\0' as char)
             .setFieldQuote('\0' as char)
-            .setHeadersPresent(headersPresent)
-        uploadCsv(ser, 32)
+            .setHeadersPresent(headersPresentIn)
+        FileQueryDelimitedSerialization serOut = new FileQueryDelimitedSerialization()
+            .setRecordSeparator(recordSeparator as char)
+            .setColumnSeparator(columnSeparator as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(headersPresentOut)
+        uploadCsv(serIn, 32)
         def expression = "SELECT * from BlobStorage"
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
@@ -3085,12 +3091,12 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue()
+        InputStream qqStream = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression).setInputSerialization(serIn).setOutputSerialization(serOut)).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
         notThrown(IOException)
-        if (headersPresent) {
+        if (headersPresentIn && !headersPresentOut) {
             /* Account for 16 bytes of header. */
             for (int j = 16; j < downloadedData.length; j++) {
                 assert queryData[j - 16] == downloadedData[j]
@@ -3106,12 +3112,12 @@ class FileAPITest extends APISpec {
         when:
         OutputStream os = new ByteArrayOutputStream()
         fc.queryWithResponse(new FileQueryOptions(expression, os)
-            .setInputSerialization(ser).setOutputSerialization(ser), null, null)
+            .setInputSerialization(serIn).setOutputSerialization(serOut), null, null)
         byte[] osData = os.toByteArray()
 
         then:
         notThrown(DataLakeStorageException)
-        if (headersPresent) {
+        if (headersPresentIn && !headersPresentOut) {
             assert osData.length == downloadedData.length - 16
             /* Account for 16 bytes of header. */
             for (int j = 16; j < downloadedData.length; j++) {
@@ -3122,24 +3128,25 @@ class FileAPITest extends APISpec {
         }
 
         where:
-        recordSeparator | columnSeparator | headersPresent || _
-        '\n'            | ','             | false          || _ /* Default. */
-        '\n'            | ','             | true           || _ /* Headers. */
-        '\t'            | ','             | false          || _ /* Record separator. */
-        '\r'            | ','             | false          || _
-        '<'             | ','             | false          || _
-        '>'             | ','             | false          || _
-        '&'             | ','             | false          || _
-        '\\'            | ','             | false          || _
-        ','             | '.'             | false          || _ /* Column separator. */
-//        ','             | '\n'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
-        ','             | ';'             | false          || _
-        '\n'            | '\t'            | false          || _
-//        '\n'            | '\r'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
-        '\n'            | '<'             | false          || _
-        '\n'            | '>'             | false          || _
-        '\n'            | '&'             | false          || _
-        '\n'            | '\\'            | false          || _
+        recordSeparator | columnSeparator | headersPresentIn | headersPresentOut || _
+        '\n'            | ','             | false            | false             || _ /* Default. */
+        '\n'            | ','             | true             | true             || _ /* Headers. */
+        '\n'            | ','             | true             | false             || _ /* Headers. */
+        '\t'            | ','             | false            | false             || _ /* Record separator. */
+        '\r'            | ','             | false            | false             || _
+        '<'             | ','             | false            | false             || _
+        '>'             | ','             | false            | false             || _
+        '&'             | ','             | false            | false             || _
+        '\\'            | ','             | false            | false             || _
+        ','             | '.'             | false            | false             || _ /* Column separator. */
+//        ','             | '\n'            | false          | false               || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        ','             | ';'             | false            | false             || _
+        '\n'            | '\t'            | false            | false             || _
+//        '\n'            | '\r'            | false          | false               || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        '\n'            | '<'             | false            | false             || _
+        '\n'            | '>'             | false            | false             || _
+        '\n'            | '&'             | false            | false             || _
+        '\n'            | '\\'            | false            | false             || _
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")

@@ -13,12 +13,19 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 
+/**
+ * Perf test for {@link HttpPipeline}.
+ */
 public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
 
     private final HttpPipeline httpPipeline;
     private final byte[] buffer = new byte[BUFFER_SIZE];
 
+    /**
+     * Creates an instance of the {@link HttpPipelineTest}.
+     * @param options options to configure the HTTP pipeline.
+     */
     public HttpPipelineTest(HttpPipelineOptions options) {
         super(options);
 
@@ -29,7 +36,7 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
         }
 
         if (policies != null) {
-            ArrayList<HttpPipelinePolicy> policyList = new ArrayList<HttpPipelinePolicy>();
+            ArrayList<HttpPipelinePolicy> policyList = new ArrayList<>();
             for (HttpPipelinePolicy policy : policies) {
                 policyList.add(policy);
             }

@@ -8,9 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/search/
+      - sdk/search/ci.mgmt.yml
+      - sdk/search/mgmt-v2015_02_28/
     exclude:
-      - sdk/search/azure-search-documents
+      - sdk/search/pom.xml
+      - sdk/search/mgmt-v2015_02_28/pom.xml
 
 pr:
   branches:
@@ -21,9 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/search/
+      - sdk/search/ci.mgmt.yml
+      - sdk/search/mgmt-v2015_02_28/
     exclude:
-      - sdk/search/azure-search-documents
+      - sdk/search/pom.xml
+      - sdk/search/mgmt-v2015_02_28/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

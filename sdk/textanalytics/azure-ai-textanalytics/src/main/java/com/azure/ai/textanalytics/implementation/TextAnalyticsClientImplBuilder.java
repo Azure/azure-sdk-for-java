@@ -192,7 +192,7 @@ public final class TextAnalyticsClientImplBuilder {
      */
     public TextAnalyticsClientImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "v3.1";
+            this.apiVersion = "v3.2-preview.1";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

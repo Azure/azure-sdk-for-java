@@ -8,7 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/logic/
+      - sdk/logic/ci.mgmt.yml
+      - sdk/logic/mgmt-v2016_06_01/
+      - sdk/logic/mgmt-v2018_07_01_preview/
+    exclude:
+      - sdk/logic/pom.xml
+      - sdk/logic/mgmt-v2016_06_01/pom.xml
+      - sdk/logic/mgmt-v2018_07_01_preview/pom.xml
 
 pr:
   branches:
@@ -19,7 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/logic/
+      - sdk/logic/ci.mgmt.yml
+      - sdk/logic/mgmt-v2016_06_01/
+      - sdk/logic/mgmt-v2018_07_01_preview/
+    exclude:
+      - sdk/logic/pom.xml
+      - sdk/logic/mgmt-v2016_06_01/pom.xml
+      - sdk/logic/mgmt-v2018_07_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

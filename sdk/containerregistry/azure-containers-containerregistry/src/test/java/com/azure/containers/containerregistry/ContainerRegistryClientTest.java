@@ -82,10 +82,17 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
             .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
             .then(registryAsyncClient.getRepository(repositoryName).getProperties())
             .flatMap(res -> Mono.just(false))
-            .onErrorResume(res -> registryAsyncClient.getRepository(repositoryName)
-                .delete()
-                .then(Mono.just(true))
-                .onErrorResume(err -> Mono.just(false)));
+            .onErrorResume(res -> {
+                System.out.println("First time:" + res.getStackTrace());
+                return registryAsyncClient.getRepository(repositoryName)
+                    .delete()
+                    .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
+                    .then(Mono.just(true))
+                    .onErrorResume(err -> {
+                        System.out.println("Second Time:" + err.getStackTrace());
+                        return Mono.just(false);
+                    });
+            });
 
         StepVerifier.create(deleteRepositoryTest)
             .assertNext(Assertions::assertTrue)

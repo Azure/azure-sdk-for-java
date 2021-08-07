@@ -9,6 +9,10 @@ trigger:
   paths:
     include:
       - sdk/formrecognizer/
+    exclude:
+      - sdk/formrecognizer/pom.xml
+      - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
+      - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
 
 
 pr:
@@ -21,6 +25,10 @@ pr:
   paths:
     include:
       - sdk/formrecognizer/
+    exclude:
+      - sdk/formrecognizer/pom.xml
+      - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
+      - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

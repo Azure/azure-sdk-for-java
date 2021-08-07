@@ -36,7 +36,7 @@ public abstract class CertificatesTest<TOptions extends PerfStressOptions> exten
             .vaultUrl(vaultUrl)
             .credential(new DefaultAzureCredentialBuilder().build());
 
-        ConfigureClientBuilder(builder);
+        configureClientBuilder(builder);
 
         certificateClient = builder.buildClient();
         certificateAsyncClient = builder.buildAsyncClient();

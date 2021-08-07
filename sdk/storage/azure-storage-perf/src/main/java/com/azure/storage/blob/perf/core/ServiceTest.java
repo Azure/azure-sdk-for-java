@@ -30,7 +30,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .connectionString(connectionString);
 
-        ConfigureClientBuilder(builder);
+        configureClientBuilder(builder);
 
         blobServiceClient = builder.buildClient();
         blobServiceAsyncClient = builder.buildAsyncClient();
