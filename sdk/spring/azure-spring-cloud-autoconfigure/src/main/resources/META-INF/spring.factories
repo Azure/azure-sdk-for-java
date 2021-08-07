@@ -10,7 +10,8 @@
 #com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor
 
 org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloudfoundry.environment.VcapProcessor,\
-  com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor
+com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor,\
+com.azure.spring.autoconfigure.unity.PreLegacyPropertyEnvironmentPostProcessor
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.azure.spring.autoconfigure.aad.AADAutoConfiguration,\
