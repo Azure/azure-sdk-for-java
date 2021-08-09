@@ -23,12 +23,12 @@ public class ServiceBusTopicInboundAdapterTest extends InboundChannelAdapterTest
     public void close() throws Exception {
         closeable.close();
     }
+
     @BeforeEach
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.adapter = new ServiceBusTopicInboundChannelAdapter(destination,
-                                                                new ServiceBusTopicTestOperation(clientFactory),
-                                                                consumerGroup);
+            new ServiceBusTopicTestOperation(clientFactory), consumerGroup);
     }
 }
