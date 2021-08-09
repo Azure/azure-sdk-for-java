@@ -163,6 +163,13 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
+      - ${{ each artifact in parameters.Artifacts }}:
+        - task: PublishPipelineArtifact@1
+          inputs:
+            targetPath: '$(Pipeline.Workspace)/sdk/${{ parameters.ServiceDirectory }}/${{ artifact.name }}/target/oom.hprof'
+            artifactType: 'filepath'
+            fileSharePath: '${{ artifact.name }}'
+
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
         inputs:

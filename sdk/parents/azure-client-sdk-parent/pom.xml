@@ -119,7 +119,7 @@
     <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError. -->
     <heapDumpOnOom>
       -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}
+      -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}oom.hprof
     </heapDumpOnOom>
   </properties>
 
