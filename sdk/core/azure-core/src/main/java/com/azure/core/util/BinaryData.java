@@ -68,8 +68,8 @@ import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_S
  * read can result in undefined behavior.
  * <p>
  * To create an instance of  {@link BinaryData}, use the various
- * static factory methods available. They all start with {@code 'to'} prefix, for example
- * {@link BinaryData#toBytes()}.
+ * static factory methods available. They all start with {@code 'from'} prefix, for example
+ * {@link BinaryData#fromBytes(byte[])}.
  *</p>
  *
  * <p><strong>Create an instance from a byte array</strong></p>
@@ -150,7 +150,7 @@ public final class BinaryData {
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}. The source flux
-     * is subscribed to as many times as the content is read. The flux, therefore, should be replayable.
+     * is subscribed to as many times as the content is read. The flux, therefore, must be replayable.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -214,8 +214,8 @@ public final class BinaryData {
      * <p>
      * If the byte array is null or zero length an empty {@link BinaryData} will be returned. Note that the input
      * byte array is used as a reference by this instance of {@link BinaryData} and any changes to the byte array
-     * outside of this instance will result in the contents of this BinaryData instance to be updated as well. To
-     * safely update the byte array, it is recommended to make a copy of the contents first.
+     * outside of this instance will result in the contents of this BinaryData instance being updated as well. To
+     * safely update the byte array without impacting the BinaryData instance, perform an array copy first.
      * </p>
      *
      * <p><strong>Create an instance from a byte array</strong></p>
@@ -335,9 +335,9 @@ public final class BinaryData {
     }
 
     /**
-     * Creates a {@link BinaryData} that uses {@link Path} as its data. This method checks for the existence of
-     * the file at the time of creating an instance of {@link BinaryData}. The file, however, is not read until there
-     * is an attempt to read the contents of the returned BinaryData instance.
+     * Creates a {@link BinaryData} that uses the content of the file at {@link Path} as its data. This method checks
+     * for the existence of the file at the time of creating an instance of {@link BinaryData}. The file, however, is
+     * not read until there is an attempt to read the contents of the returned BinaryData instance.
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
@@ -352,9 +352,9 @@ public final class BinaryData {
     }
 
     /**
-     * Creates a {@link BinaryData} that uses {@link Path file} as its data. This method checks for the existence of
-     * the file at the time of creating an instance of {@link BinaryData}. The file, however, is not read until there
-     * is an attempt to read the contents of the returned BinaryData instance.
+     * Creates a {@link BinaryData} that uses the content of the file at {@link Path file} as its data. This method
+     * checks for the existence of the file at the time of creating an instance of {@link BinaryData}. The file,
+     * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
@@ -375,7 +375,9 @@ public final class BinaryData {
     /**
      * Returns a byte array representation of this {@link BinaryData}. This method returns a reference to the
      * underlying byte array. Modifying the contents of the returned byte array will also change the content of this
-     * BinaryData instance. To safely update the byte array, it is recommended to make a copy of the contents first.
+     * BinaryData instance. If the content source of this BinaryData instance is a file, an Inputstream or a
+     * {@code Flux<ByteBuffer>} the source is not modified. To safely update the byte array, it is recommended
+     * to make a copy of the contents first.
      *
      * @return A byte array representing this {@link BinaryData}.
      */
