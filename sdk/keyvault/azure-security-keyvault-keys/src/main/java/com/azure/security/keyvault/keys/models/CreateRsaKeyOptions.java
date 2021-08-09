@@ -47,9 +47,9 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Set the key size.
+     * Set the key size in bits.
      *
-     * @param keySize The key size to set.
+     * @param keySize The key size in bits to set.
      *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */

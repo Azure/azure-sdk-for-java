@@ -925,7 +925,7 @@ public final class KeyClient {
     }
 
     /**
-     * Release the latest version of a key.
+     * Releases the latest version of a key.
      *
      * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
      *
