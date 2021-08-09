@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 import java.util.Set;
@@ -33,7 +34,7 @@ public class AADOAuth2ClientConfigurationTest {
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AADAuthenticationProperties.class);
                 assertThat(context).doesNotHaveBean(ClientRegistrationRepository.class);
-                assertThat(context).doesNotHaveBean(AADOAuth2AuthorizedClientRepository.class);
+                assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class);
             });
     }
 
@@ -45,7 +46,7 @@ public class AADOAuth2ClientConfigurationTest {
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
                 assertThat(context).hasSingleBean(ClientRegistrationRepository.class);
-                assertThat(context).hasSingleBean(AADOAuth2AuthorizedClientRepository.class);
+                assertThat(context).hasSingleBean(OAuth2AuthorizedClientRepository.class);
             });
     }
 
@@ -58,7 +59,7 @@ public class AADOAuth2ClientConfigurationTest {
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
                 assertThat(context).hasSingleBean(ClientRegistrationRepository.class);
-                assertThat(context).hasSingleBean(AADOAuth2AuthorizedClientRepository.class);
+                assertThat(context).hasSingleBean(OAuth2AuthorizedClientRepository.class);
             });
     }
 
@@ -67,7 +68,7 @@ public class AADOAuth2ClientConfigurationTest {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
             .withConfiguration(AutoConfigurations.of(AADOAuth2ClientConfiguration.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2AuthorizedClientRepository.class));
+            .run(context -> assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class));
     }
 
     @Test
@@ -79,8 +80,8 @@ public class AADOAuth2ClientConfigurationTest {
             .run(context -> {
                 final AADClientRegistrationRepository oboRepo = context.getBean(
                     AADClientRegistrationRepository.class);
-                final AADOAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADOAuth2AuthorizedClientRepository.class);
+                final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
+                    OAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 Set<String> graphScopes = graph.getScopes();
@@ -98,9 +99,9 @@ public class AADOAuth2ClientConfigurationTest {
             .withUserConfiguration(AADOAuth2ClientConfiguration.class)
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
                 + "authorization_code")
-            .run(context -> {
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
-            });
+            .run(context ->
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
+            );
     }
 
     @Test
@@ -110,9 +111,9 @@ public class AADOAuth2ClientConfigurationTest {
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
                 + "on_behalf_of")
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.on-demand = true")
-            .run(context -> {
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
-            });
+            .run(context ->
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
+            );
     }
 
     @Test
@@ -126,8 +127,8 @@ public class AADOAuth2ClientConfigurationTest {
             .run(context -> {
                 final AADClientRegistrationRepository oboRepo = context.getBean(
                     AADClientRegistrationRepository.class);
-                final AADOAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADOAuth2AuthorizedClientRepository.class);
+                final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
+                    OAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 ClientRegistration custom = oboRepo.findByRegistrationId("custom");

@@ -58,7 +58,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class GatewayAddressCache implements IAddressCache {
@@ -95,14 +94,14 @@ public class GatewayAddressCache implements IAddressCache {
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
 
     public GatewayAddressCache(
-            DiagnosticsClientContext clientContext,
-            URI serviceEndpoint,
-            Protocol protocol,
-            IAuthorizationTokenProvider tokenProvider,
-            UserAgentContainer userAgent,
-            HttpClient httpClient,
-            long suboptimalPartitionForceRefreshIntervalInSeconds,
-            boolean tcpConnectionEndpointRediscoveryEnabled) {
+        DiagnosticsClientContext clientContext,
+        URI serviceEndpoint,
+        Protocol protocol,
+        IAuthorizationTokenProvider tokenProvider,
+        UserAgentContainer userAgent,
+        HttpClient httpClient,
+        long suboptimalPartitionForceRefreshIntervalInSeconds,
+        boolean tcpConnectionEndpointRediscoveryEnabled) {
         this.clientContext = clientContext;
         try {
             this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
@@ -121,8 +120,8 @@ public class GatewayAddressCache implements IAddressCache {
 
         this.protocolScheme = protocol.scheme();
         this.protocolFilter = String.format(GatewayAddressCache.protocolFilterFormat,
-                Constants.Properties.PROTOCOL,
-                this.protocolScheme);
+            Constants.Properties.PROTOCOL,
+            this.protocolScheme);
 
         this.httpClient = httpClient;
 
@@ -142,21 +141,21 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     public GatewayAddressCache(
-            DiagnosticsClientContext clientContext,
-            URI serviceEndpoint,
-            Protocol protocol,
-            IAuthorizationTokenProvider tokenProvider,
-            UserAgentContainer userAgent,
-            HttpClient httpClient,
-            boolean tcpConnectionEndpointRediscoveryEnabled) {
+        DiagnosticsClientContext clientContext,
+        URI serviceEndpoint,
+        Protocol protocol,
+        IAuthorizationTokenProvider tokenProvider,
+        UserAgentContainer userAgent,
+        HttpClient httpClient,
+        boolean tcpConnectionEndpointRediscoveryEnabled) {
         this(clientContext,
-             serviceEndpoint,
-             protocol,
-             tokenProvider,
-             userAgent,
-             httpClient,
-             DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
-             tcpConnectionEndpointRediscoveryEnabled);
+            serviceEndpoint,
+            protocol,
+            tokenProvider,
+            userAgent,
+            httpClient,
+            DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
+            tcpConnectionEndpointRediscoveryEnabled);
     }
 
     @Override
@@ -185,8 +184,8 @@ public class GatewayAddressCache implements IAddressCache {
 
     @Override
     public Mono<Utils.ValueHolder<AddressInformation[]>> tryGetAddresses(RxDocumentServiceRequest request,
-                                                                        PartitionKeyRangeIdentity partitionKeyRangeIdentity,
-                                                                        boolean forceRefreshPartitionAddresses) {
+                                                                         PartitionKeyRangeIdentity partitionKeyRangeIdentity,
+                                                                         boolean forceRefreshPartitionAddresses) {
 
         Utils.checkNotNullOrThrow(request, "request", "");
         Utils.checkNotNullOrThrow(partitionKeyRangeIdentity, "partitionKeyRangeIdentity", "");
@@ -195,7 +194,7 @@ public class GatewayAddressCache implements IAddressCache {
             partitionKeyRangeIdentity,
             forceRefreshPartitionAddresses);
         if (StringUtils.equals(partitionKeyRangeIdentity.getPartitionKeyRangeId(),
-                PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
+            PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
 
             // if that's master partition return master partition address!
             return this.resolveMasterAsync(request, forceRefreshPartitionAddresses, request.properties)
@@ -210,20 +209,20 @@ public class GatewayAddressCache implements IAddressCache {
         if (suboptimalServerPartitionTimestamp != null) {
             logger.debug("suboptimalServerPartitionTimestamp is {}", suboptimalServerPartitionTimestamp);
             boolean forceRefreshDueToSuboptimalPartitionReplicaSet = Duration.between(suboptimalServerPartitionTimestamp, Instant.now()).getSeconds()
-                    > this.suboptimalPartitionForceRefreshIntervalInSeconds;
+                > this.suboptimalPartitionForceRefreshIntervalInSeconds;
 
             if (forceRefreshDueToSuboptimalPartitionReplicaSet) {
                 // Compares the existing value for the specified key with a specified value,
                 // and if they are equal, updates the key with a third value.
                 Instant newValue = this.suboptimalServerPartitionTimestamps.computeIfPresent(partitionKeyRangeIdentity,
-                        (key, oldVal) -> {
-                            logger.debug("key = {}, oldValue = {}", key, oldVal);
-                            if (suboptimalServerPartitionTimestamp.equals(oldVal)) {
-                                return Instant.MAX;
-                            } else {
-                                return oldVal;
-                            }
-                        });
+                    (key, oldVal) -> {
+                        logger.debug("key = {}, oldValue = {}", key, oldVal);
+                        if (suboptimalServerPartitionTimestamp.equals(oldVal)) {
+                            return Instant.MAX;
+                        } else {
+                            return oldVal;
+                        }
+                    });
                 logger.debug("newValue is {}", newValue);
                 if (!suboptimalServerPartitionTimestamp.equals(newValue)) {
                     logger.debug("setting forceRefreshPartitionAddresses to true");
@@ -238,24 +237,22 @@ public class GatewayAddressCache implements IAddressCache {
         if (forceRefreshPartitionAddressesModified) {
             logger.debug("refresh serverPartitionAddressCache for {}", partitionKeyRangeIdentity);
             this.serverPartitionAddressCache.refresh(
+                partitionKeyRangeIdentity,
+                () -> this.getAddressesForRangeId(
+                    request,
                     partitionKeyRangeIdentity,
-                    () -> this.getAddressesForRangeId(
-                            request,
-                            partitionKeyRangeIdentity.getCollectionRid(),
-                            partitionKeyRangeIdentity.getPartitionKeyRangeId(),
-                            true));
+                    true));
 
             this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
         }
 
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = this.serverPartitionAddressCache.getAsync(
+            partitionKeyRangeIdentity,
+            null,
+            () -> this.getAddressesForRangeId(
+                request,
                 partitionKeyRangeIdentity,
-                null,
-                () -> this.getAddressesForRangeId(
-                        request,
-                        partitionKeyRangeIdentity.getCollectionRid(),
-                        partitionKeyRangeIdentity.getPartitionKeyRangeId(),
-                        false)).map(Utils.ValueHolder::new);
+                false)).map(Utils.ValueHolder::new);
 
         return addressesObs.map(
             addressesValueHolder -> {
@@ -292,15 +289,15 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
-            RxDocumentServiceRequest request,
-            String collectionRid,
-            List<String> partitionKeyRangeIds,
-            boolean forceRefresh) {
+        RxDocumentServiceRequest request,
+        String collectionRid,
+        List<String> partitionKeyRangeIds,
+        boolean forceRefresh) {
         if (logger.isDebugEnabled()) {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
         }
-        request.setAddressRefresh(true);
+        request.setAddressRefresh(true, forceRefresh);
         String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
         HashMap<String, String> addressQuery = new HashMap<>();
 
@@ -311,7 +308,7 @@ public class GatewayAddressCache implements IAddressCache {
             headers.put(HttpConstants.HttpHeaders.FORCE_REFRESH, "true");
         }
 
-        if(request.forceCollectionRoutingMapRefresh) {
+        if (request.forceCollectionRoutingMapRefresh) {
             headers.put(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH, "true");
         }
 
@@ -342,12 +339,12 @@ public class GatewayAddressCache implements IAddressCache {
                 // User doesn't have rid based resource token. Maybe user has name based.
                 String collectionAltLink = PathsHelper.getCollectionPath(request.getResourceAddress());
                 token = this.tokenProvider.getUserAuthorizationToken(
-                        collectionAltLink,
-                        ResourceType.Document,
-                        RequestVerb.GET,
-                        headers,
-                        AuthorizationTokenType.PrimaryMasterKey,
-                        request.properties);
+                    collectionAltLink,
+                    ResourceType.Document,
+                    RequestVerb.GET,
+                    headers,
+                    AuthorizationTokenType.PrimaryMasterKey,
+                    request.properties);
             }
 
             token = HttpUtils.urlEncode(token);
@@ -441,42 +438,42 @@ public class GatewayAddressCache implements IAddressCache {
         Pair<PartitionKeyRangeIdentity, AddressInformation[]> masterAddressAndRangeInitial = this.masterPartitionAddressCache;
 
         forceRefresh = forceRefresh ||
-                (masterAddressAndRangeInitial != null &&
-                        notAllReplicasAvailable(masterAddressAndRangeInitial.getRight()) &&
-                        Duration.between(this.suboptimalMasterPartitionTimestamp, Instant.now()).getSeconds() > this.suboptimalPartitionForceRefreshIntervalInSeconds);
+            (masterAddressAndRangeInitial != null &&
+                notAllReplicasAvailable(masterAddressAndRangeInitial.getRight()) &&
+                Duration.between(this.suboptimalMasterPartitionTimestamp, Instant.now()).getSeconds() > this.suboptimalPartitionForceRefreshIntervalInSeconds);
 
         if (forceRefresh || this.masterPartitionAddressCache == null) {
             Mono<List<Address>> masterReplicaAddressesObs = this.getMasterAddressesViaGatewayAsync(
-                    request,
-                    ResourceType.Database,
-                    null,
-                    databaseFeedEntryUrl,
-                    forceRefresh,
-                    false,
-                    properties);
+                request,
+                ResourceType.Database,
+                null,
+                databaseFeedEntryUrl,
+                forceRefresh,
+                false,
+                properties);
 
             return masterReplicaAddressesObs.map(
-                    masterAddresses -> {
-                        Pair<PartitionKeyRangeIdentity, AddressInformation[]> masterAddressAndRangeRes =
-                                this.toPartitionAddressAndRange("", masterAddresses);
-                        this.masterPartitionAddressCache = masterAddressAndRangeRes;
+                masterAddresses -> {
+                    Pair<PartitionKeyRangeIdentity, AddressInformation[]> masterAddressAndRangeRes =
+                        this.toPartitionAddressAndRange("", masterAddresses);
+                    this.masterPartitionAddressCache = masterAddressAndRangeRes;
 
-                        if (notAllReplicasAvailable(masterAddressAndRangeRes.getRight())
-                                && this.suboptimalMasterPartitionTimestamp.equals(Instant.MAX)) {
-                            this.suboptimalMasterPartitionTimestamp = Instant.now();
-                        } else {
-                            this.suboptimalMasterPartitionTimestamp = Instant.MAX;
-                        }
+                    if (notAllReplicasAvailable(masterAddressAndRangeRes.getRight())
+                        && this.suboptimalMasterPartitionTimestamp.equals(Instant.MAX)) {
+                        this.suboptimalMasterPartitionTimestamp = Instant.now();
+                    } else {
+                        this.suboptimalMasterPartitionTimestamp = Instant.MAX;
+                    }
 
-                        return masterPartitionAddressCache;
-                    })
-                    .doOnError(
-                            e -> {
-                                this.suboptimalMasterPartitionTimestamp = Instant.MAX;
-                            });
+                    return masterPartitionAddressCache;
+                })
+                                            .doOnError(
+                                                e -> {
+                                                    this.suboptimalMasterPartitionTimestamp = Instant.MAX;
+                                                });
         } else {
             if (notAllReplicasAvailable(masterAddressAndRangeInitial.getRight())
-                    && this.suboptimalMasterPartitionTimestamp.equals(Instant.MAX)) {
+                && this.suboptimalMasterPartitionTimestamp.equals(Instant.MAX)) {
                 this.suboptimalMasterPartitionTimestamp = Instant.now();
             }
 
@@ -560,57 +557,62 @@ public class GatewayAddressCache implements IAddressCache {
             "");
     }
 
-
     private Mono<AddressInformation[]> getAddressesForRangeId(
-            RxDocumentServiceRequest request,
-            String collectionRid,
-            String partitionKeyRangeId,
-            boolean forceRefresh) {
+        RxDocumentServiceRequest request,
+        PartitionKeyRangeIdentity pkRangeIdentity,
+        boolean forceRefresh) {
+
+        Utils.checkNotNullOrThrow(request, "request", "");
+        validatePkRangeIdentity(pkRangeIdentity);
+
+        String collectionRid = pkRangeIdentity.getCollectionRid();
+        String partitionKeyRangeId = pkRangeIdentity.getPartitionKeyRangeId();
+
         logger.debug("getAddressesForRangeId collectionRid {}, partitionKeyRangeId {}, forceRefresh {}",
             collectionRid, partitionKeyRangeId, forceRefresh);
         Mono<List<Address>> addressResponse = this.getServerAddressesViaGatewayAsync(request, collectionRid, Collections.singletonList(partitionKeyRangeId), forceRefresh);
 
         Mono<List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>>> addressInfos =
-                addressResponse.map(
-                    addresses -> {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("addresses from getServerAddressesViaGatewayAsync in getAddressesForRangeId {}",
-                                JavaStreamUtils.info(addresses));
-                        }
-                        return addresses.stream().filter(addressInfo ->
-                                                             this.protocolScheme.equals(addressInfo.getProtocolScheme()))
-                                   .collect(Collectors.groupingBy(
-                                       Address::getParitionKeyRangeId))
-                                   .values().stream()
-                                   .map(groupedAddresses -> toPartitionAddressAndRange(collectionRid, addresses))
-                                   .collect(Collectors.toList());
-                    });
+            addressResponse.map(
+                addresses -> {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("addresses from getServerAddressesViaGatewayAsync in getAddressesForRangeId {}",
+                            JavaStreamUtils.info(addresses));
+                    }
+                    return addresses.stream().filter(addressInfo ->
+                        this.protocolScheme.equals(addressInfo.getProtocolScheme()))
+                                    .collect(Collectors.groupingBy(
+                                        Address::getParitionKeyRangeId))
+                                    .values().stream()
+                                    .map(groupedAddresses -> toPartitionAddressAndRange(collectionRid, addresses))
+                                    .collect(Collectors.toList());
+                });
 
         Mono<List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>>> result = addressInfos.map(addressInfo -> addressInfo.stream()
-                .filter(a ->
-                        StringUtils.equals(a.getLeft().getPartitionKeyRangeId(), partitionKeyRangeId))
-                .collect(Collectors.toList()));
+                                                                                                                              .filter(a ->
+                                                                                                                                  StringUtils.equals(a.getLeft().getPartitionKeyRangeId(), partitionKeyRangeId))
+                                                                                                                              .collect(Collectors.toList()));
 
         return result.flatMap(
-                list -> {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("getAddressesForRangeId flatMap got result {}", JavaStreamUtils.info(list));
-                    }
-                    if (list.isEmpty()) {
+            list -> {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("getAddressesForRangeId flatMap got result {}", JavaStreamUtils.info(list));
+                }
+                if (list.isEmpty()) {
 
-                        String errorMessage = String.format(
-                                RMResources.PartitionKeyRangeNotFound,
-                                partitionKeyRangeId,
-                                collectionRid);
+                    String errorMessage = String.format(
+                        RMResources.PartitionKeyRangeNotFound,
+                        partitionKeyRangeId,
+                        collectionRid);
 
-                        PartitionKeyRangeGoneException e = new PartitionKeyRangeGoneException(errorMessage);
-                        BridgeInternal.setResourceAddress(e, collectionRid);
+                    PartitionKeyRangeGoneException e = new PartitionKeyRangeGoneException(errorMessage);
+                    BridgeInternal.setResourceAddress(e, collectionRid);
 
-                        return Mono.error(e);
-                    } else {
-                        return Mono.just(list.get(0).getRight());
-                    }
-                }).doOnError(e -> {
+                    return Mono.error(e);
+                } else {
+                    return Mono.just(list.get(0).getRight());
+                }
+            }).doOnError(e -> {
             logger.debug("getAddressesForRangeId", e);
         });
     }
@@ -635,7 +637,7 @@ public class GatewayAddressCache implements IAddressCache {
             forceRefresh,
             useMasterCollectionResolver
         );
-        request.setAddressRefresh(true);
+        request.setAddressRefresh(true, forceRefresh);
         HashMap<String, String> queryParameters = new HashMap<>();
         queryParameters.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);

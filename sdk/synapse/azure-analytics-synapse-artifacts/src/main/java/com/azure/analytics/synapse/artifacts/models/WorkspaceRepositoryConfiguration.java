@@ -66,6 +66,18 @@ public final class WorkspaceRepositoryConfiguration {
     @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
+    /*
+     * GitHub bring your own app client id
+     */
+    @JsonProperty(value = "clientId")
+    private String clientId;
+
+    /*
+     * GitHub bring your own app client secret information.
+     */
+    @JsonProperty(value = "clientSecret")
+    private GitHubClientSecret clientSecret;
+
     /**
      * Get the type property: Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration,
      * WorkspaceGitHubConfiguration.
@@ -245,6 +257,46 @@ public final class WorkspaceRepositoryConfiguration {
      */
     public WorkspaceRepositoryConfiguration setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
+     * Get the clientId property: GitHub bring your own app client id.
+     *
+     * @return the clientId value.
+     */
+    public String getClientId() {
+        return this.clientId;
+    }
+
+    /**
+     * Set the clientId property: GitHub bring your own app client id.
+     *
+     * @param clientId the clientId value to set.
+     * @return the WorkspaceRepositoryConfiguration object itself.
+     */
+    public WorkspaceRepositoryConfiguration setClientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: GitHub bring your own app client secret information.
+     *
+     * @return the clientSecret value.
+     */
+    public GitHubClientSecret getClientSecret() {
+        return this.clientSecret;
+    }
+
+    /**
+     * Set the clientSecret property: GitHub bring your own app client secret information.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the WorkspaceRepositoryConfiguration object itself.
+     */
+    public WorkspaceRepositoryConfiguration setClientSecret(GitHubClientSecret clientSecret) {
+        this.clientSecret = clientSecret;
         return this;
     }
 }
