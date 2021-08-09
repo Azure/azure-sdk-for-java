@@ -12,6 +12,7 @@ import java.util.Arrays;
  */
 @Fluent
 public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptions {
+    private Boolean disableServiceLogs;
     private PiiEntityDomain domainFilter;
     private Iterable<PiiEntityCategory> categoriesFilter;
 
@@ -46,7 +47,19 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     }
 
     /**
-     * Sets the value of {@code disableServiceLogs}.
+     * Gets the value of service logs disable status. The default value of this property is 'true'. This means,
+     * Text Analytics service won't log your input text. Setting this property to 'false', enables logging your input
+     * text for 48 hours, solely to allow for troubleshooting issues.
+     *
+     * @return true if logging input text service are disabled.
+     */
+    @Override
+    public boolean isServiceLogsDisabled() {
+        return disableServiceLogs == null ? true : disableServiceLogs;
+    }
+
+    /**
+     * Sets the value of service logs disable status.
      *
      * @param disableServiceLogs The default value of this property is 'true'. This means, Text Analytics service
      * does not log your input text. Setting this property to 'false', enables the service to log your text input for
@@ -56,7 +69,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
      */
     @Override
     public RecognizePiiEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
-        super.setServiceLogsDisabled(disableServiceLogs);
+        this.disableServiceLogs = disableServiceLogs;
         return this;
     }
 
