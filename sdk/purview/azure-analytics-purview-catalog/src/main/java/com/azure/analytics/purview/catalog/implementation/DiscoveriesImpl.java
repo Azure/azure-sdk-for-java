@@ -210,7 +210,7 @@ public final class DiscoveriesImpl {
                 context ->
                         service.query(
                                 this.client.getEndpoint(),
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 searchRequest,
                                 requestOptions,
                                 context));
@@ -346,7 +346,11 @@ public final class DiscoveriesImpl {
     public Mono<Response<BinaryData>> queryWithResponseAsync(
             BinaryData searchRequest, RequestOptions requestOptions, Context context) {
         return service.query(
-                this.client.getEndpoint(), this.client.getApiVersion(), searchRequest, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                searchRequest,
+                requestOptions,
+                context);
     }
 
     /**
@@ -962,7 +966,7 @@ public final class DiscoveriesImpl {
                 context ->
                         service.suggest(
                                 this.client.getEndpoint(),
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 suggestRequest,
                                 requestOptions,
                                 context));
@@ -1040,7 +1044,11 @@ public final class DiscoveriesImpl {
     public Mono<Response<BinaryData>> suggestWithResponseAsync(
             BinaryData suggestRequest, RequestOptions requestOptions, Context context) {
         return service.suggest(
-                this.client.getEndpoint(), this.client.getApiVersion(), suggestRequest, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                suggestRequest,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1408,7 +1416,7 @@ public final class DiscoveriesImpl {
                 context ->
                         service.browse(
                                 this.client.getEndpoint(),
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 browseRequest,
                                 requestOptions,
                                 context));
@@ -1471,7 +1479,11 @@ public final class DiscoveriesImpl {
     public Mono<Response<BinaryData>> browseWithResponseAsync(
             BinaryData browseRequest, RequestOptions requestOptions, Context context) {
         return service.browse(
-                this.client.getEndpoint(), this.client.getApiVersion(), browseRequest, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                browseRequest,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1766,7 +1778,7 @@ public final class DiscoveriesImpl {
                 context ->
                         service.autoComplete(
                                 this.client.getEndpoint(),
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 autoCompleteRequest,
                                 requestOptions,
                                 context));
@@ -1815,7 +1827,11 @@ public final class DiscoveriesImpl {
     public Mono<Response<BinaryData>> autoCompleteWithResponseAsync(
             BinaryData autoCompleteRequest, RequestOptions requestOptions, Context context) {
         return service.autoComplete(
-                this.client.getEndpoint(), this.client.getApiVersion(), autoCompleteRequest, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                autoCompleteRequest,
+                requestOptions,
+                context);
     }
 
     /**

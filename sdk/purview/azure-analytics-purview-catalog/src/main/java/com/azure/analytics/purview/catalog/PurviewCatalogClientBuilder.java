@@ -235,7 +235,7 @@ public final class PurviewCatalogClientBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         PurviewCatalogClientImpl client =
-                new PurviewCatalogClientImpl(pipeline, serializerAdapter, endpoint, serviceVersion.getVersion());
+                new PurviewCatalogClientImpl(pipeline, serializerAdapter, endpoint, serviceVersion);
         return client;
     }
 

@@ -152,7 +152,7 @@ public final class TriggersImpl {
                                 this.client.getEndpoint(),
                                 dataSourceName,
                                 scanName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -231,7 +231,7 @@ public final class TriggersImpl {
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }
@@ -622,7 +622,7 @@ public final class TriggersImpl {
                                 this.client.getEndpoint(),
                                 dataSourceName,
                                 scanName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 body,
                                 requestOptions,
                                 context));
@@ -709,7 +709,7 @@ public final class TriggersImpl {
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 body,
                 requestOptions,
                 context);
@@ -1124,7 +1124,7 @@ public final class TriggersImpl {
                                 this.client.getEndpoint(),
                                 dataSourceName,
                                 scanName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -1203,7 +1203,7 @@ public final class TriggersImpl {
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }

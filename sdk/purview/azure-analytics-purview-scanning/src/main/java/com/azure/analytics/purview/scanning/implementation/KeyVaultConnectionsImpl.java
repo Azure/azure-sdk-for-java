@@ -132,7 +132,7 @@ public final class KeyVaultConnectionsImpl {
                         service.get(
                                 this.client.getEndpoint(),
                                 keyVaultName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -170,7 +170,11 @@ public final class KeyVaultConnectionsImpl {
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String keyVaultName, RequestOptions requestOptions, Context context) {
         return service.get(
-                this.client.getEndpoint(), keyVaultName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                keyVaultName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -366,7 +370,7 @@ public final class KeyVaultConnectionsImpl {
                         service.create(
                                 this.client.getEndpoint(),
                                 keyVaultName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 body,
                                 requestOptions,
                                 context));
@@ -412,7 +416,12 @@ public final class KeyVaultConnectionsImpl {
     public Mono<Response<BinaryData>> createWithResponseAsync(
             String keyVaultName, BinaryData body, RequestOptions requestOptions, Context context) {
         return service.create(
-                this.client.getEndpoint(), keyVaultName, this.client.getApiVersion(), body, requestOptions, context);
+                this.client.getEndpoint(),
+                keyVaultName,
+                this.client.getServiceVersion().getVersion(),
+                body,
+                requestOptions,
+                context);
     }
 
     /**
@@ -630,7 +639,7 @@ public final class KeyVaultConnectionsImpl {
                         service.delete(
                                 this.client.getEndpoint(),
                                 keyVaultName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -668,7 +677,11 @@ public final class KeyVaultConnectionsImpl {
     public Mono<Response<BinaryData>> deleteWithResponseAsync(
             String keyVaultName, RequestOptions requestOptions, Context context) {
         return service.delete(
-                this.client.getEndpoint(), keyVaultName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                keyVaultName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -861,7 +874,7 @@ public final class KeyVaultConnectionsImpl {
                         context ->
                                 service.listAll(
                                         this.client.getEndpoint(),
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -911,7 +924,11 @@ public final class KeyVaultConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
-        return service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context)
+        return service.listAll(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

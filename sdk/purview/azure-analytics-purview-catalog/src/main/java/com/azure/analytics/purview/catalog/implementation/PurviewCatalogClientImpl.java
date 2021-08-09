@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.catalog.implementation;
 
+import com.azure.analytics.purview.catalog.PurviewCatalogServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -26,16 +27,16 @@ public final class PurviewCatalogClientImpl {
         return this.endpoint;
     }
 
-    /** Api Version. */
-    private final String apiVersion;
+    /** Service version. */
+    private final PurviewCatalogServiceVersion serviceVersion;
 
     /**
-     * Gets Api Version.
+     * Gets Service version.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public PurviewCatalogServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -139,16 +140,16 @@ public final class PurviewCatalogClientImpl {
      *
      * @param endpoint The catalog endpoint of your Purview account. Example:
      *     https://{accountName}.catalog.purview.azure.com.
-     * @param apiVersion Api Version.
+     * @param serviceVersion Service version.
      */
-    public PurviewCatalogClientImpl(String endpoint, String apiVersion) {
+    public PurviewCatalogClientImpl(String endpoint, PurviewCatalogServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
-                apiVersion);
+                serviceVersion);
     }
 
     /**
@@ -157,10 +158,11 @@ public final class PurviewCatalogClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The catalog endpoint of your Purview account. Example:
      *     https://{accountName}.catalog.purview.azure.com.
-     * @param apiVersion Api Version.
+     * @param serviceVersion Service version.
      */
-    public PurviewCatalogClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+    public PurviewCatalogClientImpl(
+            HttpPipeline httpPipeline, String endpoint, PurviewCatalogServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -170,14 +172,17 @@ public final class PurviewCatalogClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The catalog endpoint of your Purview account. Example:
      *     https://{accountName}.catalog.purview.azure.com.
-     * @param apiVersion Api Version.
+     * @param serviceVersion Service version.
      */
     public PurviewCatalogClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            PurviewCatalogServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
+        this.serviceVersion = serviceVersion;
         this.entities = new EntitiesImpl(this);
         this.glossaries = new GlossariesImpl(this);
         this.discoveries = new DiscoveriesImpl(this);

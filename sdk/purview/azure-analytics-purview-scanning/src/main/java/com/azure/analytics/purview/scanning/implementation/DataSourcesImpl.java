@@ -178,7 +178,7 @@ public final class DataSourcesImpl {
                         service.createOrUpdate(
                                 this.client.getEndpoint(),
                                 dataSourceName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -264,7 +264,11 @@ public final class DataSourcesImpl {
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String dataSourceName, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
-                this.client.getEndpoint(), dataSourceName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                dataSourceName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -693,7 +697,7 @@ public final class DataSourcesImpl {
                         service.get(
                                 this.client.getEndpoint(),
                                 dataSourceName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -779,7 +783,11 @@ public final class DataSourcesImpl {
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String dataSourceName, RequestOptions requestOptions, Context context) {
         return service.get(
-                this.client.getEndpoint(), dataSourceName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                dataSourceName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -1207,7 +1215,7 @@ public final class DataSourcesImpl {
                         service.delete(
                                 this.client.getEndpoint(),
                                 dataSourceName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -1293,7 +1301,11 @@ public final class DataSourcesImpl {
     public Mono<Response<BinaryData>> deleteWithResponseAsync(
             String dataSourceName, RequestOptions requestOptions, Context context) {
         return service.delete(
-                this.client.getEndpoint(), dataSourceName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                dataSourceName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -1726,7 +1738,7 @@ public final class DataSourcesImpl {
                         context ->
                                 service.listAll(
                                         this.client.getEndpoint(),
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -1824,7 +1836,11 @@ public final class DataSourcesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
-        return service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context)
+        return service.listAll(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

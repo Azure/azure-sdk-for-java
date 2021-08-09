@@ -860,7 +860,11 @@ public final class LineagesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.nextPageLineage(
-                                this.client.getEndpoint(), guid, this.client.getApiVersion(), requestOptions, context));
+                                this.client.getEndpoint(),
+                                guid,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -974,7 +978,7 @@ public final class LineagesImpl {
     public Mono<Response<BinaryData>> nextPageLineageWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
         return service.nextPageLineage(
-                this.client.getEndpoint(), guid, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(), guid, this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**

@@ -128,7 +128,7 @@ public final class ScanRulesetsImpl {
                         service.get(
                                 this.client.getEndpoint(),
                                 scanRulesetName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -165,7 +165,11 @@ public final class ScanRulesetsImpl {
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String scanRulesetName, RequestOptions requestOptions, Context context) {
         return service.get(
-                this.client.getEndpoint(), scanRulesetName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                scanRulesetName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -350,7 +354,7 @@ public final class ScanRulesetsImpl {
                         service.createOrUpdate(
                                 this.client.getEndpoint(),
                                 scanRulesetName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -387,7 +391,11 @@ public final class ScanRulesetsImpl {
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String scanRulesetName, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
-                this.client.getEndpoint(), scanRulesetName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                scanRulesetName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -572,7 +580,7 @@ public final class ScanRulesetsImpl {
                         service.delete(
                                 this.client.getEndpoint(),
                                 scanRulesetName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -609,7 +617,11 @@ public final class ScanRulesetsImpl {
     public Mono<Response<BinaryData>> deleteWithResponseAsync(
             String scanRulesetName, RequestOptions requestOptions, Context context) {
         return service.delete(
-                this.client.getEndpoint(), scanRulesetName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                scanRulesetName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -797,7 +809,7 @@ public final class ScanRulesetsImpl {
                         context ->
                                 service.listAll(
                                         this.client.getEndpoint(),
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -846,7 +858,11 @@ public final class ScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
-        return service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context)
+        return service.listAll(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -152,7 +152,7 @@ public final class ClassificationRulesImpl {
                         service.get(
                                 this.client.getEndpoint(),
                                 classificationRuleName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -188,7 +188,7 @@ public final class ClassificationRulesImpl {
         return service.get(
                 this.client.getEndpoint(),
                 classificationRuleName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }
@@ -360,7 +360,7 @@ public final class ClassificationRulesImpl {
                         service.createOrUpdate(
                                 this.client.getEndpoint(),
                                 classificationRuleName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -396,7 +396,7 @@ public final class ClassificationRulesImpl {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
                 classificationRuleName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }
@@ -569,7 +569,7 @@ public final class ClassificationRulesImpl {
                         service.delete(
                                 this.client.getEndpoint(),
                                 classificationRuleName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -605,7 +605,7 @@ public final class ClassificationRulesImpl {
         return service.delete(
                 this.client.getEndpoint(),
                 classificationRuleName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }
@@ -780,7 +780,7 @@ public final class ClassificationRulesImpl {
                         context ->
                                 service.listAll(
                                         this.client.getEndpoint(),
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -826,7 +826,11 @@ public final class ClassificationRulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
-        return service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context)
+        return service.listAll(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1017,7 +1021,7 @@ public final class ClassificationRulesImpl {
                                 service.listVersionsByClassificationRuleName(
                                         this.client.getEndpoint(),
                                         classificationRuleName,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -1068,7 +1072,7 @@ public final class ClassificationRulesImpl {
         return service.listVersionsByClassificationRuleName(
                         this.client.getEndpoint(),
                         classificationRuleName,
-                        this.client.getApiVersion(),
+                        this.client.getServiceVersion().getVersion(),
                         requestOptions,
                         context)
                 .map(
@@ -1287,7 +1291,7 @@ public final class ClassificationRulesImpl {
                                 this.client.getEndpoint(),
                                 classificationRuleName,
                                 classificationRuleVersion,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -1346,7 +1350,7 @@ public final class ClassificationRulesImpl {
                 this.client.getEndpoint(),
                 classificationRuleName,
                 classificationRuleVersion,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }

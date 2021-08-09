@@ -16442,7 +16442,7 @@ public final class GlossariesImpl {
                         service.importGlossaryTermsViaCsv(
                                 this.client.getEndpoint(),
                                 glossaryGuid,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 file,
                                 requestOptions,
                                 context));
@@ -16503,7 +16503,12 @@ public final class GlossariesImpl {
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
         return service.importGlossaryTermsViaCsv(
-                this.client.getEndpoint(), glossaryGuid, this.client.getApiVersion(), file, requestOptions, context);
+                this.client.getEndpoint(),
+                glossaryGuid,
+                this.client.getServiceVersion().getVersion(),
+                file,
+                requestOptions,
+                context);
     }
 
     /**
@@ -16805,7 +16810,7 @@ public final class GlossariesImpl {
                         service.importGlossaryTermsViaCsvByGlossaryName(
                                 this.client.getEndpoint(),
                                 glossaryName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 file,
                                 requestOptions,
                                 context));
@@ -16866,7 +16871,12 @@ public final class GlossariesImpl {
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
             String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
         return service.importGlossaryTermsViaCsvByGlossaryName(
-                this.client.getEndpoint(), glossaryName, this.client.getApiVersion(), file, requestOptions, context);
+                this.client.getEndpoint(),
+                glossaryName,
+                this.client.getServiceVersion().getVersion(),
+                file,
+                requestOptions,
+                context);
     }
 
     /**
@@ -17154,7 +17164,7 @@ public final class GlossariesImpl {
                         service.getImportCsvOperationStatus(
                                 this.client.getEndpoint(),
                                 operationGuid,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -17198,7 +17208,11 @@ public final class GlossariesImpl {
     public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponseAsync(
             String operationGuid, RequestOptions requestOptions, Context context) {
         return service.getImportCsvOperationStatus(
-                this.client.getEndpoint(), operationGuid, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                operationGuid,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -17416,7 +17430,7 @@ public final class GlossariesImpl {
                         service.exportGlossaryTermsAsCsv(
                                 this.client.getEndpoint(),
                                 glossaryGuid,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 termGuids,
                                 requestOptions,
                                 context));
@@ -17460,7 +17474,7 @@ public final class GlossariesImpl {
         return service.exportGlossaryTermsAsCsv(
                 this.client.getEndpoint(),
                 glossaryGuid,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 termGuids,
                 requestOptions,
                 context);
@@ -17811,7 +17825,7 @@ public final class GlossariesImpl {
                         service.listTermsByGlossaryName(
                                 this.client.getEndpoint(),
                                 glossaryName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -17992,7 +18006,11 @@ public final class GlossariesImpl {
     public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponseAsync(
             String glossaryName, RequestOptions requestOptions, Context context) {
         return service.listTermsByGlossaryName(
-                this.client.getEndpoint(), glossaryName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                glossaryName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**

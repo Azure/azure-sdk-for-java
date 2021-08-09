@@ -166,7 +166,12 @@ public final class AccountsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
-                context -> service.get(this.client.getHost(), this.client.getApiVersion(), requestOptions, context));
+                context ->
+                        service.get(
+                                this.client.getHost(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -257,7 +262,8 @@ public final class AccountsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.get(this.client.getHost(), this.client.getApiVersion(), requestOptions, context);
+        return service.get(
+                this.client.getHost(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
@@ -739,7 +745,7 @@ public final class AccountsImpl {
                 context ->
                         service.update(
                                 this.client.getHost(),
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 accountUpdateParameters,
                                 requestOptions,
                                 context));
@@ -844,7 +850,11 @@ public final class AccountsImpl {
     public Mono<Response<BinaryData>> updateWithResponseAsync(
             BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
         return service.update(
-                this.client.getHost(), this.client.getApiVersion(), accountUpdateParameters, requestOptions, context);
+                this.client.getHost(),
+                this.client.getServiceVersion().getVersion(),
+                accountUpdateParameters,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1290,7 +1300,11 @@ public final class AccountsImpl {
     public Mono<Response<BinaryData>> listKeysWithResponseAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
-                        service.listKeys(this.client.getHost(), this.client.getApiVersion(), requestOptions, context));
+                        service.listKeys(
+                                this.client.getHost(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1319,7 +1333,8 @@ public final class AccountsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listKeysWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.listKeys(this.client.getHost(), this.client.getApiVersion(), requestOptions, context);
+        return service.listKeys(
+                this.client.getHost(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
@@ -1491,7 +1506,7 @@ public final class AccountsImpl {
                 context ->
                         service.regenerateKeys(
                                 this.client.getHost(),
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 keyOptions,
                                 requestOptions,
                                 context));
@@ -1534,7 +1549,11 @@ public final class AccountsImpl {
     public Mono<Response<BinaryData>> regenerateKeysWithResponseAsync(
             BinaryData keyOptions, RequestOptions requestOptions, Context context) {
         return service.regenerateKeys(
-                this.client.getHost(), this.client.getApiVersion(), keyOptions, requestOptions, context);
+                this.client.getHost(),
+                this.client.getServiceVersion().getVersion(),
+                keyOptions,
+                requestOptions,
+                context);
     }
 
     /**

@@ -12,6 +12,7 @@
     <profile>
       <id>coverage</id>
       <modules>
+        <module>azure-analytics-purview-account</module>
         <module>azure-analytics-purview-catalog</module>
         <module>azure-analytics-purview-scanning</module>
       </modules>
@@ -57,6 +58,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-analytics-purview-account</module>
         <module>azure-analytics-purview-catalog</module>
         <module>azure-analytics-purview-scanning</module>
       </modules>

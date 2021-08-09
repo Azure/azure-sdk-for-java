@@ -186,7 +186,7 @@ public final class ScansImpl {
                                 this.client.getEndpoint(),
                                 dataSourceName,
                                 scanName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 body,
                                 requestOptions,
                                 context));
@@ -278,7 +278,7 @@ public final class ScansImpl {
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 body,
                 requestOptions,
                 context);
@@ -718,7 +718,7 @@ public final class ScansImpl {
                                 this.client.getEndpoint(),
                                 dataSourceName,
                                 scanName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -802,7 +802,7 @@ public final class ScansImpl {
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }
@@ -1211,7 +1211,7 @@ public final class ScansImpl {
                                 this.client.getEndpoint(),
                                 dataSourceName,
                                 scanName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -1295,7 +1295,7 @@ public final class ScansImpl {
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }
@@ -1708,7 +1708,7 @@ public final class ScansImpl {
                                 service.listByDataSource(
                                         this.client.getEndpoint(),
                                         dataSourceName,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -1803,7 +1803,11 @@ public final class ScansImpl {
     public Mono<PagedResponse<BinaryData>> listByDataSourceSinglePageAsync(
             String dataSourceName, RequestOptions requestOptions, Context context) {
         return service.listByDataSource(
-                        this.client.getEndpoint(), dataSourceName, this.client.getApiVersion(), requestOptions, context)
+                        this.client.getEndpoint(),
+                        dataSourceName,
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

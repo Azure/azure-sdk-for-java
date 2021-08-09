@@ -107,7 +107,7 @@ public final class FiltersImpl {
                                 this.client.getEndpoint(),
                                 dataSourceName,
                                 scanName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -153,7 +153,7 @@ public final class FiltersImpl {
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }
@@ -372,7 +372,7 @@ public final class FiltersImpl {
                                 this.client.getEndpoint(),
                                 dataSourceName,
                                 scanName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -418,7 +418,7 @@ public final class FiltersImpl {
                 this.client.getEndpoint(),
                 dataSourceName,
                 scanName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }

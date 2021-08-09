@@ -15719,7 +15719,11 @@ public final class TypesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getTermTemplateDefByGuid(
-                                this.client.getEndpoint(), guid, this.client.getApiVersion(), requestOptions, context));
+                                this.client.getEndpoint(),
+                                guid,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -15829,7 +15833,7 @@ public final class TypesImpl {
     public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
         return service.getTermTemplateDefByGuid(
-                this.client.getEndpoint(), guid, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(), guid, this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
@@ -16387,7 +16391,11 @@ public final class TypesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getTermTemplateDefByName(
-                                this.client.getEndpoint(), name, this.client.getApiVersion(), requestOptions, context));
+                                this.client.getEndpoint(),
+                                name,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -16497,7 +16505,7 @@ public final class TypesImpl {
     public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
         return service.getTermTemplateDefByName(
-                this.client.getEndpoint(), name, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**

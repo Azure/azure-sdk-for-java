@@ -241,7 +241,7 @@ public final class PurviewScanningClientBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         PurviewScanningClientImpl client =
-                new PurviewScanningClientImpl(pipeline, serializerAdapter, endpoint, serviceVersion.getVersion());
+                new PurviewScanningClientImpl(pipeline, serializerAdapter, endpoint, serviceVersion);
         return client;
     }
 

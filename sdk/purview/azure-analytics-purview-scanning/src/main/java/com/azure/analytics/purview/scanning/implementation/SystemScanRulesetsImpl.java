@@ -144,7 +144,7 @@ public final class SystemScanRulesetsImpl {
                         context ->
                                 service.listAll(
                                         this.client.getEndpoint(),
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -193,7 +193,11 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
-        return service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context)
+        return service.listAll(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -392,7 +396,7 @@ public final class SystemScanRulesetsImpl {
                         service.get(
                                 this.client.getEndpoint(),
                                 dataSourceType,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -429,7 +433,11 @@ public final class SystemScanRulesetsImpl {
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String dataSourceType, RequestOptions requestOptions, Context context) {
         return service.get(
-                this.client.getEndpoint(), dataSourceType, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                dataSourceType,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -613,7 +621,7 @@ public final class SystemScanRulesetsImpl {
                         service.getByVersion(
                                 this.client.getEndpoint(),
                                 version,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -651,7 +659,11 @@ public final class SystemScanRulesetsImpl {
     public Mono<Response<BinaryData>> getByVersionWithResponseAsync(
             int version, RequestOptions requestOptions, Context context) {
         return service.getByVersion(
-                this.client.getEndpoint(), version, this.client.getApiVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                version,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -836,7 +848,10 @@ public final class SystemScanRulesetsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getLatest(
-                                this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context));
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -869,7 +884,8 @@ public final class SystemScanRulesetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLatestWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.getLatest(this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context);
+        return service.getLatest(
+                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
@@ -1057,7 +1073,7 @@ public final class SystemScanRulesetsImpl {
                         context ->
                                 service.listVersionsByDataSource(
                                         this.client.getEndpoint(),
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -1109,7 +1125,10 @@ public final class SystemScanRulesetsImpl {
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceSinglePageAsync(
             RequestOptions requestOptions, Context context) {
         return service.listVersionsByDataSource(
-                        this.client.getEndpoint(), this.client.getApiVersion(), requestOptions, context)
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

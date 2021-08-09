@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.scanning.implementation;
 
+import com.azure.analytics.purview.scanning.PurviewScanningServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -26,16 +27,16 @@ public final class PurviewScanningClientImpl {
         return this.endpoint;
     }
 
-    /** Api Version. */
-    private final String apiVersion;
+    /** Service version. */
+    private final PurviewScanningServiceVersion serviceVersion;
 
     /**
-     * Gets Api Version.
+     * Gets Service version.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public PurviewScanningServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -175,16 +176,16 @@ public final class PurviewScanningClientImpl {
      *
      * @param endpoint The scanning endpoint of your purview account. Example:
      *     https://{accountName}.scan.purview.azure.com.
-     * @param apiVersion Api Version.
+     * @param serviceVersion Service version.
      */
-    public PurviewScanningClientImpl(String endpoint, String apiVersion) {
+    public PurviewScanningClientImpl(String endpoint, PurviewScanningServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
-                apiVersion);
+                serviceVersion);
     }
 
     /**
@@ -193,10 +194,11 @@ public final class PurviewScanningClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The scanning endpoint of your purview account. Example:
      *     https://{accountName}.scan.purview.azure.com.
-     * @param apiVersion Api Version.
+     * @param serviceVersion Service version.
      */
-    public PurviewScanningClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+    public PurviewScanningClientImpl(
+            HttpPipeline httpPipeline, String endpoint, PurviewScanningServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -206,14 +208,17 @@ public final class PurviewScanningClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The scanning endpoint of your purview account. Example:
      *     https://{accountName}.scan.purview.azure.com.
-     * @param apiVersion Api Version.
+     * @param serviceVersion Service version.
      */
     public PurviewScanningClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            PurviewScanningServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
+        this.serviceVersion = serviceVersion;
         this.keyVaultConnections = new KeyVaultConnectionsImpl(this);
         this.classificationRules = new ClassificationRulesImpl(this);
         this.dataSources = new DataSourcesImpl(this);

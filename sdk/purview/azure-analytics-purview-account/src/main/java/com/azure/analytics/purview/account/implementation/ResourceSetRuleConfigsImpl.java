@@ -212,7 +212,12 @@ public final class ResourceSetRuleConfigsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
-                context -> service.get(this.client.getHost(), this.client.getApiVersion(), requestOptions, context));
+                context ->
+                        service.get(
+                                this.client.getHost(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -333,7 +338,8 @@ public final class ResourceSetRuleConfigsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.get(this.client.getHost(), this.client.getApiVersion(), requestOptions, context);
+        return service.get(
+                this.client.getHost(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
@@ -963,7 +969,7 @@ public final class ResourceSetRuleConfigsImpl {
                 context ->
                         service.createOrUpdate(
                                 this.client.getHost(),
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 resourceSetRuleConfig,
                                 requestOptions,
                                 context));
@@ -1096,7 +1102,11 @@ public final class ResourceSetRuleConfigsImpl {
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
-                this.client.getHost(), this.client.getApiVersion(), resourceSetRuleConfig, requestOptions, context);
+                this.client.getHost(),
+                this.client.getServiceVersion().getVersion(),
+                resourceSetRuleConfig,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1644,7 +1654,12 @@ public final class ResourceSetRuleConfigsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
-                context -> service.delete(this.client.getHost(), this.client.getApiVersion(), requestOptions, context));
+                context ->
+                        service.delete(
+                                this.client.getHost(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1664,7 +1679,8 @@ public final class ResourceSetRuleConfigsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.delete(this.client.getHost(), this.client.getApiVersion(), requestOptions, context);
+        return service.delete(
+                this.client.getHost(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
@@ -1871,7 +1887,10 @@ public final class ResourceSetRuleConfigsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByAccount(
-                                        this.client.getHost(), this.client.getApiVersion(), requestOptions, context))
+                                        this.client.getHost(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
+                                        context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2009,7 +2028,8 @@ public final class ResourceSetRuleConfigsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listByAccountSinglePageAsync(
             RequestOptions requestOptions, Context context) {
-        return service.listByAccount(this.client.getHost(), this.client.getApiVersion(), requestOptions, context)
+        return service.listByAccount(
+                        this.client.getHost(), this.client.getServiceVersion().getVersion(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

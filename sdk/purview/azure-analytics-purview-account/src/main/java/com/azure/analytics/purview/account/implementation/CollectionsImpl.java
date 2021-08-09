@@ -164,7 +164,7 @@ public final class CollectionsImpl {
                         service.get(
                                 this.client.getHost(),
                                 collectionName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -211,7 +211,12 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return service.get(this.client.getHost(), collectionName, this.client.getApiVersion(), requestOptions, context);
+        return service.get(
+                this.client.getHost(),
+                collectionName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -457,7 +462,7 @@ public final class CollectionsImpl {
                         service.createOrUpdate(
                                 this.client.getHost(),
                                 collectionName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 collection,
                                 requestOptions,
                                 context));
@@ -515,7 +520,7 @@ public final class CollectionsImpl {
         return service.createOrUpdate(
                 this.client.getHost(),
                 collectionName,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 collection,
                 requestOptions,
                 context);
@@ -764,7 +769,7 @@ public final class CollectionsImpl {
                         service.delete(
                                 this.client.getHost(),
                                 collectionName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -789,7 +794,11 @@ public final class CollectionsImpl {
     public Mono<Response<Void>> deleteWithResponseAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
         return service.delete(
-                this.client.getHost(), collectionName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getHost(),
+                collectionName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
@@ -923,7 +932,10 @@ public final class CollectionsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByAccount(
-                                        this.client.getHost(), this.client.getApiVersion(), requestOptions, context))
+                                        this.client.getHost(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
+                                        context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -983,7 +995,8 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listByAccountSinglePageAsync(
             RequestOptions requestOptions, Context context) {
-        return service.listByAccount(this.client.getHost(), this.client.getApiVersion(), requestOptions, context)
+        return service.listByAccount(
+                        this.client.getHost(), this.client.getServiceVersion().getVersion(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1236,7 +1249,7 @@ public final class CollectionsImpl {
                                 service.getChildCollectionNames(
                                         this.client.getHost(),
                                         collectionName,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -1286,7 +1299,11 @@ public final class CollectionsImpl {
     public Mono<PagedResponse<BinaryData>> getChildCollectionNamesSinglePageAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
         return service.getChildCollectionNames(
-                        this.client.getHost(), collectionName, this.client.getApiVersion(), requestOptions, context)
+                        this.client.getHost(),
+                        collectionName,
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1487,7 +1504,7 @@ public final class CollectionsImpl {
                         service.getCollectionPath(
                                 this.client.getHost(),
                                 collectionName,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -1526,7 +1543,11 @@ public final class CollectionsImpl {
     public Mono<Response<BinaryData>> getCollectionPathWithResponseAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
         return service.getCollectionPath(
-                this.client.getHost(), collectionName, this.client.getApiVersion(), requestOptions, context);
+                this.client.getHost(),
+                collectionName,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**

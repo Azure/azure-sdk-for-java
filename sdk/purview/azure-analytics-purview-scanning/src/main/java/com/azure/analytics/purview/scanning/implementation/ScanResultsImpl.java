@@ -146,7 +146,7 @@ public final class ScanResultsImpl {
                                 dataSourceName,
                                 scanName,
                                 runId,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -204,7 +204,7 @@ public final class ScanResultsImpl {
                 dataSourceName,
                 scanName,
                 runId,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }
@@ -479,7 +479,7 @@ public final class ScanResultsImpl {
                                 dataSourceName,
                                 scanName,
                                 runId,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
     }
@@ -536,7 +536,7 @@ public final class ScanResultsImpl {
                 dataSourceName,
                 scanName,
                 runId,
-                this.client.getApiVersion(),
+                this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
     }
@@ -834,7 +834,7 @@ public final class ScanResultsImpl {
                                         this.client.getEndpoint(),
                                         dataSourceName,
                                         scanName,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
                 .map(
@@ -927,7 +927,7 @@ public final class ScanResultsImpl {
                         this.client.getEndpoint(),
                         dataSourceName,
                         scanName,
-                        this.client.getApiVersion(),
+                        this.client.getServiceVersion().getVersion(),
                         requestOptions,
                         context)
                 .map(

@@ -231,7 +231,7 @@ public final class PurviewAccountClientBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         PurviewAccountClientImpl client =
-                new PurviewAccountClientImpl(pipeline, serializerAdapter, host, serviceVersion.getVersion());
+                new PurviewAccountClientImpl(pipeline, serializerAdapter, host, serviceVersion);
         return client;
     }
 

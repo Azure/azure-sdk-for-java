@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.account.implementation;
 
+import com.azure.analytics.purview.account.PurviewAccountServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -26,16 +27,16 @@ public final class PurviewAccountClientImpl {
         return this.host;
     }
 
-    /** Api Version. */
-    private final String apiVersion;
+    /** Service version. */
+    private final PurviewAccountServiceVersion serviceVersion;
 
     /**
-     * Gets Api Version.
+     * Gets Service version.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public PurviewAccountServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -102,16 +103,16 @@ public final class PurviewAccountClientImpl {
      * Initializes an instance of PurviewAccountClient client.
      *
      * @param host server parameter.
-     * @param apiVersion Api Version.
+     * @param serviceVersion Service version.
      */
-    public PurviewAccountClientImpl(String host, String apiVersion) {
+    public PurviewAccountClientImpl(String host, PurviewAccountServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 host,
-                apiVersion);
+                serviceVersion);
     }
 
     /**
@@ -119,10 +120,11 @@ public final class PurviewAccountClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param host server parameter.
-     * @param apiVersion Api Version.
+     * @param serviceVersion Service version.
      */
-    public PurviewAccountClientImpl(HttpPipeline httpPipeline, String host, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, apiVersion);
+    public PurviewAccountClientImpl(
+            HttpPipeline httpPipeline, String host, PurviewAccountServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, serviceVersion);
     }
 
     /**
@@ -131,14 +133,17 @@ public final class PurviewAccountClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param host server parameter.
-     * @param apiVersion Api Version.
+     * @param serviceVersion Service version.
      */
     public PurviewAccountClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host, String apiVersion) {
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String host,
+            PurviewAccountServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;
-        this.apiVersion = apiVersion;
+        this.serviceVersion = serviceVersion;
         this.accounts = new AccountsImpl(this);
         this.collections = new CollectionsImpl(this);
         this.resourceSetRuleConfigs = new ResourceSetRuleConfigsImpl(this);
