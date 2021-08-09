@@ -5,17 +5,17 @@ package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.security.attestation.models.AttestOpenEnclaveOptions;
+import com.azure.security.attestation.models.AttestationOptions;
 
 import java.util.Objects;
 
 /** Attestation request for OpenEnclave reports  generated from within Intel SGX enclaves. */
 @Fluent
-public final class AttestOpenEnclaveOptionsImpl implements AttestOpenEnclaveOptions {
+public final class AttestationOptionsImpl implements AttestationOptions {
     /*
      * OpenEnclave report from the enclave to be attested
      */
-    private byte[] report;
+    private byte[] evidence;
 
     /*
      * Runtime data provided by the enclave at the time of report generation.
@@ -25,6 +25,7 @@ public final class AttestOpenEnclaveOptionsImpl implements AttestOpenEnclaveOpti
      */
     private byte[] runtimeData;
     private DataType runTimeDataType;
+    boolean runTimeDataTypeSet;
 
     /*
      * Base64Url encoded "InitTime data". The MAA will verify that the init
@@ -33,6 +34,7 @@ public final class AttestOpenEnclaveOptionsImpl implements AttestOpenEnclaveOpti
      */
     private byte[] initTimeData;
     private DataType initTimeDataType;
+    boolean initTimeDataTypeSet;
 
     /*
      * Attest against the provided draft policy. Note that the resulting token
@@ -46,64 +48,41 @@ public final class AttestOpenEnclaveOptionsImpl implements AttestOpenEnclaveOpti
      * @param report the report value to set.
      * @return the AttestOpenEnclaveRequest object itself.
      */
-    public AttestOpenEnclaveOptions setReport(byte[] report) {
-        this.report = CoreUtils.clone(report);
+    public AttestationOptions setEvidence(byte[] report) {
+        this.evidence = CoreUtils.clone(report);
         return this;
     }
 
     /**
-     * Get the runtimeData property: Runtime data provided by the enclave at the time of report generation. The MAA will
-     * verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the decoded
-     * "data" field of the runtime data.
-     *
-     * @return the runtimeData value.
-     */
-    public byte[] getRuntimeData() {
-        return CoreUtils.clone(this.runtimeData);
-    }
-
-    /**
-     * Set the runtimeData property: Runtime data provided by the enclave at the time of report generation. The MAA will
+     * Set the RunTimeData property: Runtime data provided by the enclave at the time of report generation. The MAA will
      * verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the decoded
      * "data" field of the runtime data.
      *
      * @param runtimeData the runtimeData value to set.
      * @return the AttestOpenEnclaveRequest object itself.
      */
-    @Override public AttestOpenEnclaveOptions setRunTimeData(byte[] runtimeData) {
+    @Override public AttestationOptions setRunTimeData(byte[] runtimeData) {
         this.runtimeData = CoreUtils.clone(runtimeData);
-        this.runTimeDataType = DataType.BINARY;
         return this;
     }
 
     @Override
     public byte[] getRunTimeData() {
-        if (runTimeDataType.equals(DataType.BINARY)) {
-            return CoreUtils.clone(runtimeData);
-        }
-        throw new IllegalStateException("Cannot return RunTimeData if RunTimeJson has been set");
+        return CoreUtils.clone(runtimeData);
     }
 
-    /**
-     * Set the runtimeData property: Runtime data provided by the enclave at the time of report generation. The MAA will
-     * verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the decoded
-     * "data" field of the runtime data.
-     *
-     * @param runtimeData the runtimeData value to set.
-     * @return the AttestOpenEnclaveRequest object itself.
-     */
-    @Override public AttestOpenEnclaveOptions setRunTimeJson(byte[] runtimeData) {
-        this.runtimeData = CoreUtils.clone(runtimeData);
-        this.runTimeDataType = DataType.JSON;
+    @Override
+    public AttestationOptions interpretRunTimeDataAsBinary() {
+        this.runTimeDataType = DataType.BINARY;
+        this.runTimeDataTypeSet = true;
         return this;
     }
 
     @Override
-    public byte[] getRunTimeJson() {
-        if (runTimeDataType.equals(DataType.JSON)) {
-            return CoreUtils.clone(runtimeData);
-        }
-        throw new IllegalStateException("Cannot return RunTimeJson if RunTimeData has been set");
+    public AttestationOptions interpretRunTimeDataAsJson() {
+        this.runTimeDataType = DataType.JSON;
+        this.runTimeDataTypeSet = true;
+        return this;
     }
 
     /**
@@ -113,39 +92,28 @@ public final class AttestOpenEnclaveOptionsImpl implements AttestOpenEnclaveOpti
      * @param initTimeData the initTimeData value to set.
      * @return the AttestOpenEnclaveRequest object itself.
      */
-    @Override public AttestOpenEnclaveOptions setInitTimeData(byte[] initTimeData) {
+    @Override public AttestationOptions setInitTimeData(byte[] initTimeData) {
         this.initTimeData = CoreUtils.clone(initTimeData);
-        this.initTimeDataType = DataType.BINARY;
         return this;
     }
 
     @Override
     public byte[] getInitTimeData() {
-        if (!initTimeDataType.equals(DataType.BINARY)) {
-            throw new IllegalStateException("Cannot return InitTimeData if InitTimeJson has been set");
-        }
         return CoreUtils.clone(initTimeData);
     }
 
-    /**
-     * Set the initTimeData property: Base64Url encoded "InitTime data". The MAA will verify that the init data was
-     * known to the enclave. Note that InitTimeData is invalid for CoffeeLake processors.
-     *
-     * @param initTimeData the initTimeData value to set.
-     * @return the AttestOpenEnclaveRequest object itself.
-     */
-    @Override public AttestOpenEnclaveOptions setInitTimeJson(byte[] initTimeData) {
-        this.initTimeData = CoreUtils.clone(initTimeData);
-        this.initTimeDataType = DataType.JSON;
+    @Override
+    public AttestationOptions interpretInitTimeDataAsBinary() {
+        this.initTimeDataType = DataType.BINARY;
+        this.initTimeDataTypeSet = true;
         return this;
     }
 
     @Override
-    public byte[] getInitTimeJson() {
-        if (initTimeDataType.equals(DataType.JSON)) {
-            return CoreUtils.clone(initTimeData);
-        }
-        throw new IllegalStateException("Cannot return InitTimeJson if InitTimeData has been set");
+    public AttestationOptions interpretInitTimeDataAsJson() {
+        this.initTimeDataType = DataType.JSON;
+        this.initTimeDataTypeSet = true;
+        return this;
     }
 
     /**
@@ -155,7 +123,7 @@ public final class AttestOpenEnclaveOptionsImpl implements AttestOpenEnclaveOpti
      * @param draftPolicyForAttestation the draftPolicyForAttestation value to set.
      * @return the AttestOpenEnclaveRequest object itself.
      */
-    @Override public AttestOpenEnclaveOptions setDraftPolicyForAttestation(String draftPolicyForAttestation) {
+    @Override public AttestationOptions setDraftPolicyForAttestation(String draftPolicyForAttestation) {
         this.draftPolicyForAttestation = draftPolicyForAttestation;
         return this;
     }
@@ -175,16 +143,25 @@ public final class AttestOpenEnclaveOptionsImpl implements AttestOpenEnclaveOpti
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override public void validate() {
-        Objects.requireNonNull(this.report);
+        Objects.requireNonNull(this.evidence);
+        if (this.runtimeData != null) {
+            if (!this.runTimeDataTypeSet) {
+                throw new IllegalArgumentException("RunTime Data is set, but interpretRunTimeDataAsBinary or interpretRunTimeDataAsJson was not called.");
+            }
+        }
+        if (this.initTimeData != null) {
+            if (!this.initTimeDataTypeSet) {
+                throw new IllegalArgumentException("InitTime Data is set, but interpretInitTimeDataAsBinary or interpretInitTimeDataAsJson was not called.");
+            }
+        }
     }
 
     /**
      * Returns an internal type from a public type.
      * @return implementation type.
      */
-    public AttestOpenEnclaveRequest getInternalAttestRequest() {
-
-        return new com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest()
+    public AttestOpenEnclaveRequest getInternalAttestOpenEnclaveRequest() {
+        return new AttestOpenEnclaveRequest()
             .setDraftPolicyForAttestation(draftPolicyForAttestation)
             .setRuntimeData(runtimeData != null ? new RuntimeData()
                 .setData(runtimeData)
@@ -192,8 +169,22 @@ public final class AttestOpenEnclaveOptionsImpl implements AttestOpenEnclaveOpti
             .setInitTimeData(initTimeData != null ? new InitTimeData()
                 .setData(initTimeData)
                 .setDataType(initTimeDataType) : null)
-            .setReport(report);
+            .setReport(evidence);
     }
 
-
+    /**
+     * Returns an internal type from a public type.
+     * @return implementation type.
+     */
+    public AttestSgxEnclaveRequest getInternalAttestSgxRequest() {
+        return new AttestSgxEnclaveRequest()
+            .setDraftPolicyForAttestation(draftPolicyForAttestation)
+            .setRuntimeData(runtimeData != null ? new RuntimeData()
+                .setData(runtimeData)
+                .setDataType(runTimeDataType) : null)
+            .setInitTimeData(initTimeData != null ? new InitTimeData()
+                .setData(initTimeData)
+                .setDataType(initTimeDataType) : null)
+            .setQuote(evidence);
+    }
 }

@@ -10,9 +10,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.attestation.implementation.models.AttestOpenEnclaveOptionsImpl;
-import com.azure.security.attestation.models.AttestOpenEnclaveOptions;
-import com.azure.security.attestation.models.AttestSgxEnclaveOptions;
+import com.azure.security.attestation.implementation.models.AttestationOptionsImpl;
+import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 
@@ -92,7 +91,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationResult attestOpenEnclave(byte[] report) {
-        return asyncClient.attestOpenEnclave(new AttestOpenEnclaveOptionsImpl().setReport(report)).block();
+        return asyncClient.attestOpenEnclave(new AttestationOptionsImpl().setEvidence(report)).block();
     }
 
     /**
@@ -106,7 +105,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResult attestOpenEnclave(AttestOpenEnclaveOptions options) {
+    public AttestationResult attestOpenEnclave(AttestationOptions options) {
         return asyncClient.attestOpenEnclave(options).block();
     }
 
@@ -140,7 +139,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResult> attestOpenEnclaveWithResponse(
-        AttestOpenEnclaveOptions options, Context context) {
+        AttestationOptions options, Context context) {
         return asyncClient.attestOpenEnclaveWithResponse(options, context).block();
     }
 
@@ -171,7 +170,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResult attestSgxEnclave(AttestSgxEnclaveOptions options) {
+    public AttestationResult attestSgxEnclave(AttestationOptions options) {
         return asyncClient.attestSgxEnclave(options).block();
     }
 
@@ -205,7 +204,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResult> attestSgxEnclaveWithResponse(
-        AttestSgxEnclaveOptions request, Context context) {
+        AttestationOptions request, Context context) {
         return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }
 

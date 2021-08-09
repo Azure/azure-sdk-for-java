@@ -16,12 +16,10 @@ import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.implementation.SigningCertificatesImpl;
-import com.azure.security.attestation.implementation.models.AttestOpenEnclaveOptionsImpl;
-import com.azure.security.attestation.implementation.models.AttestSgxEnclaveOptionsImpl;
+import com.azure.security.attestation.implementation.models.AttestationOptionsImpl;
 import com.azure.security.attestation.implementation.models.AttestationSignerImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
-import com.azure.security.attestation.models.AttestOpenEnclaveOptions;
-import com.azure.security.attestation.models.AttestSgxEnclaveOptions;
+import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationToken;
@@ -147,7 +145,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(byte[] report) {
-        return this.attestOpenEnclaveWithResponse(new AttestOpenEnclaveOptionsImpl().setReport(report));
+        return this.attestOpenEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(report));
     }
 
     /**
@@ -161,7 +159,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestOpenEnclaveOptions options) {
+    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options) {
         return withContext(context -> this.attestOpenEnclaveWithResponse(options, context));
     }
 
@@ -177,7 +175,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(byte[] report, Context context) {
-        return this.attestOpenEnclaveWithResponse(new AttestOpenEnclaveOptionsImpl().setReport(report), context);
+        return this.attestOpenEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(report), context);
     }
 
 
@@ -192,16 +190,16 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestOpenEnclaveOptions options, Context context) {
+    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options, Context context) {
         // Ensure that the incoming request makes sense.
-        AttestOpenEnclaveOptionsImpl optionsImpl = null;
+        AttestationOptionsImpl optionsImpl = null;
         options.validate();
-        if (!(options instanceof AttestOpenEnclaveOptionsImpl)) {
-            logger.logExceptionAsError(new InvalidParameterException("AttestOpenEnclaveOptions must be an instance of AttestOpenEnclaveOptionsImpl"));
+        if (!(options instanceof AttestationOptionsImpl)) {
+            logger.logExceptionAsError(new InvalidParameterException("AttestationOptions must be an instance of AttestationOptionsImpl"));
         }
-        optionsImpl = (AttestOpenEnclaveOptionsImpl) options;
+        optionsImpl = (AttestationOptionsImpl) options;
 
-        return this.attestImpl.attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestRequest(), context)
+        return this.attestImpl.attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestOpenEnclaveRequest(), context)
             // Create an AttestationToken from the raw response from the service.
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             // Extract the AttestationResult from the AttestationToken.
@@ -235,7 +233,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResult> attestOpenEnclave(AttestOpenEnclaveOptions options) {
+    public Mono<AttestationResult> attestOpenEnclave(AttestationOptions options) {
         return withContext(context -> attestOpenEnclaveWithResponse(options, context))
             .flatMap(FluxUtil::toMono);
     }
@@ -252,7 +250,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote) {
-        return attestSgxEnclaveWithResponse(new AttestSgxEnclaveOptionsImpl().setQuote(quote));
+        return attestSgxEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(quote));
     }
 
     /**
@@ -266,7 +264,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestSgxEnclaveOptions options) {
+    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options) {
         return withContext(context -> attestSgxEnclaveWithResponse(options, context));
     }
 
@@ -282,7 +280,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote, Context context) {
-        return attestSgxEnclaveWithResponse(new AttestSgxEnclaveOptionsImpl().setQuote(quote), context);
+        return attestSgxEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(quote), context);
     }
 
     /**
@@ -296,16 +294,16 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestSgxEnclaveOptions options, Context context) {
+    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options, Context context) {
         // Ensure that the incoming request makes sense.
-        AttestSgxEnclaveOptionsImpl optionsImpl = null;
+        AttestationOptionsImpl optionsImpl = null;
         options.validate();
-        if (!(options instanceof AttestSgxEnclaveOptionsImpl)) {
+        if (!(options instanceof AttestationOptionsImpl)) {
             logger.logExceptionAsError(new InvalidParameterException("AttestSgxEnclaveRequest must be an instance of AttestSgxEnclaveRequestImpl"));
         }
-        optionsImpl = (AttestSgxEnclaveOptionsImpl) options;
+        optionsImpl = (AttestationOptionsImpl) options;
 
-        return this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestRequest(), context)
+        return this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestSgxRequest(), context)
             .map(response -> {
                 AttestationToken token = new AttestationTokenImpl(response.getValue().getToken());
                 return Utilities.generateAttestationResponseFromModelType(response, token, token.getBody(AttestationResult.class));
@@ -323,7 +321,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResult> attestSgxEnclave(AttestSgxEnclaveOptions options) {
+    public Mono<AttestationResult> attestSgxEnclave(AttestationOptions options) {
         return withContext(context -> attestSgxEnclaveWithResponse(options, context))
             .flatMap(FluxUtil::toMono);
     }
