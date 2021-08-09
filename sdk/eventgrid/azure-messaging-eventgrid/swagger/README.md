@@ -73,24 +73,54 @@ custom-types: CloudEvent,EventGridEvent
 model-override-setter-from-superclass: true
 
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.EventHub/stable/2018-01-01/EventHub.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.KeyVault/stable/2018-01-01/KeyVault.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.MachineLearningServices/stable/2018-01-01/MachineLearningServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.PolicyInsights/stable/2018-01-01/PolicyInsights.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.EventHub/stable/2018-01-01/EventHub.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.KeyVault/stable/2018-01-01/KeyVault.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.MachineLearningServices/stable/2018-01-01/MachineLearningServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.PolicyInsights/stable/2018-01-01/PolicyInsights.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
+```
+
+
+### KeyVault updates
+
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.KeyVaultVaultAccessPolicyChangedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultVaultAccessPolicyChangedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $.KeyVaultCertificateNewVersionCreatedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultCertificateNewVersionCreatedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $.KeyVaultCertificateNearExpiryEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultCertificateNearExpiryEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $.KeyVaultCertificateExpiredEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultCertificateExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $.KeyVaultKeyNewVersionCreatedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultKeyNewVersionCreatedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $.KeyVaultKeyNearExpiryEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultKeyNearExpiryEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $.KeyVaultKeyExpiredEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultKeyExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $.KeyVaultSecretNewVersionCreatedEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultSecretNewVersionCreatedEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $.KeyVaultSecretNearExpiryEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultSecretNearExpiryEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
+    $.KeyVaultSecretExpiredEventData["properties"]["NBF"]["x-ms-client-name"] = "Nbf";
+    $.KeyVaultSecretExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
 ```
 
 ### Customization
