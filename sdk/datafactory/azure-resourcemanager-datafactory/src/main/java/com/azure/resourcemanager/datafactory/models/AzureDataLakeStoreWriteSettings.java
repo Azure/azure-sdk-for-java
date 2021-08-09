@@ -59,6 +59,13 @@ public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
 
     /** {@inheritDoc} */
     @Override
+    public AzureDataLakeStoreWriteSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureDataLakeStoreWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
         return this;

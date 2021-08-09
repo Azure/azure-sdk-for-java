@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -55,10 +56,12 @@ private class ChangeFeedTable(val session: SparkSession,
                               val userConfig: util.Map[String, String],
                               val userProvidedSchema: Option[StructType] = None)
   extends Table
-    with SupportsRead
-    with CosmosLoggingTrait {
+    with SupportsRead {
 
-  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  private val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig.asScala.toMap)
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   // This can only be used for data operation against a certain container.
   private lazy val containerStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot] =
@@ -92,7 +95,8 @@ private class ChangeFeedTable(val session: SparkSession,
       session,
       new CaseInsensitiveStringMap(effectiveOptions.asJava),
       schema(),
-      containerStateHandle)
+      containerStateHandle,
+      diagnosticsConfig)
   }
 
   override def schema(): StructType = {

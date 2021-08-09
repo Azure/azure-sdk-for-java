@@ -5,6 +5,8 @@ package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.Objects;
+
 /**
  * A signed identifier.
  */
@@ -13,12 +15,23 @@ public final class TableSignedIdentifier {
     /*
      * A unique id
      */
-    private String id;
+    private final String id;
 
     /*
      * An access policy.
      */
     private TableAccessPolicy accessPolicy;
+
+    /**
+     * Create a {@link TableSignedIdentifier}.
+     *
+     * @param id A unique id for this {@link TableSignedIdentifier}.
+     */
+    public TableSignedIdentifier(String id) {
+        Objects.requireNonNull(id, "'id' cannot be null");
+
+        this.id = id;
+    }
 
     /**
      * Get the unique id.
@@ -27,19 +40,6 @@ public final class TableSignedIdentifier {
      */
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Set a unique id.
-     *
-     * @param id The id to set.
-     *
-     * @return The updated {@link TableSignedIdentifier} object.
-     */
-    public TableSignedIdentifier setId(String id) {
-        this.id = id;
-
-        return this;
     }
 
     /**

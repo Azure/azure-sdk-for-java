@@ -15,7 +15,7 @@ Azure Core Gson JSON Serializer is a plugin for the `azure-core` `JsonSerializer
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-json-gson</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)

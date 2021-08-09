@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
@@ -50,7 +51,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Represents a bidirectional link between the message broker and the client. Allows client to send a request to the
  * broker and receive the associated response.
  */
-public class RequestResponseChannel implements AsyncAutoCloseable {
+public class RequestResponseChannel implements AsyncCloseable {
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
     private final AtomicBoolean hasError = new AtomicBoolean();
@@ -155,7 +156,7 @@ public class RequestResponseChannel implements AsyncAutoCloseable {
                 handleError(error, "Error in ReceiveLinkHandler.");
                 onTerminalState("ReceiveLinkHandler");
             }, () -> {
-                closeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync().subscribe();
                 onTerminalState("ReceiveLinkHandler");
             }),
 
@@ -165,13 +166,13 @@ public class RequestResponseChannel implements AsyncAutoCloseable {
                 handleError(error, "Error in SendLinkHandler.");
                 onTerminalState("SendLinkHandler");
             }, () -> {
-                closeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync().subscribe();
                 onTerminalState("SendLinkHandler");
             }),
 
             amqpConnection.getShutdownSignals().next().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", connectionId, linkName);
-                return closeAsync(" Shutdown signal received.");
+                return closeAsync();
             }).subscribe()
         );
         //@formatter:on
@@ -200,17 +201,13 @@ public class RequestResponseChannel implements AsyncAutoCloseable {
 
     @Override
     public Mono<Void> closeAsync() {
-        return this.closeAsync("");
-    }
-
-    public Mono<Void> closeAsync(String message) {
         if (isDisposed.getAndSet(true)) {
             return closeMono.asMono().subscribeOn(Schedulers.boundedElastic());
         }
 
-        return Mono.fromRunnable(() -> {
-            logger.verbose("connectionId[{}] linkName[{}] {}", connectionId, linkName, message);
+        logger.verbose("connectionId[{}] linkName[{}] Closing request/response channel.", connectionId, linkName);
 
+        return Mono.fromRunnable(() -> {
             try {
                 provider.getReactorDispatcher().invoke(() -> {
                     sendLink.close();
@@ -364,7 +361,7 @@ public class RequestResponseChannel implements AsyncAutoCloseable {
         unconfirmedSends.forEach((key, value) -> value.error(error));
         unconfirmedSends.clear();
 
-        closeAsync("Disposing channel due to error.").subscribe();
+        closeAsync().subscribe();
     }
 
     private void onTerminalState(String handlerName) {

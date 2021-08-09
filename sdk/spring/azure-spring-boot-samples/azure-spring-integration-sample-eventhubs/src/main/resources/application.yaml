@@ -1,8 +1,0 @@
-spring:
-  cloud:
-    azure:
-      eventhub:
-        connection-string: [eventhub-namespace-connection-string]
-        checkpoint-storage-account: [checkpoint-storage-account]
-        checkpoint-access-key: [checkpoint-access-key]
-        checkpoint-container: [checkpoint-container]

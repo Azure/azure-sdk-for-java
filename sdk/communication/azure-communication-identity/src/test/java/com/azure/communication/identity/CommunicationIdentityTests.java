@@ -5,7 +5,6 @@ package com.azure.communication.identity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +22,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityClient client;
-
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-        assumeTrue(shouldEnableIdentityTests());
-    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")

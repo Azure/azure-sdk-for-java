@@ -7,20 +7,23 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.test.support.UnaryAzureMessageConverterTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.LinkedMultiValueMap;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
 public class EventHubMessageConverterTest extends UnaryAzureMessageConverterTest<EventData> {
@@ -45,6 +48,15 @@ public class EventHubMessageConverterTest extends UnaryAzureMessageConverterTest
     @Override
     protected void assertMessageHeadersEqual(EventData azureMessage, Message<?> message) {
         assertEquals(azureMessage.getProperties().get(headerProperties), message.getHeaders().get(headerProperties));
+    }
+
+    @Test
+    public void testNonUtf8DecodingPayload() {
+        String utf16Payload = new String(payload.getBytes(), StandardCharsets.UTF_16);
+        Message<String> message = MessageBuilder.withPayload(utf16Payload).build();
+        EventData azureMessage = getConverter().fromMessage(message, getTargetClass());
+        assertEquals(utf16Payload, azureMessage.getBodyAsString());
+        assertNotEquals(payload, azureMessage.getBodyAsString());
     }
 
     private static class MyEventHubMessageConverter extends EventHubMessageConverter {

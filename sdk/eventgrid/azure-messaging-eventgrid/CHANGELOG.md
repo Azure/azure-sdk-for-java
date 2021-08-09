@@ -1,6 +1,25 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
+## 4.6.0-beta.1 (Unreleased)
+
+
+## 4.5.0 (2021-07-19)
+### Features Added
+- Added `EventGridPublisherClientBuilder#credential(TokenCredential credential)` to support Azure Active Directory authentication.
+- Added field `metadata` to system event classes `AcsChatMessageEditedEventData`, `AcsChatMessageEditedInThreadEventData`, `AcsChatMessageReceivedEventData` and `AcsChatMessageReceivedInThreadEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.18.0`.
+- Update `azure-core-http-netty` dependency to `1.10.1`.
+
+## 4.4.0 (2021-06-09)
+### New Features
+- Added new Storage system event `StorageBlobInventoryPolicyCompletedEventData`.
+- Added new attributes `contentLocation` and `metadataLocation` to `AcsRecordingChunkInfoProperties`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.17.0`.
+- Update `azure-core-http-netty` dependency to `1.10.0`.
 
 
 ## 4.3.0 (2021-05-12)

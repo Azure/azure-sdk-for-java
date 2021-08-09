@@ -10,13 +10,15 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -125,6 +127,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
         return encrypt(algorithm, plaintext, Context.NONE);
     }
@@ -166,8 +169,9 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        return encrypt(new EncryptParameters(algorithm, plaintext, null, null), context);
+        return client.encrypt(algorithm, plaintext, context).block();
     }
 
     /**
@@ -206,6 +210,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
         return client.encrypt(encryptParameters, context).block();
     }
@@ -245,8 +250,9 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for decryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
-        return decrypt(new DecryptParameters(algorithm, ciphertext, null, null, null), Context.NONE);
+        return decrypt(algorithm, ciphertext, Context.NONE);
     }
 
     /**
@@ -285,8 +291,9 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for decryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        return decrypt(new DecryptParameters(algorithm, ciphertext, null, null, null), context);
+        return client.decrypt(algorithm, ciphertext, context).block();
     }
 
     /**
@@ -324,6 +331,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for decryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
         return client.decrypt(decryptParameters, context).block();
     }
@@ -355,6 +363,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for signing.
      * @throws UnsupportedOperationException If the sign operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest) {
         return client.sign(algorithm, digest, Context.NONE).block();
     }
@@ -387,6 +396,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for signing.
      * @throws UnsupportedOperationException If the sign operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         return client.sign(algorithm, digest, context).block();
     }
@@ -420,6 +430,7 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException if the verify operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm}, {@code digest} or {@code signature} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
         return verify(algorithm, digest, signature, Context.NONE);
     }
@@ -454,6 +465,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for verifying.
      * @throws UnsupportedOperationException If the verify operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
         return client.verify(algorithm, digest, signature, context).block();
     }
@@ -487,6 +499,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the wrap operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
         return wrapKey(algorithm, key, Context.NONE);
     }
@@ -521,6 +534,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the wrap operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         return client.wrapKey(algorithm, key, context).block();
     }
@@ -554,6 +568,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
      * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         return unwrapKey(algorithm, encryptedKey, Context.NONE);
     }
@@ -588,6 +603,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
      * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         return client.unwrapKey(algorithm, encryptedKey, context).block();
     }
@@ -619,6 +635,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws UnsupportedOperationException if the sign operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data) {
         return signData(algorithm, data, Context.NONE);
     }
@@ -651,6 +668,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws UnsupportedOperationException if the sign operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
         return client.signData(algorithm, data, context).block();
     }
@@ -684,6 +702,7 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException if the verify operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm}, {@code data} or {@code signature} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
         return verifyData(algorithm, data, signature, Context.NONE);
     }
@@ -718,6 +737,7 @@ public class CryptographyClient {
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
      * @throws UnsupportedOperationException if the verify operation is not supported or configured on the key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
         return client.verifyData(algorithm, data, signature, context).block();
     }

@@ -1,12 +1,35 @@
 # Release History
 
-## 4.2.0-beta.7 (Unreleased)
+## 4.3.0-beta.1 (Unreleased)
 
-### Bug Fixes
+
+## 4.2.1 (2021-07-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.18.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.1`
+
+## 4.2.0 (2021-06-17)
+
+### Features Added
+- Changed default service version to `7.2`.
+- Added `KeyVaultCertificateIdentifier` to parse certificate URLs.
+
+### Changes since 4.2.0-beta.6
+
+#### Bug Fixes
 - Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
 
-### Changes
-- Renamed `certificateId` to `id` in `KeyVaultCertificateIdentifier`.
+#### New Features
+- `KeyVaultCertificateIdentifier` can now be used to parse any Key Vault identifier.
+
+#### Breaking Changes
+- Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
+
+#### Non-Breaking Changes
+- Renamed `certificateId` to `sourceId` in `KeyVaultCertificateIdentifier`.
 - Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `CertificateClient` and `CertificateAsyncClient`.
 
 ## 4.2.0-beta.6 (2021-05-15)
@@ -235,11 +258,11 @@ For details on the Azure SDK for Java (September 2019 Preview) release refer to 
 ## 4.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
-This library is not a direct replacement for certificates management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-certificates`.
+This library is not a direct replacement for certificates management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-certificates`.
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java)
 demonstrate the new API.
 
 
@@ -253,8 +276,8 @@ only)
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 - Authentication using `azure-identity` credentials
   - see this package's
-  [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+  [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
   , and the
-  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md)
+  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md)
   for more information
 - Added support for HTTP challenge based authentication, allowing clients to interact with vaults in sovereign clouds.

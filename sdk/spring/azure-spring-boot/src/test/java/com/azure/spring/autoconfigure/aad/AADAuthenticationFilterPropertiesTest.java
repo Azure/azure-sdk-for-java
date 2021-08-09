@@ -3,9 +3,9 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
@@ -19,22 +19,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADAuthenticationFilterPropertiesTest {
-    @After
-    public void clearAllProperties() {
-        System.clearProperty("azure.activedirectory.environment");
-        System.clearProperty("azure.activedirectory.tenant-id");
-        System.clearProperty("azure.activedirectory.client-id");
-        System.clearProperty("azure.activedirectory.client-secret");
-        System.clearProperty("azure.activedirectory.user-group.allowed-groups");
-    }
+
+    private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
 
     @Test
     public void canSetProperties() {
-        configureAllRequiredProperties();
-
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            configureAllRequiredProperties(context);
             context.register(Config.class);
             context.refresh();
 
@@ -43,21 +38,24 @@ public class AADAuthenticationFilterPropertiesTest {
             assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
             assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
             assertThat(properties.getActiveDirectoryGroups()
-                    .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
+                                 .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
     }
 
-    private void configureAllRequiredProperties() {
-        System.setProperty("azure.activedirectory.tenant-id", "demo-tenant-id");
-        System.setProperty("azure.activedirectory.client-id", TestConstants.CLIENT_ID);
-        System.setProperty("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET);
-        System.setProperty("azure.activedirectory.user-group.allowed-groups",
-            TestConstants.TARGETED_GROUPS.toString().replace("[", "").replace("]", ""));
-        System.setProperty("azure.activedirectory.allow-telemetry", "false");
+    private void configureAllRequiredProperties(AnnotationConfigApplicationContext context) {
+        addInlinedPropertiesToEnvironment(
+            context,
+            AAD_PROPERTY_PREFIX + "tenant-id=demo-tenant-id",
+            AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
+            AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET,
+            AAD_PROPERTY_PREFIX + "user-group.allowed-groups="
+                + TestConstants.TARGETED_GROUPS.toString().replace("[", "").replace("]", "")
+        );
     }
 
+    @Disabled
     @Test
-    @Ignore // TODO (wepa) clientId and clientSecret can also be configured in oauth2 config, test to be refactored
+    //TODO (wepa) clientId and clientSecret can also be configured in oauth2 config, test to be refactored
     public void emptySettingsNotAllowed() {
         System.setProperty("azure.activedirectory.client-id", "");
         System.setProperty("azure.activedirectory.client-secret", "");
@@ -82,10 +80,10 @@ public class AADAuthenticationFilterPropertiesTest {
             final List<String> errorStrings = errors.stream().map(ObjectError::toString).collect(Collectors.toList());
 
             final List<String> errorStringsExpected = Arrays.asList(
-                    "Field error in object 'azure.activedirectory' on field 'activeDirectoryGroups': "
-                            + "rejected value [null];",
-                    "Field error in object 'azure.activedirectory' on field 'clientId': rejected value [];",
-                    "Field error in object 'azure.activedirectory' on field 'clientSecret': rejected value [];"
+                "Field error in object 'azure.activedirectory' on field 'activeDirectoryGroups': "
+                    + "rejected value [null];",
+                "Field error in object 'azure.activedirectory' on field 'clientId': rejected value [];",
+                "Field error in object 'azure.activedirectory' on field 'clientSecret': rejected value [];"
             );
 
             Collections.sort(errorStrings);

@@ -23,6 +23,7 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -438,8 +439,36 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage,
                                                                 Duration timeout, Context context) {
+        return listFilesAndDirectories(new ShareListFilesAndDirectoriesOptions().setPrefix(prefix)
+            .setMaxResultsPerPage(maxResultsPerPage), timeout, context);
+    }
+
+    /**
+     * Lists all sub-directories and files in this directory with their prefix or snapshots.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>List all sub-directories and files in this directory with "subdir" prefix and return 10 results in the
+     * account</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions-duration-context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-directories-and-files">Azure
+     * Docs</a>.</p>
+     *
+     * @param options Optional parameters.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link ShareFileItem File info} in this directory with prefix and max number of return results.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ShareFileItem> listFilesAndDirectories(ShareListFilesAndDirectoriesOptions options,
+        Duration timeout, Context context) {
         return new PagedIterable<>(shareDirectoryAsyncClient
-            .listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResultsPerPage, timeout, context));
+            .listFilesAndDirectoriesWithOptionalTimeout(options, timeout, context));
     }
 
     /**

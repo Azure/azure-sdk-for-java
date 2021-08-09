@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
@@ -82,13 +83,11 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 byte[] plaintext = new byte[100];
                 new Random(0x1234567L).nextBytes(plaintext);
                 byte[] ciphertext = cryptoClient.encrypt(algorithm, plaintext).getCipherText();
-                byte[] decryptedText = serviceClient.decrypt(new DecryptParameters(algorithm, ciphertext, null, null,
-                    null), Context.NONE).block().getPlainText();
+                byte[] decryptedText = serviceClient.decrypt(algorithm, ciphertext, Context.NONE).block().getPlainText();
 
                 assertArrayEquals(decryptedText, plaintext);
 
-                ciphertext = serviceClient.encrypt(new EncryptParameters(algorithm, plaintext, null, null), Context.NONE)
-                    .block().getCipherText();
+                ciphertext = serviceClient.encrypt(algorithm, plaintext, Context.NONE).block().getCipherText();
                 decryptedText = cryptoClient.decrypt(algorithm, ciphertext).getPlainText();
 
                 assertArrayEquals(decryptedText, plaintext);
@@ -323,31 +322,55 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
     @Test
     public void encryptDecryptAes128CbcLocal() throws NoSuchAlgorithmException {
-        encryptDecryptAesCbc(128, EncryptionAlgorithm.A128CBC);
+        byte[] plaintext = "My16BitPlaintext".getBytes();
+        byte[] iv = "My16BytesTestIv.".getBytes();
+        EncryptParameters encryptParameters = EncryptParameters.createA128CbcParameters(plaintext, iv);
+
+        encryptDecryptAesCbc(128, encryptParameters);
     }
 
     @Test
     public void encryptDecryptAes192CbcLocal() throws NoSuchAlgorithmException {
-        encryptDecryptAesCbc(256, EncryptionAlgorithm.A192CBC);
+        byte[] plaintext = "My16BitPlaintext".getBytes();
+        byte[] iv = "My16BytesTestIv.".getBytes();
+        EncryptParameters encryptParameters = EncryptParameters.createA192CbcParameters(plaintext, iv);
+
+        encryptDecryptAesCbc(256, encryptParameters);
     }
 
     @Test
     public void encryptDecryptAes256CbcLocal() throws NoSuchAlgorithmException {
-        encryptDecryptAesCbc(256, EncryptionAlgorithm.A256CBC);
+        byte[] plaintext = "My16BitPlaintext".getBytes();
+        byte[] iv = "My16BytesTestIv.".getBytes();
+        EncryptParameters encryptParameters = EncryptParameters.createA256CbcParameters(plaintext, iv);
+
+        encryptDecryptAesCbc(256, encryptParameters);
     }
 
     @Test
     public void encryptDecryptAes128CbcPadLocal() throws NoSuchAlgorithmException {
-        encryptDecryptAesCbc(128, EncryptionAlgorithm.A128CBCPAD);
+        byte[] plaintext = "My16BitPlaintext".getBytes();
+        byte[] iv = "My16BytesTestIv.".getBytes();
+        EncryptParameters encryptParameters = EncryptParameters.createA128CbcPadParameters(plaintext, iv);
+
+        encryptDecryptAesCbc(128, encryptParameters);
     }
 
     @Test
     public void encryptDecryptAes192CbcPadLocal() throws NoSuchAlgorithmException {
-        encryptDecryptAesCbc(192, EncryptionAlgorithm.A192CBCPAD);
+        byte[] plaintext = "My16BitPlaintext".getBytes();
+        byte[] iv = "My16BytesTestIv.".getBytes();
+        EncryptParameters encryptParameters = EncryptParameters.createA192CbcPadParameters(plaintext, iv);
+
+        encryptDecryptAesCbc(192, encryptParameters);
     }
 
     @Test
     public void encryptDecryptAes256CbcPadLocal() throws NoSuchAlgorithmException {
-        encryptDecryptAesCbc(256, EncryptionAlgorithm.A256CBCPAD);
+        byte[] plaintext = "My16BitPlaintext".getBytes();
+        byte[] iv = "My16BytesTestIv.".getBytes();
+        EncryptParameters encryptParameters = EncryptParameters.createA256CbcPadParameters(plaintext, iv);
+
+        encryptDecryptAesCbc(256, encryptParameters);
     }
 }

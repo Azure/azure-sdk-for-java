@@ -12,6 +12,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -34,6 +35,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
@@ -44,12 +46,12 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.PriorityQueue;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -62,7 +64,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Handles scheduling and transmitting events through proton-j to Event Hubs service.
  */
-class ReactorSender implements AmqpSendLink, AsyncAutoCloseable, AutoCloseable {
+class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private final String entityPath;
     private final Sender sender;
     private final SendLinkHandler handler;
@@ -86,7 +88,7 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable, AutoCloseable {
     private final AmqpRetryPolicy retry;
     private final AmqpRetryOptions retryOptions;
     private final String activeTimeoutMessage;
-    private final Timer sendTimeoutTimer = new Timer("SendTimeout-timer");
+    private final Scheduler scheduler;
 
     private final Object errorConditionLock = new Object();
 
@@ -94,17 +96,33 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable, AutoCloseable {
     private volatile Instant lastKnownErrorReportedAt;
     private volatile int linkSize;
 
+    /**
+     * Creates an instance of {@link ReactorSender}.
+     *
+     * @param amqpConnection The parent {@link AmqpConnection} that this sender lives in.
+     * @param entityPath The message broker address for the sender.
+     * @param sender The underlying proton-j sender.
+     * @param handler The proton-j handler associated with the sender.
+     * @param reactorProvider Provider to schedule work on the proton-j reactor.
+     * @param tokenManager Token manager for authorising with the CBS node. Can be {@code null} if it is part of the
+     *     transaction manager.
+     * @param messageSerializer Serializer to deserialise and serialize AMQP messages.
+     * @param retryOptions Retry options.
+     * @param scheduler Scheduler to schedule send timeout.
+     */
     ReactorSender(AmqpConnection amqpConnection, String entityPath, Sender sender, SendLinkHandler handler,
         ReactorProvider reactorProvider, TokenManager tokenManager, MessageSerializer messageSerializer,
-        AmqpRetryOptions retryOptions) {
-        this.entityPath = entityPath;
-        this.sender = sender;
-        this.handler = handler;
-        this.reactorProvider = reactorProvider;
-        this.tokenManager = tokenManager;
-        this.messageSerializer = messageSerializer;
-        this.retryOptions = retryOptions;
+        AmqpRetryOptions retryOptions, Scheduler scheduler) {
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.sender = Objects.requireNonNull(sender, "'sender' cannot be null.");
+        this.handler = Objects.requireNonNull(handler, "'handler' cannot be null.");
+        this.reactorProvider = Objects.requireNonNull(reactorProvider, "'reactorProvider' cannot be null.");
+        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
         this.retry = RetryUtil.getRetryPolicy(retryOptions);
+        this.tokenManager = tokenManager;
+
         this.activeTimeoutMessage = String.format(
             "ReactorSender connectionId[%s] linkName[%s]: Waiting for send and receive handler to be ACTIVE",
             handler.getConnectionId(), handler.getLinkName());
@@ -160,12 +178,12 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable, AutoCloseable {
                 logger.verbose("connectionId[{}] linkName[{}] response[{}] Token refreshed.",
                     handler.getConnectionId(), getLinkName(), response);
             }, error -> {
-                }, () -> {
-                    logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed. Disposing.",
-                        handler.getConnectionId(), entityPath, getLinkName());
+            }, () -> {
+                logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] Authorization completed. Disposing.",
+                    handler.getConnectionId(), entityPath, getLinkName());
 
-                    closeAsync("Authorization completed. Disposing.", null).subscribe();
-                }));
+                closeAsync("Authorization completed. Disposing.", null).subscribe();
+            }));
         }
     }
 
@@ -330,13 +348,20 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable, AutoCloseable {
     }
 
     /**
-     * Blocking call that disposes of the sender. See {@link #closeAsync(String, ErrorCondition)}.
+     * Blocking call that disposes of the sender.
+     *
+     * @see #close()
      */
     @Override
     public void dispose() {
         close();
     }
 
+    /**
+     * Blocking call that disposes of the sender.
+     *
+     * @see #closeAsync()
+     */
     @Override
     public void close() {
         closeAsync().block(retryOptions.getTryTimeout());
@@ -370,8 +395,9 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable, AutoCloseable {
                 sender.setCondition(errorCondition);
             }
 
+            // Sets local state to close. When onLinkRemoteClose is called from the service,
+            // handler.getEndpointStates() will complete its Flux.
             sender.close();
-            sendTimeoutTimer.cancel();
         };
 
         return Mono.fromRunnable(() -> {
@@ -489,7 +515,8 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable, AutoCloseable {
                     getLinkName(), deliveryTag);
 
                 workItem.setWaitingForAck();
-                sendTimeoutTimer.schedule(new SendTimeout(deliveryTag), retryOptions.getTryTimeout().toMillis());
+                scheduler.schedule(new SendTimeout(deliveryTag), retryOptions.getTryTimeout().toMillis(),
+                    TimeUnit.MILLISECONDS);
             } else {
                 logger.verbose(
                     "clientId[{}]. path[{}], linkName[{}], deliveryTag[{}], sentMessageSize[{}], "
@@ -692,9 +719,9 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable, AutoCloseable {
     }
 
     /**
-     * Keeps track of Messages that have been sent, but may not have been acknowledged by the service.
+     * Keeps track of messages that have been sent, but may not have been acknowledged by the service.
      */
-    private class SendTimeout extends TimerTask {
+    private class SendTimeout implements Runnable {
         private final String deliveryTag;
 
         SendTimeout(String deliveryTag) {

@@ -18,7 +18,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.storage.blob.models.PathRenameMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,22 +67,6 @@ public final class AzureBlobStorageImplBuilder {
      */
     public AzureBlobStorageImplBuilder version(String version) {
         this.version = version;
-        return this;
-    }
-
-    /*
-     * Determines the behavior of the rename operation
-     */
-    private PathRenameMode pathRenameMode;
-
-    /**
-     * Sets Determines the behavior of the rename operation.
-     *
-     * @param pathRenameMode the pathRenameMode value.
-     * @return the AzureBlobStorageImplBuilder.
-     */
-    public AzureBlobStorageImplBuilder pathRenameMode(PathRenameMode pathRenameMode) {
-        this.pathRenameMode = pathRenameMode;
         return this;
     }
 
@@ -208,7 +191,7 @@ public final class AzureBlobStorageImplBuilder {
      */
     public AzureBlobStorageImpl buildClient() {
         if (version == null) {
-            this.version = "2020-08-04";
+            this.version = "2020-10-02";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
@@ -216,8 +199,7 @@ public final class AzureBlobStorageImplBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureBlobStorageImpl client =
-                new AzureBlobStorageImpl(pipeline, serializerAdapter, url, version, pathRenameMode);
+        AzureBlobStorageImpl client = new AzureBlobStorageImpl(pipeline, serializerAdapter, url, version);
         return client;
     }
 

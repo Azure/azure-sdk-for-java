@@ -15,6 +15,7 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -71,6 +72,29 @@ public class EncryptedBlobClient extends BlobClient {
     EncryptedBlobClient(EncryptedBlobAsyncClient encryptedBlobAsyncClient) {
         super(encryptedBlobAsyncClient);
         this.encryptedBlobAsyncClient = encryptedBlobAsyncClient;
+    }
+
+    /**
+     * Creates a new {@link EncryptedBlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link EncryptedBlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public EncryptedBlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new EncryptedBlobClient(encryptedBlobAsyncClient.getEncryptionScopeAsyncClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link EncryptedBlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link EncryptedBlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public EncryptedBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new EncryptedBlobClient(encryptedBlobAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**
@@ -142,7 +166,7 @@ public class EncryptedBlobClient extends BlobClient {
      * <p>
      * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
      * obtained below with a {@link java.io.BufferedOutputStream}.
-     * 
+     *
      * @param options {@link BlockBlobOutputStreamOptions}
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.

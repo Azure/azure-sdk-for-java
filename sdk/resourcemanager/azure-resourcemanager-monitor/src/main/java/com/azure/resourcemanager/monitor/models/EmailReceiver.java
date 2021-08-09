@@ -30,8 +30,8 @@ public final class EmailReceiver {
     /*
      * Indicates whether to use common alert schema.
      */
-    @JsonProperty(value = "useCommonAlertSchema", required = true)
-    private boolean useCommonAlertSchema;
+    @JsonProperty(value = "useCommonAlertSchema")
+    private Boolean useCommonAlertSchema;
 
     /*
      * The receiver status of the e-mail.
@@ -86,7 +86,7 @@ public final class EmailReceiver {
      *
      * @return the useCommonAlertSchema value.
      */
-    public boolean useCommonAlertSchema() {
+    public Boolean useCommonAlertSchema() {
         return this.useCommonAlertSchema;
     }
 
@@ -96,7 +96,7 @@ public final class EmailReceiver {
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the EmailReceiver object itself.
      */
-    public EmailReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
+    public EmailReceiver withUseCommonAlertSchema(Boolean useCommonAlertSchema) {
         this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
     }

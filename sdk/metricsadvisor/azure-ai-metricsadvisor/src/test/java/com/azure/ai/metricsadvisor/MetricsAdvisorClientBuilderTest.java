@@ -5,7 +5,6 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -65,7 +64,7 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
             clientBuilder
                 .buildClient()
                 .listFeedback(METRIC_ID,
-                    new ListMetricFeedbackOptions().setTop(PAGE_SIZE),
+                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
                     Context.NONE)
                 .stream()
                 .limit(LISTING_LIMIT)
@@ -83,7 +82,7 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
             clientBuilder
                 .buildClient()
                 .listFeedback(METRIC_ID,
-                    new ListMetricFeedbackOptions().setTop(PAGE_SIZE),
+                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
                     Context.NONE)
                 .stream()
                 .limit(LISTING_LIMIT)
@@ -117,7 +116,7 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
             clientBuilder
                 .buildClient()
                 .listFeedback(METRIC_ID,
-                    new ListMetricFeedbackOptions().setTop(PAGE_SIZE),
+                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
                     Context.NONE)
                 .stream()
                 .limit(LISTING_LIMIT)

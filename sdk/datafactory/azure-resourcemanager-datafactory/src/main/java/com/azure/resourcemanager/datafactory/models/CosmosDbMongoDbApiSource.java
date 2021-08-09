@@ -192,6 +192,13 @@ public final class CosmosDbMongoDbApiSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

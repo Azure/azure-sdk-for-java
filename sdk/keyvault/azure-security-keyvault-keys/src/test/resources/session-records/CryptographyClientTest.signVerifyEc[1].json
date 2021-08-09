@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256/b7da792e4005405996fe98ff57617671?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256/b7da792e4005405996fe98ff57617671?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -53,7 +53,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256/b7da792e4005405996fe98ff57617671/sign?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256/b7da792e4005405996fe98ff57617671/sign?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -79,7 +79,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256/b7da792e4005405996fe98ff57617671/verify?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256/b7da792e4005405996fe98ff57617671/verify?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -105,7 +105,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256/b7da792e4005405996fe98ff57617671/sign?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256/b7da792e4005405996fe98ff57617671/sign?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -131,7 +131,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -157,7 +157,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384/3056d6176cab4a37acf54612c2bc6d7e?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384/3056d6176cab4a37acf54612c2bc6d7e?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -183,7 +183,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384/3056d6176cab4a37acf54612c2bc6d7e/sign?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384/3056d6176cab4a37acf54612c2bc6d7e/sign?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -209,7 +209,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384/3056d6176cab4a37acf54612c2bc6d7e/verify?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384/3056d6176cab4a37acf54612c2bc6d7e/verify?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -235,7 +235,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384/3056d6176cab4a37acf54612c2bc6d7e/sign?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-384/3056d6176cab4a37acf54612c2bc6d7e/sign?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -261,7 +261,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -287,7 +287,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521/5a6d8301de43444194c4fa180d12ae4d?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521/5a6d8301de43444194c4fa180d12ae4d?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -313,7 +313,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521/5a6d8301de43444194c4fa180d12ae4d/sign?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521/5a6d8301de43444194c4fa180d12ae4d/sign?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -339,7 +339,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521/5a6d8301de43444194c4fa180d12ae4d/verify?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521/5a6d8301de43444194c4fa180d12ae4d/verify?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -365,7 +365,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521/5a6d8301de43444194c4fa180d12ae4d/sign?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-521/5a6d8301de43444194c4fa180d12ae4d/sign?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -391,7 +391,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -417,7 +417,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K/12cab7c4cc8b4edbb98101bdb1a52d5f?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K/12cab7c4cc8b4edbb98101bdb1a52d5f?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -443,7 +443,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K/12cab7c4cc8b4edbb98101bdb1a52d5f/sign?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K/12cab7c4cc8b4edbb98101bdb1a52d5f/sign?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -469,7 +469,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K/12cab7c4cc8b4edbb98101bdb1a52d5f/verify?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K/12cab7c4cc8b4edbb98101bdb1a52d5f/verify?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -495,7 +495,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K/12cab7c4cc8b4edbb98101bdb1a52d5f/sign?api-version=7.2",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testEcKeyP-256K/12cab7c4cc8b4edbb98101bdb1a52d5f/sign?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"

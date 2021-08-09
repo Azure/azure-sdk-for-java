@@ -32,10 +32,18 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,ChangeThresholdCondition,DataFeedIngestionProgress,DataFeedDimension,EnrichmentStatus,FeedbackType,HardThresholdCondition,AnomalyIncidentStatus,IngestionStatusType,DataFeedMetric,PeriodType,AnomalySeverity,SeverityCondition,SmartDetectionCondition,SnoozeScope,SuppressCondition,AlertQueryTimeMode,TopNGroupScope,DataFeedIngestionStatus,MetricAnomalyAlertSnoozeCondition,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,ErrorCodeException,ErrorCode
+custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,DataFeedIngestionProgress,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,IngestionStatusType,PeriodType,AnomalySeverity,SnoozeScope,AlertQueryTimeMode,DataFeedIngestionStatus,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
 ```
 
 ### Generated types renamed and moved to model
+
+#### ErrorCode -> MetricsAdvisorErrorCode
+```yaml
+directive:
+  - rename-model:
+      from: ErrorCode
+      to: MetricsAdvisorErrorCode
+```
 
 #### TimeMode -> AlertQueryTimeMode
 ```yaml
@@ -291,7 +299,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/ErrorCode"
+              "$ref": "#/definitions/MetricsAdvisorErrorCode"
             }
           }
         },
@@ -363,7 +371,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/ErrorCode"
+              "$ref": "#/definitions/MetricsAdvisorErrorCode"
             }
           }
         },
@@ -435,7 +443,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/ErrorCode"
+              "$ref": "#/definitions/MetricsAdvisorErrorCode"
             }
           }
         },
@@ -507,7 +515,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/ErrorCode"
+              "$ref": "#/definitions/MetricsAdvisorErrorCode"
             }
           }
         },
@@ -579,7 +587,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/ErrorCode"
+              "$ref": "#/definitions/MetricsAdvisorErrorCode"
             }
           }
         },
@@ -651,7 +659,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/ErrorCode"
+              "$ref": "#/definitions/MetricsAdvisorErrorCode"
             }
           }
         },
@@ -723,7 +731,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/ErrorCode"
+              "$ref": "#/definitions/MetricsAdvisorErrorCode"
             }
           }
         },
@@ -795,7 +803,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/ErrorCode"
+              "$ref": "#/definitions/MetricsAdvisorErrorCode"
             }
           }
         },

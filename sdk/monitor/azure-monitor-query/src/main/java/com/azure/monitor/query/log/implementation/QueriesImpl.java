@@ -245,7 +245,7 @@ public final class QueriesImpl {
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
-     * @param prefer Optional. The prefer header to set server timeout,.
+     * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -277,7 +277,7 @@ public final class QueriesImpl {
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
-     * @param prefer Optional. The prefer header to set server timeout,.
+     * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -310,7 +310,7 @@ public final class QueriesImpl {
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
-     * @param prefer Optional. The prefer header to set server timeout,.
+     * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -336,7 +336,7 @@ public final class QueriesImpl {
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
-     * @param prefer Optional. The prefer header to set server timeout,.
+     * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -363,7 +363,7 @@ public final class QueriesImpl {
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
-     * @param prefer Optional. The prefer header to set server timeout,.
+     * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -381,7 +381,7 @@ public final class QueriesImpl {
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
      *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
-     * @param prefer Optional. The prefer header to set server timeout,.
+     * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -402,7 +402,7 @@ public final class QueriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to a batch.
+     * @return response to a batch query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BatchResponse>> batchWithResponseAsync(BatchRequest body) {
@@ -428,7 +428,7 @@ public final class QueriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to a batch.
+     * @return response to a batch query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BatchResponse>> batchWithResponseAsync(BatchRequest body, Context context) {
@@ -453,7 +453,7 @@ public final class QueriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to a batch.
+     * @return response to a batch query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchResponse> batchAsync(BatchRequest body) {
@@ -477,7 +477,7 @@ public final class QueriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to a batch.
+     * @return response to a batch query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchResponse> batchAsync(BatchRequest body, Context context) {
@@ -500,7 +500,7 @@ public final class QueriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to a batch.
+     * @return response to a batch query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchResponse batch(BatchRequest body) {
@@ -516,7 +516,7 @@ public final class QueriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to a batch.
+     * @return response to a batch query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchResponse> batchWithResponse(BatchRequest body, Context context) {

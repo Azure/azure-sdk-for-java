@@ -14,18 +14,21 @@ import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
 import com.azure.spring.integration.test.support.pojo.User;
 import com.azure.spring.integration.test.support.reactor.SendSubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Mono;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOperationTest<EventHubOperation> {
 
     @Mock
@@ -34,14 +37,22 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
     @Mock
     PartitionContext partitionContext;
 
-    @Before
+    private AutoCloseable closeable;
+
+    @BeforeEach
     @Override
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         when(this.eventContext.updateCheckpointAsync()).thenReturn(Mono.empty());
         when(this.eventContext.getPartitionContext()).thenReturn(this.partitionContext);
         when(this.partitionContext.getPartitionId()).thenReturn(this.partitionId);
 
         this.sendSubscribeOperation = new EventHubTestOperation(null, () -> eventContext);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Override

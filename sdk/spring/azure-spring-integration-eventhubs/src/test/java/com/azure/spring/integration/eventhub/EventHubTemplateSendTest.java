@@ -12,28 +12,33 @@ import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.impl.EventHubRuntimeException;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.test.support.reactor.SendOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class EventHubTemplateSendTest extends SendOperationTest<EventHubOperation> {
 
     @Mock
     EventDataBatch eventDataBatch;
     @Mock
-    private EventHubClientFactory mockClientFactory;
+    EventHubClientFactory mockClientFactory;
     @Mock
-    private EventHubProducerAsyncClient mockProducerClient;
+    EventHubProducerAsyncClient mockProducerClient;
 
-    @Before
+    private AutoCloseable closeable;
+
+    @BeforeEach
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         when(this.mockClientFactory.getOrCreateProducerClient(eq(this.destination)))
             .thenReturn(this.mockProducerClient);
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
@@ -42,6 +47,11 @@ public class EventHubTemplateSendTest extends SendOperationTest<EventHubOperatio
         when(this.eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true);
 
         this.sendOperation = new EventHubTemplate(mockClientFactory);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Override

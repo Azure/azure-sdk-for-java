@@ -4,7 +4,7 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.containers.containerregistry.models.ArtifactManifestReference;
+import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,7 +16,7 @@ public final class ManifestAttributesManifest {
      * List of manifest attributes details
      */
     @JsonProperty(value = "references")
-    private List<ArtifactManifestReference> references;
+    private List<ArtifactManifestPlatform> references;
 
     /*
      * Quarantine tag name
@@ -29,7 +29,7 @@ public final class ManifestAttributesManifest {
      *
      * @return the references value.
      */
-    public List<ArtifactManifestReference> getReferences() {
+    public List<ArtifactManifestPlatform> getReferences() {
         return this.references;
     }
 
@@ -39,7 +39,7 @@ public final class ManifestAttributesManifest {
      * @param references the references value to set.
      * @return the ManifestAttributesManifest object itself.
      */
-    public ManifestAttributesManifest setReferences(List<ArtifactManifestReference> references) {
+    public ManifestAttributesManifest setReferences(List<ArtifactManifestPlatform> references) {
         this.references = references;
         return this;
     }

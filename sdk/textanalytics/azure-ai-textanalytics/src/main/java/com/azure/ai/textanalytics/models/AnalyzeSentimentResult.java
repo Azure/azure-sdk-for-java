@@ -27,7 +27,7 @@ public final class AnalyzeSentimentResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the document sentiment.
+     * Gets the document sentiment.
      *
      * @return The document sentiment.
      *

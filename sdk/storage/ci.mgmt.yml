@@ -2,46 +2,60 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/storage/
+      - sdk/storage/ci.mgmt.yml
+      - sdk/storage/mgmt-v2016_01_01/
+      - sdk/storage/mgmt-v2017_10_01/
+      - sdk/storage/mgmt-v2018_02_01/
+      - sdk/storage/mgmt-v2018_03_01_preview/
+      - sdk/storage/mgmt-v2018_07_01/
+      - sdk/storage/mgmt-v2018_11_01/
+      - sdk/storage/mgmt-v2019_04_01/
+      - sdk/storage/mgmt-v2019_06_01/
     exclude:
-      - sdk/storage/azure-storage-blob
-      - sdk/storage/azure-storage-blob-batch
-      - sdk/storage/azure-storage-blob-cryptography
-      - sdk/storage/azure-storage-blob-nio
-      - sdk/storage/azure-storage-common
-      - sdk/storage/azure-storage-file-datalake
-      - sdk/storage/azure-storage-file-share
-      - sdk/storage/azure-storage-queue
-      - sdk/storage/perf-test
+      - sdk/storage/pom.xml
+      - sdk/storage/mgmt-v2016_01_01/pom.xml
+      - sdk/storage/mgmt-v2017_10_01/pom.xml
+      - sdk/storage/mgmt-v2018_02_01/pom.xml
+      - sdk/storage/mgmt-v2018_03_01_preview/pom.xml
+      - sdk/storage/mgmt-v2018_07_01/pom.xml
+      - sdk/storage/mgmt-v2018_11_01/pom.xml
+      - sdk/storage/mgmt-v2019_04_01/pom.xml
+      - sdk/storage/mgmt-v2019_06_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/storage/
+      - sdk/storage/ci.mgmt.yml
+      - sdk/storage/mgmt-v2016_01_01/
+      - sdk/storage/mgmt-v2017_10_01/
+      - sdk/storage/mgmt-v2018_02_01/
+      - sdk/storage/mgmt-v2018_03_01_preview/
+      - sdk/storage/mgmt-v2018_07_01/
+      - sdk/storage/mgmt-v2018_11_01/
+      - sdk/storage/mgmt-v2019_04_01/
+      - sdk/storage/mgmt-v2019_06_01/
     exclude:
-      - sdk/storage/azure-storage-blob
-      - sdk/storage/azure-storage-blob-batch
-      - sdk/storage/azure-storage-blob-cryptography
-      - sdk/storage/azure-storage-blob-nio
-      - sdk/storage/azure-storage-common
-      - sdk/storage/azure-storage-file-datalake
-      - sdk/storage/azure-storage-file-share
-      - sdk/storage/azure-storage-queue
-      - sdk/storage/perf-test
+      - sdk/storage/pom.xml
+      - sdk/storage/mgmt-v2016_01_01/pom.xml
+      - sdk/storage/mgmt-v2017_10_01/pom.xml
+      - sdk/storage/mgmt-v2018_02_01/pom.xml
+      - sdk/storage/mgmt-v2018_03_01_preview/pom.xml
+      - sdk/storage/mgmt-v2018_07_01/pom.xml
+      - sdk/storage/mgmt-v2018_11_01/pom.xml
+      - sdk/storage/mgmt-v2019_04_01/pom.xml
+      - sdk/storage/mgmt-v2019_06_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

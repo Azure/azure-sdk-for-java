@@ -1,9 +1,15 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
+
+## 1.1.1 (2021-06-09)
+Updated `azure-communication-identity` version
+
+## 1.1.0 (2021-05-27)
 ### Added
 - New exception `IdentityErrorResponseException` was added for more descriptive server error messages.
+- Dependency versions updated.
 
 ## 1.0.0 (2021-03-29)
 Updated `azure-communication-identity` version

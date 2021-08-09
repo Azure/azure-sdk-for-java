@@ -73,6 +73,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -150,7 +151,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 allEqualOrLowerConsistencies(accountConsistency)));
         preferredLocations = immutableListOrNull(parsePreferredLocation(TestConfigurations.PREFERRED_LOCATIONS));
         protocols = ObjectUtils.defaultIfNull(immutableListOrNull(parseProtocols(TestConfigurations.PROTOCOLS)),
-            ImmutableList.of(Protocol.HTTPS, Protocol.TCP));
+            ImmutableList.of(Protocol.TCP));
 
         //  Object mapper configurations
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -531,6 +532,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return collectionDefinition;
     }
 
+    static protected CosmosContainerProperties getCollectionDefinition(String collectionId, PartitionKeyDefinition partitionKeyDefinition) {
+        return new CosmosContainerProperties(collectionId, partitionKeyDefinition);
+    }
+
     static protected CosmosContainerProperties getCollectionDefinitionForHashV2(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
@@ -867,9 +872,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithGateway() {
+        return new Object[][]{{createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true)}};
+    }
+
+    @DataProvider
     public static Object[][] clientBuildersWithSessionConsistency() {
         return new Object[][]{
-            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true, true)},
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)},
             {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true)}
         };
@@ -945,7 +954,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     @DataProvider
     public static Object[][] simpleClientBuildersForDirectTcpWithoutRetryOnThrottledRequests() {
         return new Object[][]{
-            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true, false)},
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, false)},
         };
     }
@@ -1064,7 +1072,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static Object[][] clientBuildersWithDirectAllConsistencies(boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests, Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
-        return clientBuildersWithDirect(desiredConsistencies, contentResponseOnWriteEnabled, retryOnThrottledRequests);
+        return clientBuildersWithDirect(desiredConsistencies, contentResponseOnWriteEnabled, retryOnThrottledRequests, protocols);
     }
 
     static List<ConsistencyLevel> parseDesiredConsistencies(String consistencies) {
@@ -1229,5 +1237,14 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosClientBuilder copyCosmosClientBuilder(CosmosClientBuilder builder) {
         return CosmosBridgeInternal.cloneCosmosClientBuilder(builder);
+    }
+
+    public byte[] decodeHexString(String string) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        for (int i = 0; i < string.length(); i+=2) {
+            int b = Integer.parseInt(string.substring(i, i + 2), 16);
+            outputStream.write(b);
+        }
+        return outputStream.toByteArray();
     }
 }

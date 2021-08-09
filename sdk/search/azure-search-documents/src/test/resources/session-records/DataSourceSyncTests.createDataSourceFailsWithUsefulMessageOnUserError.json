@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-sql785523e468')?api-version=2020-06-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-sql93290c090a')?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9d23bfea-8fe1-4d6f-a5ca-74bfc2faf373",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7a57ab6c-7505-4341-a09b-6a279db9e2d9",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "90",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "9d23bfea-8fe1-4d6f-a5ca-74bfc2faf373",
+      "request-id" : "7a57ab6c-7505-4341-a09b-6a279db9e2d9",
       "StatusCode" : "400",
-      "Date" : "Fri, 02 Apr 2021 22:36:27 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:23:20 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "9d23bfea-8fe1-4d6f-a5ca-74bfc2faf373",
-      "elapsed-time" : "16",
+      "client-request-id" : "7a57ab6c-7505-4341-a09b-6a279db9e2d9",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "90",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Data source type 'thistypedoesnotexist' is not supported\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "9d23bfea-8fe1-4d6f-a5ca-74bfc2faf373",
+      "x-ms-client-request-id" : "7a57ab6c-7505-4341-a09b-6a279db9e2d9",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-java-test-sql785523e468" ]
+  "variables" : [ "azs-java-test-sql93290c090a" ]
 }

@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-storage</artifactId>
-  <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
+  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
   <name>Azure Spring Cloud Storage</name>
 
   <properties>
@@ -23,13 +23,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -37,14 +37,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.9.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.10.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-storage-queue</artifactId>
-      <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -52,54 +52,26 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>6.1.7.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+      <version>6.2.0.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-logging</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-logging;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-logging;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-api-mockito2</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-module-junit4</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -124,10 +96,10 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.hibernate.validator:hibernate-validator:[6.1.7.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-logging:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-logging;external_dependency} -->
+                <include>org.hibernate.validator:hibernate-validator:[6.2.0.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-logging:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-logging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

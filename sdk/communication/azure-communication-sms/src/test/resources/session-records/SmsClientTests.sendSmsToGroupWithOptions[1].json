@@ -3,19 +3,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "490b1f02-2e10-4caa-b942-e19fa9477b69",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "343ms",
-      "MS-CV" : "Ne+oZCHDfk+tQ3A5DTp+AA.0",
+      "X-Processing-Time" : "633ms",
+      "MS-CV" : "bjGLtdIQhESMbQ+rLgSmng.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0OsSVYAAAAAC2CrgtzoFiTrup5VZFckleTEFYRURHRTEyMTgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0jb/DYAAAAADSf/rwoJv1SqKdTHX01f5LWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "202",
-      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210507225034cef94723-e165-48f9-9e70-4bea77f8be15_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true},{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202105072250340723fb1d-2f5b-4819-8093-4e3433dd1743_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
-      "Date" : "Fri, 07 May 2021 22:50:33 GMT",
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202106111954537e35c845-233a-4eff-a362-8e651c0055f8_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true},{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210611195453fc2e49df-008f-49fe-8b44-ba0472332dcb_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
+      "Date" : "Fri, 11 Jun 2021 19:54:53 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },

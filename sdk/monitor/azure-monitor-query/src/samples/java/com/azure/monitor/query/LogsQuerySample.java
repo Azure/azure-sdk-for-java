@@ -29,11 +29,11 @@ public class LogsQuerySample {
                 .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
                 .build();
 
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
                 .credential(tokenCredential)
                 .buildClient();
 
-        LogsQueryResult queryResults = logsClient.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
+        LogsQueryResult queryResults = logsQueryClient.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
                 null);
         System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 
@@ -46,15 +46,15 @@ public class LogsQuerySample {
 
         // Sample to iterate by row
         for (LogsTable table : queryResults.getLogsTables()) {
-            for (LogsTableRow row : table.getTableRows()) {
-                row.getTableRow()
+            for (LogsTableRow row : table.getRows()) {
+                row.getRow()
                         .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
             }
         }
 
         // Sample to get value of a column
         for (LogsTable table : queryResults.getLogsTables()) {
-            for (LogsTableRow row : table.getTableRows()) {
+            for (LogsTableRow row : table.getRows()) {
                 Optional<LogsTableCell> resourceGroup = row.getColumnValue("DurationMs");
                 if (resourceGroup.isPresent()) {
                     System.out.println(resourceGroup.get().getValueAsString());

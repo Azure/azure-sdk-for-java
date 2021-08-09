@@ -3,6 +3,9 @@
 
 package com.azure.containers.containerregistry;
 
+/**
+ * This is a sample for listing tags asynchronously.
+ */
 public class ListTagsAsync {
     static final String ENDPOINT = "https://registryName.azure.io";
     static final String REPOSITORY_NAME = "library/hello-world";
@@ -15,9 +18,9 @@ public class ListTagsAsync {
 
         RegistryArtifactAsync image = anonymousClient.getArtifact(REPOSITORY_NAME, DIGEST);
 
-        System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
+        System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedReference()));
 
-        image.listTags().subscribe(tag -> {
+        image.listTagProperties().subscribe(tag -> {
             System.out.printf(String.format("%s/%s:%s", anonymousClient.getEndpoint(), ENDPOINT, tag.getName()));
         }, error -> {
             System.out.println("There was an error while trying to list tags" + error);

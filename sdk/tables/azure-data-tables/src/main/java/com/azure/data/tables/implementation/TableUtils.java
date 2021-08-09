@@ -4,7 +4,6 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
@@ -17,15 +16,10 @@ import com.azure.data.tables.models.TableServiceException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.net.URLEncoder;
 import java.time.Duration;
-import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -33,7 +27,7 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 /**
- * A class containing utility methods for the Azure Data Tables library.
+ * A class containing utility methods for the Azure Tables library.
  */
 public final class TableUtils {
     private static final String UTF8_CHARSET = "UTF-8";
@@ -128,18 +122,6 @@ public final class TableUtils {
     }
 
     /**
-     * Applies a timeout to a {@link PagedFlux publisher} if the given timeout is not null.
-     *
-     * @param publisher {@link PagedFlux} to apply optional timeout to.
-     * @param timeout Optional timeout.
-     * @param <T> Return type of the {@link PagedFlux}.
-     * @return {@link PagedFlux} with an applied timeout, if any.
-     */
-    public static <T> PagedFlux<T> applyOptionalTimeout(PagedFlux<T> publisher, Duration timeout) {
-        return timeout == null ? publisher : (PagedFlux<T>) publisher.timeout(timeout);
-    }
-
-    /**
      * Blocks an asynchronous response with an optional timeout.
      *
      * @param response Asynchronous response to block.
@@ -175,30 +157,6 @@ public final class TableUtils {
         }
 
         return monoError(logger, httpResponseException);
-    }
-
-    /**
-     * Computes a signature for the specified string using the HMAC-SHA256 algorithm.
-     *
-     * @param base64Key Base64 encoded key used to sign the string
-     * @param stringToSign UTF-8 encoded string to sign
-     *
-     * @return the HMAC-SHA256 encoded signature
-     *
-     * @throws RuntimeException If the HMAC-SHA256 algorithm isn't support, if the key isn't a valid Base64 encoded
-     * string, or the UTF-8 charset isn't supported.
-     */
-    public static String computeHMac256(final String base64Key, final String stringToSign) {
-        try {
-            byte[] key = Base64.getDecoder().decode(base64Key);
-            Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
-            hmacSHA256.init(new SecretKeySpec(key, "HmacSHA256"));
-            byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
-
-            return Base64.getEncoder().encodeToString(hmacSHA256.doFinal(utf8Bytes));
-        } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            throw new RuntimeException(ex);
-        }
     }
 
     /**
@@ -290,6 +248,59 @@ public final class TableUtils {
     private static String decode(final String stringToDecode) {
         try {
             return URLDecoder.decode(stringToDecode, UTF8_CHARSET);
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * Performs a safe encoding of the specified string, taking care to insert %20 for each space character instead of
+     * inserting the {@code +} character.
+     *
+     * @param stringToEncode String value to encode
+     * @return the encoded string value
+     * @throws RuntimeException If the UTF-8 charset isn't supported
+     */
+    public static String urlEncode(final String stringToEncode) {
+        if (stringToEncode == null) {
+            return null;
+        }
+
+        if (stringToEncode.length() == 0) {
+            return "";
+        }
+
+        if (stringToEncode.contains(" ")) {
+            StringBuilder outBuilder = new StringBuilder();
+
+            int startDex = 0;
+            for (int m = 0; m < stringToEncode.length(); m++) {
+                if (stringToEncode.charAt(m) == ' ') {
+                    if (m > startDex) {
+                        outBuilder.append(encode(stringToEncode.substring(startDex, m)));
+                    }
+
+                    outBuilder.append("%20");
+                    startDex = m + 1;
+                }
+            }
+
+            if (startDex != stringToEncode.length()) {
+                outBuilder.append(encode(stringToEncode.substring(startDex)));
+            }
+
+            return outBuilder.toString();
+        } else {
+            return encode(stringToEncode);
+        }
+    }
+
+    /*
+     * Helper method to reduce duplicate calls of URLEncoder.encode
+     */
+    private static String encode(final String stringToEncode) {
+        try {
+            return URLEncoder.encode(stringToEncode, UTF8_CHARSET);
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }

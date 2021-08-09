@@ -1,8 +1,16 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
 
+
+## 2.6.0 (2021-06-18)
+
+- Updated `api-version` to `2021-02-01`
+- Supported multiple `ApplicationSecurityGroup` in rules of `NetworkSecurityGroup`.
+
+## 2.5.0 (2021-05-28)
 - Updated `api-version` to `2020-11-01`
+- Supported `NetworkProfile`
 
 ## 2.4.0 (2021-04-28)
 

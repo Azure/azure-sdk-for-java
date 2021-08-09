@@ -7,9 +7,9 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
@@ -34,7 +34,6 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     private static final String PUT_TOKEN_OPERATION = "operation";
     private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
 
-    private final ClientLogger logger = new ClientLogger(ClaimsBasedSecurityChannel.class);
     private final TokenCredential credential;
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final CbsAuthorizationType authorizationType;
@@ -58,7 +57,7 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
                     final Map<String, Object> properties = new HashMap<>();
                     properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
                     properties.put(PUT_TOKEN_EXPIRY, Date.from(accessToken.getExpiresAt().toInstant()));
-                    properties.put(PUT_TOKEN_TYPE, authorizationType.getTokenType());
+                    properties.put(PUT_TOKEN_TYPE, authorizationType.toString());
                     properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
 
                     final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
@@ -86,9 +85,11 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
 
     @Override
     public void close() {
-        final RequestResponseChannel channel = cbsChannelMono.block(retryOptions.getTryTimeout());
-        if (channel != null) {
-            channel.closeAsync().block();
-        }
+        closeAsync().block(retryOptions.getTryTimeout());
+    }
+
+    @Override
+    public Mono<Void> closeAsync() {
+        return cbsChannelMono.flatMap(channel -> channel.closeAsync());
     }
 }

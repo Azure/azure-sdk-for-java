@@ -9,8 +9,8 @@ import com.azure.cosmos.util.CosmosPagedFlux
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
 import org.mockito.invocation.InvocationOnMock
-import org.mockito.{ArgumentMatchers, Mockito}
 import org.mockito.stubbing.Answer
+import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Assertion
 
 import java.time.Instant
@@ -24,8 +24,7 @@ class CosmosPartitionPlannerITest
   extends UnitSpec
     with CosmosClient
     with CosmosContainer
-    with Spark
-    with CosmosLoggingTrait {
+    with Spark {
 
   private[this] val rnd = scala.util.Random
   private[this] val cosmosEndpoint = TestConfigurations.HOST

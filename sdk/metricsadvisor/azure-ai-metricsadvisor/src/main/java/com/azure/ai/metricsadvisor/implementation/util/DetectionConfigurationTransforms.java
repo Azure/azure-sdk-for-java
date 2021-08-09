@@ -3,6 +3,9 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
+import com.azure.ai.metricsadvisor.administration.models.SmartDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.SuppressCondition;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationLogicType;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.models.ChangeThresholdConditionPatch;
@@ -12,18 +15,15 @@ import com.azure.ai.metricsadvisor.implementation.models.HardThresholdConditionP
 import com.azure.ai.metricsadvisor.implementation.models.SeriesConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.SmartDetectionConditionPatch;
-import com.azure.ai.metricsadvisor.implementation.models.SuppressConditionPatch;
 import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfigurationPatch;
-import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
-import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricSeriesGroupDetectionCondition;
-import com.azure.ai.metricsadvisor.models.MetricSingleSeriesDetectionCondition;
-import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.MetricSingleSeriesDetectionCondition;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.CoreUtils;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Expose transformation methods to transform {@link com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration}
+ * Expose transformation methods to transform {@link AnomalyDetectionConfiguration}
  * model to REST API wire model and vice-versa.
  */
 public final class DetectionConfigurationTransforms {
@@ -91,16 +91,16 @@ public final class DetectionConfigurationTransforms {
             MetricWholeSeriesDetectionCondition wholeSeriesConditions
                 = new MetricWholeSeriesDetectionCondition();
             if (innerWholeSeriesConditions.getConditionOperator() != null) {
-                wholeSeriesConditions.setCrossConditionOperator(
-                    DetectionConditionsOperator.fromString(innerWholeSeriesConditions
+                wholeSeriesConditions.setConditionOperator(
+                    DetectionConditionOperator.fromString(innerWholeSeriesConditions
                         .getConditionOperator()
                         .toString()));
             }
 
             wholeSeriesConditions
-                .setSmartDetectionCondition(innerWholeSeriesConditions.getSmartDetectionCondition())
-                .setChangeThresholdCondition(innerWholeSeriesConditions.getChangeThresholdCondition())
-                .setHardThresholdCondition(innerWholeSeriesConditions.getHardThresholdCondition());
+                .setSmartDetectionCondition(fromInner(innerWholeSeriesConditions.getSmartDetectionCondition()))
+                .setChangeThresholdCondition(fromInner(innerWholeSeriesConditions.getChangeThresholdCondition()))
+                .setHardThresholdCondition(fromInner(innerWholeSeriesConditions.getHardThresholdCondition()));
 
             configuration.setWholeSeriesDetectionCondition(wholeSeriesConditions);
         }
@@ -124,16 +124,16 @@ public final class DetectionConfigurationTransforms {
 
 
                 if (innerSeriesGroupConfiguration.getConditionOperator() != null) {
-                    seriesGroupCondition.setCrossConditionOperator(DetectionConditionsOperator.fromString(
+                    seriesGroupCondition.setConditionOperator(DetectionConditionOperator.fromString(
                         innerSeriesGroupConfiguration
                             .getConditionOperator()
                             .toString()));
                 }
 
                 seriesGroupCondition
-                    .setSmartDetectionCondition(innerSeriesGroupConfiguration.getSmartDetectionCondition())
-                    .setChangeThresholdCondition(innerSeriesGroupConfiguration.getChangeThresholdCondition())
-                    .setHardThresholdCondition(innerSeriesGroupConfiguration.getHardThresholdCondition());
+                    .setSmartDetectionCondition(fromInner(innerSeriesGroupConfiguration.getSmartDetectionCondition()))
+                    .setChangeThresholdCondition(fromInner(innerSeriesGroupConfiguration.getChangeThresholdCondition()))
+                    .setHardThresholdCondition(fromInner(innerSeriesGroupConfiguration.getHardThresholdCondition()));
 
                 configuration.addSeriesGroupDetectionCondition(seriesGroupCondition);
 
@@ -157,16 +157,16 @@ public final class DetectionConfigurationTransforms {
                     = new MetricSingleSeriesDetectionCondition(groupDimensionKey);
 
                 if (innerSeriesConfiguration.getConditionOperator() != null) {
-                    seriesCondition.setCrossConditionOperator(DetectionConditionsOperator.fromString(
+                    seriesCondition.setConditionOperator(DetectionConditionOperator.fromString(
                         innerSeriesConfiguration
                             .getConditionOperator()
                             .toString()));
                 }
 
                 seriesCondition
-                    .setSmartDetectionCondition(innerSeriesConfiguration.getSmartDetectionCondition())
-                    .setChangeThresholdCondition(innerSeriesConfiguration.getChangeThresholdCondition())
-                    .setHardThresholdCondition(innerSeriesConfiguration.getHardThresholdCondition());
+                    .setSmartDetectionCondition(fromInner(innerSeriesConfiguration.getSmartDetectionCondition()))
+                    .setChangeThresholdCondition(fromInner(innerSeriesConfiguration.getChangeThresholdCondition()))
+                    .setHardThresholdCondition(fromInner(innerSeriesConfiguration.getHardThresholdCondition()));
 
                 configuration.addSingleSeriesDetectionCondition(seriesCondition);
             });
@@ -175,7 +175,7 @@ public final class DetectionConfigurationTransforms {
     }
 
     /**
-     * Transform {@link com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration} to create API wire model.
+     * Transform {@link AnomalyDetectionConfiguration} to create API wire model.
      *
      * @param metricId The metric id.
      * @param detectionConfiguration The custom model instance.
@@ -222,7 +222,7 @@ public final class DetectionConfigurationTransforms {
     }
 
     /**
-     * Transform {@link com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration} to update API wire model.
+     * Transform {@link AnomalyDetectionConfiguration} to update API wire model.
      *
      * @param detectionConfiguration The custom model instance.
      * @return The wire model instance.
@@ -263,19 +263,19 @@ public final class DetectionConfigurationTransforms {
         setupInnerWholeSeriesConfigurationForCreate(ClientLogger logger,
                                                     MetricWholeSeriesDetectionCondition wholeSeriesCondition) {
         WholeMetricConfiguration innerWholeSeriesCondition = new WholeMetricConfiguration();
-        DetectionConditionsOperator crossConditionOperator = wholeSeriesCondition.getCrossConditionsOperator();
+        DetectionConditionOperator crossConditionOperator = wholeSeriesCondition.getConditionOperator();
         if (crossConditionOperator != null) {
             innerWholeSeriesCondition.setConditionOperator(
                 AnomalyDetectionConfigurationLogicType.fromString(crossConditionOperator.toString()));
         } else if (hasMultipleNestedConditions(wholeSeriesCondition)) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("detectionConfiguration.wholeSeriesCondition.crossConditionsOperator"
+                new IllegalArgumentException("detectionConfiguration.wholeSeriesCondition.conditionOperator"
                     + " is required when multiple conditions are specified for the whole series."));
         }
         innerWholeSeriesCondition
-            .setSmartDetectionCondition(wholeSeriesCondition.getSmartDetectionCondition())
-            .setChangeThresholdCondition(wholeSeriesCondition.getChangeThresholdCondition())
-            .setHardThresholdCondition(wholeSeriesCondition.getHardThresholdCondition());
+            .setSmartDetectionCondition(toInnerForCreate(wholeSeriesCondition.getSmartDetectionCondition()))
+            .setChangeThresholdCondition(toInnerForCreate(wholeSeriesCondition.getChangeThresholdCondition()))
+            .setHardThresholdCondition(toInnerForCreate(wholeSeriesCondition.getHardThresholdCondition()));
 
         return innerWholeSeriesCondition;
     }
@@ -283,72 +283,25 @@ public final class DetectionConfigurationTransforms {
     private static WholeMetricConfigurationPatch
         setupInnerWholeSeriesConfigurationForUpdate(MetricWholeSeriesDetectionCondition wholeSeriesCondition) {
         WholeMetricConfigurationPatch innerWholeSeriesCondition = new WholeMetricConfigurationPatch();
-        DetectionConditionsOperator crossConditionOperator = wholeSeriesCondition.getCrossConditionsOperator();
+        DetectionConditionOperator crossConditionOperator = wholeSeriesCondition.getConditionOperator();
         if (crossConditionOperator != null) {
             innerWholeSeriesCondition.setConditionOperator(
                 AnomalyDetectionConfigurationLogicType.fromString(crossConditionOperator.toString()));
         }
 
         if (wholeSeriesCondition.getSmartDetectionCondition() != null) {
-            SmartDetectionCondition smartDetectionCondition = wholeSeriesCondition.getSmartDetectionCondition();
-            SmartDetectionConditionPatch smartDetectionConditionForUpdate = new SmartDetectionConditionPatch();
-            smartDetectionConditionForUpdate
-                .setAnomalyDetectorDirection(smartDetectionCondition.getAnomalyDetectorDirection())
-                .setSensitivity(smartDetectionCondition.getSensitivity());
-
-            if (smartDetectionCondition.getSuppressCondition() != null) {
-                SuppressConditionPatch suppressConditionForUpdate = new SuppressConditionPatch();
-                suppressConditionForUpdate
-                    .setMinNumber(smartDetectionCondition.getSuppressCondition().getMinNumber())
-                    .setMinRatio(smartDetectionCondition.getSuppressCondition().getMinRatio());
-
-                smartDetectionConditionForUpdate.setSuppressCondition(suppressConditionForUpdate);
-
-            }
-            innerWholeSeriesCondition.setSmartDetectionCondition(smartDetectionConditionForUpdate);
+            innerWholeSeriesCondition
+                .setSmartDetectionCondition(toInnerForUpdate(wholeSeriesCondition.getSmartDetectionCondition()));
         }
 
-
         if (wholeSeriesCondition.getChangeThresholdCondition() != null) {
-            ChangeThresholdCondition changeThresholdCondition = wholeSeriesCondition.getChangeThresholdCondition();
-            ChangeThresholdConditionPatch changeThresholdConditionForUpdate = new ChangeThresholdConditionPatch();
-
-            changeThresholdConditionForUpdate
-                .setAnomalyDetectorDirection(changeThresholdCondition.getAnomalyDetectorDirection())
-                .setChangePercentage(changeThresholdCondition.getChangePercentage())
-                .setShiftPoint(changeThresholdCondition.getShiftPoint())
-                .setWithinRange(changeThresholdCondition.isWithinRange());
-
-            if (changeThresholdCondition.getSuppressCondition() != null) {
-                SuppressConditionPatch suppressConditionForUpdate = new SuppressConditionPatch();
-                suppressConditionForUpdate
-                    .setMinNumber(changeThresholdCondition.getSuppressCondition().getMinNumber())
-                    .setMinRatio(changeThresholdCondition.getSuppressCondition().getMinRatio());
-
-                changeThresholdConditionForUpdate.setSuppressCondition(suppressConditionForUpdate);
-            }
-            innerWholeSeriesCondition.setChangeThresholdCondition(changeThresholdConditionForUpdate);
+            innerWholeSeriesCondition
+                .setChangeThresholdCondition(toInnerForUpdate(wholeSeriesCondition.getChangeThresholdCondition()));
         }
 
         if (wholeSeriesCondition.getHardThresholdCondition() != null) {
-            HardThresholdCondition hardThresholdCondition = wholeSeriesCondition.getHardThresholdCondition();
-            HardThresholdConditionPatch hardThresholdConditionForUpdate = new HardThresholdConditionPatch();
-
-            hardThresholdConditionForUpdate
-                .setAnomalyDetectorDirection(hardThresholdCondition.getAnomalyDetectorDirection())
-                .setLowerBound(hardThresholdCondition.getLowerBound())
-                .setUpperBound(hardThresholdCondition.getUpperBound());
-
-
-            if (hardThresholdCondition.getSuppressCondition() != null) {
-                SuppressConditionPatch suppressConditionForUpdate = new SuppressConditionPatch();
-                suppressConditionForUpdate
-                    .setMinNumber(hardThresholdCondition.getSuppressCondition().getMinNumber())
-                    .setMinRatio(hardThresholdCondition.getSuppressCondition().getMinRatio());
-
-                hardThresholdConditionForUpdate.setSuppressCondition(suppressConditionForUpdate);
-            }
-            innerWholeSeriesCondition.setHardThresholdCondition(hardThresholdConditionForUpdate);
+            innerWholeSeriesCondition
+                .setHardThresholdCondition(toInnerForUpdate(wholeSeriesCondition.getHardThresholdCondition()));
         }
 
         return innerWholeSeriesCondition;
@@ -369,21 +322,21 @@ public final class DetectionConfigurationTransforms {
                 .setDimension(seriesGroupCondition.getSeriesGroupKey().asMap()));
         }
 
-        DetectionConditionsOperator groupConditionOperator = seriesGroupCondition.getCrossConditionsOperator();
+        DetectionConditionOperator groupConditionOperator = seriesGroupCondition.getConditionOperator();
         if (groupConditionOperator != null) {
             innerConfiguration.setConditionOperator(
                 AnomalyDetectionConfigurationLogicType.fromString(groupConditionOperator.toString()));
         } else if (isCreate && hasMultipleNestedConditions(seriesGroupCondition)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(
-                    "detectionConfiguration.seriesGroupConditions.crossConditionsOperator"
+                    "detectionConfiguration.seriesGroupConditions.conditionOperator"
                         + " is required when multiple conditions are specified for a series group."));
         }
 
         innerConfiguration
-            .setSmartDetectionCondition(seriesGroupCondition.getSmartDetectionCondition())
-            .setChangeThresholdCondition(seriesGroupCondition.getChangeThresholdCondition())
-            .setHardThresholdCondition(seriesGroupCondition.getHardThresholdCondition());
+            .setSmartDetectionCondition(toInnerForCreate(seriesGroupCondition.getSmartDetectionCondition()))
+            .setChangeThresholdCondition(toInnerForCreate(seriesGroupCondition.getChangeThresholdCondition()))
+            .setHardThresholdCondition(toInnerForCreate(seriesGroupCondition.getHardThresholdCondition()));
 
         return innerConfiguration;
     }
@@ -400,21 +353,21 @@ public final class DetectionConfigurationTransforms {
             .setSeries(new SeriesIdentity()
                 .setDimension(seriesCondition.getSeriesKey().asMap()));
 
-        DetectionConditionsOperator seriesConditionOperator = seriesCondition.getCrossConditionsOperator();
+        DetectionConditionOperator seriesConditionOperator = seriesCondition.getConditionOperator();
         if (seriesConditionOperator != null) {
             innerConfiguration.setConditionOperator(
                 AnomalyDetectionConfigurationLogicType.fromString(seriesConditionOperator.toString()));
         } else if (isCreate && hasMultipleNestedConditions(seriesCondition)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(
-                    "detectionConfiguration.seriesConditions.crossConditionsOperator"
+                    "detectionConfiguration.seriesConditions.conditionOperator"
                         + " is required when multiple conditions are specified for a series."));
         }
 
         innerConfiguration
-            .setSmartDetectionCondition(seriesCondition.getSmartDetectionCondition())
-            .setChangeThresholdCondition(seriesCondition.getChangeThresholdCondition())
-            .setHardThresholdCondition(seriesCondition.getHardThresholdCondition());
+            .setSmartDetectionCondition(toInnerForCreate(seriesCondition.getSmartDetectionCondition()))
+            .setChangeThresholdCondition(toInnerForCreate(seriesCondition.getChangeThresholdCondition()))
+            .setHardThresholdCondition(toInnerForCreate(seriesCondition.getHardThresholdCondition()));
 
         return innerConfiguration;
     }
@@ -453,5 +406,139 @@ public final class DetectionConfigurationTransforms {
             .skip(1)
             .findAny();
         return multipleConditionsOpt.isPresent();
+    }
+
+    private static ChangeThresholdCondition fromInner(
+        com.azure.ai.metricsadvisor.implementation.models.ChangeThresholdCondition inner) {
+        if (inner == null) {
+            return null;
+        }
+        return new ChangeThresholdCondition(
+            inner.getChangePercentage(),
+            inner.getShiftPoint(),
+            inner.isWithinRange(),
+            inner.getAnomalyDetectorDirection(),
+            fromInner(inner.getSuppressCondition()));
+    }
+
+    private static com.azure.ai.metricsadvisor.implementation.models.ChangeThresholdCondition toInnerForCreate(
+        ChangeThresholdCondition condition) {
+        if (condition == null) {
+            return null;
+        }
+        return new com.azure.ai.metricsadvisor.implementation.models.ChangeThresholdCondition()
+            .setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
+            .setChangePercentage(condition.getChangePercentage())
+            .setShiftPoint(condition.getShiftPoint())
+            .setWithinRange(condition.isWithinRange())
+            .setSuppressCondition(toInnerForCreate(condition.getSuppressCondition()));
+    }
+
+    private static ChangeThresholdConditionPatch toInnerForUpdate(ChangeThresholdCondition condition) {
+        if (condition == null) {
+            return null;
+        }
+        ChangeThresholdConditionPatch inner = new ChangeThresholdConditionPatch();
+        inner.setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
+            .setChangePercentage(condition.getChangePercentage())
+            .setShiftPoint(condition.getShiftPoint())
+            .setWithinRange(condition.isWithinRange());
+
+        if (condition.getSuppressCondition() != null) {
+            inner.setSuppressCondition(toInnerForUpdate(condition.getSuppressCondition()));
+        }
+        return inner;
+    }
+
+    private static HardThresholdCondition fromInner(
+        com.azure.ai.metricsadvisor.implementation.models.HardThresholdCondition inner) {
+        if (inner == null) {
+            return null;
+        }
+        return new HardThresholdCondition(inner.getAnomalyDetectorDirection(), fromInner(inner.getSuppressCondition()))
+            .setLowerBound(inner.getLowerBound())
+            .setUpperBound(inner.getUpperBound());
+    }
+
+    private static com.azure.ai.metricsadvisor.implementation.models.HardThresholdCondition toInnerForCreate(
+        HardThresholdCondition condition) {
+        if (condition == null) {
+            return null;
+        }
+        return new com.azure.ai.metricsadvisor.implementation.models.HardThresholdCondition()
+            .setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
+            .setSuppressCondition(toInnerForCreate(condition.getSuppressCondition()))
+            .setLowerBound(condition.getLowerBound())
+            .setUpperBound(condition.getUpperBound());
+    }
+
+    private static HardThresholdConditionPatch toInnerForUpdate(HardThresholdCondition condition) {
+        if (condition == null) {
+            return null;
+        }
+        HardThresholdConditionPatch inner = new HardThresholdConditionPatch();
+        inner.setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
+            .setLowerBound(condition.getLowerBound())
+            .setUpperBound(condition.getUpperBound());
+
+        if (condition.getSuppressCondition() != null) {
+            inner.setSuppressCondition(toInnerForUpdate(condition.getSuppressCondition()));
+        }
+        return inner;
+    }
+
+    private static SmartDetectionCondition fromInner(
+        com.azure.ai.metricsadvisor.implementation.models.SmartDetectionCondition inner) {
+        if (inner == null) {
+            return null;
+        }
+        return new SmartDetectionCondition(inner.getSensitivity(),
+            inner.getAnomalyDetectorDirection(),
+            fromInner(inner.getSuppressCondition()));
+    }
+
+    private static com.azure.ai.metricsadvisor.implementation.models.SmartDetectionCondition toInnerForCreate(
+        SmartDetectionCondition condition) {
+        if (condition == null) {
+            return null;
+        }
+        return new com.azure.ai.metricsadvisor.implementation.models.SmartDetectionCondition()
+            .setSensitivity(condition.getSensitivity())
+            .setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
+            .setSuppressCondition(toInnerForCreate(condition.getSuppressCondition()));
+    }
+
+    private static SmartDetectionConditionPatch toInnerForUpdate(SmartDetectionCondition condition) {
+        if (condition == null) {
+            return null;
+        }
+        SmartDetectionConditionPatch inner = new SmartDetectionConditionPatch();
+        inner
+            .setSensitivity(condition.getSensitivity())
+            .setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection());
+
+        if (condition.getSuppressCondition() != null) {
+            inner.setSuppressCondition(toInnerForUpdate(condition.getSuppressCondition()));
+        }
+        return inner;
+    }
+
+    private static SuppressCondition fromInner(
+        com.azure.ai.metricsadvisor.implementation.models.SuppressCondition inner) {
+        return inner != null ? new SuppressCondition(inner.getMinNumber(), inner.getMinRatio()) : null;
+    }
+
+    private static com.azure.ai.metricsadvisor.implementation.models.SuppressCondition toInnerForCreate(
+        SuppressCondition condition) {
+        return condition != null ? new com.azure.ai.metricsadvisor.implementation.models.SuppressCondition()
+            .setMinNumber(condition.getMinNumber())
+            .setMinRatio(condition.getMinRatio()) : null;
+    }
+
+    private static com.azure.ai.metricsadvisor.implementation.models.SuppressConditionPatch toInnerForUpdate(
+        SuppressCondition condition) {
+        return condition != null ? new com.azure.ai.metricsadvisor.implementation.models.SuppressConditionPatch()
+            .setMinNumber(condition.getMinNumber())
+            .setMinRatio(condition.getMinRatio()) : null;
     }
 }

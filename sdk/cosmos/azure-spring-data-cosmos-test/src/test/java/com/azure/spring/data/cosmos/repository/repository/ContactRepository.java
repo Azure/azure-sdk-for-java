@@ -44,4 +44,10 @@ public interface ContactRepository extends CosmosRepository<Contact, String> {
     @Query(value = "SELECT count(c.id) as id_count, c.intValue FROM c group by c.intValue")
     List<ObjectNode> selectGroupBy();
 
+    @Query(value = "Select DISTINCT value c.intValue from c")
+    List<Integer> findDistinctIntValueValues();
+
+    @Query(value = "Select DISTINCT value c.active from c")
+    List<Boolean> findDistinctStatusValues();
+
 }

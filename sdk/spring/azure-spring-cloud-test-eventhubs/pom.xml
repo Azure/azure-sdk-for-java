@@ -31,7 +31,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
-      <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -43,32 +43,14 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.8.6</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.8.7</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-test</artifactId>
-      <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
-      <scope>test</scope>
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
     </dependency>
   </dependencies>
 
@@ -82,7 +64,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.google.code.gson:gson:[2.8.6]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
+                <include>com.google.code.gson:gson:[2.8.7]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

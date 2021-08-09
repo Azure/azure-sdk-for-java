@@ -30,6 +30,44 @@ class CosmosConfigSpec extends UnitSpec {
     endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("westus", "eastus1")
   }
 
+  "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.applicationName" -> "myapp",
+      "spark.cosmos.useGatewayMode" -> "true",
+      "spark.cosmos.preferredRegions" -> "[west us, eastus1]"
+    )
+
+    val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+    endpointConfig.endpoint shouldEqual sampleProdEndpoint
+    endpointConfig.key shouldEqual "xyz"
+    endpointConfig.applicationName.get shouldEqual "myapp"
+    endpointConfig.useGatewayMode shouldEqual true
+    endpointConfig.preferredRegionsList.isDefined shouldEqual true
+    endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("westus", "eastus1")
+  }
+
+  "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions and spark.cosmos.preferredRegionsList" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.applicationName" -> "myapp",
+      "spark.cosmos.useGatewayMode" -> "true",
+      "spark.cosmos.preferredRegions" -> "[west us, eastus1]",
+      "spark.cosmos.preferredRegionsList" -> "[west us, eastus1]"
+    )
+
+    try {
+      CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+      fail("multiple conflicting options")
+    } catch {
+      case e: Exception => e.getMessage shouldEqual(
+        "specified multiple conflicting options [spark.cosmos.preferredRegionsList] and [spark.cosmos.preferredRegions]. Only one should be specified")
+    }
+  }
+
   it should "validate account endpoint" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "invalidUrl",
@@ -222,7 +260,7 @@ class CosmosConfigSpec extends UnitSpec {
       "spark.cosmos.read.inferSchema.query" -> customQuery
     )
 
-    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
     config.inferSchemaSamplingSize shouldEqual 50
     config.inferSchemaEnabled shouldBe false
     config.includeSystemProperties shouldBe true
@@ -233,7 +271,7 @@ class CosmosConfigSpec extends UnitSpec {
   it should "provide default schema inference config" in {
     val userConfig = Map[String, String]()
 
-    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
 
     config.inferSchemaSamplingSize shouldEqual 1000
     config.inferSchemaEnabled shouldBe true

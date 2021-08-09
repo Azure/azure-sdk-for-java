@@ -42,10 +42,10 @@ See [Next steps][SDK_README_NEXT_STEPS].
 If you would like to become an active contributor to this project please refer to our [Contribution Guidelines][SDK_README_CONTRIBUTING] for more information.
 
 <!-- LINKS -->
-<!-- [SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-catalog/README.md#contributing -->
-<!-- [SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-catalog/README.md#getting-started -->
-<!-- [SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-catalog/README.md#troubleshooting -->
-<!-- [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-catalog/README.md#key-concepts -->
-<!-- [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-catalog/README.md#include-the-package -->
-<!-- [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-catalog/README.md#next-steps -->
-<!-- [list_glossaries]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/purview/azure-analytics-purview-catalog/src/samples/java/com/azure/analytics/purview/catalog/ListGlossaries.java -->
+<!-- [SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/README.md#contributing -->
+<!-- [SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/README.md#getting-started -->
+<!-- [SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/README.md#troubleshooting -->
+<!-- [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/README.md#key-concepts -->
+<!-- [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/README.md#include-the-package -->
+<!-- [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/README.md#next-steps -->
+<!-- [list_glossaries]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/src/samples/java/com/azure/analytics/purview/catalog/ListGlossaries.java -->

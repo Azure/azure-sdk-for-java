@@ -4,7 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.AnomalyDetectorDirection;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

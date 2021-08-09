@@ -1,6 +1,9 @@
 parameters:
   PackageName: not-specified
-  SafeName: notspecified
+  SafeName: not-specified
+  Clouds: 'Public,Int'
+  TestMode: 'LIVE'
+  EnvVars: {}
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -15,12 +18,16 @@ stages:
           SubscriptionConfigurations:
             - $(sub-config-communication-int-test-resources-common)
             - $(sub-config-communication-int-test-resources-java)
-      Clouds: Public, Int
+      Clouds: ${{ parameters.Clouds }}
+      TestMode: ${{ parameters.TestMode }}
       Artifacts:
         - name: ${{ parameters.PackageName }}
           groupId: com.azure
           safeName: ${{ parameters.SafeName }}
       ServiceDirectory: communication
+      PreSteps:
+        - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
+          condition: not(startsWith(variables['System.StageName'], 'Public'))
       PostSteps:
         - task: PublishCodeCoverageResults@1
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), startsWith(variables['System.StageName'], 'Public'))
@@ -31,3 +38,5 @@ stages:
             failIfCoverageEmpty: true
       EnvVars:
         SKIP_LIVE_TEST: TRUE
+        ${{ each var in parameters.EnVars }}:
+          ${{ var.key }}: ${{ var.value }}

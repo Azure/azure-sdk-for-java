@@ -95,6 +95,13 @@ public final class ParquetSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ParquetSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

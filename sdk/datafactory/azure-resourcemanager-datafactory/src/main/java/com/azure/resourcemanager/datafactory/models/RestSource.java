@@ -244,6 +244,13 @@ public final class RestSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RestSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

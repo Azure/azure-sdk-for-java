@@ -11,7 +11,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-feature-management</artifactId>
-  <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
+  <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
   <name>Azure Spring Cloud Feature Management</name>
   <description>Adds Feature Management into Spring</description>
 
@@ -19,12 +19,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.6</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>1.0.6</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>1.0.9</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -50,13 +50,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.6.28</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.9.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -84,9 +84,9 @@
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.11.4]</include> <!-- {x-include-update;appconfig_spring_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.4]</include> <!-- {x-include-update;appconfig_spring_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[1.0.6]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                <include>org.springframework:spring-context:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty:[1.0.9]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

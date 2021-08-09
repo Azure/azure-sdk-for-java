@@ -24,6 +24,18 @@ public final class QueryResults {
     @JsonProperty(value = "statistics")
     private Object statistics;
 
+    /*
+     * Visualization data in JSON format.
+     */
+    @JsonProperty(value = "render")
+    private Object render;
+
+    /*
+     * The code and message for an error.
+     */
+    @JsonProperty(value = "error")
+    private ErrorInfo error;
+
     /**
      * Creates an instance of QueryResults class.
      *
@@ -64,6 +76,46 @@ public final class QueryResults {
     }
 
     /**
+     * Get the render property: Visualization data in JSON format.
+     *
+     * @return the render value.
+     */
+    public Object getRender() {
+        return this.render;
+    }
+
+    /**
+     * Set the render property: Visualization data in JSON format.
+     *
+     * @param render the render value to set.
+     * @return the QueryResults object itself.
+     */
+    public QueryResults setRender(Object render) {
+        this.render = render;
+        return this;
+    }
+
+    /**
+     * Get the error property: The code and message for an error.
+     *
+     * @return the error value.
+     */
+    public ErrorInfo getError() {
+        return this.error;
+    }
+
+    /**
+     * Set the error property: The code and message for an error.
+     *
+     * @param error the error value to set.
+     * @return the QueryResults object itself.
+     */
+    public QueryResults setError(ErrorInfo error) {
+        this.error = error;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -73,6 +125,9 @@ public final class QueryResults {
             throw new IllegalArgumentException("Missing required property tables in model QueryResults");
         } else {
             getTables().forEach(e -> e.validate());
+        }
+        if (getError() != null) {
+            getError().validate();
         }
     }
 }

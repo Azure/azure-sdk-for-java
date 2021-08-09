@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -65,6 +67,16 @@ public final class DimensionKey {
     public DimensionKey put(String dimensionName, String dimensionValue) {
         this.dimensions.put(dimensionName, dimensionValue);
         return this;
+    }
+
+    /**
+     * Gets dimension value for the given {@code dimensionName}.
+     *
+     * @param dimensionName The dimension name.
+     * @return The dimension value if exists, {@code null} otherwise.
+     */
+    public String get(String dimensionName) {
+        return this.dimensions.get(dimensionName);
     }
 
     /**

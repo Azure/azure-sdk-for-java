@@ -10,14 +10,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
 /** A managed Virtual Network associated with the Azure Data Factory. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ManagedVirtualNetwork")
 @Fluent
 public final class ManagedVirtualNetwork {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedVirtualNetwork.class);

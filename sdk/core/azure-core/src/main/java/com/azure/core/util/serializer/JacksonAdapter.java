@@ -375,7 +375,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         /*
-         * Finally inject all found header collection values into the deserialized headers.
+         * Finally, inject all found header collection values into the deserialized headers.
          */
         headerCollectionHandlers.forEach(h -> h.injectValuesIntoDeclaringField(deserializedHeaders, logger));
 
@@ -468,7 +468,7 @@ public class JacksonAdapter implements SerializerAdapter {
             logger.verbose("Failed to find or use public setter to set header collection.");
 
             /*
-             * Otherwise fallback to setting the field directly.
+             * Otherwise, fallback to setting the field directly.
              */
             final boolean declaredFieldAccessibleBackup = declaringField.isAccessible();
             try {
@@ -500,7 +500,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 Method setterMethod = deserializedHeaders.getClass().getDeclaredMethod(potentialSetterName, Map.class);
                 if (Modifier.isPublic(setterMethod.getModifiers())) {
                     setterMethod.invoke(deserializedHeaders, values);
-                    logger.verbose("User setter %s on class %s to set header collection.", potentialSetterName,
+                    logger.verbose("Using public setter {} on class {} to set header collection.", potentialSetterName,
                         deserializedHeaders.getClass().getSimpleName());
                     return true;
                 }

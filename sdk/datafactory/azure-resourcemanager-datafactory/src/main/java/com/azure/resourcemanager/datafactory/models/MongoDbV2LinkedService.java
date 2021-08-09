@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.MongoDbV2LinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,68 +17,23 @@ import java.util.Map;
 /** Linked service for MongoDB data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbV2")
-@JsonFlatten
 @Fluent
-public class MongoDbV2LinkedService extends LinkedService {
+public final class MongoDbV2LinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbV2LinkedService.class);
 
     /*
-     * The MongoDB connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * MongoDB linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionString", required = true)
-    private Object connectionString;
-
-    /*
-     * The name of the MongoDB database that you want to access. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.database", required = true)
-    private Object database;
+    @JsonProperty(value = "typeProperties", required = true)
+    private MongoDbV2LinkedServiceTypeProperties innerTypeProperties = new MongoDbV2LinkedServiceTypeProperties();
 
     /**
-     * Get the connectionString property: The MongoDB connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * Get the innerTypeProperties property: MongoDB linked service properties.
      *
-     * @return the connectionString value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: The MongoDB connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the MongoDbV2LinkedService object itself.
-     */
-    public MongoDbV2LinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
-     * with resultType string).
-     *
-     * @return the database value.
-     */
-    public Object database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
-     * with resultType string).
-     *
-     * @param database the database value to set.
-     * @return the MongoDbV2LinkedService object itself.
-     */
-    public MongoDbV2LinkedService withDatabase(Object database) {
-        this.database = database;
-        return this;
+    private MongoDbV2LinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -110,6 +65,56 @@ public class MongoDbV2LinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionString property: The MongoDB connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: The MongoDB connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the MongoDbV2LinkedService object itself.
+     */
+    public MongoDbV2LinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbV2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param database the database value to set.
+     * @return the MongoDbV2LinkedService object itself.
+     */
+    public MongoDbV2LinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbV2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,16 +122,13 @@ public class MongoDbV2LinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (connectionString() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property connectionString in model MongoDbV2LinkedService"));
-        }
-        if (database() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property database in model MongoDbV2LinkedService"));
+                        "Missing required property innerTypeProperties in model MongoDbV2LinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

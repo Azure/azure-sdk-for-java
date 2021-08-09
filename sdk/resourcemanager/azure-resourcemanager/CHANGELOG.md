@@ -1,7 +1,14 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
 
+
+## 2.6.0 (2021-06-18)
+
+- Added support for Challenge Based Authentication in `AuthenticationPolicy`.
+
+## 2.5.0 (2021-05-28)
+- Updated core dependency from resources
 
 ## 2.4.0 (2021-04-28)
 

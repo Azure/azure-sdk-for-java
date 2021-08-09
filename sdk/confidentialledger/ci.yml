@@ -2,18 +2,19 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/confidentialledger/
+    exclude:
+      - sdk/confidentialledger/pom.xml
+      - sdk/confidentialledger/azure-security-confidentialledger/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -21,12 +22,15 @@ pr:
   paths:
     include:
       - sdk/confidentialledger/
+    exclude:
+      - sdk/confidentialledger/pom.xml
+      - sdk/confidentialledger/azure-security-confidentialledger/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: confidentialledger
     Artifacts:
-      - name: azure-data-confidentialledger
+      - name: azure-security-confidentialledger
         groupId: com.azure
-        safeName: azuredataconfidentialledger
+        safeName: azuresecurityconfidentialledger

@@ -1827,6 +1827,16 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
+    public Map<String, String> getSiteAppSettings() {
+        return getSiteAppSettingsAsync().block();
+    }
+
+    @Override
+    public Mono<Map<String, String>> getSiteAppSettingsAsync() {
+        return kuduClient.settings();
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutAccessRule(IpSecurityRestriction ipSecurityRule) {
         if (this.siteConfig != null && this.siteConfig.ipSecurityRestrictions() != null) {

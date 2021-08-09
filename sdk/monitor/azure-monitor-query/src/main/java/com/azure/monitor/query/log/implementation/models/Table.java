@@ -28,7 +28,7 @@ public final class Table {
      * The resulting rows from this query.
      */
     @JsonProperty(value = "rows", required = true)
-    private List<List<String>> rows;
+    private List<List<Object>> rows;
 
     /**
      * Creates an instance of Table class.
@@ -41,7 +41,7 @@ public final class Table {
     public Table(
             @JsonProperty(value = "name", required = true) String name,
             @JsonProperty(value = "columns", required = true) List<Column> columns,
-            @JsonProperty(value = "rows", required = true) List<List<String>> rows) {
+            @JsonProperty(value = "rows", required = true) List<List<Object>> rows) {
         this.name = name;
         this.columns = columns;
         this.rows = rows;
@@ -70,7 +70,7 @@ public final class Table {
      *
      * @return the rows value.
      */
-    public List<List<String>> getRows() {
+    public List<List<Object>> getRows() {
         return this.rows;
     }
 

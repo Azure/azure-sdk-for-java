@@ -56,8 +56,8 @@ public class TestUtils {
     static final int USE_CASE_PEEK_RECEIVE_AND_DEFER = 10;
     static final int USE_CASE_PEEK_TRANSACTION_SENDRECEIVE_AND_COMPLETE = 11;
     static final int USE_CASE_SINGLE_SESSION = 12;
-    static final int USE_CASE_SEND_VIA_QUEUE_1 = 13;
-    static final int USE_CASE_SEND_VIA_QUEUE_2 = 14;
+    static final int USE_CASE_TXN_1 = 13;
+    static final int USE_CASE_TXN_2 = 14;
     static final int USE_CASE_SEND_VIA_TOPIC_1 = 15;
     static final int USE_CASE_SEND_VIA_TOPIC_2 = 16;
     static final int USE_CASE_VALIDATE_AMQP_PROPERTIES = 17;
@@ -66,6 +66,8 @@ public class TestUtils {
     static final int USE_CASE_AUTO_COMPLETE = 20;
     static final int USE_CASE_PEEK_BATCH = 21;
     static final int USE_CASE_PROXY = 22;
+    static final int USE_CASE_PROCESSOR_RECEIVE = 23;
+    static final int USE_CASE_AMQP_TYPES = 24;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
@@ -81,7 +83,10 @@ public class TestUtils {
      *
      * @return The namespace connection string.
      */
-    public static String getConnectionString() {
+    public static String getConnectionString(boolean withSas) {
+        if (withSas) {
+            return System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING_WITH_SAS");
+        }
         return System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     }
 

@@ -109,7 +109,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/e4978ce50e4978ce532025052603b777533e84843a2c?resource=filesystem&recursive=false&upn=false&sv=2020-08-04&se=2021-05-06T18%3A00%3A54Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A55Z&ske=2021-05-06T18%3A00%3A54Z&sks=b&skv=2020-08-04&scid=f3ad378d-a574-425b-9035-111d19645618&sr=c&sp=l&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/e4978ce50e4978ce532025052603b777533e84843a2c?resource=filesystem&recursive=false&upn=false&sv=2020-10-02&se=2021-05-06T18%3A00%3A54Z&skoid=e339aa3f-fc6a-402b-973a-31cd8d64b280&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-05-05T18%3A00%3A55Z&ske=2021-05-06T18%3A00%3A54Z&sks=b&skv=2020-08-04&scid=f3ad378d-a574-425b-9035-111d19645618&sr=c&sp=l&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",

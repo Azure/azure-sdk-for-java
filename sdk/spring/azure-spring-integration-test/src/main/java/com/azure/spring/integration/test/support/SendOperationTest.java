@@ -5,42 +5,47 @@ package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.SendOperation;
-import com.google.common.collect.ImmutableMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Fail.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class SendOperationTest<O extends SendOperation> {
 
     protected String destination = "event-hub";
-    protected Message<?> message = new GenericMessage<>("testPayload",
-                                                        ImmutableMap.of("key1", "value1", "key2", "value2"));
+    protected Message<?> message;
     protected Mono<Void> mono = Mono.empty();
     protected String partitionKey = "key";
     protected String payload = "payload";
     protected O sendOperation = null;
     private String partitionId = "1";
 
+    public SendOperationTest() {
+        Map<String, Object> valueMap = new HashMap<>(2);
+        valueMap.put("key1", "value1");
+        valueMap.put("key2", "value2");
+        message = new GenericMessage<>("testPayload", valueMap);
+    }
+
     protected abstract void setupError(String errorMessage);
 
-    @Test(expected = NestedRuntimeException.class)
+    @Test
     public void testSendCreateSenderFailure() throws Throwable {
         whenSendWithException();
 
-        try {
-            this.sendOperation.sendAsync(destination, this.message, null).get();
-        } catch (ExecutionException e) {
-            throw e.getCause();
-        }
+        assertThrows(NestedRuntimeException.class,
+            () -> this.sendOperation.sendAsync(destination, this.message, null).get());
     }
 
     @Test
@@ -78,6 +83,33 @@ public abstract class SendOperationTest<O extends SendOperation> {
         assertNull(future.get());
         verifySendWithPartitionKey(1);
         verifyGetClientCreator(1);
+    }
+
+    @Test
+    public void testSendWithSessionId() throws ExecutionException, InterruptedException {
+        Map<String, Object> valueMap = new HashMap<>();
+        valueMap.put("key1", "value1");
+        valueMap.put("key2", "value2");
+        valueMap.put("azure_service_bus_session_id", "TestSessionId");
+        Message<?> messageWithSeesionId = new GenericMessage<>("testPayload", valueMap);
+        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, messageWithSeesionId);
+
+        assertNull(future.get());
+        verifySendCalled(1);
+    }
+
+    @Test
+    public void testSendWithSessionIdAndPartitionKeyDifferent() throws ExecutionException, InterruptedException {
+        Map<String, Object> valueMap = new HashMap<>();
+        valueMap.put("key1", "value1");
+        valueMap.put("key2", "value2");
+        valueMap.put("azure_service_bus_session_id", "TestSessionId");
+        valueMap.put("azure_service_bus_partition_key", "TestPartitionKey");
+        Message<?> messageWithSeesionIdAndPartitionKey = new GenericMessage<>("testPayload", valueMap);
+        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, messageWithSeesionIdAndPartitionKey);
+
+        assertNull(future.get());
+        verifySendCalled(1);
     }
 
     @Test

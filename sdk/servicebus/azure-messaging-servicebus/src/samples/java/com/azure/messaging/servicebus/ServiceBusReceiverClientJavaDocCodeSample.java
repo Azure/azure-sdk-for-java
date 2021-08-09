@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import org.junit.jupiter.api.Test;
@@ -95,7 +96,7 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
     public void transactionsSnippet() {
         // Some random sequenceNumber.
         long sequenceNumber = 1000L;
-        ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(null);
+        ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage((BinaryData) null);
 
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext
         ServiceBusTransactionContext transaction = receiver.createTransaction();

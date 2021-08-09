@@ -4,8 +4,8 @@
 package com.azure.containers.containerregistry.implementation;
 
 import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ArtifactManifestReference;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 
 import java.time.OffsetDateTime;
@@ -27,7 +27,7 @@ public final class ArtifactManifestPropertiesHelper {
         void setRepositoryName(ArtifactManifestProperties manifestProperties, String repositoryName);
         void setRegistryLoginServer(ArtifactManifestProperties manifestProperties, String registryLoginServer);
         void setDigest(ArtifactManifestProperties manifestProperties, String digest);
-        void setManifestReferences(ArtifactManifestProperties manifestProperties, List<ArtifactManifestReference> manifestReferences);
+        void setRelatedArtifacts(ArtifactManifestProperties manifestProperties, List<ArtifactManifestPlatform> relatedArtifacts);
         void setCpuArchitecture(ArtifactManifestProperties manifestProperties, ArtifactArchitecture architecture);
         void setOperatingSystem(ArtifactManifestProperties manifestProperties, ArtifactOperatingSystem operatingSystem);
         void setTags(ArtifactManifestProperties manifestProperties, List<String> tags);
@@ -65,8 +65,8 @@ public final class ArtifactManifestPropertiesHelper {
         accessor.setlastUpdatedOn(manifestProperties, lastUpdatedOn);
     }
 
-    public static void setManifestReferences(ArtifactManifestProperties manifestProperties, List<ArtifactManifestReference> manifestReferences) {
-        accessor.setManifestReferences(manifestProperties, manifestReferences);
+    public static void setRelatedArtifacts(ArtifactManifestProperties manifestProperties, List<ArtifactManifestPlatform> relatedArtifacts) {
+        accessor.setRelatedArtifacts(manifestProperties, relatedArtifacts);
     }
 
     public static void setCpuArchitecture(ArtifactManifestProperties manifestProperties, ArtifactArchitecture architecture) {

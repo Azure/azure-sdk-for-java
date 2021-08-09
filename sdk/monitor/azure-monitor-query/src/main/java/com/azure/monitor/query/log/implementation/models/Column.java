@@ -5,7 +5,7 @@
 package com.azure.monitor.query.log.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.monitor.query.models.ColumnDataType;
+import com.azure.monitor.query.models.LogsColumnType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A column in a table. */
@@ -21,7 +21,7 @@ public final class Column {
      * The data type of this column.
      */
     @JsonProperty(value = "type")
-    private ColumnDataType type;
+    private LogsColumnType type;
 
     /**
      * Get the name property: The name of this column.
@@ -48,7 +48,7 @@ public final class Column {
      *
      * @return the type value.
      */
-    public ColumnDataType getType() {
+    public LogsColumnType getType() {
         return this.type;
     }
 
@@ -58,7 +58,7 @@ public final class Column {
      * @param type the type value to set.
      * @return the Column object itself.
      */
-    public Column setType(ColumnDataType type) {
+    public Column setType(LogsColumnType type) {
         this.type = type;
         return this;
     }

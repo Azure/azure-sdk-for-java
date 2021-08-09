@@ -6,6 +6,8 @@ Unstructured data is data that does not adhere to a particular data model or
 definition, such as text or binary data.
 This package supports client side encryption for blob storage.
 
+[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
+
 ## Getting started
 
 ### Prerequisites
@@ -21,7 +23,7 @@ This package supports client side encryption for blob storage.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.11.1</version>
+  <version>12.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -106,7 +108,7 @@ Blob storage is designed for:
 
 ## Examples
 
-Note: The usage of the `EncryptedBlobClient` is the same as the equivalent `BlobClient`, the only difference being client construction. 
+Note: The usage of the `EncryptedBlobClient` is the same as the equivalent `BlobClient`, the only difference being client construction.
 Please refer to `azure-storage-blob` for common use cases of the `BlobClient`
 
 The following sections provide several code snippets covering some of the most common Azure Storage Blob cryptography creation tasks, including:
@@ -120,7 +122,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create an `EncryptedBlobClient` using a `BlobClient`. `BlobClient` construction is explained in the `azure-storage-blob` README.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L42-L46 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L44-L48 -->
 ```java
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(key, keyWrapAlgorithm)
@@ -133,18 +135,20 @@ EncryptedBlobClient client = new EncryptedBlobClientBuilder()
 
 Create a `BlobServiceClient` using a connection string.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L50-L54 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L52-L58 -->
 ```java
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(key, keyWrapAlgorithm)
     .keyResolver(keyResolver)
     .connectionString(connectionString)
+    .containerName(containerName)
+    .blobName(blobName)
     .buildEncryptedBlobClient();
 ```
 
 ### Use a local `KeyEncryptionKey`
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L58-L67 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L62-L73 -->
 ```java
 JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(keyBytes, secretKeyAlgorithm),
     Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
@@ -154,13 +158,16 @@ AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
 
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(akek, keyWrapAlgorithm)
+    .keyResolver(keyResolver)
     .connectionString(connectionString)
+    .containerName(containerName)
+    .blobName(blobName)
     .buildEncryptedBlobClient();
 ```
 
 ### Use a `KeyVaultKey`
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L71-L86 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L77-L94 -->
 ```java
 KeyClient keyClient = new KeyClientBuilder()
     .vaultUrl(keyVaultUrl)
@@ -176,7 +183,10 @@ AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
 
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(akek, keyWrapAlgorithm)
+    .keyResolver(keyResolver)
     .connectionString(connectionString)
+    .containerName(containerName)
+    .blobName(blobName)
     .buildEncryptedBlobClient();
 ```
 
@@ -209,8 +219,18 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-cryptography%2FREADME.png)
 
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
+[source]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-cryptography/src
+[docs]: https://azure.github.io/azure-sdk-for-java/
+[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-cryptography/src/samples
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-cryptography/src/main/java
+[docs]: https://azure.github.io/azure-sdk-for-java/
+[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-cryptography/src/samples

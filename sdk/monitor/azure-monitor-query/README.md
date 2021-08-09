@@ -29,7 +29,7 @@ This client library provides access to query metrics and logs collected by Azure
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 
@@ -37,83 +37,94 @@ This client library provides access to query metrics and logs collected by Azure
 
 ### Create Logs query client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L41-L43 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L39-L41 -->
 ```java
-LogsClient logsClient = new LogsClientBuilder()
-    .credential(tokenCredential)
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
 ### Create Logs query async client
 
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L45-L47 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L43-L45 -->
 ```java
-LogsAsyncClient logsAsyncClient = new LogsClientBuilder()
-    .credential(tokenCredential)
+LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
 
 ### Get logs for a query
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L201-L233 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L166-L196 -->
 ```java
-    LogsQueryResult queryResults = logsClient.queryLogs("{workspace-id}", "{kusto-query}",
-        new QueryTimeSpan(Duration.ofDays(2)));
-    System.out.println("Number of tables = " + queryResults.getLogsTables().size());
+LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",
+    new QueryTimeSpan(Duration.ofDays(2)));
+System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 
-    // Sample to iterate over all cells in the table
-    for (LogsTable table : queryResults.getLogsTables()) {
-        for (LogsTableCell tableCell : table.getAllTableCells()) {
-            System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
-        }
+// Sample to iterate over all cells in the table
+for (LogsTable table : queryResults.getLogsTables()) {
+    for (LogsTableCell tableCell : table.getAllTableCells()) {
+        System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
     }
+}
 
-
-    // Sample to iterate over each row
-    for (LogsTable table : queryResults.getLogsTables()) {
-        for (LogsTableRow tableRow : table.getTableRows()) {
-            for (LogsTableCell tableCell : tableRow.getTableRow()) {
-                System.out.println("Column = " + tableCell.getColumnName()
-                    + "; value = " + tableCell.getValueAsString());
-            }
-        }
-    }
-
-    // Sample to get a specific column by name
-    for (LogsTable table : queryResults.getLogsTables()) {
-        for (LogsTableRow tableRow : table.getTableRows()) {
-            Optional<LogsTableCell> tableCell = tableRow.getColumnValue("DurationMs");
-            tableCell
-                .ifPresent(logsTableCell ->
-                    System.out.println("Column = " + logsTableCell.getColumnName()
-                        + "; value = " + logsTableCell.getValueAsString()));
+// Sample to iterate over each row
+for (LogsTable table : queryResults.getLogsTables()) {
+    for (LogsTableRow tableRow : table.getRows()) {
+        for (LogsTableCell tableCell : tableRow.getRow()) {
+            System.out.println("Column = " + tableCell.getColumnName()
+                + "; value = " + tableCell.getValueAsString());
         }
     }
 }
+
+// Sample to get a specific column by name
+for (LogsTable table : queryResults.getLogsTables()) {
+    for (LogsTableRow tableRow : table.getRows()) {
+        Optional<LogsTableCell> tableCell = tableRow.getColumnValue("DurationMs");
+        tableCell
+            .ifPresent(logsTableCell ->
+                System.out.println("Column = " + logsTableCell.getColumnName()
+                    + "; value = " + logsTableCell.getValueAsString()));
+    }
+}
+```
+### Get logs for a query and read the response as a model type
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L207-L214 -->
+```java
+LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",
+        new QueryTimeSpan(Duration.ofDays(2)));
+
+List<CustomModel> results = queryResults.getResultAsObject(CustomModel.class);
+results.forEach(model -> {
+    System.out.println("Time generated " + model.getTimeGenerated() + "; success = " + model.getSuccess()
+            + "; operation name = " + model.getOperationName());
+});
 ```
 
 ### Get logs for a batch of queries
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L97-L117 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L69-L89 -->
 ```java
-LogsQueryBatch logsQueryBatch = new LogsQueryBatch()
+LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
     .addQuery("{workspace-id}", "{query-1}", new QueryTimeSpan(Duration.ofDays(2)))
     .addQuery("{workspace-id}", "{query-2}", new QueryTimeSpan(Duration.ofDays(30)));
 
-LogsQueryBatchResultCollection batchResultCollection = logsClient
-    .queryLogsBatchWithResponse(logsQueryBatch, Context.NONE).getValue();
+LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
+    .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
-List<LogsQueryBatchResult> responses = batchResultCollection.getBatchResults();
+List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
-for (LogsQueryBatchResult response : responses) {
+for (LogsBatchQueryResult response : responses) {
     LogsQueryResult queryResult = response.getQueryResult();
 
     // Sample to iterate by row
     for (LogsTable table : queryResult.getLogsTables()) {
-        for (LogsTableRow row : table.getTableRows()) {
+        for (LogsTableRow row : table.getRows()) {
             System.out.println("Row index " + row.getRowIndex());
-            row.getTableRow()
+            row.getRow()
                 .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
         }
     }
@@ -122,22 +133,22 @@ for (LogsQueryBatchResult response : responses) {
 
 ### Get logs for a query with server timeout
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L132-L148 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L101-L117 -->
 ```java
 // set request options: server timeout, rendering, statistics
-LogsQueryOptions options = new LogsQueryOptions("{workspace-id}",
-    "{query}", new QueryTimeSpan(Duration.ofDays(2)))
+LogsQueryOptions options = new LogsQueryOptions()
     .setServerTimeout(Duration.ofMinutes(10));
 
 // make service call with these request options set as filter header
-Response<LogsQueryResult> response = logsClient.queryLogsWithResponse(options, Context.NONE);
+Response<LogsQueryResult> response = logsQueryClient.queryLogsWithResponse("{workspace-id}",
+        "{query}", new QueryTimeSpan(Duration.ofDays(2)), options, Context.NONE);
 LogsQueryResult logsQueryResult = response.getValue();
 
 // Sample to iterate by row
 for (LogsTable table : logsQueryResult.getLogsTables()) {
-    for (LogsTableRow row : table.getTableRows()) {
+    for (LogsTableRow row : table.getRows()) {
         System.out.println("Row index " + row.getRowIndex());
-        row.getTableRow()
+        row.getRow()
             .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
     }
 }
@@ -145,40 +156,46 @@ for (LogsTable table : logsQueryResult.getLogsTables()) {
 
 ### Create Metrics query client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L52-L54 -->
 ```java
-MetricsClient metricsClient = new MetricsClientBuilder()
-    .credential(tokenCredential)
+MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
 ### Create Metrics query async client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L60-L62 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
 ```java
-MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
-    .credential(tokenCredential)
+MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
 
 ### Get metrics
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L161-L188 -->
+A resource ID, as denoted by the `{resource-id}` placeholder in the sample below, is required to query metrics. To find the resource ID:
+
+1. Navigate to your resource's page in the Azure portal.
+2. From the **Overview** blade, select the **JSON View** link.
+3. In the resulting JSON, copy the value of the `id` property.
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L128-L155 -->
 ```java
-Response<MetricsQueryResult> metricsResponse = metricsClient
+Response<MetricsQueryResult> metricsResponse = metricsQueryClient
     .queryMetricsWithResponse(
         "{resource-id}",
         Arrays.asList("SuccessfulCalls"),
         new MetricsQueryOptions()
             .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
-            .setTimespan(Duration.ofDays(30).toString())
+            .setTimeSpan(new QueryTimeSpan(Duration.ofDays(30)))
             .setInterval(Duration.ofHours(1))
             .setTop(100)
             .setAggregation(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
         Context.NONE);
 
 MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
-List<Metrics> metrics = metricsQueryResult.getMetrics();
+List<Metric> metrics = metricsQueryResult.getMetrics();
 metrics.stream()
     .forEach(metric -> {
         System.out.println(metric.getMetricsName());
@@ -272,7 +289,7 @@ client library to use the Netty HTTP client. Configuring or changing the HTTP cl
 
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
 operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
-better performance compared to the default SSL implementation within the JDK. For more information, including how to
+better performance compared to the default SSL com.azure.monitor.collect.metrics.implementation within the JDK. For more information, including how to
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
@@ -295,13 +312,17 @@ comments.
 
 <!-- LINKS -->
 
-[azure_subscription]: https://azure.microsoft.com/free
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query/src
+
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/README.md
+
+[azure_subscription]: https://azure.microsoft.com/free/java
 
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
-[product_documentation]: https://aka.ms/awps/doc
+[product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 
-[log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 

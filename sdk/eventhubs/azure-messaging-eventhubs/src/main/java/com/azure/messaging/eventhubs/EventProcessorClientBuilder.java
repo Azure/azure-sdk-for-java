@@ -8,6 +8,8 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
@@ -180,6 +182,50 @@ public class EventProcessorClientBuilder {
     }
 
     /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
+     * @param credential The shared access name and key credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty
+     *     string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     *     null.
+     */
+    public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+        AzureNamedKeyCredential credential) {
+        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
+     * @param credential The shared access signature credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty
+     *     string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     *     null.
+     */
+    public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+        AzureSasCredential credential) {
+        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        return this;
+    }
+
+    /**
      * Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network
      * does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through
      * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
@@ -326,6 +372,20 @@ public class EventProcessorClientBuilder {
     public EventProcessorClientBuilder loadBalancingStrategy(LoadBalancingStrategy loadBalancingStrategy) {
         this.loadBalancingStrategy = Objects.requireNonNull(loadBalancingStrategy, "'loadBalancingStrategy' cannot be"
             + " null");
+        return this;
+    }
+
+    /**
+     * Sets the count used by the receivers to control the number of events each consumer will actively receive
+     * and queue locally without regard to whether a receive operation is currently active.
+     *
+     * @param prefetchCount The number of events to queue locally.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code prefetchCount} is less than 1 or greater than 8000.
+     */
+    public EventProcessorClientBuilder prefetchCount(int prefetchCount) {
+        eventHubClientBuilder.prefetchCount(prefetchCount);
         return this;
     }
 

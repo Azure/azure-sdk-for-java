@@ -16,7 +16,7 @@ import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -31,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureEventHubAutoConfigurationTest {
 
@@ -52,10 +53,11 @@ public class AzureEventHubAutoConfigurationTest {
                           .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAzureEventHubPropertiesStorageAccountIllegal() {
         this.contextRunner.withPropertyValues(EVENT_HUB_PROPERTY_PREFIX + "checkpoint-storage-account=1")
-                          .run(context -> context.getBean(AzureEventHubProperties.class));
+                          .run(context -> assertThrows(IllegalStateException.class,
+                                  () -> context.getBean(AzureEventHubProperties.class)));
     }
 
     @Test

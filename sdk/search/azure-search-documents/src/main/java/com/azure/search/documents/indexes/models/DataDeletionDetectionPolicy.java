@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata\\.type",
+        property = "@odata.type",
         defaultImpl = DataDeletionDetectionPolicy.class)
 @JsonTypeName("DataDeletionDetectionPolicy")
 @JsonSubTypes({
@@ -24,6 +23,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             name = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy",
             value = SoftDeleteColumnDeletionDetectionPolicy.class)
 })
-@JsonFlatten
 @Immutable
 public abstract class DataDeletionDetectionPolicy { }

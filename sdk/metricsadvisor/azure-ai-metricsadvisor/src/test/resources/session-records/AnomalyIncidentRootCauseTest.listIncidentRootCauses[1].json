@@ -3,20 +3,20 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/incidents/2583ff47fef9174e6d6bfe73415ad914-174d2024c00/rootCause",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "289180b8-65f7-4987-a3c4-8be885300d7d"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "1870ee8c-c5c3-4b37-911c-947329b9e4b8"
     },
     "Response" : {
-      "x-request-id" : "a986c45e-ee85-4640-8b97-97c9b16f4dc3",
+      "x-request-id" : "49aa12e8-0e1e-4bc0-9270-26ccb7fa3ac3",
       "content-length" : "259",
-      "x-envoy-upstream-service-time" : "5247",
+      "x-envoy-upstream-service-time" : "5627",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "a986c45e-ee85-4640-8b97-97c9b16f4dc3",
+      "apim-request-id" : "49aa12e8-0e1e-4bc0-9270-26ccb7fa3ac3",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[{\"rootCause\":{\"dimension\":{\"category\":\"Electronics (Consumer)\",\"city\":\"Karachi\"}},\"path\":[\"city\"],\"score\":0.34265262137636504,\"description\":\"Increase on category = Electronics (Consumer) | city = Karachi contributes the most to current incident.\"}]}",
-      "Date" : "Mon, 24 May 2021 21:31:33 GMT",
+      "Date" : "Tue, 06 Jul 2021 19:51:00 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

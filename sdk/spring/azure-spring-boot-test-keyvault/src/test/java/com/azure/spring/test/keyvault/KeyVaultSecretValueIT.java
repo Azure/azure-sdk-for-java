@@ -3,34 +3,21 @@
 
 package com.azure.spring.test.keyvault;
 
-import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT_URI;
-import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_SECRET_NAME;
-import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_SECRET_VALUE;
-import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
-import static com.azure.spring.test.EnvironmentVariable.SPRING_RESOURCE_GROUP;
-import static com.azure.spring.test.EnvironmentVariable.SPRING_SUBSCRIPTION_ID;
-import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import com.azure.spring.test.keyvault.app.DummyApp;
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.compute.RunCommandInput;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.compute.models.RunCommandInput;
+import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.spring.test.AppRunner;
 import com.azure.spring.test.MavenBasedProject;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.Ignore;
-import org.junit.Test;
+import com.azure.spring.test.keyvault.app.DummyApp;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -41,6 +28,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT_URI;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_SECRET_NAME;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_SECRET_VALUE;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_SPRING_RESOURCE_GROUP;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_SUBSCRIPTION_ID;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class KeyVaultSecretValueIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecretValueIT.class);
@@ -49,22 +52,23 @@ public class KeyVaultSecretValueIT {
     private static final String VM_USER_USERNAME = System.getenv("VM_USER_USERNAME");
     private static final String VM_USER_PASSWORD = System.getenv("VM_USER_PASSWORD");
     private static final int DEFAULT_MAX_RETRY_TIMES = 3;
-    private static final Azure AZURE;
+    private static final AzureResourceManager AZURE;
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     static {
-        AZURE = Azure.authenticate(credentials())
-            .withSubscription(SPRING_SUBSCRIPTION_ID);
+        AzureProfile profile = new AzureProfile(SPRING_TENANT_ID, SPRING_SUBSCRIPTION_ID, AzureEnvironment.AZURE);
+        AZURE = AzureResourceManager.configure()
+                                    .authenticate(credentials(), profile)
+                                    .withDefaultSubscription();
     }
 
 
-
-    private static AzureTokenCredentials credentials() {
-        return new ApplicationTokenCredentials(
-            SPRING_CLIENT_ID,
-            SPRING_TENANT_ID,
-            SPRING_CLIENT_SECRET,
-            AzureEnvironment.AZURE);
+    private static TokenCredential credentials() {
+        return new ClientSecretCredentialBuilder()
+            .clientId(SPRING_CLIENT_ID)
+            .clientSecret(SPRING_CLIENT_SECRET)
+            .tenantId(SPRING_TENANT_ID)
+            .build();
     }
 
     @Test
@@ -100,7 +104,7 @@ public class KeyVaultSecretValueIT {
             app.property("azure.keyvault.client-key", SPRING_CLIENT_SECRET);
             app.property("azure.keyvault.tenant-id", SPRING_TENANT_ID);
             app.property("azure.keyvault.secret-keys", KEY_VAULT_SECRET_NAME);
-            LOGGER.info("====" + KEY_VAULT_SECRET_NAME );
+            LOGGER.info("====" + KEY_VAULT_SECRET_NAME);
             app.start();
             assertEquals(KEY_VAULT_SECRET_VALUE, app.getProperty(KEY_VAULT_SECRET_NAME));
         }
@@ -108,11 +112,11 @@ public class KeyVaultSecretValueIT {
     }
 
     @Test
-    public void keyVaultWithAppServiceMSI() {
+    public void keyVaultWithAppServiceMSI() throws InterruptedException {
         LOGGER.info("keyVaultWithAppServiceMSI begin.");
         final WebApp webApp = AZURE
             .webApps()
-            .getByResourceGroup(SPRING_RESOURCE_GROUP, APP_SERVICE_NAME);
+            .getByResourceGroup(KEY_VAULT_SPRING_RESOURCE_GROUP, APP_SERVICE_NAME);
 
         final MavenBasedProject app = new MavenBasedProject("../azure-spring-boot-test-application");
         app.packageUp();
@@ -126,7 +130,7 @@ public class KeyVaultSecretValueIT {
             retryCount += 1;
             try {
                 webApp.zipDeploy(zipFile);
-                LOGGER.info(String.format("Deployed the artifact to https://%s", webApp.defaultHostName()));
+                LOGGER.info(String.format("Deployed the artifact to https://%s", webApp.defaultHostname()));
                 break;
             } catch (Exception e) {
                 LOGGER.error(String.format("Exception occurred when deploying the zip package: %s, "
@@ -146,10 +150,10 @@ public class KeyVaultSecretValueIT {
     }
 
     @Test
-    @Ignore("Block live test, ignore temporarily")
-    public void keyVaultWithVirtualMachineMSI() {
+    @Disabled("Block live test, ignore temporarily")
+    public void keyVaultWithVirtualMachineMSI() throws InterruptedException {
         LOGGER.info("keyVaultWithVirtualMachineMSI begin.");
-        final VirtualMachine vm = AZURE.virtualMachines().getByResourceGroup(SPRING_RESOURCE_GROUP, VM_NAME);
+        final VirtualMachine vm = AZURE.virtualMachines().getByResourceGroup(KEY_VAULT_SPRING_RESOURCE_GROUP, VM_NAME);
         final String host = vm.getPrimaryPublicIPAddress().ipAddress();
         final List<String> commands = new ArrayList<>();
         commands.add(String.format("cd /home/%s", VM_USER_USERNAME));
@@ -187,15 +191,15 @@ public class KeyVaultSecretValueIT {
     }
 
     private static <T> ResponseEntity<T> curlWithRetry(String resourceUrl,
-        final int retryTimes,
-        int sleepMills,
-        Class<T> clazz) {
+                                                       final int retryTimes,
+                                                       int sleepMills,
+                                                       Class<T> clazz) throws InterruptedException {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<T> response = ResponseEntity.of(Optional.empty());
         int rt = retryTimes;
 
         while (rt-- > 0 && httpStatus != HttpStatus.OK) {
-            SdkContext.sleep(sleepMills);
+            Thread.sleep(sleepMills);
 
             LOGGER.info("CURLing " + resourceUrl);
 

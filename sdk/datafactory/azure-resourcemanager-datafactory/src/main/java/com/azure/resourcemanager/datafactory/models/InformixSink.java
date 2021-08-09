@@ -82,6 +82,13 @@ public final class InformixSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public InformixSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

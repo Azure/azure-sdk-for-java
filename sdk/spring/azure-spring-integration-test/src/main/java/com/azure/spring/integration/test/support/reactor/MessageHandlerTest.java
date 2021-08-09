@@ -7,10 +7,7 @@ import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.core.api.reactor.SendOperation;
-import com.google.common.collect.ImmutableMap;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
 import org.springframework.expression.Expression;
 import org.springframework.integration.MessageTimeoutException;
 import org.springframework.messaging.Message;
@@ -18,14 +15,17 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(MockitoJUnitRunner.class)
 public abstract class MessageHandlerTest<O extends SendOperation> {
 
     protected String destination = "dest";
@@ -33,10 +33,16 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
     protected DefaultMessageHandler handler;
     protected Mono<Void> mono = Mono.empty();
     protected O sendOperation;
-    private Message<?> message = new GenericMessage<>("testPayload",
-                                                      ImmutableMap.of("key1", "value1", "key2", "value2"));
+    private Message<?> message;
     private String payload = "payload";
 
+
+    public MessageHandlerTest() {
+        Map<String, Object> valueMap = new HashMap<>(2);
+        valueMap.put("key1", "value1");
+        valueMap.put("key2", "value2");
+        message = new GenericMessage<>("testPayload", valueMap);
+    }
     public abstract void setUp();
 
     @Test
@@ -44,7 +50,7 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
     public void testSend() {
         this.handler.handleMessage(this.message);
         verify(this.sendOperation, times(1)).sendAsync(eq(destination), isA(Message.class),
-                                                       isA(PartitionSupplier.class));
+            isA(PartitionSupplier.class));
     }
 
     @Test
@@ -69,11 +75,12 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
     @Test
     @SuppressWarnings("unchecked")
     public void testSendDynamicTopic() {
-        Message<?> dynamicMessage = new GenericMessage<>(payload,
-                                                         ImmutableMap.of(AzureHeaders.NAME, dynamicDestination));
+        Map<String, Object> headers = new HashMap<>(1);
+        headers.put(AzureHeaders.NAME, dynamicDestination);
+        Message<?> dynamicMessage = new GenericMessage<>(payload, headers);
         this.handler.handleMessage(dynamicMessage);
         verify(this.sendOperation, times(1)).sendAsync(eq(dynamicDestination), isA(Message.class),
-                                                       isA(PartitionSupplier.class));
+            isA(PartitionSupplier.class));
     }
 
     @Test
@@ -86,15 +93,15 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
         verify(timeout, times(1)).getValue(eq(null), eq(this.message), eq(Long.class));
     }
 
-    @Test(expected = MessageTimeoutException.class)
+    @Test
     @SuppressWarnings("unchecked")
     public void testSendTimeout() {
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),
-                                          isA(PartitionSupplier.class))).thenReturn(Mono.empty().timeout(Mono.empty()));
+            isA(PartitionSupplier.class))).thenReturn(Mono.empty().timeout(Mono.empty()));
         this.handler.setSync(true);
         this.handler.setSendTimeout(1);
 
-        this.handler.handleMessage(this.message);
+        assertThrows(MessageTimeoutException.class, () -> this.handler.handleMessage(this.message));
     }
 
     public Mono<Void> getMono() {

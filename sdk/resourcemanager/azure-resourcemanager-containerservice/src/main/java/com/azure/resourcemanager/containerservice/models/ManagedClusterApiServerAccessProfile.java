@@ -33,6 +33,12 @@ public final class ManagedClusterApiServerAccessProfile {
     @JsonProperty(value = "privateDNSZone")
     private String privateDnsZone;
 
+    /*
+     * Whether to create additional public FQDN for private cluster or not.
+     */
+    @JsonProperty(value = "enablePrivateClusterPublicFQDN")
+    private Boolean enablePrivateClusterPublicFqdn;
+
     /**
      * Get the authorizedIpRanges property: Authorized IP Ranges to kubernetes API server.
      *
@@ -90,6 +96,29 @@ public final class ManagedClusterApiServerAccessProfile {
      */
     public ManagedClusterApiServerAccessProfile withPrivateDnsZone(String privateDnsZone) {
         this.privateDnsZone = privateDnsZone;
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateClusterPublicFqdn property: Whether to create additional public FQDN for private cluster or
+     * not.
+     *
+     * @return the enablePrivateClusterPublicFqdn value.
+     */
+    public Boolean enablePrivateClusterPublicFqdn() {
+        return this.enablePrivateClusterPublicFqdn;
+    }
+
+    /**
+     * Set the enablePrivateClusterPublicFqdn property: Whether to create additional public FQDN for private cluster or
+     * not.
+     *
+     * @param enablePrivateClusterPublicFqdn the enablePrivateClusterPublicFqdn value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withEnablePrivateClusterPublicFqdn(
+        Boolean enablePrivateClusterPublicFqdn) {
+        this.enablePrivateClusterPublicFqdn = enablePrivateClusterPublicFqdn;
         return this;
     }
 

@@ -2,13 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with {@link TableServiceError} information.
  */
-public final class TableServiceException extends HttpResponseException {
+@Immutable
+public class TableServiceException extends HttpResponseException {
     /**
      * Initializes a new instance of the {@link TableServiceException} class.
      *

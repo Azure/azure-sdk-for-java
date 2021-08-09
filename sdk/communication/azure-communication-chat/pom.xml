@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -55,43 +55,43 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.6.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>8.20.2</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>9.10</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -169,48 +169,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-    <profile>
-      <id>disable-coverage-if-identity</id>
-      <activation>
-        <property>
-          <name>env.TEST_PACKAGES_ENABLED</name>
-          <value>identity</value>
-        </property>
-      </activation>
-      <properties>
-        <src.dir>src/main</src.dir>
-        <test.dir>src/test</test.dir>
-        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-      </properties>
-    </profile>
-     <profile>
-      <id>disable-coverage-if-phonenumbers</id>
-      <activation>
-        <property>
-          <name>env.TEST_PACKAGES_ENABLED</name>
-          <value>phonenumbers</value>
-        </property>
-      </activation>
-      <properties>
-        <src.dir>src/main</src.dir>
-        <test.dir>src/test</test.dir>
-        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-      </properties>
-    </profile>
-    <profile>
-      <id>disable-coverage-if-sms</id>
-      <activation>
-        <property>
-          <name>env.TEST_PACKAGES_ENABLED</name>
-          <value>sms</value>
-        </property>
-      </activation>
-      <properties>
-        <src.dir>src/main</src.dir>
-        <test.dir>src/test</test.dir>
-        <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-      </properties>
     </profile>
   </profiles>
 </project>

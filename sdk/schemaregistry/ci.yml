@@ -2,18 +2,20 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/schemaregistry/
+    exclude:
+      - sdk/schemaregistry/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry-avro/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -21,6 +23,10 @@ pr:
   paths:
     include:
       - sdk/schemaregistry/
+    exclude:
+      - sdk/schemaregistry/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry-avro/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

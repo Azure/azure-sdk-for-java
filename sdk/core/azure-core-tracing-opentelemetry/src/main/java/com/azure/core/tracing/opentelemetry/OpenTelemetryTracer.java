@@ -10,14 +10,17 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -33,14 +36,21 @@ import java.util.Optional;
  * requests.
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
+
     private final Tracer tracer = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
 
-    // standard attributes with AMQP request
     static final String AZ_NAMESPACE_KEY = "az.namespace";
+
+    // standard attributes with AMQP request
     static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
     static final String PEER_ENDPOINT = "peer.address";
 
     private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
+    private static final AutoCloseable NOOP_CLOSEABLE = new AutoCloseable() {
+        @Override
+        public void close() {
+        }
+    };
 
     /**
      * {@inheritDoc}
@@ -48,17 +58,30 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     public Context start(String spanName, Context context) {
         Objects.requireNonNull(spanName, "'spanName' cannot be null.");
-        Objects.requireNonNull(context, "'context' cannot be null.");
+        SpanBuilder spanBuilder = createSpanBuilder(
+            spanName,
+            null,
+            SpanKind.INTERNAL,
+            null,
+            context);
 
-        SpanBuilder spanBuilder = getSpanBuilder(spanName, context);
-        Span span = spanBuilder.startSpan();
-        if (span.isRecording()) {
-            String tracingNamespace = getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, null, String.class);
-            if (tracingNamespace != null) {
-                span.setAttribute(AZ_NAMESPACE_KEY, tracingNamespace);
-            }
-        }
-        return context.addData(PARENT_SPAN_KEY, span);
+        return startSpanInternal(spanBuilder, null, context);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Context start(String spanName, StartSpanOptions options, Context context) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        SpanBuilder spanBuilder = createSpanBuilder(
+            spanName,
+            null,
+            convertToOtelKind(options.getSpanKind()),
+            options.getAttributes(),
+            context);
+
+        return startSpanInternal(spanBuilder, null, context);
     }
 
     /**
@@ -70,36 +93,29 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(processKind, "'processKind' cannot be null.");
 
-        Span span;
         SpanBuilder spanBuilder;
-
         switch (processKind) {
             case SEND:
                 // use previously created span builder from the LINK process.
                 spanBuilder = getOrDefault(context, SPAN_BUILDER_KEY, null, SpanBuilder.class);
                 if (spanBuilder == null) {
-                    return Context.NONE;
+                    return context;
                 }
-                span = spanBuilder.setSpanKind(SpanKind.CLIENT).startSpan();
-                if (span.isRecording()) {
-                    // If span is sampled in, add additional request attributes
-                    addSpanRequestAttributes(span, context, spanName);
-                }
-                return context.addData(PARENT_SPAN_KEY, span);
+                return startSpanInternal(spanBuilder, this::addMessagingAttributes, context);
             case MESSAGE:
-                spanBuilder = getSpanBuilder(spanName, context);
-                span = spanBuilder.setSpanKind(SpanKind.PRODUCER).startSpan();
-                if (span.isRecording()) {
-                    // If span is sampled in, add additional request attributes
-                    addSpanRequestAttributes(span, context, spanName);
-                }
-                // Add diagnostic Id and trace-headers to Context
-                context = setContextData(span);
-                return context.addData(PARENT_SPAN_KEY, span);
+                spanBuilder = createSpanBuilder(spanName, null, SpanKind.PRODUCER, null, context);
+                context = startSpanInternal(spanBuilder, this::addMessagingAttributes, context);
+                return setDiagnosticId(context);
             case PROCESS:
-                return startScopedSpan(spanName, context);
+                SpanContext remoteParentContext = getOrDefault(context, SPAN_CONTEXT_KEY, null, SpanContext.class);
+                spanBuilder = createSpanBuilder(spanName, remoteParentContext, SpanKind.CONSUMER, null, context);
+                context = startSpanInternal(spanBuilder, this::addMessagingAttributes, context);
+
+                // TODO (limolkova) we should do this in the EventHub/ServiceBus SDK instead to make sure scope is closed in the
+                // same thread where it was started to prevent leaking the context.
+                return context.addData(SCOPE_KEY, makeSpanCurrent(context));
             default:
-                return Context.NONE;
+                return context;
         }
     }
 
@@ -127,7 +143,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     public void setAttribute(String key, String value, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null");
         if (CoreUtils.isNullOrEmpty(value)) {
-            logger.warning("Failed to set span attribute since value is null or empty.");
+            logger.verbose("Failed to set span attribute since value is null or empty.");
             return;
         }
 
@@ -135,7 +151,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (span != null) {
             span.setAttribute(key, value);
         } else {
-            logger.warning("Failed to find span to add attribute.");
+            logger.verbose("Failed to find span to add attribute.");
         }
     }
 
@@ -154,7 +170,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     public void end(String statusMessage, Throwable throwable, Context context) {
         Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (span == null) {
-            logger.warning("Failed to find span to end it.");
+            logger.verbose("Failed to find span to end it.");
             return;
         }
 
@@ -163,19 +179,22 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         span.end();
+
+        // TODO (limolkova) remove once ServiceBus/EventHub start making span current explicitly.
+        endScope(context);
     }
 
     @Override
     public void addLink(Context context) {
         final SpanBuilder spanBuilder = getOrDefault(context, SPAN_BUILDER_KEY, null, SpanBuilder.class);
         if (spanBuilder == null) {
-            logger.warning("Failed to find spanBuilder to link it.");
+            logger.verbose("Failed to find spanBuilder to link it.");
             return;
         }
 
         final SpanContext spanContext = getOrDefault(context, SPAN_CONTEXT_KEY, null, SpanContext.class);
         if (spanContext == null) {
-            logger.warning("Failed to find span context to link it.");
+            logger.verbose("Failed to find span context to link it.");
             return;
         }
         spanBuilder.addLink(spanContext);
@@ -189,21 +208,48 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return AmqpPropagationFormatUtil.extractContext(diagnosticId, context);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Context getSharedSpanBuilder(String spanName, Context context) {
-        return context.addData(SPAN_BUILDER_KEY, getSpanBuilder(spanName, context));
+        // this is used to create messaging send spanBuilder, and it's a CLIENT span
+        return context.addData(SPAN_BUILDER_KEY, createSpanBuilder(spanName, null, SpanKind.CLIENT, null, context));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    public AutoCloseable makeSpanCurrent(Context context) {
+        Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
+        if (span == null) {
+            return NOOP_CLOSEABLE;
+        }
+
+        return span.makeCurrent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @SuppressWarnings("deprecation")
     public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp) {
+        addEvent(eventName, traceEventAttributes, timestamp, new Context(PARENT_SPAN_KEY, Span.current()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp,
+                         Context context) {
         Objects.requireNonNull(eventName, "'eventName' cannot be null.");
 
-        Span currentSpan = Span.current();
+        Span currentSpan = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (currentSpan == null) {
-            logger.info("Failed to find a starting span to associate the %s with.", eventName);
+            logger.verbose("Failed to find a starting span to associate the {} with.", eventName);
             return;
         }
 
@@ -218,6 +264,104 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 timestamp.toInstant()
             );
         }
+    }
+
+    /**
+     * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent
+     * being the designated {@link Span}.
+     *
+     * @param spanBuilder SpanBuilder for the span. Must be created before calling this method
+     * @param setAttributes Callback to populate attributes for the span.
+     *
+     * @return A {@link Context} with created {@link Span}.
+     */
+    private Context startSpanInternal(SpanBuilder spanBuilder,
+                                      java.util.function.BiConsumer<Span, Context> setAttributes,
+                                      Context context) {
+        Objects.requireNonNull(spanBuilder, "'spanBuilder' cannot be null.");
+        Objects.requireNonNull(context, "'context' cannot be null.");
+
+        Span span = spanBuilder.startSpan();
+        if (span.isRecording()) {
+            // If span is sampled in, add additional attributes
+
+            String tracingNamespace = getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, null, String.class);
+            if (tracingNamespace != null) {
+                span.setAttribute(AZ_NAMESPACE_KEY, tracingNamespace);
+            }
+
+            if (setAttributes != null) {
+                setAttributes.accept(span, context);
+            }
+        }
+
+        return context.addData(PARENT_SPAN_KEY, span);
+    }
+
+    /**
+     * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent
+     * being the designated {@code Span}.
+     *
+     * @param spanName The name of the returned Span.
+     * @param remoteParentContext Remote parent context if any, or {@code null} otherwise.
+     * @param spanKind Kind of the span to create.
+     * @param beforeSaplingAttributes Optional attributes available when span starts and important for sampling.
+     * @param context The context containing the span and the span name.
+     * @return A {@code Span.SpanBuilder} to create and start a new {@code Span}.
+     */
+    @SuppressWarnings("unchecked")
+    private SpanBuilder createSpanBuilder(String spanName,
+                                          SpanContext remoteParentContext,
+                                          SpanKind spanKind,
+                                          Map<String, Object> beforeSaplingAttributes,
+                                          Context context) {
+        String spanNameKey = getOrDefault(context, USER_SPAN_NAME_KEY, null, String.class);
+
+        if (spanNameKey == null) {
+            spanNameKey = spanName;
+        }
+
+        SpanBuilder spanBuilder = tracer.spanBuilder(spanNameKey)
+            .setSpanKind(spanKind);
+
+        // if remote parent is provided, it has higher priority
+        if (remoteParentContext != null) {
+            spanBuilder.setParent(io.opentelemetry.context.Context.root().with(Span.wrap(remoteParentContext)));
+        } else {
+            Span parentSpan = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
+            if (parentSpan == null) {
+                parentSpan = Span.current();
+            }
+
+            spanBuilder.setParent(io.opentelemetry.context.Context.current().with(parentSpan));
+        }
+
+        // if some attributes are provided, set them
+        if (!CoreUtils.isNullOrEmpty(beforeSaplingAttributes)) {
+            Attributes otelAttributes = convertToOtelAttributes(beforeSaplingAttributes);
+            otelAttributes.forEach(
+                (key, value) -> spanBuilder.setAttribute((AttributeKey<Object>) key, value));
+        }
+
+        return spanBuilder;
+    }
+
+    /**
+     * Ends current scope on the context.
+     * @param context Context instance with the scope to end.
+     */
+    private void endScope(Context context) {
+        Scope scope = getOrDefault(context, SCOPE_KEY, null, Scope.class);
+        if (scope != null) {
+            scope.close();
+        }
+    }
+
+    /*
+     * Converts our SpanKind to OpenTelemetry SpanKind.
+     */
+    private SpanKind convertToOtelKind(StartSpanOptions.Kind kind) {
+        return kind == StartSpanOptions.Kind.CLIENT ? SpanKind.CLIENT : SpanKind.INTERNAL;
     }
 
     /**
@@ -245,67 +389,32 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 attributesBuilder.put(key, (double[]) value);
             } else if (value instanceof boolean[]) {
                 attributesBuilder.put(key, (boolean[]) value);
+            } else {
+                logger.warning("Could not populate attribute with key '{}', type is not supported.");
             }
         });
         return attributesBuilder.build();
     }
 
     /**
-     * Starts a new child {@link Span} with parent being the remote and uses the {@link Span} is in the current Context,
-     * to return an object that represents that scope.
-     * <p>The scope is exited when the returned object is closed.</p>
-     *
-     * @param spanName The name of the returned Span.
-     * @param context The {@link Context} containing the {@link SpanContext}.
-     * @return The returned {@link Span} and the scope in a {@link Context} object.
-     */
-    private Context startScopedSpan(String spanName, Context context) {
-        Objects.requireNonNull(context, "'context' cannot be null.");
-        Span span;
-        SpanContext spanContext = getOrDefault(context, SPAN_CONTEXT_KEY, null, SpanContext.class);
-        if (spanContext != null) {
-            span = startSpanWithRemoteParent(spanName, spanContext);
-        } else {
-            SpanBuilder spanBuilder = getSpanBuilder(spanName, context);
-            span = spanBuilder.setSpanKind(SpanKind.CONSUMER).startSpan();
-        }
-        if (span.isRecording()) {
-            // If span is sampled in, add additional request attributes
-            addSpanRequestAttributes(span, context, spanName);
-        }
-        return context.addData(PARENT_SPAN_KEY, span).addData("scope", span.makeCurrent());
-    }
-
-    /**
-     * Creates a {@link SpanBuilder} to create and start a new child {@link Span} with parent being the remote and
-     * designated by the {@link SpanContext}.
-     *
-     * @param spanName The name of the returned Span.
-     * @param spanContext The remote parent context of the returned Span.
-     * @return A {@link Span} with parent being the remote {@link Span} designated by the {@link SpanContext}.
-     */
-    private Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
-        SpanBuilder spanBuilder = tracer.spanBuilder(spanName)
-            .setParent(io.opentelemetry.context.Context.root().with(Span.wrap(spanContext)));
-
-        spanBuilder.setSpanKind(SpanKind.CONSUMER);
-        return spanBuilder.startSpan();
-    }
-
-    /**
      * Extracts the {@link SpanContext trace identifiers} and the {@link SpanContext} of the current tracing span as
      * text and returns in a {@link Context} object.
      *
-     * @param span The current tracing span.
+     * @param context The context with current tracing span describing unique message context.
      * @return The {@link Context} containing the {@link SpanContext} and trace-parent of the current span.
      */
-    private static Context setContextData(Span span) {
+    private Context setDiagnosticId(Context context) {
+        Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
+        if (span == null) {
+            return context;
+        }
+
         SpanContext spanContext = span.getSpanContext();
         final String traceparent = AmqpPropagationFormatUtil.getDiagnosticId(spanContext);
         if (traceparent == null) {
-            return Context.NONE;
+            return context;
         }
-        return new Context(DIAGNOSTIC_ID_KEY, traceparent).addData(SPAN_CONTEXT_KEY, spanContext);
+        return context.addData(DIAGNOSTIC_ID_KEY, traceparent).addData(SPAN_CONTEXT_KEY, spanContext);
     }
 
     /**
@@ -313,10 +422,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      * @param span The span to which request attributes are to be added.
      * @param context The context containing the request attributes.
-     * @param spanName The name of the returned Span containing the component value.
      */
-    private void addSpanRequestAttributes(Span span, Context context, String spanName) {
+    private void addMessagingAttributes(Span span, Context context) {
         Objects.requireNonNull(span, "'span' cannot be null.");
+        Objects.requireNonNull(context, "'context' cannot be null.");
+
         String entityPath = getOrDefault(context, ENTITY_PATH_KEY, null, String.class);
         if (entityPath != null) {
             span.setAttribute(MESSAGE_BUS_DESTINATION, entityPath);
@@ -329,32 +439,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (messageEnqueuedTime != null) {
             span.setAttribute(MESSAGE_ENQUEUED_TIME, messageEnqueuedTime);
         }
-        String tracingNamespace = getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, null, String.class);
-        if (tracingNamespace != null) {
-            span.setAttribute(AZ_NAMESPACE_KEY, tracingNamespace);
-        }
-    }
-
-    /**
-     * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent
-     * being the designated {@code Span}.
-     *
-     * @param spanName The name of the returned Span.
-     * @param context The context containing the span and the span name.
-     * @return A {@code Span.SpanBuilder} to create and start a new {@code Span}.
-     */
-    private SpanBuilder getSpanBuilder(String spanName, Context context) {
-        Span parentSpan = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
-        String spanNameKey = getOrDefault(context, USER_SPAN_NAME_KEY, null, String.class);
-
-        if (spanNameKey == null) {
-            spanNameKey = spanName;
-        }
-        if (parentSpan == null) {
-            parentSpan = Span.current();
-        }
-        return tracer.spanBuilder(spanNameKey)
-            .setParent(io.opentelemetry.context.Context.current().with(parentSpan));
     }
 
     /**

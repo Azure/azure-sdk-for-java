@@ -8,42 +8,42 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** delimited text configuration. */
+/** Groups the settings used for interpreting the blob data if the blob is delimited text formatted. */
 @JacksonXmlRootElement(localName = "DelimitedTextConfiguration")
 @Fluent
 public final class DelimitedTextConfiguration {
     /*
-     * column separator
+     * The string used to separate columns.
      */
-    @JsonProperty(value = "ColumnSeparator", required = true)
+    @JsonProperty(value = "ColumnSeparator")
     private String columnSeparator;
 
     /*
-     * field quote
+     * The string used to quote a specific field.
      */
-    @JsonProperty(value = "FieldQuote", required = true)
+    @JsonProperty(value = "FieldQuote")
     private String fieldQuote;
 
     /*
-     * record separator
+     * The string used to separate records.
      */
-    @JsonProperty(value = "RecordSeparator", required = true)
+    @JsonProperty(value = "RecordSeparator")
     private String recordSeparator;
 
     /*
-     * escape char
+     * The string used as an escape character.
      */
-    @JsonProperty(value = "EscapeChar", required = true)
+    @JsonProperty(value = "EscapeChar")
     private String escapeChar;
 
     /*
-     * has headers
+     * Represents whether the data has headers.
      */
-    @JsonProperty(value = "HasHeaders", required = true)
-    private boolean headersPresent;
+    @JsonProperty(value = "HasHeaders")
+    private Boolean headersPresent;
 
     /**
-     * Get the columnSeparator property: column separator.
+     * Get the columnSeparator property: The string used to separate columns.
      *
      * @return the columnSeparator value.
      */
@@ -52,7 +52,7 @@ public final class DelimitedTextConfiguration {
     }
 
     /**
-     * Set the columnSeparator property: column separator.
+     * Set the columnSeparator property: The string used to separate columns.
      *
      * @param columnSeparator the columnSeparator value to set.
      * @return the DelimitedTextConfiguration object itself.
@@ -63,7 +63,7 @@ public final class DelimitedTextConfiguration {
     }
 
     /**
-     * Get the fieldQuote property: field quote.
+     * Get the fieldQuote property: The string used to quote a specific field.
      *
      * @return the fieldQuote value.
      */
@@ -72,7 +72,7 @@ public final class DelimitedTextConfiguration {
     }
 
     /**
-     * Set the fieldQuote property: field quote.
+     * Set the fieldQuote property: The string used to quote a specific field.
      *
      * @param fieldQuote the fieldQuote value to set.
      * @return the DelimitedTextConfiguration object itself.
@@ -83,7 +83,7 @@ public final class DelimitedTextConfiguration {
     }
 
     /**
-     * Get the recordSeparator property: record separator.
+     * Get the recordSeparator property: The string used to separate records.
      *
      * @return the recordSeparator value.
      */
@@ -92,7 +92,7 @@ public final class DelimitedTextConfiguration {
     }
 
     /**
-     * Set the recordSeparator property: record separator.
+     * Set the recordSeparator property: The string used to separate records.
      *
      * @param recordSeparator the recordSeparator value to set.
      * @return the DelimitedTextConfiguration object itself.
@@ -103,7 +103,7 @@ public final class DelimitedTextConfiguration {
     }
 
     /**
-     * Get the escapeChar property: escape char.
+     * Get the escapeChar property: The string used as an escape character.
      *
      * @return the escapeChar value.
      */
@@ -112,7 +112,7 @@ public final class DelimitedTextConfiguration {
     }
 
     /**
-     * Set the escapeChar property: escape char.
+     * Set the escapeChar property: The string used as an escape character.
      *
      * @param escapeChar the escapeChar value to set.
      * @return the DelimitedTextConfiguration object itself.
@@ -123,21 +123,21 @@ public final class DelimitedTextConfiguration {
     }
 
     /**
-     * Get the headersPresent property: has headers.
+     * Get the headersPresent property: Represents whether the data has headers.
      *
      * @return the headersPresent value.
      */
-    public boolean isHeadersPresent() {
+    public Boolean isHeadersPresent() {
         return this.headersPresent;
     }
 
     /**
-     * Set the headersPresent property: has headers.
+     * Set the headersPresent property: Represents whether the data has headers.
      *
      * @param headersPresent the headersPresent value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
-    public DelimitedTextConfiguration setHeadersPresent(boolean headersPresent) {
+    public DelimitedTextConfiguration setHeadersPresent(Boolean headersPresent) {
         this.headersPresent = headersPresent;
         return this;
     }

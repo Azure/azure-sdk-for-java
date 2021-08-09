@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -37,7 +38,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
-public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable, AutoCloseable {
+public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoCloseable {
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;

@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/net5885523f5b1?api-version=2020-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/net5885523f5b1?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f945898b-34f2-4168-b505-05994e7b97c8",
@@ -49,7 +49,7 @@
       "Retry-After" : "0",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210525T025458Z:ba4cb250-3f0f-4e7c-9be0-793f463d5b1b",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/097ef2e1-e4ab-4375-b2b7-70a9517db7e2?api-version=2020-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/097ef2e1-e4ab-4375-b2b7-70a9517db7e2?api-version=2021-02-01",
       "x-ms-request-id" : "097ef2e1-e4ab-4375-b2b7-70a9517db7e2",
       "Body" : "{\r\n  \"name\": \"net5885523f5b1\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/net5885523f5b1\",\r\n  \"etag\": \"W/\\\"f09f96ed-358a-4903-ac47-fbbfca539714\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"da4be89a-97f2-4a9b-8f73-3dcde801b04a\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/24\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet0\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/net5885523f5b1/subnets/subnet0\",\r\n        \"etag\": \"W/\\\"f09f96ed-358a-4903-ac47-fbbfca539714\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.0.0.0/24\",\r\n          \"delegations\": [\r\n            {\r\n              \"name\": \"Microsoft.ContainerInstance/containerGroups\",\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/net5885523f5b1/subnets/subnet0/delegations/Microsoft.ContainerInstance/containerGroups\",\r\n              \"etag\": \"W/\\\"f09f96ed-358a-4903-ac47-fbbfca539714\\\"\",\r\n              \"properties\": {\r\n                \"provisioningState\": \"Succeeded\",\r\n                \"serviceName\": \"Microsoft.ContainerInstance/containerGroups\",\r\n                \"actions\": [\r\n                  \"Microsoft.Network/virtualNetworks/subnets/action\"\r\n                ]\r\n              },\r\n              \"type\": \"Microsoft.Network/virtualNetworks/subnets/delegations\"\r\n            }\r\n          ],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false\r\n  }\r\n}",
       "x-ms-client-request-id" : "f945898b-34f2-4168-b505-05994e7b97c8",
@@ -58,7 +58,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/097ef2e1-e4ab-4375-b2b7-70a9517db7e2?api-version=2020-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/097ef2e1-e4ab-4375-b2b7-70a9517db7e2?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "eb091539-3804-43e3-b29b-6f45ccf70d7f"
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/net5885523f5b1?api-version=2020-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/net5885523f5b1?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b9bdc429-97f7-4000-b0e8-f882cd3ffe5a"
@@ -115,7 +115,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-profile-71953f?api-version=2020-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-profile-71953f?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0072ab7d-614c-461c-a9f6-f235532502b9",
@@ -137,7 +137,7 @@
       "Cache-Control" : "no-cache",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210525T025506Z:e0acc199-87d3-499b-b16d-73717858b7fa",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/1a3d4804-b5ce-4142-8012-cf451566abeb?api-version=2020-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/1a3d4804-b5ce-4142-8012-cf451566abeb?api-version=2021-02-01",
       "x-ms-request-id" : "1a3d4804-b5ce-4142-8012-cf451566abeb",
       "Body" : "{\r\n  \"name\": \"aci-profile-71953f\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-profile-71953f\",\r\n  \"etag\": \"W/\\\"160acd54-7618-4166-ac12-4b8409ee91ab\\\"\",\r\n  \"type\": \"Microsoft.Network/networkProfiles\",\r\n  \"location\": \"eastus\",\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"9e380bc1-12fe-4025-9606-b75f24f5edf8\",\r\n    \"containerNetworkInterfaceConfigurations\": [\r\n      {\r\n        \"name\": \"eth0\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-profile-71953f/containerNetworkInterfaceConfigurations/eth0\",\r\n        \"etag\": \"W/\\\"160acd54-7618-4166-ac12-4b8409ee91ab\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"ipConfigurations\": [\r\n            {\r\n              \"name\": \"ipconfig0\",\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-profile-71953f/containerNetworkInterfaceConfigurations/eth0/ipConfigurations/ipconfig0\",\r\n              \"etag\": \"W/\\\"160acd54-7618-4166-ac12-4b8409ee91ab\\\"\",\r\n              \"type\": \"Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations/ipConfigurations\",\r\n              \"properties\": {\r\n                \"provisioningState\": \"Succeeded\",\r\n                \"subnet\": {\r\n                  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/net5885523f5b1/subnets/subnet0\"\r\n                }\r\n              }\r\n            }\r\n          ]\r\n        },\r\n        \"type\": \"Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations\"\r\n      }\r\n    ],\r\n    \"containerNetworkInterfaces\": []\r\n  }\r\n}",
       "x-ms-client-request-id" : "0072ab7d-614c-461c-a9f6-f235532502b9",
@@ -360,7 +360,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/vnet1?api-version=2020-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/vnet1?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "db91fed0-0a05-4b3d-83e7-88f6fd6ed548",
@@ -382,7 +382,7 @@
       "Retry-After" : "0",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210525T025754Z:bdef0f9a-69c5-4e2c-853f-228196b327ed",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/c480e333-ce2e-417a-b77b-6fa7d5342c5c?api-version=2020-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/c480e333-ce2e-417a-b77b-6fa7d5342c5c?api-version=2021-02-01",
       "x-ms-request-id" : "c480e333-ce2e-417a-b77b-6fa7d5342c5c",
       "Body" : "{\r\n  \"name\": \"vnet1\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/vnet1\",\r\n  \"etag\": \"W/\\\"2b72a442-74c3-41f5-a21b-bc1503b2284a\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"2d27e921-1e87-4bd9-acea-a897f77b7347\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.1.0.0/24\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"default\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/default\",\r\n        \"etag\": \"W/\\\"2b72a442-74c3-41f5-a21b-bc1503b2284a\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.1.0.0/24\",\r\n          \"delegations\": [\r\n            {\r\n              \"name\": \"Microsoft.ContainerInstance/containerGroups\",\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/default/delegations/Microsoft.ContainerInstance/containerGroups\",\r\n              \"etag\": \"W/\\\"2b72a442-74c3-41f5-a21b-bc1503b2284a\\\"\",\r\n              \"properties\": {\r\n                \"provisioningState\": \"Succeeded\",\r\n                \"serviceName\": \"Microsoft.ContainerInstance/containerGroups\",\r\n                \"actions\": [\r\n                  \"Microsoft.Network/virtualNetworks/subnets/action\"\r\n                ]\r\n              },\r\n              \"type\": \"Microsoft.Network/virtualNetworks/subnets/delegations\"\r\n            }\r\n          ],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false\r\n  }\r\n}",
       "x-ms-client-request-id" : "db91fed0-0a05-4b3d-83e7-88f6fd6ed548",
@@ -391,7 +391,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/c480e333-ce2e-417a-b77b-6fa7d5342c5c?api-version=2020-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/c480e333-ce2e-417a-b77b-6fa7d5342c5c?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ffa97aa3-0cbf-4bb6-88e1-72df361ad1fa"
@@ -419,7 +419,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/vnet1?api-version=2020-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/vnet1?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e8083a27-3617-4352-9b29-101bad667ad2"
@@ -448,7 +448,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-vnet-profile?api-version=2020-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-vnet-profile?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c924bd8f-adab-440f-ab6f-dccde40cfc81",
@@ -470,7 +470,7 @@
       "Cache-Control" : "no-cache",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210525T025802Z:b447bf5e-360b-4fce-9bf9-85179da7c9ed",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/b8ac0350-9610-4c23-9d65-499aae5c3ee7?api-version=2020-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/b8ac0350-9610-4c23-9d65-499aae5c3ee7?api-version=2021-02-01",
       "x-ms-request-id" : "b8ac0350-9610-4c23-9d65-499aae5c3ee7",
       "Body" : "{\r\n  \"name\": \"aci-vnet-profile\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-vnet-profile\",\r\n  \"etag\": \"W/\\\"1c0c6af0-905a-4d95-8864-021c24b2e762\\\"\",\r\n  \"type\": \"Microsoft.Network/networkProfiles\",\r\n  \"location\": \"eastus\",\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"21ab6e33-b9af-4f9b-9ce7-e6b14c082197\",\r\n    \"containerNetworkInterfaceConfigurations\": [\r\n      {\r\n        \"name\": \"eth0\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-vnet-profile/containerNetworkInterfaceConfigurations/eth0\",\r\n        \"etag\": \"W/\\\"1c0c6af0-905a-4d95-8864-021c24b2e762\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"ipConfigurations\": [\r\n            {\r\n              \"name\": \"ipconfig0\",\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/networkProfiles/aci-vnet-profile/containerNetworkInterfaceConfigurations/eth0/ipConfigurations/ipconfig0\",\r\n              \"etag\": \"W/\\\"1c0c6af0-905a-4d95-8864-021c24b2e762\\\"\",\r\n              \"type\": \"Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations/ipConfigurations\",\r\n              \"properties\": {\r\n                \"provisioningState\": \"Succeeded\",\r\n                \"subnet\": {\r\n                  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69096212a00/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/default\"\r\n                }\r\n              }\r\n            }\r\n          ]\r\n        },\r\n        \"type\": \"Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations\"\r\n      }\r\n    ],\r\n    \"containerNetworkInterfaces\": []\r\n  }\r\n}",
       "x-ms-client-request-id" : "c924bd8f-adab-440f-ab6f-dccde40cfc81",

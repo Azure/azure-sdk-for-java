@@ -539,9 +539,9 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTransportClientRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
-                                                                      RequestTimeline requestTimeline) {
-        cosmosDiagnostics.clientSideRequestStatistics().setTransportClientRequestTimeline(requestTimeline);
+    public static void setGatewayRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
+                                                              RequestTimeline requestTimeline) {
+        cosmosDiagnostics.clientSideRequestStatistics().setGatewayRequestTimeline(requestTimeline);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -583,8 +583,13 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String recordAddressResolutionStart(CosmosDiagnostics cosmosDiagnostics,
-                                                      URI targetEndpoint) {
-        return cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(targetEndpoint);
+                                                      URI targetEndpoint,
+                                                      boolean forceRefresh,
+                                                      boolean forceCollectionRoutingMapRefresh) {
+        return cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(
+            targetEndpoint,
+            forceRefresh,
+            forceCollectionRoutingMapRefresh);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

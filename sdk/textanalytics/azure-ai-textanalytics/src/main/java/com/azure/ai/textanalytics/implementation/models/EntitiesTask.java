@@ -16,6 +16,12 @@ public final class EntitiesTask {
     @JsonProperty(value = "parameters")
     private EntitiesTaskParameters parameters;
 
+    /*
+     * The taskName property.
+     */
+    @JsonProperty(value = "taskName")
+    private String taskName;
+
     /**
      * Get the parameters property: The parameters property.
      *
@@ -33,6 +39,26 @@ public final class EntitiesTask {
      */
     public EntitiesTask setParameters(EntitiesTaskParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /**
+     * Get the taskName property: The taskName property.
+     *
+     * @return the taskName value.
+     */
+    public String getTaskName() {
+        return this.taskName;
+    }
+
+    /**
+     * Set the taskName property: The taskName property.
+     *
+     * @param taskName the taskName value to set.
+     * @return the EntitiesTask object itself.
+     */
+    public EntitiesTask setTaskName(String taskName) {
+        this.taskName = taskName;
         return this;
     }
 }

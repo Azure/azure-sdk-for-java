@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.5//keyPhrases?showStats=false&loggingOptOut=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/keyPhrases?showStats=false&loggingOptOut=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5b418b73-b427-4595-b65a-c1ddd2efc733",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8c8cd459-db60-4c8e-8160-2fdc4c17b212",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "10",
+      "x-envoy-upstream-service-time" : "22",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "0ba7e6d3-6411-4c46-aba4-877d59d70fb5",
+      "apim-request-id" : "c3b935af-765f-4cdc-ad3a-9636467cfd36",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Je m'appelle Mondly\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}",
-      "Date" : "Mon, 10 May 2021 15:48:50 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"monde\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}",
+      "Date" : "Fri, 30 Jul 2021 18:06:32 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

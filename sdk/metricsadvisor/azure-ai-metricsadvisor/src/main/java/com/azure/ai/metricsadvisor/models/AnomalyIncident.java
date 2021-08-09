@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.implementation.util.IncidentHelper;
 
 import java.time.OffsetDateTime;
@@ -20,8 +21,8 @@ public final class AnomalyIncident {
     private AnomalyIncidentStatus status;
     private OffsetDateTime startTime;
     private OffsetDateTime lastTime;
-    private Double value;
-    private Double expectedValue;
+    private Double valueOfRootNode;
+    private Double expectedValueOfRootNode;
 
     static {
         IncidentHelper.setAccessor(new IncidentHelper.IncidentAccessor() {
@@ -52,12 +53,12 @@ public final class AnomalyIncident {
 
             @Override
             public void setValue(AnomalyIncident incident, Double value) {
-                incident.setValue(value);
+                incident.setValueOfRootNode(value);
             }
 
             @Override
             public void setExpectedValue(AnomalyIncident incident, Double value) {
-                incident.setExpectedValue(value);
+                incident.setExpectedValueOfRootNode(value);
             }
 
             @Override
@@ -135,8 +136,8 @@ public final class AnomalyIncident {
      *
      * @return The value.
      */
-    public Double getValue() {
-        return this.value;
+    public Double getValueOfRootNode() {
+        return this.valueOfRootNode;
     }
 
     /**
@@ -144,8 +145,8 @@ public final class AnomalyIncident {
      *
      * @return The expected value.
      */
-    public Double getExpectedValue() {
-        return this.expectedValue;
+    public Double getExpectedValueOfRootNode() {
+        return this.expectedValueOfRootNode;
     }
 
     /**
@@ -204,12 +205,12 @@ public final class AnomalyIncident {
         this.rootDimensionKey = rootDimensionKey;
     }
 
-    void setValue(Double value) {
-        this.value = value;
+    void setValueOfRootNode(Double valueOfRootNode) {
+        this.valueOfRootNode = valueOfRootNode;
     }
 
-    void setExpectedValue(Double value) {
-        this.expectedValue = value;
+    void setExpectedValueOfRootNode(Double value) {
+        this.expectedValueOfRootNode = value;
     }
 
     void setSeverity(AnomalySeverity severity) {

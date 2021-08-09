@@ -3,16 +3,16 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.AzureAppInsightsDataFeedSource;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.DataFeedOptions;
-import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
+import com.azure.ai.metricsadvisor.administration.models.AzureAppInsightsDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import reactor.core.publisher.Mono;
 
@@ -40,12 +40,12 @@ public class DatafeedAsyncSample {
             .setSchema(
                 new DataFeedSchema(
                     Arrays.asList(
-                        new DataFeedMetric().setName("cost"),
-                        new DataFeedMetric().setName("revenue")
+                        new DataFeedMetric("cost"),
+                        new DataFeedMetric("revenue")
                 )).setDimensions(
                     Arrays.asList(
-                        new DataFeedDimension().setName("city"),
-                        new DataFeedDimension().setName("category")
+                        new DataFeedDimension("city"),
+                        new DataFeedDimension("category")
                     ))
             ).setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")));
 
@@ -97,14 +97,14 @@ public class DatafeedAsyncSample {
         Mono<DataFeed> updateDataFeedMono = fetchDataFeedMono
             .flatMap(dataFeed -> {
                 return advisorAdministrationAsyncClient.updateDataFeed(dataFeed
-                    .setOptions(new DataFeedOptions().setAdminEmails(Collections.singletonList("admin1@admin.com"))))
+                    .setOptions(new DataFeedOptions().setAdmins(Collections.singletonList("admin1@admin.com"))))
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating data feed: %s%n", dataFeed.getId()))
-                    .doOnSuccess(config -> {
-
+                    .doOnSuccess(updatedDataFeed -> {
 
                         System.out.printf("Updated data feed%n");
-                        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdminEmails());
+                        System.out.printf("Updated data feed admin list: %s%n",
+                            String.join(",", updatedDataFeed.getOptions().getAdmins()));
                     });
             });
 

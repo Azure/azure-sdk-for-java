@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response to a batch. */
+/** Response to a batch query. */
 @Fluent
 public final class BatchResponse {
     /*
@@ -16,14 +16,14 @@ public final class BatchResponse {
      * batch.
      */
     @JsonProperty(value = "responses")
-    private List<LogQueryResponse> responses;
+    private List<BatchQueryResponse> responses;
 
     /**
      * Get the responses property: An array of responses corresponding to each individual request in a batch.
      *
      * @return the responses value.
      */
-    public List<LogQueryResponse> getResponses() {
+    public List<BatchQueryResponse> getResponses() {
         return this.responses;
     }
 
@@ -33,7 +33,7 @@ public final class BatchResponse {
      * @param responses the responses value to set.
      * @return the BatchResponse object itself.
      */
-    public BatchResponse setResponses(List<LogQueryResponse> responses) {
+    public BatchResponse setResponses(List<BatchQueryResponse> responses) {
         this.responses = responses;
         return this;
     }

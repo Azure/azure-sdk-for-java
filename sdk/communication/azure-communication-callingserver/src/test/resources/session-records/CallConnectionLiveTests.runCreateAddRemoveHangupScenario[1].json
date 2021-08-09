@@ -1,0 +1,82 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections?api-version=2021-06-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b05cd0a0-2274-4371-a9ca-2ca9913b6bf4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "110",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0/2XJYAAAAABCC2w7V7t3SKJxutnMJWOQREZXMzBFREdFMDUxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "201",
+      "X-Microsoft-Skype-Chain-ID" : "79908075-6156-498e-86db-5b807eaa7d08",
+      "Body" : "{\"callLegId\":\"4a1f1300-3096-4446-bfb0-8b8f9b53aac3\",\"callConnectionId\":\"4a1f1300-3096-4446-bfb0-8b8f9b53aac3\"}",
+      "x-ms-client-request-id" : "b05cd0a0-2274-4371-a9ca-2ca9913b6bf4",
+      "Date" : "Wed, 16 Jun 2021 02:46:22 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/4a1f1300-3096-4446-bfb0-8b8f9b53aac3/participants?api-version=2021-06-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "51a87d07-ccec-4b6e-b63f-9f72e2b1f219",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "56",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0D2bJYAAAAAD9sY3hou1RQKewZVWSNG4tREZXMzBFREdFMDUxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "202",
+      "X-Microsoft-Skype-Chain-ID" : "4997e592-44c5-4a43-a0ed-0612fb0e6588",
+      "Body" : "{\"participantId\":\"fc2cf742-1aeb-4ff9-a8e3-d0e71ac02253\"}",
+      "x-ms-client-request-id" : "51a87d07-ccec-4b6e-b63f-9f72e2b1f219",
+      "Date" : "Wed, 16 Jun 2021 02:46:39 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/4a1f1300-3096-4446-bfb0-8b8f9b53aac3/participants/fc2cf742-1aeb-4ff9-a8e3-d0e71ac02253?api-version=2021-06-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "270a1217-a76f-44bd-9675-d115de2ff993"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0HmbJYAAAAACly2Bv+347RJ5TU9PK2kEuREZXMzBFREdFMDUxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "202",
+      "X-Microsoft-Skype-Chain-ID" : "b86abddf-e778-4fa2-aa63-f5ddfc75dc50",
+      "x-ms-client-request-id" : "270a1217-a76f-44bd-9675-d115de2ff993",
+      "Date" : "Wed, 16 Jun 2021 02:46:54 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/4a1f1300-3096-4446-bfb0-8b8f9b53aac3/:hangup?api-version=2021-06-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b9e2542b-f87a-48a7-bc81-a98e379876e0"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0IGbJYAAAAAAdwxFcOdsURo2rTBrICIQ8REZXMzBFREdFMDUxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "202",
+      "X-Microsoft-Skype-Chain-ID" : "5564465a-6239-4c2d-9ba2-483ae937cca8",
+      "x-ms-client-request-id" : "b9e2542b-f87a-48a7-bc81-a98e379876e0",
+      "Date" : "Wed, 16 Jun 2021 02:46:56 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

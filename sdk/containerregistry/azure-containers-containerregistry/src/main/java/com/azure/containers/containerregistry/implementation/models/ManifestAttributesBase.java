@@ -5,7 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.ArtifactArchitecture;
-import com.azure.containers.containerregistry.models.ArtifactManifestReference;
+import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
@@ -54,11 +54,12 @@ public class ManifestAttributesBase {
     private ArtifactOperatingSystem operatingSystem;
 
     /*
-     * List of manifests referenced by this manifest list.  List will be empty
-     * if this manifest is not a manifest list.
+     * List of artifacts that are referenced by this manifest list, with
+     * information about the platform each supports.  This list will be empty
+     * if this is a leaf manifest and not a manifest list.
      */
     @JsonProperty(value = "references", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ArtifactManifestReference> manifestReferences;
+    private List<ArtifactManifestPlatform> relatedArtifacts;
 
     /*
      * List of tags
@@ -145,13 +146,13 @@ public class ManifestAttributesBase {
     }
 
     /**
-     * Get the manifestReferences property: List of manifests referenced by this manifest list. List will be empty if
-     * this manifest is not a manifest list.
+     * Get the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
+     * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
      *
-     * @return the manifestReferences value.
+     * @return the relatedArtifacts value.
      */
-    public List<ArtifactManifestReference> getManifestReferences() {
-        return this.manifestReferences;
+    public List<ArtifactManifestPlatform> getRelatedArtifacts() {
+        return this.relatedArtifacts;
     }
 
     /**

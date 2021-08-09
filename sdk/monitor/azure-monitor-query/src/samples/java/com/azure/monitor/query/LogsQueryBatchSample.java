@@ -3,13 +3,16 @@
 
 package com.azure.monitor.query;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.monitor.query.models.LogsQueryBatch;
-import com.azure.monitor.query.models.LogsQueryBatchResult;
-import com.azure.monitor.query.models.LogsQueryBatchResultCollection;
+import com.azure.monitor.query.models.LogsBatchQuery;
+import com.azure.monitor.query.models.LogsBatchQueryResult;
+import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
+import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableRow;
@@ -31,27 +34,30 @@ public class LogsQueryBatchSample {
                 .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
                 .build();
 
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
                 .credential(tokenCredential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
 
-        LogsQueryBatch logsQueryBatch = new LogsQueryBatch()
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
                 .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null)
-                .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null);
+                .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null)
+                .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 4", null,
+                        new LogsQueryOptions().setIncludeStatistics(true));
 
-        LogsQueryBatchResultCollection batchResultCollection = logsClient
-                .queryLogsBatchWithResponse(logsQueryBatch, Context.NONE).getValue();
+        LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
+                .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
-        List<LogsQueryBatchResult> responses = batchResultCollection.getBatchResults();
+        List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
-        for (LogsQueryBatchResult response : responses) {
+        for (LogsBatchQueryResult response : responses) {
             LogsQueryResult queryResult = response.getQueryResult();
 
             // Sample to iterate by row
             for (LogsTable table : queryResult.getLogsTables()) {
-                for (LogsTableRow row : table.getTableRows()) {
+                for (LogsTableRow row : table.getRows()) {
                     System.out.println("Row index " + row.getRowIndex());
-                    row.getTableRow()
+                    row.getRow()
                             .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
                 }
             }

@@ -27,7 +27,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-    val bulkWriter = new BulkWriter(container, writeConfig)
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -54,7 +54,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-    val bulkWriter = new BulkWriter(container, writeConfig)
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -81,7 +81,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       bulkEnabled = true,
       bulkMaxPendingOperations = Some(900))
 
-    val bulkDeleter = new BulkWriter(container, deleteConfig)
+    val bulkDeleter = new BulkWriter(container, deleteConfig, DiagnosticsConfig(Option.empty))
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -99,7 +99,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-    val bulkWriter = new BulkWriter(container, writeConfig)
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -120,7 +120,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
     }
 
-    val bulkUpdater = new BulkWriter(container, writeConfig)
+    val bulkUpdater = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
 
     for(itemFromDB <- allItems) {
       items.contains(itemFromDB.get("id").textValue()) shouldBe true
@@ -153,7 +153,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       bulkEnabled = true,
       bulkMaxPendingOperations = Some(900))
 
-    val bulkDeleter = new BulkWriter(container, deleteConfig)
+    val bulkDeleter = new BulkWriter(container, deleteConfig, DiagnosticsConfig(Option.empty))
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -169,7 +169,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
   "Bulk Writer" can "create item with duplicates" in {
     val container = getContainer
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, Some(900))
-    val bulkWriter = new BulkWriter(container, writeConfig)
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
     for(i <- 0 until 5000) {

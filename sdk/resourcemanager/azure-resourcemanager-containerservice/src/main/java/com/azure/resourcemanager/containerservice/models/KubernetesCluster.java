@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,41 @@ public interface KubernetesCluster
     /** @return true if Kubernetes Role-Based Access Control is enabled */
     boolean enableRBAC();
 
+    /** @return the power state */
+    PowerState powerState();
+
+    /**
+     * @return the System Assigned Managed Service Identity specific Active Directory service principal ID
+     *     assigned to the Kubernetes cluster.
+     */
+    String systemAssignedManagedServiceIdentityPrincipalId();
+
+    // Actions
+
+    /**
+     * Starts a stopped Kubernetes cluster.
+     */
+    void start();
+
+    /**
+     * Starts a stopped Kubernetes cluster.
+     *
+     * @return the completion.
+     */
+    Mono<Void> startAsync();
+
+    /**
+     * Stops a running Kubernetes cluster.
+     */
+    void stop();
+
+    /**
+     * Stops a running Kubernetes cluster.
+     *
+     * @return the completion.
+     */
+    Mono<Void> stopAsync();
+
     // Fluent interfaces
 
     /** Interface for all the definitions related to a Kubernetes cluster. */
@@ -99,15 +135,21 @@ public interface KubernetesCluster
 
     /** Grouping of Kubernetes cluster definition stages. */
     interface DefinitionStages {
-        /** The first stage of a container service definition. */
+        /**
+         * The first stage of a container service definition.
+         */
         interface Blank extends DefinitionWithRegion<WithGroup> {
         }
 
-        /** The stage of the Kubernetes cluster definition allowing to specify the resource group. */
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify the resource group.
+         */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithVersion> {
         }
 
-        /** The stage of the Kubernetes cluster definition allowing to specify orchestration type. */
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify orchestration type.
+         */
         interface WithVersion {
             /**
              * Specifies the version for the Kubernetes cluster.
@@ -126,7 +168,9 @@ public interface KubernetesCluster
             WithLinuxRootUsername withDefaultVersion();
         }
 
-        /** The stage of the Kubernetes cluster definition allowing to specific the Linux root username. */
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specific the Linux root username.
+         */
         interface WithLinuxRootUsername {
             /**
              * Begins the definition to specify Linux root username.
@@ -137,7 +181,9 @@ public interface KubernetesCluster
             WithLinuxSshKey withRootUsername(String rootUserName);
         }
 
-        /** The stage of the Kubernetes cluster definition allowing to specific the Linux SSH key. */
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specific the Linux SSH key.
+         */
         interface WithLinuxSshKey {
             /**
              * Begins the definition to specify Linux ssh key.
@@ -148,8 +194,10 @@ public interface KubernetesCluster
             WithServicePrincipalClientId withSshKey(String sshKeyData);
         }
 
-        /** The stage of the Kubernetes cluster definition allowing to specify the service principal client ID. */
-        interface WithServicePrincipalClientId {
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify the service principal client ID.
+         */
+        interface WithServicePrincipalClientId extends WithManagedServiceIdentity {
             /**
              * Properties for Kubernetes cluster service principal.
              *
@@ -159,7 +207,9 @@ public interface KubernetesCluster
             WithServicePrincipalProfile withServicePrincipalClientId(String clientId);
         }
 
-        /** The stage of the Kubernetes cluster definition allowing to specify the service principal secret. */
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify the service principal secret.
+         */
         interface WithServicePrincipalProfile {
             /**
              * Properties for service principal.
@@ -170,7 +220,9 @@ public interface KubernetesCluster
             WithAgentPool withServicePrincipalSecret(String secret);
         }
 
-        /** The stage of the Kubernetes cluster definition allowing to specify an agent pool profile. */
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify an agent pool profile.
+         */
         interface WithAgentPool {
             /**
              * Begins the definition of an agent pool profile to be attached to the Kubernetes cluster.
@@ -181,7 +233,9 @@ public interface KubernetesCluster
             KubernetesClusterAgentPool.DefinitionStages.Blank<? extends WithCreate> defineAgentPool(String name);
         }
 
-        /** The stage of the Kubernetes cluster definition allowing to specify a network profile. */
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify a network profile.
+         */
         interface WithNetworkProfile {
             /**
              * Begins the definition of a network profile to be attached to the Kubernetes cluster.
@@ -295,6 +349,21 @@ public interface KubernetesCluster
             }
 
             /**
+             * The stage of a network profile definition allowing to specify load balancer profile.
+             *
+             * @param <ParentT> the stage of the network profile definition to return to after attaching this definition
+             */
+            interface WithLoadBalancerProfile<ParentT> {
+                /**
+                 * Specifies the load balancer SKU.
+                 *
+                 * @param loadBalancerSku the load balancer SKU.
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withLoadBalancerSku(LoadBalancerSku loadBalancerSku);
+            }
+
+            /**
              * The final stage of a network profile definition. At this stage, any remaining optional settings can be
              * specified, or the container service agent pool can be attached to the parent container service
              * definition.
@@ -308,6 +377,7 @@ public interface KubernetesCluster
                     NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
                     NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
                     NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
+                    NetworkProfileDefinitionStages.WithLoadBalancerProfile<ParentT>,
                     Attachable.InDefinition<ParentT> {
             }
         }
@@ -360,6 +430,37 @@ public interface KubernetesCluster
             WithCreate enablePrivateCluster();
         }
 
+        /** The stage of the Kubernetes cluster definition allowing to specify the auto-scale profile. */
+        interface WithAutoScalerProfile {
+            /**
+             * Specifies the auto-scale profile.
+             *
+             * @param autoScalerProfile the auto-scale profile
+             * @return the next stage
+             */
+            WithCreate withAutoScalerProfile(ManagedClusterPropertiesAutoScalerProfile autoScalerProfile);
+        }
+
+        /** The stage of the Kubernetes cluster definition allowing to specify the auto-scale profile. */
+        interface WithManagedServiceIdentity {
+            /**
+             * Specifies that System Assigned Managed Service Identity needs to be enabled in the cluster.
+             *
+             * @return the next stage of the web app definition
+             */
+            WithCreate withSystemAssignedManagedServiceIdentity();
+        }
+
+//        /** The stage of the Kubernetes cluster definition allowing to specify Kubernetes Role-Based Access Control. */
+//        interface WithRoleBasedAccessControl {
+//            /**
+//             * Enables Kubernetes Role-Based Access Control.
+//             *
+//             * @return the next stage
+//             */
+//            WithCreate enableRoleBasedAccessControl();
+//        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -371,16 +472,20 @@ public interface KubernetesCluster
                 WithDnsPrefix,
                 WithAddOnProfiles,
                 WithAccessProfiles,
+                WithAutoScalerProfile,
+                WithManagedServiceIdentity,
+//                WithRoleBasedAccessControl,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
-        extends KubernetesCluster.UpdateStages.WithAgentPool,
-            KubernetesCluster.UpdateStages.WithAddOnProfiles,
-            KubernetesCluster.UpdateStages.WithNetworkProfile,
-            KubernetesCluster.UpdateStages.WithRBAC,
+        extends UpdateStages.WithAgentPool,
+            UpdateStages.WithAddOnProfiles,
+            UpdateStages.WithNetworkProfile,
+            UpdateStages.WithRBAC,
+            UpdateStages.WithAutoScalerProfile,
             Resource.UpdateWithTags<KubernetesCluster.Update>,
             Appliable<KubernetesCluster> {
     }
@@ -406,6 +511,14 @@ public interface KubernetesCluster
              * @return the stage representing configuration for the agent pool profile
              */
             KubernetesClusterAgentPool.Update<? extends Update> updateAgentPool(String name);
+
+            /**
+             * Removes an agent pool profile from the Kubernetes cluster.
+             *
+             * @param name the name for the agent pool profile
+             * @return the next stage of the update
+             */
+            Update withoutAgentPool(String name);
         }
 
         /**
@@ -450,6 +563,17 @@ public interface KubernetesCluster
              * @return the next stage of the update
              */
             KubernetesCluster.Update withRBACDisabled();
+        }
+
+        /** The stage of the Kubernetes cluster update allowing to specify the auto-scale profile. */
+        interface WithAutoScalerProfile {
+            /**
+             * Specifies the auto-scale profile.
+             *
+             * @param autoScalerProfile the auto-scale profile
+             * @return the next stage
+             */
+            Update withAutoScalerProfile(ManagedClusterPropertiesAutoScalerProfile autoScalerProfile);
         }
     }
 }

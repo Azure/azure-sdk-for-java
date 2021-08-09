@@ -1,7 +1,22 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
 
+### Dependency Updates
+
+- Updated `api-version` to `2021-04-01`.
+
+### Breaking Changes
+
+- Property `publicIpAddressSkuName` in `PublicIpAddressSku` is renamed to `name`.
+- Property `publicIpAddressSkuTier` in `PublicIpAddressSku` is renamed to `tier`.
+- Enum `SecurityTypes` changed to subclass of `ExpandableStringEnum`.
+
+## 2.6.0 (2021-06-18)
+
+- Supported boot diagnostics with managed storage account.
+
+## 2.5.0 (2021-05-28)
 - Refreshed `api-version` `2021-03-01`
 
 ## 2.4.0 (2021-04-28)

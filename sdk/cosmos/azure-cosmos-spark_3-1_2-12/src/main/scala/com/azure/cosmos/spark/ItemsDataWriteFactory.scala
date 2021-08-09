@@ -4,6 +4,8 @@ package com.azure.cosmos.spark
 
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import org.apache.spark.{SparkContext, TaskContext}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.streaming.StreamingDataWriterFactory
@@ -12,12 +14,15 @@ import org.apache.spark.sql.types.StructType
 
 // scalastyle:off multiple.string.literals
 private class ItemsDataWriteFactory(userConfig: Map[String, String],
-                            inputSchema: StructType,
-                            cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+                                    inputSchema: StructType,
+                                    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+                                    diagnosticsConfig: DiagnosticsConfig)
   extends DataWriterFactory
-    with StreamingDataWriterFactory
-    with CosmosLoggingTrait {
-  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+    with StreamingDataWriterFactory {
+
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+
+  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   /**
    * Returns a data writer to do the actual writing work. Note that, Spark will reuse the same data
@@ -62,7 +67,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     new CosmosWriter(inputSchema)
 
   private class CosmosWriter(inputSchema: StructType) extends DataWriter[InternalRow] {
-    logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+    log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
     private val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
     private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig)
 
@@ -74,9 +79,9 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 
     private val writer = if (cosmosWriteConfig.bulkEnabled) {
-      new BulkWriter(container, cosmosWriteConfig)
+      new BulkWriter(container, cosmosWriteConfig, diagnosticsConfig)
     } else {
-      new PointWriter(container, cosmosWriteConfig)
+      new PointWriter(container, cosmosWriteConfig, diagnosticsConfig, TaskContext.get())
     }
 
     override def write(internalRow: InternalRow): Unit = {
@@ -102,19 +107,19 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     }
 
     override def commit(): WriterCommitMessage = {
-      logInfo("commit invoked!!!")
+      log.logInfo("commit invoked!!!")
       writer.flushAndClose()
 
       new WriterCommitMessage {}
     }
 
     override def abort(): Unit = {
-      logInfo("abort invoked!!!")
+      log.logInfo("abort invoked!!!")
       writer.flushAndClose()
     }
 
     override def close(): Unit = {
-      logInfo("close invoked!!!")
+      log.logInfo("close invoked!!!")
       writer.flushAndClose()
     }
   }

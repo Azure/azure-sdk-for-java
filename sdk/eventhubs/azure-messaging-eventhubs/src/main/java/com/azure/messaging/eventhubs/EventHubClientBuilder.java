@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -17,8 +16,11 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
@@ -341,6 +343,77 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
+     * @param credential The shared access name and key credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty
+     *     string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     *     null.
+     */
+    public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+                                            AzureNamedKeyCredential credential) {
+
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+        } else if (CoreUtils.isNullOrEmpty(eventHubName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+        }
+
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new EventHubSharedKeyCredential(credential.getAzureNamedKey().getName(),
+            credential.getAzureNamedKey().getKey(), ClientConstants.TOKEN_VALIDITY);
+
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
+     * @param credential The shared access signature credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty
+     *     string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     *     null.
+     */
+    public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+                                            AzureSasCredential credential) {
+
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+        } else if (CoreUtils.isNullOrEmpty(eventHubName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+        }
+
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new EventHubSharedKeyCredential(credential.getSignature());
+
+        return this;
+    }
+
+    /**
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
      * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
@@ -417,6 +490,16 @@ public class EventHubClientBuilder {
 
         this.prefetchCount = prefetchCount;
         return this;
+    }
+
+    /**
+     * Package-private method that gets the prefetch count.
+     *
+     * @return Gets the prefetch count or {@code null} if it has not been set.
+     * @see #DEFAULT_PREFETCH_COUNT for default prefetch count.
+     */
+    Integer getPrefetchCount() {
+        return prefetchCount;
     }
 
     /**
@@ -636,7 +719,7 @@ public class EventHubClientBuilder {
 
                 final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                     connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                    ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+                    connectionOptions.getAuthorizationScope());
                 final ReactorProvider provider = new ReactorProvider();
                 final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
@@ -653,10 +736,12 @@ public class EventHubClientBuilder {
     }
 
     private ConnectionOptions getConnectionOptions() {
-        configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration = configuration == null
+                ? Configuration.getGlobalConfiguration().clone()
+                : configuration;
 
         if (credentials == null) {
-            final String connectionString = configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
+            final String connectionString = buildConfiguration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
 
             if (CoreUtils.isNullOrEmpty(connectionString)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
@@ -669,7 +754,7 @@ public class EventHubClientBuilder {
         }
 
         if (proxyOptions == null) {
-            proxyOptions = getDefaultProxyConfiguration(configuration);
+            proxyOptions = getDefaultProxyConfiguration(buildConfiguration);
         }
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
@@ -694,12 +779,14 @@ public class EventHubClientBuilder {
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
         if (customEndpointAddress == null) {
-            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
-                retryOptions, proxyOptions, scheduler, options, verificationMode, product, clientVersion);
+            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
+                options, verificationMode, product, clientVersion);
         } else {
-            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport,
-                retryOptions, proxyOptions, scheduler, options, verificationMode, product, clientVersion,
-                customEndpointAddress.getHost(), customEndpointAddress.getPort());
+            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
+                options, verificationMode, product, clientVersion, customEndpointAddress.getHost(),
+                customEndpointAddress.getPort());
         }
     }
 
@@ -715,10 +802,11 @@ public class EventHubClientBuilder {
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
-        return getProxyOptions(authentication, proxyAddress);
+        return getProxyOptions(authentication, proxyAddress, configuration);
     }
 
-    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress) {
+    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress,
+                                         Configuration configuration) {
         String host;
         int port;
         if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
@@ -732,8 +820,11 @@ public class EventHubClientBuilder {
         } else {
             com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
                 .fromConfiguration(configuration);
-            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
-                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
+            Proxy.Type proxyType = coreProxyOptions.getType().toProxyType();
+            InetSocketAddress coreProxyAddress = coreProxyOptions.getAddress();
+            String username = coreProxyOptions.getUsername();
+            String password = coreProxyOptions.getPassword();
+            return new ProxyOptions(authentication, new Proxy(proxyType, coreProxyAddress), username, password);
         }
     }
 }

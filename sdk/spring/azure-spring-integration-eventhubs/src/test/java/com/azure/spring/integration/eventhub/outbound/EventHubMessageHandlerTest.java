@@ -8,12 +8,11 @@ import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.test.support.reactor.MessageHandlerTest;
-import com.google.common.collect.ImmutableMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -24,6 +23,9 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -31,7 +33,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOperation> {
 
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
@@ -42,11 +43,13 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
     private Expression partitionKeyExpression;
     private String payload = "payload";
     private byte[] payloadBytes;
+    private AutoCloseable closeable;
 
-    @Before
+    @BeforeEach
     @Override
     @SuppressWarnings("unchecked")
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.sendOperation = mock(EventHubOperation.class);
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),
                                           isA(PartitionSupplier.class))).thenReturn(mono);
@@ -56,12 +59,19 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         this.handler = new DefaultMessageHandler(this.destination, this.sendOperation);
     }
 
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
+
     @Test
     public void testToPartitionSupplierReturnPartitionIdFromHeader() {
         setPropertiesForPartitionSupplier();
 
+        Map<String, Integer> headers = new HashMap<>(1);
+        headers.put(AzureHeaders.PARTITION_ID, 1);
         // set partition id with integer type
-        Message<?> message = new GenericMessage<>(payloadBytes, ImmutableMap.of(AzureHeaders.PARTITION_ID, 1));
+        Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
                                                                                DefaultMessageHandler.class,
                                                                                TO_PARTITION_SUPPLIER_METHOD_NAME,
@@ -69,8 +79,10 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         assertThat(partitionSupplier.getPartitionId()).isEqualTo("1");
         assertThat(partitionSupplier.getPartitionKey()).isNull();
 
+        Map<String, String> headersv2 = new HashMap<>(1);
+        headersv2.put(AzureHeaders.PARTITION_ID, "2");
         // set partition id with string type
-        message = new GenericMessage<>(payloadBytes, ImmutableMap.of(AzureHeaders.PARTITION_ID, "2"));
+        message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headersv2));
         this.handler.setPartitionIdExpression(partitionIdExpression);
         partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler, DefaultMessageHandler.class,
                                                              TO_PARTITION_SUPPLIER_METHOD_NAME, message);
@@ -82,9 +94,11 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
     public void testToPartitionSupplierReturnPartitionIdFromHeaderPriority() {
         setPropertiesForPartitionSupplier();
 
+        Map<String, Integer> headers = new HashMap<>(2);
+        headers.put(AzureHeaders.PARTITION_ID, 2);
+        headers.put("scst_partition", 3);
         // set header azure_partition_id and expression partitionIdExpression
-        Message<?> message = new GenericMessage<>(payloadBytes,
-                                                  ImmutableMap.of(AzureHeaders.PARTITION_ID, 2, "scst_partition", 3));
+        Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         this.handler.setPartitionIdExpression(partitionIdExpression);
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
                                                                                DefaultMessageHandler.class,
@@ -98,8 +112,11 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
     public void testToPartitionSupplierReturnPartitionIdFromPartitionIdExpression() {
         setPropertiesForPartitionSupplier();
 
+        Map<String, Integer> headers = new HashMap<>(1);
+        headers.put("scst_partition", 3);
+
         this.handler.setPartitionIdExpression(partitionIdExpression);
-        Message<?> message = new GenericMessage<>(payloadBytes, ImmutableMap.of("scst_partition", 3));
+        Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
                                                                                DefaultMessageHandler.class,
                                                                                TO_PARTITION_SUPPLIER_METHOD_NAME,
@@ -112,8 +129,11 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
     public void testToPartitionSupplierReturnPartitionKeyFromHeader() {
         setPropertiesForPartitionSupplier();
 
+        Map<String, String> headers = new HashMap<>(1);
+        headers.put(AzureHeaders.PARTITION_KEY, "key1");
+
         // set header azure_partition_key
-        Message<?> message = new GenericMessage<>(payloadBytes, ImmutableMap.of(AzureHeaders.PARTITION_KEY, "key1"));
+        Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
                                                                                DefaultMessageHandler.class,
                                                                                TO_PARTITION_SUPPLIER_METHOD_NAME,
@@ -126,8 +146,11 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
     public void testToPartitionSupplierReturnPartitionKeyFromHeaderPriority() {
         setPropertiesForPartitionSupplier();
 
+        Map<String, String> headers = new HashMap<>(1);
+        headers.put(AzureHeaders.PARTITION_KEY, "key2");
+
         // set header azure_partition_key and key expression
-        Message<?> message = new GenericMessage<>(payloadBytes, ImmutableMap.of(AzureHeaders.PARTITION_KEY, "key2"));
+        Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         this.handler.setPartitionKeyExpression(partitionKeyExpression);
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
                                                                                DefaultMessageHandler.class,

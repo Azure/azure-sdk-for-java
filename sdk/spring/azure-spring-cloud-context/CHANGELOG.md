@@ -1,7 +1,19 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.8.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
 
+
+## 2.7.0 (2021-07-20)
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
+
+## 2.6.0 (2021-06-23)
+### Breaking Changes
+- Remove `azure-spring-cloud-telemetry` module dependency.
 
 ## 2.5.0 (2021-05-24)
 ### New Features
@@ -36,4 +48,4 @@
 
 ## 1.2.8 (2020-09-14)
 ### Breaking Changes
-- Unify Azure Spring Cloud packages version
+- Unify Spring Cloud for Azure packages version

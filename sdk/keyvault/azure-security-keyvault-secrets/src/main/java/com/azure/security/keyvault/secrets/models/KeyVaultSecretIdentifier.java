@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.secrets.models;
 
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 
@@ -13,11 +15,13 @@ import java.net.URL;
  * Information about a {@link KeyVaultSecret} parsed from the secret URL. You can use this information when calling
  * methods of {@link SecretClient} or {@link SecretAsyncClient}.
  */
+@Immutable
 public final class KeyVaultSecretIdentifier {
+    private final ClientLogger logger = new ClientLogger(KeyVaultSecretIdentifier.class);
     private final String sourceId, vaultUrl, name, version;
 
     /**
-     * Create a new {@link KeyVaultSecretIdentifier} from a given secret identifier.
+     * Create a new {@link KeyVaultSecretIdentifier} from a given Key Vault identifier.
      *
      * <p>Some examples:
      *
@@ -28,34 +32,34 @@ public final class KeyVaultSecretIdentifier {
      *     <li>https://{key-vault-name}.vault.azure.net/deletedsecrets/{deleted-secret-name}</li>
      * </ul>
      *
-     * @param id The identifier to extract information from.
+     * @param sourceId The identifier to extract information from.
      *
-     * @throws IllegalArgumentException If {@code secretId} is an invalid Key Vault Secret identifier.
-     * @throws NullPointerException If {@code secretId} is {@code null}.
+     * @throws IllegalArgumentException If {@code sourceId} is an invalid Key Vault Secret identifier.
+     * @throws NullPointerException If {@code sourceId} is {@code null}.
      */
-    public KeyVaultSecretIdentifier(String id) {
-        if (id == null) {
-            throw new NullPointerException("'secretId' cannot be null.");
+    public KeyVaultSecretIdentifier(String sourceId) {
+        if (sourceId == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'sourceId' cannot be null."));
         }
 
         try {
-            final URL url = new URL(id);
-            // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
+            final URL url = new URL(sourceId);
+            // We expect an sourceId with either 3 or 4 path segments: key vault + collection + name + "pending"/version
             final String[] pathSegments = url.getPath().split("/");
 
-            if ((pathSegments.length != 3 && pathSegments.length != 4) // More or less segments in the URI than expected.
-                || !"https".equals(url.getProtocol()) // Invalid protocol.
-                || ("deletedsecrets".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
-
-                throw new IllegalArgumentException("'secretId' is not a valid Key Vault Secret identifier.");
+            // More or less segments in the URI than expected.
+            if (pathSegments.length != 3 && pathSegments.length != 4) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier."));
             }
 
-            this.sourceId = id;
+            this.sourceId = sourceId;
             this.vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("'secretId' is not a valid Key Vault Secret identifier.", e);
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e));
         }
     }
 

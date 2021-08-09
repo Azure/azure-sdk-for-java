@@ -38,6 +38,20 @@ public class ReadInStreamOptionalParameter {
     private List<String> pages;
 
     /**
+     * Optional parameter to specify the version of the OCR model used for text
+     * extraction. Accepted values are: "latest", "latest-preview",
+     * "2021-04-12". Defaults to "latest".
+     */
+    private String modelVersion;
+
+    /**
+     * Optional parameter to specify which reading order algorithm should be
+     * applied when ordering the extract text elements. Can be either 'basic'
+     * or 'natural'. Will default to 'basic' if not specified.
+     */
+    private String readingOrder;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -79,6 +93,46 @@ public class ReadInStreamOptionalParameter {
      */
     public ReadInStreamOptionalParameter withPages(List<String> pages) {
         this.pages = pages;
+        return this;
+    }
+
+    /**
+     * Get the modelVersion value.
+     *
+     * @return the modelVersion value
+     */
+    public String modelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion value.
+     *
+     * @param modelVersion the modelVersion value to set
+     * @return the ReadInStreamOptionalParameter object itself.
+     */
+    public ReadInStreamOptionalParameter withModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
+        return this;
+    }
+
+    /**
+     * Get the readingOrder value.
+     *
+     * @return the readingOrder value
+     */
+    public String readingOrder() {
+        return this.readingOrder;
+    }
+
+    /**
+     * Set the readingOrder value.
+     *
+     * @param readingOrder the readingOrder value to set
+     * @return the ReadInStreamOptionalParameter object itself.
+     */
+    public ReadInStreamOptionalParameter withReadingOrder(String readingOrder) {
+        this.readingOrder = readingOrder;
         return this;
     }
 

@@ -43,6 +43,13 @@ public class StoreWriteSettings {
     private Object maxConcurrentConnections;
 
     /*
+     * If true, disable data store metrics collection. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "disableMetricsCollection")
+    private Object disableMetricsCollection;
+
+    /*
      * The type of copy behavior for copy sink.
      */
     @JsonProperty(value = "copyBehavior")
@@ -72,6 +79,28 @@ public class StoreWriteSettings {
      */
     public StoreWriteSettings withMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
+        return this;
+    }
+
+    /**
+     * Get the disableMetricsCollection property: If true, disable data store metrics collection. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the disableMetricsCollection value.
+     */
+    public Object disableMetricsCollection() {
+        return this.disableMetricsCollection;
+    }
+
+    /**
+     * Set the disableMetricsCollection property: If true, disable data store metrics collection. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @param disableMetricsCollection the disableMetricsCollection value to set.
+     * @return the StoreWriteSettings object itself.
+     */
+    public StoreWriteSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        this.disableMetricsCollection = disableMetricsCollection;
         return this;
     }
 

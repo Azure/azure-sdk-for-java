@@ -34,8 +34,8 @@ public class AgentPoolInner extends SubResource {
 
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be
-     * in the range of 0 to 100 (inclusive) for user pools and in the range of
-     * 1 to 100 (inclusive) for system pools. The default value is 1.
+     * in the range of 0 to 1000 (inclusive) for user pools and in the range of
+     * 1 to 1000 (inclusive) for system pools. The default value is 1.
      */
     @JsonProperty(value = "properties.count")
     private Integer count;
@@ -253,6 +253,12 @@ public class AgentPoolInner extends SubResource {
     private Boolean enableEncryptionAtHost;
 
     /*
+     * Whether to enable UltraSSD
+     */
+    @JsonProperty(value = "properties.enableUltraSSD")
+    private Boolean enableUltraSsd;
+
+    /*
      * Whether to use FIPS enabled OS
      */
     @JsonProperty(value = "properties.enableFIPS")
@@ -281,8 +287,8 @@ public class AgentPoolInner extends SubResource {
 
     /**
      * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 0 to 100 (inclusive) for user pools and in the range of 1 to 100 (inclusive) for system pools. The default value
-     * is 1.
+     * 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default
+     * value is 1.
      *
      * @return the count value.
      */
@@ -292,8 +298,8 @@ public class AgentPoolInner extends SubResource {
 
     /**
      * Set the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 0 to 100 (inclusive) for user pools and in the range of 1 to 100 (inclusive) for system pools. The default value
-     * is 1.
+     * 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default
+     * value is 1.
      *
      * @param count the count value to set.
      * @return the AgentPoolInner object itself.
@@ -932,6 +938,26 @@ public class AgentPoolInner extends SubResource {
      */
     public AgentPoolInner withEnableEncryptionAtHost(Boolean enableEncryptionAtHost) {
         this.enableEncryptionAtHost = enableEncryptionAtHost;
+        return this;
+    }
+
+    /**
+     * Get the enableUltraSsd property: Whether to enable UltraSSD.
+     *
+     * @return the enableUltraSsd value.
+     */
+    public Boolean enableUltraSsd() {
+        return this.enableUltraSsd;
+    }
+
+    /**
+     * Set the enableUltraSsd property: Whether to enable UltraSSD.
+     *
+     * @param enableUltraSsd the enableUltraSsd value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withEnableUltraSsd(Boolean enableUltraSsd) {
+        this.enableUltraSsd = enableUltraSsd;
         return this;
     }
 

@@ -5,7 +5,6 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 
@@ -18,7 +17,7 @@ public abstract class IncidentForAlertTestBase extends MetricsAdvisorClientTestB
     protected static class ListIncidentsForAlertInput {
         static final ListIncidentsForAlertInput INSTANCE = new ListIncidentsForAlertInput();
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
         final String alertConfigurationId = ALERT_CONFIG_ID;
         final String alertId = "175434e3400";
     }

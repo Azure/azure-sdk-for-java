@@ -61,6 +61,7 @@ public class DataFactoryTests extends TestBase {
             .create();
 
         try {
+            // @embedmeStart
             // storage account
             StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
                 .withRegion(REGION)
@@ -146,6 +147,7 @@ public class DataFactoryTests extends TestBase {
                 pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
                 runStatus = pipelineRun.status();
             }
+            // @embedmeEnd
 
             manager.linkedServices().listByFactory(RESOURCE_GROUP, DATA_FACTORY).stream().count();
             manager.datasets().listByFactory(RESOURCE_GROUP, DATA_FACTORY).stream().count();

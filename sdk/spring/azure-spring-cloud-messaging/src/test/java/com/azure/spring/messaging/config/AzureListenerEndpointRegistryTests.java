@@ -5,44 +5,42 @@ package com.azure.spring.messaging.config;
 
 import com.azure.spring.messaging.endpoint.MethodAzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.SimpleAzureListenerEndpoint;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Warren Zhu
  */
 public class AzureListenerEndpointRegistryTests {
 
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
     private final AzureListenerEndpointRegistry registry = new AzureListenerEndpointRegistry();
     private final AzureListenerContainerTestFactory containerFactory = new AzureListenerContainerTestFactory();
 
     @Test
     public void createWithNullEndpoint() {
-        thrown.expect(IllegalArgumentException.class);
-        registry.registerListenerContainer(null, containerFactory);
+        assertThrows(IllegalArgumentException.class,
+            () -> registry.registerListenerContainer(null, containerFactory));
     }
 
     @Test
     public void createWithNullEndpointId() {
-        thrown.expect(IllegalArgumentException.class);
-        registry.registerListenerContainer(new MethodAzureListenerEndpoint(), containerFactory);
+        assertThrows(IllegalArgumentException.class,
+            () -> registry.registerListenerContainer(new MethodAzureListenerEndpoint(), containerFactory));
     }
 
     @Test
     public void createWithNullContainerFactory() {
-        thrown.expect(IllegalArgumentException.class);
-        registry.registerListenerContainer(createEndpoint("foo", "myDestination"), null);
+        assertThrows(IllegalArgumentException.class,
+            () -> registry.registerListenerContainer(createEndpoint("foo", "myDestination"), null));
     }
 
     @Test
     public void createWithDuplicateEndpointId() {
         registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory);
 
-        thrown.expect(IllegalStateException.class);
-        registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory);
+        assertThrows(IllegalStateException.class,
+            () -> registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory));
     }
 
     private SimpleAzureListenerEndpoint createEndpoint(String id, String destinationName) {

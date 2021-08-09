@@ -65,6 +65,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final boolean autoCreateContainer;
     private final boolean autoGenerateId;
     private final boolean persitable;
+    private final boolean autoScale;
+    private final boolean isIndexingPolicySpecified;
 
 
     /**
@@ -98,6 +100,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.indexingPolicy = getIndexingPolicy(domainType);
         this.autoCreateContainer = getIsAutoCreateContainer(domainType);
         this.persitable = Persistable.class.isAssignableFrom(domainType);
+        this.autoScale = getIsAutoScale(domainType);
+        this.isIndexingPolicySpecified = isIndexingPolicySpecified(domainType);
     }
 
     @Override
@@ -248,6 +252,10 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
     }
 
+    public String getPartitionKeyFieldName() {
+        return partitionKeyField == null ? null : partitionKeyField.getName();
+    }
+
     /**
      * Check if auto creating container is allowed
      *
@@ -255,6 +263,23 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      */
     public boolean isAutoCreateContainer() {
         return autoCreateContainer;
+    }
+
+    /**
+     * Check if container should use autoscale for resource units
+     *
+     * @return boolean
+     */
+    public boolean isAutoScale() {
+        return autoScale;
+    }
+
+    public boolean isIndexingPolicySpecified() {
+        return this.isIndexingPolicySpecified;
+    }
+
+    private boolean isIndexingPolicySpecified(Class<?> domainType) {
+        return domainType.getAnnotation(CosmosIndexingPolicy.class) != null;
     }
 
     private IndexingPolicy getIndexingPolicy(Class<?> domainType) {
@@ -468,6 +493,17 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         }
 
         return autoCreateContainer;
+    }
+
+    private boolean getIsAutoScale(Class<T> domainType) {
+        final Container annotation = domainType.getAnnotation(Container.class);
+
+        boolean autoScale = Constants.DEFAULT_AUTO_SCALE;
+        if (annotation != null) {
+            autoScale = annotation.autoScale();
+        }
+
+        return autoScale;
     }
 }
 

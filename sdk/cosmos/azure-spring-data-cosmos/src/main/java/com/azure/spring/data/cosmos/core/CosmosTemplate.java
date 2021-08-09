@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -474,8 +475,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     cosmosContainerResponseMono =
                         cosmosAsyncDatabase.createContainerIfNotExists(cosmosContainerProperties);
                 } else {
-                    ThroughputProperties throughputProperties =
-                        ThroughputProperties.createManualThroughput(information.getRequestUnit());
+                    ThroughputProperties throughputProperties = information.isAutoScale()
+                        ? ThroughputProperties.createAutoscaledThroughput(information.getRequestUnit())
+                        : ThroughputProperties.createManualThroughput(information.getRequestUnit());
                     cosmosContainerResponseMono =
                         cosmosAsyncDatabase.createContainerIfNotExists(cosmosContainerProperties,
                             throughputProperties);
@@ -631,7 +633,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
 
-        final List<JsonNode> results = findItems(query, containerName);
+        final List<JsonNode> results = findItemsAsFlux(query, containerName, domainType).collectList().block();
+        assert results != null;
         return results.stream()
                       .map(item -> deleteItem(item, containerName, domainType))
                       .collect(Collectors.toList());
@@ -653,39 +656,49 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         final String containerName = getContainerName(domainType);
         final SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, pageable.getSort());
         final SqlQuerySpec countQuerySpec = NativeQueryGenerator.getInstance().generateCountQuery(querySpec);
-        return paginationQuery(sortedQuerySpec, countQuerySpec, pageable, pageable.getSort(), returnType, containerName);
+        return paginationQuery(sortedQuerySpec, countQuerySpec, pageable,
+            pageable.getSort(), returnType, containerName, Optional.empty());
     }
 
     @Override
     public <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName) {
         final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final SqlQuerySpec countQuerySpec = new CountQueryGenerator().generateCosmos(query);
-        return paginationQuery(querySpec, countQuerySpec, query.getPageable(), query.getSort(), domainType, containerName);
+        Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
+        return paginationQuery(querySpec, countQuerySpec, query.getPageable(),
+            query.getSort(), domainType, containerName, partitionKeyValue);
     }
 
     @Override
     public <T> Slice<T> sliceQuery(CosmosQuery query, Class<T> domainType, String containerName) {
         final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
-        return sliceQuery(querySpec, query.getPageable(), query.getSort(), domainType, containerName);
+        Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
+        return sliceQuery(querySpec, query.getPageable(), query.getSort(), domainType, containerName, partitionKeyValue);
     }
 
     private <T> Page<T> paginationQuery(SqlQuerySpec querySpec, SqlQuerySpec countQuerySpec,
                                        Pageable pageable, Sort sort,
-                                       Class<T> returnType, String containerName) {
-        Slice<T> response = sliceQuery(querySpec, pageable, sort, returnType, containerName);
+                                       Class<T> returnType, String containerName,
+                                        Optional<Object> partitionKeyValue) {
+        Slice<T> response = sliceQuery(querySpec, pageable, sort, returnType, containerName, partitionKeyValue);
         final long total = getCountValue(countQuerySpec, containerName);
         return new CosmosPageImpl<>(response.getContent(), response.getPageable(), total);
     }
 
     private <T> Slice<T> sliceQuery(SqlQuerySpec querySpec,
                                    Pageable pageable, Sort sort,
-                                   Class<T> returnType, String containerName) {
+                                   Class<T> returnType, String containerName,
+                                    Optional<Object> partitionKeyValue) {
         Assert.isTrue(pageable.getPageSize() > 0,
             "pageable should have page size larger than 0");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
 
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
+        partitionKeyValue.ifPresent(o -> {
+            LOGGER.debug("Setting partition key {}", o);
+            cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o));
+        });
 
         CosmosAsyncContainer container =
             cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName);
@@ -835,11 +848,17 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                 .byPage();
     }
 
-    private Flux<JsonNode> findItemsAsFlux(@NonNull CosmosQuery query,
-                                           @NonNull String containerName) {
+    private <T> Flux<JsonNode> findItemsAsFlux(@NonNull CosmosQuery query,
+                                               @NonNull String containerName,
+                                               @NonNull Class<T> domainType) {
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
+        Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
+        partitionKeyValue.ifPresent(o -> {
+            LOGGER.debug("Setting partition key {}", o);
+            cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o));
+        });
 
         return cosmosAsyncClient
             .getDatabase(this.databaseName)
@@ -878,17 +897,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                       CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
     }
 
-    private List<JsonNode> findItems(@NonNull CosmosQuery query,
-                                     @NonNull String containerName) {
-        return findItemsAsFlux(query, containerName)
-            .collectList()
-            .block();
-    }
-
     private <T> Iterable<T> findItems(@NonNull CosmosQuery query,
                                       @NonNull String containerName,
                                       @NonNull Class<T> domainType) {
-        return findItemsAsFlux(query, containerName)
+        return findItemsAsFlux(query, containerName, domainType)
             .map(jsonNode -> toDomainObject(domainType, jsonNode))
             .toIterable();
     }

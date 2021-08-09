@@ -20,7 +20,7 @@ Configuration Reference:
 | `spark.cosmos.useGatewayMode`      | `false`    | Use gateway mode for the client operations  |
 | `spark.cosmos.read.forceEventualConsistency`  | `true`    | Makes the client use Eventual consistency for read operations instead of using the default account level consistency |
 | `spark.cosmos.applicationName`      | None    | Application name  |
-| `spark.cosmos.preferredRegionsList`      | None    | Preferred regions list to be used for a multi region Cosmos DB account. This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. You should use a collocated spark cluster with your Cosmos DB account and pass the spark cluster region as preferred region. See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet&preserve-view=true) |
+| `spark.cosmos.preferredRegionsList`      | None    | Preferred regions list to be used for a multi region Cosmos DB account. This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. You should use a collocated spark cluster with your Cosmos DB account and pass the spark cluster region as preferred region. See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet&preserve-view=true). Please note that you can also use `spark.cosmos.preferredRegions` as alias |
 
 ### Write Config
 
@@ -35,7 +35,7 @@ Configuration Reference:
 ### Query Config
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
-| `spark.cosmos.read.customQuery`      | None   | When provided the custom query will be processed against the Cosmos endpoint instead of dynamically generating the query via predicate push down. Usually it is recommended to rely on Spark's predicate push down because that will allow to generate the most efficient set of filters based on the query plan. But there are a couple of of predicates like aggregates (count, group by, avg, sum etc.) that cannot be pushed down yet (at least in Spark 3.1) - so the custom query is a fallback to allow them to be pushed into the query sent to Cosmos. |
+| `spark.cosmos.read.customQuery`      | None   | When provided the custom query will be processed against the Cosmos endpoint instead of dynamically generating the query via predicate push down. Usually it is recommended to rely on Spark's predicate push down because that will allow to generate the most efficient set of filters based on the query plan. But there are a couple of predicates like aggregates (count, group by, avg, sum etc.) that cannot be pushed down yet (at least in Spark 3.1) - so the custom query is a fallback to allow them to be pushed into the query sent to Cosmos. If specified, with schema inference enabled, the custom query will also be used to infer the schema. |
 
 #### Schema Inference Config
 
@@ -48,7 +48,7 @@ When doing read operations, users can specify a custom schema or allow the conne
 | `spark.cosmos.read.inferSchema.samplingSize`      | `1000`    | Sampling size to use when inferring schema and not using a query. |
 | `spark.cosmos.read.inferSchema.includeSystemProperties`     | `false`    | When schema inference is enabled, whether the resulting schema will include all [Cosmos DB system properties](https://docs.microsoft.com/azure/cosmos-db/account-databases-containers-items#properties-of-an-item). |
 | `spark.cosmos.read.inferSchema.includeTimestamp`     | `false`    | When schema inference is enabled, whether the resulting schema will include the document Timestamp (`_ts`). Not required if `spark.cosmos.read.inferSchema.includeSystemProperties` is enabled, as it will already include all system properties. |
-| `spark.cosmos.read.inferSchema.forceNullableProperties`     | `false`    | When schema inference is enabled, whether the resulting schema will make all columns nullable. By default whether inferred columns are treated as nullable or not will depend on whether any record in the sample set has null-values within a column. If set to `true` all columns will be treated as nullable even if all rows within the sample set have non-null values. |
+| `spark.cosmos.read.inferSchema.forceNullableProperties`     | `true`    | When schema inference is enabled, whether the resulting schema will make all columns nullable. By default, all columns (except cosmos system properties) will be treated as nullable even if all rows within the sample set have non-null values. When disabled, the inferred columns are treated as nullable or not depending on whether any record in the sample set has null-values within a column.  |
 
 #### Json conversion configuration
 
