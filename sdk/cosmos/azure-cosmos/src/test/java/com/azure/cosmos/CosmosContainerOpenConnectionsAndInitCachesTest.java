@@ -92,8 +92,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
     public void loadCachesAndOpenConnectionsToServiceAsyncContainer() throws IllegalAccessException,
         NoSuchFieldException, ClassNotFoundException {
 
-        System.setProperty("COSMOS.OPEN_ASYNC_RETRIES_COUNT", "1");
-
         RntbdTransportClient rntbdTransportClient =
             (RntbdTransportClient) ReflectionUtils.getTransportClient(directCosmosAsyncClient);
         RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
@@ -167,7 +165,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
     public void loadCachesAndOpenConnectionsToServiceSyncContainer() throws ClassNotFoundException,
         NoSuchFieldException, IllegalAccessException {
 
-        System.setProperty("COSMOS.OPEN_ASYNC_RETRIES_COUNT", "1");
         RntbdTransportClient rntbdTransportClient =
             (RntbdTransportClient) ReflectionUtils.getTransportClient(directCosmosClient);
         RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);

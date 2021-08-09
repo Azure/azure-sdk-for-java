@@ -445,28 +445,21 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
-        String times = System.getProperty("COSMOS.OPEN_ASYNC_RETRIES_COUNT");
-        int count = 10;
-        if (!StringUtils.isEmpty(times)) {
-            count = Integer.parseInt(times);
-        }
 
         if(isInitialized.compareAndSet(false, true)) {
-            int finalCount = count;
             return this.getFeedRanges().flatMap(feedRanges -> {
                 List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
                 SqlQuerySpec querySpec = new SqlQuerySpec();
                 querySpec.setQueryText("select * from c where c.id = @id");
                 querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
                     UUID.randomUUID().toString())));
-                for(int i = 0; i< finalCount; i++) {
-                    for (FeedRange feedRange : feedRanges) {
-                        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                        options.setFeedRange(feedRange);
-                        CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
-                            ObjectNode.class);
-                        fluxList.add(cosmosPagedFlux.byPage());
-                    } }
+                for (FeedRange feedRange : feedRanges) {
+                    CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                    options.setFeedRange(feedRange);
+                    CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
+                        ObjectNode.class);
+                    fluxList.add(cosmosPagedFlux.byPage());
+                }
                 Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
                 return listMono.flatMap(objects -> Mono.empty());
             });
