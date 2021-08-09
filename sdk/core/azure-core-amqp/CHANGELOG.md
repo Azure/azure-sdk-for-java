@@ -1,12 +1,14 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.3.1 (2021-08-09)
 
 ### Bug Fixes
 
-- Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering
-  threads when a send link was remotely closed.
-- Fixed a bug where ReactorConnection waited indefinitely for CBS node to complete closing. The underlying problem is that the RequestResponseChannel's sender and receiver links were not active, so they would wait forever for a remote close signal.
+- Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering threads when a send link
+  was remotely closed.
+- Fixed a bug where ReactorConnection waited indefinitely for CBS node to complete closing. The underlying problem is
+  that the RequestResponseChannel's sender and receiver links were not active, so they would wait forever for a remote
+  close signal.
 
 ## 2.3.0 (2021-07-01)
 
@@ -56,10 +58,6 @@
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.15.0`.
-
-## 2.1.0-beta.1 (2021-03-26)
-### New Features
-- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
 
 ## 2.0.4 (2021-04-12)
 
