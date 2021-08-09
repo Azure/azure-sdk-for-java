@@ -9,11 +9,13 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
+import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
  * General configuration options for {@link HttpClient HttpClients}.
@@ -23,16 +25,26 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
 @Fluent
 public final class HttpClientOptions extends ClientOptions {
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_CONNECT_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-        Duration.ofSeconds(10));
-    private static final Duration DEFAULT_WRITE_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-        Duration.ofSeconds(60));
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-        Duration.ofSeconds(60));
-    private static final Duration DEFAULT_READ_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-        Duration.ofSeconds(60));
+    private static final Duration DEFAULT_CONNECT_TIMEOUT;
+    private static final Duration DEFAULT_WRITE_TIMEOUT;
+    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
+    private static final Duration DEFAULT_READ_TIMEOUT;
     private static final Duration DEFAULT_CONNECTION_IDLE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration NO_TIMEOUT = Duration.ZERO;
+
+    static {
+        ClientLogger logger = new ClientLogger(HttpClientOptions.class);
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        DEFAULT_CONNECT_TIMEOUT = Duration.ofMillis(getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, TimeUnit.SECONDS.toMillis(10), logger));
+        DEFAULT_WRITE_TIMEOUT = Duration.ofMillis(getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, TimeUnit.SECONDS.toMillis(60), logger));
+        DEFAULT_RESPONSE_TIMEOUT = Duration.ofMillis(getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, TimeUnit.SECONDS.toMillis(60), logger));
+        DEFAULT_READ_TIMEOUT = Duration.ofMillis(getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_READ_TIMEOUT, TimeUnit.SECONDS.toMillis(60), logger));
+    }
 
     private final ClientLogger logger = new ClientLogger(HttpClientOptions.class);
 
@@ -351,19 +363,6 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public Duration getConnectionIdleTimeout() {
         return getTimeout(connectionIdleTimeout, DEFAULT_CONNECTION_IDLE_TIMEOUT);
-    }
-
-    private static Duration getDefaultTimeout(String property, Duration defaultTimeout) {
-        String envTimeout = Configuration.getGlobalConfiguration().get(property);
-        if (CoreUtils.isNullOrEmpty(envTimeout)) {
-            return defaultTimeout;
-        }
-
-        try {
-            return Duration.ofMillis(Integer.parseInt(envTimeout));
-        } catch (NumberFormatException ex) {
-            return defaultTimeout;
-        }
     }
 
     private static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {

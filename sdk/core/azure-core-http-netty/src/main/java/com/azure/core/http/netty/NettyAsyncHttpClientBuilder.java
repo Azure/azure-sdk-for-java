@@ -35,6 +35,7 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_T
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
+import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
@@ -46,15 +47,27 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
  * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
-    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
-
     private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
-    private static final long DEFAULT_CONNECT_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-        10000);
-    private static final long DEFAULT_WRITE_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, 60000);
-    private static final long DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-        60000);
-    private static final long DEFAULT_READ_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_READ_TIMEOUT, 60000);
+    private static final long DEFAULT_CONNECT_TIMEOUT;
+    private static final long DEFAULT_WRITE_TIMEOUT;
+    private static final long DEFAULT_RESPONSE_TIMEOUT;
+    private static final long DEFAULT_READ_TIMEOUT;
+
+    static {
+        ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, TimeUnit.SECONDS.toMillis(10), logger);
+        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+            TimeUnit.SECONDS.toMillis(60), logger);
+        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, TimeUnit.SECONDS.toMillis(60), logger);
+        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
+            TimeUnit.SECONDS.toMillis(60), logger);
+    }
+
+    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     private final HttpClient baseHttpClient;
     private ProxyOptions proxyOptions;
@@ -403,19 +416,6 @@ public class NettyAsyncHttpClientBuilder {
         InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
 
         return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
-    }
-
-    private static long getDefaultTimeout(String property, long defaultTimeoutMillis) {
-        String envTimeout = Configuration.getGlobalConfiguration().get(property);
-        if (CoreUtils.isNullOrEmpty(envTimeout)) {
-            return defaultTimeoutMillis;
-        }
-
-        try {
-            return Long.parseLong(envTimeout);
-        } catch (NumberFormatException ex) {
-            return defaultTimeoutMillis;
-        }
     }
 
     /*

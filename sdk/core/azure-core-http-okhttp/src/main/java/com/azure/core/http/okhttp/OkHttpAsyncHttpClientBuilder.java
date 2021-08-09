@@ -8,7 +8,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
 import com.azure.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
+import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by OkHttp.
@@ -32,10 +33,20 @@ public class OkHttpAsyncHttpClientBuilder {
     private final okhttp3.OkHttpClient okHttpClient;
 
     private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
-    private static final long DEFAULT_CONNECT_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-        10000);
-    private static final long DEFAULT_WRITE_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, 60000);
-    private static final long DEFAULT_READ_TIMEOUT = getDefaultTimeout(PROPERTY_AZURE_REQUEST_READ_TIMEOUT, 60000);
+    private static final long DEFAULT_CONNECT_TIMEOUT;
+    private static final long DEFAULT_WRITE_TIMEOUT;
+    private static final long DEFAULT_READ_TIMEOUT;
+
+    static {
+        ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, TimeUnit.SECONDS.toMillis(10), logger);
+        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+            TimeUnit.SECONDS.toMillis(60), logger);
+        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
+            TimeUnit.SECONDS.toMillis(60), logger);
+    }
 
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private Duration readTimeout;
@@ -257,19 +268,6 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
-    }
-
-    private static long getDefaultTimeout(String property, long defaultTimeoutMillis) {
-        String envTimeout = Configuration.getGlobalConfiguration().get(property);
-        if (CoreUtils.isNullOrEmpty(envTimeout)) {
-            return defaultTimeoutMillis;
-        }
-
-        try {
-            return Long.parseLong(envTimeout);
-        } catch (NumberFormatException ex) {
-            return defaultTimeoutMillis;
-        }
     }
 
     /*
