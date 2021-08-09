@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.DatabasesClient;
 import com.azure.resourcemanager.postgresql.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.postgresql.models.Database;
@@ -21,9 +20,10 @@ public final class DatabasesImpl implements Databases {
 
     private final DatabasesClient innerClient;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public DatabasesImpl(DatabasesClient innerClient, PostgreSqlManager serviceManager) {
+    public DatabasesImpl(
+        DatabasesClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -62,12 +62,12 @@ public final class DatabasesImpl implements Databases {
 
     public PagedIterable<Database> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<DatabaseInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return inner.mapPage(inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Database> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<DatabaseInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return inner.mapPage(inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public Database getById(String id) {
@@ -178,7 +178,7 @@ public final class DatabasesImpl implements Databases {
         return this.innerClient;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 

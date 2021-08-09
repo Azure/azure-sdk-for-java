@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-tables
+  - azure-table-storage
 urlFragment: tables-samples
 ---
 
@@ -40,8 +40,8 @@ az cosmosdb list-connection-strings \
 
 ## Examples
 
-- [Interact with the Tables service using the async clients][sample_async_client_code_snippets]
-- [Interact with the Tables service using the synchronous clients][sample_sync_client_code_snippets]
+- [Interact with the Tables service using the async clients][sample_async_client_java_doc_code_snippets]
+- [Interact with the Tables service using the synchronous clients][sample_sync_client_java_doc_code_snippets]
 
 ## Troubleshooting
 See [Troubleshooting][sdk_readme_troubleshooting].
@@ -53,12 +53,12 @@ See [Next steps][sdk_readme_next_steps].
 This project welcomes contributions and suggestions. See [Contributing][sdk_readme_contributing] for guidelines.
 
 <!-- Links -->
-[sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/README.md#key-concepts
-[sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/README.md#getting-started
-[sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/README.md#troubleshooting
-[sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/README.md#next-steps
-[sdk_readme_contributing]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/README.md#contributing
-[sample_async_client_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src/samples/java/TableServiceAsyncClientCodeSnippets.java
-[sample_sync_client_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src/samples/java/TableServiceClientCodeSnippets.java
+[sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/README.md#key-concepts
+[sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/README.md#getting-started
+[sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/README.md#troubleshooting
+[sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/README.md#next-steps
+[sdk_readme_contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/README.md#contributing
+[sample_async_client_java_doc_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/samples/java/com/azure/data/tables/codesnippets/TableServiceAsyncClientJavaDocCodeSnippets.java
+[sample_sync_client_java_doc_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/samples/java/com/azure/data/tables/codesnippets/TableServiceClientJavaDocCodeSnippets.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%tables%2Fazure-data-tables%2Fsrc%2Fsamples%2README.png)

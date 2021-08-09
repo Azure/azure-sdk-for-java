@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "aa7e7d73-bad4-4866-9e54-57ab10050fc0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "5e21c85f-adb0-4d02-8675-6a835b035f09",
+      "content-length" : "2433",
+      "x-envoy-upstream-service-time" : "7432",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "5e21c85f-adb0-4d02-8675-6a835b035f09",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Software & Computer Games\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Musical Instruments\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Cell Phones\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Outdoors\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Luggage & Travel Accessories\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Beauty\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Historical & Advertising Collectibles\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Industrial & Scientific\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Music\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Personal Computers\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Jewelry\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Handmade\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Books\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Office Products\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Electronics (Consumer)\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Grocery & Gourmet Food\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Home & Garden\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Electronics (Accessories)\"}}],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query?$maxpagesize=20&$skip=20\"}",
+      "Date" : "Tue, 06 Jul 2021 19:51:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query?$maxpagesize=20&$skip=20",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "118d1ca1-c8f7-45db-97a1-07fc56d23dc7",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "8b9a0522-9e72-4cf3-9631-4649ed53a08f",
+      "content-length" : "786",
+      "x-envoy-upstream-service-time" : "101",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8b9a0522-9e72-4cf3-9631-4649ed53a08f",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Automotive & Powersports\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Device Accessories\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Camera & Photo\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Collectible Coins\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Fine Art\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"__SUM__\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Clothing & Accessories\"}}]}",
+      "Date" : "Tue, 06 Jul 2021 19:51:18 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

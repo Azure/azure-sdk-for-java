@@ -86,6 +86,13 @@ public class PublicCertificateInner extends ProxyOnlyResource {
         return this.thumbprint;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PublicCertificateInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

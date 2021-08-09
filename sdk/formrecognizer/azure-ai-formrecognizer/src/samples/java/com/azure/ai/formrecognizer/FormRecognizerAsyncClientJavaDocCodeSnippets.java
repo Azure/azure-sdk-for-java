@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
-import com.azure.ai.formrecognizer.models.RecognizeIdDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -266,7 +266,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length(),
             new RecognizeContentOptions()
-                .setContentType(FormContentType.APPLICATION_PDF)
+                .setContentType(FormContentType.IMAGE_JPEG)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .flatMap(Flux::fromIterable)
@@ -634,8 +634,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl,
             new RecognizeBusinessCardsOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedBusinessCards -> {
                 for (int i = 0; i < recognizedBusinessCards.size(); i++) {
@@ -768,8 +768,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeBusinessCards(buffer, businessCard.length(),
             new RecognizeBusinessCardsOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedBusinessCards -> {
                 for (int i = 0; i < recognizedBusinessCards.size(); i++) {
@@ -865,8 +865,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeInvoicesFromUrl(invoiceUrl,
             new RecognizeInvoicesOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedInvoices -> {
                 for (int i = 0; i < recognizedInvoices.size(); i++) {
@@ -946,8 +946,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             invoice.length(),
             new RecognizeInvoicesOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedInvoices -> {
                 for (int i = 0; i < recognizedInvoices.size(); i++) {
@@ -973,13 +973,13 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeIdDocumentsFromUrl(String)}
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeIdentityDocumentsFromUrl(String)}
      */
     public void beginRecognizeIDDocumentFromUrl() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string
         String idDocumentUrl = "idDocumentUrl";
         // if training polling operation completed, retrieve the final result.
-        formRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl(idDocumentUrl)
+        formRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl(idDocumentUrl)
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedIDDocumentResult -> {
                 for (int i = 0; i < recognizedIDDocumentResult.size(); i++) {
@@ -1005,12 +1005,12 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField countryFormField = recognizedFields.get("Country");
-                    if (countryFormField != null) {
-                        if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountry();
-                            System.out.printf("Country: %s, confidence: %.2f%n",
-                                country, countryFormField.getConfidence());
+                    FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                    if (countryRegionFormField != null) {
+                        if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                            String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                            System.out.printf("Country or region: %s, confidence: %.2f%n",
+                                countryRegion, countryRegionFormField.getConfidence());
                         }
                     }
 
@@ -1033,22 +1033,22 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string
     }
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeIdDocumentsFromUrl(String, RecognizeIdDocumentOptions)}
+     * {@link FormRecognizerAsyncClient#beginRecognizeIdentityDocumentsFromUrl(String, RecognizeIdentityDocumentOptions)}
      */
-    public void beginRecognizeIdDocumentsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string-RecognizeIdDocumentOptions
+    public void beginRecognizeIdentityDocumentsFromUrlWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions
         String licenseDocumentUrl = "licenseDocumentUrl";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
-        formRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl(licenseDocumentUrl,
-            new RecognizeIdDocumentOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+        formRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl,
+            new RecognizeIdentityDocumentOptions()
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedIDDocumentResult -> {
                 for (int i = 0; i < recognizedIDDocumentResult.size(); i++) {
@@ -1074,12 +1074,12 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField countryFormField = recognizedFields.get("Country");
-                    if (countryFormField != null) {
-                        if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountry();
-                            System.out.printf("Country: %s, confidence: %.2f%n",
-                                country, countryFormField.getConfidence());
+                    FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                    if (countryRegionFormField != null) {
+                        if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                            String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                            System.out.printf("Country or region: %s, confidence: %.2f%n",
+                                countryRegion, countryRegionFormField.getConfidence());
                         }
                     }
 
@@ -1102,21 +1102,21 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocumentsFromUrl#string-RecognizeIdDocumentOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeIdDocuments(Flux, long)}
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeIdentityDocuments(Flux, long)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    public void beginRecognizeIDDocuments() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long
+    public void beginRecognizeIdentityDocuments() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long
         File license = new File("local/file_path/license.jpg");
         Flux<ByteBuffer> buffer =
             toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(license.toPath())));
         // if training polling operation completed, retrieve the final result.
-        formRecognizerAsyncClient.beginRecognizeIdDocuments(buffer, license.length())
+        formRecognizerAsyncClient.beginRecognizeIdentityDocuments(buffer, license.length())
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedIDDocumentResult -> {
                 for (int i = 0; i < recognizedIDDocumentResult.size(); i++) {
@@ -1142,12 +1142,12 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField countryFormField = recognizedFields.get("Country");
-                    if (countryFormField != null) {
-                        if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountry();
-                            System.out.printf("Country: %s, confidence: %.2f%n",
-                                country, countryFormField.getConfidence());
+                    FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                    if (countryRegionFormField != null) {
+                        if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                            String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                            System.out.printf("Country or region: %s, confidence: %.2f%n",
+                                countryRegion, countryRegionFormField.getConfidence());
                         }
                     }
 
@@ -1170,30 +1170,30 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long
     }
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeIdDocuments(Flux, long, RecognizeIdDocumentOptions)} with
+     * {@link FormRecognizerAsyncClient#beginRecognizeIdentityDocuments(Flux, long, RecognizeIdentityDocumentOptions)} with
      * options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    public void beginRecognizeIDDocumentsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long-RecognizeIdDocumentOptions
+    public void beginRecognizeIdentityDocumentsWithOptions() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long-RecognizeIdentityDocumentOptions
         File licenseDocument = new File("local/file_path/license.jpg");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer =
             toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(licenseDocument.toPath())));
         // if training polling operation completed, retrieve the final result.
-        formRecognizerAsyncClient.beginRecognizeIdDocuments(buffer,
+        formRecognizerAsyncClient.beginRecognizeIdentityDocuments(buffer,
             licenseDocument.length(),
-            new RecognizeIdDocumentOptions()
+            new RecognizeIdentityDocumentOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setFieldElementsIncluded(includeFieldElements))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedIDDocumentResult -> {
                 for (int i = 0; i < recognizedIDDocumentResult.size(); i++) {
@@ -1219,12 +1219,12 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField countryFormField = recognizedFields.get("Country");
-                    if (countryFormField != null) {
-                        if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                            String country = countryFormField.getValue().asCountry();
-                            System.out.printf("Country: %s, confidence: %.2f%n",
-                                country, countryFormField.getConfidence());
+                    FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                    if (countryRegionFormField != null) {
+                        if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                            String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                            System.out.printf("Country or region: %s, confidence: %.2f%n",
+                                countryRegion, countryRegionFormField.getConfidence());
                         }
                     }
 
@@ -1247,6 +1247,6 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdDocuments#Flux-long-RecognizeIdDocumentOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeIdentityDocuments#Flux-long-RecognizeIdentityDocumentOptions
     }
 }

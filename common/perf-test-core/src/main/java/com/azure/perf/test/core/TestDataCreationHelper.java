@@ -7,6 +7,7 @@ import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Random;
@@ -15,35 +16,43 @@ import java.util.Random;
  * Utility class to help with data creation for perf testing.
  */
 public class TestDataCreationHelper {
-    private static final int RANDOM_BYTES_LENGTH = 1024 * 1024; // 1MB
+    private static final int RANDOM_BYTES_LENGTH = Integer.parseInt(
+        System.getProperty("azure.core.perf.test.data.buffer.size", "1048576")); // 1MB default;
     private static final byte[] RANDOM_BYTES;
-    private static final ByteBuffer RANDOM_BYTE_BUFFER;
-    private static final int SIZE = (1024 * 1024 * 1024) + 1;
 
     static {
         Random random = new Random(0);
         RANDOM_BYTES = new byte[RANDOM_BYTES_LENGTH];
         random.nextBytes(RANDOM_BYTES);
-        RANDOM_BYTE_BUFFER = ByteBuffer.wrap(TestDataCreationHelper.RANDOM_BYTES).asReadOnlyBuffer();
     }
 
     /**
-     * Creates a {@link Flux} of {@code size} with repeated values of {@code byteBuffer}.
+     * Creates a {@link Flux} of {@code size} with repeated values of {@code array}.
      *
-     * @param byteBuffer the byteBuffer to create Flux from.
+     * @param array the array to create Flux from.
      * @param size the size of the flux to create.
      * @return The created {@link Flux}
      */
-    @SuppressWarnings("cast")
-    public static Flux<ByteBuffer> createCircularByteBufferFlux(ByteBuffer byteBuffer, long size) {
-        int remaining = byteBuffer.remaining();
+    private static Flux<ByteBuffer> createCircularByteBufferFlux(byte[] array, long size) {
+        long quotient = size / array.length;
+        int remainder = (int) (size % array.length);
 
-        int quotient = (int) size / remaining;
-        int remainder = (int) size % remaining;
+        if (quotient == 0) {
+            return Flux.just(allocateByteBuffer(array, remainder));
+        } else {
+            return Flux.just(Boolean.TRUE).repeat(quotient - 1)
+                .map(i -> allocateByteBuffer(array, array.length))
+                .concatWithValues(allocateByteBuffer(array, remainder));
+        }
+    }
 
-        return Flux.range(0, quotient)
-            .map(i -> byteBuffer.duplicate())
-            .concatWithValues((ByteBuffer) byteBuffer.duplicate().limit(remainder));
+    private static ByteBuffer allocateByteBuffer(byte[] array, int size) {
+        // ByteBuffer.allocate() should be used instead of ByteBuffer.wrap().  The former ensures each
+        // ByteBuffer holds its own copy of the data, which more closely simulates real-world usage.
+        ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+        byteBuffer.put(array, 0, size);
+        byteBuffer.rewind();
+        return byteBuffer;
     }
 
     /**
@@ -53,7 +62,7 @@ public class TestDataCreationHelper {
      * @return the {@link Flux} of {@code size}
      */
     public static Flux<ByteBuffer> createRandomByteBufferFlux(long size) {
-        return createCircularByteBufferFlux(RANDOM_BYTE_BUFFER, size);
+        return createCircularByteBufferFlux(RANDOM_BYTES, size);
     }
 
     /**
@@ -61,14 +70,9 @@ public class TestDataCreationHelper {
      *
      * @param size the size of the stream
      * @return the {@link InputStream} of {@code size}
-     * @throws IllegalArgumentException if {@code size} is more than {@link #SIZE}
      */
     public static InputStream createRandomInputStream(long size) {
-        if (size > SIZE) {
-            throw new IllegalArgumentException("size must be <= " + SIZE);
-        }
-
-        return new RepeatingInputStream((int) size);
+        return new RepeatingInputStream(size);
     }
 
     /**
@@ -79,15 +83,37 @@ public class TestDataCreationHelper {
      * @throws IOException If an IO error occurs.
      */
     public static void writeBytesToOutputStream(OutputStream outputStream, long size) throws IOException {
-        int quotient = (int) size / RANDOM_BYTES.length;
-        int remainder = (int) size % RANDOM_BYTES.length;
+        long quotient = size / RANDOM_BYTES.length;
+        int remainder = (int) (size % RANDOM_BYTES.length);
 
-        for (int i = 0; i < quotient; i++) {
+        for (long i = 0; i < quotient; i++) {
             outputStream.write(RANDOM_BYTES);
         }
 
         outputStream.write(RANDOM_BYTES, 0, remainder);
     }
+
+    /**
+     * Writes the data from InputStream into the OutputStream.
+     *
+     * @param inputStream stream to read from.
+     * @param outputStream stream to write into.
+     * @param bufferSize number of bytes to read in a single read.
+     * @throws IOException If an IO error occurs.
+     * @return the number of bytes transferred.
+     */
+    public static long copyStream(InputStream inputStream, OutputStream outputStream, int bufferSize) throws IOException {
+        long transferred = 0;
+        byte[] buffer = new byte[bufferSize];
+        int read;
+        while ((read = inputStream.read(buffer, 0, bufferSize)) >= 0) {
+            outputStream.write(buffer, 0, read);
+            transferred += read;
+
+        }
+        return transferred;
+    }
+
 
     /**
      * Generate random string of given {@code targetLength length}. The string will only have lower case alphabets.
@@ -107,52 +133,17 @@ public class TestDataCreationHelper {
         return generatedString;
     }
 
-    private static final class RepeatingInputStream extends InputStream {
-        private final int size;
-
-        private int mark = 0;
-        private int pos = 0;
-
-        private RepeatingInputStream(int size) {
-            this.size = size;
-        }
-
-        @Override
-        public synchronized int read() {
-            return (pos < size) ? (RANDOM_BYTES[pos++ % RANDOM_BYTES_LENGTH] & 0xFF) : -1;
-        }
-
-        @Override
-        public synchronized int read(byte[] b) {
-            return read(b, 0, b.length);
-        }
-
-        @Override
-        public synchronized int read(byte[] b, int off, int len) {
-            if (pos >= size) {
-                return -1;
-            }
-
-            int readCount = Math.min(len, RANDOM_BYTES_LENGTH);
-            System.arraycopy(RANDOM_BYTES, 0, b, off, len);
-            pos += readCount;
-
-            return readCount;
-        }
-
-        @Override
-        public synchronized void reset() {
-            this.pos = this.mark;
-        }
-
-        @Override
-        public synchronized void mark(int readlimit) {
-            this.mark = readlimit;
-        }
-
-        @Override
-        public boolean markSupported() {
-            return true;
-        }
+    /**
+     * Writes contents of the specified size to the specified file path.
+     *
+     * @param filePath the path of the file to write to contents to
+     * @param size the size of the contents to write to the file.
+     * @param bufferSize the size of the buffer to use to write to the file.
+     * @throws IOException when an error occurs when writing to the file.
+     */
+    public static void writeToFile(String filePath, long size, int bufferSize) throws IOException {
+        InputStream inputStream = createRandomInputStream(size);
+        OutputStream outputStream = new FileOutputStream(filePath);
+        copyStream(inputStream, outputStream, bufferSize);
     }
 }

@@ -97,6 +97,13 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
         return this.properties;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ResourceMetricDefinitionInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

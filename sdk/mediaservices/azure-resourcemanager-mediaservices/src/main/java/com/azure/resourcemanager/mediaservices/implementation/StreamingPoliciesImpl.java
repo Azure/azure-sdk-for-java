@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingPoliciesClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingPolicyInner;
 import com.azure.resourcemanager.mediaservices.models.StreamingPolicies;
@@ -21,9 +20,11 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
 
     private final StreamingPoliciesClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public StreamingPoliciesImpl(StreamingPoliciesClient innerClient, MediaservicesManager serviceManager) {
+    public StreamingPoliciesImpl(
+        StreamingPoliciesClient innerClient,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -189,7 +190,7 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

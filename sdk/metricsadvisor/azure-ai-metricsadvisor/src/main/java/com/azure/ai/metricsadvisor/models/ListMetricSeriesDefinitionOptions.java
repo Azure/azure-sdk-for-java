@@ -14,7 +14,7 @@ import java.util.Map;
 @Fluent
 public final class ListMetricSeriesDefinitionOptions {
     private Map<String, List<String>> dimensionCombinations;
-    private Integer top;
+    private Integer maxPageSize;
     private Integer skip;
 
     /**
@@ -34,10 +34,10 @@ public final class ListMetricSeriesDefinitionOptions {
     /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The top value.
+     * @return The max page size value.
      */
-    public Integer getTop() {
-        return this.top;
+    public Integer getMaxPageSize() {
+        return this.maxPageSize;
     }
 
     /**
@@ -71,12 +71,12 @@ public final class ListMetricSeriesDefinitionOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param top The top value.
+     * @param maxPageSize The max page size value.
      *
      * @return The ListMetricSeriesDefinitionOptions object itself.
      */
-    public ListMetricSeriesDefinitionOptions setTop(int top) {
-        this.top = top;
+    public ListMetricSeriesDefinitionOptions setMaxPageSize(Integer maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 
@@ -87,7 +87,7 @@ public final class ListMetricSeriesDefinitionOptions {
      * @param skip The skip value.
      * @return ListMetricSeriesDefinitionOptions itself.
      */
-    public ListMetricSeriesDefinitionOptions setSkip(int skip) {
+    public ListMetricSeriesDefinitionOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')//docs/search.index?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3d14b87d-6031-444e-b172-b08edc4a33c1",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a78ba16c-4a1b-4dc4-9f16-fbe8990e763d",
       "Content-Type" : "application/json"
     },
     "Response" : {

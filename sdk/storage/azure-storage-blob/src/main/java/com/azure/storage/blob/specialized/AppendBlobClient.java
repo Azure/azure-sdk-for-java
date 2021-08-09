@@ -13,6 +13,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
@@ -21,6 +22,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -71,6 +73,29 @@ public final class AppendBlobClient extends BlobClientBase {
     AppendBlobClient(AppendBlobAsyncClient appendBlobAsyncClient) {
         super(appendBlobAsyncClient);
         this.appendBlobAsyncClient = appendBlobAsyncClient;
+    }
+
+    /**
+     * Creates a new {@link AppendBlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link AppendBlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public AppendBlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new AppendBlobClient(appendBlobAsyncClient.getEncryptionScopeAsyncClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link AppendBlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link AppendBlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public AppendBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new AppendBlobClient(appendBlobAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**
@@ -278,8 +303,30 @@ public final class AppendBlobClient extends BlobClientBase {
     public Response<AppendBlobItem> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMd5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(sourceUrl,
-            sourceRange, sourceContentMd5, destRequestConditions, sourceRequestConditions, context);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(
+            new AppendBlobAppendBlockFromUrlOptions(sourceUrl).setSourceRange(sourceRange)
+                .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
+                .setSourceRequestConditions(sourceRequestConditions), context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Commits a new block of data from another blob to the end of this append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions-Duration-Context}
+     *
+     * @param options options for the operation
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The information of the append blob operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AppendBlobItem> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(
+            options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

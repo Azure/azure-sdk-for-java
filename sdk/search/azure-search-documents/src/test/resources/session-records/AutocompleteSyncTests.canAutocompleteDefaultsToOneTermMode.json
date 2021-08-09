@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')//docs/search.post.autocomplete?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "daea07dc-707f-4136-9f43-82f9d005fe18",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5654b524-fb19-413f-9da3-8c0f5f98618a",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "222",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "daea07dc-707f-4136-9f43-82f9d005fe18",
+      "request-id" : "5654b524-fb19-413f-9da3-8c0f5f98618a",
       "StatusCode" : "200",
-      "Date" : "Wed, 31 Mar 2021 21:10:55 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:14:34 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "daea07dc-707f-4136-9f43-82f9d005fe18",
-      "elapsed-time" : "7",
+      "client-request-id" : "5654b524-fb19-413f-9da3-8c0f5f98618a",
+      "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "222",
       "Body" : "{\"value\":[{\"text\":\"point\",\"queryPlusText\":\"point\"},{\"text\":\"police\",\"queryPlusText\":\"police\"},{\"text\":\"polite\",\"queryPlusText\":\"polite\"},{\"text\":\"pool\",\"queryPlusText\":\"pool\"},{\"text\":\"popular\",\"queryPlusText\":\"popular\"}]}",
-      "x-ms-client-request-id" : "daea07dc-707f-4136-9f43-82f9d005fe18",
+      "x-ms-client-request-id" : "5654b524-fb19-413f-9da3-8c0f5f98618a",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

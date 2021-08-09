@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/devtestlabs/ci.yml
+      - sdk/devtestlabs/azure-resourcemanager-devtestlabs/
+    exclude:
+      - sdk/devtestlabs/pom.xml
+      - sdk/devtestlabs/azure-resourcemanager-devtestlabs/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/devtestlabs/ci.yml
+      - sdk/devtestlabs/azure-resourcemanager-devtestlabs/
+    exclude:
+      - sdk/devtestlabs/pom.xml
+      - sdk/devtestlabs/azure-resourcemanager-devtestlabs/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: devtestlabs
+    Artifacts:
+      - name: azure-resourcemanager-devtestlabs
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdevtestlabs

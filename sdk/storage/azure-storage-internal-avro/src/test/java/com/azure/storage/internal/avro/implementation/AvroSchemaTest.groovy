@@ -7,13 +7,6 @@ import java.nio.ByteBuffer
 
 class AvroSchemaTest extends Specification {
 
-    def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-    }
-
     def "getBytes"() {
         setup:
         ByteBuffer b1 = ByteBuffer.wrap("Hello ".getBytes())

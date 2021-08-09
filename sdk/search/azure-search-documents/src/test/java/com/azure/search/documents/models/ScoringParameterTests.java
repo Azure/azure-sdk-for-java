@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.experimental.geojson.GeoPoint;
+import com.azure.core.models.GeoPoint;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

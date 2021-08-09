@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.PreferredRoutingGateway;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
@@ -136,6 +137,12 @@ public class VirtualHubInner extends Resource {
      */
     @JsonProperty(value = "properties.allowBranchToBranchTraffic")
     private Boolean allowBranchToBranchTraffic;
+
+    /*
+     * The preferred gateway to route on-prem traffic
+     */
+    @JsonProperty(value = "properties.preferredRoutingGateway")
+    private PreferredRoutingGateway preferredRoutingGateway;
 
     /*
      * Resource ID.
@@ -467,6 +474,26 @@ public class VirtualHubInner extends Resource {
      */
     public VirtualHubInner withAllowBranchToBranchTraffic(Boolean allowBranchToBranchTraffic) {
         this.allowBranchToBranchTraffic = allowBranchToBranchTraffic;
+        return this;
+    }
+
+    /**
+     * Get the preferredRoutingGateway property: The preferred gateway to route on-prem traffic.
+     *
+     * @return the preferredRoutingGateway value.
+     */
+    public PreferredRoutingGateway preferredRoutingGateway() {
+        return this.preferredRoutingGateway;
+    }
+
+    /**
+     * Set the preferredRoutingGateway property: The preferred gateway to route on-prem traffic.
+     *
+     * @param preferredRoutingGateway the preferredRoutingGateway value to set.
+     * @return the VirtualHubInner object itself.
+     */
+    public VirtualHubInner withPreferredRoutingGateway(PreferredRoutingGateway preferredRoutingGateway) {
+        this.preferredRoutingGateway = preferredRoutingGateway;
         return this;
     }
 

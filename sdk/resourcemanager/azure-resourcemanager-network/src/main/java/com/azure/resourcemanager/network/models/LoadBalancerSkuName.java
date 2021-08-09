@@ -16,6 +16,9 @@ public final class LoadBalancerSkuName extends ExpandableStringEnum<LoadBalancer
     /** Static value Standard for LoadBalancerSkuName. */
     public static final LoadBalancerSkuName STANDARD = fromString("Standard");
 
+    /** Static value Gateway for LoadBalancerSkuName. */
+    public static final LoadBalancerSkuName GATEWAY = fromString("Gateway");
+
     /**
      * Creates or finds a LoadBalancerSkuName from its string representation.
      *

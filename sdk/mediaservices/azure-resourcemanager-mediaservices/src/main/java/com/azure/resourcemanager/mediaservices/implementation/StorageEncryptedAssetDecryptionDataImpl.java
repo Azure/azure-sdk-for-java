@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.StorageEncryptedAssetDecryptionDataInner;
 import com.azure.resourcemanager.mediaservices.models.AssetFileEncryptionMetadata;
 import com.azure.resourcemanager.mediaservices.models.StorageEncryptedAssetDecryptionData;
@@ -14,10 +13,11 @@ import java.util.List;
 public final class StorageEncryptedAssetDecryptionDataImpl implements StorageEncryptedAssetDecryptionData {
     private StorageEncryptedAssetDecryptionDataInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     StorageEncryptedAssetDecryptionDataImpl(
-        StorageEncryptedAssetDecryptionDataInner innerObject, MediaservicesManager serviceManager) {
+        StorageEncryptedAssetDecryptionDataInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class StorageEncryptedAssetDecryptionDataImpl implements StorageEnc
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 }

@@ -11,7 +11,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
-import com.azure.ai.formrecognizer.models.RecognizeIdDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -30,8 +30,8 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt, business card and invoice data from documents,
- * recognizing layout information and analyzing custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
+ * input documents, recognizing layout information and analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
@@ -579,117 +579,117 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code invoice} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
-        beginRecognizeInvoices(InputStream invoice, long length,
-        RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoices(InputStream invoice,
+        long length, RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(invoice);
         return client.beginRecognizeInvoices(buffer, length, recognizeInvoicesOptions, context).getSyncPoller();
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
-     * model to extract key information from passports and US driver licenses.
-     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdDocumentsFromUrl#string}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string}
      *
-     * @param iDDocumentUrl The source URL to the input ID Document.
+     * @param identityDocumentUrl The source URL to the input identity document.
      *
-     * @return A {@link SyncPoller} to poll the progress of the recognize ID Document operation until it has
+     * @return A {@link SyncPoller} to poll the progress of the recognize identity document operation until it has
      * completed, has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code iDDocumentUrl} is null.
+     * @throws NullPointerException If {@code identityDocumentUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocumentsFromUrl(
-        String iDDocumentUrl) {
-        return beginRecognizeIdDocumentsFromUrl(iDDocumentUrl, null, Context.NONE);
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl) {
+        return beginRecognizeIdentityDocumentsFromUrl(identityDocumentUrl, null, Context.NONE);
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
-     * model to extract key information from passports and US driver licenses.
-     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIdDocumentOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context}
      *
-     * @param iDDocumentUrl The source URL to the input ID Document.
-     * @param recognizeIdDocumentOptions The additional configurable {@link RecognizeIdDocumentOptions options}
-     * that may be passed when analyzing an ID Document.
+     * @param identityDocumentUrl The source URL to the input identity Document.
+     * @param recognizeIdentityDocumentOptions The additional configurable
+     * {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link SyncPoller} to poll the progress of the recognize ID Document operation until it has
+     * @return A {@link SyncPoller} to poll the progress of the recognize identity document operation until it has
      * completed, has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code iDDocumentUrl} is null.
+     * @throws NullPointerException If {@code identityDocumentUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocumentsFromUrl(
-        String iDDocumentUrl, RecognizeIdDocumentOptions recognizeIdDocumentOptions, Context context) {
-        return client.beginRecognizeIdDocumentsFromUrl(iDDocumentUrl, recognizeIdDocumentOptions, context)
-            .getSyncPoller();
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions,
+        Context context) {
+        return client.beginRecognizeIdentityDocumentsFromUrl(identityDocumentUrl, recognizeIdentityDocumentOptions,
+            context).getSyncPoller();
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
-     * model to extract key information from passports and US driver licenses.
-     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long}
      *
-     * @param iDDocument The data of the id document to recognize ID Document information from.
+     * @param identityDocument The data of the identity document to recognize identity document information from.
      * @param length The exact length of the data.
      *
-     * @return A {@link SyncPoller} that polls the recognize ID Document operation until it has completed,
+     * @return A {@link SyncPoller} that polls the recognize identity Document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code iDDocument} is null.
+     * @throws NullPointerException If {@code identityDocument} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocuments(
-        InputStream iDDocument, long length) {
-        return beginRecognizeIdDocuments(iDDocument, length, null, Context.NONE);
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        InputStream identityDocument, long length) {
+        return beginRecognizeIdentityDocuments(identityDocument, length, null, Context.NONE);
     }
 
     /**
-     * Analyze ID documents using optical character recognition (OCR) and a prebuilt model trained on ID documents
-     * model to extract key information from passports and US driver licenses.
-     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an ID document.
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIdDocumentOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context}
      *
-     * @param iDDocument The data of the id document to recognize information from.
+     * @param identityDocument The data of the identity document to recognize information from.
      * @param length The exact length of the data.
-     * @param recognizeIdDocumentOptions The additional configurable {@link RecognizeIdDocumentOptions options}
-     * that may be passed when analyzing an ID Document.
+     * @param recognizeIdentityDocumentOptions The additional configurable
+     * {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link SyncPoller} that polls the recognize ID Document operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @return A {@link SyncPoller} that polls the recognize identity document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code iDDocument} is null.
+     * @throws NullPointerException If {@code identityDocument} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdDocuments(
-        InputStream iDDocument, long length, RecognizeIdDocumentOptions recognizeIdDocumentOptions,
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        InputStream identityDocument, long length, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions,
         Context context) {
-        return client.beginRecognizeIdDocuments(toFluxByteBuffer(iDDocument), length,
-            recognizeIdDocumentOptions, context).getSyncPoller();
+        return client.beginRecognizeIdentityDocuments(toFluxByteBuffer(identityDocument), length,
+                recognizeIdentityDocumentOptions, context).getSyncPoller();
     }
 }

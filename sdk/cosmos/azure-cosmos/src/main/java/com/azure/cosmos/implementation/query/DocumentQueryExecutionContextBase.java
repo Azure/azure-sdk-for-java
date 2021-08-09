@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
@@ -29,6 +30,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,6 +194,11 @@ implements IDocumentQueryExecutionContext<T> {
             }
         }
 
+        Map<String, String> customOptions = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getHeader(cosmosQueryRequestOptions);
+        if(customOptions != null) {
+            requestHeaders.putAll(customOptions);
+        }
+
         requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions));
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
 
@@ -216,6 +223,12 @@ implements IDocumentQueryExecutionContext<T> {
 
         if(cosmosQueryRequestOptions.isQueryMetricsEnabled()){
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(cosmosQueryRequestOptions.isQueryMetricsEnabled()));
+        }
+
+        if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions() != null &&
+            cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+            requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions())));
         }
 
         return requestHeaders;

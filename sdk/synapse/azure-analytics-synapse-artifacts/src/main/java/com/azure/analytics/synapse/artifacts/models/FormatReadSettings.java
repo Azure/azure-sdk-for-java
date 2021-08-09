@@ -21,7 +21,12 @@ import java.util.Map;
         property = "type",
         defaultImpl = FormatReadSettings.class)
 @JsonTypeName("FormatReadSettings")
-@JsonSubTypes({@JsonSubTypes.Type(name = "DelimitedTextReadSettings", value = DelimitedTextReadSettings.class)})
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "DelimitedTextReadSettings", value = DelimitedTextReadSettings.class),
+    @JsonSubTypes.Type(name = "JsonReadSettings", value = JsonReadSettings.class),
+    @JsonSubTypes.Type(name = "XmlReadSettings", value = XmlReadSettings.class),
+    @JsonSubTypes.Type(name = "BinaryReadSettings", value = BinaryReadSettings.class)
+})
 @Fluent
 public class FormatReadSettings {
     /*

@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -61,7 +62,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     @Host("{$host}")
     @ServiceInterface(name = "PolicyClientPolicyDe")
     private interface PolicyDefinitionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions"
                 + "/{policyDefinitionName}")
@@ -73,9 +74,10 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") PolicyDefinitionInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions"
                 + "/{policyDefinitionName}")
@@ -86,9 +88,10 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions"
                 + "/{policyDefinitionName}")
@@ -99,9 +102,10 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -109,11 +113,12 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             @HostParam("$host") String endpoint,
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
-            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization"
+            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization"
                 + "/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -123,11 +128,12 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
             @BodyParam("application/json") PolicyDefinitionInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
-            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization"
+            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization"
                 + "/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -136,11 +142,12 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization"
+            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization"
                 + "/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -149,9 +156,10 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -159,18 +167,26 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam(value = "$filter", encoded = true) String filter,
+            @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Authorization/policyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyDefinitionListResult>> listBuiltIn(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam(value = "$filter", encoded = true) String filter,
+            @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization"
+            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization"
                 + "/policyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -178,35 +194,47 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
+            @QueryParam(value = "$filter", encoded = true) String filter,
+            @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyDefinitionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyDefinitionListResult>> listBuiltInNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyDefinitionListResult>> listByManagementGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * This operation creates or updates a policy definition in the given subscription with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -236,6 +264,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -243,18 +273,19 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         .createOrUpdate(
                             this.client.getEndpoint(),
                             policyDefinitionName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This operation creates or updates a policy definition in the given subscription with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,14 +316,17 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
                 policyDefinitionName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -300,7 +334,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * This operation creates or updates a policy definition in the given subscription with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -324,7 +358,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * This operation creates or updates a policy definition in the given subscription with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,7 +373,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * This operation creates or updates a policy definition in the given subscription with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -379,6 +413,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -386,10 +422,11 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         .delete(
                             this.client.getEndpoint(),
                             policyDefinitionName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -420,13 +457,16 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
                 policyDefinitionName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -499,6 +539,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -506,10 +548,11 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         .get(
                             this.client.getEndpoint(),
                             policyDefinitionName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -540,13 +583,16 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
                 policyDefinitionName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -622,13 +668,13 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service
-                        .getBuiltIn(
-                            this.client.getEndpoint(), policyDefinitionName, this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                    service.getBuiltIn(this.client.getEndpoint(), policyDefinitionName, apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -654,9 +700,10 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getBuiltIn(this.client.getEndpoint(), policyDefinitionName, this.client.getApiVersion(), context);
+        return service.getBuiltIn(this.client.getEndpoint(), policyDefinitionName, apiVersion, accept, context);
     }
 
     /**
@@ -715,7 +762,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      *
      * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -743,6 +790,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -750,11 +799,12 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         .createOrUpdateAtManagementGroup(
                             this.client.getEndpoint(),
                             policyDefinitionName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             managementGroupId,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -762,7 +812,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      *
      * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -791,14 +841,17 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdateAtManagementGroup(
                 this.client.getEndpoint(),
                 policyDefinitionName,
-                this.client.getApiVersion(),
+                apiVersion,
                 managementGroupId,
                 parameters,
+                accept,
                 context);
     }
 
@@ -807,7 +860,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      *
      * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -832,7 +885,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      *
      * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -849,7 +902,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      *
      * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
-     * @param parameters The policy definition.
+     * @param parameters The policy definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -891,6 +944,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -898,10 +953,11 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         .deleteAtManagementGroup(
                             this.client.getEndpoint(),
                             policyDefinitionName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             managementGroupId,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -932,14 +988,12 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteAtManagementGroup(
-                this.client.getEndpoint(),
-                policyDefinitionName,
-                this.client.getApiVersion(),
-                managementGroupId,
-                context);
+                this.client.getEndpoint(), policyDefinitionName, apiVersion, managementGroupId, accept, context);
     }
 
     /**
@@ -1016,6 +1070,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1023,10 +1079,11 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         .getAtManagementGroup(
                             this.client.getEndpoint(),
                             policyDefinitionName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             managementGroupId,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1057,14 +1114,12 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getAtManagementGroup(
-                this.client.getEndpoint(),
-                policyDefinitionName,
-                this.client.getApiVersion(),
-                managementGroupId,
-                context);
+                this.client.getEndpoint(), policyDefinitionName, apiVersion, managementGroupId, accept, context);
     }
 
     /**
@@ -1124,14 +1179,31 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given subscription.
+     * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * subscription, including those that apply directly or from management groups that contain the given subscription.
+     * If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync(String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1144,14 +1216,19 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
+                            filter,
+                            top,
+                            accept,
                             context))
             .<PagedResponse<PolicyDefinitionInner>>map(
                 res ->
@@ -1162,12 +1239,28 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given subscription.
+     * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * subscription, including those that apply directly or from management groups that contain the given subscription.
+     * If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1175,7 +1268,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync(
+        String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1188,9 +1282,11 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), filter, top, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1203,7 +1299,44 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given subscription.
+     * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * subscription, including those that apply directly or from management groups that contain the given subscription.
+     * If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
+     *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PolicyDefinitionInner> listAsync(String filter, Integer top) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * subscription, including those that apply directly or from management groups that contain the given subscription.
+     * If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1211,12 +1344,30 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyDefinitionInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+        final String filter = null;
+        final Integer top = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given subscription.
+     * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * subscription, including those that apply directly or from management groups that contain the given subscription.
+     * If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1224,13 +1375,21 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyDefinitionInner> listAsync(Context context) {
+    private PagedFlux<PolicyDefinitionInner> listAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(filter, top, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given subscription.
+     * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * subscription, including those that apply directly or from management groups that contain the given subscription.
+     * If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1238,12 +1397,30 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionInner> list() {
-        return new PagedIterable<>(listAsync());
+        final String filter = null;
+        final Integer top = null;
+        return new PagedIterable<>(listAsync(filter, top));
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given subscription.
+     * This operation retrieves a list of all the policy definitions in a given subscription that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * subscription, including those that apply directly or from management groups that contain the given subscription.
+     * If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     * subscription. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     * definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     * Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1251,28 +1428,43 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyDefinitionInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+    public PagedIterable<PolicyDefinitionInner> list(String filter, Integer top, Context context) {
+        return new PagedIterable<>(listAsync(filter, top, context));
     }
 
     /**
-     * This operation retrieves a list of all the built-in policy definitions.
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync() {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync(String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listBuiltIn(this.client.getEndpoint(), this.client.getApiVersion(), context))
+                context -> service.listBuiltIn(this.client.getEndpoint(), apiVersion, filter, top, accept, context))
             .<PagedResponse<PolicyDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1282,12 +1474,24 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This operation retrieves a list of all the built-in policy definitions.
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1295,16 +1499,19 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync(Context context) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync(
+        String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBuiltIn(this.client.getEndpoint(), this.client.getApiVersion(), context)
+            .listBuiltIn(this.client.getEndpoint(), apiVersion, filter, top, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1317,7 +1524,37 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
-     * This operation retrieves a list of all the built-in policy definitions.
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
+     *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PolicyDefinitionInner> listBuiltInAsync(String filter, Integer top) {
+        return new PagedFlux<>(
+            () -> listBuiltInSinglePageAsync(filter, top), nextLink -> listBuiltInNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1325,13 +1562,27 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyDefinitionInner> listBuiltInAsync() {
+        final String filter = null;
+        final Integer top = null;
         return new PagedFlux<>(
-            () -> listBuiltInSinglePageAsync(), nextLink -> listBuiltInNextSinglePageAsync(nextLink));
+            () -> listBuiltInSinglePageAsync(filter, top), nextLink -> listBuiltInNextSinglePageAsync(nextLink));
     }
 
     /**
-     * This operation retrieves a list of all the built-in policy definitions.
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1339,13 +1590,18 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyDefinitionInner> listBuiltInAsync(Context context) {
+    private PagedFlux<PolicyDefinitionInner> listBuiltInAsync(String filter, Integer top, Context context) {
         return new PagedFlux<>(
-            () -> listBuiltInSinglePageAsync(context), nextLink -> listBuiltInNextSinglePageAsync(nextLink, context));
+            () -> listBuiltInSinglePageAsync(filter, top, context),
+            nextLink -> listBuiltInNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * This operation retrieves a list of all the built-in policy definitions.
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1353,12 +1609,26 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionInner> listBuiltIn() {
-        return new PagedIterable<>(listBuiltInAsync());
+        final String filter = null;
+        final Integer top = null;
+        return new PagedIterable<>(listBuiltInAsync(filter, top));
     }
 
     /**
-     * This operation retrieves a list of all the built-in policy definitions.
+     * This operation retrieves a list of all the built-in policy definitions that match the optional given $filter. If
+     * $filter='policyType -eq {value}' is provided, the returned list only includes all built-in policy definitions
+     * whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If
+     * $filter='category -eq {value}' is provided, the returned list only includes all built-in policy definitions whose
+     * category match the {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1366,21 +1636,38 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyDefinitionInner> listBuiltIn(Context context) {
-        return new PagedIterable<>(listBuiltInAsync(context));
+    public PagedIterable<PolicyDefinitionInner> listBuiltIn(String filter, Integer top, Context context) {
+        return new PagedIterable<>(listBuiltInAsync(filter, top, context));
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given management group.
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
      * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupSinglePageAsync(String managementGroupId) {
+    private Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupSinglePageAsync(
+        String managementGroupId, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1391,12 +1678,14 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .listByManagementGroup(
-                            this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId, context))
+                            this.client.getEndpoint(), apiVersion, managementGroupId, filter, top, accept, context))
             .<PagedResponse<PolicyDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1406,13 +1695,29 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given management group.
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
      * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1421,7 +1726,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupSinglePageAsync(
-        String managementGroupId, Context context) {
+        String managementGroupId, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1432,9 +1737,12 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByManagementGroup(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId, context)
+            .listByManagementGroup(
+                this.client.getEndpoint(), apiVersion, managementGroupId, filter, top, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1447,7 +1755,48 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given management group.
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
+     *
+     * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PolicyDefinitionInner> listByManagementGroupAsync(
+        String managementGroupId, String filter, Integer top) {
+        return new PagedFlux<>(
+            () -> listByManagementGroupSinglePageAsync(managementGroupId, filter, top),
+            nextLink -> listByManagementGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1457,15 +1806,33 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyDefinitionInner> listByManagementGroupAsync(String managementGroupId) {
+        final String filter = null;
+        final Integer top = null;
         return new PagedFlux<>(
-            () -> listByManagementGroupSinglePageAsync(managementGroupId),
+            () -> listByManagementGroupSinglePageAsync(managementGroupId, filter, top),
             nextLink -> listByManagementGroupNextSinglePageAsync(nextLink));
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given management group.
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
      * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1473,14 +1840,23 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyDefinitionInner> listByManagementGroupAsync(String managementGroupId, Context context) {
+    private PagedFlux<PolicyDefinitionInner> listByManagementGroupAsync(
+        String managementGroupId, String filter, Integer top, Context context) {
         return new PagedFlux<>(
-            () -> listByManagementGroupSinglePageAsync(managementGroupId, context),
+            () -> listByManagementGroupSinglePageAsync(managementGroupId, filter, top, context),
             nextLink -> listByManagementGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given management group.
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1490,13 +1866,31 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionInner> listByManagementGroup(String managementGroupId) {
-        return new PagedIterable<>(listByManagementGroupAsync(managementGroupId));
+        final String filter = null;
+        final Integer top = null;
+        return new PagedIterable<>(listByManagementGroupAsync(managementGroupId, filter, top));
     }
 
     /**
-     * This operation retrieves a list of all the policy definitions in a given management group.
+     * This operation retrieves a list of all the policy definitions in a given management group that match the optional
+     * given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq
+     * '{value}''. If $filter is not provided, the unfiltered list includes all policy definitions associated with the
+     * management group, including those that apply directly or from management groups that contain the given management
+     * group. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
+     * given management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all
+     * policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+     * and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     * whose category match the {value}.
      *
      * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
+     *     -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
+     *     $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
+     *     scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy
+     *     definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and
+     *     Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions
+     *     whose category match the {value}.
+     * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1504,8 +1898,9 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return list of policy definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyDefinitionInner> listByManagementGroup(String managementGroupId, Context context) {
-        return new PagedIterable<>(listByManagementGroupAsync(managementGroupId, context));
+    public PagedIterable<PolicyDefinitionInner> listByManagementGroup(
+        String managementGroupId, String filter, Integer top, Context context) {
+        return new PagedIterable<>(listByManagementGroupAsync(managementGroupId, filter, top, context));
     }
 
     /**
@@ -1522,8 +1917,15 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PolicyDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1533,7 +1935,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1551,9 +1953,16 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1579,8 +1988,15 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBuiltInNext(nextLink, context))
+            .withContext(context -> service.listBuiltInNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PolicyDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1590,7 +2006,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1609,9 +2025,16 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBuiltInNext(nextLink, context)
+            .listBuiltInNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1637,8 +2060,16 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByManagementGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByManagementGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PolicyDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1648,7 +2079,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1667,9 +2098,16 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByManagementGroupNext(nextLink, context)
+            .listByManagementGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

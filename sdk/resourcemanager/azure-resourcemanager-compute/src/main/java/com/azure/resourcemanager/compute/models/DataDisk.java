@@ -125,6 +125,16 @@ public final class DataDisk {
     @JsonProperty(value = "detachOption")
     private DiskDetachOptionTypes detachOption;
 
+    /*
+     * Specifies whether data disk should be deleted or detached upon VM
+     * deletion.<br><br> Possible values: <br><br> **Delete** If this value is
+     * used, the data disk is deleted when VM is deleted.<br><br> **Detach** If
+     * this value is used, the data disk is retained after VM is
+     * deleted.<br><br> The default value is set to **detach**
+     */
+    @JsonProperty(value = "deleteOption")
+    private DiskDeleteOptionTypes deleteOption;
+
     /**
      * Get the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
      * disks within the VM and therefore must be unique for each data disk attached to a VM.
@@ -404,6 +414,32 @@ public final class DataDisk {
      */
     public DataDisk withDetachOption(DiskDetachOptionTypes detachOption) {
         this.detachOption = detachOption;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specifies whether data disk should be deleted or detached upon VM
+     * deletion.&lt;br&gt;&lt;br&gt; Possible values: &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data
+     * disk is deleted when VM is deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is
+     * retained after VM is deleted.&lt;br&gt;&lt;br&gt; The default value is set to **detach**.
+     *
+     * @return the deleteOption value.
+     */
+    public DiskDeleteOptionTypes deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specifies whether data disk should be deleted or detached upon VM
+     * deletion.&lt;br&gt;&lt;br&gt; Possible values: &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data
+     * disk is deleted when VM is deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is
+     * retained after VM is deleted.&lt;br&gt;&lt;br&gt; The default value is set to **detach**.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the DataDisk object itself.
+     */
+    public DataDisk withDeleteOption(DiskDeleteOptionTypes deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 

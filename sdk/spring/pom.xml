@@ -18,7 +18,6 @@
         <module>azure-spring-cloud-autoconfigure</module>
         <module>azure-spring-cloud-context</module>
         <module>azure-spring-cloud-storage</module>
-        <module>azure-spring-cloud-telemetry</module>
         <module>azure-spring-integration-core</module>
         <module>azure-spring-integration-eventhubs</module>
         <module>azure-spring-integration-servicebus</module>
@@ -33,77 +32,72 @@
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-identity-spring</artifactId>
-          <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
+          <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-boot</artifactId>
-          <version>3.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+          <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-context</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-storage</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>azure-spring-cloud-telemetry</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-integration-core</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
        </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-integration-eventhubs</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-integration-servicebus</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-integration-storage-queue</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-messaging</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-stream-binder-servicebus-core</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
-          <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
+          <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
         </dependency>
       </dependencies>
 
@@ -136,77 +130,36 @@
       </activation>
       <modules>
         <module>azure-identity-spring</module>
-        <module>azure-spring-boot-samples/azure-cloud-foundry-service-sample</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmos</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-mediaservices</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-storage-resource</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-cache</module>
-        <module>azure-spring-boot-samples/azure-appconfiguration-conversion-sample-complete</module>
-        <module>azure-spring-boot-samples/azure-appconfiguration-conversion-sample-initial</module>
-        <module>azure-spring-boot-samples/azure-appconfiguration-sample</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-multi-account</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmos-multi-database-single-account</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders</module>
-        <module>azure-spring-boot-samples/feature-management-web-sample</module>
-        <module>azure-spring-boot-samples/feature-management-sample</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-operation</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging-eventhubs</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging-servicebus</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-topic-binder</module>
-        <module>azure-spring-boot-samples/azure-spring-cloud-sample-storage-queue-operation</module>
-        <module>azure-spring-boot-samples/azure-spring-data-sample-gremlin-web-service</module>
-        <module>azure-spring-boot-samples/azure-spring-data-sample-gremlin</module>
-        <module>azure-spring-boot-samples/azure-spring-integration-sample-eventhubs</module>
-        <module>azure-spring-boot-samples/azure-spring-integration-sample-servicebus</module>
-        <module>azure-spring-boot-samples/azure-spring-integration-sample-storage-queue</module>
-        <module>azure-spring-boot-starter-active-directory-b2c</module>
+        <module>azure-spring-boot</module>
+        <module>azure-spring-boot-starter</module>
         <module>azure-spring-boot-starter-active-directory</module>
+        <module>azure-spring-boot-starter-active-directory-b2c</module>
         <module>azure-spring-boot-starter-cosmos</module>
-        <module>azure-spring-boot-starter-data-gremlin</module>
         <module>azure-spring-boot-starter-keyvault-certificates</module>
         <module>azure-spring-boot-starter-keyvault-secrets</module>
         <module>azure-spring-boot-starter-servicebus-jms</module>
         <module>azure-spring-boot-starter-storage</module>
-        <module>azure-spring-boot-starter</module>
-        <module>azure-spring-boot-test-aad-obo</module>
-        <module>azure-spring-boot-test-aad-resource-server-by-filter</module>
-        <module>azure-spring-boot-test-aad-resource-server</module>
         <module>azure-spring-boot-test-aad</module>
-        <module>azure-spring-boot-test-application</module>
         <module>azure-spring-boot-test-aad-b2c</module>
-        <module>azure-spring-boot-test-selenium-common</module>
+        <module>azure-spring-boot-test-aad-webapp-and-resource-server-with-obo</module>
+        <module>azure-spring-boot-test-aad-resource-server</module>
+        <module>azure-spring-boot-test-aad-resource-server-by-filter</module>
+        <module>azure-spring-boot-test-application</module>
         <module>azure-spring-boot-test-core</module>
         <module>azure-spring-boot-test-cosmos</module>
-        <module>azure-spring-boot-test-keyvault/pom.xml</module>
+        <module>azure-spring-boot-test-keyvault-certificate</module>
         <module>azure-spring-boot-test-keyvault/pom-reactive.xml</module>
+        <module>azure-spring-boot-test-keyvault/pom.xml</module>
         <module>azure-spring-boot-test-parent</module>
+        <module>azure-spring-boot-test-selenium-common</module>
         <module>azure-spring-boot-test-servicebus-jms</module>
         <module>azure-spring-boot-test-storage</module>
-        <module>azure-spring-boot</module>
         <module>azure-spring-cloud-autoconfigure</module>
         <module>azure-spring-cloud-context</module>
         <module>azure-spring-cloud-messaging</module>
         <module>azure-spring-cloud-starter-cache</module>
-        <module>azure-spring-cloud-starter-eventhubs-kafka</module>
         <module>azure-spring-cloud-starter-eventhubs</module>
+        <module>azure-spring-cloud-starter-eventhubs-kafka</module>
         <module>azure-spring-cloud-starter-servicebus</module>
         <module>azure-spring-cloud-starter-storage-queue</module>
         <module>azure-spring-cloud-storage</module>
@@ -215,9 +168,9 @@
         <module>azure-spring-cloud-stream-binder-servicebus-queue</module>
         <module>azure-spring-cloud-stream-binder-servicebus-topic</module>
         <module>azure-spring-cloud-stream-binder-test</module>
-        <module>azure-spring-cloud-telemetry</module>
         <module>azure-spring-cloud-test-eventhubs</module>
-        <module>azure-spring-data-gremlin</module>
+        <module>azure-spring-cloud-test-eventhubs-kafka</module>
+        <module>azure-spring-cloud-test-servicebus-binder</module>
         <module>azure-spring-integration-core</module>
         <module>azure-spring-integration-eventhubs</module>
         <module>azure-spring-integration-servicebus</module>

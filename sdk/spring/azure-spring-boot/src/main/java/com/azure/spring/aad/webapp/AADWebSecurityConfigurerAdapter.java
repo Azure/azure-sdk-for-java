@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +27,7 @@ import org.springframework.util.StringUtils;
 public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AADWebAppClientRegistrationRepository repo;
+    private AADClientRegistrationRepository repo;
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
     @Autowired
@@ -66,11 +67,11 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         result.setRequestEntityConverter(
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClient()));
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClientAccessTokenScopes()));
         return result;
     }
 
     protected OAuth2AuthorizationRequestResolver requestResolver() {
-        return new AADOAuth2AuthorizationRequestResolver(this.repo);
+        return new AADOAuth2AuthorizationRequestResolver(this.repo, properties);
     }
 }

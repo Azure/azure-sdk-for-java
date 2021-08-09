@@ -3,15 +3,11 @@
 
 package com.azure.test.aad.b2c.selenium;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
-import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
-
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,13 +19,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
+import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADB2CIT {
 
     private final String JOB_TITLE_A_WORKER = "a worker";
     private final String JOB_TITLE_WORKER = "worker";
     private AADB2CSeleniumITHelper aadB2CSeleniumITHelper;
 
-    @Before
+    @BeforeEach
     public void initAndSignIn() {
         aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, createDefaultProperteis());
         aadB2CSeleniumITHelper.logIn();
@@ -39,9 +42,9 @@ public class AADB2CIT {
     public void testSignIn() {
         String name = aadB2CSeleniumITHelper.getName();
         String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
-        Assert.assertNotNull(name);
-        Assert.assertNotNull(userFlowName);
-        Assert.assertEquals(AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
+        assertNotNull(name);
+        assertNotNull(userFlowName);
+        assertEquals(AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
     }
 
     @Test
@@ -53,20 +56,20 @@ public class AADB2CIT {
         String name = aadB2CSeleniumITHelper.getName();
         String jobTitle = aadB2CSeleniumITHelper.getJobTitle();
         String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
-        Assert.assertNotNull(name);
-        Assert.assertNotNull(jobTitle);
-        Assert.assertEquals(newJobTitle, jobTitle);
-        Assert.assertEquals(AAD_B2C_PROFILE_EDIT, userFlowName);
+        assertNotNull(name);
+        assertNotNull(jobTitle);
+        assertEquals(newJobTitle, jobTitle);
+        assertEquals(AAD_B2C_PROFILE_EDIT, userFlowName);
     }
 
     @Test
     public void testLogOut() {
         aadB2CSeleniumITHelper.logout();
         String signInButtonText = aadB2CSeleniumITHelper.getSignInButtonText();
-        Assert.assertEquals("Sign in", signInButtonText);
+        assertEquals("Sign in", signInButtonText);
     }
 
-    @After
+    @AfterEach
     public void destroy() {
         aadB2CSeleniumITHelper.destroy();
     }

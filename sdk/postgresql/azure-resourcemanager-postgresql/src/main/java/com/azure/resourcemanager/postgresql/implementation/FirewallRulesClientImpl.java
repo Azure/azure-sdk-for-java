@@ -69,7 +69,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     private interface FirewallRulesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSQL"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/servers/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -84,9 +84,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSQL"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/servers/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -97,11 +97,12 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("firewallRuleName") String firewallRuleName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSQL"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/servers/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -117,7 +118,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSQL"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/servers/{serverName}/firewallRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -190,7 +191,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -475,6 +476,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
         final String apiVersion = "2017-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -486,8 +488,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                             resourceGroupName,
                             serverName,
                             firewallRuleName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -529,6 +532,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 .error(new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null."));
         }
         final String apiVersion = "2017-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -538,6 +542,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 resourceGroupName,
                 serverName,
                 firewallRuleName,
+                accept,
                 context);
     }
 
@@ -741,7 +746,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                             firewallRuleName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -905,7 +910,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

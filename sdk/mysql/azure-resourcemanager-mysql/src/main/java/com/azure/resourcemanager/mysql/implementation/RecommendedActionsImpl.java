@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.RecommendedActionsClient;
 import com.azure.resourcemanager.mysql.fluent.models.RecommendationActionInner;
 import com.azure.resourcemanager.mysql.models.RecommendationAction;
@@ -21,9 +20,10 @@ public final class RecommendedActionsImpl implements RecommendedActions {
 
     private final RecommendedActionsClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public RecommendedActionsImpl(RecommendedActionsClient innerClient, MySqlManager serviceManager) {
+    public RecommendedActionsImpl(
+        RecommendedActionsClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -64,21 +64,21 @@ public final class RecommendedActionsImpl implements RecommendedActions {
         String resourceGroupName, String serverName, String advisorName) {
         PagedIterable<RecommendationActionInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, advisorName);
-        return inner.mapPage(inner1 -> new RecommendationActionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RecommendationAction> listByServer(
         String resourceGroupName, String serverName, String advisorName, String sessionId, Context context) {
         PagedIterable<RecommendationActionInner> inner =
             this.serviceClient().listByServer(resourceGroupName, serverName, advisorName, sessionId, context);
-        return inner.mapPage(inner1 -> new RecommendationActionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
     }
 
     private RecommendedActionsClient serviceClient() {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

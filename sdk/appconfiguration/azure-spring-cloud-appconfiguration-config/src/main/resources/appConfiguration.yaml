@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    appconfiguration:
+      version: 1.0
+      maxRetries: 2
+      maxRetryTime: 60
+      preKillTime: 5
+

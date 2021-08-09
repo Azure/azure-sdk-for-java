@@ -34,6 +34,12 @@ public final class AzureSkuName extends ExpandableStringEnum<AzureSkuName> {
     /** Static value Standard_L16s for AzureSkuName. */
     public static final AzureSkuName STANDARD_L16S = fromString("Standard_L16s");
 
+    /** Static value Standard_L8s_v2 for AzureSkuName. */
+    public static final AzureSkuName STANDARD_L8S_V2 = fromString("Standard_L8s_v2");
+
+    /** Static value Standard_L16s_v2 for AzureSkuName. */
+    public static final AzureSkuName STANDARD_L16S_V2 = fromString("Standard_L16s_v2");
+
     /** Static value Standard_D11_v2 for AzureSkuName. */
     public static final AzureSkuName STANDARD_D11_V2 = fromString("Standard_D11_v2");
 
@@ -48,6 +54,9 @@ public final class AzureSkuName extends ExpandableStringEnum<AzureSkuName> {
 
     /** Static value Standard_E64i_v3 for AzureSkuName. */
     public static final AzureSkuName STANDARD_E64I_V3 = fromString("Standard_E64i_v3");
+
+    /** Static value Standard_E80ids_v4 for AzureSkuName. */
+    public static final AzureSkuName STANDARD_E80IDS_V4 = fromString("Standard_E80ids_v4");
 
     /** Static value Standard_E2a_v4 for AzureSkuName. */
     public static final AzureSkuName STANDARD_E2A_V4 = fromString("Standard_E2a_v4");

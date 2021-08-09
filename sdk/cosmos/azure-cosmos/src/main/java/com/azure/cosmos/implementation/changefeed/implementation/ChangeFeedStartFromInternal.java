@@ -47,6 +47,19 @@ public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
         return this.toJson();
     }
 
+    @Override
+    public String toJson() {
+        String json = super.toJson();
+
+        if (json.indexOf("\"Type\":") != json.lastIndexOf("\"Type\":")) {
+            // TODO @fabianm Remove as soon as root caused - https://github.com/Azure/azure-sdk-for-java/issues/20635
+            // "StartFrom":{"Type":"NOW","Type":"NOW"}
+            throw new IllegalStateException("There shouldn't be any duplicate json properties!");
+        }
+
+        return json;
+    }
+
     public abstract boolean supportsFullFidelityRetention();
 
     public abstract void populateRequest(RxDocumentServiceRequest request);

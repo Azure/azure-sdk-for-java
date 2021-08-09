@@ -14,10 +14,10 @@ import java.util.Map;
  * A converter to turn the payload of a {@link Message} from serialized form to a typed
  * Object and vice versa.
  *
- * @param <T> Azure message type
- * @author Warren Zhu
+ * @param <I> The Azure message type when sending to the broker using Azure SDK.
+ * @param <O> The Azure message type when receiving from the broker using Azure SDK.
  */
-public interface AzureMessageConverter<T> {
+public interface AzureMessageConverter<I, O> {
 
     /**
      * Convert the payload of a {@link Message} from a serialized form to a typed Object
@@ -29,7 +29,7 @@ public interface AzureMessageConverter<T> {
      * perform the conversion
      */
     @Nullable
-    T fromMessage(Message<?> message, Class<T> targetClass);
+    O fromMessage(Message<?> message, Class<O> targetClass);
 
     /**
      * Create a {@link Message} whose payload is the result of converting the given
@@ -43,10 +43,10 @@ public interface AzureMessageConverter<T> {
      *      * Object type or the target media type
      */
     @Nullable
-    <U> Message<U> toMessage(T azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass);
+    <U> Message<U> toMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass);
 
     @Nullable
-    default <U> Message<U> toMessage(T azureMessage, Class<U> targetPayloadClass) {
+    default <U> Message<U> toMessage(I azureMessage, Class<U> targetPayloadClass) {
         return this.toMessage(azureMessage, new HashMap<>(), targetPayloadClass);
     }
 }

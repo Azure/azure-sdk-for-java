@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')//docs/search.post.suggest?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')/docs/search.post.suggest?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1e0f622d-4af6-4db9-8b3a-d36b4405db25",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b01a0b2a-3544-4d8e-885c-c3b904601c2f",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "179",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1e0f622d-4af6-4db9-8b3a-d36b4405db25",
+      "request-id" : "b01a0b2a-3544-4d8e-885c-c3b904601c2f",
       "StatusCode" : "200",
-      "Date" : "Wed, 31 Mar 2021 21:17:35 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:21:56 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "1e0f622d-4af6-4db9-8b3a-d36b4405db25",
-      "elapsed-time" : "9",
+      "client-request-id" : "b01a0b2a-3544-4d8e-885c-c3b904601c2f",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "179",
       "Body" : "{\"value\":[{\"@search.text\":\"Secret Point Motel\",\"HotelName\":\"Secret Point Motel\",\"Rating\":4,\"Address\":{\"City\":\"New York\"},\"Rooms\":[{\"Type\":\"Budget Room\"},{\"Type\":\"Budget Room\"}]}]}",
-      "x-ms-client-request-id" : "1e0f622d-4af6-4db9-8b3a-d36b4405db25",
+      "x-ms-client-request-id" : "b01a0b2a-3544-4d8e-885c-c3b904601c2f",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

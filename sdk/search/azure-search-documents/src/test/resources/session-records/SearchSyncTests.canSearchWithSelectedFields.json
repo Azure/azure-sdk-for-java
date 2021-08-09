@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')//docs/search.post.search?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "18432069-66a2-4aa3-8909-172b2f6303fc",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cab2fb4a-16ed-4db0-badf-3842abd9f486",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "258",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "18432069-66a2-4aa3-8909-172b2f6303fc",
+      "request-id" : "cab2fb4a-16ed-4db0-badf-3842abd9f486",
       "StatusCode" : "200",
-      "Date" : "Wed, 31 Mar 2021 21:16:54 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:21:10 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "18432069-66a2-4aa3-8909-172b2f6303fc",
-      "elapsed-time" : "6",
+      "client-request-id" : "cab2fb4a-16ed-4db0-badf-3842abd9f486",
+      "elapsed-time" : "8",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "258",
       "Body" : "{\"value\":[{\"@search.score\":3.281591,\"HotelName\":\"Fancy Stay\",\"Rating\":5,\"Address\":null,\"Rooms\":[]},{\"@search.score\":1.2715712,\"HotelName\":\"Secret Point Motel\",\"Rating\":4,\"Address\":{\"City\":\"New York\"},\"Rooms\":[{\"Type\":\"Budget Room\"},{\"Type\":\"Budget Room\"}]}]}",
-      "x-ms-client-request-id" : "18432069-66a2-4aa3-8909-172b2f6303fc",
+      "x-ms-client-request-id" : "cab2fb4a-16ed-4db0-badf-3842abd9f486",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

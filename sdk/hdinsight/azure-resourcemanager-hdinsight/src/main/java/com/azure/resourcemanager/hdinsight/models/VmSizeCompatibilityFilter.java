@@ -46,10 +46,30 @@ public final class VmSizeCompatibilityFilter {
     private List<String> clusterVersions;
 
     /*
+     * The list of OS types.
+     */
+    @JsonProperty(value = "OsType")
+    private List<String> osType;
+
+    /*
      * The list of virtual machine sizes.
      */
-    @JsonProperty(value = "vmsizes")
-    private List<String> vmsizes;
+    @JsonProperty(value = "VMSizes")
+    private List<String> vMSizes;
+
+    /*
+     * Whether apply for ESP cluster. 'true' means only for ESP, 'false' means
+     * only for non-ESP, null or empty string or others mean for both.
+     */
+    @JsonProperty(value = "ESPApplied")
+    private String espApplied;
+
+    /*
+     * Whether support compute isolation. 'true' means only for
+     * ComputeIsolationEnabled, 'false' means only for regular cluster.
+     */
+    @JsonProperty(value = "ComputeIsolationSupported")
+    private String computeIsolationSupported;
 
     /**
      * Get the filterMode property: The mode for the filter.
@@ -152,22 +172,86 @@ public final class VmSizeCompatibilityFilter {
     }
 
     /**
-     * Get the vmsizes property: The list of virtual machine sizes.
+     * Get the osType property: The list of OS types.
      *
-     * @return the vmsizes value.
+     * @return the osType value.
      */
-    public List<String> vmsizes() {
-        return this.vmsizes;
+    public List<String> osType() {
+        return this.osType;
     }
 
     /**
-     * Set the vmsizes property: The list of virtual machine sizes.
+     * Set the osType property: The list of OS types.
      *
-     * @param vmsizes the vmsizes value to set.
+     * @param osType the osType value to set.
      * @return the VmSizeCompatibilityFilter object itself.
      */
-    public VmSizeCompatibilityFilter withVmsizes(List<String> vmsizes) {
-        this.vmsizes = vmsizes;
+    public VmSizeCompatibilityFilter withOsType(List<String> osType) {
+        this.osType = osType;
+        return this;
+    }
+
+    /**
+     * Get the vMSizes property: The list of virtual machine sizes.
+     *
+     * @return the vMSizes value.
+     */
+    public List<String> vMSizes() {
+        return this.vMSizes;
+    }
+
+    /**
+     * Set the vMSizes property: The list of virtual machine sizes.
+     *
+     * @param vMSizes the vMSizes value to set.
+     * @return the VmSizeCompatibilityFilter object itself.
+     */
+    public VmSizeCompatibilityFilter withVMSizes(List<String> vMSizes) {
+        this.vMSizes = vMSizes;
+        return this;
+    }
+
+    /**
+     * Get the espApplied property: Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for
+     * non-ESP, null or empty string or others mean for both.
+     *
+     * @return the espApplied value.
+     */
+    public String espApplied() {
+        return this.espApplied;
+    }
+
+    /**
+     * Set the espApplied property: Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for
+     * non-ESP, null or empty string or others mean for both.
+     *
+     * @param espApplied the espApplied value to set.
+     * @return the VmSizeCompatibilityFilter object itself.
+     */
+    public VmSizeCompatibilityFilter withEspApplied(String espApplied) {
+        this.espApplied = espApplied;
+        return this;
+    }
+
+    /**
+     * Get the computeIsolationSupported property: Whether support compute isolation. 'true' means only for
+     * ComputeIsolationEnabled, 'false' means only for regular cluster.
+     *
+     * @return the computeIsolationSupported value.
+     */
+    public String computeIsolationSupported() {
+        return this.computeIsolationSupported;
+    }
+
+    /**
+     * Set the computeIsolationSupported property: Whether support compute isolation. 'true' means only for
+     * ComputeIsolationEnabled, 'false' means only for regular cluster.
+     *
+     * @param computeIsolationSupported the computeIsolationSupported value to set.
+     * @return the VmSizeCompatibilityFilter object itself.
+     */
+    public VmSizeCompatibilityFilter withComputeIsolationSupported(String computeIsolationSupported) {
+        this.computeIsolationSupported = computeIsolationSupported;
         return this;
     }
 

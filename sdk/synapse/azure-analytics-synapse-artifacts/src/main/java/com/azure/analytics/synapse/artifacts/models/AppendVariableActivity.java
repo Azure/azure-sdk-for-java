@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AppendVariable")
 @JsonFlatten
 @Fluent
-public class AppendVariableActivity extends Activity {
+public class AppendVariableActivity extends ControlActivity {
     /*
      * Name of the variable whose value needs to be appended to.
      */

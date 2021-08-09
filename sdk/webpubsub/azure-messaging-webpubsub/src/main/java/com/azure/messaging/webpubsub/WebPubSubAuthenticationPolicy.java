@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
 import com.nimbusds.jose.JOSEException;
@@ -23,7 +24,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.Map;
 
 import static java.time.LocalDateTime.now;
 
@@ -64,14 +64,14 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next) {
-        final String audienceUrl = context.getHttpRequest().getUrl().toString();
-        final String token = getAuthenticationToken(audienceUrl, null, credential);
+        return Mono.fromRunnable(() -> {
+            final String audienceUrl = context.getHttpRequest().getUrl().toString();
+            final String token = getAuthenticationToken(audienceUrl, null, credential);
 
-        if (token != null) {
-            context.getHttpRequest().setHeader("Authorization", "Bearer " + token);
-        }
-
-        return next.process();
+            if (token != null) {
+                context.getHttpRequest().setHeader("Authorization", "Bearer " + token);
+            }
+        }).then(next.process());
     }
 
     static String getAuthenticationToken(final String audienceUrl,
@@ -79,26 +79,22 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
                                          final AzureKeyCredential credential) {
         try {
             Duration expiresAfter = Duration.ofHours(1);
-            String userId = null;
+            final JWTClaimsSet.Builder claimsBuilder = new JWTClaimsSet.Builder()
+                .audience(audienceUrl);
 
             if (options != null) {
                 expiresAfter = options.getExpiresAfter() == null ? expiresAfter : options.getExpiresAfter();
-                userId = options.getUserId();
-            }
-
-            final JWTClaimsSet.Builder claimsBuilder = new JWTClaimsSet.Builder()
-                .audience(audienceUrl)
-                .expirationTime(Date.from(now().plus(expiresAfter).atZone(ZoneId.systemDefault()).toInstant()));
-
-            if (userId != null && !userId.isEmpty()) {
-                claimsBuilder.subject(userId);
-            }
-
-            if (options != null) {
-                for (Map.Entry<String, Object> e : options.getClaims().entrySet()) {
-                    claimsBuilder.claim(e.getKey(), e.getValue());
+                String userId = options.getUserId();
+                if (!CoreUtils.isNullOrEmpty(options.getRoles())) {
+                    claimsBuilder.claim("role", options.getRoles());
+                }
+                if (!CoreUtils.isNullOrEmpty(userId)) {
+                    claimsBuilder.subject(userId);
                 }
             }
+
+            claimsBuilder
+                .expirationTime(Date.from(now().plus(expiresAfter).atZone(ZoneId.systemDefault()).toInstant()));
 
             final JWTClaimsSet claims = claimsBuilder.build();
 

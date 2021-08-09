@@ -19,7 +19,7 @@ autorest --java --use=C:/work/autorest.java
 ```
 
 ### Code generation settings
-``` yaml
+```yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cosmos-db/data-plane/Microsoft.Tables/preview/2019-02-02/table.json
 java: true
 output-folder: ..\

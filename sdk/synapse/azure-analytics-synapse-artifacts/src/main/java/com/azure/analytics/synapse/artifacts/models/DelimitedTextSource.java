@@ -26,6 +26,14 @@ public final class DelimitedTextSource extends CopySource {
     @JsonProperty(value = "formatSettings")
     private DelimitedTextReadSettings formatSettings;
 
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
     /**
      * Get the storeSettings property: DelimitedText store settings.
      *
@@ -63,6 +71,28 @@ public final class DelimitedTextSource extends CopySource {
      */
     public DelimitedTextSource setFormatSettings(DelimitedTextReadSettings formatSettings) {
         this.formatSettings = formatSettings;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the DelimitedTextSource object itself.
+     */
+    public DelimitedTextSource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

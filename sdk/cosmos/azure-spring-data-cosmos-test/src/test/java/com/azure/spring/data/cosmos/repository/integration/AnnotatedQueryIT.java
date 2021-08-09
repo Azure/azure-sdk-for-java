@@ -11,6 +11,7 @@ import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -25,6 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.common.PageTestUtils.validateLastPage;
 import static com.azure.spring.data.cosmos.common.PageTestUtils.validateNonLastPage;
@@ -109,6 +111,50 @@ public class AnnotatedQueryIT {
 
         final List<Address> resultsDesc = addressRepository.annotatedFindByCity(TestConstants.CITY, Sort.by(Sort.Direction.DESC, "street"));
         assertAddressOrder(resultsDesc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testAnnotatedQueryWithValueAsPage() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+        addressRepository.saveAll(addresses);
+
+        final PageRequest cosmosPageRequest = CosmosPageRequest.of(0, 10);
+        final Page<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
+        cosmosPageRequest);
+
+        assertAddressPostalCodes(postalCodes.getContent(), addresses);
+    }
+
+    @Test
+    public void testAnnotatedQueryWithValueAsList() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+        addressRepository.saveAll(addresses);
+
+        final List<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY);
+
+        assertAddressPostalCodes(postalCodes, addresses);
+    }
+
+    @Test
+    public void testAnnotatedQueryWithJsonNodeAsPage() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+        addressRepository.saveAll(addresses);
+
+        final PageRequest cosmosPageRequest = CosmosPageRequest.of(0, 10);
+        final Page<JsonNode> postalCodes = addressRepository.annotatedFindPostalCodesByCity(TestConstants.CITY,
+        cosmosPageRequest);
+        final List<String> actualPostalCodes = postalCodes.getContent()
+                                                          .stream()
+                                                          .map(jsonNode -> jsonNode.get("postalCode").asText())
+                                                          .collect(Collectors.toList());
+        assertAddressPostalCodes(actualPostalCodes, addresses);
+    }
+
+    private void assertAddressPostalCodes(List<String> postalCodes, List<Address> expectedResults) {
+        List<String> expectedPostalCodes = expectedResults.stream()
+                                                          .map(Address::getPostalCode)
+                                                          .collect(Collectors.toList());
+        assertThat(postalCodes).isEqualTo(expectedPostalCodes);
     }
 
     private void assertAddressOrder(List<Address> actualResults, Address ... expectedResults) {

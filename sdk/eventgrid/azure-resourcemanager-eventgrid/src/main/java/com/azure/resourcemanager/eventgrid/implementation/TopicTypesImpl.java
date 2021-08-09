@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.TopicTypesClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventTypeInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner;
@@ -23,9 +22,10 @@ public final class TopicTypesImpl implements TopicTypes {
 
     private final TopicTypesClient innerClient;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public TopicTypesImpl(TopicTypesClient innerClient, EventGridManager serviceManager) {
+    public TopicTypesImpl(
+        TopicTypesClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -76,7 +76,7 @@ public final class TopicTypesImpl implements TopicTypes {
         return this.innerClient;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 }

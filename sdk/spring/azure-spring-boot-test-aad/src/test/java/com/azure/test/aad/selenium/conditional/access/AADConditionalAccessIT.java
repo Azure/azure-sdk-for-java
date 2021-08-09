@@ -3,17 +3,16 @@
 
 package com.azure.test.aad.selenium.conditional.access;
 
-import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import com.azure.test.aad.common.AADSeleniumITHelper;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -26,9 +25,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Map;
 
 import static com.azure.spring.test.EnvironmentVariable.CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID;
-import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+import static com.azure.test.aad.selenium.AADITHelper.createDefaultProperties;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
+
+/**
+ * Before running this test case, follow the <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-test-aad/README.md#what-is-aad-conditional-access-in-aad">guide</a> to start <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/src/test/java/com/azure/test/aad/webapi/conditional/access/webapi/a/ConditionalAccessPolicyTestWebApiA.java">WebapiA</a> and  <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-test-aad-resource-server/src/test/java/com/azure/test/aad/conditional/access/webapi/b/ConditionalAccessPolicyTestWebApiB.java">webapiB</a>.
+ */
+@Disabled
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADConditionalAccessIT {
 
     private AADSeleniumITHelper aadSeleniumITHelper;
@@ -36,10 +42,6 @@ public class AADConditionalAccessIT {
     private static final String WEB_API_A_ENDPOINT = "http://localhost:8882/webapiA";
     private static final Logger LOGGER = LoggerFactory.getLogger(AADConditionalAccessIT.class);
 
-    /**
-     * Before running this test case, follow the <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-test-aad/README.md#what-is-aad-conditional-access-in-aad">guide</a> to start <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-test-aad-obo/src/test/java/com/azure/test/aad/webapi/conditional/access/webapi/a/ConditionalAccessPolicyTestWebApiA.java">WebapiA</a> and  <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-test-aad-resource-server/src/test/java/com/azure/test/aad/conditional/access/webapi/b/ConditionalAccessPolicyTestWebApiB.java">webapiB</a>.
-     */
-    @Ignore
     @Test
     public void conditionalAccessTest() {
         Map<String, String> properties = createDefaultProperties();
@@ -47,16 +49,14 @@ public class AADConditionalAccessIT {
             "api://" + CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID + "/File.Read");
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
         String body = aadSeleniumITHelper.loginAndGetBodyText();
-        Assert.assertEquals("Response from webapiB.", body);
+        assertEquals("Response from webapiB.", body);
     }
 
-    @After
+    @AfterAll
     public void destroy() {
         aadSeleniumITHelper.destroy();
     }
 
-
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
     public static class DumbApp {

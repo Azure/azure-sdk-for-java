@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.fluent.OperationsStatusClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.redisenterprise.models.OperationStatus;
@@ -20,9 +19,11 @@ public final class OperationsStatusImpl implements OperationsStatus {
 
     private final OperationsStatusClient innerClient;
 
-    private final RedisEnterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    public OperationsStatusImpl(OperationsStatusClient innerClient, RedisEnterpriseManager serviceManager) {
+    public OperationsStatusImpl(
+        OperationsStatusClient innerClient,
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -53,7 +54,7 @@ public final class OperationsStatusImpl implements OperationsStatus {
         return this.innerClient;
     }
 
-    private RedisEnterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 }

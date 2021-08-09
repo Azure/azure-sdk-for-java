@@ -5,6 +5,7 @@ package com.azure.spring.keyvault;
 
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
@@ -20,13 +21,19 @@ public class KeyVaultHealthIndicator implements HealthIndicator {
 
     @Override
     public Health health() {
-        boolean isUp = environment.getPropertySources().stream()
-                .filter(propertySource -> propertySource instanceof KeyVaultPropertySource)
-                .anyMatch(propertySource -> ((KeyVaultPropertySource) propertySource).isUp());
-        if (isUp) {
-            return Health.up().build();
+        KeyVaultPropertySource keyVaultPropertySource =
+            environment.getPropertySources()
+                       .stream()
+                       .filter(propertySource -> propertySource instanceof KeyVaultPropertySource)
+                       .map(propertySource -> (KeyVaultPropertySource) propertySource)
+                       .findFirst()
+                       .orElse(null);
+        if (keyVaultPropertySource == null) {
+            return Health.status(Status.UNKNOWN).build();
+        } else if (keyVaultPropertySource.isUp()) {
+            return Health.status(Status.UP).build();
         } else {
-            return Health.down().build();
+            return Health.status(Status.DOWN).build();
         }
     }
 }

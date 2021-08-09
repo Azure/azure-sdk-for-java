@@ -1,7 +1,57 @@
 # Release History
 
-## 5.7.0-beta.1 (Unreleased)
+## 5.10.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Add `EventProcessorClientBuilder.prefetchCount(int)` overload.
+
+## 5.9.0 (2021-07-09)
+
+### Features Added
+
+- Add additional fields to `EventData`. `getContentType()`, `getCorrelationId()`, `getMessageId()` and the corresponding setters were added.
+- Add `EventData.getRawAmqpMessage()`. Data in `EventData.getSystemProperties()` is backed by `AmqpAnnotatedMessage` but are read-only.
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.18.0`.
+- Update `azure-core-amqp` dependency to `2.3.0`.
+
+## 5.8.0 (2021-06-14)
+
+### Features Added
+
+- Add `EventHubClientBuilder.credential(String, String, AzureNamedKeyCredential)` overload.
+- Add `EventHubClientBuilder.credential(String, String, AzureSasCredential)` overload.
+- Add `EventProcessorClientBuilder.credential(String, String, AzureNamedKeyCredential)` overload.
+- Add `EventProcessorClientBuilder.credential(String, String, AzureSasCredential)` overload.
+- Add `EventHubConnectionStringProperties` to get connection string properties.
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.17.0`.
+- Update `azure-core-amqp` dependency to `2.2.0`.
+
+## 5.7.1 (2021-05-10)
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.16.0`.
+- Update `azure-core-amqp` dependency to `2.0.5`.
+
+## 5.7.0 (2021-04-12)
+
+## Bug Fixes
+
+- Update AMQP receive link to add credits on the link based on backpressure
+  request from downstream.
+- Update logging to be less verbose.
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.15.0`.
+- Update `azure-core-amqp` dependency to `2.0.4`.
 
 ## 5.6.0 (2021-03-10)
 ### Bug Fixes

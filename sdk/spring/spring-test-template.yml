@@ -5,9 +5,12 @@ parameters:
   TestResourceDirectories:
     - spring/azure-spring-boot-test-cosmos
     - spring/azure-spring-boot-test-keyvault
+    - spring/azure-spring-boot-test-keyvault-certificate
     - spring/azure-spring-boot-test-servicebus-jms
     - spring/azure-spring-boot-test-storage
     - spring/azure-spring-cloud-test-eventhubs
+    - spring/azure-spring-cloud-test-eventhubs-kafka
+    - spring/azure-spring-cloud-test-servicebus-binder
   Artifacts:
     - name: azure-spring-boot-test-application
       groupId: com.azure.spring
@@ -24,7 +27,7 @@ parameters:
     - name: azure-spring-boot-test-aad-b2c
       groupId: com.azure.spring
       safeName: azurespringboottestaadb2c
-    - name: azure-spring-boot-test-aad-obo
+    - name: azure-spring-boot-test-aad-webapp-and-resource-server-with-obo
       groupId: com.azure.spring
       safeName: azurespringboottestaadobo
     - name: azure-spring-boot-test-aad-resource-server
@@ -36,6 +39,9 @@ parameters:
     - name: azure-spring-boot-test-keyvault
       groupId: com.azure.spring
       safeName: azurespringboottestkeyvault
+    - name: azure-spring-boot-test-keyvault-certificate
+      groupId: com.azure.spring
+      safeName: azurespringboottestkeyvaultcertificate
     - name: azure-spring-boot-test-keyvault-reactive
       groupId: com.azure.spring
       safeName: azurespringboottestkeyvaultreactive
@@ -48,9 +54,15 @@ parameters:
     - name: azure-spring-cloud-test-eventhubs
       groupId: com.azure.spring
       safeName: azurespringcloudtesteventhubs
+    - name: azure-spring-cloud-test-eventhubs-kafka
+      groupId: com.azure.spring
+      safeName: azurespringcloudtesteventhubskafka
     - name: azure-spring-boot-test-storage
       groupId: com.azure.spring
       safeName: azurespringbootteststorage
+    - name: azure-spring-cloud-test-servicebus-binder
+      groupId: com.azure.spring
+      safeName: azurespringcloudtestservicebusbinder
   EnvVars:
     AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
     AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
@@ -89,7 +101,8 @@ stages:
         TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
         Artifacts: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
-          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+          options: '$(DefaultTestOptions) -DskipSpringITs=false'
+          mavenOptions: '$(DefaultTestMavenOptions)'
           goals: "verify"
         PreSteps:
             - script: |
@@ -102,6 +115,49 @@ stages:
               displayName: 'Create On-demand test user'
 
         PostSteps:
+          - powershell: |
+                az ad user delete --id "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}"
+                az logout
+            condition: always()
+            displayName: 'Delete On-demand test user'
+
+          - script: |
+              python --version
+              python -m pip install setuptools termcolor in_place
+              python sdk/spring/scripts/replace_util.py --module spring --log debug --color false
+            displayName: 'Run replace_util.py'
+          - task: Maven@3
+            displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: 'install'
+              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaBuildVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
+
+          - script: |
+                az cloud set --name AzureChinaCloud
+            condition: endsWith('${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}', 'cn')
+            displayName: 'Switch to Azure China Cloud'
+          - powershell: |
+                az login --allow-no-subscriptions --tenant ${{ parameters.EnvVars.AAD_TENANT_ID_1 }} --service-principal -u ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_ID }} -p ${{ parameters.EnvVars.AAD_SERVICE_PRICIPAL_CLIENT_SECRET }}
+                az ad user create --user-principal-name "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}" --display-name "${{ parameters.AadOnDemandUserDisplayName }}" --password "${{ parameters.EnvVars.AAD_USER_PASSWORD_ON_DEMAND }}" --force-change-password-next-login false
+            displayName: 'Create On-demand test user'
+
+          - task: Maven@3
+            displayName: 'Run tests again, JDK Version: $(JavaBuildVersion)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: verify
+              options: '$(DefaultTestOptions) -DskipSpringITs=false'
+              mavenOptions: '$(DefaultTestMavenOptions)'
+
+            env:
+              ${{ parameters.EnvVars }}
+
           - powershell: |
                 az ad user delete --id "${{ parameters.EnvVars.AAD_USER_NAME_ON_DEMAND }}"
                 az logout

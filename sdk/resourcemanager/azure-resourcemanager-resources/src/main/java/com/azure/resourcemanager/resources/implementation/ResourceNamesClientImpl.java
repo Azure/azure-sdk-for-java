@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -54,7 +55,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
     @Host("{$host}")
     @ServiceInterface(name = "SubscriptionClientRe")
     private interface ResourceNamesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Resources/checkResourceName")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -62,6 +63,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ResourceName resourceNameDefinition,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -69,7 +71,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
      * a reserved word.
      *
-     * @param resourceNameDefinition Name and Type of the Resource.
+     * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -88,20 +90,25 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
         if (resourceNameDefinition != null) {
             resourceNameDefinition.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .checkResourceName(
-                            this.client.getEndpoint(), this.client.getApiVersion(), resourceNameDefinition, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            resourceNameDefinition,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
      * a reserved word.
      *
-     * @param resourceNameDefinition Name and Type of the Resource.
+     * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -121,16 +128,18 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
         if (resourceNameDefinition != null) {
             resourceNameDefinition.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .checkResourceName(this.client.getEndpoint(), this.client.getApiVersion(), resourceNameDefinition, context);
+            .checkResourceName(
+                this.client.getEndpoint(), this.client.getApiVersion(), resourceNameDefinition, accept, context);
     }
 
     /**
      * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
      * a reserved word.
      *
-     * @param resourceNameDefinition Name and Type of the Resource.
+     * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -192,7 +201,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
      * a reserved word.
      *
-     * @param resourceNameDefinition Name and Type of the Resource.
+     * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -146,6 +146,13 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteUserInvitationRequestResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "31912942-ddd7-4a00-9e7c-e6fe11d9ae00",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b99f12fc-7b59-45ef-8950-2c3f5142a5d5",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "125",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "31912942-ddd7-4a00-9e7c-e6fe11d9ae00",
+      "request-id" : "b99f12fc-7b59-45ef-8950-2c3f5142a5d5",
       "StatusCode" : "400",
-      "Date" : "Wed, 31 Mar 2021 21:18:10 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:22:37 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "31912942-ddd7-4a00-9e7c-e6fe11d9ae00",
-      "elapsed-time" : "35",
+      "client-request-id" : "b99f12fc-7b59-45ef-8950-2c3f5142a5d5",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "125",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.tokenizers[0].name : The name field is required.\\r\\n\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "31912942-ddd7-4a00-9e7c-e6fe11d9ae00",
+      "x-ms-client-request-id" : "b99f12fc-7b59-45ef-8950-2c3f5142a5d5",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanuseallregexflagsemptynametokenizer8ea39222e1765b" ]
+  "variables" : [ "hotelscanuseallregexflagsemptynametokenizer82b99418ff9a01" ]
 }

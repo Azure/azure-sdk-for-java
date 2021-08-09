@@ -8,19 +8,12 @@ import java.security.KeyStore;
 /**
  * The Azure Key Vault LoadStoreParameter of the KeyStoreSpi.
  */
-public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
-
-    private static final String DEFAULT_AAD_AUTHENTICATION_URL = "https://login.microsoftonline.com/";
+public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
 
     /**
      * Stores the URI.
      */
     private final String uri;
-
-    /**
-     * Stores the Azure AD authentication URL.
-     */
-    private final String aadAuthenticationUrl;
 
     /**
      * Stores the tenant id.
@@ -48,7 +41,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * @param uri the Azure Key Vault URI.
      */
     public KeyVaultLoadStoreParameter(String uri) {
-        this(uri, null);
+        this(uri, null, null, null, null);
     }
 
     /**
@@ -58,12 +51,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * @param managedIdentity the managed identity.
      */
     public KeyVaultLoadStoreParameter(String uri, String managedIdentity) {
-        this.uri = uri;
-        this.aadAuthenticationUrl = null;
-        this.tenantId = null;
-        this.clientId = null;
-        this.clientSecret = null;
-        this.managedIdentity = managedIdentity;
+        this(uri, null, null, null, managedIdentity);
     }
 
     /**
@@ -75,29 +63,25 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * @param clientSecret the client secret.
      */
     public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret) {
-        this(uri, DEFAULT_AAD_AUTHENTICATION_URL, tenantId, clientId, clientSecret);
+        this(uri, tenantId, clientId, clientSecret, null);
     }
-
 
     /**
      * Constructor.
      *
      * @param uri the Azure Key Vault URI.
-     * @param aadAuthenticationUrl the Azure AD authentication URL.
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.
+     * @param managedIdentity the managedIdentity.
      */
-    public KeyVaultLoadStoreParameter(String uri, String aadAuthenticationUrl,
-            String tenantId, String clientId, String clientSecret) {
+    public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret, String managedIdentity) {
         this.uri = uri;
-        this.aadAuthenticationUrl = aadAuthenticationUrl;
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.managedIdentity = null;
+        this.managedIdentity = managedIdentity;
     }
-
 
     /**
      * Get the protection parameter.
@@ -107,15 +91,6 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
     @Override
     public KeyStore.ProtectionParameter getProtectionParameter() {
         return null;
-    }
-
-    /**
-     * Get the Azure AD authentication URL.
-     *
-     * @return the Azure AD authentication URL.
-     */
-    public String getAadAuthenticationUrl() {
-        return aadAuthenticationUrl;
     }
 
     /**

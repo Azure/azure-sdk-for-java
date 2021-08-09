@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')//docs/search.post.search?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "29fc726f-b0bf-46df-b901-5abb0ea9c791",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "baa893a3-aa18-4f5c-be05-7372928d73bd",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "341",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "29fc726f-b0bf-46df-b901-5abb0ea9c791",
+      "request-id" : "baa893a3-aa18-4f5c-be05-7372928d73bd",
       "StatusCode" : "400",
-      "Date" : "Wed, 31 Mar 2021 21:16:59 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:21:15 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "29fc726f-b0bf-46df-b901-5abb0ea9c791",
-      "elapsed-time" : "47",
+      "client-request-id" : "baa893a3-aa18-4f5c-be05-7372928d73bd",
+      "elapsed-time" : "34",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "341",
       "Body" : "{\"error\":{\"code\":\"InvalidRequestParameter\",\"message\":\"Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax.\",\"details\":[{\"code\":\"InvalidSearchSyntax\",\"message\":\"Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax.\"}]}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "29fc726f-b0bf-46df-b901-5abb0ea9c791",
+      "x-ms-client-request-id" : "baa893a3-aa18-4f5c-be05-7372928d73bd",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

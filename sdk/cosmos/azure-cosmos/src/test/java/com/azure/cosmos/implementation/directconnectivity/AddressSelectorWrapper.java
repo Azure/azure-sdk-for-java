@@ -171,9 +171,9 @@ public class AddressSelectorWrapper {
                     add(new Verifier() {
                         @Override
                         public void verify(InvocationOnMock invocation) {
-                            RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                            boolean includePrimary = invocation.getArgumentAt(1, Boolean.class);
-                            boolean forceRefresh = invocation.getArgumentAt(2, Boolean.class);
+                            RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                            boolean includePrimary = invocation.getArgument(1, Boolean.class);
+                            boolean forceRefresh = invocation.getArgument(2, Boolean.class);
 
                             assertThat(request).is(requestMatcher);
 
@@ -223,9 +223,9 @@ public class AddressSelectorWrapper {
         for (InvocationOnMock invocationOnMock : invocationOnMockList) {
             boolean forceRefresh;
             if (invocationOnMock.getMethod().getName().endsWith("resolveAllUriAsync")) {
-                forceRefresh = invocationOnMock.getArgumentAt(2, Boolean.class);
+                forceRefresh = invocationOnMock.getArgument(2, Boolean.class);
             } else {
-                forceRefresh = invocationOnMock.getArgumentAt(1, Boolean.class);
+                forceRefresh = invocationOnMock.getArgument(1, Boolean.class);
             }
             if (forceRefresh) {
                 count++;
@@ -240,9 +240,9 @@ public class AddressSelectorWrapper {
         for (InvocationOnMock invocationOnMock : invocationOnMockList) {
             boolean forceRefresh;
             if (invocationOnMock.getMethod().getName().endsWith("resolveAllUriAsync")) {
-                forceRefresh = invocationOnMock.getArgumentAt(2, Boolean.class);
+                forceRefresh = invocationOnMock.getArgument(2, Boolean.class);
             } else {
-                forceRefresh = invocationOnMock.getArgumentAt(1, Boolean.class);
+                forceRefresh = invocationOnMock.getArgument(1, Boolean.class);
             }
             if (forceRefresh) {
                 count++;
@@ -305,8 +305,8 @@ public class AddressSelectorWrapper {
                 AtomicBoolean refreshed = new AtomicBoolean(false);
                 Mockito.doAnswer((invocation) -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean forceRefresh = invocation.getArgumentAt(1, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean forceRefresh = invocation.getArgument(1, Boolean.class);
 
                     if (forceRefresh || refreshed.get()) {
                         refreshed.set(true);
@@ -378,8 +378,8 @@ public class AddressSelectorWrapper {
                 AtomicBoolean refreshed = new AtomicBoolean(false);
                 Mockito.doAnswer((invocation) -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean forceRefresh = invocation.getArgumentAt(1, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean forceRefresh = invocation.getArgument(1, Boolean.class);
                     if (partitionKeyRangeFunction != null) {
                         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeFunction.apply(request);
                     }
@@ -394,9 +394,9 @@ public class AddressSelectorWrapper {
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean includePrimary = invocation.getArgumentAt(1, Boolean.class);
-                    boolean forceRefresh = invocation.getArgumentAt(2, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean includePrimary = invocation.getArgument(1, Boolean.class);
+                    boolean forceRefresh = invocation.getArgument(2, Boolean.class);
 
                     ImmutableList.Builder<Uri> b = ImmutableList.builder();
 
@@ -423,8 +423,8 @@ public class AddressSelectorWrapper {
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean forceRefresh = invocation.getArgumentAt(1, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean forceRefresh = invocation.getArgument(1, Boolean.class);
 
                     ImmutableList.Builder<AddressInformation> b = ImmutableList.builder();
 
@@ -486,9 +486,9 @@ public class AddressSelectorWrapper {
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean includePrimary = invocation.getArgumentAt(1, Boolean.class);
-                    boolean forceRefresh = invocation.getArgumentAt(2, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean includePrimary = invocation.getArgument(1, Boolean.class);
+                    boolean forceRefresh = invocation.getArgument(2, Boolean.class);
 
                     if (includePrimary) {
                         return Mono.just(ImmutableList.builder().addAll(secondaryAddresses).add(primaryAddress).build());

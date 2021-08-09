@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.AccountFiltersClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
 import com.azure.resourcemanager.mediaservices.models.AccountFilter;
@@ -21,9 +20,10 @@ public final class AccountFiltersImpl implements AccountFilters {
 
     private final AccountFiltersClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public AccountFiltersImpl(AccountFiltersClient innerClient, MediaservicesManager serviceManager) {
+    public AccountFiltersImpl(
+        AccountFiltersClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -183,7 +183,7 @@ public final class AccountFiltersImpl implements AccountFilters {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

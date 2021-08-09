@@ -1,58 +1,58 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob34076b959')?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob11821c414')?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "34924cad-fe30-4420-b9ff-b428cc3de850"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "62c7cb83-a214-494e-859f-3d8ae9ed048d"
     },
     "Response" : {
+      "content-length" : "137",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "34924cad-fe30-4420-b9ff-b428cc3de850",
+      "request-id" : "62c7cb83-a214-494e-859f-3d8ae9ed048d",
       "StatusCode" : "404",
-      "Date" : "Wed, 31 Mar 2021 21:20:12 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:23:18 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "34924cad-fe30-4420-b9ff-b428cc3de850",
-      "elapsed-time" : "16",
+      "client-request-id" : "62c7cb83-a214-494e-859f-3d8ae9ed048d",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "137",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob34076b959' was found in a service named 'alzimmer-test'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob11821c414' was found in a service named 'alzimmer-test'.\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "34924cad-fe30-4420-b9ff-b428cc3de850",
+      "x-ms-client-request-id" : "62c7cb83-a214-494e-859f-3d8ae9ed048d",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob34076b959')?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob11821c414')?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aacba50b-a81d-4eed-8475-3b13bc1a54cc"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2f89ff9e-d218-4c8e-9597-13742c84238b"
     },
     "Response" : {
+      "content-length" : "130",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "aacba50b-a81d-4eed-8475-3b13bc1a54cc",
+      "request-id" : "2f89ff9e-d218-4c8e-9597-13742c84238b",
       "StatusCode" : "404",
-      "Date" : "Wed, 31 Mar 2021 21:20:12 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:23:18 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "aacba50b-a81d-4eed-8475-3b13bc1a54cc",
-      "elapsed-time" : "5",
+      "client-request-id" : "2f89ff9e-d218-4c8e-9597-13742c84238b",
+      "elapsed-time" : "14",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "130",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob34076b959' was found in service 'alzimmer-test'.\"}}",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob11821c414' was found in service 'alzimmer-test'.\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "aacba50b-a81d-4eed-8475-3b13bc1a54cc",
+      "x-ms-client-request-id" : "2f89ff9e-d218-4c8e-9597-13742c84238b",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-java-test-blob34076b959" ]
+  "variables" : [ "azs-java-test-blob11821c414" ]
 }

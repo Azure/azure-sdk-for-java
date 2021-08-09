@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/552bfdaf0552bfdaf7770255971cdbe8e6337496f9c9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d36bf885-ce69-4d0d-bf26-621c7f01e58e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7B480E338",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:40:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "3d41e2e1-e01e-0051-18a0-79573d000000",
+      "x-ms-client-request-id" : "d36bf885-ce69-4d0d-bf26-621c7f01e58e",
+      "Date" : "Thu, 15 Jul 2021 17:40:58 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/552bfdaf0552bfdaf7770255971cdbe8e6337496f9c9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2017-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "38a6814a-6754-4c90-8aeb-b2643b8b2af1"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2017-11-09",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:40:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-has-legal-hold" : "false",
+      "Date" : "Thu, 15 Jul 2021 17:40:57 GMT",
+      "x-ms-has-immutability-policy" : "false",
+      "Vary" : "Origin",
+      "eTag" : "0x8D947B7B480E338",
+      "x-ms-request-id" : "aa022d60-601e-004f-06a0-79bbe5000000"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "552bfdaf0552bfdaf7770255971cdbe8e6337496f9c9", "552bfdaf078577c8", "552bfdaf89875aa6" ]
+}

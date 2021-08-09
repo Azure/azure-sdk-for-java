@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,13 +19,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata\\.type",
+        property = "@odata.type",
         defaultImpl = SimilarityAlgorithm.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ClassicSimilarity", value = ClassicSimilarityAlgorithm.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.BM25Similarity", value = BM25SimilarityAlgorithm.class)
 })
-@JsonFlatten
 @Immutable
 @JsonTypeName("Similarity")
 public abstract class SimilarityAlgorithm { }

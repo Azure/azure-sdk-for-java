@@ -3,7 +3,6 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.TestBase;
@@ -15,6 +14,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -46,9 +47,11 @@ public final class AnomalyDimensionValuesAsyncTest extends AnomalyDimensionValue
 
         Assertions.assertNotNull(dimensionValuesFlux);
 
+        List<String> dimensions = new ArrayList<>();
         StepVerifier.create(dimensionValuesFlux)
-            .assertNext(value -> assertListAnomalyDimensionValuesOutput(value))
-            .expectNextCount(ListAnomalyDimensionValuesOutput.INSTANCE.expectedValues - 1)
+            .thenConsumeWhile(dimensions::add)
             .verifyComplete();
+
+        Assertions.assertEquals(ListAnomalyDimensionValuesOutput.INSTANCE.expectedValues, dimensions.size());
     }
 }

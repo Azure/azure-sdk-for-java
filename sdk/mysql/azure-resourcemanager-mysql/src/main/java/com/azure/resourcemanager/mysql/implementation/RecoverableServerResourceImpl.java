@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.RecoverableServerResourceInner;
 import com.azure.resourcemanager.mysql.models.RecoverableServerResource;
 
 public final class RecoverableServerResourceImpl implements RecoverableServerResource {
     private RecoverableServerResourceInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    RecoverableServerResourceImpl(RecoverableServerResourceInner innerObject, MySqlManager serviceManager) {
+    RecoverableServerResourceImpl(
+        RecoverableServerResourceInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -58,7 +58,7 @@ public final class RecoverableServerResourceImpl implements RecoverableServerRes
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

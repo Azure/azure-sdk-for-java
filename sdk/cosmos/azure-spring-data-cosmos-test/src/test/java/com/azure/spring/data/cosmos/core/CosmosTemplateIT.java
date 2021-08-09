@@ -6,8 +6,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
@@ -23,6 +25,7 @@ import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
+import com.azure.spring.data.cosmos.domain.AutoScaleSample;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -40,6 +43,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
@@ -92,6 +96,7 @@ public class CosmosTemplateIT {
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
+    private static CosmosAsyncClient client;
     private static CosmosTemplate cosmosTemplate;
     private static CosmosEntityInformation<Person, String> personInfo;
     private static String containerName;
@@ -112,7 +117,7 @@ public class CosmosTemplateIT {
     @Before
     public void setUp() throws ClassNotFoundException {
         if (cosmosTemplate == null) {
-            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
+            client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
@@ -588,4 +593,39 @@ public class CosmosTemplateIT {
         assertNotNull(foundEntity.getLastModifiedByDate());
     }
 
+    @Test
+    public void testSliceQuery() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
+        final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
+        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
+
+        final Slice<Person> slice = cosmosTemplate.sliceQuery(query, Person.class, containerName);
+        assertThat(slice.getContent().size()).isEqualTo(1);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
+    public void createWithAutoscale() throws ClassNotFoundException {
+        final CosmosEntityInformation<AutoScaleSample, String> autoScaleSampleInfo =
+            new CosmosEntityInformation<>(AutoScaleSample.class);
+        CosmosContainerProperties containerProperties = cosmosTemplate.createContainerIfNotExists(autoScaleSampleInfo);
+        assertNotNull(containerProperties);
+        ThroughputResponse throughput = client.getDatabase(TestConstants.DB_NAME)
+            .getContainer(autoScaleSampleInfo.getContainerName())
+            .readThroughput()
+            .block();
+        assertNotNull(throughput);
+        assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
+            throughput.getProperties().getAutoscaleMaxThroughput());
+    }
 }

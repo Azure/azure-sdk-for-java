@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.mysql.fluent.models.QueryPerformanceInsightResetDataResultInner;
 import com.azure.resourcemanager.mysql.models.QueryPerformanceInsightResetDataResult;
@@ -20,9 +19,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final ResourceProvidersClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public ResourceProvidersImpl(ResourceProvidersClient innerClient, MySqlManager serviceManager) {
+    public ResourceProvidersImpl(
+        ResourceProvidersClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -69,7 +69,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

@@ -36,6 +36,7 @@ import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -653,7 +654,7 @@ public final class SearchAsyncClient {
                 SearchPagedResponse page = new SearchPagedResponse(
                     new SimpleResponse<>(response, getSearchResults(result)),
                     createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
-                    result.getCoverage());
+                    result.getCoverage(), result.getAnswers());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -806,49 +807,61 @@ public final class SearchAsyncClient {
      * Create search request from search text and parameters
      *
      * @param searchText search text
-     * @param searchOptions search options
+     * @param options search options
      * @return SearchRequest
      */
-    private static SearchRequest createSearchRequest(String searchText, SearchOptions searchOptions) {
-        SearchRequest searchRequest = new SearchRequest().setSearchText(searchText);
+    private static SearchRequest createSearchRequest(String searchText, SearchOptions options) {
+        SearchRequest request = new SearchRequest().setSearchText(searchText);
 
-        if (searchOptions != null) {
-            List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
-                : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
-                    .collect(Collectors.toList());
-            searchRequest.setSearchMode(searchOptions.getSearchMode())
-                .setFacets(searchOptions.getFacets())
-                .setFilter(searchOptions.getFilter())
-                .setHighlightPostTag(searchOptions.getHighlightPostTag())
-                .setHighlightPreTag(searchOptions.getHighlightPreTag())
-                .setIncludeTotalResultCount(searchOptions.isTotalCountIncluded())
-                .setMinimumCoverage(searchOptions.getMinimumCoverage())
-                .setQueryType(searchOptions.getQueryType())
-                .setScoringParameters(scoringParameters)
-                .setScoringProfile(searchOptions.getScoringProfile())
-                .setSkip(searchOptions.getSkip())
-                .setTop(searchOptions.getTop())
-                .setScoringStatistics(searchOptions.getScoringStatistics())
-                .setSessionId(searchOptions.getSessionId());
-
-            if (searchOptions.getHighlightFields() != null) {
-                searchRequest.setHighlightFields(String.join(",", searchOptions.getHighlightFields()));
-            }
-
-            if (searchOptions.getSearchFields() != null) {
-                searchRequest.setSearchFields(String.join(",", searchOptions.getSearchFields()));
-            }
-
-            if (searchOptions.getOrderBy() != null) {
-                searchRequest.setOrderBy(String.join(",", searchOptions.getOrderBy()));
-            }
-
-            if (searchOptions.getSelect() != null) {
-                searchRequest.setSelect(String.join(",", searchOptions.getSelect()));
-            }
+        if (options == null) {
+            return request;
         }
 
-        return searchRequest;
+        List<String> scoringParameters = options.getScoringParameters() == null
+            ? null
+            : options.getScoringParameters().stream().map(ScoringParameter::toString).collect(Collectors.toList());
+
+        return request.setIncludeTotalResultCount(options.isTotalCountIncluded())
+            .setFacets(options.getFacets())
+            .setFilter(options.getFilter())
+            .setHighlightFields(nullSafeStringJoin(options.getHighlightFields()))
+            .setHighlightPostTag(options.getHighlightPostTag())
+            .setHighlightPreTag(options.getHighlightPreTag())
+            .setMinimumCoverage(options.getMinimumCoverage())
+            .setOrderBy(nullSafeStringJoin(options.getOrderBy()))
+            .setQueryType(options.getQueryType())
+            .setScoringParameters(scoringParameters)
+            .setScoringProfile(options.getScoringProfile())
+            .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
+            .setQueryLanguage(options.getQueryLanguage())
+            .setSpeller(options.getSpeller())
+            .setAnswers(createSearchRequestAnswers(options))
+            .setSearchMode(options.getSearchMode())
+            .setScoringStatistics(options.getScoringStatistics())
+            .setSessionId(options.getSessionId())
+            .setSelect(nullSafeStringJoin(options.getSelect()))
+            .setSkip(options.getSkip())
+            .setTop(options.getTop())
+            .setCaptions(options.getCaptions())
+            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()));
+    }
+
+    private static String createSearchRequestAnswers(SearchOptions searchOptions) {
+        QueryAnswer answer = searchOptions.getAnswers();
+        Integer answersCount = searchOptions.getAnswersCount();
+
+        // No answer has been defined.
+        if (answer == null) {
+            return null;
+        }
+
+        // No count, just send the QueryAnswer.
+        if (answersCount == null) {
+            return answer.toString();
+        }
+
+        // Answer and count, format it as the service expects.
+        return answer + "|count-" + answersCount;
     }
 
     /**
@@ -856,38 +869,26 @@ public final class SearchAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName search text
-     * @param suggestOptions suggest options
+     * @param options suggest options
      * @return SuggestRequest
      */
     private static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
-        SuggestOptions suggestOptions) {
-        SuggestRequest suggestRequest = new SuggestRequest(searchText, suggesterName);
+        SuggestOptions options) {
+        SuggestRequest request = new SuggestRequest(searchText, suggesterName);
 
-        if (suggestOptions != null) {
-            suggestRequest.setFilter(suggestOptions.getFilter())
-                .setUseFuzzyMatching(suggestOptions.useFuzzyMatching())
-                .setHighlightPostTag(suggestOptions.getHighlightPostTag())
-                .setHighlightPreTag(suggestOptions.getHighlightPreTag())
-                .setMinimumCoverage(suggestOptions.getMinimumCoverage())
-                .setTop(suggestOptions.getTop());
-
-            List<String> searchFields = suggestOptions.getSearchFields();
-            if (searchFields != null) {
-                suggestRequest.setSearchFields(String.join(",", searchFields));
-            }
-
-            List<String> orderBy = suggestOptions.getOrderBy();
-            if (orderBy != null) {
-                suggestRequest.setOrderBy(String.join(",", orderBy));
-            }
-
-            List<String> select = suggestOptions.getSelect();
-            if (select != null) {
-                suggestRequest.setSelect(String.join(",", select));
-            }
+        if (options == null) {
+            return request;
         }
 
-        return suggestRequest;
+        return request.setFilter(options.getFilter())
+            .setUseFuzzyMatching(options.useFuzzyMatching())
+            .setHighlightPostTag(options.getHighlightPostTag())
+            .setHighlightPreTag(options.getHighlightPreTag())
+            .setMinimumCoverage(options.getMinimumCoverage())
+            .setOrderBy(nullSafeStringJoin(options.getOrderBy()))
+            .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
+            .setSelect(nullSafeStringJoin(options.getSelect()))
+            .setTop(options.getTop());
     }
 
     /**
@@ -895,29 +896,33 @@ public final class SearchAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName search text
-     * @param autocompleteOptions autocomplete options
+     * @param options autocomplete options
      * @return AutocompleteRequest
      */
     private static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
-        AutocompleteOptions autocompleteOptions) {
-        AutocompleteRequest autoCompleteRequest = new AutocompleteRequest(searchText, suggesterName);
+        AutocompleteOptions options) {
+        AutocompleteRequest request = new AutocompleteRequest(searchText, suggesterName);
 
-        if (autocompleteOptions != null) {
-            autoCompleteRequest.setFilter(autocompleteOptions.getFilter())
-                .setUseFuzzyMatching(autocompleteOptions.useFuzzyMatching())
-                .setHighlightPostTag(autocompleteOptions.getHighlightPostTag())
-                .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
-                .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())
-                .setTop(autocompleteOptions.getTop())
-                .setAutocompleteMode(autocompleteOptions.getAutocompleteMode());
-
-            List<String> searchFields = autocompleteOptions.getSearchFields();
-            if (searchFields != null) {
-                autoCompleteRequest.setSearchFields(String.join(",", searchFields));
-            }
+        if (options == null) {
+            return request;
         }
 
-        return autoCompleteRequest;
+        return request.setAutocompleteMode(options.getAutocompleteMode())
+            .setFilter(options.getFilter())
+            .setUseFuzzyMatching(options.useFuzzyMatching())
+            .setHighlightPostTag(options.getHighlightPostTag())
+            .setHighlightPreTag(options.getHighlightPreTag())
+            .setMinimumCoverage(options.getMinimumCoverage())
+            .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
+            .setTop(options.getTop());
+    }
+
+    private static String nullSafeStringJoin(Iterable<? extends CharSequence> elements) {
+        if (elements == null) {
+            return null;
+        }
+
+        return String.join(",", elements);
     }
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {

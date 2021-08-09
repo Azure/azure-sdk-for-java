@@ -3,10 +3,9 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
-import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Assertions;
@@ -14,11 +13,11 @@ import org.junit.jupiter.api.Assertions;
 import java.time.OffsetDateTime;
 
 import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_END_TIME;
-import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_START_TIME;
 
 public abstract class DataFeedIngestionOperationTestBase extends MetricsAdvisorAdministrationClientTestBase {
     public abstract void listIngestionStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
     static final String DATA_FEED_ID = "9860df01-e740-40ec-94a2-6351813552ba";
+    static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2020-09-09T00:00:00Z");
 
     // Pre-configured test resource.
     protected static class ListIngestionStatusInput {

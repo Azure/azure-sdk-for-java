@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.FormSelectionMark;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -34,8 +35,8 @@ public class RecognizeContent {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
-            + "sample-forms/forms/Form_1.jpg");
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
+                                       + "sample-forms/forms/selectionMarkForm.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
@@ -66,13 +67,24 @@ public class RecognizeContent {
                 System.out.println();
             }
 
+            // Selection Mark
+            for (FormSelectionMark selectionMark : formPage.getSelectionMarks()) {
+                System.out.printf(
+                    "Page: %s, Selection mark is %s within bounding box %s has a confidence score %.2f.%n",
+                    selectionMark.getPageNumber(),
+                    selectionMark.getState(),
+                    selectionMark.getBoundingBox().toString(),
+                    selectionMark.getConfidence());
+            }
+
+            // Lines
             formPage.getLines().forEach(formLine -> {
                 if (formLine.getAppearance() != null) {
                     System.out.printf(
                         "Line %s consists of %d words and has a text style %s with a confidence score of %.2f.%n",
                         formLine.getText(), formLine.getWords().size(),
-                        formLine.getAppearance().getStyle().getName(),
-                        formLine.getAppearance().getStyle().getConfidence());
+                        formLine.getAppearance().getStyleName(),
+                        formLine.getAppearance().getStyleConfidence());
                 }
             });
         }

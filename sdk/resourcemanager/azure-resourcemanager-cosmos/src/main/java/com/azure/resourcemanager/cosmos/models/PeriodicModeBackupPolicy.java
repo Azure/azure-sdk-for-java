@@ -44,6 +44,13 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PeriodicModeBackupPolicy withMigrationState(BackupPolicyMigrationState migrationState) {
+        super.withMigrationState(migrationState);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

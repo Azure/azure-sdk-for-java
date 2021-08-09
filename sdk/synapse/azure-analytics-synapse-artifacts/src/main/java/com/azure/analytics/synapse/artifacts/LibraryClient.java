@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.LibrariesImpl;
-import com.azure.analytics.synapse.artifacts.models.AzureEntityResource;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.LibraryResource;
 import com.azure.analytics.synapse.artifacts.models.LibraryResourceInfo;
@@ -99,7 +98,7 @@ public final class LibraryClient {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureEntityResource getOperationResult(String operationId) {
+    public LibraryResource getOperationResult(String operationId) {
         return this.serviceClient.getOperationResult(operationId);
     }
 
@@ -114,7 +113,7 @@ public final class LibraryClient {
      * @return operation result for Library.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureEntityResource> getOperationResultWithResponse(String operationId, Context context) {
+    public Response<LibraryResource> getOperationResultWithResponse(String operationId, Context context) {
         return this.serviceClient.getOperationResultWithResponse(operationId, context);
     }
 
@@ -219,17 +218,17 @@ public final class LibraryClient {
      *     length.
      * @param content Library file chunk.
      * @param contentLength The contentLength parameter.
-     * @param xMsBlobConditionAppendpos Set this header to a byte offset at which the block is expected to be appended.
-     *     The request succeeds only if the current offset matches this value. Otherwise, the request fails with the
-     *     AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void append(
-            String libraryName, Flux<ByteBuffer> content, long contentLength, Long xMsBlobConditionAppendpos) {
-        this.serviceClient.append(libraryName, content, contentLength, xMsBlobConditionAppendpos);
+            String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
+        this.serviceClient.append(libraryName, content, contentLength, blobConditionAppendPosition);
     }
 
     /**
@@ -257,9 +256,9 @@ public final class LibraryClient {
      *     length.
      * @param content Library file chunk.
      * @param contentLength The contentLength parameter.
-     * @param xMsBlobConditionAppendpos Set this header to a byte offset at which the block is expected to be appended.
-     *     The request succeeds only if the current offset matches this value. Otherwise, the request fails with the
-     *     AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -271,9 +270,9 @@ public final class LibraryClient {
             String libraryName,
             Flux<ByteBuffer> content,
             long contentLength,
-            Long xMsBlobConditionAppendpos,
+            Long blobConditionAppendPosition,
             Context context) {
         return this.serviceClient.appendWithResponse(
-                libraryName, content, contentLength, xMsBlobConditionAppendpos, context);
+                libraryName, content, contentLength, blobConditionAppendPosition, context);
     }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.experimental.geojson.GeoPoint;
+import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -64,6 +64,7 @@ public class FieldBuilderTests {
             SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setSearchable(true)
             .setKey(false)
+            .setHidden(false)
             .setFilterable(false)
             .setSortable(false)
             .setFacetable(false)
@@ -285,11 +286,13 @@ public class FieldBuilderTests {
         SearchField hotelId = new SearchField("hotelId", SearchFieldDataType.STRING)
             .setKey(true)
             .setSortable(true)
+            .setHidden(false)
             .setSearchable(false)
             .setFacetable(false)
             .setFilterable(false);
         SearchField tags = new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setKey(false)
+            .setHidden(false)
             .setSearchable(true)
             .setSortable(false)
             .setFilterable(false)

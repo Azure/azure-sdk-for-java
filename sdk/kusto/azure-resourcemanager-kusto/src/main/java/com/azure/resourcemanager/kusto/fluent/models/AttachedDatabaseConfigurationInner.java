@@ -10,6 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.DefaultPrincipalsModificationKind;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -58,6 +59,12 @@ public class AttachedDatabaseConfigurationInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.defaultPrincipalsModificationKind")
     private DefaultPrincipalsModificationKind defaultPrincipalsModificationKind;
+
+    /*
+     * Table level sharing specifications
+     */
+    @JsonProperty(value = "properties.tableLevelSharingProperties")
+    private TableLevelSharingProperties tableLevelSharingProperties;
 
     /**
      * Get the location property: Resource location.
@@ -164,10 +171,34 @@ public class AttachedDatabaseConfigurationInner extends ProxyResource {
     }
 
     /**
+     * Get the tableLevelSharingProperties property: Table level sharing specifications.
+     *
+     * @return the tableLevelSharingProperties value.
+     */
+    public TableLevelSharingProperties tableLevelSharingProperties() {
+        return this.tableLevelSharingProperties;
+    }
+
+    /**
+     * Set the tableLevelSharingProperties property: Table level sharing specifications.
+     *
+     * @param tableLevelSharingProperties the tableLevelSharingProperties value to set.
+     * @return the AttachedDatabaseConfigurationInner object itself.
+     */
+    public AttachedDatabaseConfigurationInner withTableLevelSharingProperties(
+        TableLevelSharingProperties tableLevelSharingProperties) {
+        this.tableLevelSharingProperties = tableLevelSharingProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (tableLevelSharingProperties() != null) {
+            tableLevelSharingProperties().validate();
+        }
     }
 }

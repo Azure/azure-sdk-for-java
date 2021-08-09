@@ -9,11 +9,11 @@
 
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-redisenterprise</artifactId>
-    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redisenterprise;current} -->
+    <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redisenterprise;current} -->
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for RedisEnterprise Management</name>
-    <description>This package contains Microsoft Azure SDK for RedisEnterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package tag package-2021-03. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt</description>
+    <description>This package contains Microsoft Azure SDK for RedisEnterprise Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST API for managing Redis Enterprise resources in Azure. Package tag package-2021-03.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <licenses>
@@ -44,12 +44,12 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-management</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+            <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
         </dependency>
     </dependencies>
     <build>

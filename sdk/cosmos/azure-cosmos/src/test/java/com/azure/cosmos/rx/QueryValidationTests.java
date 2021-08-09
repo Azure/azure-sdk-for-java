@@ -35,7 +35,6 @@ import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
-import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -325,7 +324,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 20)
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;
@@ -435,7 +434,30 @@ public class QueryValidationTests extends TestSuiteBase {
         container.delete().block();
     }
 
-    @NotNull
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryLargePartitionKeyOn100BPKCollection() throws Exception {
+        String containerId = "testContainer_" + UUID.randomUUID();
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/id");
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
+        CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        //id as partitionkey > 100bytes
+        String itemID1 = "cosmosdb" +
+                             "-drWarm4Z60GkknMfHLo5BwuiH7w6AffzSb9jKbvwAQwaRZd10oxnLeCueuyZ5gbm9dwVVAqJLdzrB38Dk73Q6xMErv-0";
+        String itemID2 = "cosmosdb" +
+                             "-drWarm4Z60GkknMfHLo5BwuiH7w6AffzSb9jKbvwAQwaRZd10oxnLeCueuyZ5gbm9dwVVAqJLdzrB38Dk73Q6xMErv-1";
+        TestObject obj = new TestObject();
+        obj.setId(itemID1);
+        container.createItem(obj).block();
+        obj.setId(itemID2);
+        container.createItem(obj).block();
+
+        String query = "select * from c where c.id IN ( \"" + itemID1 + "\" , \"" + itemID2 + "\")";
+        List<JsonNode> results = container.queryItems(query, JsonNode.class).collectList().block();
+        assertThat(results).isNotNull();
+        assertThat(results.size()).isEqualTo(2);
+        container.delete().block();
+    }
+
     private List<PartitionKeyRange> getPartitionKeyRanges(
         String containerId, AsyncDocumentClient asyncDocumentClient) {
         List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();

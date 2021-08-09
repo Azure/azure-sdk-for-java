@@ -15,6 +15,7 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.batch.options.BlobBatchSetBlobAccessTierOptions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -70,7 +71,7 @@ public final class BlobBatch {
     private Deque<BlobBatchOperation<?>> batchOperationQueue;
     private BlobBatchType batchType;
 
-    BlobBatch(String accountUrl, HttpPipeline pipeline) {
+    BlobBatch(String accountUrl, HttpPipeline pipeline, BlobServiceVersion serviceVersion) {
         boolean batchHeadersPolicySet = false;
         HttpPipelineBuilder batchPipelineBuilder = new HttpPipelineBuilder();
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -96,6 +97,7 @@ public final class BlobBatch {
         this.blobAsyncClient = new BlobClientBuilder()
             .endpoint(accountUrl)
             .blobName("")
+            .serviceVersion(serviceVersion)
             .pipeline(batchPipelineBuilder.build())
             .buildAsyncClient();
 

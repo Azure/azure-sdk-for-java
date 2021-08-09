@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.JpgFormat")
 @JsonFlatten
-@Immutable
-public class JpgFormat extends Format {
+@Fluent
+public class JpgFormat extends ImageFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JpgFormat.class);
 
     /** {@inheritDoc} */

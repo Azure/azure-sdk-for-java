@@ -22,9 +22,6 @@ public abstract class Handler extends BaseHandler implements Closeable {
         .latestOrDefault(EndpointState.UNINITIALIZED);
     private final String connectionId;
     private final String hostname;
-    private final Object endpointLock = new Object();
-
-    private volatile EndpointState lastEndpoint = null;
 
     final ClientLogger logger;
 
@@ -35,14 +32,14 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @param hostname Hostname of the connection. This could be the DNS hostname or the IP address of the
      *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
      *     messages are brokered through an intermediary.
-     *
      * @param logger Logger to use for messages.
-     * @throws NullPointerException if {@code connectionId} or {@code hostname} is null.
+     *
+     * @throws NullPointerException if {@code connectionId}, {@code hostname}, or {@code logger} is null.
      */
     Handler(final String connectionId, final String hostname, ClientLogger logger) {
         this.connectionId = Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
-        this.logger = logger;
+        this.logger = Objects.requireNonNull(logger, "'logger' cannot be null.");
     }
 
     /**
@@ -56,8 +53,8 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
     /**
      * Gets the hostname of the AMQP connection. This could be the DNS hostname or the IP address of the connection.
-     * Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the messages are
-     * brokered through an intermediary.
+     * Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the messages are brokered
+     * through an intermediary.
      *
      * @return Gets the hostname of the AMQP connection.
      */
@@ -71,25 +68,20 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @return The endpoint states of the handler.
      */
     public Flux<EndpointState> getEndpointStates() {
-        return endpointStates.asFlux();
+        // In previous incarnations, we used .distinct(). It hashed all the previous values and would only push values
+        // that were not seen yet. What we want is only to push endpoint states that are unique from the previous one.
+        return endpointStates.asFlux().distinctUntilChanged();
     }
 
     /**
-     * Emits the next endpoint. If the previous endpoint was emitted, it is skipped.
+     * Emits the next endpoint. If the previous endpoint was emitted, it is skipped. If the handler is closed, the
+     * endpoint state is not emitted.
      *
      * @param state The next endpoint state to emit.
      */
     void onNext(EndpointState state) {
         if (isTerminal.get()) {
             return;
-        }
-
-        synchronized (endpointLock) {
-            if (lastEndpoint == state) {
-                return;
-            }
-
-            lastEndpoint = state;
         }
 
         endpointStates.emitNext(state, (signalType, emitResult) -> {
@@ -128,15 +120,14 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
-        final boolean shouldEmit;
-        synchronized (endpointLock) {
-            shouldEmit = lastEndpoint != EndpointState.CLOSED;
-            lastEndpoint = EndpointState.CLOSED;
-        }
+        // This is fine in the case that someone called onNext(EndpointState.CLOSED) and then called handler.close().
+        // We want to ensure that the next endpoint subscriber does not believe the handler is alive still.
+        endpointStates.emitNext(EndpointState.CLOSED, (signalType, emitResult) -> {
+            logger.info("connectionId[{}] signal[{}] result[{}] Could not emit closed endpoint state.", connectionId,
+                signalType, emitResult);
 
-        if (shouldEmit) {
-            endpointStates.emitNext(EndpointState.CLOSED, Sinks.EmitFailureHandler.FAIL_FAST);
-        }
+            return false;
+        });
 
         endpointStates.emitComplete((signalType, emitResult) -> {
             logger.verbose("connectionId[{}] result[{}] Could not emit complete.", connectionId, emitResult);

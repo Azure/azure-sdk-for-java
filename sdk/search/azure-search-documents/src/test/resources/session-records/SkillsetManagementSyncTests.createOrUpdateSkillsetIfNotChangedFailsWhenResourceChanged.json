@@ -1,110 +1,110 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillset9504770c986d9cd814ff')?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillset22650efa9360d13294ad')?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7f232788-836b-448e-8cdb-7e8583acbc77",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f8db1a47-f87f-4417-acff-78b142676d4d",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "754",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "7f232788-836b-448e-8cdb-7e8583acbc77",
+      "request-id" : "f8db1a47-f87f-4417-acff-78b142676d4d",
       "StatusCode" : "201",
-      "Date" : "Wed, 31 Mar 2021 21:26:24 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:27:08 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D8F48BA38AB2BE\"",
-      "client-request-id" : "7f232788-836b-448e-8cdb-7e8583acbc77",
-      "elapsed-time" : "75",
+      "ETag" : "W/\"0x8D9463434CA55DC\"",
+      "client-request-id" : "f8db1a47-f87f-4417-acff-78b142676d4d",
+      "elapsed-time" : "36",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "754",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D8F48BA38AB2BE\\\"\",\"name\":\"ocr-skillset9504770c986d9cd814ff\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "x-ms-client-request-id" : "7f232788-836b-448e-8cdb-7e8583acbc77",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D9463434CA55DC\\\"\",\"name\":\"ocr-skillset22650efa9360d13294ad\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "f8db1a47-f87f-4417-acff-78b142676d4d",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://alzimmer-test.search.windows.net/skillsets('ocr-skillset9504770c986d9cd814ff')?api-version=2020-06-30"
+      "Location" : "https://alzimmer-test.search.windows.net/skillsets('ocr-skillset22650efa9360d13294ad')?api-version=2021-04-30-Preview"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillset9504770c986d9cd814ff')?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillset22650efa9360d13294ad')?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0269926f-e9e1-4b86-895a-7af06899b8de",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bd7eabc8-31f4-4c46-89d0-d8e9c2747432",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "695",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0269926f-e9e1-4b86-895a-7af06899b8de",
+      "request-id" : "bd7eabc8-31f4-4c46-89d0-d8e9c2747432",
       "StatusCode" : "200",
-      "Date" : "Wed, 31 Mar 2021 21:26:25 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:27:08 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D8F48BA3A4F614\"",
-      "client-request-id" : "0269926f-e9e1-4b86-895a-7af06899b8de",
-      "elapsed-time" : "116",
+      "ETag" : "W/\"0x8D9463434DF684B\"",
+      "client-request-id" : "bd7eabc8-31f4-4c46-89d0-d8e9c2747432",
+      "elapsed-time" : "34",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "695",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D8F48BA3A4F614\\\"\",\"name\":\"ocr-skillset9504770c986d9cd814ff\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"maxKeyPhraseCount\":null,\"modelVersion\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mydescription/*/Tags/*\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "x-ms-client-request-id" : "0269926f-e9e1-4b86-895a-7af06899b8de",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D9463434DF684B\\\"\",\"name\":\"ocr-skillset22650efa9360d13294ad\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"maxKeyPhraseCount\":null,\"modelVersion\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mydescription/*/Tags/*\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "bd7eabc8-31f4-4c46-89d0-d8e9c2747432",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillset9504770c986d9cd814ff')?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillset22650efa9360d13294ad')?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cd9f83db-d7a0-42f8-819f-efceec0314e5",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eb5f5140-094d-4d3a-a52e-57c7305d9f80",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "160",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "cd9f83db-d7a0-42f8-819f-efceec0314e5",
+      "request-id" : "eb5f5140-094d-4d3a-a52e-57c7305d9f80",
       "StatusCode" : "412",
-      "Date" : "Wed, 31 Mar 2021 21:26:25 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:27:08 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "cd9f83db-d7a0-42f8-819f-efceec0314e5",
-      "elapsed-time" : "35",
+      "client-request-id" : "eb5f5140-094d-4d3a-a52e-57c7305d9f80",
+      "elapsed-time" : "7",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "160",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The precondition given in one of the request headers evaluated to false. No change was made to the resource from this request.\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "cd9f83db-d7a0-42f8-819f-efceec0314e5",
+      "x-ms-client-request-id" : "eb5f5140-094d-4d3a-a52e-57c7305d9f80",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillset9504770c986d9cd814ff')?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('ocr-skillset22650efa9360d13294ad')?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "335e64af-ba3e-491d-bc84-55365acc1c07"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a4f4bc78-360b-48c0-9f75-dc35aa124796"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "335e64af-ba3e-491d-bc84-55365acc1c07",
-      "elapsed-time" : "65",
+      "client-request-id" : "a4f4bc78-360b-48c0-9f75-dc35aa124796",
+      "elapsed-time" : "22",
       "Pragma" : "no-cache",
       "Expires" : "-1",
       "retry-after" : "0",
-      "request-id" : "335e64af-ba3e-491d-bc84-55365acc1c07",
+      "request-id" : "a4f4bc78-360b-48c0-9f75-dc35aa124796",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "335e64af-ba3e-491d-bc84-55365acc1c07",
-      "Date" : "Wed, 31 Mar 2021 21:26:25 GMT"
+      "x-ms-client-request-id" : "a4f4bc78-360b-48c0-9f75-dc35aa124796",
+      "Date" : "Tue, 13 Jul 2021 19:27:08 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "ocr-skillset9504770c986d9cd814ff" ]
+  "variables" : [ "ocr-skillset22650efa9360d13294ad" ]
 }

@@ -2,17 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
-import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.ssl.SSLContexts;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -28,37 +28,27 @@ public class ClientSSLSample {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
 
-        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.aad-authentication-url"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        keyStore.load(parameter);
+        KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
             .build();
 
-        SSLConnectionSocketFactory factory = SSLConnectionSocketFactoryBuilder
-            .create()
-            .setSslContext(sslContext)
-            .setHostnameVerifier((hostname, session) -> true)
-            .build();
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+            sslContext, (hostname, session) -> true);
 
-        PoolingHttpClientConnectionManager manager = PoolingHttpClientConnectionManagerBuilder
-            .create()
-            .setSSLSocketFactory(factory)
-            .build();
+        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
+            RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("https", sslConnectionSocketFactory)
+                .build());
 
         String result = null;
 
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
             HttpGet httpGet = new HttpGet("https://localhost:8766");
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
+            ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+                int status = response.getStatusLine().getStatusCode();
                 String result1 = "Not success";
                 if (status == 204) {
                     result1 = "Success";

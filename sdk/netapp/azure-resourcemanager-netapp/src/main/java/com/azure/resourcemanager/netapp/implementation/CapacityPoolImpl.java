@@ -72,6 +72,10 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         return this.innerModel().qosType();
     }
 
+    public Boolean coolAccess() {
+        return this.innerModel().coolAccess();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -216,6 +220,11 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
             this.updateBody.withQosType(qosType);
             return this;
         }
+    }
+
+    public CapacityPoolImpl withCoolAccess(Boolean coolAccess) {
+        this.innerModel().withCoolAccess(coolAccess);
+        return this;
     }
 
     public CapacityPoolImpl withSize(Long size) {

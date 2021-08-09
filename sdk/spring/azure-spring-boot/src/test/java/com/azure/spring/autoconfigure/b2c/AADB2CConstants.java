@@ -26,8 +26,9 @@ public class AADB2CConstants {
     public static final String TEST_TENANT_ID = "fake-tenant-id";
 
     public static final String TEST_CLIENT_SECRET = "fake-client-secret";
+    public static final String TEST_APP_ID_URI = "https://fake-tenant.onmicrosoft.com/custom";
 
-    public static final String TEST_KEY_SIGN_UP_OR_IN = "sign-in-or-up";
+    public static final String TEST_KEY_SIGN_UP_OR_IN = "sign-up-or-sign-in";
     public static final String TEST_SIGN_UP_OR_IN_NAME = "fake-sign-in-or-up";
 
     public static final Object TEST_KEY_SIGN_IN = "sign-in";
@@ -41,6 +42,11 @@ public class AADB2CConstants {
 
     public static final String TEST_LOGOUT_SUCCESS_URL = "https://fake-logout-success-url";
 
+    public static final String TEST_CLIENT_CREDENTIAL_SCOPES = "https://fake-tenant.onmicrosoft.com/other/.default";
+    public static final String TEST_CLIENT_CREDENTIAL_GRANT_TYPE = "client_credentials";
+
+    public static final String CLIENT_CREDENTIAL_NAME = "webApiA";
+
     public static final String BASE_URI = String.format("%s.%s", PREFIX, "base-uri");
 
     public static final String TEST_ATTRIBUTE_NAME = String.format("%s.%s", PREFIX, "name");
@@ -52,6 +58,7 @@ public class AADB2CConstants {
     public static final String TENANT_ID = String.format("%s.%s", PREFIX, "tenant-id");
 
     public static final String CLIENT_SECRET = String.format("%s.%s", PREFIX, "client-secret");
+    public static final String APP_ID_URI = String.format("%s.%s", PREFIX, "app-id-uri");
 
     public static final String LOGOUT_SUCCESS_URL = String.format("%s.%s", PREFIX, "logout-success-url");
 
@@ -64,4 +71,6 @@ public class AADB2CConstants {
 
     public static final String CONFIG_LOGIN_HINT = String.format("%s.%s", PREFIX,
         AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT);
+
+    public static final String AUTHORIZATION_CLIENTS = String.format("%s.%s", PREFIX, "authorization-clients");
 }

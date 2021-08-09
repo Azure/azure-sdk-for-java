@@ -4,73 +4,92 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
+import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Manifest details. */
+@JsonFlatten
 @Fluent
-public final class ManifestAttributesBase {
+public class ManifestAttributesBase {
     /*
      * Manifest
      */
-    @JsonProperty(value = "digest", required = true)
+    @JsonProperty(value = "digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
      * Image size
      */
-    @JsonProperty(value = "imageSize")
+    @JsonProperty(value = "imageSize", access = JsonProperty.Access.WRITE_ONLY)
     private Long size;
 
     /*
      * Created time
      */
-    @JsonProperty(value = "createdTime")
+    @JsonProperty(value = "createdTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Last update time
      */
-    @JsonProperty(value = "lastUpdateTime")
+    @JsonProperty(value = "lastUpdateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture", required = true)
-    private String cpuArchitecture;
+    @JsonProperty(value = "architecture", access = JsonProperty.Access.WRITE_ONLY)
+    private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "os", required = true)
-    private String operatingSystem;
+    @JsonProperty(value = "os", access = JsonProperty.Access.WRITE_ONLY)
+    private ArtifactOperatingSystem operatingSystem;
 
     /*
-     * Media type
+     * List of artifacts that are referenced by this manifest list, with
+     * information about the platform each supports.  This list will be empty
+     * if this is a leaf manifest and not a manifest list.
      */
-    @JsonProperty(value = "mediaType")
-    private String manifestMediaType;
-
-    /*
-     * Config blob media type
-     */
-    @JsonProperty(value = "configMediaType")
-    private String configMediaType;
+    @JsonProperty(value = "references", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ArtifactManifestPlatform> relatedArtifacts;
 
     /*
      * List of tags
      */
-    @JsonProperty(value = "tags", required = true)
+    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tags;
 
     /*
-     * Changeable attributes
+     * Delete enabled
      */
-    @JsonProperty(value = "changeableAttributes")
-    private ContentProperties manifestProperties;
+    @JsonProperty(value = "changeableAttributes.deleteEnabled")
+    private Boolean deleteEnabled;
+
+    /*
+     * Write enabled
+     */
+    @JsonProperty(value = "changeableAttributes.writeEnabled")
+    private Boolean writeEnabled;
+
+    /*
+     * List enabled
+     */
+    @JsonProperty(value = "changeableAttributes.listEnabled")
+    private Boolean listEnabled;
+
+    /*
+     * Read enabled
+     */
+    @JsonProperty(value = "changeableAttributes.readEnabled")
+    private Boolean readEnabled;
 
     /**
      * Get the digest property: Manifest.
@@ -79,17 +98,6 @@ public final class ManifestAttributesBase {
      */
     public String getDigest() {
         return this.digest;
-    }
-
-    /**
-     * Set the digest property: Manifest.
-     *
-     * @param digest the digest value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setDigest(String digest) {
-        this.digest = digest;
-        return this;
     }
 
     /**
@@ -102,34 +110,12 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the size property: Image size.
-     *
-     * @param size the size value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setSize(Long size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
      * Get the createdOn property: Created time.
      *
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
-    }
-
-    /**
-     * Set the createdOn property: Created time.
-     *
-     * @param createdOn the createdOn value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setCreatedOn(OffsetDateTime createdOn) {
-        this.createdOn = createdOn;
-        return this;
     }
 
     /**
@@ -142,34 +128,12 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the lastUpdatedOn property: Last update time.
+     * Get the architecture property: CPU architecture.
      *
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @return the ManifestAttributesBase object itself.
+     * @return the architecture value.
      */
-    public ManifestAttributesBase setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-        return this;
-    }
-
-    /**
-     * Get the cpuArchitecture property: CPU architecture.
-     *
-     * @return the cpuArchitecture value.
-     */
-    public String getCpuArchitecture() {
-        return this.cpuArchitecture;
-    }
-
-    /**
-     * Set the cpuArchitecture property: CPU architecture.
-     *
-     * @param cpuArchitecture the cpuArchitecture value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setCpuArchitecture(String cpuArchitecture) {
-        this.cpuArchitecture = cpuArchitecture;
-        return this;
+    public ArtifactArchitecture getArchitecture() {
+        return this.architecture;
     }
 
     /**
@@ -177,59 +141,18 @@ public final class ManifestAttributesBase {
      *
      * @return the operatingSystem value.
      */
-    public String getOperatingSystem() {
+    public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
     }
 
     /**
-     * Set the operatingSystem property: Operating system.
+     * Get the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
+     * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
      *
-     * @param operatingSystem the operatingSystem value to set.
-     * @return the ManifestAttributesBase object itself.
+     * @return the relatedArtifacts value.
      */
-    public ManifestAttributesBase setOperatingSystem(String operatingSystem) {
-        this.operatingSystem = operatingSystem;
-        return this;
-    }
-
-    /**
-     * Get the manifestMediaType property: Media type.
-     *
-     * @return the manifestMediaType value.
-     */
-    public String getManifestMediaType() {
-        return this.manifestMediaType;
-    }
-
-    /**
-     * Set the manifestMediaType property: Media type.
-     *
-     * @param manifestMediaType the manifestMediaType value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setManifestMediaType(String manifestMediaType) {
-        this.manifestMediaType = manifestMediaType;
-        return this;
-    }
-
-    /**
-     * Get the configMediaType property: Config blob media type.
-     *
-     * @return the configMediaType value.
-     */
-    public String getConfigMediaType() {
-        return this.configMediaType;
-    }
-
-    /**
-     * Set the configMediaType property: Config blob media type.
-     *
-     * @param configMediaType the configMediaType value to set.
-     * @return the ManifestAttributesBase object itself.
-     */
-    public ManifestAttributesBase setConfigMediaType(String configMediaType) {
-        this.configMediaType = configMediaType;
-        return this;
+    public List<ArtifactManifestPlatform> getRelatedArtifacts() {
+        return this.relatedArtifacts;
     }
 
     /**
@@ -242,33 +165,82 @@ public final class ManifestAttributesBase {
     }
 
     /**
-     * Set the tags property: List of tags.
+     * Get the deleteEnabled property: Delete enabled.
      *
-     * @param tags the tags value to set.
+     * @return the deleteEnabled value.
+     */
+    public Boolean isDeleteEnabled() {
+        return this.deleteEnabled;
+    }
+
+    /**
+     * Set the deleteEnabled property: Delete enabled.
+     *
+     * @param deleteEnabled the deleteEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
-    public ManifestAttributesBase setTags(List<String> tags) {
-        this.tags = tags;
+    public ManifestAttributesBase setDeleteEnabled(Boolean deleteEnabled) {
+        this.deleteEnabled = deleteEnabled;
         return this;
     }
 
     /**
-     * Get the manifestProperties property: Changeable attributes.
+     * Get the writeEnabled property: Write enabled.
      *
-     * @return the manifestProperties value.
+     * @return the writeEnabled value.
      */
-    public ContentProperties getManifestProperties() {
-        return this.manifestProperties;
+    public Boolean isWriteEnabled() {
+        return this.writeEnabled;
     }
 
     /**
-     * Set the manifestProperties property: Changeable attributes.
+     * Set the writeEnabled property: Write enabled.
      *
-     * @param manifestProperties the manifestProperties value to set.
+     * @param writeEnabled the writeEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
-    public ManifestAttributesBase setManifestProperties(ContentProperties manifestProperties) {
-        this.manifestProperties = manifestProperties;
+    public ManifestAttributesBase setWriteEnabled(Boolean writeEnabled) {
+        this.writeEnabled = writeEnabled;
+        return this;
+    }
+
+    /**
+     * Get the listEnabled property: List enabled.
+     *
+     * @return the listEnabled value.
+     */
+    public Boolean isListEnabled() {
+        return this.listEnabled;
+    }
+
+    /**
+     * Set the listEnabled property: List enabled.
+     *
+     * @param listEnabled the listEnabled value to set.
+     * @return the ManifestAttributesBase object itself.
+     */
+    public ManifestAttributesBase setListEnabled(Boolean listEnabled) {
+        this.listEnabled = listEnabled;
+        return this;
+    }
+
+    /**
+     * Get the readEnabled property: Read enabled.
+     *
+     * @return the readEnabled value.
+     */
+    public Boolean isReadEnabled() {
+        return this.readEnabled;
+    }
+
+    /**
+     * Set the readEnabled property: Read enabled.
+     *
+     * @param readEnabled the readEnabled value to set.
+     * @return the ManifestAttributesBase object itself.
+     */
+    public ManifestAttributesBase setReadEnabled(Boolean readEnabled) {
+        this.readEnabled = readEnabled;
         return this;
     }
 }

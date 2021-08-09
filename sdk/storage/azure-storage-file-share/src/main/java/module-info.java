@@ -5,6 +5,7 @@ module com.azure.storage.file.share {
     requires transitive com.azure.storage.common;
 
     requires com.fasterxml.jackson.dataformat.xml;
+    requires com.azure.core.experimental;
 
     exports com.azure.storage.file.share;
     exports com.azure.storage.file.share.models;

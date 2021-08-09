@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
-import com.azure.ai.formrecognizer.models.RecognizeIdDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -597,8 +597,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         String businessCardUrl = "{business_card_url}";
         formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl,
             new RecognizeBusinessCardsOptions()
-                .setPollInterval(Duration.ofSeconds(5))
-                .setFieldElementsIncluded(true), Context.NONE).getFinalResult()
+                .setFieldElementsIncluded(true), Context.NONE)
+            .setPollInterval(Duration.ofSeconds(5)).getFinalResult()
             .forEach(recognizedBusinessCard -> {
                 Map<String, FormField> recognizedFields = recognizedBusinessCard.getFields();
                 FormField contactNamesFormField = recognizedFields.get("ContactNames");
@@ -723,8 +723,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 businessCard.length(),
                 new RecognizeBusinessCardsOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
-                    .setFieldElementsIncluded(includeFieldElements)
-                    .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
+                    .setFieldElementsIncluded(includeFieldElements),
+                Context.NONE).setPollInterval(Duration.ofSeconds(5))
                 .getFinalResult()) {
                 Map<String, FormField> recognizedFields = recognizedForm.getFields();
                 FormField contactNamesFormField = recognizedFields.get("ContactNames");
@@ -814,8 +814,8 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerClient.beginRecognizeInvoicesFromUrl(invoiceUrl,
             new RecognizeInvoicesOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
+                .setFieldElementsIncluded(includeFieldElements),
+            Context.NONE).setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -889,9 +889,9 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             invoice.length(),
             new RecognizeInvoicesOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)),
+                .setFieldElementsIncluded(includeFieldElements),
             Context.NONE)
+            .setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -915,13 +915,13 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerClient#beginRecognizeIdDocumentsFromUrl(String)}
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeIdentityDocumentsFromUrl(String)}
      */
-    public void beginRecognizeIDDocumentsFromUrl() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdDocumentsFromUrl#string
+    public void beginRecognizeIdentityDocumentsFromUrl() {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string
         String licenseDocumentUrl = "licenseDocumentUrl";
         // if training polling operation completed, retrieve the final result.
-        formRecognizerClient.beginRecognizeIdDocumentsFromUrl(licenseDocumentUrl)
+        formRecognizerClient.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl)
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -944,12 +944,12 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
 
-                FormField countryFormField = recognizedFields.get("Country");
-                if (countryFormField != null) {
-                    if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
-                        System.out.printf("Country: %s, confidence: %.2f%n",
-                            country, countryFormField.getConfidence());
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
                     }
                 }
 
@@ -980,22 +980,22 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdDocumentsFromUrl#string
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string
     }
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeInvoicesFromUrl(String, RecognizeInvoicesOptions)}
+     * {@link FormRecognizerAsyncClient#beginRecognizeIdentityDocumentsFromUrl(String, RecognizeIdentityDocumentOptions, Context)}
      */
-    public void beginRecognizeIDDocumentsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIdDocumentOptions-Context
+    public void beginRecognizeIdentityDocumentsFromUrlWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context
         String licenseDocumentUrl = "licenseDocumentUrl";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
-        formRecognizerClient.beginRecognizeIdDocumentsFromUrl(licenseDocumentUrl,
-            new RecognizeIdDocumentOptions()
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
+        formRecognizerClient.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl,
+            new RecognizeIdentityDocumentOptions()
+                .setFieldElementsIncluded(includeFieldElements),
+            Context.NONE).setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -1018,12 +1018,12 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
 
-                FormField countryFormField = recognizedFields.get("Country");
-                if (countryFormField != null) {
-                    if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
-                        System.out.printf("Country: %s, confidence: %.2f%n",
-                            country, countryFormField.getConfidence());
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
                     }
                 }
 
@@ -1045,20 +1045,20 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocumentsFromUrl#string-RecognizeIdDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context
     }
 
     /**
-     * Code snippet for {@link FormRecognizerClient#beginRecognizeIdDocuments(InputStream, long)}
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeIdentityDocuments(InputStream, long)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    public void beginRecognizeIDDocuments() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long
+    public void beginRecognizeIdentityDocuments() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long
         File license = new File("local/file_path/license.jpg");
         ByteArrayInputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(license.toPath()));
         // if training polling operation completed, retrieve the final result.
-        formRecognizerClient.beginRecognizeIdDocuments(inputStream, license.length())
+        formRecognizerClient.beginRecognizeIdentityDocuments(inputStream, license.length())
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -1081,12 +1081,12 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
 
-                FormField countryFormField = recognizedFields.get("Country");
-                if (countryFormField != null) {
-                    if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
-                        System.out.printf("Country: %s, confidence: %.2f%n",
-                            country, countryFormField.getConfidence());
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
                     }
                 }
 
@@ -1108,30 +1108,30 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long
     }
 
     /**
      * Code snippet for
-     * {@link FormRecognizerClient#beginRecognizeIdDocuments(InputStream, long, RecognizeIdDocumentOptions, Context)} with
-     * options
+     * {@link FormRecognizerClient#beginRecognizeIdentityDocuments(InputStream, long, RecognizeIdentityDocumentOptions, Context)}
+     * with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    public void beginRecognizeIDDocumentsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIdDocumentOptions-Context
+    public void beginRecognizeIdentityDocumentsWithOptions() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context
         File licenseDocument = new File("local/file_path/license.jpg");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         ByteArrayInputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(licenseDocument.toPath()));
         // if training polling operation completed, retrieve the final result.
-        formRecognizerClient.beginRecognizeIdDocuments(inputStream,
+        formRecognizerClient.beginRecognizeIdentityDocuments(inputStream,
             licenseDocument.length(),
-            new RecognizeIdDocumentOptions()
+            new RecognizeIdentityDocumentOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setFieldElementsIncluded(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(5)),
+                .setFieldElementsIncluded(includeFieldElements),
             Context.NONE)
+            .setPollInterval(Duration.ofSeconds(5))
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -1154,12 +1154,12 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
 
-                FormField countryFormField = recognizedFields.get("Country");
-                if (countryFormField != null) {
-                    if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
-                        System.out.printf("Country: %s, confidence: %.2f%n",
-                            country, countryFormField.getConfidence());
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
                     }
                 }
 
@@ -1190,6 +1190,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIDDocuments#InputStream-long-RecognizeIdDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context
     }
 }

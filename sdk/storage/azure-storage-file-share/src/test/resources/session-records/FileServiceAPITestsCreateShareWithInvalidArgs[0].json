@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/43a3e1d843a3e1d8a4068065b4e33156d30f442e96?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3f904cb1-26a7-4441-87db-9f887a8dcd03"
+    },
+    "Response" : {
+      "content-length" : "260",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidMetadata",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "6442f108-001a-0076-6feb-4140f9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:6442f108-001a-0076-6feb-4140f9000000\nTime:2021-05-05T20:19:36.6237684Z</Message></Error>",
+      "x-ms-client-request-id" : "3f904cb1-26a7-4441-87db-9f887a8dcd03",
+      "Date" : "Wed, 05 May 2021 20:19:35 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=43a3e1d8&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "be17c2d3-ab2b-4488-94a1-2b49ad4eea90"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "67e7042e-901a-004b-09eb-4136e2000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>43a3e1d8</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "be17c2d3-ab2b-4488-94a1-2b49ad4eea90",
+      "Date" : "Wed, 05 May 2021 20:19:35 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "43a3e1d843a3e1d8a4068065b4e33156d30f442e96" ]
+}

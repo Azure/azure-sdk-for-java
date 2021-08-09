@@ -336,11 +336,12 @@ public class PhoneNumbersClientBuilderTest {
         assertEquals(this.httpClient, phoneNumberManagementClient.getHttpPipeline().getHttpClient());
 
         // Validate HttpPipelinePolicy settings
-        assertEquals(5, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
-        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
-        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
-        assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(4));
+        assertEquals(6, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
+        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
+        assertEquals(spyHelper.requestIdPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
+        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
+        assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(4));
+        assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(5));
 
         // Validate HttpLogOptions
         assertEquals(spyHelper.defaultHttpLogOptionsRef.get(), spyHelper.httpLogOptionsArg.getValue());
@@ -385,14 +386,15 @@ public class PhoneNumbersClientBuilderTest {
         PhoneNumberAdminClientImpl phoneNumberManagementClient = spyHelper.phoneNumberAdminClientArg.getValue();
 
         // Validate HttpPipelinePolicy settings
-        int expectedPolicyCount = 5 + policies.size();
+        int expectedPolicyCount = 6 + policies.size();
         int lastPolicyIndex = expectedPolicyCount - 1;
-        int customPolicyIndex = 4;
+        int customPolicyIndex = 5;
 
         assertEquals(expectedPolicyCount, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
-        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
-        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
-        assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
+        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
+        assertEquals(spyHelper.requestIdPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
+        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
+        assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(4));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(lastPolicyIndex));
 
         for (HttpPipelinePolicy policy : policies) {
@@ -406,6 +408,7 @@ public class PhoneNumbersClientBuilderTest {
 
         final AtomicReference<HmacAuthenticationPolicy> authenticationPolicyRef = new AtomicReference<>();
         final AtomicReference<UserAgentPolicy> userAgentPolicyRef = new AtomicReference<>();
+        final AtomicReference<RequestIdPolicy> requestIdPolicyRef = new AtomicReference<>();
         final AtomicReference<RetryPolicy> retryPolicyRef = new AtomicReference<>();
         final AtomicReference<CookiePolicy> cookiePolicyRef = new AtomicReference<>();
         final AtomicReference<HttpLoggingPolicy> httpLoggingPolicyRef = new AtomicReference<>();
@@ -435,6 +438,12 @@ public class PhoneNumbersClientBuilderTest {
                 return this.userAgentPolicyRef.get();
             };
             doAnswer(createUserAgentPolicy).when(this.clientBuilder).createUserAgentPolicy(any(), any(), any(), any());
+
+            Answer<RequestIdPolicy> createRequestIdPolicy = (invocation) -> {
+                this.requestIdPolicyRef.set(mock(RequestIdPolicy.class));
+                return this.requestIdPolicyRef.get();
+            };
+            doAnswer(createRequestIdPolicy).when(this.clientBuilder).createRequestIdPolicy();
 
             Answer<CookiePolicy> createCookiePolicy = (invocation) -> {
                 this.cookiePolicyRef.set((CookiePolicy) invocation.callRealMethod());

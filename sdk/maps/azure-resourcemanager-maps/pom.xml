@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-client-sdk-parent</artifactId>
+        <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+        <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+    </parent>
+
+    <groupId>com.azure.resourcemanager</groupId>
+    <artifactId>azure-resourcemanager-maps</artifactId>
+    <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-maps;current} -->
+    <packaging>jar</packaging>
+
+    <name>Microsoft Azure SDK for AzureMaps Management</name>
+    <description>This package contains Microsoft Azure SDK for AzureMaps Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Maps. Package tag package-2021-02.</description>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>http://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/Azure/azure-sdk-for-java</url>
+        <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+        <developerConnection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <developers>
+        <developer>
+            <id>microsoft</id>
+            <name>Microsoft</name>
+        </developer>
+    </developers>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core</artifactId>
+            <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core-management</artifactId>
+            <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core-test</artifactId>
+            <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azure.resourcemanager</groupId>
+            <artifactId>azure-resourcemanager-resources</artifactId>
+            <version>2.6.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

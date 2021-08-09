@@ -14,6 +14,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
+import java.util.Map;
+
 /**
  * An immutable client-side representation of an Azure policy.
  */
@@ -45,6 +47,11 @@ public interface PolicyDefinition extends
      * @return the policy rule
      */
     Object policyRule();
+
+    /**
+     * @return the parameters of the policy definition
+     */
+    Map<String, ParameterDefinitionsValue> parameters();
 
     /**
      * Container interface for all the definitions that need to be implemented.
@@ -125,6 +132,30 @@ public interface PolicyDefinition extends
         }
 
         /**
+         * A policy definition allowing parameters to be set.
+         */
+        interface WithParameters {
+            /**
+             * Specifies the parameters of the policy.
+             *
+             * @param name the name of the parameter
+             * @param definition the definition of the parameter
+             * @return the next stage of policy definition
+             */
+            WithCreate withParameter(String name, ParameterDefinitionsValue definition);
+
+            /**
+             * Specifies the parameters of the policy.
+             *
+             * @param name the name of the parameter
+             * @param parameterType the type of the parameter
+             * @param defaultValue the default value of the parameter
+             * @return the next stage of policy definition
+             */
+            WithCreate withParameter(String name, ParameterType parameterType, Object defaultValue);
+        }
+
+        /**
          * A policy definition with sufficient inputs to create a new
          * policy in the cloud, but exposing additional optional inputs to
          * specify.
@@ -133,7 +164,8 @@ public interface PolicyDefinition extends
                 Creatable<PolicyDefinition>,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithDisplayName,
-                DefinitionStages.WithPolicyType {
+                DefinitionStages.WithPolicyType,
+                DefinitionStages.WithParameters {
         }
     }
 

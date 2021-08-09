@@ -5,6 +5,7 @@ package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.resourcemanager.storage.models.EncryptionService;
 import com.azure.resourcemanager.storage.models.EncryptionServices;
+import com.azure.resourcemanager.storage.models.KeyType;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionStatus;
 import java.time.OffsetDateTime;
 
@@ -19,12 +20,10 @@ public abstract class StorageAccountEncryptionStatusImpl implements StorageAccou
     @Override
     public boolean isEnabled() {
         EncryptionService encryptionService = this.encryptionService();
-        if (encryptionService == null) {
-            return false;
-        } else if (encryptionService.enabled() != null) {
-            return encryptionService.enabled();
+        if (encryptionService == null || encryptionService.enabled() == null) {
+            return true;
         } else {
-            return false;
+            return encryptionService.enabled();
         }
     }
 
@@ -35,6 +34,16 @@ public abstract class StorageAccountEncryptionStatusImpl implements StorageAccou
             return null;
         } else {
             return encryptionService.lastEnabledTime();
+        }
+    }
+
+    @Override
+    public KeyType keyType() {
+        EncryptionService encryptionService = this.encryptionService();
+        if (encryptionService == null) {
+            return null;
+        } else {
+            return encryptionService.keyType();
         }
     }
 

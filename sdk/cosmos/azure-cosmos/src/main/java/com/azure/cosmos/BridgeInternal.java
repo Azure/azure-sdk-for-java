@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
@@ -159,7 +160,6 @@ public final class BridgeInternal {
         boolean useEtagAsContinuation,
         boolean isNoChangesResponse,
         CosmosDiagnostics cosmosDiagnostics) {
-
         FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal.createFeedResponseWithQueryMetrics(
             results,
             headers,
@@ -539,9 +539,9 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTransportClientRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
-                                                                      RequestTimeline requestTimeline) {
-        cosmosDiagnostics.clientSideRequestStatistics().setTransportClientRequestTimeline(requestTimeline);
+    public static void setGatewayRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
+                                                              RequestTimeline requestTimeline) {
+        cosmosDiagnostics.clientSideRequestStatistics().setGatewayRequestTimeline(requestTimeline);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -551,9 +551,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void recordRetryContext(CosmosDiagnostics cosmosDiagnostics,
-                                          RxDocumentServiceRequest request) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordRetryContext(request);
+    public static void recordRetryContextEndTime(CosmosDiagnostics cosmosDiagnostics) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordRetryContextEndTime();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -584,8 +583,13 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String recordAddressResolutionStart(CosmosDiagnostics cosmosDiagnostics,
-                                                      URI targetEndpoint) {
-        return cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(targetEndpoint);
+                                                      URI targetEndpoint,
+                                                      boolean forceRefresh,
+                                                      boolean forceCollectionRoutingMapRefresh) {
+        return cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(
+            targetEndpoint,
+            forceRefresh,
+            forceCollectionRoutingMapRefresh);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -808,5 +812,14 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosAsyncContainer getControlContainerFromThroughputGlobalControlConfig(GlobalThroughputControlConfig globalControlConfig) {
         return globalControlConfig.getControlContainer();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RetryContext getRetryContext(CosmosDiagnostics cosmosDiagnostics) {
+        if(cosmosDiagnostics != null && cosmosDiagnostics.clientSideRequestStatistics() != null) {
+            return cosmosDiagnostics.clientSideRequestStatistics().getRetryContext();
+        } else {
+            return null;
+        }
     }
 }

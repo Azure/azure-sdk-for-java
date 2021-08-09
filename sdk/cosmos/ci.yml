@@ -3,24 +3,34 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/cosmos/
+      - sdk/cosmos/ci.yml
+      - sdk/cosmos/azure-cosmos/
+      - sdk/cosmos/azure-cosmos-benchmark/
+      - sdk/cosmos/azure-cosmos-dotnet-benchmark/
+      - sdk/cosmos/azure-cosmos-encryption/
+      - sdk/cosmos/azure-cosmos-examples/
+      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
+      - sdk/cosmos/azure-spring-data-cosmos/
+      - sdk/cosmos/azure-spring-data-cosmos-test/
+      - sdk/cosmos/faq/
     exclude:
-      - sdk/cosmos/mgmt
-      - sdk/cosmos/mgmt-v2015_04_08
-      - sdk/cosmos/mgmt-v2019_08_01
-      - sdk/cosmos/mgmt-v2019_08_01_preview
-      - sdk/cosmos/mgmt-v2019_12_12
+      - sdk/cosmos/pom.xml
+      - sdk/cosmos/azure-cosmos/pom.xml
+      - sdk/cosmos/azure-cosmos-benchmark/pom.xml
+      - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
+      - sdk/cosmos/azure-cosmos-encryption/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
+      - sdk/cosmos/azure-spring-data-cosmos/pom.xml
+      - sdk/cosmos/azure-spring-data-cosmos-test/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - feature/cosmos/spark30
@@ -28,13 +38,25 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/cosmos/
+      - sdk/cosmos/ci.yml
+      - sdk/cosmos/azure-cosmos/
+      - sdk/cosmos/azure-cosmos-benchmark/
+      - sdk/cosmos/azure-cosmos-dotnet-benchmark/
+      - sdk/cosmos/azure-cosmos-encryption/
+      - sdk/cosmos/azure-cosmos-examples/
+      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
+      - sdk/cosmos/azure-spring-data-cosmos/
+      - sdk/cosmos/azure-spring-data-cosmos-test/
+      - sdk/cosmos/faq/
     exclude:
-      - sdk/cosmos/mgmt
-      - sdk/cosmos/mgmt-v2015_04_08
-      - sdk/cosmos/mgmt-v2019_08_01
-      - sdk/cosmos/mgmt-v2019_08_01_preview
-      - sdk/cosmos/mgmt-v2019_12_12
+      - sdk/cosmos/pom.xml
+      - sdk/cosmos/azure-cosmos/pom.xml
+      - sdk/cosmos/azure-cosmos-benchmark/pom.xml
+      - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
+      - sdk/cosmos/azure-cosmos-encryption/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
+      - sdk/cosmos/azure-spring-data-cosmos/pom.xml
+      - sdk/cosmos/azure-spring-data-cosmos-test/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.

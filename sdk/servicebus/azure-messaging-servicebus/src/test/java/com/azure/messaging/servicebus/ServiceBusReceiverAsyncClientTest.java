@@ -9,10 +9,10 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
@@ -24,6 +24,7 @@ import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
 import com.azure.messaging.servicebus.models.AbandonOptions;
@@ -78,6 +79,7 @@ import java.util.stream.Stream;
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -158,14 +160,16 @@ class ServiceBusReceiverAsyncClientTest {
         // in ReactorExecutor.
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(sessionReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(sessionReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(sessionReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), CLIENT_OPTIONS,
-            SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(),
+            CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -311,25 +315,30 @@ class ServiceBusReceiverAsyncClientTest {
                 false, "Some-Session", null), connectionProcessor,
             CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
-        MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
-            invocationOnMock -> new FluxAutoLockRenew(Flux.empty(), Duration.ofSeconds(30),
-                new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()));
+        // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
+        try (
+            MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
+                invocationOnMock -> new FluxAutoLockRenew(Flux.empty(),
+                    new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1, Duration.ofSeconds(30),
+                        true),
+                    new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()))) {
 
-        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
-        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
-        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+            ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+            when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
+            when(receivedMessage.getLockToken()).thenReturn(lockToken);
 
-        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
-            .thenReturn(receivedMessage);
+            when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+                .thenReturn(receivedMessage);
 
-        // Act & Assert
-        StepVerifier.create(mySessionReceiver.receiveMessages().take(numberOfEvents))
-            .then(() -> messages.forEach(messageSink::next))
-            .expectNextCount(numberOfEvents)
-            .verifyComplete();
+            // Act & Assert
+            StepVerifier.create(mySessionReceiver.receiveMessages().take(numberOfEvents))
+                .then(() -> messages.forEach(messageSink::next))
+                .expectNextCount(numberOfEvents)
+                .verifyComplete();
 
-        // Message onNext should not trigger `FluxAutoLockRenew` for each message because this is session entity.
-        Assertions.assertEquals(0, mockedAutoLockRenew.constructed().size());
+            // Message onNext should not trigger `FluxAutoLockRenew` for each message because this is session entity.
+            Assertions.assertEquals(0, mockedAutoLockRenew.constructed().size());
+        }
     }
 
     /**

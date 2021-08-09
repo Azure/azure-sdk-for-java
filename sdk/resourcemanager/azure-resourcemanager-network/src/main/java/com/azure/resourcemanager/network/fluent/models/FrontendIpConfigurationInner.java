@@ -111,6 +111,12 @@ public class FrontendIpConfigurationInner extends SubResource {
     private SubResource publicIpPrefix;
 
     /*
+     * The reference to gateway load balancer frontend IP.
+     */
+    @JsonProperty(value = "properties.gatewayLoadBalancer")
+    private SubResource gatewayLoadBalancer;
+
+    /*
      * The provisioning state of the frontend IP configuration resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -333,6 +339,26 @@ public class FrontendIpConfigurationInner extends SubResource {
      */
     public FrontendIpConfigurationInner withPublicIpPrefix(SubResource publicIpPrefix) {
         this.publicIpPrefix = publicIpPrefix;
+        return this;
+    }
+
+    /**
+     * Get the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
+     *
+     * @return the gatewayLoadBalancer value.
+     */
+    public SubResource gatewayLoadBalancer() {
+        return this.gatewayLoadBalancer;
+    }
+
+    /**
+     * Set the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
+     *
+     * @param gatewayLoadBalancer the gatewayLoadBalancer value to set.
+     * @return the FrontendIpConfigurationInner object itself.
+     */
+    public FrontendIpConfigurationInner withGatewayLoadBalancer(SubResource gatewayLoadBalancer) {
+        this.gatewayLoadBalancer = gatewayLoadBalancer;
         return this;
     }
 

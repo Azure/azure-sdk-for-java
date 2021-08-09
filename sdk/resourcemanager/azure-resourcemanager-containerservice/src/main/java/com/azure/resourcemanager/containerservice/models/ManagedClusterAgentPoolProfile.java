@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAgentPoolProfileProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,14 +19,15 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /*
      * Unique name of the agent pool profile in the context of the subscription
-     * and resource group.
+     * and resource group. Windows agent pool names must be 6 characters or
+     * less.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * group. Windows agent pool names must be 6 characters or less.
      *
      * @return the name value.
      */
@@ -35,7 +37,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /**
      * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * group. Windows agent pool names must be 6 characters or less.
      *
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
@@ -54,7 +56,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
-    public ManagedClusterAgentPoolProfile withVmSize(ContainerServiceVMSizeTypes vmSize) {
+    public ManagedClusterAgentPoolProfile withVmSize(String vmSize) {
         super.withVmSize(vmSize);
         return this;
     }
@@ -70,6 +72,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withOsDiskType(OSDiskType osDiskType) {
         super.withOsDiskType(osDiskType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withKubeletDiskType(KubeletDiskType kubeletDiskType) {
+        super.withKubeletDiskType(kubeletDiskType);
         return this;
     }
 
@@ -103,6 +112,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withOsSku(Ossku osSku) {
+        super.withOsSku(osSku);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withMaxCount(Integer maxCount) {
         super.withMaxCount(maxCount);
         return this;
@@ -119,6 +135,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withEnableAutoScaling(Boolean enableAutoScaling) {
         super.withEnableAutoScaling(enableAutoScaling);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withScaleDownMode(ScaleDownMode scaleDownMode) {
+        super.withScaleDownMode(scaleDownMode);
         return this;
     }
 
@@ -161,6 +184,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withEnableNodePublicIp(Boolean enableNodePublicIp) {
         super.withEnableNodePublicIp(enableNodePublicIp);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withNodePublicIpPrefixId(String nodePublicIpPrefixId) {
+        super.withNodePublicIpPrefixId(nodePublicIpPrefixId);
         return this;
     }
 
@@ -224,6 +254,34 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withLinuxOSConfig(LinuxOSConfig linuxOSConfig) {
         super.withLinuxOSConfig(linuxOSConfig);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableEncryptionAtHost(Boolean enableEncryptionAtHost) {
+        super.withEnableEncryptionAtHost(enableEncryptionAtHost);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableUltraSsd(Boolean enableUltraSsd) {
+        super.withEnableUltraSsd(enableUltraSsd);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableFips(Boolean enableFips) {
+        super.withEnableFips(enableFips);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withGpuInstanceProfile(GpuInstanceProfile gpuInstanceProfile) {
+        super.withGpuInstanceProfile(gpuInstanceProfile);
         return this;
     }
 

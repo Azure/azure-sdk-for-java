@@ -23,11 +23,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityClient client;
 
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-    }
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createIdentityClientUsingManagedIdentity(HttpClient httpClient) {

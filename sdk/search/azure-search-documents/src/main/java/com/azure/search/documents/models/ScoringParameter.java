@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.experimental.geojson.GeoPoint;
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.Utility;

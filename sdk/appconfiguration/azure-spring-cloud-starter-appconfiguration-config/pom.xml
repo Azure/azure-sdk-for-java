@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
+  <version>2.0.1-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
+  <name>Azure Spring Cloud Starter App Configuration Config</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-appconfiguration-config-web</artifactId>
+      <version>2.0.1-beta.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config-web;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-feature-management-web</artifactId>
+      <version>2.0.0</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management-web;dependency} -->
+    </dependency>
+  </dependencies>
+</project>

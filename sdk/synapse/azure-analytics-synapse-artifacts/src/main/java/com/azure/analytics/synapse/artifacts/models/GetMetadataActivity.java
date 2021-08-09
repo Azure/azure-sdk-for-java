@@ -29,6 +29,18 @@ public class GetMetadataActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.fieldList")
     private List<Object> fieldList;
 
+    /*
+     * GetMetadata activity store settings.
+     */
+    @JsonProperty(value = "typeProperties.storeSettings")
+    private StoreReadSettings storeSettings;
+
+    /*
+     * GetMetadata activity format settings.
+     */
+    @JsonProperty(value = "typeProperties.formatSettings")
+    private FormatReadSettings formatSettings;
+
     /**
      * Get the dataset property: GetMetadata activity dataset reference.
      *
@@ -66,6 +78,46 @@ public class GetMetadataActivity extends ExecutionActivity {
      */
     public GetMetadataActivity setFieldList(List<Object> fieldList) {
         this.fieldList = fieldList;
+        return this;
+    }
+
+    /**
+     * Get the storeSettings property: GetMetadata activity store settings.
+     *
+     * @return the storeSettings value.
+     */
+    public StoreReadSettings getStoreSettings() {
+        return this.storeSettings;
+    }
+
+    /**
+     * Set the storeSettings property: GetMetadata activity store settings.
+     *
+     * @param storeSettings the storeSettings value to set.
+     * @return the GetMetadataActivity object itself.
+     */
+    public GetMetadataActivity setStoreSettings(StoreReadSettings storeSettings) {
+        this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /**
+     * Get the formatSettings property: GetMetadata activity format settings.
+     *
+     * @return the formatSettings value.
+     */
+    public FormatReadSettings getFormatSettings() {
+        return this.formatSettings;
+    }
+
+    /**
+     * Set the formatSettings property: GetMetadata activity format settings.
+     *
+     * @param formatSettings the formatSettings value to set.
+     * @return the GetMetadataActivity object itself.
+     */
+    public GetMetadataActivity setFormatSettings(FormatReadSettings formatSettings) {
+        this.formatSettings = formatSettings;
         return this;
     }
 }

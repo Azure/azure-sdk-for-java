@@ -39,6 +39,12 @@ public final class RoutingStorageContainerProperties {
     private AuthenticationType authenticationType;
 
     /*
+     * Managed identity properties of routing storage endpoint.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedIdentity identity;
+
+    /*
      * The name that identifies this endpoint. The name can only include
      * alphanumeric characters, periods, underscores, hyphens and has a maximum
      * length of 64 characters. The following names are reserved:  events,
@@ -173,6 +179,26 @@ public final class RoutingStorageContainerProperties {
      */
     public RoutingStorageContainerProperties withAuthenticationType(AuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Managed identity properties of routing storage endpoint.
+     *
+     * @return the identity value.
+     */
+    public ManagedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity properties of routing storage endpoint.
+     *
+     * @param identity the identity value to set.
+     * @return the RoutingStorageContainerProperties object itself.
+     */
+    public RoutingStorageContainerProperties withIdentity(ManagedIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -354,6 +380,9 @@ public final class RoutingStorageContainerProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (name() == null) {
             throw logger
                 .logExceptionAsError(

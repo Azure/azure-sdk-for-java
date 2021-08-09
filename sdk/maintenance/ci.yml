@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/maintenance/ci.yml
+      - sdk/maintenance/azure-resourcemanager-maintenance/
+    exclude:
+      - sdk/maintenance/pom.xml
+      - sdk/maintenance/azure-resourcemanager-maintenance/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/maintenance/ci.yml
+      - sdk/maintenance/azure-resourcemanager-maintenance/
+    exclude:
+      - sdk/maintenance/pom.xml
+      - sdk/maintenance/azure-resourcemanager-maintenance/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: maintenance
+    Artifacts:
+      - name: azure-resourcemanager-maintenance
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermaintenance

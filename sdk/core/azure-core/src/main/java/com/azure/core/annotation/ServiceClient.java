@@ -4,16 +4,16 @@
 package com.azure.core.annotation;
 
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
  * Annotation given to all service client classes.
  */
-@Retention(RetentionPolicy.SOURCE)
-@Target({TYPE})
+@Retention(CLASS)
+@Target(TYPE)
 public @interface ServiceClient {
 
     /**

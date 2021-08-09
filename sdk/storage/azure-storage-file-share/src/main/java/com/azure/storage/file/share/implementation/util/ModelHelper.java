@@ -7,12 +7,17 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.FileProperty;
+import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
+import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
@@ -24,6 +29,52 @@ public class ModelHelper {
 
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+
+    private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
+    private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
+
+    /**
+     * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
+     * object for safety.
+     *
+     * @param other The options to fill in defaults.
+     * @return An object with defaults filled in for null values in the original.
+     */
+    public static ParallelTransferOptions populateAndApplyDefaults(ParallelTransferOptions other) {
+        other = other == null ? new ParallelTransferOptions() : other;
+
+        // For now these two checks are useful for when we transition to
+        if (other.getBlockSizeLong() != null) {
+            StorageImplUtils.assertInBounds("ParallelTransferOptions.blockSize", other.getBlockSizeLong(), 1,
+                MAX_FILE_PUT_RANGE_BYTES);
+        }
+
+        if (other.getMaxSingleUploadSizeLong() != null) {
+            StorageImplUtils.assertInBounds("ParallelTransferOptions.maxSingleUploadSize",
+                other.getMaxSingleUploadSizeLong(), 1, MAX_FILE_PUT_RANGE_BYTES);
+        }
+
+        Long blockSize = other.getBlockSizeLong();
+        if (blockSize == null) {
+            blockSize = MAX_FILE_PUT_RANGE_BYTES;
+        }
+
+        Integer maxConcurrency = other.getMaxConcurrency();
+        if (maxConcurrency == null) {
+            maxConcurrency = FILE_DEFAULT_NUMBER_OF_BUFFERS;
+        }
+
+        Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
+        if (maxSingleUploadSize == null) {
+            maxSingleUploadSize = MAX_FILE_PUT_RANGE_BYTES;
+        }
+
+        return new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setMaxConcurrency(maxConcurrency)
+            .setProgressReceiver(other.getProgressReceiver())
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+    }
 
     /**
      * Converts an internal type to a public type.
@@ -139,5 +190,17 @@ public class ModelHelper {
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    public static String getETag(HttpHeaders headers) {
+        return headers.getValue("ETag");
+    }
+
+    public static ShareFileItemProperties transformFileProperty(FileProperty property) {
+        if (property == null) {
+            return null;
+        }
+        return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
+            property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
     }
 }

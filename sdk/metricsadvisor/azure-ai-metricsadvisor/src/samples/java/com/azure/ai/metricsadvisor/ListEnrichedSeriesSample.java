@@ -30,8 +30,8 @@ public class ListEnrichedSeriesSample {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-12T00:00:00Z");
 
         PagedIterable<MetricEnrichedSeriesData> enrichedDataIterable
-            = advisorClient.listMetricEnrichedSeriesData(Arrays.asList(seriesKey),
-            detectionConfigurationId,
+            = advisorClient.listMetricEnrichedSeriesData(detectionConfigurationId,
+            Arrays.asList(seriesKey),
             startTime,
             endTime);
 

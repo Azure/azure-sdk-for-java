@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')//docs/search.post.suggest?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')/docs/search.post.suggest?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8d663e3a-1fbc-4e7c-9ff9-3537dee79e13",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4a1b8b07-2bca-498b-997a-0cfed7505a92",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "1229",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "8d663e3a-1fbc-4e7c-9ff9-3537dee79e13",
+      "request-id" : "4a1b8b07-2bca-498b-997a-0cfed7505a92",
       "StatusCode" : "200",
-      "Date" : "Wed, 31 Mar 2021 21:17:35 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:21:56 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "8d663e3a-1fbc-4e7c-9ff9-3537dee79e13",
-      "elapsed-time" : "9",
+      "client-request-id" : "4a1b8b07-2bca-498b-997a-0cfed7505a92",
+      "elapsed-time" : "8",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "1229",
       "Body" : "{\"@search.coverage\":100.0,\"value\":[{\"@search.text\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"HotelId\":\"1\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]}]}",
-      "x-ms-client-request-id" : "8d663e3a-1fbc-4e7c-9ff9-3537dee79e13",
+      "x-ms-client-request-id" : "4a1b8b07-2bca-498b-997a-0cfed7505a92",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

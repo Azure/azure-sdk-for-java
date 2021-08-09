@@ -17,13 +17,13 @@ public final class ExtendedLocation {
     /*
      * The name of the extended location.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type of the extended location.
      */
-    @JsonProperty(value = "type", required = true)
+    @JsonProperty(value = "type")
     private ExtendedLocationTypes type;
 
     /**
@@ -72,15 +72,5 @@ public final class ExtendedLocation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ExtendedLocation"));
-        }
-        if (type() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ExtendedLocation"));
-        }
     }
 }

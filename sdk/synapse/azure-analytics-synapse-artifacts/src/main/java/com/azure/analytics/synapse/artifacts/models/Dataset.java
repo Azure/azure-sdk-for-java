@@ -27,12 +27,16 @@ import java.util.Map;
         defaultImpl = Dataset.class)
 @JsonTypeName("Dataset")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class),
     @JsonSubTypes.Type(name = "Avro", value = AvroDataset.class),
+    @JsonSubTypes.Type(name = "Excel", value = ExcelDataset.class),
     @JsonSubTypes.Type(name = "Parquet", value = ParquetDataset.class),
     @JsonSubTypes.Type(name = "DelimitedText", value = DelimitedTextDataset.class),
     @JsonSubTypes.Type(name = "Json", value = JsonDataset.class),
+    @JsonSubTypes.Type(name = "Xml", value = XmlDataset.class),
     @JsonSubTypes.Type(name = "Orc", value = OrcDataset.class),
     @JsonSubTypes.Type(name = "Binary", value = BinaryDataset.class),
+    @JsonSubTypes.Type(name = "AzureBlob", value = AzureBlobDataset.class),
     @JsonSubTypes.Type(name = "AzureTable", value = AzureTableDataset.class),
     @JsonSubTypes.Type(name = "AzureSqlTable", value = AzureSqlTableDataset.class),
     @JsonSubTypes.Type(name = "AzureSqlMITable", value = AzureSqlMITableDataset.class),
@@ -44,8 +48,12 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "DynamicsEntity", value = DynamicsEntityDataset.class),
     @JsonSubTypes.Type(name = "DynamicsCrmEntity", value = DynamicsCrmEntityDataset.class),
     @JsonSubTypes.Type(name = "CommonDataServiceForAppsEntity", value = CommonDataServiceForAppsEntityDataset.class),
+    @JsonSubTypes.Type(name = "AzureDataLakeStoreFile", value = AzureDataLakeStoreDataset.class),
+    @JsonSubTypes.Type(name = "AzureBlobFSFile", value = AzureBlobFSDataset.class),
     @JsonSubTypes.Type(name = "Office365Table", value = Office365Dataset.class),
+    @JsonSubTypes.Type(name = "FileShare", value = FileShareDataset.class),
     @JsonSubTypes.Type(name = "MongoDbCollection", value = MongoDbCollectionDataset.class),
+    @JsonSubTypes.Type(name = "MongoDbAtlasCollection", value = MongoDbAtlasCollectionDataset.class),
     @JsonSubTypes.Type(name = "MongoDbV2Collection", value = MongoDbV2CollectionDataset.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiCollection", value = CosmosDbMongoDbApiCollectionDataset.class),
     @JsonSubTypes.Type(name = "ODataResource", value = ODataResourceDataset.class),
@@ -73,6 +81,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SapTableResource", value = SapTableResourceDataset.class),
     @JsonSubTypes.Type(name = "WebTable", value = WebTableDataset.class),
     @JsonSubTypes.Type(name = "AzureSearchIndex", value = AzureSearchIndexDataset.class),
+    @JsonSubTypes.Type(name = "HttpFile", value = HttpDataset.class),
     @JsonSubTypes.Type(name = "AmazonMWSObject", value = AmazonMWSObjectDataset.class),
     @JsonSubTypes.Type(name = "AzurePostgreSqlTable", value = AzurePostgreSqlTableDataset.class),
     @JsonSubTypes.Type(name = "ConcurObject", value = ConcurObjectDataset.class),
@@ -107,7 +116,10 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "DynamicsAXResource", value = DynamicsAXResourceDataset.class),
     @JsonSubTypes.Type(name = "OracleServiceCloudObject", value = OracleServiceCloudObjectDataset.class),
     @JsonSubTypes.Type(name = "AzureDataExplorerTable", value = AzureDataExplorerTableDataset.class),
-    @JsonSubTypes.Type(name = "GoogleAdWordsObject", value = GoogleAdWordsObjectDataset.class)
+    @JsonSubTypes.Type(name = "GoogleAdWordsObject", value = GoogleAdWordsObjectDataset.class),
+    @JsonSubTypes.Type(name = "SnowflakeTable", value = SnowflakeDataset.class),
+    @JsonSubTypes.Type(name = "SharePointOnlineListResource", value = SharePointOnlineListResourceDataset.class),
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeDataset", value = AzureDatabricksDeltaLakeDataset.class)
 })
 @Fluent
 public class Dataset {

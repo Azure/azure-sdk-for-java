@@ -2,9 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
+import com.azure.resourcemanager.containerservice.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
@@ -14,8 +20,19 @@ import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
+import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,6 +41,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** The implementation for KubernetesCluster and its create and update interfaces. */
 public class KubernetesClusterImpl
@@ -170,6 +188,44 @@ public class KubernetesClusterImpl
         return this.innerModel().enableRbac();
     }
 
+    @Override
+    public PowerState powerState() {
+        return this.innerModel().powerState();
+    }
+
+    @Override
+    public String systemAssignedManagedServiceIdentityPrincipalId() {
+        String objectId = null;
+        if (this.innerModel().identityProfile() != null) {
+            UserAssignedIdentity identity =
+                this.innerModel().identityProfile().get("kubeletidentity");
+            if (identity != null) {
+                objectId = identity.objectId();
+            }
+        }
+        return objectId;
+    }
+
+    @Override
+    public void start() {
+        this.startAsync().block();
+    }
+
+    @Override
+    public Mono<Void> startAsync() {
+        return manager().kubernetesClusters().startAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void stop() {
+        this.stopAsync().block();
+    }
+
+    @Override
+    public Mono<Void> stopAsync() {
+        return manager().kubernetesClusters().stopAsync(this.resourceGroupName(), this.name());
+    }
+
     private Mono<List<CredentialResult>> listAdminConfig(final KubernetesClusterImpl self) {
         return this
             .manager()
@@ -277,6 +333,18 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public KubernetesClusterImpl withSystemAssignedManagedServiceIdentity() {
+        this.innerModel().withIdentity(new ManagedClusterIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED));
+        return this;
+    }
+
+//    @Override
+//    public KubernetesClusterImpl enableRoleBasedAccessControl() {
+//        this.innerModel().withEnableRbac(true);
+//        return this;
+//    }
+
+    @Override
     public KubernetesClusterImpl withServicePrincipalSecret(String secret) {
         this.innerModel().servicePrincipalProfile().withSecret(secret);
         return this;
@@ -304,6 +372,21 @@ public class KubernetesClusterImpl
         }
         throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
             "Cannot get agent pool named %s", name)));
+    }
+
+    @Override
+    public Update withoutAgentPool(String name) {
+        if (innerModel().agentPoolProfiles() != null) {
+            innerModel().withAgentPoolProfiles(
+                innerModel().agentPoolProfiles().stream()
+                    .filter(p -> !name.equals(p.name()))
+                    .collect(Collectors.toList()));
+
+            this.addDependency(context ->
+                manager().serviceClient().getAgentPools().deleteAsync(resourceGroupName(), name(), name)
+                    .then(context.voidMono()));
+        }
+        return this;
     }
 
     @Override
@@ -346,5 +429,136 @@ public class KubernetesClusterImpl
         }
         innerModel().agentPoolProfiles().add(agentPool.innerModel());
         return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withAutoScalerProfile(ManagedClusterPropertiesAutoScalerProfile autoScalerProfile) {
+        this.innerModel().withAutoScalerProfile(autoScalerProfile);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl enablePrivateCluster() {
+        if (innerModel().apiServerAccessProfile() == null) {
+            innerModel().withApiServerAccessProfile(new ManagedClusterApiServerAccessProfile());
+        }
+        innerModel().apiServerAccessProfile().withEnablePrivateCluster(true);
+        return this;
+    }
+
+    @Override
+    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
+        return new PagedIterable<>(listPrivateLinkResourcesAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
+        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getPrivateLinkResources()
+            .listWithResponseAsync(this.resourceGroupName(), this.name())
+            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
+                .map(PrivateLinkResourceImpl::new)
+                .collect(Collectors.toList())));
+
+        return PagedConverter.convertListToPagedFlux(retList);
+    }
+
+    @Override
+    public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections() {
+        return new PagedIterable<>(listPrivateEndpointConnectionsAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
+        Mono<Response<List<PrivateEndpointConnection>>> retList = this.manager().serviceClient()
+            .getPrivateEndpointConnections()
+            .listWithResponseAsync(this.resourceGroupName(), this.name())
+            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
+                .map(PrivateEndpointConnectionImpl::new)
+                .collect(Collectors.toList())));
+
+        return PagedConverter.convertListToPagedFlux(retList);
+    }
+
+    private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
+        private final PrivateLinkResourceInner innerModel;
+
+        private PrivateLinkResourceImpl(PrivateLinkResourceInner innerModel) {
+            this.innerModel = innerModel;
+        }
+
+        @Override
+        public String groupId() {
+            return innerModel.groupId();
+        }
+
+        @Override
+        public List<String> requiredMemberNames() {
+            return Collections.unmodifiableList(innerModel.requiredMembers());
+        }
+
+        @Override
+        public List<String> requiredDnsZoneNames() {
+            return Collections.emptyList();
+        }
+    }
+
+    private static final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
+        private final PrivateEndpointConnectionInner innerModel;
+
+        private final PrivateEndpoint privateEndpoint;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState;
+        private final PrivateEndpointConnectionProvisioningState provisioningState;
+
+        private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
+            this.innerModel = innerModel;
+
+            this.privateEndpoint = innerModel.privateEndpoint() == null
+                ? null
+                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
+                ? null
+                : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
+                innerModel.privateLinkServiceConnectionState().status() == null
+                    ? null
+                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                innerModel.privateLinkServiceConnectionState().description(),
+                "");
+            this.provisioningState = innerModel.provisioningState() == null
+                ? null
+                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
+        }
+
+        @Override
+        public String id() {
+            return innerModel.id();
+        }
+
+        @Override
+        public String name() {
+            return innerModel.name();
+        }
+
+        @Override
+        public String type() {
+            return innerModel.type();
+        }
+
+        @Override
+        public PrivateEndpoint privateEndpoint() {
+            return privateEndpoint;
+        }
+
+        @Override
+        public com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState() {
+            return privateLinkServiceConnectionState;
+        }
+
+        @Override
+        public PrivateEndpointConnectionProvisioningState provisioningState() {
+            return provisioningState;
+        }
     }
 }

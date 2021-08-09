@@ -94,6 +94,13 @@ public class MSDeployStatusInner extends ProxyOnlyResource {
         return this.complete;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MSDeployStatusInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

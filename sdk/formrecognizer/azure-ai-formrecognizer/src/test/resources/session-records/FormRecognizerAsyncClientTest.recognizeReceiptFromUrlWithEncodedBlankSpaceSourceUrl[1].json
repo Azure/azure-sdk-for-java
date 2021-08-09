@@ -1,25 +1,56 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/receipt/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "afb0912b-d42e-49c1-8dbb-3dfd58d6c5e7",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "35f7ec2f-4aab-46b5-b232-95648b847eae",
       "Content-Type" : "application/json"
     },
-    "Response" : {
-      "x-envoy-upstream-service-time" : "4765",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "81ec23a5-728c-4256-8afd-f25703ad2315",
-      "retry-after" : "0",
-      "Content-Length" : "161",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"FailedToDownloadImage\",\"innerError\":{\"requestId\":\"81ec23a5-728c-4256-8afd-f25703ad2315\"},\"message\":\"Failed to download image from input URL.\"}}",
-      "Date" : "Fri, 26 Mar 2021 13:47:19 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.util.concurrent.TimeoutException",
+      "ErrorMessage" : "Channel response timed out after 60000 milliseconds."
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "35f7ec2f-4aab-46b5-b232-95648b847eae",
+      "Content-Type" : "application/json"
     },
-    "Exception" : null
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.util.concurrent.TimeoutException",
+      "ErrorMessage" : "Channel response timed out after 60000 milliseconds."
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "35f7ec2f-4aab-46b5-b232-95648b847eae",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.util.concurrent.TimeoutException",
+      "ErrorMessage" : "Channel response timed out after 60000 milliseconds."
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "35f7ec2f-4aab-46b5-b232-95648b847eae",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.util.concurrent.TimeoutException",
+      "ErrorMessage" : "Channel response timed out after 60000 milliseconds."
+    }
   } ],
   "variables" : [ ]
 }

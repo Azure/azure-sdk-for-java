@@ -3,27 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - common/perf-test-core/
       - sdk/template/
+    exclude:
+      - sdk/template/pom.xml
+      - sdk/template/azure-sdk-template/pom.xml
+      - sdk/template/azure-template-perf/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - common/perf-test-core/
       - sdk/template/
+    exclude:
+      - sdk/template/pom.xml
+      - sdk/template/azure-sdk-template/pom.xml
+      - sdk/template/azure-template-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

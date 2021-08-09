@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.mysql.models.PrivateLinkResource;
 import com.azure.resourcemanager.mysql.models.PrivateLinkResourceProperties;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.mysql.models.PrivateLinkResourceProperties;
 public final class PrivateLinkResourceImpl implements PrivateLinkResource {
     private PrivateLinkResourceInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject, MySqlManager serviceManager) {
+    PrivateLinkResourceImpl(
+        PrivateLinkResourceInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

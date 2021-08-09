@@ -11,12 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema {
     /*
-     * Grant type is expected to be refresh_token
-     */
-    @JsonProperty(value = "grant_type", required = true)
-    private String grantType;
-
-    /*
      * Indicates the name of your Azure container registry.
      */
     @JsonProperty(value = "service", required = true)
@@ -34,33 +28,13 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * Must be a valid ACR refresh token
      */
     @JsonProperty(value = "refresh_token", required = true)
-    private String refreshToken;
+    private String acrRefreshToken;
 
-    /** Creates an instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema class. */
-    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {
-        grantType = "refresh_token";
-    }
-
-    /**
-     * Get the grantType property: Grant type is expected to be refresh_token.
-     *
-     * @return the grantType value.
+    /*
+     * Grant type is expected to be refresh_token
      */
-    public String getGrantType() {
-        return this.grantType;
-    }
-
-    /**
-     * Set the grantType property: Grant type is expected to be refresh_token.
-     *
-     * @param grantType the grantType value to set.
-     * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
-     */
-    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setGrantType(
-            String grantType) {
-        this.grantType = grantType;
-        return this;
-    }
+    @JsonProperty(value = "grant_type", required = true)
+    private TokenGrantType grantType;
 
     /**
      * Get the service property: Indicates the name of your Azure container registry.
@@ -105,23 +79,44 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
     }
 
     /**
-     * Get the refreshToken property: Must be a valid ACR refresh token.
+     * Get the acrRefreshToken property: Must be a valid ACR refresh token.
      *
-     * @return the refreshToken value.
+     * @return the acrRefreshToken value.
      */
-    public String getRefreshToken() {
-        return this.refreshToken;
+    public String getAcrRefreshToken() {
+        return this.acrRefreshToken;
     }
 
     /**
-     * Set the refreshToken property: Must be a valid ACR refresh token.
+     * Set the acrRefreshToken property: Must be a valid ACR refresh token.
      *
-     * @param refreshToken the refreshToken value to set.
+     * @param acrRefreshToken the acrRefreshToken value to set.
      * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setRefreshToken(
-            String refreshToken) {
-        this.refreshToken = refreshToken;
+    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setAcrRefreshToken(
+            String acrRefreshToken) {
+        this.acrRefreshToken = acrRefreshToken;
+        return this;
+    }
+
+    /**
+     * Get the grantType property: Grant type is expected to be refresh_token.
+     *
+     * @return the grantType value.
+     */
+    public TokenGrantType getGrantType() {
+        return this.grantType;
+    }
+
+    /**
+     * Set the grantType property: Grant type is expected to be refresh_token.
+     *
+     * @param grantType the grantType value to set.
+     * @return the PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
+     */
+    public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema setGrantType(
+            TokenGrantType grantType) {
+        this.grantType = grantType;
         return this;
     }
 }

@@ -34,6 +34,12 @@ public class VnetParameters extends ProxyOnlyResource {
     @JsonProperty(value = "properties.vnetSubnetName")
     private String vnetSubnetName;
 
+    /*
+     * The ARM Resource ID of the subnet to validate
+     */
+    @JsonProperty(value = "properties.subnetResourceId")
+    private String subnetResourceId;
+
     /**
      * Get the vnetResourceGroup property: The Resource Group of the VNET to be validated.
      *
@@ -91,6 +97,33 @@ public class VnetParameters extends ProxyOnlyResource {
      */
     public VnetParameters withVnetSubnetName(String vnetSubnetName) {
         this.vnetSubnetName = vnetSubnetName;
+        return this;
+    }
+
+    /**
+     * Get the subnetResourceId property: The ARM Resource ID of the subnet to validate.
+     *
+     * @return the subnetResourceId value.
+     */
+    public String subnetResourceId() {
+        return this.subnetResourceId;
+    }
+
+    /**
+     * Set the subnetResourceId property: The ARM Resource ID of the subnet to validate.
+     *
+     * @param subnetResourceId the subnetResourceId value to set.
+     * @return the VnetParameters object itself.
+     */
+    public VnetParameters withSubnetResourceId(String subnetResourceId) {
+        this.subnetResourceId = subnetResourceId;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VnetParameters withKind(String kind) {
+        super.withKind(kind);
         return this;
     }
 

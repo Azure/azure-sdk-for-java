@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.ServersClient;
 import com.azure.resourcemanager.mysql.fluent.models.ServerInner;
 import com.azure.resourcemanager.mysql.models.Server;
@@ -22,9 +21,9 @@ public final class ServersImpl implements Servers {
 
     private final ServersClient innerClient;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public ServersImpl(ServersClient innerClient, MySqlManager serviceManager) {
+    public ServersImpl(ServersClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -63,22 +62,22 @@ public final class ServersImpl implements Servers {
 
     public PagedIterable<Server> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new ServerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new ServerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> list() {
         PagedIterable<ServerInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new ServerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> list(Context context) {
         PagedIterable<ServerInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new ServerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public void restart(String resourceGroupName, String serverName) {
@@ -194,7 +193,7 @@ public final class ServersImpl implements Servers {
         return this.innerClient;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 

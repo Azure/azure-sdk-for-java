@@ -207,7 +207,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
             new ConfigurationClientBuilder()
                 .connectionString(connectionString)
                 .clientOptions(new ClientOptions()
-                                   .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))                                                       .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                                   .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
                 .httpClient(httpRequest -> {
                     assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
                     return Mono.just(new MockHttpResponse(httpRequest, 400));

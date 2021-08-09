@@ -17,7 +17,7 @@ spark.sql("CREATE DATABASE IF NOT EXISTS cosmosCatalog.{};".format(REPLACEME))
 Create a Cosmos DB container:
 ```python
 # create a cosmos container with the specified partition key path and throughput
-spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.items TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')".format(REPLACEME, REPLACEME))
+spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.oltp TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')".format(REPLACEME, REPLACEME))
 ```
 
 Supported Configuration in `TBLPROPERTIES`

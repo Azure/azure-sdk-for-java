@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.DirectoryCreated event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.DirectoryCreated event. */
 @Fluent
 public final class StorageDirectoryCreatedEventData {
     /*

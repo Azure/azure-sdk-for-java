@@ -52,6 +52,12 @@ public class VirtualNetworkInner extends Resource {
     private DhcpOptions dhcpOptions;
 
     /*
+     * The FlowTimeout value (in minutes) for the Virtual Network
+     */
+    @JsonProperty(value = "properties.flowTimeoutInMinutes")
+    private Integer flowTimeoutInMinutes;
+
+    /*
      * A list of subnets in a Virtual Network.
      */
     @JsonProperty(value = "properties.subnets")
@@ -185,6 +191,26 @@ public class VirtualNetworkInner extends Resource {
      */
     public VirtualNetworkInner withDhcpOptions(DhcpOptions dhcpOptions) {
         this.dhcpOptions = dhcpOptions;
+        return this;
+    }
+
+    /**
+     * Get the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
+     *
+     * @return the flowTimeoutInMinutes value.
+     */
+    public Integer flowTimeoutInMinutes() {
+        return this.flowTimeoutInMinutes;
+    }
+
+    /**
+     * Set the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
+     *
+     * @param flowTimeoutInMinutes the flowTimeoutInMinutes value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withFlowTimeoutInMinutes(Integer flowTimeoutInMinutes) {
+        this.flowTimeoutInMinutes = flowTimeoutInMinutes;
         return this;
     }
 

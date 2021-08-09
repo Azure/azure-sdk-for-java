@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
@@ -18,6 +17,7 @@ import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -37,13 +37,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private static final String MANAGEMENT_SESSION_NAME = "mgmt-session";
     private static final String MANAGEMENT_LINK_NAME = "mgmt";
     private static final String MANAGEMENT_ADDRESS = "$management";
+    private static final String CROSS_ENTITY_TRANSACTIONS_LINK_NAME = "crossentity-coordinator";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorAmqpConnection.class);
-    /**
-     * Keeps track of the opened send links. Links are key'd by their entityPath. The send link for allowing the service
-     * load balance messages is the eventHubName.
-     */
-    private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ServiceBusManagementNode> managementNodes = new ConcurrentHashMap<>();
     private final String connectionId;
     private final ReactorProvider reactorProvider;
@@ -54,6 +50,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
+    private final boolean distributedTransactionsSupport;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -64,10 +61,13 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
+     * @param distributedTransactionsSupport indicate if distributed transaction across different entities is required
+     *        for this connection.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+        boolean distributedTransactionsSupport) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
@@ -80,6 +80,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.messageSerializer = messageSerializer;
         this.scheduler = connectionOptions.getScheduler();
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
+        this.distributedTransactionsSupport = distributedTransactionsSupport;
     }
 
     @Override
@@ -141,11 +142,11 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
          String transferEntityPath) {
 
-        return createSession(entityPath).cast(ServiceBusSession.class).flatMap(session -> {
+        return createSession(linkName).cast(ServiceBusSession.class).flatMap(session -> {
             logger.verbose("Get or create sender link : '{}'", linkName);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(),
+            return session.createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(),
                 retryPolicy, transferEntityPath).cast(AmqpSendLink.class);
         });
     }
@@ -176,6 +177,11 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             });
     }
 
+    @Override
+    public Mono<AmqpSession> createSession(String sessionName) {
+        return super.createSession(distributedTransactionsSupport ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName);
+    }
+
     /**
      * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
      * same {@code linkName}. Otherwise, a new link is created and returned.
@@ -204,17 +210,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     }
 
     @Override
-    public void dispose() {
-        logger.verbose("Disposing of connection.");
-        sendLinks.forEach((key, value) -> value.dispose());
-        sendLinks.clear();
-
-        super.dispose();
-    }
-
-    @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions);
+        return new ServiceBusReactorSession(this, session, handler, sessionName, reactorProvider,
+            handlerProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
+            new ServiceBusCreateSessionOptions(distributedTransactionsSupport));
     }
 }

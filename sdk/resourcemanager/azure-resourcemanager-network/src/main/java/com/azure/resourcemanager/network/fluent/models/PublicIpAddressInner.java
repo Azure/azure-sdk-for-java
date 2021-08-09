@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.DdosSettings;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
@@ -139,10 +140,17 @@ public class PublicIpAddressInner extends Resource {
     private PublicIpAddressMigrationPhase migrationPhase;
 
     /*
-     * The source Public IP Address (IPv6) that links to this address (IPv4).
+     * The linked public IP address of the public IP address resource.
      */
     @JsonProperty(value = "properties.linkedPublicIPAddress")
     private PublicIpAddressInner linkedPublicIpAddress;
+
+    /*
+     * Specify what happens to the public IP address when the VM using it is
+     * deleted
+     */
+    @JsonProperty(value = "properties.deleteOption")
+    private DeleteOptions deleteOption;
 
     /*
      * Resource ID.
@@ -469,7 +477,7 @@ public class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Get the linkedPublicIpAddress property: The source Public IP Address (IPv6) that links to this address (IPv4).
+     * Get the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
      *
      * @return the linkedPublicIpAddress value.
      */
@@ -478,13 +486,33 @@ public class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Set the linkedPublicIpAddress property: The source Public IP Address (IPv6) that links to this address (IPv4).
+     * Set the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
      *
      * @param linkedPublicIpAddress the linkedPublicIpAddress value to set.
      * @return the PublicIpAddressInner object itself.
      */
     public PublicIpAddressInner withLinkedPublicIpAddress(PublicIpAddressInner linkedPublicIpAddress) {
         this.linkedPublicIpAddress = linkedPublicIpAddress;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withDeleteOption(DeleteOptions deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 

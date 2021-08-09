@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** RerunTrigger resource type. */
 @Fluent
-public final class RerunTriggerResource extends AzureEntityResource {
+public final class RerunTriggerResource extends SubResource {
     /*
      * Properties of the rerun trigger.
      */

@@ -52,8 +52,10 @@ public final class BlobBatchAsyncClient {
 
     private final AzureBlobStorageImpl client;
     private final boolean containerScoped;
+    private final BlobServiceVersion serviceVersion;
 
     BlobBatchAsyncClient(String clientUrl, HttpPipeline pipeline, BlobServiceVersion version, boolean containerScoped) {
+        this.serviceVersion = version;
         this.client = new AzureBlobStorageImplBuilder()
             .url(clientUrl)
             .pipeline(pipeline)
@@ -68,7 +70,7 @@ public final class BlobBatchAsyncClient {
      * @return a new {@link BlobBatch} instance.
      */
     public BlobBatch getBlobBatch() {
-        return new BlobBatch(client.getUrl(), client.getHttpPipeline());
+        return new BlobBatch(client.getUrl(), client.getHttpPipeline(), serviceVersion);
     }
 
     /**

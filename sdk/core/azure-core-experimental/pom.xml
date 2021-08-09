@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-experimental</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+  <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
 
   <name>Microsoft Azure Java Core Experimental Library</name>
   <description>This package contains experimental core types for Azure Java clients.</description>
@@ -45,6 +45,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
+    <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
   </properties>
 
   <developers>
@@ -58,31 +60,31 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.3</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -122,9 +124,8 @@
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
-                --add-opens com.azure.core.experimental/com.azure.core.experimental.geojson=ALL-UNNAMED
                 --add-opens com.azure.core.experimental/com.azure.core.experimental.http=ALL-UNNAMED
-                --add-opens com.azure.core.experimental/com.azure.core.experimental.jsonpatch=ALL-UNNAMED
+                --add-opens com.azure.core.experimental/com.azure.core.experimental.models=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

@@ -6,7 +6,8 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The FormElement model.
+ * Represents a form element recognized from the input document. Its text can be a line,
+ * a word, the content of a table cell, a selection mark, etc.
  */
 @Immutable
 public abstract class FormElement {
@@ -48,9 +49,9 @@ public abstract class FormElement {
     }
 
     /**
-     * The text content of the extracted element.
+     * The text content of the form element.
      *
-     * @return The text content of the extracted element.
+     * @return The text content of the form element.
      */
     public String getText() {
         return text;

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.ServerSecurityAlertPolicyInner;
 import com.azure.resourcemanager.mysql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.mysql.models.ServerSecurityAlertPolicy;
@@ -17,7 +16,7 @@ public final class ServerSecurityAlertPolicyImpl
     implements ServerSecurityAlertPolicy, ServerSecurityAlertPolicy.Definition, ServerSecurityAlertPolicy.Update {
     private ServerSecurityAlertPolicyInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -73,7 +72,7 @@ public final class ServerSecurityAlertPolicyImpl
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 
@@ -108,7 +107,8 @@ public final class ServerSecurityAlertPolicyImpl
         return this;
     }
 
-    ServerSecurityAlertPolicyImpl(SecurityAlertPolicyName name, MySqlManager serviceManager) {
+    ServerSecurityAlertPolicyImpl(
+        SecurityAlertPolicyName name, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = new ServerSecurityAlertPolicyInner();
         this.serviceManager = serviceManager;
         this.securityAlertPolicyName = name;
@@ -137,7 +137,8 @@ public final class ServerSecurityAlertPolicyImpl
         return this;
     }
 
-    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner innerObject, MySqlManager serviceManager) {
+    ServerSecurityAlertPolicyImpl(
+        ServerSecurityAlertPolicyInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

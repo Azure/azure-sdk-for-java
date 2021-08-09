@@ -10,6 +10,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.compute.models.RunCommandInput;
+import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -30,10 +32,10 @@ import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import java.io.IOException;
+
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 
@@ -84,29 +86,17 @@ public abstract class ComputeManagementTest extends ResourceManagerTestBase {
     protected void cleanUpResources() {
     }
 
-    protected void deprovisionAgentInLinuxVM(String host, int port, String userName, String password) {
-        if (isPlaybackMode()) {
-            return;
-        }
-        SshShell shell = null;
-        try {
-            System.out.println("Trying to de-provision");
-            shell = SshShell.open(host, port, userName, password);
-            List<String> deprovisionCommand = new ArrayList<>();
-            deprovisionCommand.add("sudo waagent -deprovision+user --force");
-            String output = shell.runCommands(deprovisionCommand);
-            System.out.println(output);
-        } catch (JSchException jSchException) {
-            Assertions.assertNull(jSchException, jSchException.getMessage());
-        } catch (IOException ioException) {
-            Assertions.assertNull(ioException, ioException.getMessage());
-        } catch (Exception exception) {
-            Assertions.assertNull(exception, exception.getMessage());
-        } finally {
-            if (shell != null) {
-                shell.close();
-            }
-        }
+    protected void deprovisionAgentInLinuxVM(VirtualMachine virtualMachine) {
+        System.out.println("Trying to de-provision");
+
+        virtualMachine.manager().serviceClient().getVirtualMachines().beginRunCommand(
+            virtualMachine.resourceGroupName(), virtualMachine.name(),
+            new RunCommandInput()
+                .withCommandId("RunShellScript")
+                .withScript(Collections.singletonList("sudo waagent -deprovision+user --force")));
+
+        // wait as above command will not return as sync
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
     }
 
     protected void ensureCanDoSsh(String fqdn, int sshPort, String uname, String password) {

@@ -6,6 +6,7 @@ package com.azure.search.documents.util;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.search.documents.implementation.models.SearchRequest;
+import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
 
@@ -62,5 +63,16 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      */
     public Long getTotalCount() {
         return pagedFlux.getTotalCount().block();
+    }
+
+    /**
+     * The answer results based on the search request.
+     * <p>
+     * If {@code answers} wasn't supplied in the request this will be null.
+     *
+     * @return The answer results if {@code answers} were supplied in the request, otherwise null.
+     */
+    public List<AnswerResult> getAnswers() {
+        return pagedFlux.getAnswers().block();
     }
 }

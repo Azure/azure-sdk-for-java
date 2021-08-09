@@ -17,27 +17,29 @@ import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareItem;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * The JUnit tests for the AzureStorageResourcePatternResolver class.
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(properties = "spring.main.banner-mode=off")
-@RunWith(SpringRunner.class)
 public class AzureStorageResourcePatternResolverTest {
 
     /**
@@ -51,6 +53,18 @@ public class AzureStorageResourcePatternResolverTest {
      */
     @Autowired
     private ShareServiceClient shareServiceClient;
+
+    private AutoCloseable closeable;
+
+    @BeforeAll
+    public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterAll
+    public void close() throws Exception {
+        closeable.close();
+    }
 
     /**
      * Test getResources method.

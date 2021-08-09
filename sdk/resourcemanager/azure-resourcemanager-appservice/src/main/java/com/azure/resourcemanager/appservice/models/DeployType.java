@@ -43,6 +43,12 @@ public class DeployType extends ExpandableStringEnum<DeployType> {
     public static final DeployType STATIC = fromString("static");
 
     /**
+     * Deploy the script file to {@code /home/site/scripts/}.
+     * {@code DeployOptions.path} parameter needs to be specified.
+     */
+    public static final DeployType SCRIPT = fromString("script");
+
+    /**
      * Deploy the script as startup.sh (Linux) or startup.cmd (Windows) to {@code /home/site/scripts/}.
      * {@code DeployOptions.path} parameter is not supported.
      */

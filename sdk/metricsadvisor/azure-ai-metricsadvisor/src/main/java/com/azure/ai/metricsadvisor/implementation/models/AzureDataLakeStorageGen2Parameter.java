@@ -11,37 +11,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureDataLakeStorageGen2Parameter {
     /*
-     * Account name
+     * The account name of this Azure Data Lake
      */
-    @JsonProperty(value = "accountName", required = true)
+    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
-     * Account key
+     * The account key that can access this Azure Data Lake
      */
-    @JsonProperty(value = "accountKey", required = true)
+    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*
-     * File system name (Container)
+     * The file system (container) name in this Azure Data Lake
      */
     @JsonProperty(value = "fileSystemName", required = true)
     private String fileSystemName;
 
     /*
-     * Directory template
+     * The directory template under this file system
      */
     @JsonProperty(value = "directoryTemplate", required = true)
     private String directoryTemplate;
 
     /*
-     * File template
+     * The file template
      */
     @JsonProperty(value = "fileTemplate", required = true)
     private String fileTemplate;
 
     /**
-     * Get the accountName property: Account name.
+     * Get the accountName property: The account name of this Azure Data Lake.
      *
      * @return the accountName value.
      */
@@ -50,7 +50,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     }
 
     /**
-     * Set the accountName property: Account name.
+     * Set the accountName property: The account name of this Azure Data Lake.
      *
      * @param accountName the accountName value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.
@@ -61,7 +61,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     }
 
     /**
-     * Get the accountKey property: Account key.
+     * Get the accountKey property: The account key that can access this Azure Data Lake.
      *
      * @return the accountKey value.
      */
@@ -70,7 +70,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     }
 
     /**
-     * Set the accountKey property: Account key.
+     * Set the accountKey property: The account key that can access this Azure Data Lake.
      *
      * @param accountKey the accountKey value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.
@@ -81,7 +81,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     }
 
     /**
-     * Get the fileSystemName property: File system name (Container).
+     * Get the fileSystemName property: The file system (container) name in this Azure Data Lake.
      *
      * @return the fileSystemName value.
      */
@@ -90,7 +90,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     }
 
     /**
-     * Set the fileSystemName property: File system name (Container).
+     * Set the fileSystemName property: The file system (container) name in this Azure Data Lake.
      *
      * @param fileSystemName the fileSystemName value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.
@@ -101,7 +101,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     }
 
     /**
-     * Get the directoryTemplate property: Directory template.
+     * Get the directoryTemplate property: The directory template under this file system.
      *
      * @return the directoryTemplate value.
      */
@@ -110,7 +110,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     }
 
     /**
-     * Set the directoryTemplate property: Directory template.
+     * Set the directoryTemplate property: The directory template under this file system.
      *
      * @param directoryTemplate the directoryTemplate value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.
@@ -121,7 +121,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     }
 
     /**
-     * Get the fileTemplate property: File template.
+     * Get the fileTemplate property: The file template.
      *
      * @return the fileTemplate value.
      */
@@ -130,7 +130,7 @@ public final class AzureDataLakeStorageGen2Parameter {
     }
 
     /**
-     * Set the fileTemplate property: File template.
+     * Set the fileTemplate property: The file template.
      *
      * @param fileTemplate the fileTemplate value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.

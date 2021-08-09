@@ -34,8 +34,9 @@ public class RecognizeReceiptsFromUrl {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-            + "/azure-ai-formrecognizer/src/samples/java/sample-forms/receipts/contoso-allinone.jpg";
+        String receiptUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl);
 

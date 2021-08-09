@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/TextAnalytics/preview/v3.1-preview.4/TextAnalytics.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/TextAnalytics/preview/v3.2-preview.1/TextAnalytics.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -32,4 +32,5 @@ add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
 context-client-method-parameter: true
+service-interface-as-public: true
 ```

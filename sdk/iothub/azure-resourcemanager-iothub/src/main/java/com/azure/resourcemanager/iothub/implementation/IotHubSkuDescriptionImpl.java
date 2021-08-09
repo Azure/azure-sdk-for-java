@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubSkuDescriptionInner;
 import com.azure.resourcemanager.iothub.models.IotHubCapacity;
 import com.azure.resourcemanager.iothub.models.IotHubSkuDescription;
@@ -13,9 +12,10 @@ import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
 public final class IotHubSkuDescriptionImpl implements IotHubSkuDescription {
     private IotHubSkuDescriptionInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    IotHubSkuDescriptionImpl(IotHubSkuDescriptionInner innerObject, IotHubManager serviceManager) {
+    IotHubSkuDescriptionImpl(
+        IotHubSkuDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -36,7 +36,7 @@ public final class IotHubSkuDescriptionImpl implements IotHubSkuDescription {
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

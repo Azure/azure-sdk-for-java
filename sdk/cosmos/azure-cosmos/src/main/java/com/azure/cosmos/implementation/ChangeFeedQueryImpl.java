@@ -86,6 +86,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         return Paginator.getChangeFeedQueryResultAsObservable(
             this.client,
             this.changeFeedState,
+            ModelBridgeInternal.getPropertiesFromChangeFeedRequestOptions(this.options),
             this.createRequestFunc,
             this.executeFunc,
             this.klass,

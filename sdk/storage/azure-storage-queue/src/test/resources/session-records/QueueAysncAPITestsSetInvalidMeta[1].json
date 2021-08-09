@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/af7ed3feaf7ed3feb1e2302362d2ffcce2db47bd8e",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f7898f4b-4493-45c6-bc1a-0e9d1f1d4197"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "90ba1193-f003-00bb-3f09-414c83000000",
+      "x-ms-client-request-id" : "f7898f4b-4493-45c6-bc1a-0e9d1f1d4197",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/af7ed3feaf7ed3feb1e2302362d2ffcce2db47bd8e?comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d0459de1-65c7-415d-aaa7-fe6d815697cc"
+    },
+    "Response" : {
+      "content-length" : "260",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidMetadata",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "7c5d39ab-2003-0011-6f09-416c95000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:7c5d39ab-2003-0011-6f09-416c95000000\nTime:2021-05-04T17:18:37.8713965Z</Message></Error>",
+      "x-ms-client-request-id" : "d0459de1-65c7-415d-aaa7-fe6d815697cc",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "af7ed3feaf7ed3feb1e2302362d2ffcce2db47bd8e" ]
+}

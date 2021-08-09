@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hdinsight.implementation;
 
-import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterConfigurationsInner;
 import com.azure.resourcemanager.hdinsight.models.ClusterConfigurations;
 import java.util.Collections;
@@ -13,9 +12,10 @@ import java.util.Map;
 public final class ClusterConfigurationsImpl implements ClusterConfigurations {
     private ClusterConfigurationsInner innerObject;
 
-    private final HDInsightManager serviceManager;
+    private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    ClusterConfigurationsImpl(ClusterConfigurationsInner innerObject, HDInsightManager serviceManager) {
+    ClusterConfigurationsImpl(
+        ClusterConfigurationsInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -33,7 +33,7 @@ public final class ClusterConfigurationsImpl implements ClusterConfigurations {
         return this.innerObject;
     }
 
-    private HDInsightManager manager() {
+    private com.azure.resourcemanager.hdinsight.HDInsightManager manager() {
         return this.serviceManager;
     }
 }

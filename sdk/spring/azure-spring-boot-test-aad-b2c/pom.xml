@@ -12,6 +12,7 @@
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-test-aad-b2c</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-b2c;current} -->
 
@@ -19,7 +20,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-      <version>3.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current} -->
     </dependency>
 
     <dependency>
@@ -51,6 +52,7 @@
       <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-selenium-common;current} -->
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
@@ -62,13 +64,6 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-      <scope>test</scope>
     </dependency>
   </dependencies>
 

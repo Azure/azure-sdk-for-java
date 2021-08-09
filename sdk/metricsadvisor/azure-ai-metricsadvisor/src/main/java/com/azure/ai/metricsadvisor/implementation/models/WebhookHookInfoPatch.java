@@ -18,14 +18,14 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      * The hookParameter property.
      */
     @JsonProperty(value = "hookParameter")
-    private WebhookHookParameter hookParameter;
+    private WebhookHookParameterPatch hookParameter;
 
     /**
      * Get the hookParameter property: The hookParameter property.
      *
      * @return the hookParameter value.
      */
-    public WebhookHookParameter getHookParameter() {
+    public WebhookHookParameterPatch getHookParameter() {
         return this.hookParameter;
     }
 
@@ -35,7 +35,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      * @param hookParameter the hookParameter value to set.
      * @return the WebhookHookInfoPatch object itself.
      */
-    public WebhookHookInfoPatch setHookParameter(WebhookHookParameter hookParameter) {
+    public WebhookHookInfoPatch setHookParameter(WebhookHookParameterPatch hookParameter) {
         this.hookParameter = hookParameter;
         return this;
     }

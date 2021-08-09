@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
@@ -245,6 +246,24 @@ public final class BlobItemPropertiesInternal {
      */
     @JsonProperty(value = "LastAccessTime")
     private DateTimeRfc1123 lastAccessedOn;
+
+    /*
+     * The ImmutabilityPolicyUntilDate property.
+     */
+    @JsonProperty(value = "ImmutabilityPolicyUntilDate")
+    private DateTimeRfc1123 immutabilityPolicyExpiresOn;
+
+    /*
+     * The ImmutabilityPolicyMode property.
+     */
+    @JsonProperty(value = "ImmutabilityPolicyMode")
+    private BlobImmutabilityPolicyMode immutabilityPolicyMode;
+
+    /*
+     * The LegalHold property.
+     */
+    @JsonProperty(value = "LegalHold")
+    private Boolean legalHold;
 
     /**
      * Get the creationTime property: The Creation-Time property.
@@ -1034,6 +1053,73 @@ public final class BlobItemPropertiesInternal {
         } else {
             this.lastAccessedOn = new DateTimeRfc1123(lastAccessedOn);
         }
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicyExpiresOn property: The ImmutabilityPolicyUntilDate property.
+     *
+     * @return the immutabilityPolicyExpiresOn value.
+     */
+    public OffsetDateTime getImmutabilityPolicyExpiresOn() {
+        if (this.immutabilityPolicyExpiresOn == null) {
+            return null;
+        }
+        return this.immutabilityPolicyExpiresOn.getDateTime();
+    }
+
+    /**
+     * Set the immutabilityPolicyExpiresOn property: The ImmutabilityPolicyUntilDate property.
+     *
+     * @param immutabilityPolicyExpiresOn the immutabilityPolicyExpiresOn value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setImmutabilityPolicyExpiresOn(OffsetDateTime immutabilityPolicyExpiresOn) {
+        if (immutabilityPolicyExpiresOn == null) {
+            this.immutabilityPolicyExpiresOn = null;
+        } else {
+            this.immutabilityPolicyExpiresOn = new DateTimeRfc1123(immutabilityPolicyExpiresOn);
+        }
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicyMode property: The ImmutabilityPolicyMode property.
+     *
+     * @return the immutabilityPolicyMode value.
+     */
+    public BlobImmutabilityPolicyMode getImmutabilityPolicyMode() {
+        return this.immutabilityPolicyMode;
+    }
+
+    /**
+     * Set the immutabilityPolicyMode property: The ImmutabilityPolicyMode property.
+     *
+     * @param immutabilityPolicyMode the immutabilityPolicyMode value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setImmutabilityPolicyMode(BlobImmutabilityPolicyMode immutabilityPolicyMode) {
+        this.immutabilityPolicyMode = immutabilityPolicyMode;
+        return this;
+    }
+
+    /**
+     * Get the legalHold property: The LegalHold property.
+     *
+     * @return the legalHold value.
+     */
+    public Boolean isLegalHold() {
+        return this.legalHold;
+    }
+
+    /**
+     * Set the legalHold property: The LegalHold property.
+     *
+     * @param legalHold the legalHold value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setLegalHold(Boolean legalHold) {
+        this.legalHold = legalHold;
         return this;
     }
 }

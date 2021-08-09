@@ -54,6 +54,29 @@
       NM_FIELD_NAMING_CONVENTION"/>
   </Match>
 
+  <!-- Internal implementation details, not at risk.-->
+  <Match>
+    <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
+    <Bug pattern="EI_EXPOSE_REP,
+      EI_EXPOSE_REP2"/>
+  </Match>
+
+  <Match>
+    <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxDatabase"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+
+  <!-- Third party source code files, kept as it is.-->
+  <Match>
+    <Class name="~com\.azure\.identity\.implementation\.intellij\.LittleEndianDataInputStream"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <Match>
+    <Class name="~com\.azure\.identity\.implementation\.intellij\.Salsa20"/>
+    <Bug pattern="DM_DEFAULT_ENCODING"/>
+  </Match>
+
   <!-- Exception needs to be caught here.-->
   <Match>
     <Class name="~com\.azure\.identity\.implementation\.VisualStudioCacheAccessor"/>
@@ -103,11 +126,11 @@
         <Method name="getDataFromMessageBody"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
+        <Class name="com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer"/>
         <Method name="deserialize"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
+        <Class name="com.azure.security.keyvault.keys.implementation.ByteExtensions"/>
         <Method name="clone"/>
       </And>
       <And>
@@ -140,6 +163,15 @@
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
+
+  <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates$JREKeyStore"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
 
   <Match>
     <Or>
@@ -353,7 +385,11 @@
 
   <!-- Uninitialized subscription property will be initialized on onSubscribe(). Spotbugs is unaware of reactor execution orders. -->
   <Match>
-    <Class name="com.azure.core.util.FluxUtil"/>
+    <Or>
+      <Class name="com.azure.core.util.FluxUtil"/>
+      <Class name="com.azure.core.util.FluxUtil$1"/>
+      <Class name="com.azure.core.implementation.FileWriteSubscriber"/>
+    </Or>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
@@ -601,12 +637,6 @@
     <Bug pattern="UC_USELESS_CONDITION"/>
   </Match>
 
-  <!-- This is a false positive, the subscribe method will be called before onNext, onCancelled, or onError. -->
-  <Match>
-    <Class name="com.azure.core.util.FluxUtil$1"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-
   <!-- Retry thus does not throw.
     SharedTokenCacheCredential needs to catch any catch exception that gets thrown.-->
   <Match>
@@ -724,6 +754,10 @@
     <Or>
       <Package name="com.azure.storage.blob.perf"/>
       <Package name="com.azure.storage.blob.perf.core"/>
+      <Package name="com.azure.storage.file.datalake.perf"/>
+      <Package name="com.azure.storage.file.datalake.perf.core"/>
+      <Package name="com.azure.storage.file.share.perf"/>
+      <Package name="com.azure.storage.file.share.perf.core"/>
     </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST, DM_EXIT, RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
@@ -1956,7 +1990,7 @@
 
   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.clientTelemetry.ReportPayload"/>
+    <Class name="com.azure.cosmos.implementation.clienttelemetry.ReportPayload"/>
     <Method name="equals"/>
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
@@ -2269,21 +2303,12 @@
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
-      <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
       <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
-      <Class name="com.azure.spring.cloud.telemetry.GetHashMac"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
-  </Match>
-
-  <Match>
-    <Or>
-      <Class name="com.azure.spring.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
   <Match>
@@ -2296,8 +2321,22 @@
   </Match>
 
   <Match>
+    <Bug pattern="UWF_NULL_FIELD"/>
+    <Class name="com.azure.spring.integration.core.AbstractInboundChannelAdapter"/>
+    <Or>
+      <Field name="subscribeByGroupOperation"/>
+      <Field name="subscribeOperation"/>
+    </Or>
+  </Match>
+
+  <Match>
     <Class name="com.azure.spring.messaging.config.AzureListenerEndpointRegistrar"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- The transient fields are not used if deserialization happens. -->
@@ -2319,13 +2358,15 @@
     <Or>
       <Method name="getIntellijServicePrincipalDetails"/>
       <Method name="getKdbxPassword"/>
+      <Method name="getCredentialFromKdbx"/>
     </Or>
-    <Bug pattern="DM_DEFAULT_ENCODING"/>
+    <Bug pattern="DM_DEFAULT_ENCODING,
+    REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- The field is designed to be unread and for serialization purpose. -->
   <Match>
-    <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter)"/>
+    <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter|SynonymMap)"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -2333,10 +2374,6 @@
   <Match>
     <Class name="com.azure.search.documents.SearchAsyncClient"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-  <Match>
-    <Class name="~com\.azure\.search\.documents\.indexes\.implementation\.models\.(Suggester|SynonymMap)"/>
-    <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
   <Match>
@@ -2426,19 +2463,11 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
   <Match>
-    <Class name="com.azure.security.keyvault.jca.LegacyRestClient"/>
+    <Class name="com.azure.security.keyvault.jca.implementation.utils.HttpUtil"/>
     <Method name="~(get|post)"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
 
-  <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions"/>
-      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions"/>
-    </Or>
-    <Bug pattern="NM_CONFUSING"/>
-  </Match>
   <!-- Returning a new copy of the object is not necessary for queuing system use cases.
   Client do not change content of message once message is created. Array copy would degrade the performance.
   https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/models/AmqpMessageBody.java#L115 -->
@@ -2462,7 +2491,57 @@
 
   <!-- Machine generated classes for MAA service generate spotBugs errors -->
   <Match>
-    <Class name="~com.azure.security.attestation.models\.[\w]+"/>
+    <Or>
+      <Class name="~com.azure.security.attestation.implementation.models.*"/>
+      <Class name="~com.azure.security.attestation.models.*+"/>
+    </Or>
+    <Or>
+      <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+      <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Or>
+  </Match>
+
+  <!-- Generated implementation of Anomaly Detector is using an inline class -->
+  <Match>
+    <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Some generated base clients in Purview Catalog do not send api-version -->
+  <Match>
+    <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
+  <Match>
+    <Class name="~com\.azure\.security\.confidentialledger\.\w+BaseClient"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- This is a false positive. The type of TOptions is known because it is set
+       in the constructor of the concrete class. -->
+  <Match>
+    <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
+  <!-- We shouldn't return a zero-length array if null is provided to serialization/deserialization and clone methods. -->
+  <Match>
+    <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
+    <Method name="deserialize"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
+    <Method name="clone"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- If the ServiceVersion type doesn't implement Enum it would have already thrown an exception. -->
+  <Match>
+    <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider"/>
+    <Method name="getServiceVersions"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 </FindBugsFilter>

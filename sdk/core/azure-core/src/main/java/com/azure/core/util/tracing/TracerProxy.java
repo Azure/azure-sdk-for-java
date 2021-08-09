@@ -14,11 +14,20 @@ import java.util.ServiceLoader;
  * @see Tracer
  */
 public final class TracerProxy {
+    /*
+     * AutoCloseable implementation which performs a no-op when close() is called.
+     */
+    static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> { };
 
     private static Tracer tracer;
 
     static {
-        ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
+        // Use as classloader to load provider-configuration files and provider classes the classloader
+        // that loaded this class. In most cases this will be the System classloader.
+        // But this choice here provides additional flexibility in managed environments that control
+        // classloading differently (OSGi, Spring and others) and don't/ depend on the
+        // System classloader to load Tracer classes.
+        ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class, TracerProxy.class.getClassLoader());
         Iterator<?> iterator = serviceLoader.iterator();
         if (iterator.hasNext()) {
             tracer = serviceLoader.iterator().next();
@@ -30,7 +39,7 @@ public final class TracerProxy {
     }
 
     /**
-     * A new tracing span is created for each {@link Tracer tracer} plugged into the SDK.
+     * A new tracing span with INTERNAL kind is created for each {@link Tracer tracer} plugged into the SDK.
      * <p>
      * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
      * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
@@ -45,6 +54,25 @@ public final class TracerProxy {
             return context;
         }
         return tracer.start(methodName, context);
+    }
+
+    /**
+     * A new tracing span is created for each {@link Tracer tracer} plugged into the SDK.
+     * <p>
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
+     * downstream {@code start()} calls will use the created span as the parent.
+     *
+     * @param methodName Name of the method triggering the span creation.
+     * @param spanOptions span creation options.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return An updated {@link Context} object.
+     */
+    public static Context start(String methodName, StartSpanOptions spanOptions, Context context) {
+        if (tracer == null) {
+            return context;
+        }
+        return tracer.start(methodName, spanOptions, context);
     }
 
     /**
@@ -65,7 +93,7 @@ public final class TracerProxy {
     /**
      * For the plugged in {@link Tracer tracer}, its current tracing span is marked as completed.
      *
-     * @param responseCode Response status code if the span is in a HTTP call context.
+     * @param responseCode Response status code if the span is in an HTTP call context.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      */

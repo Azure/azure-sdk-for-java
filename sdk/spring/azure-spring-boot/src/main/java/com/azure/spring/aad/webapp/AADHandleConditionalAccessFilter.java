@@ -68,7 +68,7 @@ public class AADHandleConditionalAccessFilter extends OncePerRequestFilter {
      */
     private Map<String, String> parseAuthParameters(String wwwAuthenticateHeader) {
         return Stream.of(wwwAuthenticateHeader)
-                     .filter(header -> !StringUtils.isEmpty(header))
+                     .filter(header -> StringUtils.hasText(header))
                      .filter(header -> header.startsWith(Constants.BEARER_PREFIX))
                      .map(str -> str.substring(Constants.BEARER_PREFIX.length() + 1, str.length() - 1))
                      .map(str -> str.split(", "))

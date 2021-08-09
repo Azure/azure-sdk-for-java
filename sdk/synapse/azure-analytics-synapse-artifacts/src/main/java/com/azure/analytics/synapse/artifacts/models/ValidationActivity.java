@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Validation")
 @JsonFlatten
 @Fluent
-public class ValidationActivity extends Activity {
+public class ValidationActivity extends ControlActivity {
     /*
      * Specifies the timeout for the activity to run. If there is no value
      * specified, it takes the value of TimeSpan.FromDays(7) which is 1 week as

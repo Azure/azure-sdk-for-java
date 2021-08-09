@@ -8,7 +8,6 @@ import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -53,7 +52,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         List<String> actualDimensionValues = new ArrayList<String>();
         StepVerifier.create(client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME,
-            new ListMetricDimensionValuesOptions().setTop(20).setSkip(20)))
+            new ListMetricDimensionValuesOptions().setMaxPageSize(20).setSkip(20)))
             .thenConsumeWhile(actualDimensionValues::add)
             .verifyComplete();
 
@@ -101,7 +100,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesDefinitions(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME, null))
+        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME, null)
+            .take(LISTING_SERIES_DEFINITIONS_LIMIT))
             .thenConsumeWhile(metricSeriesDefinition -> metricSeriesDefinition.getMetricId() != null
                 && metricSeriesDefinition.getSeriesKey() != null)
             .verifyComplete();

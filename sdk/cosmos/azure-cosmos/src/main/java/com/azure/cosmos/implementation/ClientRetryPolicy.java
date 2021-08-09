@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.CosmosException;
@@ -52,15 +53,17 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                              boolean enableEndpointDiscovery,
                              ThrottlingRetryOptions throttlingRetryOptions) {
 
-        this.throttlingRetry = new ResourceThrottleRetryPolicy(
-                throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
-                throttlingRetryOptions.getMaxRetryWaitTime());
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
         this.sessionTokenRetryCount = 0;
         this.canUseMultipleWriteLocations = false;
         this.cosmosDiagnostics = diagnosticsClientContext.createDiagnostics();
+        this.throttlingRetry = new ResourceThrottleRetryPolicy(
+            throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
+            throttlingRetryOptions.getMaxRetryWaitTime(),
+            BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
+            false);
     }
 
     @Override
@@ -146,8 +149,12 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         logger
             .warn("shouldRetryQueryPlanAndAddress() Retrying on endpoint {}, operationType = {}, count = {}, " +
-                      "isAddressRefresh = {}",
-                  this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount, this.request.isAddressRefresh());
+                      "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
+                      "shouldForceCollectionRoutingMapRefresh = {}",
+                  this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount,
+                this.request.isAddressRefresh(),
+                this.request.shouldForceAddressRefresh(),
+                this.request.forceCollectionRoutingMapRefresh);
 
         Duration retryDelay = Duration.ZERO;
         return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
@@ -289,6 +296,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             request.requestContext.routeToLocation(this.locationEndpoint);
         }
     }
+
+    @Override
+    public com.azure.cosmos.implementation.RetryContext getRetryContext() {
+        return BridgeInternal.getRetryContext(this.getCosmosDiagnostics());
+    }
+
+    CosmosDiagnostics getCosmosDiagnostics() {
+        return cosmosDiagnostics;
+    }
+
     private static class RetryContext {
 
         public int retryCount;

@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventChannelInner;
 import com.azure.resourcemanager.eventgrid.models.EventChannel;
 import com.azure.resourcemanager.eventgrid.models.EventChannelDestination;
@@ -13,13 +13,12 @@ import com.azure.resourcemanager.eventgrid.models.EventChannelFilter;
 import com.azure.resourcemanager.eventgrid.models.EventChannelProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.EventChannelSource;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicReadinessState;
-import com.azure.resourcemanager.eventgrid.models.SystemData;
 import java.time.OffsetDateTime;
 
 public final class EventChannelImpl implements EventChannel, EventChannel.Definition, EventChannel.Update {
     private EventChannelInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -69,7 +68,7 @@ public final class EventChannelImpl implements EventChannel, EventChannel.Defini
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -107,7 +106,7 @@ public final class EventChannelImpl implements EventChannel, EventChannel.Defini
         return this;
     }
 
-    EventChannelImpl(String name, EventGridManager serviceManager) {
+    EventChannelImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new EventChannelInner();
         this.serviceManager = serviceManager;
         this.eventChannelName = name;
@@ -139,7 +138,8 @@ public final class EventChannelImpl implements EventChannel, EventChannel.Defini
         return this;
     }
 
-    EventChannelImpl(EventChannelInner innerObject, EventGridManager serviceManager) {
+    EventChannelImpl(
+        EventChannelInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

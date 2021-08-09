@@ -22,8 +22,10 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
@@ -33,6 +35,7 @@ import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.RandomBytes;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -66,6 +69,7 @@ public final class KeyAsyncClient {
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
@@ -75,7 +79,7 @@ public final class KeyAsyncClient {
     private final String vaultUrl;
     private final KeyService service;
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
-
+    private final HttpPipeline pipeline;
 
     /**
      * Creates a KeyAsyncClient that uses {@code pipeline} to service requests
@@ -89,6 +93,7 @@ public final class KeyAsyncClient {
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(KeyService.class, pipeline);
+        this.pipeline = pipeline;
         apiVersion = version.getVersion();
     }
 
@@ -98,6 +103,15 @@ public final class KeyAsyncClient {
      */
     public String getVaultUrl() {
         return vaultUrl;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
     }
 
     Duration getDefaultPollingInterval() {
@@ -214,7 +228,8 @@ public final class KeyAsyncClient {
             .setKty(createKeyOptions.getKeyType())
             .setKeyOps(createKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createKeyOptions))
-            .setReleasePolicy(createKeyOptions.getReleasePolicy());
+            .setTags(createKeyOptions.getTags());
+
         return service.createKey(vaultUrl, createKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Creating key - {}", createKeyOptions.getName()))
@@ -295,8 +310,9 @@ public final class KeyAsyncClient {
             .setKeySize(createRsaKeyOptions.getKeySize())
             .setKeyOps(createRsaKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions))
-            .setReleasePolicy(createRsaKeyOptions.getReleasePolicy())
-            .setPublicExponent(createRsaKeyOptions.getPublicExponent());
+            .setPublicExponent(createRsaKeyOptions.getPublicExponent())
+            .setTags(createRsaKeyOptions.getTags());
+
         return service.createKey(vaultUrl, createRsaKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Creating Rsa key - {}", createRsaKeyOptions.getName()))
@@ -383,12 +399,99 @@ public final class KeyAsyncClient {
             .setCurve(createEcKeyOptions.getCurveName())
             .setKeyOps(createEcKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions))
-            .setReleasePolicy(createEcKeyOptions.getReleasePolicy());
+            .setTags(createEcKeyOptions.getTags());
+
         return service.createKey(vaultUrl, createEcKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Creating Ec key - {}", createEcKeyOptions.getName()))
             .doOnSuccess(response -> logger.verbose("Created Ec key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to create Ec key - {}", createEcKeyOptions.getName(), error));
+    }
+
+    /**
+     * Creates and stores a new symmetric key in Key Vault. If the named key already exists, Azure Key Vault creates a
+     * new version of the key. This operation requires the keys/create permission.
+     *
+     * <p>The {@link CreateOctKeyOptions} parameter is required. The {@link CreateOctKeyOptions#getExpiresOn() expires}
+     * and {@link CreateOctKeyOptions#getNotBefore() notBefore} values are optional. The
+     * {@link CreateOctKeyOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     *
+     * <p>The {@link CreateOctKeyOptions#getKeyType() keyType} indicates the type of key to create.
+     * Possible values include: {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a new symmetric key. The key activates in one day and expires in one year. Subscribes to the call
+     * asynchronously and prints out the details of the newly created key when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKey#CreateOctKeyOptions}
+     *
+     * @param createOctKeyOptions The key options object containing information about the ec key being created.
+     *
+     * @return A {@link Mono} containing the {@link KeyVaultKey created key}.
+     *
+     * @throws NullPointerException If {@code ecKeyCreateOptions} is {@code null}.
+     * @throws ResourceModifiedException If {@code ecKeyCreateOptions} is malformed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> createOctKey(CreateOctKeyOptions createOctKeyOptions) {
+        try {
+            return createOctKeyWithResponse(createOctKeyOptions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates and stores a new symmetric key in Key Vault. If the named key already exists, Azure Key Vault creates
+     * a new version of the key. This operation requires the keys/create permission.
+     *
+     * <p>The {@link CreateOctKeyOptions} parameter is required. The {@link CreateOctKeyOptions#getExpiresOn() expires}
+     * and {@link CreateOctKeyOptions#getNotBefore() notBefore} values are optional. The
+     * {@link CreateOctKeyOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     *
+     * <p>The {@link CreateOctKeyOptions#getKeyType() keyType} indicates the type of key to create.
+     * Possible values include: {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a new symmetric key. The key activates in one day and expires in one year. Subscribes to the call
+     * asynchronously and prints out the details of the newly created key when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKeyWithResponse#CreateOctKeyOptions}
+     *
+     * @param createOctKeyOptions The key options object containing information about the ec key being created.
+     *
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
+     * KeyVaultKey created key}.
+     *
+     * @throws NullPointerException If {@code createOctKeyOptions} is {@code null}.
+     * @throws ResourceModifiedException If {@code createOctKeyOptions} is malformed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultKey>> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions) {
+        try {
+            return withContext(context -> createOctKeyWithResponse(createOctKeyOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<KeyVaultKey>> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions, Context context) {
+        Objects.requireNonNull(createOctKeyOptions, "The create key options cannot be null.");
+
+        context = context == null ? Context.NONE : context;
+
+        KeyRequestParameters parameters = new KeyRequestParameters()
+            .setKty(createOctKeyOptions.getKeyType())
+            .setKeyOps(createOctKeyOptions.getKeyOperations())
+            .setKeyAttributes(new KeyRequestAttributes(createOctKeyOptions))
+            .setTags(createOctKeyOptions.getTags());
+
+        return service.createKey(vaultUrl, createOctKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.verbose("Creating symmetric key - {}", createOctKeyOptions.getName()))
+            .doOnSuccess(response -> logger.verbose("Created symmetric key - {}", response.getValue().getName()))
+            .doOnError(error ->
+                logger.warning("Failed to create symmetric key - {}", createOctKeyOptions.getName(), error));
     }
 
     /**
@@ -497,105 +600,13 @@ public final class KeyAsyncClient {
             .setKey(importKeyOptions.getKey())
             .setHsm(importKeyOptions.isHardwareProtected())
             .setKeyAttributes(new KeyRequestAttributes(importKeyOptions))
-            .setReleasePolicy(importKeyOptions.getReleasePolicy());
+            .setTags(importKeyOptions.getTags());
+
         return service.importKey(vaultUrl, importKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Importing key - {}", importKeyOptions.getName()))
             .doOnSuccess(response -> logger.verbose("Imported key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to import key - {}", importKeyOptions.getName(), error));
-    }
-
-    /**
-     * Exports the latest version of a key from the key vault. The export key operation may be used to import any key
-     * from the Azure Key Vault as long as it is marked as exportable and its release policy is satisfied.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
-     * details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String}
-     *
-     * @param name The name of the key to be exported.
-     * @param environment The target environment assertion.
-     * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name} or {@code environment} are {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultKey> exportKey(String name, String environment) {
-        try {
-            return exportKeyWithResponse(name, "", environment).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
-     * as long as it is marked as exportable and its release policy is satisfied.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
-     * details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String-String}
-     *
-     * @param name The name of the key to be exported.
-     * @param version The key version.
-     * @param environment The target environment assertion.
-     * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
-     * {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultKey> exportKey(String name, String version, String environment) {
-        try {
-            return exportKeyWithResponse(name, version, environment).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
-     * as long as it is marked as exportable and its release policy is satisfied.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
-     * details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#String-String-String}
-     *
-     * @param name The name of the key to be exported.
-     * @param version The key version.
-     * @param environment The target environment assertion.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link KeyVaultKey exported key}.
-     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
-     * {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, String environment) {
-        try {
-            return withContext(context -> exportKeyWithResponse(name, version, environment, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, String environment,
-                                                      Context context) {
-        Objects.requireNonNull(name, "The key name cannot be null.");
-        Objects.requireNonNull(version, "The key version cannot be null.");
-        Objects.requireNonNull(environment, "The environment parameter cannot be null.");
-
-        context = context == null ? Context.NONE : context;
-        KeyExportRequestParameters parameters = new KeyExportRequestParameters().setEnvironment(environment);
-
-        return service.exportKey(vaultUrl, name, version, apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Exporting key - {}", name))
-            .doOnSuccess(response -> logger.verbose("Exported key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to export key - {}", name, error));
     }
 
     /**
@@ -757,8 +768,7 @@ public final class KeyAsyncClient {
         context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
-            .setKeyAttributes(new KeyRequestAttributes(keyProperties))
-            .setReleasePolicy(keyProperties.getReleasePolicy());
+            .setKeyAttributes(new KeyRequestAttributes(keyProperties));
         if (keyOperations.length > 0) {
             parameters.setKeyOps(Arrays.asList(keyOperations));
         }
@@ -790,32 +800,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
-        return beginDeleteKey(name, getDefaultPollingInterval());
-    }
-
-    /**
-     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
-     * in the deleted state and requires to be purged for permanent deletion else the key is permanently deleted. The
-     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual version
-     * of a key. This operation removes the cryptographic material associated with the key, which means the key is not
-     * usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the
-     * {@code keys/delete} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the key in the Azure Key Vault. Subscribes to the call asynchronously and prints out the deleted key
-     * details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKey#String-Duration}
-     *
-     * @param name The name of the key to be deleted.
-     * @param pollingInterval The interval at which the operation status will be polled for.
-     * @return A {@link PollerFlux} to poll on the {@link DeletedKey deleted key} status.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a key with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DeletedKey, Void> beginDeleteKey(String name, Duration pollingInterval) {
-        return new PollerFlux<>(pollingInterval,
+        return new PollerFlux<>(getDefaultPollingInterval(),
             activationOperation(name),
             createPollOperation(name),
             (context, firstResponse) -> Mono.empty(),
@@ -992,29 +977,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return beginRecoverDeletedKey(name, getDefaultPollingInterval());
-    }
-
-    /**
-     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete
-     * enabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
-     * delete operation on soft-delete enabled vaults. This operation requires the {@code keys/recover} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
-     * prints out the recovered key details when a response has been received.</p>
-     * //Assuming key is deleted on a soft-delete enabled vault.
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String-Duration}
-     *
-     * @param name The name of the deleted key to be recovered.
-     * @param pollingInterval The interval at which the operation status will be polled for.
-     * @return A {@link PollerFlux} to poll on the {@link KeyVaultKey recovered key} status.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a key with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name, Duration pollingInterval) {
-        return new PollerFlux<>(pollingInterval,
+        return new PollerFlux<>(getDefaultPollingInterval(),
             recoverActivationOperation(name),
             createRecoverPollOperation(name),
             (context, firstResponse) -> Mono.empty(),
@@ -1379,7 +1342,7 @@ public final class KeyAsyncClient {
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing key versions - {}", name))
                 .doOnSuccess(response -> logger.verbose("Listed key versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list key versions - %s", name), error));
+                .doOnError(error -> logger.warning("Failed to list key versions - {}", name, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1403,6 +1366,64 @@ public final class KeyAsyncClient {
                     error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the retrieved bytes in
+     * base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int}
+     *
+     * @param count The requested number of random bytes.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RandomBytes> getRandomBytes(int count) {
+        try {
+            return withContext(context -> getRandomBytesWithResponse(count, context)
+                .flatMap(FluxUtil::toMono));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Get the requested number of bytes containing random values from a managed HSM.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the
+     * {@link Response HTTP Response} details and the retrieved bytes in base64Url format.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int}
+     *
+     * @param count The requested number of random bytes.
+     *
+     * @return The requested number of bytes containing random values from a managed HSM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RandomBytes>> getRandomBytesWithResponse(int count) {
+        try {
+            return withContext(context -> getRandomBytesWithResponse(count, context));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    Mono<Response<RandomBytes>> getRandomBytesWithResponse(int count, Context context) {
+        try {
+            return service.getRandomBytes(vaultUrl, apiVersion, new GetRandomBytesRequest().setCount(count),
+                    "application/json", context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.verbose("Getting {} random bytes.", count))
+                .doOnSuccess(response -> logger.verbose("Got {} random bytes.", count))
+                .doOnError(error -> logger.warning("Failed to get random bytes - {}", error))
+                .map(response -> new SimpleResponse<>(response, new RandomBytes(response.getValue().getBytes())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 }

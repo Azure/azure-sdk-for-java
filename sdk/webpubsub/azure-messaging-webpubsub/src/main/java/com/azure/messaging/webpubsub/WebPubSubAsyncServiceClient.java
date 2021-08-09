@@ -21,11 +21,10 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_JSON;
 import static com.azure.messaging.webpubsub.models.WebPubSubContentType.APPLICATION_OCTET_STREAM;
-import static com.azure.messaging.webpubsub.models.WebPubSubContentType.TEXT_PLAIN;
 
 /**
  * The asynchronous client for connecting to an Azure Web Pub Sub hub (for a synchronous API, refer to the
@@ -64,8 +63,7 @@ import static com.azure.messaging.webpubsub.models.WebPubSubContentType.TEXT_PLA
     serviceInterfaces = WebPubSubsImpl.WebPubSubsService.class
 )
 public final class WebPubSubAsyncServiceClient {
-    // TODO (jogiles) find the appropriate name
-    static final String TRACING_NAMESPACE_VALUE = "Microsoft.WebSubPubService";
+    static final String TRACING_NAMESPACE_VALUE = "Microsoft.SignalRService";
 
     private final ClientLogger logger = new ClientLogger(WebPubSubAsyncServiceClient.class);
 
@@ -125,7 +123,8 @@ public final class WebPubSubAsyncServiceClient {
         final String authToken = WebPubSubAuthenticationPolicy.getAuthenticationToken(
             audience, options, webPubSubAuthPolicy.getCredential());
 
-        final String clientEndpoint = endpoint.replaceAll("(http)|(https)", "ws");
+        // The endpoint should always be http or https and client endpoint should be ws or wss respectively.
+        final String clientEndpoint = endpoint.replaceFirst("http", "ws");
         final String clientUrl = clientEndpoint + "client/hubs/" + hub;
 
         final String url = clientUrl + "?access_token=" + authToken;
@@ -140,7 +139,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String}
+     * {@codesnippet com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient.sendToAll#String}
      *
      * @param message The message to send.
      * @return An empty {@link Mono}.
@@ -157,7 +156,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#String-WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -168,30 +167,6 @@ public final class WebPubSubAsyncServiceClient {
         return sendToAllWithResponse(message, contentType, null).flatMap(FluxUtil::toMono);
     }
 
-//    /**
-//     * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
-//     * {@code excludedConnectionIds} list.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List}
-//     *
-//     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-//     * excluded connection IDs to a List and pass that in as the second argument:</p>
-//     *
-//     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncclient.sendToAll.String.List.2}
-//     *
-//     * @param message The message to send.
-//     * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
-//     * @return An empty {@link Mono}.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Mono<Void> sendToAll(final String message, final List<String> excludedConnectionIds) {
-//        return sendToAllWithResponse(message, excludedConnectionIds).flatMap(FluxUtil::toMono);
-//    }
-
     /**
      * Broadcast a text message to all connections on this hub, excluding any connection IDs provided in the
      * {@code excludedConnectionIds} list.
@@ -200,12 +175,12 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse}
      *
      * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
-     * excluded connection IDs to a List and pass that in as the second argument:</p>
+     * excluded connection IDs to a List and pass that in as the third argument:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll.String.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse.withexclusions}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -226,7 +201,6 @@ public final class WebPubSubAsyncServiceClient {
                                                final Iterable<String> excludedConnectionIds,
                                                final Context context) {
         contentType = contentType == null ? APPLICATION_JSON : contentType;
-
         switch (contentType) {
             case TEXT_PLAIN:
                 return webPubSubApis.sendToAllWithResponseAsync(
@@ -239,6 +213,7 @@ public final class WebPubSubAsyncServiceClient {
             case APPLICATION_JSON:
                 return sendToAllWithResponse(
                     message.getBytes(StandardCharsets.UTF_8), contentType, excludedConnectionIds, context);
+
         }
     }
 
@@ -249,7 +224,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte}
      *
      * @param message The message to send.
      * @return An empty {@link Mono}.
@@ -266,7 +241,7 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.String}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#byte-WebPubSubContentType}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -285,12 +260,12 @@ public final class WebPubSubAsyncServiceClient {
      *
      * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.List}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse.byte}
      *
      * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
      * add the excluded connection IDs to the end of the method call as var-args:</p>
      *
-     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllBytes.byte.List.2}
+     * {@codesnippet com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAllWithResponse.byte.withexclusion}
      *
      * @param message The message to send.
      * @param contentType The content type of the message.
@@ -376,21 +351,22 @@ public final class WebPubSubAsyncServiceClient {
                                                 final String message,
                                                 WebPubSubContentType contentType,
                                                 Context context) {
-        contentType = contentType == null ? APPLICATION_JSON : contentType;
 
+        contentType = contentType == null ? APPLICATION_JSON : contentType;
         switch (contentType) {
             case TEXT_PLAIN:
                 return webPubSubApis.sendToUserWithResponseAsync(hub, userId, message, configureTracing(context))
                    .doOnSubscribe(ignoredValue ->
-                          logger.verbose("Sending to user '{}'", userId, message))
+                       logger.verbose("Sending to user '{}'", userId, message))
                    .doOnSuccess(response ->
-                        logger.verbose("Sent to user '{}', response: {}", userId, response.getValue()))
+                       logger.verbose("Sent to user '{}', response: {}", userId, response.getValue()))
                    .doOnError(error ->
-                        logger.warning("Failed to send message to user '{}', response: {}", message, userId, error));
+                       logger.warning("Failed to send message to user '{}', response: {}", message, userId, error));
             default:
-            case APPLICATION_OCTET_STREAM:
             case APPLICATION_JSON:
+            case APPLICATION_OCTET_STREAM:
                 return sendToUserWithResponse(userId, message.getBytes(StandardCharsets.UTF_8), contentType, context);
+
         }
     }
 
@@ -507,8 +483,7 @@ public final class WebPubSubAsyncServiceClient {
                                                       final String message,
                                                       WebPubSubContentType contentType,
                                                       final Context context) {
-        contentType = contentType == null ? APPLICATION_OCTET_STREAM : contentType;
-
+        contentType = contentType == null ? APPLICATION_JSON : contentType;
         switch (contentType) {
             case TEXT_PLAIN:
                 return webPubSubApis.sendToConnectionWithResponseAsync(
@@ -519,10 +494,10 @@ public final class WebPubSubAsyncServiceClient {
                     .doOnError(error ->
                         logger.warning("Failed to send message to connection '{}', response: {}", connectionId, error));
             default:
-            case APPLICATION_OCTET_STREAM:
             case APPLICATION_JSON:
-                return sendToConnectionWithResponse(
-                    connectionId, message.getBytes(StandardCharsets.UTF_8), contentType, context);
+            case APPLICATION_OCTET_STREAM:
+                return sendToConnectionWithResponse(connectionId, message.getBytes(StandardCharsets.UTF_8),
+                    contentType, context);
         }
     }
 
@@ -652,7 +627,7 @@ public final class WebPubSubAsyncServiceClient {
 
     // package-private
     Mono<Response<Boolean>> checkUserExistsWithResponse(final String userId, final Context context) {
-        return webPubSubApis.checkUserExistenceWithResponseAsync(hub, userId, configureTracing(context))
+        return webPubSubApis.userExistsWithResponseAsync(hub, userId, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.verbose("Checking if user '{}' exists", userId))
            .doOnSuccess(response -> logger.verbose("Checked if user '{}' exists, response: {}",
                userId, response.getValue()))
@@ -685,7 +660,7 @@ public final class WebPubSubAsyncServiceClient {
 
     // package-private
     Mono<Response<Boolean>> checkGroupExistsWithResponse(final String group, final Context context) {
-        return webPubSubApis.checkGroupExistenceWithResponseAsync(hub, group, configureTracing(context))
+        return webPubSubApis.groupExistsWithResponseAsync(hub, group, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.verbose("Checking if group '{}' exists", group))
            .doOnSuccess(response -> logger.verbose("Checked if group '{}' exists, response: {}",
                group, response.getValue()))
@@ -754,7 +729,7 @@ public final class WebPubSubAsyncServiceClient {
 
     // package-private
     Mono<Response<Boolean>> checkConnectionExistsWithResponse(final String connectionId, final Context context) {
-        return webPubSubApis.checkConnectionExistenceWithResponseAsync(hub, connectionId, configureTracing(context))
+        return webPubSubApis.connectionExistsWithResponseAsync(hub, connectionId, configureTracing(context))
            .doOnSubscribe(ignoredValue -> logger.verbose("Checking if connection '{}' exists", connectionId))
            .doOnSuccess(response -> logger.verbose("Checked if connection '{}' exists, response: {}",
                connectionId, response.getValue()))
@@ -767,12 +742,15 @@ public final class WebPubSubAsyncServiceClient {
      *
      * @param permission The permission to be checked against the given connection ID.
      * @param connectionId Target connection Id.
+     * @param targetName Get the permission for the specific target. The meaning of the target depends on the
+     * specific permission.
      * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the connection
      *     has the specified permission.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkPermissionExists(final WebPubSubPermission permission, final String connectionId) {
-        return checkPermissionExistsWithResponse(permission, connectionId, null).map(Response::getValue);
+    public Mono<Boolean> checkPermissionExists(final WebPubSubPermission permission, final String connectionId,
+                                               final String targetName) {
+        return checkPermissionExistsWithResponse(permission, connectionId, targetName).map(Response::getValue);
     }
 
     /**
@@ -780,8 +758,8 @@ public final class WebPubSubAsyncServiceClient {
      *
      * @param permission The permission to be checked against the given connection ID.
      * @param connectionId Target connection Id.
-     * @param targetName Optional. If not set, get the permission for all targets. If set, get the permission for the
-     *     specific target. The meaning of the target depends on the specific permission.
+     * @param targetName Get the permission for the specific target. The meaning of the target depends on the
+     * specific permission.
      * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the connection
       *     has the specified permission, as well as status code and response headers representing the response from
      *      the service.

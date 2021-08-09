@@ -1,44 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/fileserviceasyncapitestsdeleteshare637363c757b0150?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/4286490b4286490b41b0253466bc2697376e4972b7?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "4d2e5594-5687-45bd-b382-ca7fa1f16241"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "95b6483a-3a11-49b4-a79b-7c18add87b7c"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911F595BDBF",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:33 GMT",
+      "eTag" : "0x8D910031AB4B9F6",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:36 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9ba99e12-201a-0011-64fa-aa088f000000",
-      "Date" : "Wed, 04 Dec 2019 23:30:33 GMT",
-      "x-ms-client-request-id" : "4d2e5594-5687-45bd-b382-ca7fa1f16241"
+      "x-ms-request-id" : "dfc61465-c01a-0046-35eb-41fe36000000",
+      "x-ms-client-request-id" : "95b6483a-3a11-49b4-a79b-7c18add87b7c",
+      "Date" : "Wed, 05 May 2021 20:19:35 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gaprastg71.file.core.windows.net/fileserviceasyncapitestsdeleteshare637363c757b0150?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/4286490b4286490b41b0253466bc2697376e4972b7?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e98c9cd2-5766-42b6-8f0b-568219c0cb84"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f6098b41-cb79-4253-8a05-87206ba21d7b"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9ba99e15-201a-0011-66fa-aa088f000000",
-      "Date" : "Wed, 04 Dec 2019 23:30:33 GMT",
-      "x-ms-client-request-id" : "e98c9cd2-5766-42b6-8f0b-568219c0cb84"
+      "x-ms-request-id" : "5fe79ab9-001a-0066-29eb-418591000000",
+      "x-ms-client-request-id" : "f6098b41-cb79-4253-8a05-87206ba21d7b",
+      "Date" : "Wed, 05 May 2021 20:19:36 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=4286490b&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7efa63aa-cd05-4c48-aa5c-46de0e65e472"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "9095c199-201a-0071-29eb-412c9a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>4286490b</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "7efa63aa-cd05-4c48-aa5c-46de0e65e472",
+      "Date" : "Wed, 05 May 2021 20:19:36 GMT",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceasyncapitestsdeleteshare637363c757b0150" ]
+  "variables" : [ "4286490b4286490b41b0253466bc2697376e4972b7" ]
 }

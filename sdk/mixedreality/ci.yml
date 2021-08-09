@@ -3,25 +3,35 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/mixedreality/
+      - sdk/mixedreality/ci.yml
+      - sdk/mixedreality/azure-mixedreality-authentication/
+      - sdk/mixedreality/azure-resourcemanager-mixedreality/
+    exclude:
+      - sdk/mixedreality/pom.xml
+      - sdk/mixedreality/azure-mixedreality-authentication/pom.xml
+      - sdk/mixedreality/azure-resourcemanager-mixedreality/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/mixedreality/
+      - sdk/mixedreality/ci.yml
+      - sdk/mixedreality/azure-mixedreality-authentication/
+      - sdk/mixedreality/azure-resourcemanager-mixedreality/
+    exclude:
+      - sdk/mixedreality/pom.xml
+      - sdk/mixedreality/azure-mixedreality-authentication/pom.xml
+      - sdk/mixedreality/azure-resourcemanager-mixedreality/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -31,3 +41,6 @@ extends:
       - name: azure-mixedreality-authentication
         groupId: com.azure
         safeName: azuremixedrealityauthentication
+      - name: azure-resourcemanager-mixedreality
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermixedreality

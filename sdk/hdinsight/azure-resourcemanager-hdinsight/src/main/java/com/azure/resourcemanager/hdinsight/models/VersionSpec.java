@@ -31,7 +31,7 @@ public final class VersionSpec {
      * Whether or not the version is the default version.
      */
     @JsonProperty(value = "isDefault")
-    private String isDefault;
+    private Boolean isDefault;
 
     /*
      * The component version property.
@@ -84,7 +84,7 @@ public final class VersionSpec {
      *
      * @return the isDefault value.
      */
-    public String isDefault() {
+    public Boolean isDefault() {
         return this.isDefault;
     }
 
@@ -94,7 +94,7 @@ public final class VersionSpec {
      * @param isDefault the isDefault value to set.
      * @return the VersionSpec object itself.
      */
-    public VersionSpec withIsDefault(String isDefault) {
+    public VersionSpec withIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
         return this;
     }

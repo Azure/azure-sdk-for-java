@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -55,15 +56,17 @@ private class ChangeFeedTable(val session: SparkSession,
                               val userConfig: util.Map[String, String],
                               val userProvidedSchema: Option[StructType] = None)
   extends Table
-    with SupportsRead
-    with CosmosLoggingTrait {
+    with SupportsRead {
 
-  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
+  private val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig.asScala.toMap)
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   // This can only be used for data operation against a certain container.
   private lazy val containerStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot] =
     initializeAndBroadcastCosmosClientStateForContainer()
-  private val effectiveUserConfig = CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap)
+  private val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userConfig.asScala.toMap)
   private val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
   private val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(effectiveUserConfig)
@@ -74,6 +77,7 @@ private class ChangeFeedTable(val session: SparkSession,
     CosmosClientConfiguration(effectiveUserConfig,
     useEventualConsistency = readConfig.forceEventualConsistency), None)
   private val container = ThroughputControlHelper.getContainer(effectiveUserConfig, cosmosContainerConfig, client)
+  container.openConnectionsAndInitCaches().block()
 
   override def name(): String = tableName
 
@@ -83,12 +87,17 @@ private class ChangeFeedTable(val session: SparkSession,
   ).asJava
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
+    val effectiveOptions = Option.apply(options) match {
+      case Some(optionsProvided) => effectiveUserConfig ++ optionsProvided.asScala
+      case None => effectiveUserConfig
+    }
+
     ChangeFeedScanBuilder(
       session,
-      new CaseInsensitiveStringMap(
-        CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava),
+      new CaseInsensitiveStringMap(effectiveOptions.asJava),
       schema(),
-      containerStateHandle)
+      containerStateHandle,
+      diagnosticsConfig)
   }
 
   override def schema(): StructType = {

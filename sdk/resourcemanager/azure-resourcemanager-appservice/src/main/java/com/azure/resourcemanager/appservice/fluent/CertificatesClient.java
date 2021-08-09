@@ -23,6 +23,20 @@ public interface CertificatesClient
     /**
      * Description for Get all certificates for a subscription.
      *
+     * @param filter Return only information specified in the filter (using OData syntax). For example:
+     *     $filter=KeyVaultId eq 'KeyVaultId'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of certificates.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CertificateInner> listAsync(String filter);
+
+    /**
+     * Description for Get all certificates for a subscription.
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -45,6 +59,8 @@ public interface CertificatesClient
     /**
      * Description for Get all certificates for a subscription.
      *
+     * @param filter Return only information specified in the filter (using OData syntax). For example:
+     *     $filter=KeyVaultId eq 'KeyVaultId'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -53,7 +69,7 @@ public interface CertificatesClient
      * @return collection of certificates.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CertificateInner> list(Context context);
+    PagedIterable<CertificateInner> list(String filter, Context context);
 
     /**
      * Description for Get all certificates in a resource group.
@@ -157,7 +173,7 @@ public interface CertificatesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
-     * @param certificateEnvelope SSL certificate for an app.
+     * @param certificateEnvelope Details of certificate, if it exists already.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -173,7 +189,7 @@ public interface CertificatesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
-     * @param certificateEnvelope SSL certificate for an app.
+     * @param certificateEnvelope Details of certificate, if it exists already.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -189,7 +205,7 @@ public interface CertificatesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
-     * @param certificateEnvelope SSL certificate for an app.
+     * @param certificateEnvelope Details of certificate, if it exists already.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -204,7 +220,7 @@ public interface CertificatesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
-     * @param certificateEnvelope SSL certificate for an app.
+     * @param certificateEnvelope Details of certificate, if it exists already.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -277,7 +293,7 @@ public interface CertificatesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
-     * @param certificateEnvelope ARM resource for a certificate.
+     * @param certificateEnvelope Details of certificate, if it exists already.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -293,7 +309,7 @@ public interface CertificatesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
-     * @param certificateEnvelope ARM resource for a certificate.
+     * @param certificateEnvelope Details of certificate, if it exists already.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -309,7 +325,7 @@ public interface CertificatesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
-     * @param certificateEnvelope ARM resource for a certificate.
+     * @param certificateEnvelope Details of certificate, if it exists already.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -324,7 +340,7 @@ public interface CertificatesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
-     * @param certificateEnvelope ARM resource for a certificate.
+     * @param certificateEnvelope Details of certificate, if it exists already.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

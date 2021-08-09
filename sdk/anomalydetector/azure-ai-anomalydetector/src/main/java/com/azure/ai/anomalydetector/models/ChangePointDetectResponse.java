@@ -15,21 +15,21 @@ public final class ChangePointDetectResponse {
      * Frequency extracted from the series, zero means no recurrent pattern has
      * been found.
      */
-    @JsonProperty(value = "period", required = true)
-    private int period;
+    @JsonProperty(value = "period", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer period;
 
     /*
      * isChangePoint contains change point properties for each input point.
      * True means an anomaly either negative or positive has been detected. The
      * index of the array is consistent with the input series.
      */
-    @JsonProperty(value = "isChangePoint", required = true)
+    @JsonProperty(value = "isChangePoint")
     private List<Boolean> isChangePoint;
 
     /*
      * the change point confidence of each point
      */
-    @JsonProperty(value = "confidenceScores", required = true)
+    @JsonProperty(value = "confidenceScores")
     private List<Float> confidenceScores;
 
     /**
@@ -37,19 +37,8 @@ public final class ChangePointDetectResponse {
      *
      * @return the period value.
      */
-    public int getPeriod() {
+    public Integer getPeriod() {
         return this.period;
-    }
-
-    /**
-     * Set the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.
-     *
-     * @param period the period value to set.
-     * @return the ChangePointDetectResponse object itself.
-     */
-    public ChangePointDetectResponse setPeriod(int period) {
-        this.period = period;
-        return this;
     }
 
     /**

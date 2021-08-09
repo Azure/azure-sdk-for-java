@@ -61,9 +61,10 @@ public final class BlobLeaseAsyncClient {
     private final String containerName;
     private final String blobName;
     private final boolean isBlob;
-    private final String leaseId;
     private final AzureBlobStorageImpl client;
     private final String accountName;
+
+    private volatile String leaseId;
 
     BlobLeaseAsyncClient(HttpPipeline pipeline, String url, String containerName, String blobName, String leaseId,
         boolean isBlob, String accountName, String serviceVersion) {
@@ -174,19 +175,24 @@ public final class BlobLeaseAsyncClient {
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
+
+        Mono<Response<String>> response;
         if (this.isBlob) {
-            return this.client.getBlobs().acquireLeaseWithResponseAsync(containerName, blobName, null,
+            response = this.client.getBlobs().acquireLeaseWithResponseAsync(containerName, blobName, null,
                 options.getDuration(), this.leaseId, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
-            return this.client.getContainers().acquireLeaseWithResponseAsync(containerName, null,
+            response = this.client.getContainers().acquireLeaseWithResponseAsync(containerName, null,
                 options.getDuration(), this.leaseId, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
+
+        response = response.doOnSuccess(r -> this.leaseId = r.getValue());
+        return response;
     }
 
     /**
@@ -254,19 +260,24 @@ public final class BlobLeaseAsyncClient {
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
+
+        Mono<Response<String>> response;
         if (this.isBlob) {
-            return this.client.getBlobs().renewLeaseWithResponseAsync(containerName, blobName, this.leaseId, null,
+            response = this.client.getBlobs().renewLeaseWithResponseAsync(containerName, blobName, this.leaseId, null,
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
                 requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
-            return this.client.getContainers().renewLeaseWithResponseAsync(containerName, this.leaseId, null,
+            response = this.client.getContainers().renewLeaseWithResponseAsync(containerName, this.leaseId, null,
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
+
+        response = response.doOnSuccess(r -> this.leaseId = r.getValue());
+        return response;
     }
 
     /**
@@ -513,20 +524,25 @@ public final class BlobLeaseAsyncClient {
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
+
+        Mono<Response<String>> response;
         if (this.isBlob) {
-            return this.client.getBlobs().changeLeaseWithResponseAsync(containerName, blobName, this.leaseId,
+            response = this.client.getBlobs().changeLeaseWithResponseAsync(containerName, blobName, this.leaseId,
                 options.getProposedId(), null, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
-            return this.client.getContainers().changeLeaseWithResponseAsync(containerName, this.leaseId,
+            response = this.client.getContainers().changeLeaseWithResponseAsync(containerName, this.leaseId,
                 options.getProposedId(), null, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
+
+        response = response.doOnSuccess(r -> this.leaseId = r.getValue());
+        return response;
     }
 
     /**

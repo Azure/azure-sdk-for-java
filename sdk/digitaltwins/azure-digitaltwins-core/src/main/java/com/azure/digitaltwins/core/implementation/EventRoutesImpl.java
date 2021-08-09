@@ -57,7 +57,7 @@ public final class EventRoutesImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsAPI")
-    private interface EventRoutesService {
+    public interface EventRoutesService {
         @Get("/eventroutes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

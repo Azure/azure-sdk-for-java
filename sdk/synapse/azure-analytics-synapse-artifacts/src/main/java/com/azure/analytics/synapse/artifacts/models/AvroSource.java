@@ -20,6 +20,14 @@ public final class AvroSource extends CopySource {
     @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
 
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
     /**
      * Get the storeSettings property: Avro store settings.
      *
@@ -37,6 +45,28 @@ public final class AvroSource extends CopySource {
      */
     public AvroSource setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the AvroSource object itself.
+     */
+    public AvroSource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.AnomalyStatus;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,6 +25,18 @@ public final class AnomalyProperty {
      */
     @JsonProperty(value = "anomalyStatus", access = JsonProperty.Access.WRITE_ONLY)
     private AnomalyStatus anomalyStatus;
+
+    /*
+     * value of the anomaly
+     */
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    private Double value;
+
+    /*
+     * expected value of the anomaly given by smart detector
+     */
+    @JsonProperty(value = "expectedValue", access = JsonProperty.Access.WRITE_ONLY)
+    private Double expectedValue;
 
     /**
      * Get the anomalySeverity property: anomaly severity.
@@ -55,5 +67,23 @@ public final class AnomalyProperty {
      */
     public AnomalyStatus getAnomalyStatus() {
         return this.anomalyStatus;
+    }
+
+    /**
+     * Get the value property: value of the anomaly.
+     *
+     * @return the value value.
+     */
+    public Double getValue() {
+        return this.value;
+    }
+
+    /**
+     * Get the expectedValue property: expected value of the anomaly given by smart detector.
+     *
+     * @return the expectedValue value.
+     */
+    public Double getExpectedValue() {
+        return this.expectedValue;
     }
 }

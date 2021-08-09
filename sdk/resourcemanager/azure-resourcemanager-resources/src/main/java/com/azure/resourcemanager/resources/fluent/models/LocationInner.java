@@ -7,6 +7,7 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.LocationMetadata;
+import com.azure.resourcemanager.resources.models.LocationType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -33,6 +34,12 @@ public final class LocationInner {
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
+
+    /*
+     * The location type.
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private LocationType type;
 
     /*
      * The display name of the location.
@@ -78,6 +85,15 @@ public final class LocationInner {
      */
     public String name() {
         return this.name;
+    }
+
+    /**
+     * Get the type property: The location type.
+     *
+     * @return the type value.
+     */
+    public LocationType type() {
+        return this.type;
     }
 
     /**

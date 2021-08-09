@@ -27,9 +27,15 @@ If applicable, add screenshots to help explain your problem.
 
 **Setup (please complete the following information):**
  - OS: [e.g. iOS]
- - IDE : [e.g. IntelliJ]
- - Version of the Library used
+ - IDE: [e.g. IntelliJ]
+ - Library/Libraries: [e.g. com.azure:azure-core:1.16.0 (groupId:artifactId:version)]
+ - Java version: [e.g. 8] 
+ - App Server/Environment: [e.g. Tomcat, WildFly, Azure Function, Apache Spark, Databricks, IDE plugin or anything special]
+ - Frameworks: [e.g. Spring Boot, Micronaut, Quarkus, etc] 
 
+If you suspect a dependency version mismatch (e.g. you see `NoClassDefFoundError`, `NoSuchMethodError` or similar), please provide
+- dependency tree (`mvn dependency:tree -Dverbose`)
+  
 **Additional context**
 Add any other context about the problem here.
 

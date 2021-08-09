@@ -82,12 +82,11 @@ public class HttpPipelinePolicyCheck extends AbstractCheck {
             return;
         }
 
-        final DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
-        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(classDefToken);
         final String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
         // Public class check
         if (!accessModifier.equals(AccessModifierOption.PUBLIC)) {
-            log(modifiersToken, String.format("Class ''%s'' implementing ''%s'' and should be a public class",
+            log(classDefToken, String.format("Class ''%s'' implementing ''%s'' and should be a public class",
                 className, HTTP_PIPELINE_POLICY));
         }
 

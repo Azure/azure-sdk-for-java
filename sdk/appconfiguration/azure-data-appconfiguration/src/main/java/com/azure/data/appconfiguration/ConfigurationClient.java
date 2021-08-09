@@ -3,16 +3,16 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
@@ -572,5 +572,15 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         return new PagedIterable<>(client.listRevisions(selector, context));
+    }
+
+    /**
+     * Adds an external synchronization token to ensure service requests receive up-to-date values.
+     *
+     * @param token an external synchronization token to ensure service requests receive up-to-date values.
+     * @throws NullPointerException if the given token is null.
+     */
+    public void updateSyncToken(String token) {
+        client.updateSyncToken(token);
     }
 }

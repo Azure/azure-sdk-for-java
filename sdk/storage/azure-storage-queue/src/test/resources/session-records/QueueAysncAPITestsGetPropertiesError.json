@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestsgetpropertieserror99934c4402811b?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/d7fda9ecd7fda9ece04852809a0ea596847943788b?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "a344c4a6-3165-47f8-b9a4-0855a5c6ecb4"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "664b8b28-bc7f-4faa-a231-fa413b9a5b68"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "37a3a0ab-3003-009b-0203-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3a0ab-3003-009b-0203-3a8ca5000000\nTime:2020-06-04T00:05:15.2360903Z</Message></Error>",
-      "Date" : "Thu, 04 Jun 2020 00:05:14 GMT",
-      "x-ms-client-request-id" : "a344c4a6-3165-47f8-b9a4-0855a5c6ecb4",
+      "x-ms-request-id" : "34fa7a04-1003-0078-4709-4155d9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:34fa7a04-1003-0078-4709-4155d9000000\nTime:2021-05-04T17:18:37.4649208Z</Message></Error>",
+      "x-ms-client-request-id" : "664b8b28-bc7f-4faa-a231-fa413b9a5b68",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsgetpropertieserror99934c4402811b" ]
+  "variables" : [ "d7fda9ecd7fda9ece04852809a0ea596847943788b" ]
 }

@@ -29,6 +29,7 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -96,7 +97,33 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
+     * Creates a new {@link BlockBlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link BlockBlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public BlockBlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new BlockBlobClient(client.getEncryptionScopeAsyncClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link BlockBlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link BlockBlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public BlockBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new BlockBlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
+    }
+
+    /**
      * Creates and opens an output stream to write data to the block blob.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -107,6 +134,9 @@ public final class BlockBlobClient extends BlobClientBase {
 
     /**
      * Creates and opens an output stream to write data to the block blob.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
@@ -128,6 +158,9 @@ public final class BlockBlobClient extends BlobClientBase {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
@@ -144,6 +177,9 @@ public final class BlockBlobClient extends BlobClientBase {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
@@ -168,6 +204,9 @@ public final class BlockBlobClient extends BlobClientBase {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @param options {@link BlockBlobOutputStreamOptions}
      * @return A {@link BlobOutputStream} object used to write data to the blob.
@@ -525,8 +564,31 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
             byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Duration timeout,
             Context context) {
-        Mono<Response<Void>> response = client.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl,
-            sourceRange, sourceContentMd5, leaseId, sourceRequestConditions, context);
+        return stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
+            .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
+            .setSourceRequestConditions(sourceRequestConditions), timeout, context);
+    }
+
+    /**
+     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-from-url">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions-Duration-Context}
+     *
+     * @param options Parameters for the operation
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A response containing status code and HTTP headers
+     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<Void>> response = client.stageBlockFromUrlWithResponse(options, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 

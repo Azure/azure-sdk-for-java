@@ -36,8 +36,9 @@ public class RecognizeReceiptsFromUrlAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-            + "/azure-ai-formrecognizer/src/samples/java/sample-forms/receipts/contoso-allinone.jpg";
+        String receiptUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl);
 
@@ -46,7 +47,6 @@ public class RecognizeReceiptsFromUrlAsync {
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"

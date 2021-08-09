@@ -3,7 +3,7 @@ trigger: none
 pr:
   branches:
     include:
-      - master
+      - main
   paths:
     include:
       - eng/pipelines/aggregate-reports.yml
@@ -13,22 +13,26 @@ jobs:
     displayName: Generate reports (with build)
     timeoutInMinutes: 180
     variables:
-      - template: templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
     pool:
-      vmImage: 'ubuntu-18.04'
+      vmImage: 'ubuntu-20.04'
     steps:
+    - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
+      parameters:
+        JobType: 'Reporting'
+        SDKType: 'client'
+        ServiceDirectory: 'aggregate-report'
+
+
     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-    - template: templates/steps/install-reporting-tools.yml
-      parameters:
-        Options: --batch-mode
-        MavenOptions: $(MemoryOptions) $(LoggingOptions)
+    - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
     - task: Maven@3
       displayName: 'Build All Libraries'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
+        options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
@@ -47,6 +51,18 @@ jobs:
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
         goals: 'verify site:site site:stage'
+
+    - task: Maven@3
+      displayName: 'Generate BOM Reports'
+      inputs:
+        mavenPomFile: eng/bomgenerator/pom.xml
+        options: '$(DefaultOptions)'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'clean package'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
@@ -82,17 +98,21 @@ jobs:
 
         Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item eng/bomgenerator/target/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
 
     - publish: $(Build.ArtifactStagingDirectory)
       condition: succeededOrFailed()
       displayName: 'Publish Report Artifacts'
       artifact: reports
+
+    - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+
   - job: Compliance
     displayName: Analyze (no build)
     timeoutInMinutes: 120
     variables:
-      - template: templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
     pool:
       # CredScan build task is Windows only (https://aka.ms/credscan).
       vmImage: 'windows-2019'
@@ -110,9 +130,6 @@ jobs:
       inputs:
         suppressionsFile: 'eng\CredScanSuppression.json'
       condition: succeededOrFailed()
-    - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
-      displayName: 'Publish Security Analysis Logs'
-      condition: succeededOrFailed()
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
       displayName: 'Post Analysis'
       inputs:
@@ -126,9 +143,34 @@ jobs:
         # GdnBreakOutputBaseline: baseline
       condition: succeededOrFailed()
       continueOnError: true
+    - pwsh: |
+        $results = (Get-Content "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.sarif" | ConvertFrom-Json).runs.results
+        $csvRows = @()
+        $pathMatchRegex = ("$(Build.SourcesDirectory)" -replace "\\", "/")
+        $results | ForEach-Object {
+          $csvRows += [pscustomobject]@{
+            ruleId = $_.ruleId
+            ruleIndex = $_.ruleIndex
+            fingerprints = $_.fingerprints
+            message = $_.message
+            properties = $_.properties
+            rank = $_.rank
+            fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/main/`$1"
+            startLine = $_.locations.physicalLocation.region.startLine
+            startColumn = $_.locations.physicalLocation.region.startColumn
+            endLine = $_.locations.physicalLocation.region.endLine
+            endColumn = $_.locations.physicalLocation.region.endColumn
+            level = $_.level
+          }
+        }
+        $csvRows | Export-Csv -Path "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.csv" -NoTypeInformation
+      displayName: Add converted csv file for CredScan-matches.sarif
+    - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
+      displayName: 'Publish Security Analysis Logs'
+      condition: succeededOrFailed()
     # Run link verification at the end as it will run no matter the pipeline passing or failing.
     # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
-    - template: ../common/pipelines/templates/steps/verify-links.yml
+    - template: /eng/common/pipelines/templates/steps/verify-links.yml
       parameters:
         Directory: ""
         CheckLinkGuidance: $true

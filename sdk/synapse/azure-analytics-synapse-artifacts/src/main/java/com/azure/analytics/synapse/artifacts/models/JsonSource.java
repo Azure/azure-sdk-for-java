@@ -20,6 +20,20 @@ public final class JsonSource extends CopySource {
     @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
 
+    /*
+     * Json format settings.
+     */
+    @JsonProperty(value = "formatSettings")
+    private JsonReadSettings formatSettings;
+
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
     /**
      * Get the storeSettings property: Json store settings.
      *
@@ -37,6 +51,48 @@ public final class JsonSource extends CopySource {
      */
     public JsonSource setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /**
+     * Get the formatSettings property: Json format settings.
+     *
+     * @return the formatSettings value.
+     */
+    public JsonReadSettings getFormatSettings() {
+        return this.formatSettings;
+    }
+
+    /**
+     * Set the formatSettings property: Json format settings.
+     *
+     * @param formatSettings the formatSettings value to set.
+     * @return the JsonSource object itself.
+     */
+    public JsonSource setFormatSettings(JsonReadSettings formatSettings) {
+        this.formatSettings = formatSettings;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the JsonSource object itself.
+     */
+    public JsonSource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

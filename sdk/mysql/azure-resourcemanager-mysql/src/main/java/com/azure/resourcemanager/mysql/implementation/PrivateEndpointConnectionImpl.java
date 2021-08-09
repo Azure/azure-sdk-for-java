@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysql.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.mysql.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.mysql.models.PrivateEndpointProperty;
@@ -17,7 +16,7 @@ public final class PrivateEndpointConnectionImpl
     implements PrivateEndpointConnection, PrivateEndpointConnection.Definition, PrivateEndpointConnection.Update {
     private PrivateEndpointConnectionInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -47,7 +46,7 @@ public final class PrivateEndpointConnectionImpl
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 
@@ -85,7 +84,7 @@ public final class PrivateEndpointConnectionImpl
         return this;
     }
 
-    PrivateEndpointConnectionImpl(String name, MySqlManager serviceManager) {
+    PrivateEndpointConnectionImpl(String name, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = new PrivateEndpointConnectionInner();
         this.serviceManager = serviceManager;
         this.privateEndpointConnectionName = name;
@@ -115,7 +114,8 @@ public final class PrivateEndpointConnectionImpl
         return this;
     }
 
-    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject, MySqlManager serviceManager) {
+    PrivateEndpointConnectionImpl(
+        PrivateEndpointConnectionInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

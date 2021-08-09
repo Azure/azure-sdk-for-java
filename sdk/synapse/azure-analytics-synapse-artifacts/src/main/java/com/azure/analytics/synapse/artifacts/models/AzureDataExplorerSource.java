@@ -35,6 +35,14 @@ public final class AzureDataExplorerSource extends CopySource {
     @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
     /**
      * Get the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression
      * with resultType string).
@@ -98,6 +106,28 @@ public final class AzureDataExplorerSource extends CopySource {
      */
     public AzureDataExplorerSource setQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the AzureDataExplorerSource object itself.
+     */
+    public AzureDataExplorerSource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

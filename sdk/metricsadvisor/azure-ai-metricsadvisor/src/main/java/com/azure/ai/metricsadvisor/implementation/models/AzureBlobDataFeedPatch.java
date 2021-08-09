@@ -18,14 +18,14 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private AzureBlobParameter dataSourceParameter;
+    private AzureBlobParameterPatch dataSourceParameter;
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
      *
      * @return the dataSourceParameter value.
      */
-    public AzureBlobParameter getDataSourceParameter() {
+    public AzureBlobParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -35,7 +35,7 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureBlobDataFeedPatch object itself.
      */
-    public AzureBlobDataFeedPatch setDataSourceParameter(AzureBlobParameter dataSourceParameter) {
+    public AzureBlobDataFeedPatch setDataSourceParameter(AzureBlobParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

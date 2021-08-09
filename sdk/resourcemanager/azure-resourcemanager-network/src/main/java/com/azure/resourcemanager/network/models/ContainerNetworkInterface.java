@@ -48,7 +48,7 @@ public class ContainerNetworkInterface extends SubResource {
      * attached.
      */
     @JsonProperty(value = "properties.container")
-    private SubResource container;
+    private Container container;
 
     /*
      * Reference to the ip configuration on this container nic.
@@ -115,7 +115,7 @@ public class ContainerNetworkInterface extends SubResource {
      *
      * @return the container value.
      */
-    public SubResource container() {
+    public Container container() {
         return this.container;
     }
 
@@ -125,7 +125,7 @@ public class ContainerNetworkInterface extends SubResource {
      * @param container the container value to set.
      * @return the ContainerNetworkInterface object itself.
      */
-    public ContainerNetworkInterface withContainer(SubResource container) {
+    public ContainerNetworkInterface withContainer(Container container) {
         this.container = container;
         return this;
     }
@@ -163,6 +163,9 @@ public class ContainerNetworkInterface extends SubResource {
     public void validate() {
         if (containerNetworkInterfaceConfiguration() != null) {
             containerNetworkInterfaceConfiguration().validate();
+        }
+        if (container() != null) {
+            container().validate();
         }
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());

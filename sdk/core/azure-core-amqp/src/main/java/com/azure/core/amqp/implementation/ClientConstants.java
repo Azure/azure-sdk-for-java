@@ -3,10 +3,14 @@
 
 package com.azure.core.amqp.implementation;
 
+import java.time.Duration;
+
 public final class ClientConstants {
     public static final String NOT_APPLICABLE = "n/a";
     public static final String PLATFORM_INFO = getOSInformation();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
+    // Base sleep wait time.
+    public static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.

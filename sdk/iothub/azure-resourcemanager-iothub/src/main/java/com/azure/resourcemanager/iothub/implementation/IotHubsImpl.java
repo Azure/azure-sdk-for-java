@@ -6,7 +6,6 @@ package com.azure.resourcemanager.iothub.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.IotHubsClient;
 import com.azure.resourcemanager.iothub.models.FailoverInput;
 import com.azure.resourcemanager.iothub.models.IotHubs;
@@ -17,9 +16,9 @@ public final class IotHubsImpl implements IotHubs {
 
     private final IotHubsClient innerClient;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    public IotHubsImpl(IotHubsClient innerClient, IotHubManager serviceManager) {
+    public IotHubsImpl(IotHubsClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -37,7 +36,7 @@ public final class IotHubsImpl implements IotHubs {
         return this.innerClient;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

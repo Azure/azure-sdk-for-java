@@ -107,13 +107,16 @@
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
 
+    <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
+    <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
+
     <!-- This property determines the max heap size of the Surefire JVM. By default 3GB, or 3096MB, is used. -->
     <surefireXmx>3096m</surefireXmx>
 
-    <!-- This property configures the max heap size of the Surefire JVM -->
+    <!-- This property configures the max heap size of the Surefire JVM. -->
     <surefireJvmXmx>-Xmx${surefireXmx}</surefireJvmXmx>
 
-    <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError -->
+    <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError. -->
     <heapDumpOnOom>
       -XX:+HeapDumpOnOutOfMemoryError
       -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}
@@ -448,13 +451,13 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>8.40</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+              <version>8.42</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
-            <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-            <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-            <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+            <suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+            <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
             <propertyExpansion>samedir=</propertyExpansion>
             <encoding>UTF-8</encoding>
             <consoleOutput>true</consoleOutput>
@@ -559,43 +562,43 @@
               <!-- JDK APIs -->
               <offlineLink>
                 <url>https://docs.oracle.com/javase/8/docs/api/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/java8/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/java8/</location>
               </offlineLink>
 
               <!-- Reactor APIs -->
               <offlineLink>
                 <url>https://projectreactor.io/docs/core/release/api/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/reactor-core/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-core/</location>
               </offlineLink>
               <offlineLink>
                 <url>https://projectreactor.io/docs/netty/release/api/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/reactor-netty/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-netty/</location>
               </offlineLink>
 
               <!-- Jackson APIs -->
               <offlineLink>
                 <url>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/jackson-annotations/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-annotations/</location>
               </offlineLink>
               <offlineLink>
                 <url>https://fasterxml.github.io/jackson-core/javadoc/2.12/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/jackson-core/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-core/</location>
               </offlineLink>
               <offlineLink>
                 <url>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/jackson-databind/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-databind/</location>
               </offlineLink>
 
               <!-- Netty APIs -->
               <offlineLink>
                 <url>https://netty.io/4.1/api/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/netty/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/netty/</location>
               </offlineLink>
 
               <!-- Avro APIs -->
               <offlineLink>
                 <url>https://avro.apache.org/docs/current/api/java/</url>
-                <location>${project.basedir}/../../../eng/javadoc-package-lists/apache-avro/</location>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/apache-avro/</location>
               </offlineLink>
             </offlineLinks>
             <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
@@ -871,7 +874,7 @@
           <name>generate-overview</name>
         </property>
         <file>
-          <exists>../../../eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</exists>
         </file>
       </activation>
       <build>
@@ -891,7 +894,7 @@
                   <executable>python</executable>
                   <workingDirectory>${project.basedir}</workingDirectory>
                   <arguments>
-                    <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</argument>
                     <argument>--rf</argument>
                     <argument>${project.basedir}/README.md</argument>
                     <argument>--v</argument>
@@ -926,7 +929,7 @@
           <name>inject-codesnippets</name>
         </property>
         <file>
-          <exists>../../../eng/pipelines/scripts/inject_codesnippets.py</exists>
+          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</exists>
         </file>
       </activation>
       <build>
@@ -946,44 +949,9 @@
                   <executable>python</executable>
                   <workingDirectory>${project.basedir}</workingDirectory>
                   <arguments>
-                    <argument>../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</argument>
                     <argument>--project-dir</argument>
                     <argument>${project.basedir}</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <!-- separate profile for windows as the executable on windows is named npx.cmd and npx on other os families -->
-      <id>readme-codesnippet-windows</id>
-      <activation>
-        <property>
-          <name>readme-codesnippet-windows</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>code-snippet-for-readme-windows</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>npx.cmd</executable>
-                  <arguments>
-                    <argument>embedme</argument>
-                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1016,9 +984,10 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>npx</executable>
+                  <executable>python</executable>
                   <arguments>
-                    <argument>embedme</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/scripts/invoke_embedme.py</argument>
+                    <argument>--readme</argument>
                     <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
@@ -1029,44 +998,7 @@
       </build>
     </profile>
 
-    <profile>
-      <!-- separate profile for windows as the executable on windows is named npx.cmd and npx on other os families -->
-      <id>verify-readme-windows</id>
-      <activation>
-        <property>
-          <name>verify-readme-windows</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>verify-readme-codesnippet-windows</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>npx.cmd</executable>
-                  <arguments>
-                    <argument>embedme</argument>
-                    <argument>--verify</argument>
-                    <argument>${project.basedir}/README.md</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Verify that there are no changes to readme file. Build fails if the there's a difference in README
-     after running the embedme tool. -->
+    <!-- Verify that there are no changes to README file. Build fails if the there's a difference in README after running the embedme tool. -->
     <profile>
       <id>verify-readme</id>
       <activation>
@@ -1088,11 +1020,50 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>npx</executable>
+                  <executable>python</executable>
                   <arguments>
-                    <argument>embedme</argument>
-                    <argument>--verify</argument>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/scripts/invoke_embedme.py</argument>
+                    <argument>--readme</argument>
                     <argument>${project.basedir}/README.md</argument>
+                    <argument>--verify</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Verify that the CHANGELOG is formatted correctly. -->
+    <profile>
+      <id>verify-changelog</id>
+      <activation>
+        <property>
+          <name>verify-changelog</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>verify-readme-codesnippet</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>pwsh</executable>
+                  <arguments>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/common/scripts/Verify-Changelog.ps1</argument>
+                    <argument>-ChangeLogLocation</argument>
+                    <argument>${project.basedir}/CHANGELOG.md</argument>
+                    <argument>-VersionString</argument>
+                    <argument>${project.version}</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1115,7 +1086,7 @@
           <plugin>
             <groupId>net.jonathangiles.tools</groupId>
             <artifactId>dependencyChecker-maven-plugin</artifactId>
-            <version>1.0.5</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
+            <version>1.0.6</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
             <inherited>false</inherited>
             <executions>
               <execution>
@@ -1201,6 +1172,7 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1225,6 +1197,7 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1248,6 +1221,7 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>
@@ -1272,6 +1246,7 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
               </systemPropertyVariables>
+              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
         </plugins>

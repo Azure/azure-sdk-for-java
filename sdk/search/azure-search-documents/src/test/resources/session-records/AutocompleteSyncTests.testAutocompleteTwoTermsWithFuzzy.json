@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')//docs/search.post.autocomplete?api-version=2020-06-30",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a093c774-8c64-4fab-8eed-ea769ee7c1f7",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "43279099-6e94-47d6-92f8-3c3051b213f7",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "290",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a093c774-8c64-4fab-8eed-ea769ee7c1f7",
+      "request-id" : "43279099-6e94-47d6-92f8-3c3051b213f7",
       "StatusCode" : "200",
-      "Date" : "Wed, 31 Mar 2021 21:10:55 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:14:35 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "a093c774-8c64-4fab-8eed-ea769ee7c1f7",
-      "elapsed-time" : "10",
+      "client-request-id" : "43279099-6e94-47d6-92f8-3c3051b213f7",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "290",
       "Body" : "{\"value\":[{\"text\":\"model suites\",\"queryPlusText\":\"model suites\"},{\"text\":\"modern architecture\",\"queryPlusText\":\"modern architecture\"},{\"text\":\"modern stay\",\"queryPlusText\":\"modern stay\"},{\"text\":\"morel coverings\",\"queryPlusText\":\"morel coverings\"},{\"text\":\"motel\",\"queryPlusText\":\"motel\"}]}",
-      "x-ms-client-request-id" : "a093c774-8c64-4fab-8eed-ea769ee7c1f7",
+      "x-ms-client-request-id" : "43279099-6e94-47d6-92f8-3c3051b213f7",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

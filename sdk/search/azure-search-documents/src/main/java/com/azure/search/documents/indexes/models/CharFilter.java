@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -18,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata\\.type",
+        property = "@odata.type",
         defaultImpl = CharFilter.class)
 @JsonTypeName("CharFilter")
 @JsonSubTypes({
@@ -27,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             name = "#Microsoft.Azure.Search.PatternReplaceCharFilter",
             value = PatternReplaceCharFilter.class)
 })
-@JsonFlatten
 @Fluent
 public abstract class CharFilter {
     /*

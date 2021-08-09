@@ -9,9 +9,11 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
@@ -22,11 +24,13 @@ import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
@@ -36,6 +40,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
@@ -204,6 +209,10 @@ public class ReflectionUtils {
         set(client, storeModel, "storeModel");
     }
 
+    public static void setGatewayHttpClient(RxStoreModel client, HttpClient httpClient) {
+        set(client, httpClient, "httpClient");
+    }
+
     public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
         return get(ReplicatedResourceClient.class, storeClient, "replicatedResourceClient");
     }
@@ -216,12 +225,16 @@ public class ReflectionUtils {
         return get(ConsistencyWriter.class, replicatedResourceClient, "consistencyWriter");
     }
 
-    public static void setRetryCount(RetryContext retryContext, int retryCount) {
-        set(retryContext, retryCount, "retryCount");
+    public static void setRetryContext(ClientSideRequestStatistics clientSideRequestStatistics, RetryContext retryContext) {
+        set(clientSideRequestStatistics, retryContext, "retryContext");
     }
 
     public static StoreReader getStoreReader(ConsistencyReader consistencyReader) {
         return get(StoreReader.class, consistencyReader, "storeReader");
+    }
+
+    public static void setStoreReader(ConsistencyReader consistencyReader, StoreReader storeReader) {
+        set(consistencyReader, storeReader, "storeReader");
     }
 
     public static void setTransportClient(StoreReader storeReader, TransportClient transportClient) {
@@ -289,5 +302,34 @@ public class ReflectionUtils {
 
     public static AtomicBoolean isInitialized(CosmosAsyncContainer cosmosAsyncContainer) {
         return get(AtomicBoolean.class, cosmosAsyncContainer, "isInitialized");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ConcurrentHashMap<OperationType, ThroughputControlTrackingUnit> getThroughputControlTrackingDictionary(
+        ThroughputRequestThrottler requestThrottler) {
+        return get(ConcurrentHashMap.class, requestThrottler, "trackingDictionary");
+    }
+
+    public static HttpClient getHttpClient(ClientTelemetry telemetry) {
+        return get(HttpClient.class, telemetry, "httpClient");
+    }
+
+    public static void setHttpClient(ClientTelemetry telemetry, HttpClient httpClient) {
+        set(telemetry, httpClient, "httpClient");
+    }
+
+    public static void setDefaultMinDurationBeforeEnforcingCollectionRoutingMapRefreshDuration(
+        Duration newDuration) {
+
+        String fieldName = "minDurationBeforeEnforcingCollectionRoutingMapRefresh";
+
+        try {
+            Field field = GatewayAddressCache.class.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            FieldUtils.removeFinalModifier(field, true);
+            FieldUtils.writeField(field, (Object)null, newDuration, true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

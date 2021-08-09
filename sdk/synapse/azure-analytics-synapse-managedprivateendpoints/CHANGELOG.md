@@ -1,5 +1,13 @@
-## 1.0.0-beta.3 (Unreleased)
+# Release History
 
+## 1.0.0-beta.4 (2021-08-10)
+- Update API version to 2021-06-01-preview
+- Added missing properties for managed private endpoints in stable version
+
+## 1.0.0-beta.3 (2021-04-06)
+
+### Dependency Updates
+- Update azure-core to 1.15.0
 
 ## 1.0.0-beta.2 (2021-02-09)
 

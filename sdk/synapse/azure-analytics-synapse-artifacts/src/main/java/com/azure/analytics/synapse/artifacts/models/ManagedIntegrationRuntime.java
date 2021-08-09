@@ -24,6 +24,12 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
     private IntegrationRuntimeState state;
 
     /*
+     * Managed Virtual Network reference.
+     */
+    @JsonProperty(value = "managedVirtualNetwork")
+    private ManagedVirtualNetworkReference managedVirtualNetwork;
+
+    /*
      * The compute resource for managed integration runtime.
      */
     @JsonProperty(value = "typeProperties.computeProperties")
@@ -42,6 +48,26 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      */
     public IntegrationRuntimeState getState() {
         return this.state;
+    }
+
+    /**
+     * Get the managedVirtualNetwork property: Managed Virtual Network reference.
+     *
+     * @return the managedVirtualNetwork value.
+     */
+    public ManagedVirtualNetworkReference getManagedVirtualNetwork() {
+        return this.managedVirtualNetwork;
+    }
+
+    /**
+     * Set the managedVirtualNetwork property: Managed Virtual Network reference.
+     *
+     * @param managedVirtualNetwork the managedVirtualNetwork value to set.
+     * @return the ManagedIntegrationRuntime object itself.
+     */
+    public ManagedIntegrationRuntime setManagedVirtualNetwork(ManagedVirtualNetworkReference managedVirtualNetwork) {
+        this.managedVirtualNetwork = managedVirtualNetwork;
+        return this;
     }
 
     /**

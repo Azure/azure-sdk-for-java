@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/805151b40805151b464f21317abe5ee6154844bc7974?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8e2bb4b2-d95b-4d22-9f0b-1d3144b5a3eb"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7B4809D7D",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:40:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "3c6554f5-c01e-0034-4ca0-79f979000000",
+      "x-ms-client-request-id" : "8e2bb4b2-d95b-4d22-9f0b-1d3144b5a3eb",
+      "Date" : "Thu, 15 Jul 2021 17:40:58 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/805151b41805151b464f903785358fba0c03244e5abc?restype=container&comp=acl",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a0031a47-7f37-4941-86bb-1439cd0552dd",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "225",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "3c655597-c01e-0034-5da0-79f979000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:3c655597-c01e-0034-5da0-79f979000000\nTime:2021-07-15T17:40:58.6783938Z</Message></Error>",
+      "x-ms-client-request-id" : "a0031a47-7f37-4941-86bb-1439cd0552dd",
+      "Date" : "Thu, 15 Jul 2021 17:40:58 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "805151b40805151b464f21317abe5ee6154844bc7974", "805151b473783d16", "805151b452762b77", "805151b41805151b464f903785358fba0c03244e5abc" ]
+}

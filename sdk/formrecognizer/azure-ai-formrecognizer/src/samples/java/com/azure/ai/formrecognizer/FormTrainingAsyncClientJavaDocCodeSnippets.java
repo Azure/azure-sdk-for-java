@@ -329,8 +329,8 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
         formTrainingAsyncClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
             new CreateComposedModelOptions()
-                .setModelName("my composed model name")
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setModelName("my composed model name"))
+            .setPollInterval(Duration.ofSeconds(5))
             // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(customFormModel -> {

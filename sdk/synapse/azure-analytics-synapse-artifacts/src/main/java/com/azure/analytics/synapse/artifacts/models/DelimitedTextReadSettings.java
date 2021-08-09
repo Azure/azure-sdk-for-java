@@ -21,6 +21,12 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
     @JsonProperty(value = "skipLineCount")
     private Object skipLineCount;
 
+    /*
+     * Compression settings.
+     */
+    @JsonProperty(value = "compressionProperties")
+    private CompressionReadSettings compressionProperties;
+
     /**
      * Get the skipLineCount property: Indicates the number of non-empty rows to skip when reading data from input
      * files. Type: integer (or Expression with resultType integer).
@@ -40,6 +46,26 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      */
     public DelimitedTextReadSettings setSkipLineCount(Object skipLineCount) {
         this.skipLineCount = skipLineCount;
+        return this;
+    }
+
+    /**
+     * Get the compressionProperties property: Compression settings.
+     *
+     * @return the compressionProperties value.
+     */
+    public CompressionReadSettings getCompressionProperties() {
+        return this.compressionProperties;
+    }
+
+    /**
+     * Set the compressionProperties property: Compression settings.
+     *
+     * @param compressionProperties the compressionProperties value to set.
+     * @return the DelimitedTextReadSettings object itself.
+     */
+    public DelimitedTextReadSettings setCompressionProperties(CompressionReadSettings compressionProperties) {
+        this.compressionProperties = compressionProperties;
         return this;
     }
 }

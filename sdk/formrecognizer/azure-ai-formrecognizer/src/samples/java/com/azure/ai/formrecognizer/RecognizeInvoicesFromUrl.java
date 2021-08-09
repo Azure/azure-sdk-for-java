@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Sample for recognizing commonly found invoice fields from a file source URL of an invoice document.
@@ -38,8 +37,9 @@ public class RecognizeInvoicesFromUrl {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        String invoiceUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-            + "/azure-ai-formrecognizer/src/samples/java/sample-forms/invoices/Invoice_1.pdf";
+        String invoiceUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/formrecognizer/"
+                + "azure-ai-formrecognizer/samples/sample_forms/forms/sample_invoice.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeInvoicesPoller
             = client.beginRecognizeInvoicesFromUrl(invoiceUrl);
 
@@ -111,15 +111,49 @@ public class RecognizeInvoicesFromUrl {
                         invoiceTotal, invoiceTotalField.getConfidence());
                 }
             }
-        }
 
-        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
-        // the thread so the program does not end before the send operation is complete. Using .block() instead of
-        // .subscribe() will turn this into a synchronous call.
-        try {
-            TimeUnit.MINUTES.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            FormField invoiceItemsField = recognizedFields.get("Items");
+            if (invoiceItemsField != null) {
+                System.out.printf("Invoice Items: %n");
+                if (FieldValueType.LIST == invoiceItemsField.getValue().getValueType()) {
+                    List<FormField> invoiceItems = invoiceItemsField.getValue().asList();
+                    invoiceItems.stream()
+                        .filter(invoiceItem -> FieldValueType.MAP == invoiceItem.getValue().getValueType())
+                        .map(formField -> formField.getValue().asMap())
+                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                            // See a full list of fields found on an invoice here:
+                            // https://aka.ms/formrecognizer/invoicefields
+                            if ("Description".equals(key)) {
+                                if (FieldValueType.STRING == formField.getValue().getValueType()) {
+                                    String name = formField.getValue().asString();
+                                    System.out.printf("Description: %s, confidence: %.2fs%n",
+                                        name, formField.getConfidence());
+                                }
+                            }
+                            if ("Quantity".equals(key)) {
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float quantity = formField.getValue().asFloat();
+                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                        quantity, formField.getConfidence());
+                                }
+                            }
+                            if ("UnitPrice".equals(key)) {
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float unitPrice = formField.getValue().asFloat();
+                                    System.out.printf("Unit Price: %f, confidence: %.2f%n",
+                                        unitPrice, formField.getConfidence());
+                                }
+                            }
+                            if ("ProductCode".equals(key)) {
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float productCode = formField.getValue().asFloat();
+                                    System.out.printf("Product Code: %f, confidence: %.2f%n",
+                                        productCode, formField.getConfidence());
+                                }
+                            }
+                        }));
+                }
+            }
         }
     }
 }

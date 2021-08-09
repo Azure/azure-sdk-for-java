@@ -19,15 +19,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * KeyProperties is the resource containing all the properties of the key except its {@link JsonWebKey} material.
- * It is managed by the Key Service.
+ * {@link KeyProperties} is the resource containing all the properties of the key except its {@link JsonWebKey}
+ * material. It is managed by the Key Service.
  *
- *  @see KeyClient
- *  @see KeyAsyncClient
+ * @see KeyClient
+ * @see KeyAsyncClient
  */
 @Fluent
 public class KeyProperties {
-
     /**
      * Determines whether the object is enabled.
      */
@@ -59,12 +58,10 @@ public class KeyProperties {
     private OffsetDateTime updatedOn;
 
     /**
-     * Reflects the deletion recovery level currently in effect for keys in
-     * the current vault. If it contains 'Purgeable', the key can be
-     * permanently deleted by a privileged user; otherwise, only the system can
-     * purge the key, at the end of the retention interval. Possible values
-     * include: 'Purgeable', 'Recoverable+Purgeable', 'Recoverable',
-     * 'Recoverable+ProtectedSubscription'.
+     * Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains
+     * 'Purgeable', the key can be permanently deleted by a privileged user; otherwise, only the system can purge the
+     * key, at the end of the retention interval. Possible values include: 'Purgeable', 'Recoverable+Purgeable',
+     * 'Recoverable', 'Recoverable+ProtectedSubscription'.
      */
     private String recoveryLevel;
 
@@ -86,8 +83,8 @@ public class KeyProperties {
     private Map<String, String> tags;
 
     /**
-     * True if the key's lifetime is managed by key vault. If this is a key
-     * backing a certificate, then managed will be true.
+     * True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+     * be true.
      */
     @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean managed;
@@ -99,28 +96,18 @@ public class KeyProperties {
     private Integer recoverableDays;
 
     /**
-     * Indicates if the private key can be exported.
-     */
-    @JsonProperty(value = "exportable")
-    Boolean exportable;
-
-    /**
-     * The policy rules under which the key can be exported.
-     */
-    KeyReleasePolicy releasePolicy;
-
-    /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
-     * @return the recoverable days.
+     *
+     * @return The recoverable days.
      */
     public Integer getRecoverableDays() {
         return recoverableDays;
     }
 
     /**
-     * Get the recoveryLevel value.
+     * Get the key recovery level.
      *
-     * @return the recoveryLevel value
+     * @return The key recovery level.
      */
     public String getRecoveryLevel() {
         return this.recoveryLevel;
@@ -129,7 +116,7 @@ public class KeyProperties {
     /**
      * Get the key name.
      *
-     * @return the name of the key.
+     * @return The name of the key.
      */
     public String getName() {
         return this.name;
@@ -139,76 +126,82 @@ public class KeyProperties {
     /**
      * Get the enabled value.
      *
-     * @return the enabled value
+     * @return The enabled value.
      */
     public Boolean isEnabled() {
         return this.enabled;
     }
 
     /**
-     * Set the enabled value.
+     * Set a value that indicates if the key is enabled.
      *
-     * @param enabled The enabled value to set
-     * @return the updated KeyProperties object itself.
+     * @param enabled The enabled value to set.
+     *
+     * @return The updated {@link KeyProperties} object.
      */
     public KeyProperties setEnabled(Boolean enabled) {
         this.enabled = enabled;
+
         return this;
     }
 
     /**
-     * Get the notBefore UTC time.
+     * Get the {@link OffsetDateTime key's notBefore time} in UTC.
      *
-     * @return the notBefore UTC time.
+     * @return The {@link OffsetDateTime key's notBefore time} in UTC.
      */
     public OffsetDateTime getNotBefore() {
         return notBefore;
     }
 
     /**
-     * Set the {@link OffsetDateTime notBefore} UTC time.
+     * Set the {@link OffsetDateTime key's notBefore time} in UTC.
      *
-     * @param notBefore The notBefore UTC time to set
-     * @return the updated KeyProperties object itself.
+     * @param notBefore The {@link OffsetDateTime key's notBefore time} in UTC.
+     *
+     * @return The updated {@link KeyProperties} object.
      */
     public KeyProperties setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
+
         return this;
     }
 
     /**
-     * Get the Key Expiry time in UTC.
+     * Get the {@link OffsetDateTime key expiration time} in UTC.
      *
-     * @return the expires UTC time.
+     * @return The {@link OffsetDateTime key expiration time} in UTC.
      */
     public OffsetDateTime getExpiresOn() {
         return this.expiresOn;
     }
 
     /**
-     * Set the {@link OffsetDateTime expires} UTC time.
+     * Set the {@link OffsetDateTime key expiration time} in UTC.
      *
-     * @param expiresOn The expiry time to set for the key.
-     * @return the updated KeyProperties object itself.
+     * @param expiresOn The {@link OffsetDateTime key expiration time} in UTC.
+     *
+     * @return The updated {@link KeyProperties} object.
      */
     public KeyProperties setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
+
         return this;
     }
 
     /**
-     * Get the the UTC time at which key was created.
+     * Get the {@link OffsetDateTime time at which key was created} in UTC.
      *
-     * @return the created UTC time.
+     * @return The {@link OffsetDateTime time at which key was created} in UTC.
      */
     public OffsetDateTime getCreatedOn() {
         return createdOn;
     }
 
     /**
-     * Get the UTC time at which key was last updated.
+     * Get the {@link OffsetDateTime time at which key was last updated} in UTC.
      *
-     * @return the last updated UTC time.
+     * @return The {@link OffsetDateTime time at which key was last updated} in UTC.
      */
     public OffsetDateTime getUpdatedOn() {
         return updatedOn;
@@ -217,7 +210,7 @@ public class KeyProperties {
     /**
      * Get the key identifier.
      *
-     * @return the key identifier.
+     * @return The key identifier.
      */
     public String getId() {
         return this.id;
@@ -227,7 +220,7 @@ public class KeyProperties {
     /**
      * Get the tags associated with the key.
      *
-     * @return the value of the tags.
+     * @return The tag names and values.
      */
     public Map<String, String> getTags() {
         return this.tags;
@@ -236,18 +229,20 @@ public class KeyProperties {
     /**
      * Set the tags to be associated with the key.
      *
-     * @param tags The tags to set
-     * @return the updated KeyProperties object itself.
+     * @param tags The tags to set.
+     *
+     * @return The updated {@link KeyProperties} object.
      */
     public KeyProperties setTags(Map<String, String> tags) {
         this.tags = tags;
+
         return this;
     }
 
     /**
      * Get the managed value.
      *
-     * @return the managed value
+     * @return The managed value.
      */
     public Boolean isManaged() {
         return this.managed;
@@ -256,50 +251,10 @@ public class KeyProperties {
     /**
      * Get the version of the key.
      *
-     * @return the version of the key.
+     * @return The version of the key.
      */
     public String getVersion() {
         return this.version;
-    }
-
-    /**
-     * Indicates if the private key can be exported.
-     *
-     * @return The exportable value.
-     */
-    public Boolean isExportable() {
-        return this.exportable;
-    }
-
-    /**
-     * Set a value that indicates if the private key can be exported.
-     *
-     * @param exportable The exportable value to set.
-     * @return The updated {@link KeyProperties} object.
-     */
-    public KeyProperties setExportable(Boolean exportable) {
-        this.exportable = exportable;
-        return this;
-    }
-
-    /**
-     * Get the policy rules under which the key can be exported.
-     *
-     * @return The release policy.
-     */
-    public KeyReleasePolicy getReleasePolicy() {
-        return releasePolicy;
-    }
-
-    /**
-     * Set the policy rules under which the key can be exported.
-     *
-     * @param releasePolicy The release policy to set.
-     * @return The updated {@link KeyProperties} object.
-     */
-    public KeyProperties setReleasePolicy(KeyReleasePolicy releasePolicy) {
-        this.releasePolicy = releasePolicy;
-        return this;
     }
 
     /**
@@ -313,8 +268,8 @@ public class KeyProperties {
     @SuppressWarnings("unchecked")
     void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
-        this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
-        this.expiresOn =  epochToOffsetDateTime(attributes.get("exp"));
+        this.notBefore = epochToOffsetDateTime(attributes.get("nbf"));
+        this.expiresOn = epochToOffsetDateTime(attributes.get("exp"));
         this.createdOn = epochToOffsetDateTime(attributes.get("created"));
         this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
@@ -324,8 +279,10 @@ public class KeyProperties {
     private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
         if (epochValue != null) {
             Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
+
             return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
         }
+
         return null;
     }
 
@@ -333,6 +290,7 @@ public class KeyProperties {
         if (input1 == null) {
             return input2;
         }
+
         return input1;
     }
 
@@ -340,6 +298,7 @@ public class KeyProperties {
     void unpackId(String keyId) {
         if (keyId != null && keyId.length() > 0) {
             this.id = keyId;
+
             try {
                 URL url = new URL(keyId);
                 String[] tokens = url.getPath().split("/");
@@ -353,32 +312,35 @@ public class KeyProperties {
 
     List<KeyOperation> getKeyOperations(List<String> jsonWebKeyOps) {
         List<KeyOperation> output = new ArrayList<>();
+
         for (String keyOp : jsonWebKeyOps) {
             output.add(KeyOperation.fromString(keyOp));
         }
+
         return output;
     }
 
     @SuppressWarnings("unchecked")
     JsonWebKey createKeyMaterialFromJson(Map<String, Object> key) {
         JsonWebKey outputKey = new JsonWebKey()
-                .setY(decode((String) key.get("y")))
-                .setX(decode((String) key.get("x")))
-                .setCurveName(KeyCurveName.fromString((String) key.get("crv")))
-                .setKeyOps(getKeyOperations((List<String>) key.get("key_ops")))
-                .setT(decode((String) key.get("key_hsm")))
-                .setK(decode((String) key.get("k")))
-                .setQ(decode((String) key.get("q")))
-                .setP(decode((String) key.get("p")))
-                .setQi(decode((String) key.get("qi")))
-                .setDq(decode((String) key.get("dq")))
-                .setDp(decode((String) key.get("dp")))
-                .setD(decode((String) key.get("d")))
-                .setE(decode((String) key.get("e")))
-                .setN(decode((String) key.get("n")))
-                .setKeyType(KeyType.fromString((String) key.get("kty")))
-                .setId((String) key.get("kid"));
+            .setY(decode((String) key.get("y")))
+            .setX(decode((String) key.get("x")))
+            .setCurveName(KeyCurveName.fromString((String) key.get("crv")))
+            .setKeyOps(getKeyOperations((List<String>) key.get("key_ops")))
+            .setT(decode((String) key.get("key_hsm")))
+            .setK(decode((String) key.get("k")))
+            .setQ(decode((String) key.get("q")))
+            .setP(decode((String) key.get("p")))
+            .setQi(decode((String) key.get("qi")))
+            .setDq(decode((String) key.get("dq")))
+            .setDp(decode((String) key.get("dp")))
+            .setD(decode((String) key.get("d")))
+            .setE(decode((String) key.get("e")))
+            .setN(decode((String) key.get("n")))
+            .setKeyType(KeyType.fromString((String) key.get("kty")))
+            .setId((String) key.get("kid"));
         unpackId((String) key.get("kid"));
+
         return outputKey;
     }
 
@@ -390,6 +352,7 @@ public class KeyProperties {
         if (in != null) {
             return Base64.getUrlDecoder().decode(in);
         }
+
         return null;
     }
 }

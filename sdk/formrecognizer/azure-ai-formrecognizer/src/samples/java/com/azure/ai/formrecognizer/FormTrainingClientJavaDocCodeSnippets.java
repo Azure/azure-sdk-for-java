@@ -320,9 +320,9 @@ public class FormTrainingClientJavaDocCodeSnippets {
         final CustomFormModel customFormModel =
             formTrainingClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
                 new CreateComposedModelOptions()
-                    .setModelName("my composed model name")
-                    .setPollInterval(Duration.ofSeconds(5)),
+                    .setModelName("my composed model name"),
                 Context.NONE)
+                .setPollInterval(Duration.ofSeconds(5))
                 .getFinalResult();
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());

@@ -232,6 +232,11 @@ public final class Utility {
      * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length
      * and the input length.
      *
+     * Using markAndReset=true to force a seekable stream implies a buffering strategy is not being used, in which case
+     * length is still needed for whatever underlying REST call is being streamed to. If markAndReset=false and data is
+     * being buffered, consider using {@link com.azure.core.util.FluxUtil#toFluxByteBuffer(InputStream, int)} which
+     * does not require a data length.
+     *
      * @param data The input data which needs to convert to ByteBuffer.
      * @param length The expected input data length.
      * @param blockSize The size of each ByteBuffer.
@@ -246,6 +251,18 @@ public final class Utility {
                                                              boolean markAndReset) {
         if (markAndReset) {
             data.mark(Integer.MAX_VALUE);
+        }
+        if (length == 0) {
+            try {
+                if (data.read() != -1) {
+                    long totalLength = 1 + data.available();
+                    throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                            totalLength, length), totalLength, length));
+                }
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
+            }
         }
         return Flux.defer(() -> {
             /*
@@ -271,9 +288,9 @@ public final class Utility {
                     int len = (int) count;
                     while (numOfBytes != -1 && offset < count) {
                         numOfBytes = data.read(cache, offset, len);
-                        offset += numOfBytes;
-                        len -= numOfBytes;
                         if (numOfBytes != -1) {
+                            offset += numOfBytes;
+                            len -= numOfBytes;
                             currentTotalLength[0] += numOfBytes;
                         }
                     }
@@ -282,25 +299,27 @@ public final class Utility {
                             String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                                 currentTotalLength[0], length), currentTotalLength[0], length));
                     }
-                    return ByteBuffer.wrap(cache);
-                }))
-                .doOnComplete(() -> {
-                    try {
-                        if (data.read() != -1) {
-                            long totalLength = currentTotalLength[0] + data.available();
-                            throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                                String.format("Request body emitted %d bytes, more than the expected %d bytes.",
-                                    totalLength, length), totalLength, length));
-                        } else if (currentTotalLength[0] > length) {
-                            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                                String.format("Read more data than was requested. Size of data read: %d. Size of data"
-                                    + " requested: %d", currentTotalLength[0], length)));
+
+                    // Validate that stream isn't longer.
+                    if (currentTotalLength[0] >= length) {
+                        try {
+                            if (data.read() != -1) {
+                                long totalLength = 1 + currentTotalLength[0] + data.available();
+                                throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                                    String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                                        totalLength, length), totalLength, length));
+                            } else if (currentTotalLength[0] > length) {
+                                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                                    String.format("Read more data than was requested. Size of data read: %d. Size of data"
+                                        + " requested: %d", currentTotalLength[0], length)));
+                            }
+                        } catch (IOException e) {
+                            throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
                         }
-                    } catch (IOException e) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
-                            + e.getMessage()));
                     }
-                });
+
+                    return ByteBuffer.wrap(cache, 0, offset);
+                }));
         });
     }
 

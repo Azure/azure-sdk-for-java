@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
@@ -21,32 +20,33 @@ public final class OrganizationsImpl implements Organizations {
 
     private final OrganizationsClient innerClient;
 
-    private final ConfluentManager serviceManager;
+    private final com.azure.resourcemanager.confluent.ConfluentManager serviceManager;
 
-    public OrganizationsImpl(OrganizationsClient innerClient, ConfluentManager serviceManager) {
+    public OrganizationsImpl(
+        OrganizationsClient innerClient, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<OrganizationResource> list() {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrganizationResource> list(Context context) {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<OrganizationResourceInner> inner =
             this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     public OrganizationResource getByResourceGroup(String resourceGroupName, String organizationName) {
@@ -161,7 +161,7 @@ public final class OrganizationsImpl implements Organizations {
         return this.innerClient;
     }
 
-    private ConfluentManager manager() {
+    private com.azure.resourcemanager.confluent.ConfluentManager manager() {
         return this.serviceManager;
     }
 

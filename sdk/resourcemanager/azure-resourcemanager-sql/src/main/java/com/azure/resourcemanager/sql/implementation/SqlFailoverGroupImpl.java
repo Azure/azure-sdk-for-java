@@ -365,7 +365,7 @@ public class SqlFailoverGroupImpl
     @Override
     public SqlFailoverGroupImpl withoutDatabaseId(String id) {
         if (this.innerModel().databases() != null) {
-            this.innerModel().databases().remove(key);
+            this.innerModel().databases().remove(id);
         }
         return this;
     }

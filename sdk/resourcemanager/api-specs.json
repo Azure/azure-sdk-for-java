@@ -21,7 +21,8 @@
     "dir": "azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider"
+    "args": "--payload-flattening-threshold=1 --tag=package-2020-12 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
+    "note": "Add status code '200' to 'syncFunctionTriggers'"
   },
   "authorization": {
     "dir": "azure-resourcemanager-authorization",
@@ -76,8 +77,7 @@
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-03-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities",
-    "note": "Add '@JsonInclude(content = JsonInclude.Include.ALWAYS)' to 'userAssignedIdentities' property of class 'VirtualMachineIdentity', 'VirtualMachineScaleSetIdentity'"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-04-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
   },
   "consumption": {
     "dir": "azure-resourcemanager-consumption",
@@ -89,7 +89,7 @@
     "dir": "azure-resourcemanager-containerinstance",
     "source": "specification/containerinstance/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerinstance",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-12 --remove-inner=Operation,CachedImages,Capabilities"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-03 --remove-inner=Container,Operation,CachedImages,Capabilities"
   },
   "containerregistry": {
     "dir": "azure-resourcemanager-containerregistry",
@@ -101,13 +101,13 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2020-11 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --remove-model=BaseManagedCluster,ManagedClusterPropertiesIdentityProfile,ManagedClusterPropertiesIdentityProfileValue --rename-model=ManagedClusterIdentityUserAssignedIdentitiesValue:ManagedClusterIdentityUserAssignedIdentities"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-07 --preserve-model=ContainerServiceVMSizeTypes"
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--payload-flattening-threshold=0 --tag=package-2021-03"
+    "args": "--payload-flattening-threshold=0 --tag=package-2021-06"
   },
   "customerinsights": {
     "dir": "azure-resourcemanager-customerinsights",
@@ -165,10 +165,10 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-features-2015-12"
+    "args": "--tag=package-features-2021-07"
   },
   "graphrbac": {
-    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager",
+    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager",
     "dir": "azure-resourcemanager-authorization",
     "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",
@@ -184,7 +184,7 @@
     "dir": "azure-resourcemanager-keyvault",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-02"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-09"
   },
   "locks": {
     "dir": "azure-resourcemanager-resources",
@@ -208,13 +208,13 @@
     "dir": "azure-resourcemanager-monitor",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-06 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit"
   },
   "network": {
     "dir": "azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--payload-flattening-threshold=1 --tag=package-2020-08 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-02 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
   },
   "notificationhubs": {
     "dir": "azure-resourcemanager-notificationhubs",
@@ -226,7 +226,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--payload-flattening-threshold=1 --tag=package-policy-2019-09"
+    "args": "--payload-flattening-threshold=1 --tag=package-policy-2020-09"
   },
   "powerbi": {
     "dir": "azure-resourcemanager-powerbi",
@@ -274,7 +274,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2020-06 --payload-flattening-threshold=1 --add-inner=Deployment"
+    "args": "--tag=package-resources-2021-01 --payload-flattening-threshold=1 --add-inner=Deployment"
   },
   "scheduler": {
     "dir": "azure-resourcemanager-scheduler",
@@ -335,7 +335,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2020-01 --name-for-ungrouped-operations=ResourceName"
+    "args": "--tag=package-subscriptions-2021-01 --name-for-ungrouped-operations=ResourceName"
   },
   "trafficmanager": {
     "dir": "azure-resourcemanager-trafficmanager",
