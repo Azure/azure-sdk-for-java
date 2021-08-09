@@ -9,11 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterIdentityUserAssignedIdentities model. */
+/** The ManagedServiceIdentityUserAssignedIdentitiesValue model. */
 @Immutable
-public final class ManagedClusterIdentityUserAssignedIdentities {
+public final class ManagedServiceIdentityUserAssignedIdentitiesValue {
     @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterIdentityUserAssignedIdentities.class);
+    private final ClientLogger logger = new ClientLogger(ManagedServiceIdentityUserAssignedIdentitiesValue.class);
 
     /*
      * The principal id of user assigned identity.
