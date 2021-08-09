@@ -15,19 +15,19 @@ public final class OSOptionProperty {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OSOptionProperty.class);
 
     /*
-     * OS type.
+     * The OS type.
      */
     @JsonProperty(value = "os-type", required = true)
     private String osType;
 
     /*
-     * Whether FIPS image is enabled.
+     * Whether the image is FIPS-enabled.
      */
     @JsonProperty(value = "enable-fips-image", required = true)
     private boolean enableFipsImage;
 
     /**
-     * Get the osType property: OS type.
+     * Get the osType property: The OS type.
      *
      * @return the osType value.
      */
@@ -36,7 +36,7 @@ public final class OSOptionProperty {
     }
 
     /**
-     * Set the osType property: OS type.
+     * Set the osType property: The OS type.
      *
      * @param osType the osType value to set.
      * @return the OSOptionProperty object itself.
@@ -47,7 +47,7 @@ public final class OSOptionProperty {
     }
 
     /**
-     * Get the enableFipsImage property: Whether FIPS image is enabled.
+     * Get the enableFipsImage property: Whether the image is FIPS-enabled.
      *
      * @return the enableFipsImage value.
      */
@@ -56,7 +56,7 @@ public final class OSOptionProperty {
     }
 
     /**
-     * Set the enableFipsImage property: Whether FIPS image is enabled.
+     * Set the enableFipsImage property: Whether the image is FIPS-enabled.
      *
      * @param enableFipsImage the enableFipsImage value to set.
      * @return the OSOptionProperty object itself.

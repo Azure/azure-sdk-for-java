@@ -8,24 +8,24 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BomDependencyErrorInfo {
-    private BomDependency expectedDependency;
+    private BomDependency dependencyWithConflict;
     private Set<ConflictingDependency> conflictingDependencies;
 
-    public BomDependencyErrorInfo(BomDependency expectedDependency) {
-        this.expectedDependency = expectedDependency;
+    public BomDependencyErrorInfo(BomDependency dependencyWithConflict) {
+        this.dependencyWithConflict = dependencyWithConflict;
         conflictingDependencies = new HashSet<>();
     }
 
-    public void addConflictingDependency(BomDependency actualDependency, BomDependency expectedDependency) {
-        conflictingDependencies.add(new ConflictingDependency(actualDependency, expectedDependency));
+    public void addConflictingDependency(BomDependency actualDependency, BomDependency dependencyWithConflict) {
+        conflictingDependencies.add(new ConflictingDependency(actualDependency, dependencyWithConflict));
     }
 
     public Set<ConflictingDependency> getConflictingDependencies() {
         return Collections.unmodifiableSet(this.conflictingDependencies);
     }
 
-    public BomDependency getExpectedDependency() {
-        return this.expectedDependency;
+    public BomDependency getDependencyWithConflict() {
+        return this.dependencyWithConflict;
     }
 }
 

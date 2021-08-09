@@ -53,27 +53,27 @@ com.azure:azure-analytics-synapse-spark;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-chat;1.0.0;1.1.0-beta.1
-com.azure:azure-communication-callingserver;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-communication-callingserver;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-common;1.0.3;1.1.0-beta.1
 com.azure:azure-communication-sms;1.0.3;1.1.0-beta.1
 com.azure:azure-communication-identity;1.1.1;1.2.0-beta.1
 com.azure:azure-communication-phonenumbers;1.0.3;1.1.0-beta.1
 com.azure:azure-containers-containerregistry;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core;1.18.0;1.19.0-beta.2
+com.azure:azure-core;1.19.0;1.20.0-beta.1
 com.azure:azure-core-amqp;2.3.0;2.4.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-experimental;1.0.0-beta.15;1.0.0-beta.16
+com.azure:azure-core-experimental;1.0.0-beta.16;1.0.0-beta.17
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-http-netty;1.10.1;1.11.0-beta.1
-com.azure:azure-core-http-okhttp;1.7.1;1.8.0-beta.1
-com.azure:azure-core-management;1.3.1;1.4.0-beta.1
-com.azure:azure-core-serializer-avro-apache;1.0.0-beta.12;1.0.0-beta.13
+com.azure:azure-core-http-netty;1.10.2;1.11.0-beta.1
+com.azure:azure-core-http-okhttp;1.7.2;1.8.0-beta.1
+com.azure:azure-core-management;1.4.0;1.5.0-beta.1
+com.azure:azure-core-serializer-avro-apache;1.0.0-beta.13;1.0.0-beta.14
 com.azure:azure-core-serializer-avro-jackson;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-core-serializer-json-gson;1.1.4;1.2.0-beta.1
-com.azure:azure-core-serializer-json-jackson;1.2.5;1.3.0-beta.1
-com.azure:azure-core-test;1.6.4;1.7.0-beta.1
-com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.12;1.0.0-beta.13
+com.azure:azure-core-serializer-json-gson;1.1.5;1.2.0-beta.1
+com.azure:azure-core-serializer-json-jackson;1.2.6;1.3.0-beta.1
+com.azure:azure-core-test;1.7.0;1.8.0-beta.1
+com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.13;1.0.0-beta.14
 com.azure:azure-cosmos;4.17.0;4.18.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
@@ -104,8 +104,9 @@ com.azure:azure-mixedreality-authentication;1.0.0;1.1.0
 com.azure:azure-mixedreality-remoterendering;1.0.0;1.1.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-monitor-query;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;11.4.0;11.5.0-beta.2
+com.azure:azure-search-documents;11.4.1;11.5.0-beta.2
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-security-confidentialledger;1.0.0-beta.2;1.0.0-beta.3
@@ -189,6 +190,7 @@ com.azure.spring:azure-spring-boot-test-parent;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-servicebus-jms;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-servicebus-binder;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-eventhubs;1.0.0;1.0.0
+com.azure.spring:azure-spring-cloud-test-eventhubs-kafka;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-storage;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-appconfiguration-config;1.0.0;1.0.0
 com.azure.resourcemanager:azure-resourcemanager;2.6.0;2.7.0-beta.1
@@ -233,7 +235,7 @@ com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-digitaltwins;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-netapp;1.0.0-beta.4;1.0.0-beta.5
-com.azure.resourcemanager:azure-resourcemanager-storagecache;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-storagecache;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-redisenterprise;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hybridkubernetes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-iothub;1.0.0;1.1.0-beta.1
@@ -317,8 +319,8 @@ com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.1;1.0.0-
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-core;1.19.0-beta.2
-unreleased_com.azure:azure-core-test;1.7.0-beta.1
+unreleased_com.azure:azure-core-amqp;2.4.0-beta.1
+
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
 # for dependency versions. These entries are specifically for when we've released a beta for

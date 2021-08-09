@@ -74,7 +74,7 @@ public class SearchIndexerAsyncClient {
 
         this.restClient = new SearchServiceClientImplBuilder()
             .endpoint(endpoint)
-            //  .apiVersion(serviceVersion.getVersion())
+            .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .buildClient();
     }
@@ -144,10 +144,9 @@ public class SearchIndexerAsyncClient {
             dataSource.setConnectionString("<unchanged>");
         }
         try {
-            return restClient
-                .getDataSources()
+            return restClient.getDataSources()
                 .createOrUpdateWithResponseAsync(dataSource.getName(), SearchIndexerDataSourceConverter.map(dataSource),
-                    ifMatch, null, null, context)
+                    ifMatch, null, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
@@ -459,7 +458,7 @@ public class SearchIndexerAsyncClient {
         try {
             return restClient.getIndexers()
                 .createOrUpdateWithResponseAsync(indexer.getName(), SearchIndexerConverter.map(indexer), ifMatch, null,
-                    null, context)
+                    null, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
@@ -971,7 +970,7 @@ public class SearchIndexerAsyncClient {
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
             return restClient.getSkillsets()
-                .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null, null, context)
+                .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null, null, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
