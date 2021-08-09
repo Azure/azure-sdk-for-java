@@ -11,8 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on pod
- * identity integration.
+ * The pod identity profile of the Managed Cluster. See [use AAD pod
+ * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on pod identity
+ * integration.
  */
 @Fluent
 public final class ManagedClusterPodIdentityProfile {

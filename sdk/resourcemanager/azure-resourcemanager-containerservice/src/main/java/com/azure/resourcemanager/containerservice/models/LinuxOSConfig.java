@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * See [AKS custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more details.
+ * OS configurations of Linux agent nodes. See [AKS custom node
+ * configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more details.
  */
 @Fluent
 public final class LinuxOSConfig {

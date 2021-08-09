@@ -15,8 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about
- * planned maintenance.
+ * Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster. See [planned
+ * maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about planned
+ * maintenance.
  */
 @Fluent
 public final class MaintenanceConfigurationInner extends SubResource {

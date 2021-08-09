@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** For more details see [managed AAD on AKS](https://docs.microsoft.com/azure/aks/managed-aad). */
+/**
+ * AADProfile specifies attributes for Azure Active Directory integration. For more details see [managed AAD on
+ * AKS](https://docs.microsoft.com/azure/aks/managed-aad).
+ */
 @Fluent
 public final class ManagedClusterAadProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAadProfile.class);
