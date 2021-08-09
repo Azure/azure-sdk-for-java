@@ -498,7 +498,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return see [planned maintenance](https://docs.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -560,7 +560,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return see [planned maintenance](https://docs.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -622,7 +622,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return see [planned maintenance](https://docs.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceConfigurationInner> createOrUpdateAsync(
@@ -648,7 +648,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return see [planned maintenance](https://docs.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner createOrUpdate(
@@ -667,7 +667,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return see [planned maintenance](https://docs.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(

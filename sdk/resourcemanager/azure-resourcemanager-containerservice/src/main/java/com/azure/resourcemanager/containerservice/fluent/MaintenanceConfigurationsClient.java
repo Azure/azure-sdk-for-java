@@ -125,7 +125,7 @@ public interface MaintenanceConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return see [planned maintenance](https://docs.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -141,7 +141,7 @@ public interface MaintenanceConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return see [planned maintenance](https://docs.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MaintenanceConfigurationInner> createOrUpdateAsync(
@@ -157,7 +157,7 @@ public interface MaintenanceConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return see [planned maintenance](https://docs.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MaintenanceConfigurationInner createOrUpdate(
@@ -174,7 +174,7 @@ public interface MaintenanceConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return see [planned maintenance](https://docs.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
