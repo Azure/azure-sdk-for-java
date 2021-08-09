@@ -4,12 +4,11 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
-import com.azure.containers.containerregistry.models.RepositoryProperties;
+import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -36,7 +35,7 @@ import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.getCredential;
+import static com.azure.containers.containerregistry.TestUtils.getCredentialsByEndpoint;
 import static com.azure.containers.containerregistry.TestUtils.isSorted;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,20 +46,47 @@ public class ContainerRegistryClientsTestBase extends TestBase {
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile("(\".*_token\":\"(.*)\".*)");
 
-    protected static ContentProperties writeableProperties = new ContentProperties()
-        .setCanDelete(false)
-        .setCanList(true)
-        .setCanRead(true)
-        .setCanWrite(true);
+    protected static ArtifactTagProperties tagWriteableProperties = new ArtifactTagProperties()
+        .setDeleteEnabled(false)
+        .setListEnabled(true)
+        .setReadEnabled(true)
+        .setWriteEnabled(true);
 
-    protected static ContentProperties defaultProperties = new ContentProperties()
-        .setCanDelete(true)
-        .setCanList(true)
-        .setCanRead(true)
-        .setCanWrite(true);
+    protected static ArtifactTagProperties defaultTagProperties = new ArtifactTagProperties()
+        .setDeleteEnabled(true)
+        .setListEnabled(true)
+        .setReadEnabled(true)
+        .setWriteEnabled(true);
+
+    protected static ArtifactManifestProperties manifestWriteableProperties = new ArtifactManifestProperties()
+        .setDeleteEnabled(false)
+        .setListEnabled(true)
+        .setReadEnabled(true)
+        .setWriteEnabled(true);
+
+    protected static ArtifactManifestProperties defaultManifestProperties = new ArtifactManifestProperties()
+        .setDeleteEnabled(true)
+        .setListEnabled(true)
+        .setReadEnabled(true)
+        .setWriteEnabled(true);
+
+
+    protected static ContainerRepositoryProperties repoWriteableProperties = new ContainerRepositoryProperties()
+        .setDeleteEnabled(false)
+        .setListEnabled(true)
+        .setReadEnabled(true)
+        .setWriteEnabled(true)
+        .setTeleportEnabled(false);
+
+    protected static ContainerRepositoryProperties defaultRepoWriteableProperties = new ContainerRepositoryProperties()
+        .setDeleteEnabled(true)
+        .setListEnabled(true)
+        .setReadEnabled(true)
+        .setWriteEnabled(true)
+        .setTeleportEnabled(false);
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
-        TokenCredential credential = getCredential(getTestMode());
+        TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
         return getContainerRegistryBuilder(httpClient, credential);
     }
 
@@ -68,14 +94,17 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
+        String authenticationScope = TestUtils.getAuthenticationScope(endpoint);
+
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
-            .credential(credential);
+            .credential(credential)
+            .authenticationScope(authenticationScope);
 
-        // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+           // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         return builder;
     }
 
@@ -83,42 +112,32 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         return getContainerRegistryBuilder(httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    List<String> getChildArtifacts(Collection<ArtifactManifestProperties> artifacts) {
+    List<String> getChildArtifacts(Collection<ArtifactManifestPlatform> artifacts) {
         return artifacts.stream()
             .filter(artifact -> artifact.getArchitecture() != null)
             .map(s -> s.getDigest()).collect(Collectors.toList());
     }
 
-    String getChildArtifactDigest(Collection<ArtifactManifestProperties> artifacts) {
+    String getChildArtifactDigest(Collection<ArtifactManifestPlatform> artifacts) {
         return getChildArtifacts(artifacts).get(0);
     }
 
-    void validateDeletedRepositoryResponse(DeleteRepositoryResult response) {
-        assertNotNull(response);
-        assertNotNull(response.getDeletedTags());
-        assertNotNull(response.getDeletedManifests());
-    }
-
-    void validateDeletedRepositoryResponse(Response<DeleteRepositoryResult> response) {
-        validateResponse(response);
-
-        DeleteRepositoryResult result = response.getValue();
-        assertNotNull(result);
-        assertNotNull(result.getDeletedTags());
-        assertNotNull(result.getDeletedManifests());
-    }
-
-    void validateProperties(RepositoryProperties properties) {
+    void validateProperties(ContainerRepositoryProperties properties) {
         assertNotNull(properties);
         assertEquals(HELLO_WORLD_REPOSITORY_NAME, properties.getName());
         assertNotNull(properties.getCreatedOn());
         assertNotNull(properties.getLastUpdatedOn());
         assertNotNull(properties.getTagCount());
         assertNotNull(properties.getManifestCount());
-        assertNotNull(properties.getWriteableProperties());
+        assertNotNull(properties.isDeleteEnabled());
+        assertNotNull(properties.isListEnabled());
+        assertNotNull(properties.isReadEnabled());
+        assertNotNull(properties.isWriteEnabled());
+        assertNotNull(properties.isTeleportEnabled());
+        assertNotNull(properties.getRegistryLoginServer());
     }
 
-    void validateProperties(Response<RepositoryProperties> response) {
+    void validateProperties(Response<ContainerRepositoryProperties> response) {
         validateResponse(response);
         validateProperties(response.getValue());
     }
@@ -129,7 +148,10 @@ public class ContainerRegistryClientsTestBase extends TestBase {
             assertNotNull(props.getDigest());
             assertNotNull(props.getCreatedOn());
             assertNotNull(props.getLastUpdatedOn());
-            assertNotNull(props.getWriteableProperties());
+            assertNotNull(props.isDeleteEnabled());
+            assertNotNull(props.isListEnabled());
+            assertNotNull(props.isReadEnabled());
+            assertNotNull(props.isWriteEnabled());
         });
 
         assertTrue(artifacts.stream().anyMatch(prop -> prop.getTags() != null));
@@ -183,19 +205,24 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
     void validateManifestProperties(ArtifactManifestProperties props, boolean hasTag, boolean isChild) {
         assertNotNull(props);
-        assertNotNull(props.getWriteableProperties());
+        assertNotNull(props.getRepositoryName());
+        assertNotNull(props.getRegistryLoginServer());
         assertNotNull(props.getDigest());
         assertNotNull(props.getLastUpdatedOn());
         assertNotNull(props.getCreatedOn());
-        assertNotNull(props.getSize());
+        assertNotNull(props.getSizeInBytes());
+        assertNotNull(props.isDeleteEnabled());
+        assertNotNull(props.isListEnabled());
+        assertNotNull(props.isReadEnabled());
+        assertNotNull(props.isWriteEnabled());
 
         if (isChild) {
             assertNotNull(props.getArchitecture());
             assertNotNull(props.getOperatingSystem());
         } else {
             assertNotNull(props.getTags());
-            assertNotNull(props.getManifests());
-            props.getManifests().stream().forEach(prop -> {
+            assertNotNull(props.getRelatedArtifacts());
+            props.getRelatedArtifacts().stream().forEach(prop -> {
                 assertNotNull(prop.getDigest());
                 assertNotNull(prop.getArchitecture());
                 assertNotNull(prop.getOperatingSystem());
@@ -206,11 +233,14 @@ public class ContainerRegistryClientsTestBase extends TestBase {
     boolean validateListTags(Collection<ArtifactTagProperties> tags) {
         assertTrue(tags.size() > 0);
         tags.forEach(props -> {
-            assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepository());
+            assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepositoryName());
             assertNotNull(props.getName());
             assertNotNull(props.getDigest());
             assertNotNull(props.getCreatedOn());
-            assertNotNull(props.getWriteableProperties());
+            assertNotNull(props.isDeleteEnabled());
+            assertNotNull(props.isListEnabled());
+            assertNotNull(props.isReadEnabled());
+            assertNotNull(props.isWriteEnabled());
             assertNotNull(props.getLastUpdatedOn());
         });
 
@@ -221,10 +251,14 @@ public class ContainerRegistryClientsTestBase extends TestBase {
     void validateTagProperties(ArtifactTagProperties props, String tagName) {
         assertNotNull(props);
         assertNotNull(props.getLastUpdatedOn());
-        assertNotNull(props.getWriteableProperties());
+        assertNotNull(props.isDeleteEnabled());
+        assertNotNull(props.isListEnabled());
+        assertNotNull(props.isReadEnabled());
+        assertNotNull(props.isWriteEnabled());
         assertNotNull(props.getDigest());
+        assertNotNull(props.getRegistryLoginServer());
         assertEquals(tagName, props.getName());
-        assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepository());
+        assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepositoryName());
         assertNotNull(props.getCreatedOn());
     }
 
@@ -241,12 +275,29 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         validateTagProperties(response.getValue(), tagName);
     }
 
-    void validateContentProperties(ContentProperties properties) {
+    void validateRepoContentProperties(ContainerRepositoryProperties properties) {
         assertNotNull(properties);
-        assertEquals(false, properties.isCanDelete(), "canDelete incorrect");
-        assertEquals(true, properties.isCanList(), "canList incorrect");
-        assertEquals(true, properties.isCanRead(), "canRead incorrect");
-        assertEquals(true, properties.isCanWrite(), "canWrite incorrect");
+        assertEquals(false, properties.isDeleteEnabled(), "isDelete incorrect");
+        assertEquals(true, properties.isListEnabled(), "isList incorrect");
+        assertEquals(true, properties.isReadEnabled(), "isRead incorrect");
+        assertEquals(true, properties.isWriteEnabled(), "isWrite incorrect");
+        assertEquals(false, properties.isTeleportEnabled(), "isTeleport incorrect");
+    }
+
+    void validateTagContentProperties(ArtifactTagProperties properties) {
+        assertNotNull(properties);
+        assertEquals(false, properties.isDeleteEnabled(), "isDelete incorrect");
+        assertEquals(true, properties.isListEnabled(), "isList incorrect");
+        assertEquals(true, properties.isReadEnabled(), "isRead incorrect");
+        assertEquals(true, properties.isWriteEnabled(), "isWrite incorrect");
+    }
+
+    void validateManifestContentProperties(ArtifactManifestProperties properties) {
+        assertNotNull(properties);
+        assertEquals(false, properties.isDeleteEnabled(), "isDelete incorrect");
+        assertEquals(true, properties.isListEnabled(), "isList incorrect");
+        assertEquals(true, properties.isReadEnabled(), "isRead incorrect");
+        assertEquals(true, properties.isWriteEnabled(), "isWrite incorrect");
     }
 
     protected String getEndpoint(String endpoint) {

@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
   <name>Encryption Plugin for Azure Cosmos DB SDK</name>
   <description>This Package contains Encryption Plugin for Microsoft Azure Cosmos SDK</description>
   <packaging>jar</packaging>
@@ -32,13 +32,6 @@ Licensed under the MIT License.
     <tag>HEAD</tag>
   </scm>
 
-  <repositories>
-    <repository>
-      <id>azuresdkmaven</id>
-      <url>https://azsdkartifacts.blob.core.windows.net/maven</url>
-    </repository>
-  </repositories>
-
   <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,13 +44,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.2.8</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.3.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -74,7 +67,7 @@ Licensed under the MIT License.
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <scope>test</scope>
-      <version>1.3.0</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.4</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -117,35 +110,35 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.14.3</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <version>7.3.0</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.18.1</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.19.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.13.3</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <version>2.14.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.13.3</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <version>2.14.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.13.3</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <version>2.14.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -159,7 +152,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.5</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -173,7 +166,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -185,12 +178,12 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.microsoft.data.encryption</groupId>
       <artifactId>cryptography</artifactId>
-      <version>0.2.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
+      <version>0.2.2.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.data.encryption</groupId>
       <artifactId>azure-key-vault-keystoreprovider</artifactId>
-      <version>0.2.0.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
+      <version>0.2.2.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.microsoft.data.encryption</groupId>
@@ -252,8 +245,8 @@ Licensed under the MIT License.
               <includes>
                 <include>com.azure:*</include>
                 <include>org.bouncycastle:bcprov-jdk15on:[1.68]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
-                <include>com.microsoft.data.encryption:cryptography:[0.2.0.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
-                <include>com.microsoft.data.encryption:azure-key-vault-keystoreprovider:[0.2.0.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
+                <include>com.microsoft.data.encryption:cryptography:[0.2.2.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
+                <include>com.microsoft.data.encryption:azure-key-vault-keystoreprovider:[0.2.2.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

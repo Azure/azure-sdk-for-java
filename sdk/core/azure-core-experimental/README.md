@@ -17,7 +17,7 @@ Azure Core Experimental contains types that are being evaluated and might eventu
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-experimental</artifactId>
-    <version>1.0.0-beta.13</version>
+    <version>1.0.0-beta.16</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)

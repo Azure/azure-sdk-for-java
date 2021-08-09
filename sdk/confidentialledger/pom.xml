@@ -12,14 +12,14 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-data-confidentialledger</module>
+        <module>azure-security-confidentialledger</module>
       </modules>
 
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-data-confidentialledger</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-confidentialledger;current} -->
+          <artifactId>azure-security-confidentialledger</artifactId>
+          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-security-confidentialledger;current} -->
         </dependency>
       </dependencies>
 
@@ -51,7 +51,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-data-confidentialledger</module>
+        <module>azure-security-confidentialledger</module>
       </modules>
     </profile>
   </profiles>

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupI
 import com.azure.resourcemanager.containerinstance.fluent.models.LogsInner;
 import com.azure.resourcemanager.containerinstance.models.CachedImages;
 import com.azure.resourcemanager.containerinstance.models.Capabilities;
+import com.azure.resourcemanager.containerinstance.models.ContainerAttachResult;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.containerinstance.models.Operation;
@@ -134,6 +135,18 @@ public class ContainerGroupsImpl
     @Override
     public Mono<Void> startAsync(String resourceGroupName, String containerGroupName) {
         return this.manager().serviceClient().getContainerGroups().startAsync(resourceGroupName, containerGroupName);
+    }
+
+    @Override
+    public ContainerAttachResult attachOutputStream(String resourceGroupName, String containerGroupName, String containerName) {
+        return this.attachOutputStreamAsync(resourceGroupName, containerGroupName, containerName).block();
+    }
+
+    @Override
+    public Mono<ContainerAttachResult> attachOutputStreamAsync(String resourceGroupName, String containerGroupName, String containerName) {
+        return this.manager().serviceClient().getContainers()
+            .attachAsync(resourceGroupName, containerGroupName, containerName)
+            .map(ContainerAttachResultImpl::new);
     }
 
     @Override

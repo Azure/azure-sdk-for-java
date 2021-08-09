@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorContext;
@@ -163,7 +164,7 @@ class RequestResponseChannelTest {
             receiverSettleMode);
         final AmqpErrorContext errorContext = channel.getErrorContext();
 
-        StepVerifier.create(channel.disposeAsync("Test-method"))
+        StepVerifier.create(channel.closeAsync())
             .then(() -> {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();
@@ -192,7 +193,7 @@ class RequestResponseChannelTest {
         sendEndpoints.next(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.create(channel.disposeAsync("Test"))
+        StepVerifier.create(channel.closeAsync())
             .then(() -> {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();
@@ -233,7 +234,7 @@ class RequestResponseChannelTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        channel.dispose();
+        channel.closeAsync().block();
 
         // Assert
         verify(sender).close();
@@ -241,7 +242,6 @@ class RequestResponseChannelTest {
 
         assertTrue(channel.isDisposed());
     }
-
 
     /**
      * Verifies error when sending with null
@@ -465,7 +465,7 @@ class RequestResponseChannelTest {
         assertTrue(channel.isDisposed());
 
         // This turns it into a synchronous operation so we know that it is disposed completely.
-        channel.dispose();
+        channel.closeAsync().block();
 
         // Assert
         verify(receiver).close();
@@ -474,5 +474,73 @@ class RequestResponseChannelTest {
         receiveEndpoints.assertNoSubscribers();
         sendEndpoints.assertNoSubscribers();
         shutdownSignals.assertNoSubscribers();
+    }
+
+    /**
+     * Verifies that closing times out and does not wait indefinitely.
+     */
+    @Test
+    public void closeAsyncTimeout() {
+        // Arrange
+        final AmqpRetryOptions retry = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(1)).setMaxRetries(0);
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE,
+            LINK_NAME, ENTITY_PATH, session, retry, handlerProvider, reactorProvider, serializer,
+            SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
+
+        // Act & Assert
+        StepVerifier.create(channel.closeAsync())
+            .thenAwait(retry.getTryTimeout())
+            .expectComplete()
+            .verify(Duration.ofSeconds(30));
+
+        // Calling closeAsync() returns the same completed status.
+        StepVerifier.create(channel.closeAsync())
+            .verifyComplete();
+
+        // The last state would be uninitialised because we did not emit any state.
+        StepVerifier.create(channel.getEndpointStates())
+            .verifyComplete();
+
+        assertTrue(channel.isDisposed());
+    }
+
+    /**
+     * Verifies that closing does not wait indefinitely.
+     */
+    @Test
+    public void closeAsync() {
+        // Arrange
+        final AmqpRetryOptions retry = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(1)).setMaxRetries(0);
+        final RequestResponseChannel channel = new RequestResponseChannel(amqpConnection, CONNECTION_ID, NAMESPACE,
+            LINK_NAME, ENTITY_PATH, session, retry, handlerProvider, reactorProvider, serializer,
+            SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
+
+        sendEndpoints.next(EndpointState.ACTIVE);
+        receiveEndpoints.next(EndpointState.ACTIVE);
+
+        doAnswer(invocationOnMock -> {
+            sendEndpoints.complete();
+            return null;
+        }).when(sender).close();
+
+        doAnswer(invocationOnMock -> {
+            receiveEndpoints.complete();
+            return null;
+        }).when(receiver).close();
+
+        // Act & Assert
+        StepVerifier.create(channel.closeAsync())
+            .verifyComplete();
+
+        // Calling closeAsync() returns the same completed status.
+        StepVerifier.create(channel.closeAsync())
+            .verifyComplete();
+
+        // The last endpoint we saw was active.
+        StepVerifier.create(channel.getEndpointStates())
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .verifyComplete();
+
+        assertTrue(channel.isDisposed());
     }
 }

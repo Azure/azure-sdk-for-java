@@ -14,9 +14,9 @@ public interface Operations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response.
+     * @return a list of REST API operations supported by an Azure Resource Provider.
      */
-    PagedIterable<OperationEntity> list();
+    PagedIterable<Operation> list();
 
     /**
      * Lists all the available Cognitive Services account operations.
@@ -25,7 +25,7 @@ public interface Operations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response.
+     * @return a list of REST API operations supported by an Azure Resource Provider.
      */
-    PagedIterable<OperationEntity> list(Context context);
+    PagedIterable<Operation> list(Context context);
 }

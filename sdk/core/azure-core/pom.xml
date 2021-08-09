@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -47,6 +47,7 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <boring-ssl-classifier></boring-ssl-classifier>
   </properties>
 
   <developers>
@@ -60,32 +61,32 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -101,35 +102,36 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.4.5</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-test</artifactId>
-      <version>3.4.5</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
-      <scope>test</scope>
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-tcnative-boringssl-static</artifactId>
-      <version>2.0.38.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+      <version>2.0.40.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+      <classifier>${boring-ssl-classifier}</classifier>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -141,7 +143,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -160,6 +162,12 @@
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-generator-annprocess</artifactId>
       <version>1.22</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.json</groupId>
+      <artifactId>javax.json-api</artifactId>
+      <version>1.1.4</version>  <!-- {x-version-update;javax.json:javax.json-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -190,14 +198,14 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-tcnative-boringssl-static:[2.0.38.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
-                <include>io.projectreactor:reactor-core:[3.4.5]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-core:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>io.netty:netty-tcnative-boringssl-static:[2.0.40.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.4.8]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -250,8 +258,6 @@
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.credential=ALL-UNNAMED
@@ -259,13 +265,12 @@
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
-                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
+                --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.jsonpatch=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
@@ -276,6 +281,45 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>native-linux</id>
+      <activation>
+        <property>
+          <name>native-linux</name>
+        </property>
+      </activation>
+
+      <properties>
+        <boring-ssl-classifier>linux-x86_64</boring-ssl-classifier>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>native-macos</id>
+      <activation>
+        <property>
+          <name>native-macos</name>
+        </property>
+      </activation>
+
+      <properties>
+        <boring-ssl-classifier>osx-x86_64</boring-ssl-classifier>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>native-windows</id>
+      <activation>
+        <property>
+          <name>native-windows</name>
+        </property>
+      </activation>
+
+      <properties>
+        <boring-ssl-classifier>windows-x86_64</boring-ssl-classifier>
+      </properties>
     </profile>
   </profiles>
 </project>

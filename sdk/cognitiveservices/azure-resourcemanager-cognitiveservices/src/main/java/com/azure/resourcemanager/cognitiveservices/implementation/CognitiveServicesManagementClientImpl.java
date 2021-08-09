@@ -23,6 +23,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.OperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesClient;
@@ -127,6 +128,18 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         return this.accounts;
     }
 
+    /** The DeletedAccountsClient object to access its operations. */
+    private final DeletedAccountsClient deletedAccounts;
+
+    /**
+     * Gets the DeletedAccountsClient object to access its operations.
+     *
+     * @return the DeletedAccountsClient object.
+     */
+    public DeletedAccountsClient getDeletedAccounts() {
+        return this.deletedAccounts;
+    }
+
     /** The ResourceSkusClient object to access its operations. */
     private final ResourceSkusClient resourceSkus;
 
@@ -209,8 +222,9 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-04-18";
+        this.apiVersion = "2021-04-30";
         this.accounts = new AccountsClientImpl(this);
+        this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);

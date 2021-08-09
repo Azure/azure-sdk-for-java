@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-servicebus</artifactId>
-  <version>3.7.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
+  <version>3.6.4</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
 
   <name>Microsoft Azure SDK for Service Bus</name>
   <description>Java library for Azure Service Bus. Please note, a newer package com.azure:azure-messaging-servicebus for Azure Service Bus is available as of December 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the migration guide at https://aka.ms/azsdk/java/migrate/sb for more details.</description>
@@ -58,17 +58,17 @@
     <dependency>
       <groupId>org.apache.qpid</groupId>
       <artifactId>proton-j</artifactId>
-      <version>0.33.4</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
+      <version>0.33.8</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
     </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>qpid-proton-j-extensions</artifactId>
-        <version>1.2.3</version> <!-- {x-version-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
+        <version>1.2.4</version> <!-- {x-version-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
       </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.asynchttpclient</groupId>

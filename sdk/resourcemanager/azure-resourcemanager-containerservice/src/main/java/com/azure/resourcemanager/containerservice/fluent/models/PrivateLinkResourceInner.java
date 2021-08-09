@@ -40,7 +40,7 @@ public final class PrivateLinkResourceInner {
     private String groupId;
 
     /*
-     * RequiredMembers of the resource
+     * The RequiredMembers of the resource
      */
     @JsonProperty(value = "requiredMembers")
     private List<String> requiredMembers;
@@ -133,7 +133,7 @@ public final class PrivateLinkResourceInner {
     }
 
     /**
-     * Get the requiredMembers property: RequiredMembers of the resource.
+     * Get the requiredMembers property: The RequiredMembers of the resource.
      *
      * @return the requiredMembers value.
      */
@@ -142,7 +142,7 @@ public final class PrivateLinkResourceInner {
     }
 
     /**
-     * Set the requiredMembers property: RequiredMembers of the resource.
+     * Set the requiredMembers property: The RequiredMembers of the resource.
      *
      * @param requiredMembers the requiredMembers value to set.
      * @return the PrivateLinkResourceInner object itself.

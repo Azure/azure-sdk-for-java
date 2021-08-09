@@ -131,6 +131,11 @@ class StorageAccountImpl
     }
 
     @Override
+    public boolean infrastructureEncryptionEnabled() {
+        return this.encryptionHelper.infrastructureEncryptionEnabled();
+    }
+
+    @Override
     public AccessTier accessTier() {
         return innerModel().accessTier();
     }
@@ -381,6 +386,12 @@ class StorageAccountImpl
     }
 
     @Override
+    public StorageAccountImpl withInfrastructureEncryption() {
+        this.encryptionHelper.withInfrastructureEncryption();
+        return this;
+    }
+
+    @Override
     public StorageAccountImpl withBlobEncryption() {
         this.encryptionHelper.withBlobEncryption();
         return this;
@@ -407,6 +418,18 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withoutFileEncryption() {
         this.encryptionHelper.withoutFileEncryption();
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withTableAccountScopedEncryptionKey() {
+        this.encryptionHelper.withTableEncryption();
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withQueueAccountScopedEncryptionKey() {
+        this.encryptionHelper.withQueueEncryption();
         return this;
     }
 

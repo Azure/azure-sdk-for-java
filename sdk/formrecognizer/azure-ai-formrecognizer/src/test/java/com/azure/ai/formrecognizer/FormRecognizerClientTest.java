@@ -5,9 +5,9 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormContentType;
+import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
-import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerLanguage;
 import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
@@ -35,15 +35,12 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.ID;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
+import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_IMAGE_URL_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
@@ -53,8 +50,10 @@ import static com.azure.ai.formrecognizer.TestUtils.getContentDetectionFileData;
 import static com.azure.ai.formrecognizer.TestUtils.validateExceptionSource;
 import static com.azure.ai.formrecognizer.models.FormContentType.APPLICATION_PDF;
 import static com.azure.ai.formrecognizer.models.FormContentType.IMAGE_JPEG;
+import static com.azure.ai.formrecognizer.models.FormContentType.IMAGE_PNG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -85,11 +84,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeReceiptData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceipts(data, dataLength, new RecognizeReceiptsOptions()
-                    .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceipts(data,
+                    dataLength,
+                    new RecognizeReceiptsOptions().setContentType(FormContentType.IMAGE_JPEG),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, RECEIPT);
+            validateReceiptData(syncPoller.getFinalResult(), false, FormContentType.IMAGE_JPEG);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -113,11 +115,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                                  FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
-                getContentDetectionFileData(filePath), dataLength, new RecognizeReceiptsOptions()
-                    .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceipts(getContentDetectionFileData(filePath),
+                    dataLength,
+                    new RecognizeReceiptsOptions(),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
+
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, RECEIPT);
+            validateReceiptData(syncPoller.getFinalResult(), false, FormContentType.IMAGE_JPEG);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -131,11 +137,16 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
-                data, dataLength, new RecognizeReceiptsOptions().setContentType(FormContentType.IMAGE_JPEG)
-                    .setFieldElementsIncluded(true).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceipts(
+                    data,
+                    dataLength,
+                    new RecognizeReceiptsOptions().setContentType(FormContentType.IMAGE_JPEG)
+                        .setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, RECEIPT);
+            validateReceiptData(syncPoller.getFinalResult(), true, FormContentType.IMAGE_JPEG);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -148,12 +159,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                 FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceipts(data, dataLength, new RecognizeReceiptsOptions().setContentType(
-                    FormContentType.IMAGE_PNG).setFieldElementsIncluded(true)
-                    .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceipts(data,
+                    dataLength,
+                    new RecognizeReceiptsOptions().setContentType(FormContentType.IMAGE_PNG)
+                        .setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, RECEIPT);
+            validateReceiptData(syncPoller.getFinalResult(), true, FormContentType.IMAGE_PNG);
         }, RECEIPT_CONTOSO_PNG);
     }
 
@@ -166,11 +180,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                  FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
-                data, dataLength, new RecognizeReceiptsOptions().setContentType(APPLICATION_PDF)
-                    .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceipts(data,
+                    dataLength,
+                    new RecognizeReceiptsOptions().setContentType(APPLICATION_PDF),
+                    Context.NONE).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateBlankPdfResultData(syncPoller.getFinalResult());
+            validateBlankPdfData(syncPoller.getFinalResult());
         }, BLANK_PDF);
     }
 
@@ -179,9 +195,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeReceiptFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
-                data, dataLength, new RecognizeReceiptsOptions().setContentType(APPLICATION_PDF)
-                    .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceipts(
+                    data,
+                    dataLength,
+                    new RecognizeReceiptsOptions().setContentType(APPLICATION_PDF),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultipageReceiptData(syncPoller.getFinalResult());
         }, MULTIPAGE_RECEIPT_PDF);
@@ -195,12 +215,16 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeReceiptFromDamagedPdf(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
-            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeReceipts(data, dataLength, new RecognizeReceiptsOptions()
-                    .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE)
-                    .getFinalResult());
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) httpResponseException.getValue();
+            HttpResponseException httpResponseException
+                = assertThrows(HttpResponseException.class,
+                    () -> client.beginRecognizeReceipts(data,
+                            dataLength,
+                            new RecognizeReceiptsOptions().setContentType(APPLICATION_PDF),
+                            Context.NONE)
+                            .setPollInterval(durationTestMode)
+                            .getFinalResult());
+            FormRecognizerErrorInformation errorInformation
+                = (FormRecognizerErrorInformation) httpResponseException.getValue();
             assertEquals(BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
         });
     }
@@ -215,10 +239,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeReceiptSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceiptsFromUrl(sourceUrl).setPollInterval(durationTestMode);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceiptsFromUrl(sourceUrl).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, RECEIPT);
+            validateReceiptData(syncPoller.getFinalResult(), false, FormContentType.IMAGE_JPEG);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -228,14 +252,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeReceiptFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
-            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeReceiptsFromUrl(sourceUrl, new RecognizeReceiptsOptions()
-                    .setPollInterval(durationTestMode), Context.NONE));
+            HttpResponseException errorResponseException
+                = assertThrows(HttpResponseException.class,
+                    () -> client.beginRecognizeReceiptsFromUrl(sourceUrl).setPollInterval(durationTestMode));
             validateExceptionSource(errorResponseException);
         });
     }
@@ -248,8 +272,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeReceiptInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((sourceUrl) ->
-            assertThrows(HttpResponseException.class, () -> client.beginRecognizeReceiptsFromUrl(sourceUrl,
-                new RecognizeReceiptsOptions().setPollInterval(durationTestMode), Context.NONE)));
+            assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeReceiptsFromUrl(sourceUrl).setPollInterval(durationTestMode)));
     }
 
     /**
@@ -262,12 +286,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                             FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceiptsFromUrl(sourceUrl,
-                    new RecognizeReceiptsOptions().setFieldElementsIncluded(true)
-                        .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceiptsFromUrl(sourceUrl,
+                    new RecognizeReceiptsOptions().setFieldElementsIncluded(true), Context.NONE)
+                        .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, RECEIPT);
+            validateReceiptData(syncPoller.getFinalResult(), true, IMAGE_JPEG);
         }, RECEIPT_CONTOSO_JPG);
     }
 
@@ -281,14 +305,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                      FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceiptsFromUrl(sourceUrl,
-                    new RecognizeReceiptsOptions()
-                        .setFieldElementsIncluded(true)
-                        .setPollInterval(durationTestMode),
-                    Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceiptsFromUrl(sourceUrl,
+                    new RecognizeReceiptsOptions().setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, RECEIPT);
+            validateReceiptData(syncPoller.getFinalResult(), true, IMAGE_PNG);
         }, RECEIPT_CONTOSO_PNG);
     }
 
@@ -299,12 +322,32 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
         urlRunner(receiptUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceiptsFromUrl(
-                    receiptUrl, new RecognizeReceiptsOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceiptsFromUrl(receiptUrl).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultipageReceiptData(syncPoller.getFinalResult());
-        }, MULTIPAGE_INVOICE_PDF);
+        }, MULTIPAGE_RECEIPT_PDF);
+    }
+
+    /**
+     * Verify locale parameter passed when specified by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void receiptValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+
+        localFilePathRunner((filePath, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> receiptPoller
+                = client.beginRecognizeReceipts(
+                    getContentDetectionFileData(filePath),
+                    dataLength,
+                    new RecognizeReceiptsOptions().setLocale(FormRecognizerLocale.EN_US),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
+            validateReceiptData(receiptPoller.getFinalResult(), false, FormContentType.IMAGE_JPEG);
+
+        }, RECEIPT_CONTOSO_JPG);
     }
 
     // Content Recognition
@@ -319,12 +362,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContent(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContent(data, dataLength, new RecognizeContentOptions()
-                    .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContent(data,
+                    dataLength,
+                    new RecognizeContentOptions().setContentType(FormContentType.IMAGE_JPEG),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
-        }, FORM_JPG);
+            validateContentData(syncPoller.getFinalResult(), true);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -346,12 +392,16 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                                    FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller = client.beginRecognizeContent(
-                getContentDetectionFileData(filePath), dataLength, new RecognizeContentOptions()
-                    .setContentType(null).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContent(
+                    getContentDetectionFileData(filePath),
+                    dataLength,
+                    new RecognizeContentOptions().setContentType(null),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
-        }, FORM_JPG);
+            validateContentData(syncPoller.getFinalResult(), true);
+        }, CONTENT_FORM_JPG);
 
     }
 
@@ -363,11 +413,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContentResultWithBlankPdf(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContent(data, dataLength, new RecognizeContentOptions()
-                    .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContent(data,
+                    dataLength,
+                    new RecognizeContentOptions().setContentType(APPLICATION_PDF),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
+            validateContentData(syncPoller.getFinalResult(), true);
         }, BLANK_PDF);
     }
 
@@ -376,11 +429,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContent(data, dataLength, new RecognizeContentOptions()
-                    .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContent(data,
+                    dataLength,
+                    new RecognizeContentOptions().setContentType(APPLICATION_PDF),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
+            validateContentData(syncPoller.getFinalResult(), true);
         }, MULTIPAGE_INVOICE_PDF);
     }
 
@@ -394,11 +450,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeContent(data, dataLength, new RecognizeContentOptions()
-                    .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE)
-                    .getFinalResult());
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) errorResponseException.getValue();
+                () -> client.beginRecognizeContent(data,
+                        dataLength,
+                        new RecognizeContentOptions().setContentType(APPLICATION_PDF),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode)
+                        .getFinalResult());
+            FormRecognizerErrorInformation errorInformation
+                = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(INVALID_IMAGE_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
@@ -409,11 +468,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                    FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContent(data, dataLength, new RecognizeContentOptions()
-                    .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContent(data,
+                    dataLength,
+                    new RecognizeContentOptions().setContentType(APPLICATION_PDF),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
+            validateContentData(syncPoller.getFinalResult(), true);
         }, SELECTION_MARK_PDF);
     }
 
@@ -422,17 +484,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContentWithPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContent(data,
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContent(data,
                     dataLength,
-                    new RecognizeContentOptions()
-                        .setContentType(APPLICATION_PDF)
-                        .setPollInterval(durationTestMode)
-                        .setPages(Collections.singletonList("1")),
-                    Context.NONE);
+                    new RecognizeContentOptions().setContentType(APPLICATION_PDF).setPages(Collections.singletonList("1")),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             List<FormPage> formPages = syncPoller.getFinalResult();
-            validateContentResultData(formPages, false);
+            validateContentData(formPages, true);
             assertEquals(1, formPages.size());
         }, MULTIPAGE_INVOICE_PDF);
     }
@@ -442,17 +502,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContentWithPages(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContent(data,
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContent(data,
                     dataLength,
-                    new RecognizeContentOptions()
-                        .setContentType(APPLICATION_PDF)
-                        .setPollInterval(durationTestMode)
-                        .setPages(Arrays.asList("1", "2")),
-                    Context.NONE);
+                    new RecognizeContentOptions().setContentType(APPLICATION_PDF).setPages(Arrays.asList("1", "2")),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             List<FormPage> formPages = syncPoller.getFinalResult();
-            validateContentResultData(formPages, false);
+            validateContentData(formPages, true);
             assertEquals(2, formPages.size());
         }, MULTIPAGE_INVOICE_PDF);
     }
@@ -462,17 +520,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContentWithPageRange(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContent(data,
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContent(data,
                     dataLength,
-                    new RecognizeContentOptions()
-                        .setContentType(APPLICATION_PDF)
-                        .setPollInterval(durationTestMode)
-                        .setPages(Arrays.asList("1-2", "3")),
-                    Context.NONE);
+                    new RecognizeContentOptions().setContentType(APPLICATION_PDF).setPages(Arrays.asList("1-2", "3")),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             List<FormPage> formPages = syncPoller.getFinalResult();
-            validateContentResultData(formPages, false);
+            validateContentData(formPages, true);
             assertEquals(3, formPages.size());
         }, MULTIPAGE_INVOICE_PDF);
     }
@@ -485,19 +541,18 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContentAppearance(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContent(data,
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContent(data,
                     dataLength,
-                    new RecognizeContentOptions()
-                        .setContentType(FormContentType.IMAGE_JPEG)
-                        .setPollInterval(durationTestMode),
-                    Context.NONE);
+                    new RecognizeContentOptions().setContentType(FormContentType.IMAGE_JPEG),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             List<FormPage> formPages = syncPoller.getFinalResult();
-            validateContentResultData(formPages, false);
+            validateContentData(formPages, true);
             assertEquals(TextStyleName.OTHER,
                 formPages.get(0).getLines().get(0).getAppearance().getStyleName());
-        }, FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     // Content - URL
@@ -507,12 +562,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContentFromUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContentFromUrl(sourceUrl, new RecognizeContentOptions()
-                    .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContentFromUrl(sourceUrl).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
-        }, FORM_JPG);
+            validateContentData(syncPoller.getFinalResult(), true);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -521,14 +575,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeContentFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
-            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeContentFromUrl(sourceUrl, new RecognizeContentOptions()
-                    .setPollInterval(durationTestMode), Context.NONE));
+            HttpResponseException errorResponseException
+                = assertThrows(HttpResponseException.class,
+                    () -> client.beginRecognizeContentFromUrl(sourceUrl).setPollInterval(durationTestMode));
             validateExceptionSource(errorResponseException);
         });
     }
@@ -541,11 +595,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContentFromUrlWithPdf(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContentFromUrl(sourceUrl,
-                    new RecognizeContentOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContentFromUrl(sourceUrl).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
+            validateContentData(syncPoller.getFinalResult(), true);
         }, INVOICE_6_PDF);
     }
 
@@ -556,10 +609,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeContentInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        invalidSourceUrlRunner((invalidSourceUrl) -> assertThrows(
-            HttpResponseException.class, () ->
-                client.beginRecognizeContentFromUrl(invalidSourceUrl,
-                    new RecognizeContentOptions().setPollInterval(durationTestMode), Context.NONE)));
+        invalidSourceUrlRunner((invalidSourceUrl)
+            -> assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeContentFromUrl(invalidSourceUrl).setPollInterval(durationTestMode)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -567,12 +619,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeContentFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner((formUrl) -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContentFromUrl(formUrl,
-                    new RecognizeContentOptions().setPollInterval(durationTestMode),
-                    Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContentFromUrl(formUrl).setPollInterval(durationTestMode);
+
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
+            validateContentData(syncPoller.getFinalResult(), true);
         }, MULTIPAGE_INVOICE_PDF);
     }
 
@@ -582,29 +633,26 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                           FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContentFromUrl(sourceUrl,
-                    new RecognizeContentOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContentFromUrl(sourceUrl).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
+            validateContentData(syncPoller.getFinalResult(), true);
         }, SELECTION_MARK_PDF);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeGermanContentFromUrl(HttpClient httpClient,
                                               FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         testingContainerUrlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContentFromUrl(sourceUrl,
-                    new RecognizeContentOptions().setPollInterval(durationTestMode)
-                        .setLanguage(FormRecognizerLanguage.DE),
-                    Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<FormPage>> syncPoller
+                = client.beginRecognizeContentFromUrl(sourceUrl,
+                    new RecognizeContentOptions().setLanguage(FormRecognizerLanguage.DE),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
-            validateNetworkCallRecord("language", "de");
+            validateContentData(syncPoller.getFinalResult(), true);
         }, CONTENT_GERMAN_PDF);
     }
 
@@ -617,8 +665,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             HttpResponseException exception
                 = assertThrows(HttpResponseException.class,
                     () -> client.beginRecognizeContentFromUrl(sourceUrl,
-                        new RecognizeContentOptions().setPollInterval(durationTestMode)
-                            .setLanguage(FormRecognizerLanguage.fromString("language")), Context.NONE));
+                            new RecognizeContentOptions().setLanguage(FormRecognizerLanguage.fromString("language")),
+                            Context.NONE)
+                            .setPollInterval(durationTestMode));
+
             assertEquals(((FormRecognizerErrorInformation) exception.getValue()).getErrorCode(),
                 "NotSupportedLanguage");
         }, CONTENT_GERMAN_PDF);
@@ -637,20 +687,23 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 trainingPoller.waitForCompletion();
 
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                    client.beginRecognizeCustomForms(
-                        trainingPoller.getFinalResult().getModelId(), data, dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(IMAGE_JPEG).setFieldElementsIncluded(true)
-                            .setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                    = client.beginRecognizeCustomForms(
+                        trainingPoller.getFinalResult().getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setContentType(IMAGE_JPEG).setFieldElementsIncluded(true),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPoller.getFinalResult(), true, true);
-            }), FORM_JPG);
+                validateJpegCustomForm(syncPoller.getFinalResult(), true, 1, true);
+            }), CONTENT_FORM_JPG);
     }
 
     /**
@@ -663,20 +716,23 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 trainingPoller.waitForCompletion();
 
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                    client.beginRecognizeCustomForms(
-                        trainingPoller.getFinalResult().getModelId(), data, dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                    = client.beginRecognizeCustomForms(
+                        trainingPoller.getFinalResult().getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setContentType(FormContentType.IMAGE_JPEG),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPoller.getFinalResult(), false, true);
-            }), FORM_JPG);
+                validateJpegCustomForm(syncPoller.getFinalResult(), false, 1, true);
+            }), CONTENT_FORM_JPG);
     }
 
     /**
@@ -688,17 +744,22 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion)
+                .beginTraining(trainingFilesUrl, useTrainingLabels)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(
-                    trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeCustomFormsOptions()
-                        .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomForms(
+                    trainingPoller.getFinalResult().getModelId(),
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, true);
+            validateBlankCustomForm(syncPoller.getFinalResult(), 1, true);
         }), BLANK_PDF);
     }
 
@@ -711,19 +772,24 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeCustomFormLabeledDataExcludeFieldElements(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
-            trainingPoller.waitForCompletion();
+        dataRunner((data, dataLength) ->
+            beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, useTrainingLabels).setPollInterval(durationTestMode);
+                trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(
-                    trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeCustomFormsOptions()
-                        .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, true);
-        }), FORM_JPG);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                    = client.beginRecognizeCustomForms(
+                        trainingPoller.getFinalResult().getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
+                syncPoller.waitForCompletion();
+                validateJpegCustomForm(syncPoller.getFinalResult(), false, 1, true);
+            }), CONTENT_FORM_JPG);
     }
 
     /**
@@ -736,18 +802,21 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
 
-                assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
-                    syncPoller.getFinalResult().getModelId(), (InputStream) null, dataLength,
-                    new RecognizeCustomFormsOptions()
-                        .setContentType(APPLICATION_PDF).setFieldElementsIncluded(true)
-                        .setPollInterval(durationTestMode), Context.NONE));
-            }), INVOICE_6_PDF
-        );
+                assertThrows(RuntimeException.class,
+                    () -> client.beginRecognizeCustomForms(syncPoller.getFinalResult().getModelId(),
+                            (InputStream) null,
+                            dataLength,
+                            new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF)
+                                .setFieldElementsIncluded(true),
+                            Context.NONE)
+                            .setPollInterval(durationTestMode));
+            }), INVOICE_6_PDF);
     }
 
     /**
@@ -760,9 +829,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
-                null, data, dataLength, new RecognizeCustomFormsOptions()
-                    .setContentType(APPLICATION_PDF).setFieldElementsIncluded(true)
-                    .setPollInterval(durationTestMode), Context.NONE));
+                    null,
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode));
             assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         }, INVOICE_6_PDF);
     }
@@ -777,10 +849,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
 
         dataRunner((data, dataLength) -> {
-            Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
-                "", data, dataLength, new RecognizeCustomFormsOptions()
-                    .setContentType(APPLICATION_PDF).setFieldElementsIncluded(true)
-                    .setPollInterval(durationTestMode), Context.NONE));
+            Exception ex = assertThrows(RuntimeException.class,
+                () -> client.beginRecognizeCustomForms("",
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode));
             assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         }, INVOICE_6_PDF);
     }
@@ -791,18 +866,22 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) ->
             beginTrainingLabeledRunner((training, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(training, useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(training, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
-                FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
-                    () -> client.beginRecognizeCustomFormsFromUrl(
-                        createdModel.getModelId(), invalidSourceUrl, new RecognizeCustomFormsOptions()
-                            .setPollInterval(durationTestMode), Context.NONE)
-                        .getFinalResult());
-                FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                assertEquals(URL_BADLY_FORMATTED_ERROR_CODE, errorInformation.getErrorCode());
+                HttpResponseException httpResponseException
+                    = assertThrows(HttpResponseException.class,
+                        () -> client.beginRecognizeCustomFormsFromUrl(
+                                createdModel.getModelId(),
+                                invalidSourceUrl)
+                                .setPollInterval(durationTestMode)
+                                .getFinalResult());
+                FormRecognizerErrorInformation errorInformation
+                    = (FormRecognizerErrorInformation) httpResponseException.getValue();
+                assertEquals(INVALID_SOURCE_URL_EXCEPTION_MESSAGE, errorInformation.getMessage());
             }));
     }
 
@@ -816,37 +895,42 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> beginTrainingLabeledRunner(
             (trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 trainingPoller.waitForCompletion();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                    client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(),
-                        getContentDetectionFileData(filePath), dataLength,
-                        new RecognizeCustomFormsOptions().setFieldElementsIncluded(true)
-                            .setPollInterval(durationTestMode),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                    = client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(),
+                        getContentDetectionFileData(filePath),
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setFieldElementsIncluded(true),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPoller.getFinalResult(), true, true);
-            }), FORM_JPG);
+                validateJpegCustomForm(syncPoller.getFinalResult(), true, 1, true);
+            }), CONTENT_FORM_JPG);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormMultiPageLabeled(HttpClient httpClient,
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
             String modelId = trainingPoller.getFinalResult().getModelId();
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(
-                    modelId, data, dataLength, new RecognizeCustomFormsOptions()
-                        .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomForms(
+                    modelId,
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultiPageDataLabeled(syncPoller.getFinalResult(), modelId);
         }), MULTIPAGE_INVOICE_PDF);
@@ -859,20 +943,21 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             beginSelectionMarkTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 trainingPoller.waitForCompletion();
 
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                    client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(), data, dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(APPLICATION_PDF)
-                            .setFieldElementsIncluded(true)
-                            .setPollInterval(durationTestMode),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                    = client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPoller.getFinalResult(), true, true);
+                validateCustomFormWithSelectionMarks(syncPoller.getFinalResult(), true, 1);
             }), SELECTION_MARK_PDF);
     }
 
@@ -883,23 +968,26 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion).
+                    beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 trainingPoller.waitForCompletion();
 
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                    client.beginRecognizeCustomForms(
-                        trainingPoller.getFinalResult().getModelId(), data, dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                    = client.beginRecognizeCustomForms(
+                        trainingPoller.getFinalResult().getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPoller.getFinalResult(), false, false);
+                validateUnlabeledCustomForm(syncPoller.getFinalResult(), false, 1);
             }), INVOICE_6_PDF);
     }
 
@@ -908,25 +996,29 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                      FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
 
-        dataRunner((data, dataLength) -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
-            trainingPoller.waitForCompletion();
+        dataRunner((data, dataLength) ->
+            beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
+                trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(
-                    trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeCustomFormsOptions()
-                        .setContentType(APPLICATION_PDF).setFieldElementsIncluded(true)
-                        .setPollInterval(durationTestMode), Context.NONE);
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), true, false);
-        }), INVOICE_6_PDF);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                    = client.beginRecognizeCustomForms(
+                        trainingPoller.getFinalResult().getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
+                syncPoller.waitForCompletion();
+                validateUnlabeledCustomForm(syncPoller.getFinalResult(), true, 1);
+            }), INVOICE_6_PDF);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -934,19 +1026,25 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, false,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
-            trainingPoller.waitForCompletion();
+        dataRunner((data, dataLength) ->
+            beginTrainingMultipageRunner((trainingFilesUrl) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, false)
+                        .setPollInterval(durationTestMode);
+                trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(
-                    trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeCustomFormsOptions()
-                        .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
-            syncPoller.waitForCompletion();
-            validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
-        }), MULTIPAGE_INVOICE_PDF);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                    = client.beginRecognizeCustomForms(
+                        trainingPoller.getFinalResult().getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
+                syncPoller.waitForCompletion();
+                validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
+            }), MULTIPAGE_INVOICE_PDF);
     }
 
     /**
@@ -954,26 +1052,28 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUnlabeledDataWithJpgContentType(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, false)
+                        .setPollInterval(durationTestMode);
                 trainingPoller.waitForCompletion();
 
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                    client.beginRecognizeCustomForms(
-                        trainingPoller.getFinalResult().getModelId(), data, dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                    = client.beginRecognizeCustomForms(
+                        trainingPoller.getFinalResult().getModelId(),
+                        data,
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setContentType(FormContentType.IMAGE_JPEG),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
-                validateRecognizedResult(syncPoller.getFinalResult(), false, false);
-            }), FORM_JPG);
+                validateJpegCustomForm(syncPoller.getFinalResult(), false, 1, false);
+            }), CONTENT_FORM_JPG);
     }
 
     /**
@@ -985,17 +1085,22 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                                         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion)
+                .beginTraining(trainingFilesUrl, useTrainingLabels)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(
-                    trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeCustomFormsOptions()
-                        .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomForms(
+                    trainingPoller.getFinalResult().getModelId(),
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
+            validateBlankCustomForm(syncPoller.getFinalResult(), 1, false);
         }), BLANK_PDF);
     }
 
@@ -1006,23 +1111,24 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient,
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion)
+                .beginTraining(trainingFilesUrl, useTrainingLabels)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeCustomFormsOptions()
-                        .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomFormsFromUrl(
+                    trainingPoller.getFinalResult().getModelId(),
+                    fileUrl)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
-        }), FORM_JPG);
+            validateJpegCustomForm(syncPoller.getFinalResult(), false, 1, false);
+        }), CONTENT_FORM_JPG);
     }
 
     /**
@@ -1030,41 +1136,42 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeCustomFormsOptions()
-                        .setFieldElementsIncluded(true).setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomFormsFromUrl(
+                    trainingPoller.getFinalResult().getModelId(),
+                    fileUrl,
+                    new RecognizeCustomFormsOptions().setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), true, false);
-        }), FORM_JPG);
+            validateJpegCustomForm(syncPoller.getFinalResult(), true, 1, false);
+        }), CONTENT_FORM_JPG);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         testingContainerUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, false,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion)
+                .beginTraining(trainingFilesUrl, false)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeCustomFormsOptions()
-                        .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomFormsFromUrl(trainingPoller.getFinalResult().getModelId(), fileUrl)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
         }), MULTIPAGE_INVOICE_PDF);
@@ -1081,17 +1188,19 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                = getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
             HttpResponseException httpResponseException = assertThrows(
-                HttpResponseException.class, () -> client.beginRecognizeCustomFormsFromUrl(
-                    createdModel.getModelId(), INVALID_URL, new RecognizeCustomFormsOptions()
-                        .setPollInterval(durationTestMode), Context.NONE).getFinalResult());
-            final FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) httpResponseException.getValue();
+                HttpResponseException.class,
+                () -> client.beginRecognizeCustomFormsFromUrl(
+                        createdModel.getModelId(),
+                        INVALID_URL)
+                        .getFinalResult());
+            final FormRecognizerErrorInformation errorInformation
+                = (FormRecognizerErrorInformation) httpResponseException.getValue();
             assertEquals(INVALID_SOURCE_URL_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
@@ -1106,9 +1215,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomFormsFromUrl(
-                null, fileUrl, new RecognizeCustomFormsOptions().setPollInterval(durationTestMode), Context.NONE));
+                null, fileUrl, new RecognizeCustomFormsOptions()
+                        .setPollInterval(durationTestMode), Context.NONE));
             assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
-        }, FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -1122,9 +1232,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         urlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> client.beginRecognizeCustomFormsFromUrl("", fileUrl,
-                    new RecognizeCustomFormsOptions().setPollInterval(durationTestMode), Context.NONE));
+                        new RecognizeCustomFormsOptions().setPollInterval(durationTestMode), Context.NONE));
             assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
-        }), FORM_JPG);
+        }), CONTENT_FORM_JPG);
     }
 
     /**
@@ -1137,18 +1247,19 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
 
         urlRunner(fileUrl -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomFormsFromUrl(
                     trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeCustomFormsOptions()
-                        .setFieldElementsIncluded(true).setPollInterval(durationTestMode), Context.NONE);
+                        .setFieldElementsIncluded(true).setPollInterval(durationTestMode), Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), true, true);
-        }), FORM_JPG);
+            validateJpegCustomForm(syncPoller.getFinalResult(), true, 1, true);
+        }), CONTENT_FORM_JPG);
     }
 
     /**
@@ -1160,18 +1271,19 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         urlRunner(fileUrl -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             client = getFormRecognizerClient(httpClient, serviceVersion);
 
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeCustomFormsOptions()
-                        .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomFormsFromUrl(
+                    trainingPoller.getFinalResult().getModelId(),
+                    fileUrl)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, true);
-        }), FORM_JPG);
+            validateJpegCustomForm(syncPoller.getFinalResult(), false, 1, true);
+        }), CONTENT_FORM_JPG);
     }
 
     /**
@@ -1179,20 +1291,19 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
                                                        FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion)
+                .beginTraining(trainingFilesUrl, true)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
             String modelId = trainingPoller.getFinalResult().getModelId();
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(
-                    modelId, fileUrl, new RecognizeCustomFormsOptions()
-                        .setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomFormsFromUrl(modelId, fileUrl)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultiPageDataLabeled(syncPoller.getFinalResult(), modelId);
         }), MULTIPAGE_INVOICE_PDF);
@@ -1204,14 +1315,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeCustomFormFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client
-                    .beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl, new RecognizeCustomFormsOptions()
-                        .setPollInterval(durationTestMode), Context.NONE));
+                () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl));
             validateExceptionSource(errorResponseException);
         });
     }
@@ -1226,12 +1336,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, fileUrl,
-                    new RecognizeCustomFormsOptions().setPollInterval(durationTestMode), Context.NONE));
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) errorResponseException.getValue();
+                () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, fileUrl));
+            FormRecognizerErrorInformation errorInformation
+                = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(INVALID_MODEL_ID_ERROR_CODE, errorInformation.getErrorCode());
-        }, FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -1244,19 +1353,22 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) ->
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                    getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                    = getFormTrainingClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, false).setPollInterval(durationTestMode);
                 trainingPoller.waitForCompletion();
 
                 HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                    () -> client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(), data,
-                        dataLength, new RecognizeCustomFormsOptions()
-                            .setContentType(APPLICATION_PDF).setPollInterval(durationTestMode),
-                        Context.NONE).getFinalResult());
+                    () -> client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(),
+                            data,
+                            dataLength,
+                            new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF),
+                            Context.NONE)
+                            .setPollInterval(durationTestMode)
+                            .getFinalResult());
 
-                FormRecognizerErrorInformation errorInformation =
-                    (FormRecognizerErrorInformation) httpResponseException.getValue();
+                FormRecognizerErrorInformation errorInformation
+                    = (FormRecognizerErrorInformation) httpResponseException.getValue();
                 assertEquals("Invalid input file.", errorInformation.getMessage());
             }));
     }
@@ -1268,18 +1380,19 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         urlRunner(fileUrl -> beginSelectionMarkTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             client = getFormRecognizerClient(httpClient, serviceVersion);
 
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels)
+                    .setPollInterval(durationTestMode);
             trainingPoller.waitForCompletion();
 
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(trainingPoller.getFinalResult().getModelId(), fileUrl,
-                    new RecognizeCustomFormsOptions().setFieldElementsIncluded(true)
-                        .setPollInterval(durationTestMode),
-                    Context.NONE);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomFormsFromUrl(trainingPoller.getFinalResult().getModelId(),
+                    fileUrl,
+                    new RecognizeCustomFormsOptions().setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), true, true);
+            validateCustomFormWithSelectionMarks(syncPoller.getFinalResult(), true, 1);
         }), SELECTION_MARK_PDF);
     }
 
@@ -1293,24 +1406,25 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                    formTrainingClient.beginTraining(trainingFilesUrl,
-                        useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels,
+                        new TrainingOptions().setModelName("model1"),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1 =
-                    formRecognizerClient.beginRecognizeCustomForms(
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
+                    = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
                         data,
                         dataLength,
                         new RecognizeCustomFormsOptions()
-                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                        Context.NONE);
+                            .setContentType(FormContentType.IMAGE_JPEG),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller1.waitForCompletion();
                 final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
                 assertEquals("custom:model1", recognizedForm.getFormType());
@@ -1321,7 +1435,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 assertEquals("custom:model1", submodel.getFormType());
                 formTrainingClient.deleteModel(createdModel.getModelId());
             });
-        }, FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -1334,24 +1448,22 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                    formTrainingClient.beginTraining(trainingFilesUrl,
-                        useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1 =
-                    formRecognizerClient.beginRecognizeCustomForms(
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
+                    = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
                         data,
                         dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                        Context.NONE);
+                        new RecognizeCustomFormsOptions().setContentType(FormContentType.IMAGE_JPEG),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller1.waitForCompletion();
                 final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
                 assertEquals("custom:" + createdModel.getModelId(), recognizedForm.getFormType());
@@ -1362,7 +1474,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 assertEquals("custom:" + createdModel.getModelId(), submodel.getFormType());
                 formTrainingClient.deleteModel(createdModel.getModelId());
             });
-        }, FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -1375,24 +1487,22 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                    formTrainingClient.beginTraining(trainingFilesUrl,
-                        useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1 =
-                    formRecognizerClient.beginRecognizeCustomForms(
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
+                    = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
                         data,
                         dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                        Context.NONE);
+                        new RecognizeCustomFormsOptions().setContentType(FormContentType.IMAGE_JPEG),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller1.waitForCompletion();
                 final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
                 assertEquals("form-0", recognizedForm.getFormType());
@@ -1402,7 +1512,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 assertEquals("form-0", submodel.getFormType());
                 formTrainingClient.deleteModel(createdModel.getModelId());
             });
-        }, FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -1415,24 +1525,25 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                    formTrainingClient.beginTraining(trainingFilesUrl,
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
                         useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
-                        Context.NONE);
+                        new TrainingOptions().setModelName("model1"),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1 =
-                    formRecognizerClient.beginRecognizeCustomForms(
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
+                    = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
                         data,
                         dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                        Context.NONE);
+                        new RecognizeCustomFormsOptions().setContentType(FormContentType.IMAGE_JPEG),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller1.waitForCompletion();
                 final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
                 assertEquals("form-0", recognizedForm.getFormType());
@@ -1443,7 +1554,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 formTrainingClient.deleteModel(createdModel.getModelId());
             });
-        }, FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -1456,40 +1567,34 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                    formTrainingClient.beginTraining(trainingFilesUrl,
-                        useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
+                    useTrainingLabels).setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1 =
-                    formTrainingClient.beginTraining(trainingFilesUrl,
-                        useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
+                    = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels)
+                        .setPollInterval(durationTestMode);
                 syncPoller1.waitForCompletion();
                 CustomFormModel createdModel1 = syncPoller1.getFinalResult();
 
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2 =
-                    formTrainingClient.beginCreateComposedModel(
-                        Arrays.asList(createdModel.getModelId(), createdModel1.getModelId()),
-                        new CreateComposedModelOptions(),
-                        Context.NONE).setPollInterval(durationTestMode);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
+                    = formTrainingClient.beginCreateComposedModel(Arrays.asList(createdModel.getModelId(),
+                    createdModel1.getModelId())).setPollInterval(durationTestMode);
                 syncPoller2.waitForCompletion();
                 CustomFormModel composedModel = syncPoller2.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3 =
-                    formRecognizerClient.beginRecognizeCustomForms(
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
+                    = formRecognizerClient.beginRecognizeCustomForms(
                         composedModel.getModelId(),
                         data,
                         dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                        Context.NONE);
+                        new RecognizeCustomFormsOptions().setContentType(FormContentType.IMAGE_JPEG),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller3.waitForCompletion();
 
                 final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
@@ -1515,7 +1620,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 formTrainingClient.deleteModel(createdModel1.getModelId());
                 formTrainingClient.deleteModel(composedModel.getModelId());
             });
-        }, FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -1523,46 +1628,47 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void checkRecognizeFormTypeComposedModelWithModelName(
         HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                    formTrainingClient.beginTraining(trainingFilesUrl,
-                        useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
-                        Context.NONE);
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels,
+                        new TrainingOptions().setModelName("model1"),
+                        Context.NONE)
+                    .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
-                CustomFormModel createdModel = syncPoller.getFinalResult();
+                CustomFormModel createdModel1 = syncPoller.getFinalResult();
 
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1 =
-                    formTrainingClient.beginTraining(trainingFilesUrl,
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
                         useTrainingLabels,
-                        new TrainingOptions().setPollInterval(durationTestMode).setModelName("model2"),
-                        Context.NONE);
+                        new TrainingOptions().setModelName("model2"),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller1.waitForCompletion();
-                CustomFormModel createdModel1 = syncPoller1.getFinalResult();
+                CustomFormModel createdModel2 = syncPoller1.getFinalResult();
 
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2 =
-                    formTrainingClient.beginCreateComposedModel(
-                        Arrays.asList(createdModel.getModelId(), createdModel1.getModelId()),
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
+                    = formTrainingClient.beginCreateComposedModel(
+                        Arrays.asList(createdModel1.getModelId(), createdModel2.getModelId()),
                         new CreateComposedModelOptions().setModelName("composedModelName"),
-                        Context.NONE).setPollInterval(durationTestMode);
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller2.waitForCompletion();
                 CustomFormModel composedModel = syncPoller2.getFinalResult();
 
                 FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
                     .getFormRecognizerClient();
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3 =
-                    formRecognizerClient.beginRecognizeCustomForms(
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
+                    = formRecognizerClient.beginRecognizeCustomForms(
                         composedModel.getModelId(),
                         data,
                         dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
-                        Context.NONE);
+                        new RecognizeCustomFormsOptions().setContentType(FormContentType.IMAGE_JPEG),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode);
                 syncPoller3.waitForCompletion();
 
                 final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
@@ -1573,11 +1679,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 assertNotNull(recognizedForm.getFormTypeConfidence());
 
-                formTrainingClient.deleteModel(createdModel.getModelId());
                 formTrainingClient.deleteModel(createdModel1.getModelId());
+                formTrainingClient.deleteModel(createdModel2.getModelId());
                 formTrainingClient.deleteModel(composedModel.getModelId());
             });
-        }, FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     // Business card recognition
@@ -1592,12 +1698,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeBusinessCardData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCards(data, dataLength,
-                    new RecognizeBusinessCardsOptions().setContentType(FormContentType.IMAGE_JPEG), Context.NONE)
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCards(data,
+                    dataLength,
+                    new RecognizeBusinessCardsOptions().setContentType(FormContentType.IMAGE_JPEG),
+                    Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, BUSINESS_CARD);
+            validateBusinessCardData(syncPoller.getFinalResult(), false);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1609,8 +1717,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeBusinessCardDataNullData(HttpClient httpClient,
                                                   FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class, () -> client.beginRecognizeBusinessCards(
-            null, 0));
+        assertThrows(NullPointerException.class,
+            () -> client.beginRecognizeBusinessCards(null, 0));
     }
 
     /**
@@ -1622,11 +1730,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCards(getContentDetectionFileData(filePath), dataLength,
-                    new RecognizeBusinessCardsOptions(), Context.NONE).setPollInterval(durationTestMode);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCards(getContentDetectionFileData(filePath), dataLength)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, BUSINESS_CARD);
+            validateBusinessCardData(syncPoller.getFinalResult(), false);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1640,12 +1748,16 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                               FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCards(data, dataLength,
-                    new RecognizeBusinessCardsOptions().setContentType(FormContentType.IMAGE_JPEG)
-                        .setFieldElementsIncluded(true), Context.NONE).setPollInterval(durationTestMode);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCards(data,
+                    dataLength,
+                    new RecognizeBusinessCardsOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG)
+                        .setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, BUSINESS_CARD);
+            validateBusinessCardData(syncPoller.getFinalResult(), true);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1658,12 +1770,16 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                      FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCards(data, dataLength, new RecognizeBusinessCardsOptions().setContentType(
-                    FormContentType.IMAGE_PNG).setFieldElementsIncluded(true),
-                    Context.NONE).setPollInterval(durationTestMode);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCards(data,
+                    dataLength,
+                    new RecognizeBusinessCardsOptions()
+                        .setContentType(FormContentType.IMAGE_PNG)
+                        .setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, BUSINESS_CARD);
+            validateBusinessCardData(syncPoller.getFinalResult(), true);
         }, BUSINESS_CARD_PNG);
     }
 
@@ -1676,12 +1792,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCards(data, dataLength,
-                    new RecognizeBusinessCardsOptions().setContentType(APPLICATION_PDF), Context.NONE)
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCards(data,
+                    dataLength,
+                    new RecognizeBusinessCardsOptions().setContentType(APPLICATION_PDF),
+                    Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateBlankPdfResultData(syncPoller.getFinalResult());
+            validateBlankPdfData(syncPoller.getFinalResult());
         }, BLANK_PDF);
     }
 
@@ -1695,11 +1813,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeBusinessCards(data, dataLength,
-                    new RecognizeBusinessCardsOptions().setContentType(APPLICATION_PDF), Context.NONE)
-                          .setPollInterval(durationTestMode).getFinalResult());
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) httpResponseException.getValue();
+                () -> client.beginRecognizeBusinessCards(data,
+                        dataLength,
+                        new RecognizeBusinessCardsOptions().setContentType(APPLICATION_PDF),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode)
+                        .getFinalResult());
+            FormRecognizerErrorInformation errorInformation
+                = (FormRecognizerErrorInformation) httpResponseException.getValue();
             assertEquals(BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
         });
     }
@@ -1712,13 +1833,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeMultipageBusinessCard(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCards(data,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCards(data,
                     dataLength,
-                    new RecognizeBusinessCardsOptions()
-                        .setContentType(APPLICATION_PDF)
-                        .setFieldElementsIncluded(true),
-                    Context.NONE).setPollInterval(durationTestMode);
+                    new RecognizeBusinessCardsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultipageBusinessData(syncPoller.getFinalResult());
         }, MULTIPAGE_BUSINESS_CARD_PDF);
@@ -1734,11 +1854,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeBusinessCardSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
-                    new RecognizeBusinessCardsOptions(), Context.NONE).setPollInterval(durationTestMode);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCardsFromUrl(sourceUrl).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, BUSINESS_CARD);
+            validateBusinessCardData(syncPoller.getFinalResult(), false);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1748,14 +1867,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeBusinessCardFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                            FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
-                    new RecognizeBusinessCardsOptions(), Context.NONE).setPollInterval(durationTestMode));
+                () -> client.beginRecognizeBusinessCardsFromUrl(sourceUrl).setPollInterval(durationTestMode));
             validateExceptionSource(errorResponseException);
         });
     }
@@ -1769,8 +1887,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((sourceUrl) -> assertThrows(HttpResponseException.class,
-            () -> client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
-                new RecognizeBusinessCardsOptions(), Context.NONE).setPollInterval(durationTestMode)));
+            () -> client.beginRecognizeBusinessCardsFromUrl(sourceUrl).setPollInterval(durationTestMode)));
     }
 
     /**
@@ -1783,12 +1900,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                                  FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
-                    new RecognizeBusinessCardsOptions().setFieldElementsIncluded(true), Context.NONE)
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
+                    new RecognizeBusinessCardsOptions().setFieldElementsIncluded(true),
+                    Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, BUSINESS_CARD);
+            validateBusinessCardData(syncPoller.getFinalResult(), true);
         }, BUSINESS_CARD_JPG);
     }
 
@@ -1802,12 +1920,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                           FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
-                    new RecognizeBusinessCardsOptions().setFieldElementsIncluded(true), Context.NONE)
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
+                    new RecognizeBusinessCardsOptions().setFieldElementsIncluded(true),
+                    Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, BUSINESS_CARD);
+            validateBusinessCardData(syncPoller.getFinalResult(), true);
         }, BUSINESS_CARD_PNG);
     }
 
@@ -1819,34 +1938,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeMultipageBusinessCardUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
-                    new RecognizeBusinessCardsOptions()
-                        .setFieldElementsIncluded(true),
-                    Context.NONE).setPollInterval(durationTestMode);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
+                    new RecognizeBusinessCardsOptions().setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultipageBusinessData(syncPoller.getFinalResult());
         }, MULTIPAGE_BUSINESS_CARD_PDF);
-    }
-
-    /**
-     * Verify locale parameter passed when specified by user.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void receiptValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-
-        localFilePathRunner((filePath, dataLength) -> {
-            client.beginRecognizeReceipts(
-                getContentDetectionFileData(filePath),
-                dataLength,
-                new RecognizeReceiptsOptions().setPollInterval(durationTestMode)
-                    .setLocale(FormRecognizerLocale.EN_US),
-                Context.NONE);
-            validateNetworkCallRecord("locale", "en-US");
-
-        }, RECEIPT_CONTOSO_JPG);
     }
 
     // Invoice recognition
@@ -1861,13 +1960,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeInvoiceData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoices(data,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeInvoices(data,
                     dataLength,
                     new RecognizeInvoicesOptions().setContentType(APPLICATION_PDF),
-                    Context.NONE).setPollInterval(durationTestMode);
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, INVOICE);
+            validateInvoiceData(syncPoller.getFinalResult(), false);
         }, INVOICE_PDF);
     }
 
@@ -1880,13 +1980,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                                  FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoices(getContentDetectionFileData(filePath),
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeInvoices(getContentDetectionFileData(filePath),
                     dataLength,
                     new RecognizeInvoicesOptions(),
-                    Context.NONE).setPollInterval(durationTestMode);
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, INVOICE);
+            validateInvoiceData(syncPoller.getFinalResult(), false);
         }, INVOICE_PDF);
     }
 
@@ -1900,15 +2001,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoices(data,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeInvoices(data,
                     dataLength,
-                    new RecognizeInvoicesOptions()
-                        .setContentType(APPLICATION_PDF)
-                        .setFieldElementsIncluded(true),
-                    Context.NONE).setPollInterval(durationTestMode);
+                    new RecognizeInvoicesOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, INVOICE);
+            validateInvoiceData(syncPoller.getFinalResult(), true);
         }, INVOICE_PDF);
     }
 
@@ -1922,13 +2022,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                  FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoices(data,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeInvoices(data,
                     dataLength,
                     new RecognizeInvoicesOptions().setContentType(APPLICATION_PDF),
-                    Context.NONE).setPollInterval(durationTestMode);
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateBlankPdfResultData(syncPoller.getFinalResult());
+            validateBlankPdfData(syncPoller.getFinalResult());
         }, BLANK_PDF);
     }
 
@@ -1942,11 +2043,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeInvoices(data,
-                    dataLength,
-                    new RecognizeInvoicesOptions().setContentType(APPLICATION_PDF),
-                    Context.NONE).setPollInterval(durationTestMode).getFinalResult());
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) httpResponseException.getValue();
+                        dataLength,
+                        new RecognizeInvoicesOptions().setContentType(APPLICATION_PDF),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode).getFinalResult());
+            FormRecognizerErrorInformation errorInformation
+                = (FormRecognizerErrorInformation) httpResponseException.getValue();
             assertEquals(BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
         });
     }
@@ -1960,13 +2062,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         // confirm if pageResults should be returned for prebuilt model recognition
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoices(data,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeInvoices(data,
                     dataLength,
-                    new RecognizeInvoicesOptions()
-                        .setContentType(APPLICATION_PDF)
-                        .setFieldElementsIncluded(true),
-                    Context.NONE).setPollInterval(durationTestMode);
+                    new RecognizeInvoicesOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultipageInvoiceData(syncPoller.getFinalResult());
         }, MULTIPAGE_VENDOR_INVOICE_PDF);
@@ -1982,12 +2083,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeInvoiceSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoicesFromUrl(sourceUrl,
-                    new RecognizeInvoicesOptions(),
-                    Context.NONE).setPollInterval(durationTestMode);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeInvoicesFromUrl(sourceUrl)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, INVOICE);
+            validateInvoiceData(syncPoller.getFinalResult(), false);
         }, INVOICE_PDF);
     }
 
@@ -1997,15 +2097,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeInvoiceFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeInvoicesFromUrl(sourceUrl,
-                    new RecognizeInvoicesOptions(),
-                    Context.NONE).setPollInterval(durationTestMode));
+                () -> client.beginRecognizeInvoicesFromUrl(sourceUrl).setPollInterval(durationTestMode));
             validateExceptionSource(errorResponseException);
         });
     }
@@ -2020,8 +2118,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((sourceUrl)
             -> assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeInvoicesFromUrl(sourceUrl,
-                    new RecognizeInvoicesOptions(), Context.NONE).setPollInterval(durationTestMode)));
+                () -> client.beginRecognizeInvoicesFromUrl(sourceUrl).setPollInterval(durationTestMode)));
     }
 
     /**
@@ -2034,12 +2131,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                             FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoicesFromUrl(sourceUrl,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeInvoicesFromUrl(sourceUrl,
                     new RecognizeInvoicesOptions().setFieldElementsIncluded(true),
-                    Context.NONE).setPollInterval(durationTestMode);
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, INVOICE);
+            validateInvoiceData(syncPoller.getFinalResult(), true);
         }, INVOICE_PDF);
     }
 
@@ -2051,16 +2149,44 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void invoiceValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
-            client.beginRecognizeInvoices(
-                getContentDetectionFileData(filePath),
-                dataLength,
-                new RecognizeInvoicesOptions().setLocale(FormRecognizerLocale.EN_US),
-                Context.NONE).setPollInterval(durationTestMode);
-            validateNetworkCallRecord("locale", "en-US");
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeInvoices(
+                    getContentDetectionFileData(filePath),
+                    dataLength,
+                    new RecognizeInvoicesOptions().setLocale(FormRecognizerLocale.EN_US),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
+            validateInvoiceData(syncPoller.getFinalResult(), false);
         }, INVOICE_PDF);
     }
 
-    // ID Document Recognition
+    /**
+     * Verify SDK returns empty object and array for null sub line items field.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void invoiceSubLineItemsNull(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        localFilePathRunner((filePath, dataLength) -> {
+            List<RecognizedForm> recognizedForms = client.beginRecognizeInvoices(
+                    getContentDetectionFileData(filePath),
+                    dataLength,
+                    new RecognizeInvoicesOptions().setLocale(FormRecognizerLocale.EN_US),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode)
+                    .getFinalResult();
+
+            RecognizedForm recognizedForm = recognizedForms.get(0);
+            FormField itemFieldList = recognizedForm.getFields().get("Items").getValue().asList().get(0);
+            Map<String, FormField> formFieldMap = itemFieldList.getValue().asMap();
+
+            assertNull(formFieldMap);
+            assertEquals(String.valueOf(1), itemFieldList.getValueData().getText());
+
+        }, INVOICE_NO_SUB_LINE_PDF);
+    }
+
+    // Identity Document Recognition
 
     /**
      * Verifies license card data from a document using file data as source.
@@ -2070,14 +2196,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeLicenseCardData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdentityDocuments(data,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeIdentityDocuments(data,
                     dataLength,
                     new RecognizeIdentityDocumentOptions().setContentType(FormContentType.IMAGE_JPEG),
                     Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+            validateIdentityData(syncPoller.getFinalResult(), false);
         }, LICENSE_CARD_JPG);
     }
 
@@ -2089,8 +2215,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeIDDocumentDataNullData(HttpClient httpClient,
                                                 FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class, () -> client.beginRecognizeIdentityDocuments(
-            null, 0));
+        assertThrows(NullPointerException.class, () -> client.beginRecognizeIdentityDocuments(null, 0));
     }
 
     /**
@@ -2104,18 +2229,18 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         localFilePathRunner((filePath, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
                 = client.beginRecognizeIdentityDocuments(
-                getContentDetectionFileData(filePath),
-                dataLength,
-                new RecognizeIdentityDocumentOptions(),
-                Context.NONE
-            ).setPollInterval(durationTestMode);
+                    getContentDetectionFileData(filePath),
+                    dataLength,
+                    new RecognizeIdentityDocumentOptions(),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+            validateIdentityData(syncPoller.getFinalResult(), false);
         }, LICENSE_CARD_JPG);
     }
 
     /**
-     * Verifies ID Document data from a document using file data as source and including element reference details.
+     * Verifies identity document data from a document using file data as source and including element reference details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2123,20 +2248,21 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdentityDocuments(data,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeIdentityDocuments(data,
                     dataLength,
                     new RecognizeIdentityDocumentOptions()
                         .setContentType(FormContentType.IMAGE_JPEG)
                         .setFieldElementsIncluded(true),
-                    Context.NONE).setPollInterval(durationTestMode);
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
+            validateIdentityData(syncPoller.getFinalResult(), true);
         }, LICENSE_CARD_JPG);
     }
 
     /**
-     * Verifies ID Document data from a document using blank PDF.
+     * Verifies identity document data from a document using blank PDF.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2144,21 +2270,20 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                 FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdentityDocuments(
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeIdentityDocuments(
                     data,
                     dataLength,
-                    new RecognizeIdentityDocumentOptions()
-                        .setContentType(FormContentType.APPLICATION_PDF),
-                    Context.NONE
-                ).setPollInterval(durationTestMode);
+                    new RecognizeIdentityDocumentOptions().setContentType(FormContentType.APPLICATION_PDF),
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             assertEquals(0, syncPoller.getFinalResult().size());
         }, BLANK_PDF);
     }
 
     /**
-     * Verify that ID Document recognition with damaged PDF file.
+     * Verify that identity document recognition with damaged PDF file.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2168,19 +2293,19 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeIdentityDocuments(
-                    data,
-                    dataLength,
-                    new RecognizeIdentityDocumentOptions()
-                        .setContentType(FormContentType.APPLICATION_PDF),
-                    Context.NONE
-                ).setPollInterval(durationTestMode).getFinalResult());
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) httpResponseException.getValue();
+                        data,
+                        dataLength,
+                        new RecognizeIdentityDocumentOptions().setContentType(FormContentType.APPLICATION_PDF),
+                        Context.NONE)
+                        .setPollInterval(durationTestMode)
+                        .getFinalResult());
+            FormRecognizerErrorInformation errorInformation
+                = (FormRecognizerErrorInformation) httpResponseException.getValue();
             assertEquals(BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
         });
     }
 
-    // ID Document - URL
+    // Identity Document - URL
 
     /**
      * Verifies business card data for a document using source as file url.
@@ -2190,13 +2315,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeLicenseSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdentityDocumentsFromUrl(sourceUrl,
-                    new RecognizeIdentityDocumentOptions(),
-                    Context.NONE
-                ).setPollInterval(durationTestMode);
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeIdentityDocumentsFromUrl(sourceUrl).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+            validateIdentityData(syncPoller.getFinalResult(), false);
         }, LICENSE_CARD_JPG);
     }
 
@@ -2210,19 +2332,17 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeIdentityDocumentsFromUrl(
-                    invalidSourceUrl,
-                    new RecognizeIdentityDocumentOptions(),
-                    Context.NONE
-                ).setPollInterval(durationTestMode).getFinalResult());
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) errorResponseException.getValue();
+                () -> client.beginRecognizeIdentityDocumentsFromUrl(invalidSourceUrl)
+                        .setPollInterval(durationTestMode)
+                        .getFinalResult());
+            FormRecognizerErrorInformation errorInformation
+                = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
     /**
-     * Verifies license ID data for a document using source as file url and include content when
+     * Verifies license identity data for a document using source as file url and include content when
      * includeFieldElements is true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2231,12 +2351,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                                FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeIdentityDocumentsFromUrl(sourceUrl,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeIdentityDocumentsFromUrl(sourceUrl,
                     new RecognizeIdentityDocumentOptions().setFieldElementsIncluded(true),
-                Context.NONE).setPollInterval(durationTestMode);
+                    Context.NONE)
+                    .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
+            validateIdentityData(syncPoller.getFinalResult(), true);
         }, LICENSE_CARD_JPG);
     }
 }

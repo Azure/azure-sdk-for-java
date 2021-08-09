@@ -95,6 +95,13 @@ public final class OrcSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public OrcSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

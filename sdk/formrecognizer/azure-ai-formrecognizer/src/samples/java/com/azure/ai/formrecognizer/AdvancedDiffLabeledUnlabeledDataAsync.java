@@ -29,7 +29,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * The models used in this sample can be created using TrainModelsWithLabels.java and TrainModelsWithoutLabels.java.
  * <p>
  * See
- * <a href = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels">here </a>
+ * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels">here</a>
  * for service documentation on training with and without labels.
  * </p>
  */
@@ -76,7 +76,6 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"

@@ -4,12 +4,15 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -26,7 +29,11 @@ abstract class LocalKeyCryptographyClient {
         this.serviceClient = serviceClient;
     }
 
+    abstract Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey jsonWebKey);
+
     abstract Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, Context context, JsonWebKey jsonWebKey);
+
+    abstract Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey jsonWebKey);
 
     abstract Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, Context context, JsonWebKey jsonWebKey);
 

@@ -28,14 +28,11 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     /** Static value AzureEventHubs for DataSourceType. */
     public static final DataSourceType AZURE_EVENT_HUBS = fromString("AzureEventHubs");
 
+    /** Static value AzureLogAnalytics for DataSourceType. */
+    public static final DataSourceType AZURE_LOG_ANALYTICS = fromString("AzureLogAnalytics");
+
     /** Static value AzureTable for DataSourceType. */
     public static final DataSourceType AZURE_TABLE = fromString("AzureTable");
-
-    /** Static value Elasticsearch for DataSourceType. */
-    public static final DataSourceType ELASTICSEARCH = fromString("Elasticsearch");
-
-    /** Static value HttpRequest for DataSourceType. */
-    public static final DataSourceType HTTP_REQUEST = fromString("HttpRequest");
 
     /** Static value InfluxDB for DataSourceType. */
     public static final DataSourceType INFLUX_DB = fromString("InfluxDB");

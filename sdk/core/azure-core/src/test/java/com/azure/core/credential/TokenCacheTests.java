@@ -31,7 +31,7 @@ public class TokenCacheTests {
         Flux.range(1, 10)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs cache.getToken() on 10 different threads
-                .publishOn(Schedulers.newParallel("pool", 10))
+                .publishOn(Schedulers.parallel())
                 .flatMap(start -> cache.getToken()
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
@@ -69,7 +69,7 @@ public class TokenCacheTests {
             .take(100)
             .flatMap(i -> Mono.just(OffsetDateTime.now())
                 // Runs cache.getToken() on 10 different threads
-                .subscribeOn(Schedulers.newParallel("pool", 10))
+                .subscribeOn(Schedulers.parallel())
                 .flatMap(start -> cache.getToken()
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {

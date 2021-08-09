@@ -25,8 +25,12 @@ import java.nio.file.Paths
 class FileTestHelper {
     private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
 
-    static boolean assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
-        return expectedStatusCode == response.getStatusCode()
+    static boolean assertResponseStatusCode(Response<?> response, int... expectedStatusCode) {
+        boolean result = false
+        for (int statusCode : expectedStatusCode) {
+            result |= statusCode == response.getStatusCode()
+        }
+        return result
     }
 
     static <T extends Throwable> boolean assertExceptionStatusCodeAndMessage(T throwable, int expectedStatusCode, ShareErrorCode errMessage) {

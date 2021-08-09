@@ -318,6 +318,13 @@ public final class SapTableSource extends TabularSource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SapTableSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -1,8 +1,28 @@
 # Release History
 
-## 3.1.0 (Unreleased)
+## 3.2.0-beta.1 (Unreleased)
+
+
+## 3.1.2 (2021-07-08)
+### Other changes
+- Updated test infrastructure to remove dependency on network call recorded data.
+
+#### Dependency Updates
+- Updated `azure-core` to `1.18.0`.
+- Updated `azure-core-http-netty` to `1.10.1`.
+
+## 3.1.1 (2021-06-09)
+
+### Bug Fixes
+
+- Fixed invoices and other recognition operations to avoid Null Pointer Exception when data returned with no
+  sub-line item fields detected.
+- Fixed invoices and other recognition operations that return a `FormField` with `text`
+  and no `boundingBox` or `page` information.
+
+## 3.1.0 (2021-05-26)
 ### Features Added
-- This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.4`.
+- This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.3`.
 - Added `clientOptions()` and `getDefaultLogOptions()` methods to the `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`.
 - We are able to support multiple service API versions now: `V2_0` and `V2_1`.
 - Add more static values to `FormRecognizerLanguage` expandable string class.
@@ -21,8 +41,15 @@
   For example, renamed `beginRecognizeIdDocuments` to `beginRecognizeIdentityDocuments`.
 - Renamed the method `asCountry` to `asCountryRegion`.
 - Renamed value `COUNTRY` to `COUNTRY_REGION` in the model `FieldValuetype`.
+- Renamed the property `fieldBoundingBox` to `boundingBox` in the class `FormTable`.
 - Make `FormLine`, `FormPage`, `FormTable`, `FormSelectionMark`, `TextAppearance`, `CustomFormModel`, `CustomFormModelInfo`, `CustomFormModelProperties`
   `CustomFormSubmodel`, `TrainingDocumentInfo` model class immutable.
+
+## 3.0.8 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
 
 ## 3.0.7 (2021-04-07)
 ### Dependency updates
@@ -132,7 +159,7 @@ respectively
 ## 1.0.0-beta.4 (2020-07-07)
 ### Breaking Changes
 - `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See
-[this](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java)
+[this](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java)
 suggested approach for extracting information from receipts.
 - Methods returning `textContent` have been renamed to `fieldElements` on `FieldData` and `FormTableCell`
 - Renamed `FormContent` to `FormElement`

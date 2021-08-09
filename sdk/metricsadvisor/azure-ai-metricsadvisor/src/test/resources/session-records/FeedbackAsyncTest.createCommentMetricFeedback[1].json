@@ -1,43 +1,43 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "107d5f8a-c246-4f5f-bdf3-aa7d49b5aaad",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "fc096570-499c-47f4-86c8-1b372f2789c7",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "1f0d03ba-7f44-4e55-84cd-9169a6999baa",
-      "x-envoy-upstream-service-time" : "227",
+      "x-request-id" : "75071ca4-cbcb-4d69-84dd-e9bf4d909759",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "455",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "1f0d03ba-7f44-4e55-84cd-9169a6999baa",
+      "apim-request-id" : "75071ca4-cbcb-4d69-84dd-e9bf4d909759",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 30 Mar 2021 15:56:50 GMT",
-      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/9c2b1717-e639-474e-babe-d2a46a8e273d"
+      "Date" : "Tue, 06 Jul 2021 19:51:33 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/1c652c15-9619-492f-aff8-e67e7aacd7ea"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric/9c2b1717-e639-474e-babe-d2a46a8e273d",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/1c652c15-9619-492f-aff8-e67e7aacd7ea",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "7dccc579-ce66-4dde-ad36-52382a247e17"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
+      "x-ms-client-request-id" : "4395081b-e088-4c02-9090-68e454399941"
     },
     "Response" : {
-      "x-request-id" : "d7028bb6-904b-43af-92eb-59a9eb6e4544",
-      "x-envoy-upstream-service-time" : "47",
+      "x-request-id" : "c2a0fe6a-b562-4728-b3de-86f55acfe077",
+      "content-length" : "420",
+      "x-envoy-upstream-service-time" : "81",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "d7028bb6-904b-43af-92eb-59a9eb6e4544",
+      "apim-request-id" : "c2a0fe6a-b562-4728-b3de-86f55acfe077",
       "retry-after" : "0",
-      "Content-Length" : "420",
       "StatusCode" : "200",
-      "Body" : "{\"feedbackId\":\"9c2b1717-e639-474e-babe-d2a46a8e273d\",\"createdTime\":\"2021-03-30T15:56:50.248Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}",
-      "Date" : "Tue, 30 Mar 2021 15:56:49 GMT",
+      "Body" : "{\"feedbackId\":\"1c652c15-9619-492f-aff8-e67e7aacd7ea\",\"createdTime\":\"2021-07-06T19:51:33.846Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}",
+      "Date" : "Tue, 06 Jul 2021 19:51:33 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -1,7 +1,21 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
 
+### Dependency Updates
+
+- Updated `api-version` of features to `2021-07-01`.
+
+### Features Added
+
+- Added support for `resourceProviderName` and `featureName` in `Feature`.
+
+## 2.6.0 (2021-06-18)
+
+- Added support for Challenge Based Authentication in `AuthenticationPolicy`.
+- Added support for `parameters` in `PolicyDefinition` and `PolicyAssignment`.
+
+## 2.5.0 (2021-05-28)
 - Updated `api-version` of resources to `2021-01-01`
 - Updated `api-version` of subscriptions to `2021-01-01`
 - Updated `api-version` of policy to `2020-09-01`

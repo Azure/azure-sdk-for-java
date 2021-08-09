@@ -81,4 +81,4 @@ Developing version naming convention is like `0.1.2-beta.1`. Release version nam
 
 ## Contribute to code
 Contribution is welcome. Please follow 
-[this instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) to contribute code.
+[this instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) to contribute code.

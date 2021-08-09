@@ -9,10 +9,12 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Abstract class to share properties between concrete selectors. */
 @Fluent
-public class SearchIndexerKnowledgeStoreBlobProjectionSelector extends SearchIndexerKnowledgeStoreProjectionSelector {
+public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
+        extends SearchIndexerKnowledgeStoreProjectionSelector {
     /*
      * Blob container to store projections in.
      */
@@ -37,5 +39,36 @@ public class SearchIndexerKnowledgeStoreBlobProjectionSelector extends SearchInd
      */
     public String getStorageContainer() {
         return this.storageContainer;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreBlobProjectionSelector setReferenceKeyName(String referenceKeyName) {
+        super.setReferenceKeyName(referenceKeyName);
+        return this;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreBlobProjectionSelector setGeneratedKeyName(String generatedKeyName) {
+        super.setGeneratedKeyName(generatedKeyName);
+        return this;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreBlobProjectionSelector setSource(String source) {
+        super.setSource(source);
+
+        return this;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreBlobProjectionSelector setSourceContext(String sourceContext) {
+        super.setSourceContext(sourceContext);
+        return this;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreBlobProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
+        super.setInputs(inputs);
+        return this;
     }
 }

@@ -14,6 +14,7 @@
       <id>coverage</id>
       <modules>
         <module>azure-monitor-opentelemetry-exporter</module>
+        <module>azure-monitor-query</module>
       </modules>
 
       <dependencies>
@@ -21,6 +22,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
           <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-monitor-query</artifactId>
+          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
         </dependency>
       </dependencies>
 
@@ -53,6 +59,8 @@
       </activation>
       <modules>
         <module>azure-monitor-opentelemetry-exporter</module>
+        <module>azure-monitor-query</module>
+        <module>azure-monitor-query-perf</module>
       </modules>
     </profile>
   </profiles>

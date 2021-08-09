@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -31,13 +30,11 @@ import java.util.Objects;
  * the desired client.
  *
  * <p>The client needs the service endpoint of the Azure Container Registry and Azure access credentials.
- * <p><strong>Instantiating an asynchronous {@link ContainerRegistryAsyncClient}</strong></p>
+ * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
+ * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation}
  *
- * {@codesnippet com.azure.containers.containerregistry.async.repository.instantiation}
- *
- * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
- *
- * {@codesnippet com.azure.containers.containerregistry.repository.instantiation}
+ * <p><strong>Instantiating a synchronous Container Registry client</strong></p>
+ * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.instantiation}
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
@@ -49,13 +46,11 @@ import java.util.Objects;
  * would need to provide implementation for this policy as well.
  * For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a>.</p>
  *
- * <p><strong>Instantiating an asynchronous {@link ContainerRegistryAsyncClient}</strong></p>
+ * <p><strong>Instantiating an asynchronous Container Registry client using a custom pipeline</strong></p>
+ * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation}
  *
- * {@codesnippet com.azure.containers.containerregistry.async.repository.pipeline.instantiation}
- *
- * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
- *
- * {@codesnippet com.azure.containers.containerregistry.repository.pipeline.instantiation}
+ * <p><strong>Instantiating a synchronous Container Registry client with custom pipeline</strong></p>
+ * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation}
  *
  *
  * @see ContainerRegistryAsyncClient
@@ -89,6 +84,7 @@ public final class ContainerRegistryClientBuilder {
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
     private ContainerRegistryServiceVersion version;
+    private String authenticationScope;
 
     /**
      * Sets the service endpoint for the Azure Container Registry instance.
@@ -105,6 +101,23 @@ public final class ContainerRegistryClientBuilder {
         }
 
         this.endpoint = endpoint;
+        return this;
+    }
+
+    /**
+     * Sets the authentication scope to be used for getting AAD credentials.
+     *
+     * <p> To connect to a different cloud, set this value to "&lt;resource-id&gt;/.default",
+     * where &lt;resource-id&gt; is one of the Resource IDs listed at
+     * https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities#azure-resource-manager.
+     * For example, to connect to the Azure Germany cloud, {@code authenticationScope} is set to "https://management.microsoftazure.de/.default".
+     * </p>
+     *
+     * @param authenticationScope ARM management scope associated with the given registry.
+     * @return The updated {@link ContainerRegistryClientBuilder} object.
+     */
+    public ContainerRegistryClientBuilder authenticationScope(String authenticationScope) {
+        this.authenticationScope = authenticationScope;
         return this;
     }
 
@@ -283,6 +296,7 @@ public final class ContainerRegistryClientBuilder {
             this.configuration,
             this.retryPolicy,
             this.credential,
+            this.authenticationScope,
             this.perCallPolicies,
             this.perRetryPolicies,
             this.httpClient,

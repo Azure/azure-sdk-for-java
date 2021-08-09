@@ -7,15 +7,24 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
+import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
-
-import java.time.Duration;
+import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 
 /**
- * The {@link KeyVaultBackupClient} provides synchronous methods to perform full backup and restore of an Azure Key
- * Vault.
+ * The {@link KeyVaultBackupClient} provides synchronous methods to perform backup and restore operations of an Azure
+ * Key Vault.
+ *
+ * <p>Instances of this client are obtained by calling the {@link KeyVaultBackupClientBuilder#buildClient()}
+ * method on a {@link KeyVaultBackupClientBuilder} object.</p>
+ *
+ * <p><strong>Samples to construct a sync client</strong></p>
+ * {@codesnippet com.azure.security.keyvault.administration.keyVaultBackupClient.instantiation}
+ *
+ * @see KeyVaultBackupClientBuilder
  */
 @ServiceClient(builder = KeyVaultBackupClientBuilder.class)
 public final class KeyVaultBackupClient {
@@ -42,6 +51,12 @@ public final class KeyVaultBackupClient {
     /**
      * Initiates a full backup of the Key Vault.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Starts a {@link KeyVaultBackupOperation backup operation}, polls for its status and waits for it to complete.
+     * Prints out the details of the operation's final result in case of success or prints out error details in case the
+     * operation fails.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultBackupClient.beginBackup#String-String}
+     *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup will be located.
      * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
      *
@@ -56,25 +71,12 @@ public final class KeyVaultBackupClient {
     }
 
     /**
-     * Initiates a full backup of the Key Vault.
-     *
-     * @param blobStorageUrl The URL for the Blob Storage resource where the backup will be located.
-     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param pollingInterval The interval at which the operation status will be polled for.
-     *
-     * @return A {@link SyncPoller} polling on the {@link KeyVaultBackupOperation backup operation} status.
-     *
-     * @throws KeyVaultAdministrationException If the given {@code blobStorageUrl} or {@code sasToken} are invalid.
-     * @throws NullPointerException If the {@code blobStorageUrl} or {@code sasToken} are {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken,
-                                                                   Duration pollingInterval) {
-        return asyncClient.beginBackup(blobStorageUrl, sasToken, pollingInterval).getSyncPoller();
-    }
-
-    /**
      * Initiates a full restore of the Key Vault.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Starts a {@link KeyVaultRestoreOperation restore operation}, polls for its status and waits for it to
+     * complete. Prints out error details in case the operation fails.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultBackupClient.beginBackup#String-String}
      *
      * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
      * the blob container where the backup resides. This would be the exact value that is returned as the result of a
@@ -88,34 +90,18 @@ public final class KeyVaultBackupClient {
      * @throws NullPointerException If the {@code folderUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String folderUrl, String sasToken) {
+    public SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> beginRestore(String folderUrl, String sasToken) {
         return asyncClient.beginRestore(folderUrl, sasToken).getSyncPoller();
     }
 
     /**
-     * Initiates a full restore of the Key Vault.
-     *
-     * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
-     * the blob container where the backup resides. This would be the exact value that is returned as the result of a
-     * backup operation. An example of such a URL may look like the following:
-     * https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
-     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param pollingInterval The interval at which the operation status will be polled for.
-     *
-     * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
-     *
-     * @throws KeyVaultAdministrationException If the given {@code folderUrl} or {@code sasToken} are invalid.
-     * @throws NullPointerException If the {@code folderUrl} or {@code sasToken} are {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String folderUrl, String sasToken,
-                                                                   Duration pollingInterval) {
-        return asyncClient.beginRestore(folderUrl, sasToken, pollingInterval).getSyncPoller();
-    }
-
-    /**
      * Restores all versions of a given key using the supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Starts a {@link KeyVaultSelectiveKeyRestoreOperation selective key restore operation}, polls for its status
+     * and waits for it to complete. Prints out error details in case the operation fails.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultBackupClient.beginSelectiveKeyRestore#String-String-String}
      *
      * @param keyName The name of the key to be restored.
      * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
@@ -131,32 +117,7 @@ public final class KeyVaultBackupClient {
      * null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String folderUrl,
-                                                                            String sasToken) {
-        return asyncClient.beginSelectiveRestore(keyName, folderUrl, sasToken).getSyncPoller();
-    }
-
-    /**
-     * Restores all versions of a given key using the supplied SAS token pointing to a previously stored Azure Blob
-     * storage backup folder.
-     *
-     * @param keyName The name of the key to be restored.
-     * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
-     * the blob container where the backup resides. This would be the exact value that is returned as the result of a
-     * backup operation. An example of such a URL may look like the following:
-     * https://contoso.blob.core.windows.net/backup/mhsm-contoso-2020090117323313.
-     * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
-     * @param pollingInterval The interval at which the operation status will be polled for.
-     *
-     * @return A {@link SyncPoller} to poll on the {@link KeyVaultRestoreOperation restore operation} status.
-     *
-     * @throws KeyVaultAdministrationException If the given {@code folderUrl} or {@code sasToken} are invalid.
-     * @throws NullPointerException If the {@code keyName}, {@code folderUrl} or {@code sasToken} are {@code
-     * null}.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String folderUrl,
-                                                                            String sasToken, Duration pollingInterval) {
-        return asyncClient.beginSelectiveRestore(keyName, folderUrl, sasToken, pollingInterval).getSyncPoller();
+    public SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> beginSelectiveKeyRestore(String keyName, String folderUrl, String sasToken) {
+        return asyncClient.beginSelectiveKeyRestore(keyName, folderUrl, sasToken).getSyncPoller();
     }
 }

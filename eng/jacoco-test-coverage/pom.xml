@@ -44,17 +44,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>3.1.0</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-metricsadvisor</artifactId>
-      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-textanalytics</artifactId>
-      <version>5.1.0-beta.7</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+      <version>5.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
     </dependency>
     <dependency>
     <groupId>com.azure</groupId>
@@ -68,6 +68,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-communication-identity</artifactId>
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-communication-sms</artifactId>
       <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
     </dependency>
@@ -78,8 +83,13 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-communication-callingserver</artifactId>
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-containers-containerregistry</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -99,12 +109,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -114,7 +124,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -124,22 +134,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-avro-apache</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+      <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -154,22 +164,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+      <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -184,7 +194,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-tables</artifactId>
-      <version>12.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+      <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -199,102 +209,117 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.3.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
+      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <version>1.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.3.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-webpubsub</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-query</artifactId>
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.4.0-beta.3</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.5.0-beta.2</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-administration</artifactId>
-      <version>4.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
+      <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.2.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-jca</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.3.0-beta.9</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.4.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.3.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+      <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.12.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.12.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-batch</artifactId>
-      <version>12.10.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+      <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-changefeed</artifactId>
-      <version>12.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
+      <version>12.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.12.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-nio</artifactId>
-      <version>12.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
+      <version>12.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.10.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+      <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <version>12.7.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.0.5-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.10.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+      <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -302,201 +327,190 @@
       <version>1.2.1-beta.16</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
-    </dependency>
-
-    <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appplatform</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appservice</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-compute</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerinstance</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerregistry</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerservice</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-dns</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-keyvault</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-keyvault;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-keyvault;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-monitor</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-msi</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-sql</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-identity-spring</artifactId>
-      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
+      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>3.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter</artifactId>
-      <version>3.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-      <version>3.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
+      <version>3.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-      <version>3.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-      <version>3.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-      <version>3.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-cosmos</artifactId>
-      <version>3.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-cosmos;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
-      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-data-gremlin;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-storage</artifactId>
-      <version>3.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-storage;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-storage;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-telemetry</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-core</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-test</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-test;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-test;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-eventhubs</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-servicebus</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-storage-queue</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-storage</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-messaging</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -506,62 +520,62 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter-cache</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-cache;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-cache;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter-eventhubs-kafka</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-servicebus;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-storage-queue;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-servicebus-core</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-test</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
     </dependency>
 	  <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-digitaltwins-core</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-authentication</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

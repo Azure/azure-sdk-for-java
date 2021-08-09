@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-internal-avro</artifactId>
-  <version>12.0.5-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+  <version>12.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
 
   <name>Microsoft Azure internal Avro module for Storage</name>
   <description>This module contains internal use only avro parser code based for Microsoft Azure Storage client libraries.</description>
@@ -41,22 +41,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.12.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.5</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -68,9 +68,27 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.12.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.14.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.14.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.14.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-datafactory</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -74,13 +74,103 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+// storage account
+StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
+    .withRegion(REGION)
+    .withExistingResourceGroup(RESOURCE_GROUP)
+    .create();
+final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
+final String connectionString = getStorageConnectionString(STORAGE_ACCOUNT, storageAccountKey, storageManager.environment());
+
+// container
+final String containerName = "adf";
+storageManager.blobContainers().defineContainer(containerName)
+    .withExistingBlobService(RESOURCE_GROUP, STORAGE_ACCOUNT)
+    .withPublicAccess(PublicAccess.NONE)
+    .create();
+
+// blob as input
+BlobClient blobClient = new BlobClientBuilder()
+    .connectionString(connectionString)
+    .containerName(containerName)
+    .blobName("input/data.txt")
+    .buildClient();
+blobClient.upload(BinaryData.fromString("data"));
+
+// data factory
+manager.factories().define(DATA_FACTORY)
+    .withRegion(REGION)
+    .withExistingResourceGroup(RESOURCE_GROUP)
+    .create();
+
+// linked service
+final Map<String, String> connectionStringProperty = new HashMap<>();
+connectionStringProperty.put("type", "SecureString");
+connectionStringProperty.put("value", connectionString);
+
+final String linkedServiceName = "LinkedService";
+manager.linkedServices().define(linkedServiceName)
+    .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+    .withProperties(new AzureStorageLinkedService()
+        .withConnectionString(connectionStringProperty))
+    .create();
+
+// input dataset
+final String inputDatasetName = "InputDataset";
+manager.datasets().define(inputDatasetName)
+    .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+    .withProperties(new AzureBlobDataset()
+        .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
+        .withFolderPath(containerName)
+        .withFileName("input/data.txt")
+        .withFormat(new TextFormat()))
+    .create();
+
+// output dataset
+final String outputDatasetName = "OutputDataset";
+manager.datasets().define(outputDatasetName)
+    .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+    .withProperties(new AzureBlobDataset()
+        .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
+        .withFolderPath(containerName)
+        .withFileName("output/data.txt")
+        .withFormat(new TextFormat()))
+    .create();
+
+// pipeline
+PipelineResource pipeline = manager.pipelines().define("CopyBlobPipeline")
+    .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+    .withActivities(Collections.singletonList(new CopyActivity()
+        .withName("CopyBlob")
+        .withSource(new BlobSource())
+        .withSink(new BlobSink())
+        .withInputs(Collections.singletonList(new DatasetReference().withReferenceName(inputDatasetName)))
+        .withOutputs(Collections.singletonList(new DatasetReference().withReferenceName(outputDatasetName)))))
+    .create();
+
+// run pipeline
+CreateRunResponse createRun = pipeline.createRun();
+
+// wait for completion
+PipelineRun pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
+String runStatus = pipelineRun.status();
+while ("InProgress".equals(runStatus)) {
+    sleepIfRunningAgainstService(10 * 1000);    // wait 10 seconds
+    pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
+    runStatus = pipelineRun.status();
+}
+```
+[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/datafactory/azure-resourcemanager-datafactory/SAMPLE.md)
+
+
 ## Troubleshooting
 
 ## Next steps
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)
@@ -93,7 +183,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity
-[azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty
-[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
-[design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
+[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
+[design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md

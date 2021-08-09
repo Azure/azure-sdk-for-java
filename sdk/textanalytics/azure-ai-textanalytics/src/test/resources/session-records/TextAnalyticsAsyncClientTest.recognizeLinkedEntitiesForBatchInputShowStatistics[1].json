@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//entities/linking?showStats=true&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/linking?showStats=true&loggingOptOut=false&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.5 (11.0.9.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6d3989c4-e86e-41d4-9918-c0f07d829a31",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c08ac593-7303-474d-8fd7-d3333aec9257",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "485",
+      "x-envoy-upstream-service-time" : "11",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2",
-      "apim-request-id" : "ed5c53ab-ae13-4654-8a61-2acedc166e9c",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
+      "apim-request-id" : "b6abdc90-dfa1-4430-bec5-012c05f95141",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"statistics\":{\"documentsCount\":2,\"validDocumentsCount\":2,\"erroneousDocumentsCount\":0,\"transactionsCount\":2},\"documents\":[{\"id\":\"0\",\"statistics\":{\"charactersCount\":44,\"transactionsCount\":1},\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]},{\"id\":\"1\",\"statistics\":{\"charactersCount\":20,\"transactionsCount\":1},\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":10,\"length\":9,\"confidenceScore\":0.25}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-02-01\"}",
-      "Date" : "Wed, 24 Feb 2021 03:03:22 GMT",
+      "Body" : "{\"statistics\":{\"documentsCount\":2,\"validDocumentsCount\":2,\"erroneousDocumentsCount\":0,\"transactionsCount\":2},\"documents\":[{\"id\":\"0\",\"statistics\":{\"charactersCount\":44,\"transactionsCount\":1},\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]},{\"id\":\"1\",\"statistics\":{\"charactersCount\":20,\"transactionsCount\":1},\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":10,\"length\":9,\"confidenceScore\":0.25}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}",
+      "Date" : "Fri, 30 Jul 2021 18:06:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

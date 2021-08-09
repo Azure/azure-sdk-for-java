@@ -23,8 +23,8 @@ public class DesignPreviewSamples {
 
     private final String rgName = "rg-test";
     private final String contentVersion = "1.0.0.0";
-    private final String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json";
-    private final String parametersUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json";
+    private final String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-cognitive-services-translate/azuredeploy.json";
+    private final String parametersUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-cognitive-services-translate/azuredeploy.parameters.json";
 
     // extra empty lines to compensate import lines
 

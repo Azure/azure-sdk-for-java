@@ -83,6 +83,13 @@ public final class ZohoSource extends TabularSource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ZohoSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

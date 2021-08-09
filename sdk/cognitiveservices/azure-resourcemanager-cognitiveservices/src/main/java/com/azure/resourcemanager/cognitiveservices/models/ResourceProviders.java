@@ -19,7 +19,7 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return check SKU availability result list.
      */
-    CheckSkuAvailabilityResultList checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters);
+    SkuAvailabilityListResult checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters);
 
     /**
      * Check available SKUs.
@@ -32,7 +32,7 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return check SKU availability result list.
      */
-    Response<CheckSkuAvailabilityResultList> checkSkuAvailabilityWithResponse(
+    Response<SkuAvailabilityListResult> checkSkuAvailabilityWithResponse(
         String location, CheckSkuAvailabilityParameter parameters, Context context);
 
     /**
@@ -42,9 +42,9 @@ public interface ResourceProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check Domain availability result.
+     * @return domain availability.
      */
-    CheckDomainAvailabilityResult checkDomainAvailability(CheckDomainAvailabilityParameter parameters);
+    DomainAvailability checkDomainAvailability(CheckDomainAvailabilityParameter parameters);
 
     /**
      * Check whether a domain is available.
@@ -54,8 +54,8 @@ public interface ResourceProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check Domain availability result.
+     * @return domain availability.
      */
-    Response<CheckDomainAvailabilityResult> checkDomainAvailabilityWithResponse(
+    Response<DomainAvailability> checkDomainAvailabilityWithResponse(
         CheckDomainAvailabilityParameter parameters, Context context);
 }

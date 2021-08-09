@@ -3,7 +3,6 @@
 
 package com.azure.ai.metricsadvisor.perf;
 
-import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
 import com.azure.ai.metricsadvisor.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
@@ -25,8 +24,7 @@ public class IncidentsListTest extends ServiceTest<PerfStressOptions> {
     public void run() {
         super.metricsAdvisorClient
             .listIncidentsForAlert(super.alertConfigId,
-                super.alertId,
-                new ListIncidentsAlertedOptions())
+                super.alertId)
             .stream()
             .limit(super.maxListElements)
             .forEach(incident -> {
@@ -37,8 +35,7 @@ public class IncidentsListTest extends ServiceTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         return super.metricsAdvisorAsyncClient
             .listIncidentsForAlert(super.alertConfigId,
-                super.alertId,
-                new ListIncidentsAlertedOptions())
+                super.alertId)
             .take(super.maxListElements)
             .then();
     }

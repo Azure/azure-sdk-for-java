@@ -179,7 +179,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -213,7 +213,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -294,7 +294,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -339,7 +339,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -449,7 +449,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -514,7 +514,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -756,7 +756,7 @@ public final class ExpressRouteGatewaysClientImpl
                 .error(
                     new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         TagsObject expressRouteGatewayParameters = new TagsObject();
         expressRouteGatewayParameters.withTags(tags);
@@ -812,7 +812,7 @@ public final class ExpressRouteGatewaysClientImpl
                 .error(
                     new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         TagsObject expressRouteGatewayParameters = new TagsObject();
         expressRouteGatewayParameters.withTags(tags);
@@ -1060,7 +1060,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1112,7 +1112,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1217,7 +1217,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1270,7 +1270,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

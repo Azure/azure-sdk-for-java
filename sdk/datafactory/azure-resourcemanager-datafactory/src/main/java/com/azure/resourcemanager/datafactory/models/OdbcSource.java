@@ -80,6 +80,13 @@ public final class OdbcSource extends TabularSource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public OdbcSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

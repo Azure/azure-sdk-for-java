@@ -41,15 +41,15 @@ public final class ShareFileSasPermission {
      * Creates an {@code ShareFileSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code ShareFileSasPermission}.
+     * @param permissionString A {@code String} which represents the {@code ShareFileSasPermission}.
      * @return A {@code ShareFileSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, c, w, or d.
+     * @throws IllegalArgumentException If {@code permissionString} contains a character other than r, c, w, or d.
      */
-    public static ShareFileSasPermission parse(String permString) {
+    public static ShareFileSasPermission parse(String permissionString) {
         ShareFileSasPermission permissions = new ShareFileSasPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.readPermission = true;
@@ -66,7 +66,7 @@ public final class ShareFileSasPermission {
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                            "Permissions", permissionString, c));
             }
         }
         return permissions;

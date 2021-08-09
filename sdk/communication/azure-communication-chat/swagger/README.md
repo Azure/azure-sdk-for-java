@@ -21,24 +21,25 @@ There is one swagger for Chat management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.11 --use=@autorest/modelerfour@4.15.442
+autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 ```
 
 ## Update generated files for chat service
 To update generated files for chat service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.11 --use=@autorest/modelerfour@4.15.442
+> autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 ``` yaml
-tag: package-chat-2021-03-07
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bf081421869ccd31d9fd87084b07a1e246aee310/specification/communication/data-plane/Microsoft.CommunicationServicesChat/readme.md
+tag: package-chat-2021-04-05-preview6
+require:
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/29e0c9624a8e60138127457f2e863bb4a9ba1419/specification/communication/data-plane/Chat/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult
+custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult,TypingNotificationOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false
@@ -141,6 +142,25 @@ directive:
   transform: >
     if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("UpdateChatThreadRequest")) {
         const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/UpdateChatThreadOptions");
+        $.schema = { "$ref": path };
+    }
+```
+
+### Rename SendTypingNotificationRequest to TypingNotificationOptions
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.TypingNotificationOptions) {
+      $.TypingNotificationOptions = $.SendTypingNotificationRequest;
+      delete $.TypingNotificationRequest;
+    }
+- from: swagger-document
+  where: $["paths"]["/chat/threads/{chatThreadId}/typing"].post.parameters[2]
+  transform: >
+    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("SendTypingNotificationRequest")) {
+        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/TypingNotificationOptions");
         $.schema = { "$ref": path };
     }
 ```

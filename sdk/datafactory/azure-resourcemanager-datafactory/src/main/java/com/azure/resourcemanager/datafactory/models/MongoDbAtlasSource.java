@@ -192,6 +192,13 @@ public final class MongoDbAtlasSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -4,8 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -29,9 +27,8 @@ import java.util.UUID;
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerDataFeed.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStorageGen2", value = AzureDataLakeStorageGen2DataFeed.class),
     @JsonSubTypes.Type(name = "AzureEventHubs", value = AzureEventHubsDataFeed.class),
+    @JsonSubTypes.Type(name = "AzureLogAnalytics", value = AzureLogAnalyticsDataFeed.class),
     @JsonSubTypes.Type(name = "AzureTable", value = AzureTableDataFeed.class),
-    @JsonSubTypes.Type(name = "Elasticsearch", value = ElasticsearchDataFeed.class),
-    @JsonSubTypes.Type(name = "HttpRequest", value = HttpRequestDataFeed.class),
     @JsonSubTypes.Type(name = "InfluxDB", value = InfluxDBDataFeed.class),
     @JsonSubTypes.Type(name = "MySql", value = MySqlDataFeed.class),
     @JsonSubTypes.Type(name = "PostgreSql", value = PostgreSqlDataFeed.class),

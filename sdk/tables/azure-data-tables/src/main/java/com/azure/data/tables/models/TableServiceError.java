@@ -2,9 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * A class that represents an error occurred in a Tables operation.
  */
+@Immutable
 public final class TableServiceError {
     /*
      * The service error code.

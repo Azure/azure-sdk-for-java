@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -36,11 +37,14 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
 import com.azure.resourcemanager.network.models.LoadBalancerListResult;
+import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequest;
+import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequestFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -166,6 +170,21 @@ public final class LoadBalancersClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}"
+                + "/setLoadBalancerFrontendPublicIpAddresses")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> swapPublicIpAddresses(
+            @HostParam("$host") String endpoint,
+            @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") LoadBalancerVipSwapRequest parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -218,7 +237,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -269,7 +288,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -452,7 +471,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -505,7 +524,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -642,7 +661,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -700,7 +719,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -904,7 +923,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
@@ -959,7 +978,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
@@ -1080,7 +1099,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1122,7 +1141,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1218,7 +1237,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1272,7 +1291,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1353,6 +1372,288 @@ public final class LoadBalancersClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> swapPublicIpAddressesWithResponseAsync(
+        String location, List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (frontendIpConfigurations != null) {
+            frontendIpConfigurations.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
+        LoadBalancerVipSwapRequest parameters = new LoadBalancerVipSwapRequest();
+        parameters.withFrontendIpConfigurations(frontendIpConfigurations);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .swapPublicIpAddresses(
+                            this.client.getEndpoint(),
+                            location,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> swapPublicIpAddressesWithResponseAsync(
+        String location,
+        List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (frontendIpConfigurations != null) {
+            frontendIpConfigurations.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
+        LoadBalancerVipSwapRequest parameters = new LoadBalancerVipSwapRequest();
+        parameters.withFrontendIpConfigurations(frontendIpConfigurations);
+        context = this.client.mergeContext(context);
+        return service
+            .swapPublicIpAddresses(
+                this.client.getEndpoint(),
+                location,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginSwapPublicIpAddressesAsync(
+        String location, List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            swapPublicIpAddressesWithResponseAsync(location, frontendIpConfigurations);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginSwapPublicIpAddressesAsync(
+        String location,
+        List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            swapPublicIpAddressesWithResponseAsync(location, frontendIpConfigurations, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(
+        String location, List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations) {
+        return beginSwapPublicIpAddressesAsync(location, frontendIpConfigurations).getSyncPoller();
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(
+        String location,
+        List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations,
+        Context context) {
+        return beginSwapPublicIpAddressesAsync(location, frontendIpConfigurations, context).getSyncPoller();
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> swapPublicIpAddressesAsync(
+        String location, List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations) {
+        return beginSwapPublicIpAddressesAsync(location, frontendIpConfigurations)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> swapPublicIpAddressesAsync(String location) {
+        final List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations = null;
+        return beginSwapPublicIpAddressesAsync(location, frontendIpConfigurations)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> swapPublicIpAddressesAsync(
+        String location,
+        List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations,
+        Context context) {
+        return beginSwapPublicIpAddressesAsync(location, frontendIpConfigurations, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void swapPublicIpAddresses(
+        String location, List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations) {
+        swapPublicIpAddressesAsync(location, frontendIpConfigurations).block();
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void swapPublicIpAddresses(String location) {
+        final List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations = null;
+        swapPublicIpAddressesAsync(location, frontendIpConfigurations).block();
+    }
+
+    /**
+     * Swaps VIPs between two load balancers.
+     *
+     * @param location The region where load balancers are located at.
+     * @param frontendIpConfigurations A list of frontend IP configuration resources that should swap VIPs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void swapPublicIpAddresses(
+        String location,
+        List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations,
+        Context context) {
+        swapPublicIpAddressesAsync(location, frontendIpConfigurations, context).block();
     }
 
     /**

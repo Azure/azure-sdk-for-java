@@ -42,6 +42,7 @@ public class ConnectionHandler extends Handler {
     static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
 
     static final int MAX_FRAME_SIZE = 65536;
+    static final int CONNECTION_IDLE_TIMEOUT = 60_000;  // milliseconds
 
     private final Map<String, Object> connectionProperties;
     private final ConnectionOptions connectionOptions;
@@ -113,6 +114,11 @@ public class ConnectionHandler extends Handler {
      * @param transport Transport to add layers to.
      */
     protected void addTransportLayers(Event event, TransportInternal transport) {
+        // default connection idle timeout is 0.
+        // Giving it a idle timeout will enable the client side to know broken connection faster.
+        // Refer to http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#doc-doc-idle-time-out
+        transport.setIdleTimeout(CONNECTION_IDLE_TIMEOUT);
+
         final SslDomain sslDomain = Proton.sslDomain();
         sslDomain.init(SslDomain.Mode.CLIENT);
 

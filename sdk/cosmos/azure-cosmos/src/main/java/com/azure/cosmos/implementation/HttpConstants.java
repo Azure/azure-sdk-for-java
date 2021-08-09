@@ -273,7 +273,7 @@ public class HttpConstants {
     }
 
     public static class Versions {
-        public static final String CURRENT_VERSION = "2018-12-31";
+        public static final String CURRENT_VERSION = "2020-07-15";
         public static final String QUERY_VERSION = "1.0";
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
@@ -340,6 +340,9 @@ public class HttpConstants {
 
         // Client generated offer not configured exception
         public static final int OFFER_NOT_CONFIGURED = 10004;
+
+        // Client generated request rate too large exception
+        public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
     }
 
     public static class HeaderValues {

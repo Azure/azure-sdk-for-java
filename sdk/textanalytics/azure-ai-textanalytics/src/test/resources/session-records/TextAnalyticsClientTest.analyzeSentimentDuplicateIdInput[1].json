@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//sentiment?showStats=false&opinionMining=false&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/sentiment?showStats=false&loggingOptOut=false&opinionMining=false&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.5 (11.0.9.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6177a034-f7fc-4bdb-89db-a8be440dd131",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2de73787-fbb8-453b-9f1a-2078e59edd99",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "6",
+      "x-envoy-upstream-service-time" : "7",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "9253cddf-fd26-4ae8-9092-440828aa252d",
+      "apim-request-id" : "eb83b321-9dea-494a-99cc-eab980e5f947",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Request contains duplicated Ids. Make sure each document has a unique Id.\"}}}",
-      "Date" : "Wed, 24 Feb 2021 02:51:42 GMT",
+      "Date" : "Fri, 30 Jul 2021 17:57:48 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

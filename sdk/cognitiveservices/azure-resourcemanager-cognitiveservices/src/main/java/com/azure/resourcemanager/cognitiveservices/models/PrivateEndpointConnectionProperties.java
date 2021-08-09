@@ -29,6 +29,12 @@ public final class PrivateEndpointConnectionProperties {
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
+     * The provisioning state of the private endpoint connection resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private PrivateEndpointConnectionProvisioningState provisioningState;
+
+    /*
      * The private link resource group ids.
      */
     @JsonProperty(value = "groupIds")
@@ -75,6 +81,15 @@ public final class PrivateEndpointConnectionProperties {
         PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
+     *
+     * @return the provisioningState value.
+     */
+    public PrivateEndpointConnectionProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**

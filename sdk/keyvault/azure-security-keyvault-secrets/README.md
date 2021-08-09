@@ -16,7 +16,7 @@ Maven dependency for the Azure Key Vault Secrets client library. Add it to your 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.3.0-beta.6</version>
+    <version>4.3.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,6 +75,8 @@ Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to
 
     > --secret-permissions:
     > Accepted values: backup, delete, get, list, purge, recover, restore, set
+
+    If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Secrets Officer" in our [RBAC guide][rbac_guide].
 
 * Use the aforementioned Key Vault name to retrieve details of your Vault, which also contain your Key Vault URL:
 
@@ -300,9 +302,9 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
@@ -313,12 +315,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]: https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
-[secrets_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/samples/README.md
+[secrets_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_cloud_shell]: https://shell.azure.com/bash
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2FREADME.png)

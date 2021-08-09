@@ -2,26 +2,40 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/batchai/
+      - sdk/batchai/ci.mgmt.yml
+      - sdk/batchai/mgmt-v2017_09_01_preview/
+      - sdk/batchai/mgmt-v2018_03_01/
+      - sdk/batchai/mgmt-v2018_05_01/
+    exclude:
+      - sdk/batchai/pom.xml
+      - sdk/batchai/mgmt-v2017_09_01_preview/pom.xml
+      - sdk/batchai/mgmt-v2018_03_01/pom.xml
+      - sdk/batchai/mgmt-v2018_05_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/batchai/
+      - sdk/batchai/ci.mgmt.yml
+      - sdk/batchai/mgmt-v2017_09_01_preview/
+      - sdk/batchai/mgmt-v2018_03_01/
+      - sdk/batchai/mgmt-v2018_05_01/
+    exclude:
+      - sdk/batchai/pom.xml
+      - sdk/batchai/mgmt-v2017_09_01_preview/pom.xml
+      - sdk/batchai/mgmt-v2018_03_01/pom.xml
+      - sdk/batchai/mgmt-v2018_05_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

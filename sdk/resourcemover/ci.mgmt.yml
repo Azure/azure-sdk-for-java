@@ -2,26 +2,32 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/resourcemover/
+      - sdk/resourcemover/ci.mgmt.yml
+      - sdk/resourcemover/mgmt-v2021_01_01/
+    exclude:
+      - sdk/resourcemover/pom.xml
+      - sdk/resourcemover/mgmt-v2021_01_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/resourcemover/
+      - sdk/resourcemover/ci.mgmt.yml
+      - sdk/resourcemover/mgmt-v2021_01_01/
+    exclude:
+      - sdk/resourcemover/pom.xml
+      - sdk/resourcemover/mgmt-v2021_01_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

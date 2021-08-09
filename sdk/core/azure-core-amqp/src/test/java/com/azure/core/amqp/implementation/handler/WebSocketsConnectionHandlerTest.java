@@ -6,9 +6,9 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import org.apache.qpid.proton.Proton;
@@ -69,8 +69,10 @@ public class WebSocketsConnectionHandlerTest {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
+            AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS,
+            scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
+
         this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
     }
 
@@ -181,9 +183,9 @@ public class WebSocketsConnectionHandlerTest {
         final int port = 9888;
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(fullyQualifiedNamespace, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION,
-            customEndpoint, port);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
+            AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler,
+            CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpoint, port);
 
         try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions,
             peerDetails)) {

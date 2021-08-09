@@ -24,7 +24,8 @@ public class KeyVaultKeyManagerTest {
     @BeforeEach
     public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
         CertificateException {
-        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),

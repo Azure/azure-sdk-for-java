@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateEndpointConnectionInner;
 
@@ -32,6 +33,13 @@ public interface PrivateEndpointConnection {
     String type();
 
     /**
+     * Gets the etag property: Resource Etag.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the properties property: Resource properties.
      *
      * @return the properties value.
@@ -39,11 +47,11 @@ public interface PrivateEndpointConnection {
     PrivateEndpointConnectionProperties properties();
 
     /**
-     * Gets the etag property: Entity Tag.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
-     * @return the etag value.
+     * @return the systemData value.
      */
-    String etag();
+    SystemData systemData();
 
     /**
      * Gets the location property: The location of the private endpoint connection.

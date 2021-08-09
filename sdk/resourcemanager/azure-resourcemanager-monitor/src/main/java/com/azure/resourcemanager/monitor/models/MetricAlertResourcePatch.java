@@ -105,6 +105,12 @@ public class MetricAlertResourcePatch {
     @JsonProperty(value = "properties.lastUpdatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedTime;
 
+    /*
+     * the value indicating whether this alert rule is migrated.
+     */
+    @JsonProperty(value = "properties.isMigrated", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isMigrated;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -364,6 +370,15 @@ public class MetricAlertResourcePatch {
      */
     public OffsetDateTime lastUpdatedTime() {
         return this.lastUpdatedTime;
+    }
+
+    /**
+     * Get the isMigrated property: the value indicating whether this alert rule is migrated.
+     *
+     * @return the isMigrated value.
+     */
+    public Boolean isMigrated() {
+        return this.isMigrated;
     }
 
     /**

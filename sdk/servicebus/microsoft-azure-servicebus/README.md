@@ -7,7 +7,7 @@
 > Please note, a newer package [com.azure:azure-messaging-servicebus](https://search.maven.org/artifact/com.azure/azure-messaging-servicebus) for [Azure Service Bus](https://azure.microsoft.com/services/service-bus/) is available as of December 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the [migration guide](https://aka.ms/azsdk/java/migrate/sb) for more details.
 
 This is the Java client library for Azure Service Bus that focuses on Queues & Topics. If you are looking for Event Hubs and Relay clients, follow the below links:
-* [Event Hubs](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventhubs/microsoft-azure-eventhubs)
+* [Event Hubs](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/microsoft-azure-eventhubs)
 * [Relay](https://github.com/azure/azure-relay-dotnet)
 
 Azure Service Bus is an asynchronous messaging cloud platform that enables you to send and receive messages between decoupled systems. Microsoft offers this feature as a service, which means that you do not need to host any of your own hardware in order to use it.
@@ -21,14 +21,14 @@ The package can be downloaded from [Maven](https://search.maven.org/artifact/com
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-servicebus</artifactId>
-  <version>3.6.3</version>
+  <version>3.6.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ## How to provide feedback
 
-See our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+See our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 ## How to get support
 
@@ -59,7 +59,7 @@ The samples are located in this repo. [Java Samples](https://github.com/Azure/az
 
 ### Can I manage Service Bus entities with this library?
 
-Yes, this client library now has the management functionality built into it. This is made available through the [ManagementClient](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/microsoft-azure-servicebus/src/main/java/com/microsoft/azure/servicebus/management/ManagementClient.java) which now enables create, read(exists), update and delete Queues, Topics, Subscriptions, Rules.
+Yes, this client library now has the management functionality built into it. This is made available through the [ManagementClient](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/microsoft-azure-servicebus/src/main/java/com/microsoft/azure/servicebus/management/ManagementClient.java) which now enables create, read(exists), update and delete Queues, Topics, Subscriptions, Rules.
 
 ### How do I run the unit tests?
 

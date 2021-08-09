@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** A copy activity Azure Blob sink. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -44,6 +45,13 @@ public final class BlobSink extends CopySink {
      */
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
+
+    /*
+     * Specify the custom metadata to be added to sink data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "metadata")
+    private List<MetadataItem> metadata;
 
     /**
      * Get the blobWriterOverwriteFiles property: Blob writer overwrite files. Type: boolean (or Expression with
@@ -131,6 +139,28 @@ public final class BlobSink extends CopySink {
         return this;
     }
 
+    /**
+     * Get the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     *
+     * @return the metadata value.
+     */
+    public List<MetadataItem> metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     *
+     * @param metadata the metadata value to set.
+     * @return the BlobSink object itself.
+     */
+    public BlobSink withMetadata(List<MetadataItem> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public BlobSink withWriteBatchSize(Object writeBatchSize) {
@@ -166,6 +196,13 @@ public final class BlobSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public BlobSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -174,5 +211,8 @@ public final class BlobSink extends CopySink {
     @Override
     public void validate() {
         super.validate();
+        if (metadata() != null) {
+            metadata().forEach(e -> e.validate());
+        }
     }
 }

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata\\.type",
+        property = "@odata.type",
         defaultImpl = CognitiveServicesAccount.class)
 @JsonTypeName("CognitiveServicesAccount")
 @JsonSubTypes({
@@ -28,7 +27,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             name = "#Microsoft.Azure.Search.CognitiveServicesByKey",
             value = CognitiveServicesAccountKey.class)
 })
-@JsonFlatten
 @Fluent
 public abstract class CognitiveServicesAccount {
     /*

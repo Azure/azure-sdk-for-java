@@ -30,6 +30,7 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
@@ -103,6 +104,7 @@ import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnection
 import com.azure.messaging.eventgrid.systemevents.StorageAsyncOperationInitiatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobInventoryPolicyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobTierChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
@@ -248,6 +250,13 @@ public final class SystemEventMappingNames {
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ImagePushed event. */
     public static final String CONTAINER_REGISTRY_IMAGE_PUSHED = "Microsoft.ContainerRegistry.ImagePushed";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
+     * event.
+     */
+    public static final String CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE =
+            "Microsoft.ContainerService.NewKubernetesVersionAvailable";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
     public static final String EVENT_HUB_CAPTURE_FILE_CREATED = "Microsoft.EventHub.CaptureFileCreated";
@@ -602,6 +611,10 @@ public final class SystemEventMappingNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobDeleted event. */
     public static final String STORAGE_BLOB_DELETED = "Microsoft.Storage.BlobDeleted";
 
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobInventoryPolicyCompleted event. */
+    public static final String STORAGE_BLOB_INVENTORY_POLICY_COMPLETED =
+            "Microsoft.Storage.BlobInventoryPolicyCompleted";
+
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobRenamed event. */
     public static final String STORAGE_BLOB_RENAMED = "Microsoft.Storage.BlobRenamed";
 
@@ -699,6 +712,9 @@ public final class SystemEventMappingNames {
                     put(CONTAINER_REGISTRY_CHART_PUSHED, ContainerRegistryChartPushedEventData.class);
                     put(CONTAINER_REGISTRY_IMAGE_DELETED, ContainerRegistryImageDeletedEventData.class);
                     put(CONTAINER_REGISTRY_IMAGE_PUSHED, ContainerRegistryImagePushedEventData.class);
+                    put(
+                            CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
+                            ContainerServiceNewKubernetesVersionAvailableEventData.class);
                     put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
                     put(IOT_HUB_DEVICE_CONNECTED, IotHubDeviceConnectedEventData.class);
                     put(IOT_HUB_DEVICE_CREATED, IotHubDeviceCreatedEventData.class);
@@ -798,6 +814,7 @@ public final class SystemEventMappingNames {
                     put(STORAGE_ASYNC_OPERATION_INITIATED, StorageAsyncOperationInitiatedEventData.class);
                     put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
                     put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
+                    put(STORAGE_BLOB_INVENTORY_POLICY_COMPLETED, StorageBlobInventoryPolicyCompletedEventData.class);
                     put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
                     put(STORAGE_BLOB_TIER_CHANGED, StorageBlobTierChangedEventData.class);
                     put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);
@@ -832,6 +849,6 @@ public final class SystemEventMappingNames {
     }
 
     private SystemEventMappingNames() {
-        // No instances allowed
+
     }
 }

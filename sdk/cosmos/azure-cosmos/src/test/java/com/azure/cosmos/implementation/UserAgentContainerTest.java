@@ -31,10 +31,12 @@ public class UserAgentContainerTest {
         assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
 
         //With suffix greater than 64 character
-        userProvidedSuffix = "greater than 64 characters ###########################################";
+        userProvidedSuffix = "greater than 255 characters in total ################################################" +
+        "##########################################################################################################" +
+        "##########################################################################################################";
         userAgentContainer = new UserAgentContainer();
         userAgentContainer.setSuffix(userProvidedSuffix);
-        expectedString = expectedStringFixedPart + SPACE + userProvidedSuffix.substring(0, 64);
+        expectedString = (expectedStringFixedPart + SPACE + userProvidedSuffix).substring(0, 255);
         assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
     }
 

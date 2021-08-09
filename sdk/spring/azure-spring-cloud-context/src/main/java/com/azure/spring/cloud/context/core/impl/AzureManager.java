@@ -33,7 +33,11 @@ public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
 
     @Override
     public boolean exists(K key) {
-        return get(key) != null;
+        boolean exists = get(key) != null;
+        if (!exists) {
+            LOGGER.debug("{} '{}' does not exist.", getResourceType(), getResourceName(key));
+        }
+        return exists;
     }
 
     @Override

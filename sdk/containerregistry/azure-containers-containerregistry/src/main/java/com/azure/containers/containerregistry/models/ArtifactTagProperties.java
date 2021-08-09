@@ -4,20 +4,28 @@
 
 package com.azure.containers.containerregistry.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Tag attributes. */
 @JsonFlatten
-@Immutable
+@Fluent
 public final class ArtifactTagProperties {
+    /*
+     * Registry login server name.  This is likely to be similar to
+     * {registry-name}.azurecr.io
+     */
+    @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String registryLoginServer;
+
     /*
      * Image name
      */
     @JsonProperty(value = "imageName", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String repository;
+    private String repositoryName;
 
     /*
      * Tag name
@@ -44,48 +52,80 @@ public final class ArtifactTagProperties {
     private OffsetDateTime lastUpdatedOn;
 
     /*
-     * Writeable properties of the resource
+     * Delete enabled
      */
-    @JsonProperty(value = "tag.changeableAttributes", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private ContentProperties writeableProperties;
+    @JsonProperty(value = "tag.changeableAttributes.deleteEnabled")
+    private Boolean deleteEnabled;
 
-    /**
-     * Needed to keep the serializer happy.
+    /*
+     * Write enabled
      */
-    private ArtifactTagProperties() { }
+    @JsonProperty(value = "tag.changeableAttributes.writeEnabled")
+    private Boolean writeEnabled;
 
-    /**
-     * Initialized an instance of TagProperties.
-     * @param name name associated with the tag.
-     * @param repository repository associated with the tag.
-     * @param digest digest associated with the tag.
-     * @param createdOn tag created time.
-     * @param lastUpdatedOn last updated time for the tag.
-     * @param writeableProperties writeable properties for the tag.
+    /*
+     * List enabled
      */
-    public ArtifactTagProperties(
-        String name,
-        String repository,
-        String digest,
-        ContentProperties writeableProperties,
-        OffsetDateTime createdOn,
-        OffsetDateTime lastUpdatedOn) {
-        this.createdOn = createdOn;
-        this.digest = digest;
-        this.lastUpdatedOn = lastUpdatedOn;
-        this.writeableProperties = writeableProperties;
-        this.name = name;
-        this.repository = repository;
+    @JsonProperty(value = "tag.changeableAttributes.listEnabled")
+    private Boolean listEnabled;
+
+    /*
+     * Read enabled
+     */
+    @JsonProperty(value = "tag.changeableAttributes.readEnabled")
+    private Boolean readEnabled;
+
+    static {
+        ArtifactTagPropertiesHelper.setAccessor(new ArtifactTagPropertiesHelper.ArtifactTagPropertiesAccessor() {
+            @Override
+            public void setRepositoryName(ArtifactTagProperties tagProperties, String repositoryName) {
+                tagProperties.setRepositoryName(repositoryName);
+            }
+
+            @Override
+            public void setName(ArtifactTagProperties tagProperties, String tagName) {
+                tagProperties.setName(tagName);
+            }
+
+            @Override
+            public void setDigest(ArtifactTagProperties tagProperties, String digest) {
+                tagProperties.setDigest(digest);
+            }
+
+            @Override
+            public void setCreatedOn(ArtifactTagProperties tagProperties, OffsetDateTime createdOn) {
+                tagProperties.setCreatedOn(createdOn);
+            }
+
+            @Override
+            public void setlastUpdatedOn(ArtifactTagProperties tagProperties, OffsetDateTime lastUpdatedOn) {
+                tagProperties.setLastUpdatedOn(lastUpdatedOn);
+            }
+        });
     }
 
+    private ArtifactTagProperties setName(String tagName) {
+        this.name = tagName;
+        return this;
+    }
 
     /**
-     * Get the repository property: Image name.
+     * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
      *
-     * @return the repository value.
+     * @return the registryLoginServer value.
      */
-    public String getRepository() {
-        return this.repository;
+    public String getRegistryLoginServer() {
+        return this.registryLoginServer;
+    }
+
+    /**
+     * Get the repositoryName property: Image name.
+     *
+     * @return the repositoryName value.
+     */
+    public String getRepositoryName() {
+        return this.repositoryName;
     }
 
     /**
@@ -125,11 +165,103 @@ public final class ArtifactTagProperties {
     }
 
     /**
-     * Get the writeableProperties property: Writeable properties of the resource.
+     * Get the deleteEnabled property: Delete enabled.
      *
-     * @return the writeableProperties value.
+     * @return the deleteEnabled value.
      */
-    public ContentProperties getWriteableProperties() {
-        return this.writeableProperties;
+    public Boolean isDeleteEnabled() {
+        return this.deleteEnabled;
+    }
+
+    /**
+     * Set the deleteEnabled property: Delete enabled.
+     *
+     * @param deleteEnabled the deleteEnabled value to set.
+     * @return the ArtifactTagProperties object itself.
+     */
+    public ArtifactTagProperties setDeleteEnabled(Boolean deleteEnabled) {
+        this.deleteEnabled = deleteEnabled;
+        return this;
+    }
+
+    /**
+     * Get the writeEnabled property: Write enabled.
+     *
+     * @return the writeEnabled value.
+     */
+    public Boolean isWriteEnabled() {
+        return this.writeEnabled;
+    }
+
+    /**
+     * Set the writeEnabled property: Write enabled.
+     *
+     * @param writeEnabled the writeEnabled value to set.
+     * @return the ArtifactTagProperties object itself.
+     */
+    public ArtifactTagProperties setWriteEnabled(Boolean writeEnabled) {
+        this.writeEnabled = writeEnabled;
+        return this;
+    }
+
+    /**
+     * Get the listEnabled property: List enabled.
+     *
+     * @return the listEnabled value.
+     */
+    public Boolean isListEnabled() {
+        return this.listEnabled;
+    }
+
+    /**
+     * Set the listEnabled property: List enabled.
+     *
+     * @param listEnabled the listEnabled value to set.
+     * @return the ArtifactTagProperties object itself.
+     */
+    public ArtifactTagProperties setListEnabled(Boolean listEnabled) {
+        this.listEnabled = listEnabled;
+        return this;
+    }
+
+    /**
+     * Get the readEnabled property: Read enabled.
+     *
+     * @return the readEnabled value.
+     */
+    public Boolean isReadEnabled() {
+        return this.readEnabled;
+    }
+
+    /**
+     * Set the readEnabled property: Read enabled.
+     *
+     * @param readEnabled the readEnabled value to set.
+     * @return the ArtifactTagProperties object itself.
+     */
+    public ArtifactTagProperties setReadEnabled(Boolean readEnabled) {
+        this.readEnabled = readEnabled;
+        return this;
+    }
+
+    private ArtifactTagProperties setRepositoryName(String repositoryName) {
+        this.repositoryName = repositoryName;
+        return this;
+    }
+
+    private ArtifactTagProperties setDigest(String digest) {
+        this.digest = digest;
+        return this;
+    }
+
+
+    private ArtifactTagProperties setCreatedOn(OffsetDateTime createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    private ArtifactTagProperties setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
+        return this;
     }
 }

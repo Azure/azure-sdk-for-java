@@ -4,6 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: containerregistry
+      SupportedClouds: 'Public,UsGov,China'
       Artifacts:
         - name: azure-containers-containerregistry
           groupId: com.azure

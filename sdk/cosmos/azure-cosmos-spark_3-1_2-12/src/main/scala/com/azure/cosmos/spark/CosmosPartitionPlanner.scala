@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, Spar
 import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -26,7 +27,7 @@ import scala.collection.mutable
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private object CosmosPartitionPlanner extends CosmosLoggingTrait {
+private object CosmosPartitionPlanner extends BasicLoggingTrait {
   val DefaultPartitionSizeInMB: Int = 5 * 1024 // 10 GB
 
   def createInputPartitions
@@ -440,6 +441,7 @@ private object CosmosPartitionPlanner extends CosmosLoggingTrait {
       CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
 
     val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
+    container.openConnectionsAndInitCaches().block()
 
     container
       .getFeedRanges

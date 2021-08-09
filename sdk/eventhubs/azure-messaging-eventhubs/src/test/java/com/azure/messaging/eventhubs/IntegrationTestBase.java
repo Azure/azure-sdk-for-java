@@ -54,7 +54,7 @@ public abstract class IntegrationTestBase extends TestBase {
     protected static final List<String> EXPECTED_PARTITION_IDS = IntStream.range(0, NUMBER_OF_PARTITIONS)
         .mapToObj(String::valueOf)
         .collect(Collectors.toList());
-    protected static final Duration TIMEOUT = Duration.ofSeconds(30);
+    protected static final Duration TIMEOUT = Duration.ofMinutes(1);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
 
     protected final ClientLogger logger;
@@ -220,7 +220,11 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(getConnectionString());
+        return new ConnectionStringProperties(getConnectionString(false));
+    }
+
+    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
+        return new ConnectionStringProperties(getConnectionString(withSas));
     }
 
     /**
@@ -289,8 +293,7 @@ public abstract class IntegrationTestBase extends TestBase {
             try {
                 closeable.close();
             } catch (IOException error) {
-                logger.error(String.format("[%s]: %s didn't close properly.", testName,
-                    closeable.getClass().getSimpleName()), error);
+                logger.error("[{}]: {} didn't close properly.", testName, closeable.getClass().getSimpleName(), error);
             }
         }
     }

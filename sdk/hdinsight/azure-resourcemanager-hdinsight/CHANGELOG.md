@@ -1,7 +1,30 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
+
+## 1.0.0-beta.3 (2021-05-31)
+
+- Azure Resource Manager HDInsight client library for Java. This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2018-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### New Feature
+
+* `models.AzureMonitorTableConfiguration` was added
+
+* `models.AzureMonitorResponse` was added
+
+* `models.AzureMonitorSelectedConfigurations` was added
+
+* `models.AzureMonitorRequest` was added
+
+#### `models.Extensions` was modified
+
+* `disableAzureMonitor(java.lang.String,java.lang.String)` was added
+* `enableAzureMonitor(java.lang.String,java.lang.String,models.AzureMonitorRequest)` was added
+* `enableAzureMonitor(java.lang.String,java.lang.String,models.AzureMonitorRequest,com.azure.core.util.Context)` was added
+* `disableAzureMonitor(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getAzureMonitorStatusWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getAzureMonitorStatus(java.lang.String,java.lang.String)` was added
 
 ## 1.0.0-beta.2 (2021-04-12)
 

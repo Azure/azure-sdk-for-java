@@ -154,6 +154,18 @@ public class VirtualNetworkGatewayInner extends Resource {
     private String vNetExtendedLocationResourceId;
 
     /*
+     * NatRules for virtual network gateway.
+     */
+    @JsonProperty(value = "properties.natRules")
+    private List<VirtualNetworkGatewayNatRuleInner> natRules;
+
+    /*
+     * EnableBgpRouteTranslationForNat flag.
+     */
+    @JsonProperty(value = "properties.enableBgpRouteTranslationForNat")
+    private Boolean enableBgpRouteTranslationForNat;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
@@ -512,6 +524,46 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
+     * Get the natRules property: NatRules for virtual network gateway.
+     *
+     * @return the natRules value.
+     */
+    public List<VirtualNetworkGatewayNatRuleInner> natRules() {
+        return this.natRules;
+    }
+
+    /**
+     * Set the natRules property: NatRules for virtual network gateway.
+     *
+     * @param natRules the natRules value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withNatRules(List<VirtualNetworkGatewayNatRuleInner> natRules) {
+        this.natRules = natRules;
+        return this;
+    }
+
+    /**
+     * Get the enableBgpRouteTranslationForNat property: EnableBgpRouteTranslationForNat flag.
+     *
+     * @return the enableBgpRouteTranslationForNat value.
+     */
+    public Boolean enableBgpRouteTranslationForNat() {
+        return this.enableBgpRouteTranslationForNat;
+    }
+
+    /**
+     * Set the enableBgpRouteTranslationForNat property: EnableBgpRouteTranslationForNat flag.
+     *
+     * @param enableBgpRouteTranslationForNat the enableBgpRouteTranslationForNat value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withEnableBgpRouteTranslationForNat(Boolean enableBgpRouteTranslationForNat) {
+        this.enableBgpRouteTranslationForNat = enableBgpRouteTranslationForNat;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -568,6 +620,9 @@ public class VirtualNetworkGatewayInner extends Resource {
         }
         if (customRoutes() != null) {
             customRoutes().validate();
+        }
+        if (natRules() != null) {
+            natRules().forEach(e -> e.validate());
         }
     }
 }

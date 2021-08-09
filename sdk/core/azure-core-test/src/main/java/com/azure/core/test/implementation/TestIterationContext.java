@@ -9,6 +9,9 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Hook into JUnit 5's test infrastructure which determines the test iteration.
+ */
 public final class TestIterationContext implements BeforeEachCallback {
     private static final Pattern TEST_ITERATION_PATTERN = Pattern.compile("test-template-invocation:#(\\d+)");
 

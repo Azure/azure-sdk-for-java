@@ -7,6 +7,7 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.implementation.models.AcrAccessToken;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.AcrRefreshToken;
+import com.azure.containers.containerregistry.implementation.models.TokenGrantType;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.FormParam;
 import com.azure.core.annotation.HeaderParam;
@@ -67,10 +68,10 @@ public final class AuthenticationsImpl {
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrAccessToken>> exchangeAcrRefreshTokenForAcrAccessToken(
                 @HostParam("url") String url,
-                @FormParam("grant_type") String grantType,
                 @FormParam("service") String service,
                 @FormParam("scope") String scope,
                 @FormParam("refresh_token") String refreshToken,
+                @FormParam("grant_type") TokenGrantType grantType,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -172,6 +173,7 @@ public final class AuthenticationsImpl {
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
      *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
+     * @param grantType Grant type is expected to be refresh_token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -179,13 +181,12 @@ public final class AuthenticationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcrAccessToken>> exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(
-            String serviceParam, String scope, String refreshToken) {
-        final String grantType = "refresh_token";
+            String serviceParam, String scope, String refreshToken, TokenGrantType grantType) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.exchangeAcrRefreshTokenForAcrAccessToken(
-                                this.client.getUrl(), grantType, serviceParam, scope, refreshToken, accept, context));
+                                this.client.getUrl(), serviceParam, scope, refreshToken, grantType, accept, context));
     }
 
     /**
@@ -195,6 +196,7 @@ public final class AuthenticationsImpl {
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
      *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
+     * @param grantType Grant type is expected to be refresh_token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -203,11 +205,10 @@ public final class AuthenticationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcrAccessToken>> exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(
-            String serviceParam, String scope, String refreshToken, Context context) {
-        final String grantType = "refresh_token";
+            String serviceParam, String scope, String refreshToken, TokenGrantType grantType, Context context) {
         final String accept = "application/json";
         return service.exchangeAcrRefreshTokenForAcrAccessToken(
-                this.client.getUrl(), grantType, serviceParam, scope, refreshToken, accept, context);
+                this.client.getUrl(), serviceParam, scope, refreshToken, grantType, accept, context);
     }
 
     /**
@@ -217,6 +218,7 @@ public final class AuthenticationsImpl {
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
      *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
+     * @param grantType Grant type is expected to be refresh_token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,8 +226,8 @@ public final class AuthenticationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcrAccessToken> exchangeAcrRefreshTokenForAcrAccessTokenAsync(
-            String serviceParam, String scope, String refreshToken) {
-        return exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceParam, scope, refreshToken)
+            String serviceParam, String scope, String refreshToken, TokenGrantType grantType) {
+        return exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceParam, scope, refreshToken, grantType)
                 .flatMap(
                         (Response<AcrAccessToken> res) -> {
                             if (res.getValue() != null) {
@@ -243,6 +245,7 @@ public final class AuthenticationsImpl {
      * @param scope Which is expected to be a valid scope, and can be specified more than once for multiple scope
      *     requests. You obtained this from the Www-Authenticate response header from the challenge.
      * @param refreshToken Must be a valid ACR refresh token.
+     * @param grantType Grant type is expected to be refresh_token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -251,8 +254,9 @@ public final class AuthenticationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcrAccessToken> exchangeAcrRefreshTokenForAcrAccessTokenAsync(
-            String serviceParam, String scope, String refreshToken, Context context) {
-        return exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceParam, scope, refreshToken, context)
+            String serviceParam, String scope, String refreshToken, TokenGrantType grantType, Context context) {
+        return exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(
+                        serviceParam, scope, refreshToken, grantType, context)
                 .flatMap(
                         (Response<AcrAccessToken> res) -> {
                             if (res.getValue() != null) {

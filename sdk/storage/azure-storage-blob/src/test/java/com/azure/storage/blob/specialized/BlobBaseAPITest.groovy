@@ -1,5 +1,6 @@
 package com.azure.storage.blob.specialized
 
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceVersion
@@ -92,7 +93,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query min"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -139,16 +140,22 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query csv serialization separator"() {
         setup:
-        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
+        BlobQueryDelimitedSerialization serIn = new BlobQueryDelimitedSerialization()
             .setRecordSeparator(recordSeparator as char)
             .setColumnSeparator(columnSeparator as char)
             .setEscapeChar('\0' as char)
             .setFieldQuote('\0' as char)
-            .setHeadersPresent(headersPresent)
-        uploadCsv(ser, 32)
+            .setHeadersPresent(headersPresentIn)
+        BlobQueryDelimitedSerialization serOut = new BlobQueryDelimitedSerialization()
+            .setRecordSeparator(recordSeparator as char)
+            .setColumnSeparator(columnSeparator as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(headersPresentOut)
+        uploadCsv(serIn, 32)
         def expression = "SELECT * from BlobStorage"
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
@@ -157,12 +164,12 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue()
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression).setInputSerialization(serIn).setOutputSerialization(serOut)).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
         notThrown(IOException)
-        if (headersPresent) {
+        if (headersPresentIn && !headersPresentOut) {
             /* Account for 16 bytes of header. */
             for (int j = 16; j < downloadedData.length; j++) {
                 assert queryData[j - 16] == downloadedData[j]
@@ -178,12 +185,12 @@ class BlobBaseAPITest extends APISpec {
         when:
         OutputStream os = new ByteArrayOutputStream()
         bc.queryWithResponse(new BlobQueryOptions(expression, os)
-            .setInputSerialization(ser).setOutputSerialization(ser), null, null)
+            .setInputSerialization(serIn).setOutputSerialization(serOut), null, null)
         byte[] osData = os.toByteArray()
 
         then:
         notThrown(BlobStorageException)
-        if (headersPresent) {
+        if (headersPresentIn && !headersPresentOut) {
             assert osData.length == downloadedData.length - 16
             /* Account for 16 bytes of header. */
             for (int j = 16; j < downloadedData.length; j++) {
@@ -194,28 +201,30 @@ class BlobBaseAPITest extends APISpec {
         }
 
         where:
-        recordSeparator | columnSeparator | headersPresent || _
-        '\n'            | ','             | false          || _ /* Default. */
-        '\n'            | ','             | true           || _ /* Headers. */
-        '\t'            | ','             | false          || _ /* Record separator. */
-        '\r'            | ','             | false          || _
-        '<'             | ','             | false          || _
-        '>'             | ','             | false          || _
-        '&'             | ','             | false          || _
-        '\\'            | ','             | false          || _
-        ','             | '.'             | false          || _ /* Column separator. */
-//        ','             | '\n'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
-        ','             | ';'             | false          || _
-        '\n'            | '\t'            | false          || _
-//        '\n'            | '\r'            | false          || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
-        '\n'            | '<'             | false          || _
-        '\n'            | '>'             | false          || _
-        '\n'            | '&'             | false          || _
-        '\n'            | '\\'            | false          || _
+        recordSeparator | columnSeparator | headersPresentIn | headersPresentOut || _
+        '\n'            | ','             | false            | false             || _ /* Default. */
+        '\n'            | ','             | true             | true              || _ /* Headers. */
+        '\n'            | ','             | true             | false             || _ /* Headers. */
+        '\t'            | ','             | false            | false             || _ /* Record separator. */
+        '\r'            | ','             | false            | false             || _
+        '<'             | ','             | false            | false             || _
+        '>'             | ','             | false            | false             || _
+        '&'             | ','             | false            | false             || _
+        '\\'            | ','             | false            | false             || _
+        ','             | '.'             | false            | false             || _ /* Column separator. */
+//        ','             | '\n'            | false          | false             || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        ','             | ';'             | false            | false             || _
+        '\n'            | '\t'            | false            | false             || _
+//        '\n'            | '\r'            | false          | false             || _ /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+        '\n'            | '<'             | false            | false             || _
+        '\n'            | '>'             | false            | false             || _
+        '\n'            | '&'             | false            | false             || _
+        '\n'            | '\\'            | false            | false             || _
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query csv serialization escape and field quote"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -257,7 +266,7 @@ class BlobBaseAPITest extends APISpec {
     /* Note: Input delimited tested everywhere */
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input json"() {
         setup:
         BlobQueryJsonSerialization ser = new BlobQueryJsonSerialization()
@@ -299,8 +308,8 @@ class BlobBaseAPITest extends APISpec {
         1000      || _
     }
 
-    @Unroll
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input parquet"() {
         setup:
         String fileName = "parquet.parquet"
@@ -336,6 +345,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input csv Output json"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -376,7 +386,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input json Output csv"() {
         setup:
         BlobQueryJsonSerialization inSer = new BlobQueryJsonSerialization()
@@ -417,7 +427,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query Input csv Output arrow"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -455,7 +465,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5)
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query non fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -495,6 +505,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -524,6 +535,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query progress receiver"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -568,6 +580,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @LiveOnly // Large amount of data.
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query multiple records with progress receiver"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -619,6 +632,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query snapshot"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -660,6 +674,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
@@ -690,6 +705,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query arrow input IA"() {
         setup:
         def inSer = new BlobQueryArrowSerialization()
@@ -712,7 +728,8 @@ class BlobBaseAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query parquet output IA"() {
         setup:
         def outSer = new BlobQueryParquetSerialization()
@@ -736,6 +753,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query error"() {
         setup:
         bc = cc.getBlobClient(generateBlobName())
@@ -755,6 +773,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
+    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query AC"() {
         setup:
         def t = new HashMap<String, String>()

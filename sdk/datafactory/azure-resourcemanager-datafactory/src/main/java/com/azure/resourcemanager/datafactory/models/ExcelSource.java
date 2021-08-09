@@ -95,6 +95,13 @@ public final class ExcelSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ExcelSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

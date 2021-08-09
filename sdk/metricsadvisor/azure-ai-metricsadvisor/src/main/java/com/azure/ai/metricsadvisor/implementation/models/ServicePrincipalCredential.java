@@ -17,7 +17,7 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
     /*
      * The parameters property.
      */
-    @JsonProperty(value = "parameters")
+    @JsonProperty(value = "parameters", required = true)
     private ServicePrincipalParam parameters;
 
     /**

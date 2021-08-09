@@ -75,15 +75,15 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     }
 
     /**
-     * Gets the private link service ID the specified managed cluster.
+     * Gets the private link service ID for the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Parameters (name, groupId) supplied in order to resolve a private link service ID.
+     * @param parameters Parameters required in order to resolve a private link service ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link service ID the specified managed cluster.
+     * @return the private link service ID for the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourceInner>> postWithResponseAsync(
@@ -112,7 +112,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -131,16 +131,16 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     }
 
     /**
-     * Gets the private link service ID the specified managed cluster.
+     * Gets the private link service ID for the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Parameters (name, groupId) supplied in order to resolve a private link service ID.
+     * @param parameters Parameters required in order to resolve a private link service ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link service ID the specified managed cluster.
+     * @return the private link service ID for the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceInner>> postWithResponseAsync(
@@ -169,7 +169,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -185,15 +185,15 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     }
 
     /**
-     * Gets the private link service ID the specified managed cluster.
+     * Gets the private link service ID for the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Parameters (name, groupId) supplied in order to resolve a private link service ID.
+     * @param parameters Parameters required in order to resolve a private link service ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link service ID the specified managed cluster.
+     * @return the private link service ID for the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourceInner> postAsync(
@@ -210,15 +210,15 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     }
 
     /**
-     * Gets the private link service ID the specified managed cluster.
+     * Gets the private link service ID for the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Parameters (name, groupId) supplied in order to resolve a private link service ID.
+     * @param parameters Parameters required in order to resolve a private link service ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link service ID the specified managed cluster.
+     * @return the private link service ID for the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner post(
@@ -227,16 +227,16 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     }
 
     /**
-     * Gets the private link service ID the specified managed cluster.
+     * Gets the private link service ID for the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Parameters (name, groupId) supplied in order to resolve a private link service ID.
+     * @param parameters Parameters required in order to resolve a private link service ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link service ID the specified managed cluster.
+     * @return the private link service ID for the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> postWithResponse(

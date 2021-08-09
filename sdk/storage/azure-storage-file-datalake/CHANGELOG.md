@@ -1,7 +1,16 @@
 # Release History
 
-## 12.6.0-beta.2 (Unreleased)
+## 12.7.0-beta.2 (Unreleased)
 
+
+## 12.7.0-beta.1 (2021-07-28)
+- Added support for openInputStream to sync data lake file clients
+- Added support for the 2020-10-02 service version.
+- Added support to specify Parquet Input Serialization when querying a file.
+- Updated DownloadRetryOptions.maxRetryRequests to default downloads to retry 5 times.
+
+## 12.6.0 (2021-06-09)
+- GA release
 
 ## 12.6.0-beta.1 (2021-05-13)
 - Added support for the 2020-08-04 service version.
@@ -121,9 +130,9 @@ and
 
 ## 12.0.0-beta.7 (2019-12-04)
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
 
 - Fixed bug in ClientBuilders that prevented OAuth from functioning.
 - Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
@@ -145,7 +154,7 @@ and
 - Support for DataLakeFileClient: create, delete, rename, get properties, get access control, set metadata, set properties, set access control, append, flush, read
 
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
 

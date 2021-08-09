@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share.implementation.util;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -38,9 +39,10 @@ public class ShareSasImplUtil {
      */
     private static final String SAS_SHARE_CONSTANT = "s";
 
-    private final ClientLogger logger = new ClientLogger(ShareSasImplUtil.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ShareSasImplUtil.class);
 
-    private String version;
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, ShareServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
 
@@ -89,7 +91,6 @@ public class ShareSasImplUtil {
      */
     public ShareSasImplUtil(ShareServiceSasSignatureValues sasValues, String shareName, String filePath) {
         Objects.requireNonNull(sasValues);
-        this.version = sasValues.getVersion();
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
         this.expiryTime = sasValues.getExpiryTime();
@@ -120,7 +121,7 @@ public class ShareSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         final String stringToSign = stringToSign(canonicalName);
-        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        StorageImplUtils.logStringToSign(LOGGER, stringToSign, context);
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(signature);
@@ -138,7 +139,7 @@ public class ShareSasImplUtil {
          */
         StringBuilder sb = new StringBuilder();
 
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, this.version);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, VERSION);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
@@ -168,13 +169,9 @@ public class ShareSasImplUtil {
      * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
      */
     private void ensureState() {
-        if (version == null) {
-            version = ShareServiceVersion.getLatest().getVersion();
-        }
-
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
-                throw logger.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
+                throw LOGGER.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
                     + "and permissions must be set"));
             }
         }
@@ -195,7 +192,7 @@ public class ShareSasImplUtil {
                     break;
                 default:
                     // We won't reparse the permissions if we don't know the type.
-                    logger.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
+                    LOGGER.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
                     break;
             }
         }
@@ -225,7 +222,7 @@ public class ShareSasImplUtil {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            this.version == null ? "" : this.version,
+            VERSION == null ? "" : VERSION,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,

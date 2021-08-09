@@ -263,16 +263,6 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     /**
-     * Tests that an attempt to recover a non existing deleted secret throws an error on a soft-delete enabled vault.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void recoverDeletedSecretNotFoundWithPollingDuration(HttpClient httpClient, SecretServiceVersion serviceVersion) {
-        initializeClient(httpClient, serviceVersion);
-        assertRestException(() -> client.beginRecoverDeletedSecret("non-existing", Duration.ofSeconds(1)), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
-    }
-
-    /**
      * Tests that a secret can be backed up in the key vault.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

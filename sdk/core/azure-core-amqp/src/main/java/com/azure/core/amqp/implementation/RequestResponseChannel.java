@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -50,7 +52,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Represents a bidirectional link between the message broker and the client. Allows client to send a request to the
  * broker and receive the associated response.
  */
-public class RequestResponseChannel implements Disposable {
+public class RequestResponseChannel implements AsyncCloseable {
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
     private final AtomicBoolean hasError = new AtomicBoolean();
@@ -155,7 +157,7 @@ public class RequestResponseChannel implements Disposable {
                 handleError(error, "Error in ReceiveLinkHandler.");
                 onTerminalState("ReceiveLinkHandler");
             }, () -> {
-                disposeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync().subscribe();
                 onTerminalState("ReceiveLinkHandler");
             }),
 
@@ -165,13 +167,15 @@ public class RequestResponseChannel implements Disposable {
                 handleError(error, "Error in SendLinkHandler.");
                 onTerminalState("SendLinkHandler");
             }, () -> {
-                disposeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync().subscribe();
                 onTerminalState("SendLinkHandler");
             }),
 
+            //TODO (conniey): Do we need this if we already close the request response nodes when the
+            // connection.closeWork is executed? It would be preferred to get rid of this circular dependency.
             amqpConnection.getShutdownSignals().next().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", connectionId, linkName);
-                return disposeAsync(" Shutdown signal received.");
+                return closeAsync();
             }).subscribe()
         );
         //@formatter:on
@@ -199,21 +203,34 @@ public class RequestResponseChannel implements Disposable {
     }
 
     @Override
-    public void dispose() {
-        disposeAsync("Dispose called.")
-            .block(retryOptions.getTryTimeout());
-    }
+    public Mono<Void> closeAsync() {
+        final Mono<Void> closeOperationWithTimeout = closeMono.asMono()
+            .timeout(retryOptions.getTryTimeout())
+            .onErrorResume(TimeoutException.class, error -> {
+                return Mono.fromRunnable(() -> {
+                    logger.info("connectionId[{}] linkName[{}] Timed out waiting for RequestResponseChannel to complete"
+                            + "closing. Manually closing.",
+                        connectionId, linkName, error);
 
-    Mono<Void> disposeAsync(String message) {
+                    onTerminalState("SendLinkHandler");
+                    onTerminalState("ReceiveLinkHandler");
+                });
+            })
+            .subscribeOn(Schedulers.boundedElastic());
+
         if (isDisposed.getAndSet(true)) {
-            return closeMono.asMono().subscribeOn(Schedulers.boundedElastic());
+            logger.verbose("connectionId[{}] linkName[{}] Channel already closed.", connectionId, linkName);
+            return closeOperationWithTimeout;
         }
 
-        return Mono.fromRunnable(() -> {
-            logger.verbose("connectionId[{}] linkName[{}] {}", connectionId, linkName, message);
+        logger.verbose("connectionId[{}] linkName[{}] Closing request/response channel.", connectionId, linkName);
 
+        return Mono.fromRunnable(() -> {
             try {
                 provider.getReactorDispatcher().invoke(() -> {
+                    logger.verbose("connectionId[{}] linkName[{}] Closing send link and receive link.",
+                        connectionId, linkName);
+
                     sendLink.close();
                     receiveLink.close();
                 });
@@ -223,10 +240,9 @@ public class RequestResponseChannel implements Disposable {
                 sendLink.close();
                 receiveLink.close();
             }
-        }).publishOn(Schedulers.boundedElastic()).then(closeMono.asMono());
+        }).subscribeOn(Schedulers.boundedElastic()).then(closeOperationWithTimeout);
     }
 
-    @Override
     public boolean isDisposed() {
         return isDisposed.get();
     }
@@ -366,16 +382,25 @@ public class RequestResponseChannel implements Disposable {
         unconfirmedSends.forEach((key, value) -> value.error(error));
         unconfirmedSends.clear();
 
-        disposeAsync("Disposing channel due to error.").subscribe();
+        closeAsync().subscribe();
     }
 
     private void onTerminalState(String handlerName) {
+        if (pendingDisposes.get() == 0) {
+            logger.verbose("connectionId[{}] linkName[{}]: Already disposed send/receive links.");
+            return;
+        }
+
         final int remaining = pendingDisposes.decrementAndGet();
         logger.verbose("connectionId[{}] linkName[{}]: {} disposed. Remaining: {}",
             connectionId, linkName, handlerName, remaining);
 
         if (remaining == 0) {
             subscriptions.dispose();
+
+            endpointStates.emitComplete(((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                "Could not emit complete signal.")));
+
             closeMono.emitEmpty((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
                 handlerName + ". Error closing mono."));
         }

@@ -20,9 +20,6 @@ public final class PrivateEndpointServiceConnectionStatus
     /** Static value Rejected for PrivateEndpointServiceConnectionStatus. */
     public static final PrivateEndpointServiceConnectionStatus REJECTED = fromString("Rejected");
 
-    /** Static value Disconnected for PrivateEndpointServiceConnectionStatus. */
-    public static final PrivateEndpointServiceConnectionStatus DISCONNECTED = fromString("Disconnected");
-
     /**
      * Creates or finds a PrivateEndpointServiceConnectionStatus from its string representation.
      *

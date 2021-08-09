@@ -2,38 +2,36 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/synapse/
+      - sdk/synapse/ci.mgmt.yml
+      - sdk/synapse/mgmt-v2019_06_01_preview/
+      - sdk/synapse/mgmt-v2020_12_01/
     exclude:
-      - sdk/synapse/azure-analytics-synapse-accesscontrol
-      - sdk/synapse/azure-analytics-synapse-artifacts
-      - sdk/synapse/azure-analytics-synapse-spark
-      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints
-      - sdk/synapse/azure-analytics-synapse-monitoring
+      - sdk/synapse/pom.xml
+      - sdk/synapse/mgmt-v2019_06_01_preview/pom.xml
+      - sdk/synapse/mgmt-v2020_12_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/synapse/
+      - sdk/synapse/ci.mgmt.yml
+      - sdk/synapse/mgmt-v2019_06_01_preview/
+      - sdk/synapse/mgmt-v2020_12_01/
     exclude:
-      - sdk/synapse/azure-analytics-synapse-accesscontrol
-      - sdk/synapse/azure-analytics-synapse-artifacts
-      - sdk/synapse/azure-analytics-synapse-spark
-      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints
-      - sdk/synapse/azure-analytics-synapse-monitoring
+      - sdk/synapse/pom.xml
+      - sdk/synapse/mgmt-v2019_06_01_preview/pom.xml
+      - sdk/synapse/mgmt-v2020_12_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

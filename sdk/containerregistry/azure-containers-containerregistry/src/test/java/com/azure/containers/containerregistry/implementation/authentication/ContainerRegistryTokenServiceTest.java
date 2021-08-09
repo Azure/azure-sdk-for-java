@@ -71,6 +71,7 @@ public class ContainerRegistryTokenServiceTest {
     public void refreshTokenRestAPICalledOnlyOnce() throws Exception {
         ContainerRegistryTokenService service = new ContainerRegistryTokenService(
             this.tokenCredential,
+            null,
             "myString",
             this.httpPipeline,
             this.serializerAdapter

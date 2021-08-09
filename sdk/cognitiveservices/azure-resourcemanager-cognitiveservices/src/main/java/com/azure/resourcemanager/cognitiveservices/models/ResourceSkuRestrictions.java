@@ -4,40 +4,40 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes restrictions of a SKU. */
-@Immutable
+@Fluent
 public final class ResourceSkuRestrictions {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuRestrictions.class);
 
     /*
      * The type of restrictions.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private ResourceSkuRestrictionsType type;
 
     /*
      * The value of restrictions. If the restriction type is set to location.
      * This would be different locations where the SKU is restricted.
      */
-    @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "values")
     private List<String> values;
 
     /*
      * The information about the restriction where the SKU cannot be used.
      */
-    @JsonProperty(value = "restrictionInfo", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "restrictionInfo")
     private ResourceSkuRestrictionInfo restrictionInfo;
 
     /*
      * The reason for restriction.
      */
-    @JsonProperty(value = "reasonCode", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "reasonCode")
     private ResourceSkuRestrictionsReasonCode reasonCode;
 
     /**
@@ -47,6 +47,17 @@ public final class ResourceSkuRestrictions {
      */
     public ResourceSkuRestrictionsType type() {
         return this.type;
+    }
+
+    /**
+     * Set the type property: The type of restrictions.
+     *
+     * @param type the type value to set.
+     * @return the ResourceSkuRestrictions object itself.
+     */
+    public ResourceSkuRestrictions withType(ResourceSkuRestrictionsType type) {
+        this.type = type;
+        return this;
     }
 
     /**
@@ -60,6 +71,18 @@ public final class ResourceSkuRestrictions {
     }
 
     /**
+     * Set the values property: The value of restrictions. If the restriction type is set to location. This would be
+     * different locations where the SKU is restricted.
+     *
+     * @param values the values value to set.
+     * @return the ResourceSkuRestrictions object itself.
+     */
+    public ResourceSkuRestrictions withValues(List<String> values) {
+        this.values = values;
+        return this;
+    }
+
+    /**
      * Get the restrictionInfo property: The information about the restriction where the SKU cannot be used.
      *
      * @return the restrictionInfo value.
@@ -69,12 +92,34 @@ public final class ResourceSkuRestrictions {
     }
 
     /**
+     * Set the restrictionInfo property: The information about the restriction where the SKU cannot be used.
+     *
+     * @param restrictionInfo the restrictionInfo value to set.
+     * @return the ResourceSkuRestrictions object itself.
+     */
+    public ResourceSkuRestrictions withRestrictionInfo(ResourceSkuRestrictionInfo restrictionInfo) {
+        this.restrictionInfo = restrictionInfo;
+        return this;
+    }
+
+    /**
      * Get the reasonCode property: The reason for restriction.
      *
      * @return the reasonCode value.
      */
     public ResourceSkuRestrictionsReasonCode reasonCode() {
         return this.reasonCode;
+    }
+
+    /**
+     * Set the reasonCode property: The reason for restriction.
+     *
+     * @param reasonCode the reasonCode value to set.
+     * @return the ResourceSkuRestrictions object itself.
+     */
+    public ResourceSkuRestrictions withReasonCode(ResourceSkuRestrictionsReasonCode reasonCode) {
+        this.reasonCode = reasonCode;
+        return this;
     }
 
     /**

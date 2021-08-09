@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20200916.1
+      ref: refs/tags/azure-sdk-build-tools_20210603.1
 
 parameters:
 - name: Artifacts
@@ -68,15 +68,13 @@ stages:
           - ${{ if eq(parameters.SDKType, 'data') }}:
             - TestFromSource=^(?!true).*
         MatrixReplace:
-          # Temporarily replace macOS agents with ubuntu agents because of ongoing pool capacity issues
-          - Pool=Azure.Pipelines/azsdk-pool-mms-ubuntu-1804-general
-          - OsVmImage=macOS-10.15/MMSUbuntu18.04
-          - AZURE_TEST.*=.*/
+          - ${{ each replacement in parameters.MatrixReplace }}:
+            - ${{ replacement }}
           - ${{ if eq(parameters.SDKType, 'data') }}:
             - TestGoals=.*/verify
             - TestOptions=.*/-am
-          - ${{ each replacement in parameters.MatrixReplace }}:
-            - ${{ replacement }}
+          - AZURE_TEST.*=.*/
+
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:

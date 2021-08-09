@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -16,9 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** Standard Apache Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.StandardAnalyzer")
-@JsonFlatten
 @Fluent
 public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
     /*

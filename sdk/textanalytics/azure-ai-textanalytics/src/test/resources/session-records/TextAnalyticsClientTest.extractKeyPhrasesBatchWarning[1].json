@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//keyPhrases",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/keyPhrases?showStats=false&loggingOptOut=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.5 (11.0.9.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cf206931-6213-4c3e-91b8-5862ea2d4217",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cdaa06e9-ee40-433e-8417-371f4827b49a",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "820",
+      "x-envoy-upstream-service-time" : "53",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2",
-      "apim-request-id" : "55e7df67-1166-44fe-a731-52f2af9073c9",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
+      "apim-request-id" : "7df51203-af02-40bf-bf88-47d29cdcc72c",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmost\"],\"warnings\":[{\"code\":\"LongWordsInDocument\",\"message\":\"The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.\"}]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}",
-      "Date" : "Wed, 24 Feb 2021 02:56:01 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmostdoesn\",\"ThereasonforthistestistotryandseewhathappenswhenwesubmitaveryveryverylongtexttoLanguage\",\"Thisshouldworkjustfinebutjustincaseitisalwaysgoodtohaveatestcase\",\"ThisallowsustotestwhathappensifitisnotOK\",\"Ofcourseitisgoingtobeokbutthenagainitisalsobettertobesure\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}",
+      "Date" : "Fri, 30 Jul 2021 18:01:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

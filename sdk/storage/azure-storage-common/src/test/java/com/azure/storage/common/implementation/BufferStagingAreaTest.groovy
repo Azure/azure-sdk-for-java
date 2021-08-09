@@ -8,13 +8,6 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 
 class BufferStagingAreaTest extends Specification {
-    def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-    }
-
     static def generateData(int numBuffs, int minBuffSize, int maxBuffSize) {
         def random = new Random()
         // Generate random sizes between minBuffSize and maxBuffSize for the buffers

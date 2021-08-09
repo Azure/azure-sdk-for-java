@@ -10,16 +10,16 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CognitiveServicesAccountEnumerateSkusResultInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CognitiveServicesAccountInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CognitiveServicesAccountKeysInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.UsagesResultInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountSkuListResultInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.ApiKeysInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
+import com.azure.resourcemanager.cognitiveservices.models.Account;
+import com.azure.resourcemanager.cognitiveservices.models.AccountSkuListResult;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
-import com.azure.resourcemanager.cognitiveservices.models.CognitiveServicesAccount;
-import com.azure.resourcemanager.cognitiveservices.models.CognitiveServicesAccountEnumerateSkusResult;
-import com.azure.resourcemanager.cognitiveservices.models.CognitiveServicesAccountKeys;
+import com.azure.resourcemanager.cognitiveservices.models.ApiKeys;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
-import com.azure.resourcemanager.cognitiveservices.models.UsagesResult;
+import com.azure.resourcemanager.cognitiveservices.models.UsageListResult;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountsImpl implements Accounts {
@@ -40,156 +40,150 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().delete(resourceGroupName, accountName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, context);
+    public void delete(String resourceGroupName, String accountName, Context context) {
+        this.serviceClient().delete(resourceGroupName, accountName, context);
     }
 
-    public CognitiveServicesAccount getByResourceGroup(String resourceGroupName, String accountName) {
-        CognitiveServicesAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
+    public Account getByResourceGroup(String resourceGroupName, String accountName) {
+        AccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
         if (inner != null) {
-            return new CognitiveServicesAccountImpl(inner, this.manager());
+            return new AccountImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<CognitiveServicesAccount> getByResourceGroupWithResponse(
+    public Response<Account> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context) {
-        Response<CognitiveServicesAccountInner> inner =
+        Response<AccountInner> inner =
             this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new CognitiveServicesAccountImpl(inner.getValue(), this.manager()));
+                new AccountImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PagedIterable<CognitiveServicesAccount> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CognitiveServicesAccountInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new CognitiveServicesAccountImpl(inner1, this.manager()));
+    public PagedIterable<Account> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<AccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CognitiveServicesAccount> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<CognitiveServicesAccountInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new CognitiveServicesAccountImpl(inner1, this.manager()));
+    public PagedIterable<Account> listByResourceGroup(String resourceGroupName, Context context) {
+        PagedIterable<AccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CognitiveServicesAccount> list() {
-        PagedIterable<CognitiveServicesAccountInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new CognitiveServicesAccountImpl(inner1, this.manager()));
+    public PagedIterable<Account> list() {
+        PagedIterable<AccountInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CognitiveServicesAccount> list(Context context) {
-        PagedIterable<CognitiveServicesAccountInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new CognitiveServicesAccountImpl(inner1, this.manager()));
+    public PagedIterable<Account> list(Context context) {
+        PagedIterable<AccountInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
-    public CognitiveServicesAccountKeys listKeys(String resourceGroupName, String accountName) {
-        CognitiveServicesAccountKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
+    public ApiKeys listKeys(String resourceGroupName, String accountName) {
+        ApiKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
         if (inner != null) {
-            return new CognitiveServicesAccountKeysImpl(inner, this.manager());
+            return new ApiKeysImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<CognitiveServicesAccountKeys> listKeysWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        Response<CognitiveServicesAccountKeysInner> inner =
+    public Response<ApiKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
+        Response<ApiKeysInner> inner =
             this.serviceClient().listKeysWithResponse(resourceGroupName, accountName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new CognitiveServicesAccountKeysImpl(inner.getValue(), this.manager()));
+                new ApiKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CognitiveServicesAccountKeys regenerateKey(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
-        CognitiveServicesAccountKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, accountName, parameters);
+    public ApiKeys regenerateKey(String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
+        ApiKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, accountName, parameters);
         if (inner != null) {
-            return new CognitiveServicesAccountKeysImpl(inner, this.manager());
+            return new ApiKeysImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<CognitiveServicesAccountKeys> regenerateKeyWithResponse(
+    public Response<ApiKeys> regenerateKeyWithResponse(
         String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context) {
-        Response<CognitiveServicesAccountKeysInner> inner =
+        Response<ApiKeysInner> inner =
             this.serviceClient().regenerateKeyWithResponse(resourceGroupName, accountName, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new CognitiveServicesAccountKeysImpl(inner.getValue(), this.manager()));
+                new ApiKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CognitiveServicesAccountEnumerateSkusResult listSkus(String resourceGroupName, String accountName) {
-        CognitiveServicesAccountEnumerateSkusResultInner inner =
-            this.serviceClient().listSkus(resourceGroupName, accountName);
+    public AccountSkuListResult listSkus(String resourceGroupName, String accountName) {
+        AccountSkuListResultInner inner = this.serviceClient().listSkus(resourceGroupName, accountName);
         if (inner != null) {
-            return new CognitiveServicesAccountEnumerateSkusResultImpl(inner, this.manager());
+            return new AccountSkuListResultImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<CognitiveServicesAccountEnumerateSkusResult> listSkusWithResponse(
+    public Response<AccountSkuListResult> listSkusWithResponse(
         String resourceGroupName, String accountName, Context context) {
-        Response<CognitiveServicesAccountEnumerateSkusResultInner> inner =
+        Response<AccountSkuListResultInner> inner =
             this.serviceClient().listSkusWithResponse(resourceGroupName, accountName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new CognitiveServicesAccountEnumerateSkusResultImpl(inner.getValue(), this.manager()));
+                new AccountSkuListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public UsagesResult getUsages(String resourceGroupName, String accountName) {
-        UsagesResultInner inner = this.serviceClient().getUsages(resourceGroupName, accountName);
+    public UsageListResult listUsages(String resourceGroupName, String accountName) {
+        UsageListResultInner inner = this.serviceClient().listUsages(resourceGroupName, accountName);
         if (inner != null) {
-            return new UsagesResultImpl(inner, this.manager());
+            return new UsageListResultImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<UsagesResult> getUsagesWithResponse(
+    public Response<UsageListResult> listUsagesWithResponse(
         String resourceGroupName, String accountName, String filter, Context context) {
-        Response<UsagesResultInner> inner =
-            this.serviceClient().getUsagesWithResponse(resourceGroupName, accountName, filter, context);
+        Response<UsageListResultInner> inner =
+            this.serviceClient().listUsagesWithResponse(resourceGroupName, accountName, filter, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new UsagesResultImpl(inner.getValue(), this.manager()));
+                new UsageListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CognitiveServicesAccount getById(String id) {
+    public Account getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -208,7 +202,7 @@ public final class AccountsImpl implements Accounts {
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
-    public Response<CognitiveServicesAccount> getByIdWithResponse(String id, Context context) {
+    public Response<Account> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -243,10 +237,10 @@ public final class AccountsImpl implements Accounts {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        this.delete(resourceGroupName, accountName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -262,7 +256,7 @@ public final class AccountsImpl implements Accounts {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, accountName, context);
+        this.delete(resourceGroupName, accountName, context);
     }
 
     private AccountsClient serviceClient() {
@@ -273,7 +267,7 @@ public final class AccountsImpl implements Accounts {
         return this.serviceManager;
     }
 
-    public CognitiveServicesAccountImpl define(String name) {
-        return new CognitiveServicesAccountImpl(name, this.manager());
+    public AccountImpl define(String name) {
+        return new AccountImpl(name, this.manager());
     }
 }

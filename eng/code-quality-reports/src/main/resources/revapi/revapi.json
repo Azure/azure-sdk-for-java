@@ -490,8 +490,9 @@
         "justification": "Adding a final method to an abstract class that is rarely extended. New final method uses an unlikely name that wouldn't be found in sub-types."
       },
       {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method java.util.function.Predicate<C> com.azure.core.util.paging.ContinuablePagedFlux<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::getContinuationPredicate()",
+        "regex": true,
+        "code": "java\\.method\\.finalMethodAddedToNonFinalClass",
+        "new": "method java\\.util\\.function\\.Predicate<C> com\\.azure\\.core\\.util\\.paging\\.ContinuablePagedFlux<C, T, P extends com\\.azure\\.core\\.util\\.paging\\.ContinuablePage<C extends java\\.lang\\.Object, T extends java\\.lang\\.Object>>::getContinuationPredicate\\(\\).*",
         "justification": "Adding a final method to an abstract class that is rarely extended. New final method uses an unlikely name that wouldn't be found in sub-types."
       },
       {
@@ -505,6 +506,139 @@
         "code": "java.annotation.attributeValueChanged",
         "new": "@interface com.azure.core.annotation.JsonFlatten",
         "justification": "Changes made the annotation more permissive on the target types."
+      },
+      {
+        "code": "java.field.serialVersionUIDUnchanged",
+        "old": "field com.azure.core.amqp.exception.AmqpErrorContext.serialVersionUID",
+        "new": "field com.azure.core.amqp.exception.AmqpErrorContext.serialVersionUID",
+        "justification": "The field ErrorInfo was added to AmqpErrorContext, but no existing fields were removed or changed."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setReadTimeout(java.time.Duration)",
+        "justification": "New Setter method."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setResponseTimeout(java.time.Duration)",
+        "justification": "New Setter method."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.time.Duration com.azure.core.util.HttpClientOptions::getConnectionIdleTimeout()",
+        "package": "com.azure.core.util",
+        "justification": "New getter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Integer com.azure.core.util.HttpClientOptions::getMaximumConnectionPoolSize()",
+        "package": "com.azure.core.util",
+        "justification": "New getter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setConnectionIdleTimeout(java.time.Duration)",
+        "package": "com.azure.core.util",
+        "justification": "New setter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setMaximumConnectionPoolSize(java.lang.Integer)",
+        "package": "com.azure.core.util",
+        "justification": "New setter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setResponseTimeout(java.time.Duration)",
+        "justification": "New Setter method."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getD()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getD()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDp()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDp()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDq()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDq()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getE()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getE()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getK()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getK()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getN()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getN()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getP()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getP()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQ()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQ()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQi()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQi()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getT()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getT()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getX()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getX()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.annotation.attributeValueChanged",
+        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getY()",
+        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getY()",
+        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method boolean com.google.gson.JsonArray::isEmpty()",
+        "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
+      },
+      {
+        "code": "java.field.constantValueChanged",
+        "old": "field com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY",
+        "new": "field com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY",
+        "justification": "Old field value spelled incorrectly and was used in preview version of tracing package"
+      },
+      {
+        "code": "java.method.added",
+        "new":"method void com.azure.core.http.HttpHeaders::<init>(int)",
+        "justification": "New HttpHeaders constructor exported from azure-core."
       }
     ]
   }

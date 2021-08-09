@@ -17,13 +17,6 @@ import java.time.ZoneOffset
 
 class BlobServiceSasModelsTest extends Specification {
 
-    def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-    }
-
     @Unroll
     def "BlobSASPermissions toString"() {
         setup:
@@ -38,23 +31,25 @@ class BlobServiceSasModelsTest extends Specification {
             .setListPermission(list)
             .setMovePermission(move)
             .setExecutePermission(execute)
+            .setImmutabilityPolicyPermission(setImmutabilityPolicy)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute || expectedString
-        true  | false | false  | false  | false | false         | false | false | false | false   || "r"
-        false | true  | false  | false  | false | false         | false | false | false | false   || "w"
-        false | false | true   | false  | false | false         | false | false | false | false   || "d"
-        false | false | false  | true   | false | false         | false | false | false | false   || "c"
-        false | false | false  | false  | true  | false         | false | false | false | false   || "a"
-        false | false | false  | false  | false | true          | false | false | false | false   || "x"
-        false | false | false  | false  | false | false         | true  | false | false | false   || "t"
-        false | false | false  | false  | false | false         | false | true  | false | false   || "l"
-        false | false | false  | false  | false | false         | false | false | true  | false   || "m"
-        false | false | false  | false  | false | false         | false | false | false | true    || "e"
-        true  | true  | true   | true   | true  | true          | true  | true  | true  | true    || "racwdxltme"
+        read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute | setImmutabilityPolicy || expectedString
+        true  | false | false  | false  | false | false         | false | false | false | false   | false                 || "r"
+        false | true  | false  | false  | false | false         | false | false | false | false   | false                 || "w"
+        false | false | true   | false  | false | false         | false | false | false | false   | false                 || "d"
+        false | false | false  | true   | false | false         | false | false | false | false   | false                 || "c"
+        false | false | false  | false  | true  | false         | false | false | false | false   | false                 || "a"
+        false | false | false  | false  | false | true          | false | false | false | false   | false                 || "x"
+        false | false | false  | false  | false | false         | true  | false | false | false   | false                 || "t"
+        false | false | false  | false  | false | false         | false | true  | false | false   | false                 || "l"
+        false | false | false  | false  | false | false         | false | false | true  | false   | false                 || "m"
+        false | false | false  | false  | false | false         | false | false | false | true    | false                 || "e"
+        false | false | false  | false  | false | false         | false | false | false | false   | true                  || "i"
+        true  | true  | true   | true   | true  | true          | true  | true  | true  | true    | true                  || "racwdxltmei"
     }
 
     @Unroll
@@ -73,21 +68,23 @@ class BlobServiceSasModelsTest extends Specification {
         perms.hasListPermission() == list
         perms.hasMovePermission() == move
         perms.hasExecutePermission() == execute
+        perms.hasImmutabilityPolicyPermission() == setImmutabilityPolicy
 
         where:
-        permString    || read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute
-        "r"           || true  | false | false  | false  | false | false         | false | false | false | false
-        "w"           || false | true  | false  | false  | false | false         | false | false | false | false
-        "d"           || false | false | true   | false  | false | false         | false | false | false | false
-        "c"           || false | false | false  | true   | false | false         | false | false | false | false
-        "a"           || false | false | false  | false  | true  | false         | false | false | false | false
-        "x"           || false | false | false  | false  | false | true          | false | false | false | false
-        "t"           || false | false | false  | false  | false | false         | true  | false | false | false
-        "l"           || false | false | false  | false  | false | false         | false | true  | false | false
-        "m"           || false | false | false  | false  | false | false         | false | false | true  | false
-        "e"           || false | false | false  | false  | false | false         | false | false | false | true
-        "racwdxltme"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true
-        "dtcxewlrma"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true
+        permString     || read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute | setImmutabilityPolicy
+        "r"            || true  | false | false  | false  | false | false         | false | false | false | false   | false
+        "w"            || false | true  | false  | false  | false | false         | false | false | false | false   | false
+        "d"            || false | false | true   | false  | false | false         | false | false | false | false   | false
+        "c"            || false | false | false  | true   | false | false         | false | false | false | false   | false
+        "a"            || false | false | false  | false  | true  | false         | false | false | false | false   | false
+        "x"            || false | false | false  | false  | false | true          | false | false | false | false   | false
+        "t"            || false | false | false  | false  | false | false         | true  | false | false | false   | false
+        "l"            || false | false | false  | false  | false | false         | false | true  | false | false   | false
+        "m"            || false | false | false  | false  | false | false         | false | false | true  | false   | false
+        "e"            || false | false | false  | false  | false | false         | false | false | false | true    | false
+        "i"            || false | false | false  | false  | false | false         | false | false | false | false   | true
+        "racwdxltmei"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true    | true
+        "dtcxiewlrma"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true    | true
     }
 
     def "BlobSASPermissions parse IA"() {
@@ -120,23 +117,25 @@ class BlobServiceSasModelsTest extends Specification {
             .setTagsPermission(tags)
             .setMovePermission(move)
             .setExecutePermission(execute)
+            .setImmutabilityPolicyPermission(setImmutabilityPolicy)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute || expectedString
-        true  | false | false  | false  | false | false         | false | false | false | false   || "r"
-        false | true  | false  | false  | false | false         | false | false | false | false   || "w"
-        false | false | true   | false  | false | false         | false | false | false | false   || "d"
-        false | false | false  | true   | false | false         | false | false | false | false   || "c"
-        false | false | false  | false  | true  | false         | false | false | false | false   || "a"
-        false | false | false  | false  | false | true          | false | false | false | false   || "x"
-        false | false | false  | false  | false | false         | true  | false | false | false   || "t"
-        false | false | false  | false  | false | false         | false | true  | false | false   || "l"
-        false | false | false  | false  | false | false         | false | false | true  | false   || "m"
-        false | false | false  | false  | false | false         | false | false | false | true    || "e"
-        true  | true  | true   | true   | true  | true          | true  | true  | true  | true    || "racwdxltme"
+        read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute | setImmutabilityPolicy   || expectedString
+        true  | false | false  | false  | false | false         | false | false | false | false   | false                   || "r"
+        false | true  | false  | false  | false | false         | false | false | false | false   | false                   || "w"
+        false | false | true   | false  | false | false         | false | false | false | false   | false                   || "d"
+        false | false | false  | true   | false | false         | false | false | false | false   | false                   || "c"
+        false | false | false  | false  | true  | false         | false | false | false | false   | false                   || "a"
+        false | false | false  | false  | false | true          | false | false | false | false   | false                   || "x"
+        false | false | false  | false  | false | false         | true  | false | false | false   | false                   || "t"
+        false | false | false  | false  | false | false         | false | true  | false | false   | false                   || "l"
+        false | false | false  | false  | false | false         | false | false | true  | false   | false                   || "m"
+        false | false | false  | false  | false | false         | false | false | false | true    | false                   || "e"
+        false | false | false  | false  | false | false         | false | false | false | false   | true                    || "i"
+        true  | true  | true   | true   | true  | true          | true  | true  | true  | true    | true                    || "racwdxltmei"
     }
 
     @Unroll
@@ -155,21 +154,23 @@ class BlobServiceSasModelsTest extends Specification {
         perms.hasListPermission() == list
         perms.hasMovePermission() == move
         perms.hasExecutePermission() == execute
+        perms.hasImmutabilityPolicyPermission() == setImmutabilityPolicy
 
         where:
-        permString    || read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute
-        "r"           || true  | false | false  | false  | false | false         | false | false | false | false
-        "w"           || false | true  | false  | false  | false | false         | false | false | false | false
-        "d"           || false | false | true   | false  | false | false         | false | false | false | false
-        "c"           || false | false | false  | true   | false | false         | false | false | false | false
-        "a"           || false | false | false  | false  | true  | false         | false | false | false | false
-        "x"           || false | false | false  | false  | false | true          | false | false | false | false
-        "t"           || false | false | false  | false  | false | false         | true  | false | false | false
-        "l"           || false | false | false  | false  | false | false         | false | true  | false | false
-        "m"           || false | false | false  | false  | false | false         | false | false | true  | false
-        "e"           || false | false | false  | false  | false | false         | false | false | false | true
-        "racwdxltme"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true
-        "dtcxewlrma"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true
+        permString     || read  | write | delete | create | add   | deleteVersion | tags  | list  | move  | execute | setImmutabilityPolicy
+        "r"            || true  | false | false  | false  | false | false         | false | false | false | false   | false
+        "w"            || false | true  | false  | false  | false | false         | false | false | false | false   | false
+        "d"            || false | false | true   | false  | false | false         | false | false | false | false   | false
+        "c"            || false | false | false  | true   | false | false         | false | false | false | false   | false
+        "a"            || false | false | false  | false  | true  | false         | false | false | false | false   | false
+        "x"            || false | false | false  | false  | false | true          | false | false | false | false   | false
+        "t"            || false | false | false  | false  | false | false         | true  | false | false | false   | false
+        "l"            || false | false | false  | false  | false | false         | false | true  | false | false   | false
+        "m"            || false | false | false  | false  | false | false         | false | false | true  | false   | false
+        "e"            || false | false | false  | false  | false | false         | false | false | false | true    | false
+        "i"            || false | false | false  | false  | false | false         | false | false | false | false   | true
+        "racwdxltmei"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true    | true
+        "dticxewlrma"  || true  | true  | true   | true   | true  | true          | true  | true  | true  | true    | true
     }
 
     def "ContainerSASPermissions parse IA"() {
@@ -215,18 +216,6 @@ class BlobServiceSasModelsTest extends Specification {
         then:
         ex = thrown(NullPointerException)
         ex.getMessage().contains("accountName")
-    }
-
-    def "ensure state version"() {
-        when:
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(new BlobServiceSasSignatureValues("id"), "container")
-        implUtil.version = null
-        implUtil.ensureState()
-
-        then:
-        implUtil.version // Version is set
-        implUtil.resource == "c" // Default resource is container
-        !implUtil.permissions // Identifier was used so permissions is null
     }
 
     def "ensure state illegal argument"() {

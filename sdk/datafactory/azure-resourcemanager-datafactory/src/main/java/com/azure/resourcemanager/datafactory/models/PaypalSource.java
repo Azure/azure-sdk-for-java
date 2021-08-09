@@ -83,6 +83,13 @@ public final class PaypalSource extends TabularSource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PaypalSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

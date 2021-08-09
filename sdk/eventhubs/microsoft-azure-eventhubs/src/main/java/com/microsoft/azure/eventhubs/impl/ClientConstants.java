@@ -39,7 +39,7 @@ public final class ClientConstants {
     public static final String DEFAULT_RETRY = "Default";
     public static final String PRODUCT_NAME = "MSJavaClient";
     // {x-version-update-start;com.microsoft.azure:azure-eventhubs;current}
-    public static final String CURRENT_JAVACLIENT_VERSION = "3.2.3";
+    public static final String CURRENT_JAVACLIENT_VERSION = "3.3.0";
     // {x-version-update-end}
     public static final String PLATFORM_INFO = getPlatformInfo();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();

@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/vmwarecloudsimple/
+      - sdk/vmwarecloudsimple/ci.yml
+      - sdk/vmwarecloudsimple/azure-resourcemanager-vmwarecloudsimple/
+    exclude:
+      - sdk/vmwarecloudsimple/pom.xml
+      - sdk/vmwarecloudsimple/azure-resourcemanager-vmwarecloudsimple/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/vmwarecloudsimple/
+      - sdk/vmwarecloudsimple/ci.yml
+      - sdk/vmwarecloudsimple/azure-resourcemanager-vmwarecloudsimple/
+    exclude:
+      - sdk/vmwarecloudsimple/pom.xml
+      - sdk/vmwarecloudsimple/azure-resourcemanager-vmwarecloudsimple/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

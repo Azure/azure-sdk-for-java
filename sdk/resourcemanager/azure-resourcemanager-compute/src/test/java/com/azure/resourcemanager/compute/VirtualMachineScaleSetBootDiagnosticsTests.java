@@ -77,7 +77,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withBootDiagnostics()
                 .create();
 
@@ -130,7 +130,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withBootDiagnostics(creatableStorageAccount)
                 .create();
 
@@ -189,7 +189,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withBootDiagnostics(storageAccount)
                 .create();
 
@@ -239,7 +239,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withBootDiagnostics()
                 .create();
 
@@ -294,7 +294,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withBootDiagnostics()
                 .create();
@@ -372,7 +372,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withBootDiagnostics()
                 .withExistingStorageAccount(
@@ -437,7 +437,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withBootDiagnostics(
                     creatableStorageAccount) // This storage account should be used for BDiagnostics not OS disk storage
@@ -467,5 +467,41 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
             }
         }
         Assertions.assertTrue(notFound);
+    }
+
+
+    @Test
+    public void canEnableBootDiagnosticsOnManagedStorageAccount() {
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
+                .define(vmName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withoutPrimaryInternetFacingLoadBalancer()
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("jvuser")
+                .withSsh(sshPublicKey())
+                .withBootDiagnosticsOnManagedStorageAccount()
+                .create();
+
+        Assertions.assertNotNull(virtualMachineScaleSet);
+        Assertions.assertTrue(virtualMachineScaleSet.isBootDiagnosticsEnabled());
+        Assertions.assertNull(virtualMachineScaleSet.bootDiagnosticsStorageUri());
     }
 }

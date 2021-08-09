@@ -4,8 +4,8 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.BoundaryDirection;
-import com.azure.ai.metricsadvisor.models.MetricBoundaryCondition;
+import com.azure.ai.metricsadvisor.administration.models.BoundaryDirection;
+import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
 
 /**
  * The helper class to set the non-public properties of an {@link MetricBoundaryCondition} instance.

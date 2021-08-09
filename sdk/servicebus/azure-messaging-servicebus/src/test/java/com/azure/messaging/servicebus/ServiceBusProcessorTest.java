@@ -194,7 +194,6 @@ public class ServiceBusProcessorTest {
      */
     @Test
     public void testErrorRecovery() throws InterruptedException {
-
         List<ServiceBusMessageContext> messageList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
@@ -204,6 +203,7 @@ public class ServiceBusProcessorTest {
                 new ServiceBusMessageContext(serviceBusReceivedMessage);
             messageList.add(serviceBusMessageContext);
         }
+
         final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
             (state, sink) -> {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
@@ -220,11 +220,9 @@ public class ServiceBusProcessorTest {
             });
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
-
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
         countDownLatch.set(new CountDownLatch(4));
-
         AtomicBoolean assertionFailed = new AtomicBoolean();
         StringBuffer messageIdNotMatched = new StringBuffer();
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,

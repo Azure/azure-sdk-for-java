@@ -30,6 +30,7 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
@@ -103,6 +104,7 @@ import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnection
 import com.azure.messaging.eventgrid.systemevents.StorageAsyncOperationInitiatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobInventoryPolicyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobTierChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
@@ -406,6 +408,10 @@ public final class SystemEventNames {
      */
     public static final String STORAGE_BLOB_DELETED = "Microsoft.Storage.BlobDeleted";
 
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobInventoryPolicyCompleted event. */
+    public static final String STORAGE_BLOB_INVENTORY_POLICY_COMPLETED =
+        "Microsoft.Storage.BlobInventoryPolicyCompleted";
+
     /**
      * indicates an event of blob renaming.
      */
@@ -455,6 +461,13 @@ public final class SystemEventNames {
         "Microsoft.Communication.ChatThreadParticipantAdded";
     public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER =
         "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
+     * event.
+     */
+    public static final String CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE =
+            "Microsoft.ContainerService.NewKubernetesVersionAvailable";
 
     /**
      * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD}.
@@ -608,6 +621,7 @@ public final class SystemEventNames {
             // Storage events.
             put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
             put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
+            put(STORAGE_BLOB_INVENTORY_POLICY_COMPLETED, StorageBlobInventoryPolicyCompletedEventData.class);
             put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
             put(STORAGE_BLOB_TIER_CHANGED, StorageBlobTierChangedEventData.class);
             put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);
@@ -689,6 +703,10 @@ public final class SystemEventNames {
             put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
             put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
             put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
+
+            // Container Service
+            put(CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
+                    ContainerServiceNewKubernetesVersionAvailableEventData.class);
         }
     };
 

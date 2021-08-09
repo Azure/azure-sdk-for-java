@@ -10,7 +10,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-cosmos</artifactId>
-  <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
+  <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for CosmosDB Management</name>
@@ -48,42 +48,42 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
+      <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

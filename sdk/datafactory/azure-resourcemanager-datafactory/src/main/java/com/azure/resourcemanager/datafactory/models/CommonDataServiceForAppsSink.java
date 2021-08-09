@@ -138,6 +138,13 @@ public final class CommonDataServiceForAppsSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

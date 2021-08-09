@@ -180,6 +180,13 @@ public final class CosmosDbSqlApiSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbSqlApiSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

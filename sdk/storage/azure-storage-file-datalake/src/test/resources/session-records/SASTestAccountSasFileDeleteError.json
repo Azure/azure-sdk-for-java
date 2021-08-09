@@ -109,7 +109,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/de5f996f0de5f996fb0f33821e4a0cecf51314842b0b/de5f996f2de5f996fb0f61367818a55517d644c48aab?sv=2020-08-04&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/de5f996f0de5f996fb0f33821e4a0cecf51314842b0b/de5f996f2de5f996fb0f61367818a55517d644c48aab?sv=2020-10-02&ss=b&srt=sco&se=2021-05-06T17%3A53%3A43Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",

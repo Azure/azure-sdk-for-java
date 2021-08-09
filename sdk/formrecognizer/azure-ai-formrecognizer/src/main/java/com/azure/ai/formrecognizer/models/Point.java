@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The Point model.
+ * Represents the x and y coordinates of a point.
  */
 @Immutable
 public final class Point {

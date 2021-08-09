@@ -13,6 +13,9 @@ public final class SkuTier extends ExpandableStringEnum<SkuTier> {
     /** Static value Free for SkuTier. */
     public static final SkuTier FREE = fromString("Free");
 
+    /** Static value Basic for SkuTier. */
+    public static final SkuTier BASIC = fromString("Basic");
+
     /** Static value Standard for SkuTier. */
     public static final SkuTier STANDARD = fromString("Standard");
 

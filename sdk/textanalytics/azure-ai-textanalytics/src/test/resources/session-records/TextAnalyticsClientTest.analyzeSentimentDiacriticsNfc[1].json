@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//sentiment?showStats=false&opinionMining=true&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/sentiment?showStats=false&loggingOptOut=false&opinionMining=true&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.5 (11.0.9.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8b129d0f-c530-4a18-8261-ca4aa48a32b2",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d7bc4340-46e6-4ac3-879c-b411ba6d6d9c",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "88",
+      "x-envoy-upstream-service-time" : "244",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "3ae695fd-11df-49b1-a22a-a5282d250178",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
+      "apim-request-id" : "b1510a3b-76e1-46af-8a69-5b184eac415f",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":26,\"text\":\"año The hotel was unclean.\",\"targets\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":8,\"length\":5,\"text\":\"hotel\",\"relations\":[{\"relationType\":\"assessment\",\"ref\":\"#/documents/0/sentences/0/assessments/0\"}]}],\"assessments\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":18,\"length\":7,\"text\":\"unclean\",\"isNegated\":false}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}",
-      "Date" : "Wed, 24 Feb 2021 02:56:01 GMT",
+      "Date" : "Fri, 30 Jul 2021 18:01:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

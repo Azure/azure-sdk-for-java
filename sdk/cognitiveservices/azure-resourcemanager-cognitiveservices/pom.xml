@@ -9,11 +9,11 @@
 
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-cognitiveservices</artifactId>
-    <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;current} -->
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for CognitiveServices Management</name>
-    <description>This package contains Microsoft Azure SDK for CognitiveServices Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Cognitive Services Management Client. Package tag package-2017-04.</description>
+    <description>This package contains Microsoft Azure SDK for CognitiveServices Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Cognitive Services Management Client. Package tag package-2021-04.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <licenses>
@@ -44,12 +44,12 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-management</artifactId>
-            <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+            <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
         </dependency>
     </dependencies>
     <build>

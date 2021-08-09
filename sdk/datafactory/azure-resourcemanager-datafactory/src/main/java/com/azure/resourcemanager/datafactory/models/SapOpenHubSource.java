@@ -175,6 +175,13 @@ public final class SapOpenHubSource extends TabularSource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SapOpenHubSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

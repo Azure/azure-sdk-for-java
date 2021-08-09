@@ -5,14 +5,14 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-test-selenium-common</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-core;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-selenium-common;current} -->
   <packaging>jar</packaging>
 
   <dependencies>

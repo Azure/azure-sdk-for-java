@@ -5,15 +5,15 @@ package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class UnaryAzureMessageConverterTest<T> {
@@ -28,7 +28,7 @@ public abstract class UnaryAzureMessageConverterTest<T> {
 
     protected abstract void assertMessageHeadersEqual(T azureMessage, Message<?> message);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         converter = getConverter();
     }

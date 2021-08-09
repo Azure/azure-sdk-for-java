@@ -9,9 +9,8 @@ import com.azure.spring.autoconfigure.storage.StorageHealthConfiguration;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import com.azure.storage.file.share.models.ShareServiceProperties;
-import org.apache.http.HttpException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -27,16 +26,16 @@ import static org.mockito.Mockito.when;
 public class FileStorageHealthIndicatorTest {
     private static final String MOCK_URL = "https://example.org/bigly_fake_url";
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testWithNoStorageConfiguration() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withAllowBeanDefinitionOverriding(true)
             .withBean(ShareServiceClientBuilder.class)
             .withConfiguration(AutoConfigurations.of(StorageHealthConfiguration.class));
 
-        contextRunner.withBean(FileStorageHealthIndicator.class).run(context -> {
-            context.getBean(FileStorageHealthIndicator.class).getHealth(true);
-        });
+        contextRunner.withBean(FileStorageHealthIndicator.class).run(context ->
+            Assertions.assertThrows(IllegalStateException.class,
+                () -> context.getBean(FileStorageHealthIndicator.class).getHealth(true)));
     }
 
     @Test
@@ -48,8 +47,8 @@ public class FileStorageHealthIndicatorTest {
             .withPropertyValues("azure.storage.account-name=acc1");
         contextRunner.run(context -> {
             Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
-            Assert.assertEquals(Status.UP, health.getStatus());
-            Assert.assertEquals(MOCK_URL, health.getDetails().get(URL_FIELD));
+            Assertions.assertEquals(Status.UP, health.getStatus());
+            Assertions.assertEquals(MOCK_URL, health.getDetails().get(URL_FIELD));
         });
     }
 
@@ -62,8 +61,8 @@ public class FileStorageHealthIndicatorTest {
             .withPropertyValues("azure.storage.account-name=acc1");
         contextRunner.run(context -> {
             Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
-            Assert.assertEquals(Status.DOWN, health.getStatus());
-            Assert.assertEquals(MOCK_URL, health.getDetails().get(URL_FIELD));
+            Assertions.assertEquals(Status.DOWN, health.getStatus());
+            Assertions.assertEquals(MOCK_URL, health.getDetails().get(URL_FIELD));
         });
     }
 
@@ -95,7 +94,7 @@ public class FileStorageHealthIndicatorTest {
             ShareServiceAsyncClient mockAsyncClient = mock(ShareServiceAsyncClient.class);
             when(mockAsyncClient.getFileServiceUrl()).thenReturn(MOCK_URL);
             when(mockAsyncClient.getPropertiesWithResponse())
-                .thenReturn(Mono.error(new HttpException("The gremlins have cut the cable.")));
+                .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
             when(mockClientBuilder.buildAsyncClient()).thenReturn(mockAsyncClient);
 
             return mockClientBuilder;

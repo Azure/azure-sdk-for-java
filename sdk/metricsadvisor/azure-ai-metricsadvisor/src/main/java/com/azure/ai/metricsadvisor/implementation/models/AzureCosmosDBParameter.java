@@ -11,31 +11,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureCosmosDBParameter {
     /*
-     * Azure CosmosDB connection string
+     * The connection string of this Azure CosmosDB
      */
-    @JsonProperty(value = "connectionString", required = true)
+    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
-     * Query script
+     * The statement to query this collection
      */
     @JsonProperty(value = "sqlQuery", required = true)
     private String sqlQuery;
 
     /*
-     * Database name
+     * A database name in this Azure CosmosDB
      */
     @JsonProperty(value = "database", required = true)
     private String database;
 
     /*
-     * Collection id
+     * A collection id in this database
      */
     @JsonProperty(value = "collectionId", required = true)
     private String collectionId;
 
     /**
-     * Get the connectionString property: Azure CosmosDB connection string.
+     * Get the connectionString property: The connection string of this Azure CosmosDB.
      *
      * @return the connectionString value.
      */
@@ -44,7 +44,7 @@ public final class AzureCosmosDBParameter {
     }
 
     /**
-     * Set the connectionString property: Azure CosmosDB connection string.
+     * Set the connectionString property: The connection string of this Azure CosmosDB.
      *
      * @param connectionString the connectionString value to set.
      * @return the AzureCosmosDBParameter object itself.
@@ -55,7 +55,7 @@ public final class AzureCosmosDBParameter {
     }
 
     /**
-     * Get the sqlQuery property: Query script.
+     * Get the sqlQuery property: The statement to query this collection.
      *
      * @return the sqlQuery value.
      */
@@ -64,7 +64,7 @@ public final class AzureCosmosDBParameter {
     }
 
     /**
-     * Set the sqlQuery property: Query script.
+     * Set the sqlQuery property: The statement to query this collection.
      *
      * @param sqlQuery the sqlQuery value to set.
      * @return the AzureCosmosDBParameter object itself.
@@ -75,7 +75,7 @@ public final class AzureCosmosDBParameter {
     }
 
     /**
-     * Get the database property: Database name.
+     * Get the database property: A database name in this Azure CosmosDB.
      *
      * @return the database value.
      */
@@ -84,7 +84,7 @@ public final class AzureCosmosDBParameter {
     }
 
     /**
-     * Set the database property: Database name.
+     * Set the database property: A database name in this Azure CosmosDB.
      *
      * @param database the database value to set.
      * @return the AzureCosmosDBParameter object itself.
@@ -95,7 +95,7 @@ public final class AzureCosmosDBParameter {
     }
 
     /**
-     * Get the collectionId property: Collection id.
+     * Get the collectionId property: A collection id in this database.
      *
      * @return the collectionId value.
      */
@@ -104,7 +104,7 @@ public final class AzureCosmosDBParameter {
     }
 
     /**
-     * Set the collectionId property: Collection id.
+     * Set the collectionId property: A collection id in this database.
      *
      * @param collectionId the collectionId value to set.
      * @return the AzureCosmosDBParameter object itself.

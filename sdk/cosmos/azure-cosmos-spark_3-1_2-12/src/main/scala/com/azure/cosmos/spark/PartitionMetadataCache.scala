@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import reactor.core.scala.publisher.SMono
@@ -21,7 +22,7 @@ import scala.collection.concurrent.TrieMap
 // physical partition - it is not guaranteeing functional correctness
 // because the cached metadata could be old or even be for a different
 // container after deletion and recreation of a container
-private object PartitionMetadataCache extends CosmosLoggingTrait {
+private object PartitionMetadataCache extends BasicLoggingTrait {
   private[this] val Nothing = 0
   private[this] val cache = new TrieMap[String, PartitionMetadata]
   // purpose of the time is to update partition metadata

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAgentPoolProfileProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,14 +19,15 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /*
      * Unique name of the agent pool profile in the context of the subscription
-     * and resource group.
+     * and resource group. Windows agent pool names must be 6 characters or
+     * less.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * group. Windows agent pool names must be 6 characters or less.
      *
      * @return the name value.
      */
@@ -35,7 +37,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /**
      * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * group. Windows agent pool names must be 6 characters or less.
      *
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
@@ -133,6 +135,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withEnableAutoScaling(Boolean enableAutoScaling) {
         super.withEnableAutoScaling(enableAutoScaling);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withScaleDownMode(ScaleDownMode scaleDownMode) {
+        super.withScaleDownMode(scaleDownMode);
         return this;
     }
 
@@ -252,6 +261,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withEnableEncryptionAtHost(Boolean enableEncryptionAtHost) {
         super.withEnableEncryptionAtHost(enableEncryptionAtHost);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableUltraSsd(Boolean enableUltraSsd) {
+        super.withEnableUltraSsd(enableUltraSsd);
         return this;
     }
 

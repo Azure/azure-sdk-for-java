@@ -4,6 +4,6 @@
 
 /**
  * Package containing the data models for MicrosoftAzureSDKForMediaVideoAnalyzerEdge. This package contains Microsoft
- * Azure SDK for Media Video Analyzer Edge.
+ * Microsoft Azure SDK for Azure Video Analyzer on IoT Edge - edge client library for Java.
  */
 package com.azure.media.videoanalyzer.edge.models;

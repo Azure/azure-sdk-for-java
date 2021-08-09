@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/hybridcompute/
+      - sdk/hybridcompute/ci.yml
+      - sdk/hybridcompute/azure-resourcemanager-hybridcompute/
+    exclude:
+      - sdk/hybridcompute/pom.xml
+      - sdk/hybridcompute/azure-resourcemanager-hybridcompute/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/hybridcompute/
+      - sdk/hybridcompute/ci.yml
+      - sdk/hybridcompute/azure-resourcemanager-hybridcompute/
+    exclude:
+      - sdk/hybridcompute/pom.xml
+      - sdk/hybridcompute/azure-resourcemanager-hybridcompute/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

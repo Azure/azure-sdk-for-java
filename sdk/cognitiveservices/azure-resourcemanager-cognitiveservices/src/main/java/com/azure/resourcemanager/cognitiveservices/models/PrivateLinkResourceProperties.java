@@ -22,12 +22,6 @@ public final class PrivateLinkResourceProperties {
     private String groupId;
 
     /*
-     * The private link resource display name.
-     */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
-
-    /*
      * The private link resource required member names.
      */
     @JsonProperty(value = "requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
@@ -39,6 +33,12 @@ public final class PrivateLinkResourceProperties {
     @JsonProperty(value = "requiredZoneNames")
     private List<String> requiredZoneNames;
 
+    /*
+     * The private link resource display name.
+     */
+    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
+    private String displayName;
+
     /**
      * Get the groupId property: The private link resource group id.
      *
@@ -46,15 +46,6 @@ public final class PrivateLinkResourceProperties {
      */
     public String groupId() {
         return this.groupId;
-    }
-
-    /**
-     * Get the displayName property: The private link resource display name.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.displayName;
     }
 
     /**
@@ -84,6 +75,15 @@ public final class PrivateLinkResourceProperties {
     public PrivateLinkResourceProperties withRequiredZoneNames(List<String> requiredZoneNames) {
         this.requiredZoneNames = requiredZoneNames;
         return this;
+    }
+
+    /**
+     * Get the displayName property: The private link resource display name.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
     }
 
     /**

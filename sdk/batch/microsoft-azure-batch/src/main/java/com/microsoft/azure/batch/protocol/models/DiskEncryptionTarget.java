@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for DiskEncryptionTarget.
  */
 public enum DiskEncryptionTarget {
-    /** The temporary disk on the compute node is encrypted. On Linux this encryption applies to other partitions (such as those on mounted data disks) when encryption occurs at boot time. */
+    /** The OS Disk on the compute node is encrypted. */
     OS_DISK("osdisk"),
 
     /** The temporary disk on the compute node is encrypted. On Linux this encryption applies to other partitions (such as those on mounted data disks) when encryption occurs at boot time. */

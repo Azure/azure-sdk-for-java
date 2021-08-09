@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link AssessmentSentiment} model.
  */
+@Immutable
 public final class AssessmentSentiment {
     private String text;
     private TextSentiment sentiment;
@@ -53,7 +55,7 @@ public final class AssessmentSentiment {
     }
 
     /**
-     * Get the opinion text property.
+     * Gets the opinion text property.
      *
      * @return The text value.
      */
@@ -62,7 +64,7 @@ public final class AssessmentSentiment {
     }
 
     /**
-     * Get the opinion text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
+     * Gets the opinion text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
      * {@code neutral} sentiment type additionally, but target sentiment can only be positive, negative, or mixed.
      *
      * @return The sentiment value.
@@ -72,7 +74,7 @@ public final class AssessmentSentiment {
     }
 
     /**
-     * Get the offset of opinion text.
+     * Gets the offset of opinion text.
      *
      * @return The offset of opinion text.
      */
@@ -81,7 +83,7 @@ public final class AssessmentSentiment {
     }
 
     /**
-     * Get the length of opinion text.
+     * Gets the length of opinion text.
      *
      * @return The length of opinion text.
      */
@@ -90,7 +92,7 @@ public final class AssessmentSentiment {
     }
 
     /**
-     * Get the boolean indicator to show if the text is negative.
+     * Gets the boolean indicator to show if the text is negative.
      *
      * @return The boolean indicator to show if the text is negative.
      */
@@ -99,9 +101,9 @@ public final class AssessmentSentiment {
     }
 
     /**
-     * Get the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
-     * higher the confidence in the sentiment. OpinionSentiment only has positive or negative confidence score value
-     * because there is no neutral sentiment label in the OpinionSentiment.
+     * Gets the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
+     * higher the confidence in the sentiment. {@link AssessmentSentiment} only has positive or negative confidence
+     * score value because there is no neutral sentiment label in the {@link AssessmentSentiment}.
      *
      * @return The {@link SentimentConfidenceScores}.
      */

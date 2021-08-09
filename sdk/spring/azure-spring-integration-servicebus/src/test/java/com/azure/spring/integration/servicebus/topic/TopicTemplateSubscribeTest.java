@@ -7,12 +7,12 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.support.ServiceBusProcessorClientWrapper;
 import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
@@ -20,20 +20,19 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<ServiceBusTopicOperation> {
 
     @Mock
     private ServiceBusTopicClientFactory mockClientFactory;
     private ServiceBusProcessorClientWrapper processorClientWrapper;
-
-    @Before
+    private AutoCloseable closeable;
+    @BeforeEach
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
         ServiceBusProcessorClientWrapper anotherProcessorClientWrapper = new ServiceBusProcessorClientWrapper();
 
-        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory,
-                                                                     new ServiceBusMessageConverter());
+        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateProcessor(eq(this.destination),
                                                          eq(this.consumerGroup),
                                                          any(),
@@ -42,6 +41,11 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
                                                          eq(this.anotherConsumerGroup),
                                                          any(),
                                                          any())).thenReturn(anotherProcessorClientWrapper.getClient());
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Override

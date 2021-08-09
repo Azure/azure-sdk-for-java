@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.4//entities/recognition/pii?showStats=false&domain=PHI&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/recognition/pii?showStats=false&loggingOptOut=false&domain=PHI&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.5 (11.0.9.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "dfee6146-9a62-4571-b3da-6f48d1810f89",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a32ba17f-cfaf-452b-b2f9-ad72d16ee8a9",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "928",
+      "x-envoy-upstream-service-time" : "62",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2",
-      "apim-request-id" : "3e4de370-dbac-4c14-9c96-0dce6dd60ea7",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
+      "apim-request-id" : "2f729b4a-6014-471f-aec3-c004bb5d26a5",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]},{\"redactedText\":\"Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.\",\"id\":\"1\",\"entities\":[{\"text\":\"111000025\",\"category\":\"PhoneNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.8},{\"text\":\"111000025\",\"category\":\"ABARoutingNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.75},{\"text\":\"111000025\",\"category\":\"NZSocialWelfareNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}",
-      "Date" : "Wed, 24 Feb 2021 03:42:54 GMT",
+      "Date" : "Fri, 30 Jul 2021 18:06:02 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -3,19 +3,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7550a08a-dcfc-409c-867d-42ccd36820b8",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "278ms",
-      "MS-CV" : "sWHf49FO5kW3Q7tRMJajLg.0",
+      "X-Processing-Time" : "327ms",
+      "MS-CV" : "EOrRUoKHpU2EDnP+/Q6bsA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0tsWVYAAAAACV5n4xF4lyR7Lqkf0Vzqp9TEFYRURHRTEyMTIAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0hb/DYAAAAAAZqOB5hSNAQ6KSUTiO0lfZWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "202",
       "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"httpStatusCode\":400,\"errorMessage\":\"Invalid To phone number format.\",\"successful\":false}]}",
-      "Date" : "Fri, 07 May 2021 22:56:54 GMT",
+      "Date" : "Fri, 11 Jun 2021 19:54:45 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
@@ -24,19 +26,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "dfd3eaea-6f19-472c-a9cc-2eedd61db67f",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "273ms",
-      "MS-CV" : "Th2BlzjKY0KWq9OYzhWaVg.0",
+      "X-Processing-Time" : "278ms",
+      "MS-CV" : "eKOOyYDaHU2fszlLAfGjOw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0tsWVYAAAAAAhR4dZUTihQbWVNRKqZDP9TEFYRURHRTEyMTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0hr/DYAAAAAA/qB45jlGES6ILjpCUxVWSWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "202",
       "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"httpStatusCode\":400,\"errorMessage\":\"Invalid To phone number format.\",\"successful\":false}]}",
-      "Date" : "Fri, 07 May 2021 22:56:54 GMT",
+      "Date" : "Fri, 11 Jun 2021 19:54:46 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },

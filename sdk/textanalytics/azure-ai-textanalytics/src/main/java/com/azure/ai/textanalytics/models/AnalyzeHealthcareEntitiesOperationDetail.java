@@ -4,12 +4,14 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 
 /**
  * The {@link AnalyzeHealthcareEntitiesOperationDetail} model.
  */
+@Immutable
 public final class AnalyzeHealthcareEntitiesOperationDetail {
     private String operationId;
     private OffsetDateTime createdAt;
@@ -50,7 +52,7 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
     /**
      * Gets the operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
      *
-     * @return the operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
+     * @return The operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
@@ -59,7 +61,7 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
     /**
      * Gets the created time of an action.
      *
-     * @return the created time of an action.
+     * @return The created time of an action.
      */
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -68,7 +70,7 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
     /**
      * Gets the expiration time of an action.
      *
-     * @return the expiration time of an action.
+     * @return The expiration time of an action.
      */
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
@@ -77,7 +79,7 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
     /**
      * Gets the last updated time of an action.
      *
-     * @return the last updated time of an action.
+     * @return The last updated time of an action.
      */
     public OffsetDateTime getLastModifiedAt() {
         return lastModifiedAt;

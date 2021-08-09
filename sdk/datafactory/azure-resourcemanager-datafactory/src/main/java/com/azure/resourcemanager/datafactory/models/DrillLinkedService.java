@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.DrillLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,94 +17,23 @@ import java.util.Map;
 /** Drill server linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Drill")
-@JsonFlatten
 @Fluent
-public class DrillLinkedService extends LinkedService {
+public final class DrillLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DrillLinkedService.class);
 
     /*
-     * An ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * Drill server linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionString")
-    private Object connectionString;
-
-    /*
-     * The Azure key vault secret reference of password in connection string.
-     */
-    @JsonProperty(value = "typeProperties.pwd")
-    private AzureKeyVaultSecretReference pwd;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private DrillLinkedServiceTypeProperties innerTypeProperties = new DrillLinkedServiceTypeProperties();
 
     /**
-     * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * Get the innerTypeProperties property: Drill server linked service properties.
      *
-     * @return the connectionString value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the DrillLinkedService object itself.
-     */
-    public DrillLinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the pwd property: The Azure key vault secret reference of password in connection string.
-     *
-     * @return the pwd value.
-     */
-    public AzureKeyVaultSecretReference pwd() {
-        return this.pwd;
-    }
-
-    /**
-     * Set the pwd property: The Azure key vault secret reference of password in connection string.
-     *
-     * @param pwd the pwd value to set.
-     * @return the DrillLinkedService object itself.
-     */
-    public DrillLinkedService withPwd(AzureKeyVaultSecretReference pwd) {
-        this.pwd = pwd;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the DrillLinkedService object itself.
-     */
-    public DrillLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private DrillLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -136,6 +65,79 @@ public class DrillLinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the DrillLinkedService object itself.
+     */
+    public DrillLinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DrillLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the pwd property: The Azure key vault secret reference of password in connection string.
+     *
+     * @return the pwd value.
+     */
+    public AzureKeyVaultSecretReference pwd() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().pwd();
+    }
+
+    /**
+     * Set the pwd property: The Azure key vault secret reference of password in connection string.
+     *
+     * @param pwd the pwd value to set.
+     * @return the DrillLinkedService object itself.
+     */
+    public DrillLinkedService withPwd(AzureKeyVaultSecretReference pwd) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DrillLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPwd(pwd);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the DrillLinkedService object itself.
+     */
+    public DrillLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DrillLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -143,8 +145,13 @@ public class DrillLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (pwd() != null) {
-            pwd().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model DrillLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

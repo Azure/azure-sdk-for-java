@@ -80,6 +80,13 @@ public final class OracleSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public OracleSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

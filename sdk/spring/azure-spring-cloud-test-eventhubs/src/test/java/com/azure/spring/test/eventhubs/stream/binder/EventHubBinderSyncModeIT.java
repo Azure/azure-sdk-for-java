@@ -4,7 +4,6 @@
 package com.azure.spring.test.eventhubs.stream.binder;
 
 import org.junit.Rule;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +19,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = EventHubBinderSyncModeIT.TestConfig.class)
 @TestPropertySource(properties =
@@ -34,7 +36,7 @@ import java.util.function.Supplier;
     })
 public class EventHubBinderSyncModeIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderManualModeIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderSyncModeIT.class);
     private static String message = UUID.randomUUID().toString();
 
     @Autowired
@@ -43,7 +45,7 @@ public class EventHubBinderSyncModeIT {
     @Rule
     public OutputCaptureRule capture = new OutputCaptureRule();
 
-    private static final AtomicInteger count = new AtomicInteger(0);
+    private static CountDownLatch latch = new CountDownLatch(1);
 
     @EnableAutoConfiguration
     public static class TestConfig {
@@ -63,18 +65,21 @@ public class EventHubBinderSyncModeIT {
         @Bean
         public Consumer<Message<String>> consume() {
             return message -> {
-                LOGGER.info("New message received: '{}'", message.getPayload());
-                Assertions.assertEquals(message.getPayload(), EventHubBinderSyncModeIT.message);
-                count.addAndGet(1);
+                LOGGER.info("EventHubBinderRecordModeIT: New message received: '{}'", message.getPayload());
+                if (message.getPayload().equals(EventHubBinderSyncModeIT.message) && message.getHeaders().containsKey("x-opt-enqueued-time")) {
+                    latch.countDown();
+                }
             };
         }
     }
 
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
-        Thread.sleep(15000);
+        LOGGER.info("EventHubBinderSyncModeIT begin.");
+        EventHubBinderSyncModeIT.latch.await(15, TimeUnit.SECONDS);
+        LOGGER.info("Send a message:" + message + ".");
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        Thread.sleep(6000);
-        Assertions.assertEquals(1, count.get());
+        assertThat(EventHubBinderSyncModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        LOGGER.info("EventHubBinderSyncModeIT end.");
     }
 }

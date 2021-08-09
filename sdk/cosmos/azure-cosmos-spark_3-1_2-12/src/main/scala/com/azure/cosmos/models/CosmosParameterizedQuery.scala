@@ -8,12 +8,12 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 // SqlQuerySpec is not serializable we need a serializable wrapper
-private[cosmos] case class CosmosParameterizedQuery(queryTest: String,
+private[cosmos] case class CosmosParameterizedQuery(queryText: String,
                                                     parameterNames: List[String],
                                                     parameterValues: List[Any])
   extends Serializable {
   def toSqlQuerySpec: SqlQuerySpec = {
-    new SqlQuerySpec(queryTest, parameterNames.zip(parameterValues)
+    new SqlQuerySpec(queryText, parameterNames.zip(parameterValues)
       .map(param => new SqlParameter(param._1, param._2))
       .asJava)
   }

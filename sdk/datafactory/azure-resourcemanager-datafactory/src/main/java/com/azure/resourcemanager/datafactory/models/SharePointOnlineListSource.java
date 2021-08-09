@@ -100,6 +100,13 @@ public final class SharePointOnlineListSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SharePointOnlineListSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -40,7 +40,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Entry point to VideoAnalyzerManager. Azure Video Analyzer ARM Client. */
+/**
+ * Entry point to VideoAnalyzerManager. Azure Video Analyzer provides a platform for you to build intelligent video
+ * applications that span the edge and the cloud.
+ */
 public final class VideoAnalyzerManager {
     private Operations operations;
 
@@ -69,11 +72,11 @@ public final class VideoAnalyzerManager {
     }
 
     /**
-     * Creates an instance of VideoAnalyzer service API entry point.
+     * Creates an instance of Video Analyzer service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the VideoAnalyzer service API instance.
+     * @return the Video Analyzer service API instance.
      */
     public static VideoAnalyzerManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -162,11 +165,11 @@ public final class VideoAnalyzerManager {
         }
 
         /**
-         * Creates an instance of VideoAnalyzer service API entry point.
+         * Creates an instance of Video Analyzer service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the VideoAnalyzer service API instance.
+         * @return the Video Analyzer service API instance.
          */
         public VideoAnalyzerManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -178,7 +181,7 @@ public final class VideoAnalyzerManager {
                 .append("-")
                 .append("com.azure.resourcemanager.videoanalyzer")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")

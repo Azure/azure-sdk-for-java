@@ -20,13 +20,13 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ```yaml
-branch: master
+branch: 3d6211cf28f83236cdf78e7cfc50efd3fb7cba72
 repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 ```
 
 ```yaml
 input-file:
-    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2019-06-01-preview/managedPrivateEndpoints.json
+    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2021-06-01-preview/managedPrivateEndpoints.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -41,4 +41,5 @@ context-client-method-parameter: true
 required-parameter-client-methods: true
 credential-types: tokencredential
 credential-scopes: https://dev.azuresynapse.net/.default
+title: ManagedPrivateEndpointsClient
 ```

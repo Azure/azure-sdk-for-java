@@ -4,8 +4,8 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.geojson.GeoPoint;
-import com.azure.core.experimental.geojson.GeoPosition;
+import com.azure.core.models.GeoPoint;
+import com.azure.core.models.GeoPosition;
 import com.azure.core.test.TestMode;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;

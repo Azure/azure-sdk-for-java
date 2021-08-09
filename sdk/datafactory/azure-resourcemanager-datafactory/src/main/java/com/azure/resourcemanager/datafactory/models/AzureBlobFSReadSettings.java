@@ -285,6 +285,13 @@ public final class AzureBlobFSReadSettings extends StoreReadSettings {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSReadSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

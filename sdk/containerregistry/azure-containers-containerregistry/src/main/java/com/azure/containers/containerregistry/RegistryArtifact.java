@@ -6,8 +6,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.TagOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -18,19 +17,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
- * This class provides a client that contains all the operations for repositories in Azure Container Registry.
- * Operations allowed by the client are listing, retrieving, deleting, setting writeable properties.
- * These operations are supported on the repository and the respective tags and manifests in it.
+ * This class provides a helper type that contains all the operations for artifacts in a given repository.
  *
- * <p><strong>Instantiating Container Repository Client</strong></p>
+ * <p><strong>Instantiating Registry Artifact </strong></p>
  *
- * {@codesnippet com.azure.containers.containerregistry.registryartifact.instantiation}
+ * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.instantiation}
  */
 public final class RegistryArtifact {
     private final RegistryArtifactAsync asyncClient;
 
     /**
-     * Creates a ContainerRepositoryAsyncClient that sends requests to the given repository in the container registry service at {@code endpoint}.
+     * Creates a RegistryArtifact type that sends requests to the given repository in the container registry service at {@code endpoint}.
      * Each service call goes through the {@code pipeline}.
      * @param asyncClient The async client for the given repository.
      */
@@ -56,27 +53,25 @@ public final class RegistryArtifact {
     }
 
     /**
-     * Gets the tag or digest for the current instance.
-     * @return Tag or digest information for the current instance.
+     * Gets the fully qualified reference for the current instance.
+     * @return Fully qualified reference of the current instance.
      * */
-    public String getTagOrDigest() {
-        return this.asyncClient.getTagOrDigest();
+    public String getFullyQualifiedReference() {
+        return this.asyncClient.getFullyQualifiedReference();
     }
 
     /**
-     * Deletes the registry artifact with the matching digest {@link #getTagOrDigest()} in the given {@link #getRepositoryName() respository}.
+     * Deletes the registry artifact with the digest and repository associated with the instance.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the registry artifact.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.deleteWithResponse}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.deleteWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the result of the service call.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
-     * @throws NullPointerException thrown if digest is null.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -85,17 +80,15 @@ public final class RegistryArtifact {
     }
 
     /**
-     * Deletes the registry artifact with the matching digest {@link #getTagOrDigest()} in the given {@link #getRepositoryName() respository}.
+     * Deletes the registry artifact with the digest and repository associated with the instance.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the registry artifact.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.delete}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.delete}
      *
      * @throws ClientAuthenticationException thrown if the client does not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
-     * @throws NullPointerException thrown if digest is null.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -110,14 +103,14 @@ public final class RegistryArtifact {
      *
      * <p>Delete the tag for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.deleteTagWithResponse}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.deleteTagWithResponse}
      *
      * @param tag The name of the tag that needs to be deleted.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the result of the service call.
      * @throws ClientAuthenticationException thrown if the client does not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given tag was not found.
-     * @throws NullPointerException thrown if tag is null.
+     * @throws NullPointerException thrown if {@code tag} is null.
+     * @throws IllegalArgumentException thrown if {@code tag} is empty.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -132,12 +125,12 @@ public final class RegistryArtifact {
      *
      * <p>Delete the tag for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.deleteTag}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.deleteTag}
      *
      * @param tag The name of the tag that needs to be deleted.
      * @throws ClientAuthenticationException thrown if the client does not have access to modify the namespace.
-     * @throws ResourceNotFoundException thrown if the given tag was not found.
-     * @throws NullPointerException thrown if tag is null.
+     * @throws NullPointerException thrown if {@code tag} is null.
+     * @throws IllegalArgumentException throws if {@code tag} is empty.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -156,10 +149,10 @@ public final class RegistryArtifact {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.getManifestPropertiesWithResponse}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.getManifestPropertiesWithResponse}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing {@link ArtifactManifestProperties properties} associated with the given {@code tagOrDigest}.
+     * @return A REST response containing {@link ArtifactManifestProperties properties} associated with the given {@code Digest}.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
@@ -179,9 +172,9 @@ public final class RegistryArtifact {
      *
      * <p>Get the registry artifact properties for a given tag or digest.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.getManifestProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.getManifestProperties}.
      *
-     * @return The {@link ArtifactManifestProperties properties} associated with the given {@code tagOrDigest}.
+     * @return The {@link ArtifactManifestProperties properties} associated with the given {@code Digest}.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
@@ -198,13 +191,15 @@ public final class RegistryArtifact {
      *
      * <p>Retrieve the properties associated with the given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.getTagPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.getTagPropertiesWithResponse}.
      *
      * @param tag name of the tag.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response with the {@link ArtifactTagProperties properties} associated with the given tag.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
+     * @throws NullPointerException thrown if {@code tag} is null.
+     * @throws IllegalArgumentException throws if {@code tag} is empty.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -220,12 +215,14 @@ public final class RegistryArtifact {
      *
      * <p>Retrieve the properties associated with the given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.getTagProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.getTagProperties}.
      *
      * @param tag name of the tag.
      * @return The {@link ArtifactTagProperties properties} associated with the given tag.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
+     * @throws NullPointerException thrown if {@code tag} is null.
+     * @throws IllegalArgumentException throws if {@code tag} is empty.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -237,7 +234,7 @@ public final class RegistryArtifact {
      * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listTags(TagOrderBy, Context)}  listTags}
+     * use the overload that takes in the options parameter {@link #listTagProperties(ArtifactTagOrderBy, Context)}  listTagProperties}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -245,15 +242,15 @@ public final class RegistryArtifact {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagsWithOptions}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptions}.
      *
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTags() {
-        return listTags(TagOrderBy.NONE, Context.NONE);
+    public PagedIterable<ArtifactTagProperties> listTagProperties() {
+        return listTagProperties(ArtifactTagOrderBy.NONE, Context.NONE);
     }
 
     /**
@@ -268,7 +265,31 @@ public final class RegistryArtifact {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagsWithOptions}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptionsNoContext}.
+     *
+     * @param orderBy The order in which the tags should be returned by the service.
+     * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
+     * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
+     * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy) {
+        return this.listTagProperties(orderBy, Context.NONE);
+    }
+
+    /**
+     * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
+     *
+     * <p> The method supports options to select the order in which the tags are returned by the service.
+     * Currently the service supports an ascending or descending order based on the last updated time of the tag.
+     * No assumptions on the order can be made if no options are provided to the service.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
+     *
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptions}.
      *
      * @param orderBy The order in which the tags should be returned by the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -277,92 +298,98 @@ public final class RegistryArtifact {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTags(TagOrderBy orderBy, Context context) {
-        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTags(orderBy, context));
+    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy, Context context) {
+        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTagProperties(orderBy, context));
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the given tag in {@link #getRepositoryName() repository}.
+     * Update the properties {@link ArtifactTagProperties} of the given tag in {@link #getRepositoryName() repository}.
      * These properties set whether the given tag can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.updateTagPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.updateTagPropertiesWithResponse}.
      *
      * @param tag Name of the tag.
-     * @param value {@link ContentProperties value} to be set.
+     * @param tagProperties {@link ArtifactTagProperties tagProperties} to be set.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response for the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
-     * @throws ResourceNotFoundException thrown if the given tag was not found.
+     * @throws ResourceNotFoundException thrown if the given {@code tag} was not found.
+     * @throws NullPointerException thrown if {@code tag} or {@code tagProperties} is null.
+     * @throws IllegalArgumentException thrown if {@code tag} or {@code tagProperties} is empty.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> updateTagPropertiesWithResponse(String tag, ContentProperties value, Context context) {
-        return this.asyncClient.updateTagPropertiesWithResponse(tag, value, context).block();
+    public Response<ArtifactTagProperties> updateTagPropertiesWithResponse(String tag, ArtifactTagProperties tagProperties, Context context) {
+        return this.asyncClient.updateTagPropertiesWithResponse(tag, tagProperties, context).block();
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the given {@code tag}.
+     * Update the properties {@link ArtifactTagProperties} of the given {@code tag}.
      * These properties set whether the given tag can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.updateTagProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.updateTagProperties}.
      *
      * @param tag Name of the tag.
-     * @param value {@link ContentProperties value} to be set.
+     * @param tagProperties {@link ArtifactTagProperties tagProperties} to be set.
      * @return The updated {@link ArtifactTagProperties properties }
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
-     * @throws ResourceNotFoundException thrown if the given tag was not found.
+     * @throws ResourceNotFoundException thrown if the given {@code tag} was not found.
+     * @throws NullPointerException thrown if {@code tag} or {@code tagProperties} is null.
+     * @throws IllegalArgumentException thrown if {@code tag} or {@code tagProperties} is empty.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactTagProperties updateTagProperties(String tag, ContentProperties value) {
-        return this.updateTagPropertiesWithResponse(tag, value, Context.NONE).getValue();
+    public ArtifactTagProperties updateTagProperties(String tag, ArtifactTagProperties tagProperties) {
+        return this.updateTagPropertiesWithResponse(tag, tagProperties, Context.NONE).getValue();
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the artifact with the given {@code digest}.
+     * Update the properties {@link ArtifactTagProperties} of the artifact with the given {@code digest}.
      * These properties set whether the given manifest can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given artifact.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.updateManifestPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.updateManifestPropertiesWithResponse}.
      *
-     * @param value {@link ContentProperties value} to be set.
+     * @param manifestProperties {@link ArtifactManifestProperties tagProperties} to be set.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response for the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws NullPointerException thrown if the {@code manifestProperties} is null.
+     * @throws ResourceNotFoundException thrown if the given {@code digest} was not found.
      */
-    public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(ContentProperties value, Context context) {
-        return this.asyncClient.updateManifestPropertiesWithResponse(value, context).block();
+    public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
+        return this.asyncClient.updateManifestPropertiesWithResponse(manifestProperties, context).block();
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the artifact with the given {@code digest}.
+     * Update the writeable properties {@link ArtifactTagProperties} of the artifact with the given {@code digest}.
      * These properties set whether the given manifest can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given manifest.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.updateManifestProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifact.updateManifestProperties}.
      *
-     * @param value {@link ContentProperties value} to be set.
+     * @param manifestProperties {@link ArtifactManifestProperties manifestProperties} to be set.
      * @return The updated {@link ArtifactManifestProperties properties }
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
+     * @throws ResourceNotFoundException thrown if the given {@code digest} was not found.
+     * @throws NullPointerException thrown if the {@code manifestProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArtifactManifestProperties updateManifestProperties(ContentProperties value) {
-        return this.updateManifestPropertiesWithResponse(value, Context.NONE).getValue();
+    public ArtifactManifestProperties updateManifestProperties(ArtifactManifestProperties manifestProperties) {
+        return this.updateManifestPropertiesWithResponse(manifestProperties, Context.NONE).getValue();
     }
 }

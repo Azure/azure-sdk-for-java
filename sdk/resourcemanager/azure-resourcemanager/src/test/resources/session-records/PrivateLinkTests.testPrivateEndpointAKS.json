@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596?api-version=2021-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "beb79570-84c2-4d48-8358-616599b539a1",
@@ -419,7 +419,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596?api-version=2021-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5fb8abd2-186e-4874-a296-68f9d5b028c8"
@@ -445,7 +445,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596/listClusterUserCredential?api-version=2021-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596/listClusterUserCredential?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "519175ed-5b6f-4c0d-9003-55c24b7af1d2",
@@ -472,7 +472,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596/listClusterAdminCredential?api-version=2021-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596/listClusterAdminCredential?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "240f4883-1e3d-439d-a4b2-7472379442f6",
@@ -499,7 +499,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596/privateLinkResources?api-version=2021-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596/privateLinkResources?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7bbe5f55-c43e-4f04-8461-654c7f136551",
@@ -526,7 +526,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596/privateEndpointConnections?api-version=2021-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg26720/providers/Microsoft.ContainerService/managedClusters/aks08596/privateEndpointConnections?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0cda42de-5a93-4379-9c45-5266619cb74e",

@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,9 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Defines a data deletion detection policy that implements a soft-deletion strategy. It determines whether an item
  * should be deleted based on the value of a designated 'soft delete' column.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy")
-@JsonFlatten
 @Fluent
 public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionDetectionPolicy {
     /*

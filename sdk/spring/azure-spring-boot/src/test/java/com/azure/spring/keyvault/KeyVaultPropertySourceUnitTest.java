@@ -3,32 +3,44 @@
 
 package com.azure.spring.keyvault;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class KeyVaultPropertySourceUnitTest {
 
     private static final String TEST_PROPERTY_NAME_1 = "testPropertyName1";
+
+    private AutoCloseable closeable;
+
     @Mock
     KeyVaultOperation keyVaultOperation;
+
     KeyVaultPropertySource keyVaultPropertySource;
 
-    @Before
+    @BeforeEach
     public void setup() {
+        closeable = MockitoAnnotations.openMocks(this);
+
         final String[] propertyNameList = new String[]{TEST_PROPERTY_NAME_1};
 
         when(keyVaultOperation.getProperty(anyString())).thenReturn(TEST_PROPERTY_NAME_1);
         when(keyVaultOperation.getPropertyNames()).thenReturn(propertyNameList);
 
         keyVaultPropertySource = new KeyVaultPropertySource(keyVaultOperation);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Test

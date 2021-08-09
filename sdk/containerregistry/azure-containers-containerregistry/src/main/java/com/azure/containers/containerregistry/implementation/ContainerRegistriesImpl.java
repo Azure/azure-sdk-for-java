@@ -5,7 +5,7 @@
 package com.azure.containers.containerregistry.implementation;
 
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
-import com.azure.containers.containerregistry.implementation.models.ArtifactManifestProperties;
+import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesCreateManifestResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetManifestsNextResponse;
@@ -14,12 +14,13 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsNextResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsResponse;
+import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.containers.containerregistry.implementation.models.Manifest;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
+import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
+import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
-import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
-import com.azure.containers.containerregistry.models.RepositoryProperties;
+import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -100,7 +101,7 @@ public final class ContainerRegistriesImpl {
                 Context context);
 
         @Delete("/v2/{name}/manifests/{reference}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({202, 404})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<Void>> deleteManifest(
                 @HostParam("url") String url,
@@ -122,16 +123,16 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<RepositoryProperties>> getProperties(
+        Mono<Response<ContainerRepositoryProperties>> getProperties(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/acr/v1/{name}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({202, 404})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<DeleteRepositoryResult>> deleteRepository(
+        Mono<Response<Void>> deleteRepository(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @HeaderParam("Accept") String accept,
@@ -140,10 +141,10 @@ public final class ContainerRegistriesImpl {
         @Patch("/acr/v1/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<RepositoryProperties>> setProperties(
+        Mono<Response<ContainerRepositoryProperties>> updateProperties(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
-                @BodyParam("application/json") ContentProperties value,
+                @BodyParam("application/json") RepositoryWriteableProperties value,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -177,12 +178,12 @@ public final class ContainerRegistriesImpl {
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("reference") String reference,
-                @BodyParam("application/json") ContentProperties value,
+                @BodyParam("application/json") TagWriteableProperties value,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/acr/v1/{name}/_tags/{reference}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({202, 404})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<Void>> deleteTag(
                 @HostParam("url") String url,
@@ -220,7 +221,7 @@ public final class ContainerRegistriesImpl {
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("digest") String digest,
-                @BodyParam("application/json") ContentProperties value,
+                @BodyParam("application/json") ManifestWriteableProperties value,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -648,7 +649,7 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RepositoryProperties>> getPropertiesWithResponseAsync(String name) {
+    public Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponseAsync(String name) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getProperties(this.client.getUrl(), name, accept, context));
     }
@@ -664,7 +665,7 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RepositoryProperties>> getPropertiesWithResponseAsync(String name, Context context) {
+    public Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponseAsync(String name, Context context) {
         final String accept = "application/json";
         return service.getProperties(this.client.getUrl(), name, accept, context);
     }
@@ -679,10 +680,10 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RepositoryProperties> getPropertiesAsync(String name) {
+    public Mono<ContainerRepositoryProperties> getPropertiesAsync(String name) {
         return getPropertiesWithResponseAsync(name)
                 .flatMap(
-                        (Response<RepositoryProperties> res) -> {
+                        (Response<ContainerRepositoryProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -702,10 +703,10 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RepositoryProperties> getPropertiesAsync(String name, Context context) {
+    public Mono<ContainerRepositoryProperties> getPropertiesAsync(String name, Context context) {
         return getPropertiesWithResponseAsync(name, context)
                 .flatMap(
-                        (Response<RepositoryProperties> res) -> {
+                        (Response<ContainerRepositoryProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -721,10 +722,10 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponseAsync(String name) {
+    public Mono<Response<Void>> deleteRepositoryWithResponseAsync(String name) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteRepository(this.client.getUrl(), name, accept, context));
     }
@@ -737,10 +738,10 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponseAsync(String name, Context context) {
+    public Mono<Response<Void>> deleteRepositoryWithResponseAsync(String name, Context context) {
         final String accept = "application/json";
         return service.deleteRepository(this.client.getUrl(), name, accept, context);
     }
@@ -752,19 +753,11 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteRepositoryResult> deleteRepositoryAsync(String name) {
-        return deleteRepositoryWithResponseAsync(name)
-                .flatMap(
-                        (Response<DeleteRepositoryResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<Void> deleteRepositoryAsync(String name) {
+        return deleteRepositoryWithResponseAsync(name).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -775,19 +768,11 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deleted repository.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteRepositoryResult> deleteRepositoryAsync(String name, Context context) {
-        return deleteRepositoryWithResponseAsync(name, context)
-                .flatMap(
-                        (Response<DeleteRepositoryResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<Void> deleteRepositoryAsync(String name, Context context) {
+        return deleteRepositoryWithResponseAsync(name, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -798,13 +783,14 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
+     * @return properties of this repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RepositoryProperties>> setPropertiesWithResponseAsync(String name, ContentProperties value) {
+    public Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponseAsync(
+            String name, RepositoryWriteableProperties value) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.setProperties(this.client.getUrl(), name, value, accept, context));
+                context -> service.updateProperties(this.client.getUrl(), name, value, accept, context));
     }
 
     /**
@@ -816,13 +802,13 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
+     * @return properties of this repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RepositoryProperties>> setPropertiesWithResponseAsync(
-            String name, ContentProperties value, Context context) {
+    public Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponseAsync(
+            String name, RepositoryWriteableProperties value, Context context) {
         final String accept = "application/json";
-        return service.setProperties(this.client.getUrl(), name, value, accept, context);
+        return service.updateProperties(this.client.getUrl(), name, value, accept, context);
     }
 
     /**
@@ -833,13 +819,13 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
+     * @return properties of this repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RepositoryProperties> setPropertiesAsync(String name, ContentProperties value) {
-        return setPropertiesWithResponseAsync(name, value)
+    public Mono<ContainerRepositoryProperties> updatePropertiesAsync(String name, RepositoryWriteableProperties value) {
+        return updatePropertiesWithResponseAsync(name, value)
                 .flatMap(
-                        (Response<RepositoryProperties> res) -> {
+                        (Response<ContainerRepositoryProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -857,13 +843,14 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
+     * @return properties of this repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RepositoryProperties> setPropertiesAsync(String name, ContentProperties value, Context context) {
-        return setPropertiesWithResponseAsync(name, value, context)
+    public Mono<ContainerRepositoryProperties> updatePropertiesAsync(
+            String name, RepositoryWriteableProperties value, Context context) {
+        return updatePropertiesWithResponseAsync(name, value, context)
                 .flatMap(
-                        (Response<RepositoryProperties> res) -> {
+                        (Response<ContainerRepositoryProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1067,7 +1054,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
-     * @param value Repository attribute value.
+     * @param value Tag attribute value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1075,7 +1062,7 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactTagProperties>> updateTagAttributesWithResponseAsync(
-            String name, String reference, ContentProperties value) {
+            String name, String reference, TagWriteableProperties value) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.updateTagAttributes(this.client.getUrl(), name, reference, value, accept, context));
@@ -1086,7 +1073,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
-     * @param value Repository attribute value.
+     * @param value Tag attribute value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1095,7 +1082,7 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactTagProperties>> updateTagAttributesWithResponseAsync(
-            String name, String reference, ContentProperties value, Context context) {
+            String name, String reference, TagWriteableProperties value, Context context) {
         final String accept = "application/json";
         return service.updateTagAttributes(this.client.getUrl(), name, reference, value, accept, context);
     }
@@ -1105,7 +1092,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
-     * @param value Repository attribute value.
+     * @param value Tag attribute value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1113,7 +1100,7 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArtifactTagProperties> updateTagAttributesAsync(
-            String name, String reference, ContentProperties value) {
+            String name, String reference, TagWriteableProperties value) {
         return updateTagAttributesWithResponseAsync(name, reference, value)
                 .flatMap(
                         (Response<ArtifactTagProperties> res) -> {
@@ -1130,7 +1117,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
-     * @param value Repository attribute value.
+     * @param value Tag attribute value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1139,7 +1126,7 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArtifactTagProperties> updateTagAttributesAsync(
-            String name, String reference, ContentProperties value, Context context) {
+            String name, String reference, TagWriteableProperties value, Context context) {
         return updateTagAttributesWithResponseAsync(name, reference, value, context)
                 .flatMap(
                         (Response<ArtifactTagProperties> res) -> {
@@ -1406,7 +1393,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
-     * @param value Repository attribute value.
+     * @param value Manifest attribute value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1414,7 +1401,7 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponseAsync(
-            String name, String digest, ContentProperties value) {
+            String name, String digest, ManifestWriteableProperties value) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1426,7 +1413,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
-     * @param value Repository attribute value.
+     * @param value Manifest attribute value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1435,7 +1422,7 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponseAsync(
-            String name, String digest, ContentProperties value, Context context) {
+            String name, String digest, ManifestWriteableProperties value, Context context) {
         final String accept = "application/json";
         return service.updateManifestProperties(this.client.getUrl(), name, digest, value, accept, context);
     }
@@ -1445,7 +1432,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
-     * @param value Repository attribute value.
+     * @param value Manifest attribute value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1453,7 +1440,7 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArtifactManifestProperties> updateManifestPropertiesAsync(
-            String name, String digest, ContentProperties value) {
+            String name, String digest, ManifestWriteableProperties value) {
         return updateManifestPropertiesWithResponseAsync(name, digest, value)
                 .flatMap(
                         (Response<ArtifactManifestProperties> res) -> {
@@ -1470,7 +1457,7 @@ public final class ContainerRegistriesImpl {
      *
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
-     * @param value Repository attribute value.
+     * @param value Manifest attribute value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1479,7 +1466,7 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArtifactManifestProperties> updateManifestPropertiesAsync(
-            String name, String digest, ContentProperties value, Context context) {
+            String name, String digest, ManifestWriteableProperties value, Context context) {
         return updateManifestPropertiesWithResponseAsync(name, digest, value, context)
                 .flatMap(
                         (Response<ArtifactManifestProperties> res) -> {

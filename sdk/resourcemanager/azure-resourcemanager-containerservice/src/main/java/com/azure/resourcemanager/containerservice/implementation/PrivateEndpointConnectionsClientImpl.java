@@ -131,15 +131,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
+     * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionListResultInner>> listWithResponseAsync(
@@ -163,7 +162,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -181,8 +180,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -190,7 +188,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
+     * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionListResultInner>> listWithResponseAsync(
@@ -214,7 +212,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -229,15 +227,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
+     * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionListResultInner> listAsync(String resourceGroupName, String resourceName) {
@@ -253,15 +250,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
+     * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionListResultInner list(String resourceGroupName, String resourceName) {
@@ -269,8 +265,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
-     * each private endpoint connection.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -278,7 +273,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections in the specified managed cluster.
+     * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionListResultInner> listWithResponse(
@@ -287,7 +282,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -295,7 +290,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -325,7 +320,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -344,7 +339,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -353,7 +348,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -383,7 +378,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -399,7 +394,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -407,7 +402,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> getAsync(
@@ -424,7 +419,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -432,7 +427,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(
@@ -441,7 +436,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Gets the details of the private endpoint connection by managed cluster and resource group.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -450,7 +445,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection by managed cluster and resource group.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(
@@ -459,12 +454,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Updates a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param parameters The updated private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -506,7 +501,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -526,12 +521,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Updates a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param parameters The updated private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -575,7 +570,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -592,12 +587,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Updates a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param parameters The updated private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -621,12 +616,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Updates a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param parameters The updated private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -642,12 +637,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Updates a private endpoint connection in the specified managed cluster.
+     * Updates a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
+     * @param parameters The updated private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -667,7 +662,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -705,7 +700,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -724,7 +719,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -763,7 +758,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -779,7 +774,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -800,7 +795,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -823,7 +818,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -840,7 +835,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -859,7 +854,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -877,7 +872,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -897,7 +892,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -912,7 +907,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Deletes the private endpoint connection in the specified managed cluster.
+     * Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.

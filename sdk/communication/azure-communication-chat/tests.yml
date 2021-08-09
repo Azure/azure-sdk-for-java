@@ -1,23 +1,7 @@
 trigger: none
 
 stages:
-- template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-  parameters:
-    CloudConfig:
-      Public:
-        SubscriptionConfigurations:
-          - $(sub-config-azure-cloud-test-resources)
-          - $(sub-config-communication-services-cloud-test-resources-common)
-          - $(sub-config-communication-services-cloud-test-resources-java)
-      Int:
-        SubscriptionConfigurations:
-          - $(sub-config-communication-int-test-resources-common)
-          - $(sub-config-communication-int-test-resources-java)
-    Clouds: Public, Int
-    Artifacts:
-      - name: azure-communication-chat
-        groupId: com.azure
-        safeName: azurecommunicationchat
-    ServiceDirectory: communication
-    EnvVars:
-      SKIP_LIVE_TEST: TRUE
+  - template: /sdk/communication/communication-tests-template.yml
+    parameters:
+      PackageName: azure-communication-chat
+      SafeName: azurecommunicationchat

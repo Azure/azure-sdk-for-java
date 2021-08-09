@@ -201,6 +201,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoi
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
+import com.jcraft.jsch.JSchException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import reactor.core.publisher.Mono;
@@ -212,6 +213,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
@@ -236,6 +238,8 @@ public final class Utils {
 
     private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
 
+    private static String sshPublicKey;
+
     private Utils() {
     }
 
@@ -244,6 +248,20 @@ public final class Utils {
         String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
         System.out.printf("Password: %s%n", password);
         return password;
+    }
+
+    /**
+     * @return an SSH public key
+     */
+    public static String sshPublicKey() {
+        if (sshPublicKey == null) {
+            try {
+                sshPublicKey = SSHShell.generateSSHKeys(null, null).getSshPublicKey();
+            } catch (UnsupportedEncodingException | JSchException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));
+            }
+        }
+        return sshPublicKey;
     }
 
     /**
@@ -699,6 +717,7 @@ public final class Utils {
         info.append("\n\t\tTraffic allowed from only HTTPS: ").append(storageAccount.innerModel().enableHttpsTrafficOnly());
 
         info.append("\n\tEncryption status: ");
+        info.append("\n\t\tInfrastructure Encryption: ").append(storageAccount.infrastructureEncryptionEnabled() ? "Enabled" : "Disabled");
         for (Map.Entry<StorageService, StorageAccountEncryptionStatus> eStatus : storageAccount.encryptionStatuses().entrySet()) {
             info.append("\n\t\t").append(eStatus.getValue().storageService()).append(": ").append(eStatus.getValue().isEnabled() ? "Enabled" : "Disabled");
         }
