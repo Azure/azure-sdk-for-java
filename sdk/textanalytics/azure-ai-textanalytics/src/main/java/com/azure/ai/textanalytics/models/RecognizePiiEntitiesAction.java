@@ -41,7 +41,7 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Gets the value of {@code disableServiceLogs}. The default value of this property is 'true'. This means,
+     * Gets the value of service logs disable status. The default value of this property is 'true'. This means,
      * Text Analytics service won't log your input text. Setting this property to 'false', enables logging your input
      * text for 48 hours, solely to allow for troubleshooting issues.
      *
@@ -52,7 +52,7 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Sets the value of {@code disableServiceLogs}.
+     * Sets the value of service logs disable status.
      *
      * @param disableServiceLogs The default value of this property is 'true'. This means, Text Analytics service won't
      * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
