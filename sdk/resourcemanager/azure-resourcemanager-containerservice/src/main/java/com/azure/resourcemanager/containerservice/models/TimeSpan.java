@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The time span with start and end properties. */
+/** For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z. */
 @Fluent
 public final class TimeSpan {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSpan.class);

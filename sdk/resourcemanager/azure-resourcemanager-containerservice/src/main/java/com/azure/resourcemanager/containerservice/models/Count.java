@@ -10,18 +10,18 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /** Defines values for Count. */
 public enum Count {
     /** Enum value 1. */
-    ONE("1"),
+    ONE(1),
 
     /** Enum value 3. */
-    THREE("3"),
+    THREE(3),
 
     /** Enum value 5. */
-    FIVE("5");
+    FIVE(5);
 
     /** The actual serialized value for a Count instance. */
-    private final String value;
+    private final int value;
 
-    Count(String value) {
+    Count(int value) {
         this.value = value;
     }
 
@@ -32,19 +32,23 @@ public enum Count {
      * @return the parsed Count object, or null if unable to parse.
      */
     @JsonCreator
-    public static Count fromString(String value) {
+    public static Count fromInt(int value) {
         Count[] items = Count.values();
         for (Count item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
+            if (item.toInt() == value) {
                 return item;
             }
         }
         return null;
     }
 
+    /**
+     * De-serializes the instance to int value.
+     *
+     * @return the int value.
+     */
     @JsonValue
-    @Override
-    public String toString() {
+    public int toInt() {
         return this.value;
     }
 }
