@@ -167,11 +167,6 @@ public class Configuration implements Cloneable {
      */
     public static final String PROPERTY_AZURE_REQUEST_READ_TIMEOUT = "AZURE_REQUEST_READ_TIMEOUT";
 
-    /**
-     * Sets the default polling interval, in milliseconds, between each poll request in a long-running operation.
-     */
-    public static final String PROPERTY_AZURE_REQUEST_POLLING_INTERVAL = "AZURE_REQUEST_POLLING_INTERVAL";
-
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
@@ -204,8 +199,7 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
         PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
         PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-        PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-        PROPERTY_AZURE_REQUEST_POLLING_INTERVAL
+        PROPERTY_AZURE_REQUEST_READ_TIMEOUT
     };
 
     /*
