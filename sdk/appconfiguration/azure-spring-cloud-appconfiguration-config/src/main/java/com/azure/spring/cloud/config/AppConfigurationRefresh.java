@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -44,7 +45,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     private final ClientStore clientStore;
 
-    private HashMap<String, AppConfigurationStoreHealth> clientHealth;
+    private Map<String, AppConfigurationStoreHealth> clientHealth;
 
     private String eventDataInfo;
 
@@ -52,7 +53,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         this.configStores = properties.getStores();
         this.clientStore = clientStore;
         this.eventDataInfo = "";
-        this.clientHealth = new HashMap<String, AppConfigurationStoreHealth>();
+        this.clientHealth = new HashMap<>();
         configStores.stream().forEach(store -> {
             if (getStoreHealthState(store)) {
                 this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.UP);
@@ -98,7 +99,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private boolean refreshStores() {
         boolean didRefresh = false;
         if (running.compareAndSet(false, true)) {
-            HashMap<String, AppConfigurationStoreHealth> clientHealthUpdate = new HashMap<String, AppConfigurationStoreHealth>();
+            Map<String, AppConfigurationStoreHealth> clientHealthUpdate = new HashMap<>();
             configStores.stream().forEach(store -> {
                 if (getStoreHealthState(store)) {
                     clientHealthUpdate.put(store.getEndpoint(), AppConfigurationStoreHealth.DOWN);
@@ -188,13 +189,15 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     return true;
                 }
             }
-            StateHolder.setState(endpoint, state.getWatchKeys(), refreshInterval);
+            
+            // Just need to reset refreshInterval, if a refresh was triggered it will updated after loading the new configurations.
+            StateHolder.setState(state,  refreshInterval);
         }
 
         return false;
     }
 
-    public HashMap<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
+    public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
         return this.clientHealth;
     }
 

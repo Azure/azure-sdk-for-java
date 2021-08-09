@@ -14,10 +14,13 @@ class State {
     private final List<ConfigurationSetting> watchKeys;
 
     private final Date nextRefreshCheck;
+    
+    private final String key;
 
-    State(List<ConfigurationSetting> watchKeys, int refreshInterval) {
+    State(List<ConfigurationSetting> watchKeys, int refreshInterval, String key) {
         this.watchKeys = watchKeys;
         nextRefreshCheck = DateUtils.addSeconds(new Date(), refreshInterval);
+        this.key = key;
     }
 
     /**
@@ -34,4 +37,10 @@ class State {
         return nextRefreshCheck;
     }
 
+    /**
+     * @return the key
+     */
+    public String getKey() {
+        return key;
+    }
 }

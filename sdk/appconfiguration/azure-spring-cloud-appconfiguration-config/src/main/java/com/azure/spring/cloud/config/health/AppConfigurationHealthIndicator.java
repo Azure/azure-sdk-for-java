@@ -24,7 +24,7 @@ public class AppConfigurationHealthIndicator implements HealthIndicator {
         Boolean healthy = true;
 
         for (String store : refresh.getAppConfigurationStoresHealth().keySet()) {
-            if (refresh.getAppConfigurationStoresHealth().get(store).equals(AppConfigurationStoreHealth.DOWN)) {
+            if (AppConfigurationStoreHealth.DOWN.equals(refresh.getAppConfigurationStoresHealth().get(store))) {
                 healthy = false;
                 healthBuilder.withDetail(store, "DOWN");
             } else if (refresh.getAppConfigurationStoresHealth().get(store).equals(AppConfigurationStoreHealth.NOT_LOADED)) {

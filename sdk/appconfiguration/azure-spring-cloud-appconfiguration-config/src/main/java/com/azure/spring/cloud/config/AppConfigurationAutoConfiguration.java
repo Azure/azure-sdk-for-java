@@ -38,12 +38,12 @@ public class AppConfigurationAutoConfiguration {
      * Health Indicator for Azure App Configuration store connections.
      */
     @Configuration
-    @ConditionalOnBean(AppConfigurationRefresh.class)
     @ConditionalOnClass({ HealthIndicator.class })
-    static class KeyVaultHealthConfiguration {
+    @ConditionalOnEnabledHealthIndicator("azure-app-configuration")
+    static class AppConfigurationtHealthConfiguration {
 
         @Bean
-        @ConditionalOnEnabledHealthIndicator("azure-app-configuration")
+        @ConditionalOnBean
         AppConfigurationHealthIndicator appConfigurationHealthIndicator(AppConfigurationRefresh refresh) {
             return new AppConfigurationHealthIndicator(refresh);
         }
