@@ -1,4 +1,9 @@
 # Release History
+## 5.1.1 (2021-08-10)
+### Bugs Fixed
+- Fixed the bug to support the default value `disableServiceLogs = true`, in the option bags, `AnalyzeHealthcareEntitiesOptions`, 
+  `RecognizePiiEntitiesOptions` and `RecognizePiiEntitiesAction`, 
+- Using UTF-16 code unit as the default encoding in the `Sentimant Analysis` and `Linked Entities Recognition` actions. 
 
 ## 5.1.0 (2021-07-08)
 #### Feature Added

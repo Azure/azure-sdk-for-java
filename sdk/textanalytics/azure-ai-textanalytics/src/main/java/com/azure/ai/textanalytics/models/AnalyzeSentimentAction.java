@@ -38,18 +38,18 @@ public final class AnalyzeSentimentAction {
     }
 
     /**
-     * Gets the value of {@code disableServiceLogs}.
-     *
-     * @return The value of {@code disableServiceLogs}. The default value of this property is 'false'. This means,
+     * Gets the value of service logs disable status. The default value of this property is 'false'. This means,
      * Text Analytics service logs your input text for 48 hours, solely to allow for troubleshooting issues. Setting
      * this property to true, disables input logging and may limit our ability to investigate issues that occur.
+     *
+     * @return true if logging input text service are disabled.
      */
     public boolean isServiceLogsDisabled() {
         return disableServiceLogs;
     }
 
     /**
-     * Sets the value of {@code disableServiceLogs}.
+     * Sets the value of service logs disable status.
      *
      * @param disableServiceLogs The default value of this property is 'false'. This means, Text Analytics service logs
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
