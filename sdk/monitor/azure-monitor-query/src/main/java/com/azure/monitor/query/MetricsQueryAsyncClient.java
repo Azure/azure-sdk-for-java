@@ -56,8 +56,8 @@ public final class MetricsQueryAsyncClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricsQueryResult> queryMetrics(String resourceUri, List<String> metricsNames) {
-        return queryMetricsWithResponse(resourceUri, metricsNames, new MetricsQueryOptions()).map(Response::getValue);
+    public Mono<MetricsQueryResult> query(String resourceUri, List<String> metricsNames) {
+        return queryWithResponse(resourceUri, metricsNames, new MetricsQueryOptions()).map(Response::getValue);
     }
 
     /**
@@ -68,9 +68,9 @@ public final class MetricsQueryAsyncClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricsQueryResult>> queryMetricsWithResponse(String resourceUri, List<String> metricsNames,
-                                                                       MetricsQueryOptions options) {
-        return withContext(context -> queryMetricsWithResponse(resourceUri, metricsNames, options, context));
+    public Mono<Response<MetricsQueryResult>> queryWithResponse(String resourceUri, List<String> metricsNames,
+                                                                MetricsQueryOptions options) {
+        return withContext(context -> queryWithResponse(resourceUri, metricsNames, options, context));
     }
 
     /**
@@ -80,10 +80,20 @@ public final class MetricsQueryAsyncClient {
      * @return List of metrics namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime) {
+    public PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime) {
         return metricsNamespaceClient
                 .getMetricNamespaces()
                 .listAsync(resourceUri, startTime.toString());
+    }
+
+    /**
+     * Lists all the metrics definitions created for the resource URI.
+     * @param resourceUri The resource URI for which the metrics definitions are listed.
+     * @return List of metrics definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MetricDefinition> listMetricDefinitions(String resourceUri) {
+        return listMetricDefinitions(resourceUri, null);
     }
 
     /**
@@ -93,28 +103,28 @@ public final class MetricsQueryAsyncClient {
      * @return List of metrics definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace) {
+    public PagedFlux<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace) {
         return metricsDefinitionsClient
                 .getMetricDefinitions()
                 .listAsync(resourceUri, metricsNamespace);
     }
 
-    PagedFlux<MetricNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime, Context context) {
+    PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime, Context context) {
         return metricsNamespaceClient
                 .getMetricNamespaces()
                 .listAsync(resourceUri, startTime.toString(), context);
     }
 
-    PagedFlux<MetricDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace, Context context) {
+    PagedFlux<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace, Context context) {
         return metricsDefinitionsClient.getMetricDefinitions()
                 .listAsync(resourceUri, metricsNamespace, context);
     }
 
-    Mono<Response<MetricsQueryResult>> queryMetricsWithResponse(String resourceUri, List<String> metricsNames,
-                                                                MetricsQueryOptions options, Context context) {
+    Mono<Response<MetricsQueryResult>> queryWithResponse(String resourceUri, List<String> metricsNames,
+                                                         MetricsQueryOptions options, Context context) {
         String aggregation = null;
-        if (!CoreUtils.isNullOrEmpty(options.getAggregation())) {
-            aggregation = options.getAggregation()
+        if (!CoreUtils.isNullOrEmpty(options.getAggregations())) {
+            aggregation = options.getAggregations()
                     .stream()
                     .map(type -> String.valueOf(type.ordinal()))
                     .collect(Collectors.joining(","));
@@ -123,8 +133,8 @@ public final class MetricsQueryAsyncClient {
         return metricsClient
                 .getMetrics()
                 .listWithResponseAsync(resourceUri, timespan, options.getInterval(),
-                        String.join(",", metricsNames), aggregation, options.getTop(), options.getOrderby(),
-                        options.getFilter(), ResultType.DATA, options.getMetricsNamespace(), context)
+                        String.join(",", metricsNames), aggregation, options.getTop(), options.getOrderBy(),
+                        options.getFilter(), ResultType.DATA, options.getMetricNamespace(), context)
                 .map(response -> convertToMetricsQueryResult(response));
     }
 

@@ -47,7 +47,7 @@ public final class LogsQueryHelper {
             return null;
         }
         StringBuilder sb = new StringBuilder();
-        if (options.isIncludeRendering()) {
+        if (options.isIncludeVisualization()) {
             sb.append("include-render=true");
         }
 
