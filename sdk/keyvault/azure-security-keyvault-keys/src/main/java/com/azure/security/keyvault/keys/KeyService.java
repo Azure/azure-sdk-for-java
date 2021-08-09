@@ -244,7 +244,7 @@ interface KeyService {
     @Post("rng")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<RandomBytes>> getRandomBytes(@HostParam("url") String vaultBaseUrl,
+    Mono<Response<RandomBytes>> getRandomBytes(@HostParam("url") String url,
                                                @QueryParam("api-version") String apiVersion,
                                                @BodyParam("application/json") GetRandomBytesRequest parameters,
                                                @HeaderParam("Accept") String accept,
