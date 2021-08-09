@@ -4,6 +4,7 @@
 package com.azure.identity.implementation.util;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.experimental.credential.TokenRequestContextExperimental;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,16 +26,18 @@ public final class IdentityUtil {
 
         String contextTenantId;
         if (requestContext instanceof TokenRequestContextExperimental) {
-            contextTenantId = ((TokenRequestContextExperimental) requestContext).getTenantId();
+            TokenRequestContextExperimental experimental = ((TokenRequestContextExperimental) requestContext);
+            contextTenantId = experimental.getTenantId();
         } else {
             return currentTenantId;
         }
 
         if (!options.isMultiTenantAuthenticationAllowed()) {
-            if (contextTenantId != null && currentTenantId != contextTenantId
+            if (contextTenantId != null && !currentTenantId.equals(contextTenantId)
                 && !options.isLegacyTenantSelectionEnabled()) {
-                LOGGER.logExceptionAsError(new RuntimeException("The TenantId received from a challenge did not match "
-                    + "the configured TenantId and AllowMultiTenantAuthentication is false."));
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The TenantId received from a"
+                    + " challenge did not match the configured TenantId and AllowMultiTenantAuthentication is false.",
+                    null));
             }
             return CoreUtils.isNullOrEmpty(currentTenantId) ? contextTenantId : currentTenantId;
         }

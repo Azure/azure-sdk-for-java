@@ -6,6 +6,7 @@ package com.azure.core.experimental.credential;
 import com.azure.core.credential.TokenRequestContext;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class TokenRequestContextExperimental extends TokenRequestContext {
     private String tenantId;
 
     /**
-     * Creates a token request instance.
+     * Creates a token request experimental instance.
      */
     public TokenRequestContextExperimental() {
         super();
@@ -25,7 +26,7 @@ public class TokenRequestContextExperimental extends TokenRequestContext {
      * Set the tenant to be used in the authentication request.
      *
      * @param tenantId the tenant to be used when retrieving the token.
-     * @return the updated TokenRequestContext itself
+     * @return the updated TokenRequestContextExperimental itself
      */
     public TokenRequestContextExperimental setTenantId(String tenantId) {
         this.tenantId = tenantId;
@@ -48,7 +49,7 @@ public class TokenRequestContextExperimental extends TokenRequestContext {
      *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
      *
      * @param claims the additional claims to be included in the token.
-     * @return the updated TokenRequestContext itself
+     * @return the updated TokenRequestContextExperimental itself
      */
     @Override
     public TokenRequestContextExperimental setClaims(String claims) {
@@ -59,11 +60,21 @@ public class TokenRequestContextExperimental extends TokenRequestContext {
     /**
      * Sets the scopes required for the token.
      * @param scopes the scopes required for the token
-     * @return the TokenRequestContext itself
+     * @return the TokenRequestContextExperimental itself
      */
     @Override
     public TokenRequestContextExperimental setScopes(List<String> scopes) {
         super.setScopes(scopes);
+        return this;
+    }
+
+    /**
+     * Adds one or more scopes to the request scopes.
+     * @param scopes one or more scopes to add
+     * @return the TokenRequestContextExperimental itself
+     */
+    public TokenRequestContextExperimental addScopes(String... scopes) {
+        super.addScopes(scopes);
         return this;
     }
 }
