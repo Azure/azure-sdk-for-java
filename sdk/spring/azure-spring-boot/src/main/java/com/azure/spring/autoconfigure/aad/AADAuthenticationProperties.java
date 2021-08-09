@@ -469,7 +469,7 @@ public class AADAuthenticationProperties implements InitializingBean {
         if ((applicationType == AADApplicationType.WEB_APPLICATION
             || applicationType == AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER
             || applicationType == AADApplicationType.RESOURCE_SERVER_WITH_OBO)
-            && !StringUtils.hasText(clientId)) {
+            && !StringUtils.hasText(clientId) && !"common".equals(tenantId)) {
             throw new IllegalStateException("'azure.activedirectory.client-id' must be configured when "
                 + "application type is 'web_application', "
                 + "'resource_server_with_obo' or 'web_application_and_resource_server'.");
