@@ -12,6 +12,8 @@ import org.slf4j.helpers.NOPLogger;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -37,6 +39,7 @@ import java.util.regex.Pattern;
  */
 public class ClientLogger {
     private static final Pattern CRLF_PATTERN = Pattern.compile("[\r\n]");
+    private static final String DEFAULT_MESSAGE_FORMAT = "{}";
     private final Logger logger;
 
     /**
@@ -60,12 +63,49 @@ public class ClientLogger {
     }
 
     /**
+     * Logs a formattable message that uses {@code {}} as the placeholder at the given {@code logLevel}.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with a specific log level</p>
+     * {@codesnippet com.azure.core.util.logging.clientlogger.log}
+     *
+     * @param logLevel Logging level for the log message.
+     * @param message The formattable message to log.
+     */
+    public void log(LogLevel logLevel, Supplier<String> message) {
+        if (message != null) {
+            performDeferredLogging(logLevel, false, DEFAULT_MESSAGE_FORMAT, message);
+        }
+    }
+
+    /**
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with a specific log level and exception</p>
+     * <p>
+     * {@codesnippet com.azure.core.util.logging.clientlogger.log#throwable}
+     *
+     * @param logLevel Logging level for the log message.
+     * @param message The formattable message to log.
+     * @param throwable Throwable for the message.
+     *                  {@link Throwable}.
+     */
+    public void log(LogLevel logLevel, Supplier<String> message, Throwable throwable) {
+        if (message != null) {
+            performDeferredLogging(logLevel, true, DEFAULT_MESSAGE_FORMAT, message, throwable);
+        }
+    }
+
+    /**
      * Logs a message at {@code verbose} log level.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at verbose log level.</p>
-     *
+     * <p>
      * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
      *
      * @param message The message to log.
@@ -82,12 +122,12 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at verbose log level.</p>
-     *
+     * <p>
      * {@codesnippet com.azure.core.util.logging.clientlogger.verbose#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
-     *     {@link Throwable}.
+     *               {@link Throwable}.
      */
     public void verbose(String format, Object... args) {
         if (logger.isDebugEnabled()) {
@@ -101,7 +141,7 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at verbose log level.</p>
-     *
+     * <p>
      * {@codesnippet com.azure.core.util.logging.clientlogger.info}
      *
      * @param message The message to log.
@@ -118,12 +158,12 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at informational log level.</p>
-     *
+     * <p>
      * {@codesnippet com.azure.core.util.logging.clientlogger.info#string-object}
      *
      * @param format The formattable message to log
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
-     *     {@link Throwable}.
+     *               {@link Throwable}.
      */
     public void info(String format, Object... args) {
         if (logger.isInfoEnabled()) {
@@ -136,8 +176,8 @@ public class ClientLogger {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <p>Logging a message at verbose log level.</p>
-     *
+     * <p>Logging a message at warning log level.</p>
+     * <p>
      * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
      *
      * @param message The message to log.
@@ -154,12 +194,12 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at warning log level.</p>
-     *
+     * <p>
      * {@codesnippet com.azure.core.util.logging.clientlogger.warning#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
-     *     {@link Throwable}.
+     *               {@link Throwable}.
      */
     public void warning(String format, Object... args) {
         if (logger.isWarnEnabled()) {
@@ -172,8 +212,8 @@ public class ClientLogger {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <p>Logging a message at verbose log level.</p>
-     *
+     * <p>Logging a message at error log level.</p>
+     * <p>
      * {@codesnippet com.azure.core.util.logging.clientlogger.error}
      *
      * @param message The message to log.
@@ -190,12 +230,12 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging an error with stack trace.</p>
-     *
+     * <p>
      * {@codesnippet com.azure.core.util.logging.clientlogger.error#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
-     *     {@link Throwable}.
+     *               {@link Throwable}.
      */
     public void error(String format, Object... args) {
         if (logger.isErrorEnabled()) {
@@ -330,30 +370,98 @@ public class ClientLogger {
         }
 
         sanitizeLogMessageInput(format);
+        executeLogging(logLevel, format, throwableMessage, s -> s, args);
+    }
+
+    /*
+     * Performs the logging.
+     *
+     * @param logLevel sets the logging level
+     * @isExceptionLogging sets exception logging
+     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     */
+    private void performDeferredLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
+        // If the logging level is less granular than verbose remove the potential throwable from the args.
+        String throwableMessage = "";
+        if (doesArgsHaveThrowable(args)) {
+            // If we are logging an exception the format string is already the exception message, don't append it.
+            if (!isExceptionLogging) {
+                Object throwable = args[args.length - 1];
+
+                // This is true from before but is needed to appease SpotBugs.
+                if (throwable instanceof Throwable) {
+                    throwableMessage = ((Throwable) throwable).getMessage();
+                }
+            }
+
+            /*
+             * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
+             * stack trace which is only expected when logging at a verbose level.
+             */
+            if (!logger.isDebugEnabled()) {
+                args = removeThrowable(args);
+            }
+        }
+
+        sanitizeLogMessageInput(format);
+        executeLogging(logLevel, format, throwableMessage, this::evaluateSupplierArgument, args);
+    }
+
+    /*
+     * Performs the logging.
+     *
+     * @param logLevel sets the logging level
+     * @format sets exception logging
+     * @throwableMessage the evaluated exception message which get value based on log level.
+     * @loggingFunction sets how the logging message should be evaluated
+     * @args Arguments for the message, if an exception is being logged last argument is the throwable.
+     */
+    private void executeLogging(LogLevel logLevel, String format, String throwableMessage,
+                                Function<Object[], Object[]> loggingEvaluation, Object[] args) {
         switch (logLevel) {
             case VERBOSE:
-                logger.debug(format, args);
+                logger.debug(format, loggingEvaluation.apply(args));
                 break;
             case INFORMATIONAL:
-                logger.info(format, args);
+                logger.info(format, loggingEvaluation.apply(args));
                 break;
             case WARNING:
                 if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
                     format += System.lineSeparator() + throwableMessage;
                 }
-                logger.warn(format, args);
+                logger.warn(format, loggingEvaluation.apply(args));
                 break;
             case ERROR:
                 if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
                     format += System.lineSeparator() + throwableMessage;
                 }
-                logger.error(format, args);
+                logger.error(format, loggingEvaluation.apply(args));
                 break;
             default:
                 // Don't do anything, this state shouldn't be possible.
                 break;
         }
+    }
 
+    /**
+     * @param args The arguments passed to evaluate suppliers in args.
+     * @return Return the argument with evaluated supplier
+     */
+
+    Object[] evaluateSupplierArgument(Object[] args) {
+        if (isSupplierLogging(args)) {
+            args[0] = ((Supplier<?>) args[0]).get();
+        }
+        return args;
+    }
+
+    /**
+     * @param args The arguments passed to determine supplier evaluation
+     * @return Determines if it is supplier logging
+     */
+    boolean isSupplierLogging(Object[] args) {
+        return (args.length == 1 && args[0] instanceof Supplier)
+            || (args.length == 2 && args[0] instanceof Supplier && (args[1] instanceof Throwable || args[1] == null));
     }
 
     /**

@@ -310,7 +310,10 @@ public class KeyVaultClient {
             // and we can't access private key(which is not exportable), we will use
             // the Azure Key Vault Secrets API to obtain the private key (keyless).
             LOGGER.exiting("KeyVaultClient", "getKey", null);
-            return new KeyVaultPrivateKey(keyType, certificateBundle.getKid());
+            return Optional.ofNullable(certificateBundle)
+                           .map(CertificateBundle::getKid)
+                           .map(kid -> new KeyVaultPrivateKey(keyType, kid))
+                           .orElse(null);
         }
         String certificateSecretUri = certificateBundle.getSid();
         HashMap<String, String> headers = new HashMap<>();
