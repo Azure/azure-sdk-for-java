@@ -11,6 +11,11 @@
 - Supported `start` and `stop` for `KubernetesCluster`.
 - Supported `listOrchestrators` for `KubernetesCluster`.
 
+### Breaking Changes
+
+- Removed class `ManagedClusterIdentityUserAssignedIdentities`.
+- Removed unused classes.
+
 ## 2.6.0 (2021-06-18)
 
 - Updated `api-version` to `2021-05-01`
