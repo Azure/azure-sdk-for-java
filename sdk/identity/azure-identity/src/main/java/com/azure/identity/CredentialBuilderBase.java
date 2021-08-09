@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.time.Duration;
@@ -91,13 +92,17 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     }
 
     /**
-     * Allows to log the pii information in the application level logs.
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example configuring
+     * {@code piiLogging} using {@link ClientOptions#setAllowPiiLogging(boolean)} to allow
+     * pii logs to be enabled on client side debugging/monitoring purposes.
      *
-     * @return An updated instance of this builder with pii logging enabled.
+     * @param options the {@link ClientOptions} to be set on the credential client.
+     *
+     * @return An updated instance of this builder with the {@link ClientOptions} set as specified.
      */
     @SuppressWarnings("unchecked")
-    public T allowPiiLogging() {
-        this.identityClientOptions.setAllowPiiLogging(true);
+    public T clientOptions(ClientOptions options) {
+        this.identityClientOptions.setAllowPiiLogging(options.isPiiLoggingAllowed());
         return (T) this;
     }
 }
