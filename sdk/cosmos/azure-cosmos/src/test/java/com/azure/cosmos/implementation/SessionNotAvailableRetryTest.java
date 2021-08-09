@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.doAnswer;
 
 public class SessionNotAvailableRetryTest extends TestSuiteBase {
-    private static final int TIMEOUT = 600000;
+    private static final int TIMEOUT = 60000;
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private DatabaseAccount databaseAccount;
