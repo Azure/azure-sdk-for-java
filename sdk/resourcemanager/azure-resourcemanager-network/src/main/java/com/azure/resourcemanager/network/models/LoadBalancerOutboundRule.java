@@ -226,7 +226,6 @@ public interface LoadBalancerOutboundRule
         LoadBalancerOutboundRule.UpdateStages.WithProtocol,
         LoadBalancerOutboundRule.UpdateStages.WithBackend,
         LoadBalancerOutboundRule.UpdateStages.WithFrontend,
-        LoadBalancerOutboundRule.UpdateStages.WithFrontends,
         LoadBalancerOutboundRule.UpdateStages.WithEnableTcpReset,
         LoadBalancerOutboundRule.UpdateStages.WithIdleTimeout {
     }
