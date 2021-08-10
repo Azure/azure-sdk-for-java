@@ -257,10 +257,11 @@ public class AttestationTokenImpl implements AttestationToken {
      * policies.
      * @return Newly created unsecured attestation token with an empty body.
      */
+    static final String EMPTY_TOKEN = "eyJhbGciOiJub25lIn0..";
     public static AttestationToken createUnsecuredToken() {
         // Create a AttestationToken using the well known unsecured JWT header.
         // See <a href='https://datatracker.ietf.org/doc/html/rfc7519#section-6.1' RFC 7519 section 6.1/>.
-        return new AttestationTokenImpl("eyJhbGciOiJub25lIn0..");
+        return new AttestationTokenImpl(EMPTY_TOKEN);
     }
     /**
      * Create an unsecured attestation token from the specified string body.
