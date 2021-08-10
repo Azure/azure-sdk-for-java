@@ -111,7 +111,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           log.logItemWriteCompletion(createOperation)
         case Failure(e) =>
           promise.failure(e)
-          capturedFailure.set(e)
+          captureIfFirstFailure(e)
           log.logItemWriteFailure(createOperation, e)
           pendingPointWrites.remove(promise.future)
       }
@@ -133,7 +133,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           log.logItemWriteCompletion(upsertOperation)
         case Failure(e) =>
           promise.failure(e)
-          capturedFailure.set(e)
+          captureIfFirstFailure(e)
           pendingPointWrites.remove(promise.future)
           log.logItemWriteFailure(upsertOperation, e)
       }
@@ -157,7 +157,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           log.logItemWriteCompletion(deleteOperation)
         case Failure(e) =>
           promise.failure(e)
-          capturedFailure.set(e)
+          captureIfFirstFailure(e)
           pendingPointWrites.remove(promise.future)
           log.logItemWriteFailure(deleteOperation, e)
       }
@@ -304,6 +304,31 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
         .setOperationContext(options, operationContextAndListenerTuple)
     }
     options
+  }
+
+  /**
+   * Don't wait for any remaining work but signal to the writer the ungraceful close
+   * Should not throw any exceptions
+   */
+  override def abort(): Unit = {
+    // signal an exception that will be thrown for any pending work/flushAndClose if no other exception has
+    // been registered
+    captureIfFirstFailure(
+      new IllegalStateException(s"The Spark task was aborted, Context: ${taskDiagnosticsContext.toString}"))
+
+    closed.set(true);
+
+    try {
+      executorService.shutdownNow()
+    } catch {
+      case e: Throwable =>
+        log.logWarning(s"Exception when trying to shut down executor service", e)
+    }
+  }
+
+  private def captureIfFirstFailure(throwable: Throwable): Unit = {
+    log.logError(s"capture failure, Context: {${taskDiagnosticsContext.toString}}", throwable)
+    capturedFailure.compareAndSet(null, throwable)
   }
 }
 

@@ -467,6 +467,18 @@ class BulkWriter(container: CosmosAsyncContainer,
       None
     }
   }
+
+  /**
+   * Don't wait for any remaining work but signal to the writer the ungraceful close
+   * Should not throw any exceptions
+   */
+  override def abort(): Unit = {
+    // signal an exception that will be thrown for any pending work/flushAndClose if no other exception has
+    // been registered
+    captureIfFirstFailure(
+      new IllegalStateException(s"The Spark task was aborted, Context: ${operationContext.toString}"))
+    cancelWork()
+  }
 }
 
 private object BulkWriter {
