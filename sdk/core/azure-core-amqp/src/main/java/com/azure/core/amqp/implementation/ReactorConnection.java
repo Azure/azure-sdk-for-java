@@ -431,23 +431,33 @@ public class ReactorConnection implements AmqpConnection {
             Flux.fromStream(managementNodes.values().stream()).flatMap(node -> node.closeAsync()));
 
         final Mono<Void> closeReactor = Mono.fromRunnable(() -> {
+            logger.verbose("connectionId[{}] Scheduling closeConnection work.", connectionId);
             final ReactorDispatcher dispatcher = reactorProvider.getReactorDispatcher();
 
-            try {
-                if (dispatcher != null) {
-                    dispatcher.invoke(this::closeConnectionWork);
-                } else {
+            if (dispatcher != null) {
+                try {
+                    dispatcher.invoke(() -> closeConnectionWork());
+                } catch (IOException | RejectedExecutionException e) {
+                    logger.warning("connectionId[{}] Error while scheduling closeConnection work. Manually disposing.",
+                        connectionId, e);
                     closeConnectionWork();
                 }
-            } catch (IOException | RejectedExecutionException e) {
-                logger.warning("connectionId[{}] Error while scheduling closeConnection work. Manually disposing.",
-                    connectionId, e);
+            } else {
                 closeConnectionWork();
             }
         });
 
-        return Mono.whenDelayError(cbsCloseOperation, managementNodeCloseOperations)
-            .then(closeReactor)
+        return Mono.whenDelayError(
+            cbsCloseOperation.doFinally(signalType ->
+                logger.verbose("connectionId[{}] signalType[{}] Closed CBS node.", connectionId, signalType)),
+            managementNodeCloseOperations.doFinally(signalType ->
+                logger.verbose("connectionId[{}] signalType[{}] Closed management nodes.", connectionId,
+                    signalType)))
+
+
+            .then(closeReactor.doFinally(signalType ->
+                logger.verbose("connectionId[{}] signalType[{}] Closed reactor dispatcher.", connectionId,
+                    signalType)))
             .then(isClosedMono.asMono());
     }
 
@@ -469,8 +479,9 @@ public class ReactorConnection implements AmqpConnection {
         final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
         sessionMap.values().forEach(link -> closingSessions.add(link.isClosed()));
 
-        final Mono<Void> closedExecutor = executor != null ? Mono.defer(() ->  {
+        final Mono<Void> closedExecutor = executor != null ? Mono.defer(() -> {
             synchronized (this) {
+                logger.info("connectionId[{}] Closing executor.", connectionId);
                 return executor.closeAsync();
             }
         }) : Mono.empty();
@@ -535,7 +546,7 @@ public class ReactorConnection implements AmqpConnection {
 
             // To avoid inconsistent synchronization of executor, we set this field with the closeAsync method.
             // It will not be kicked off until subscribed to.
-            final Mono<Void> executorCloseMono = Mono.defer(() ->  {
+            final Mono<Void> executorCloseMono = Mono.defer(() -> {
                 synchronized (this) {
                     return executor.closeAsync();
                 }

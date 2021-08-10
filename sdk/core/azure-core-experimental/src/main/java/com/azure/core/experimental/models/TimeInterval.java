@@ -31,16 +31,17 @@ public final class TimeInterval {
 
     private static final ClientLogger LOGGER = new ClientLogger(TimeInterval.class);
     private static final String ERROR_MESSAGE = "%s is an invalid time interval. It must be in one of the "
-            + "following ISO 8601 time interval formats: duration, startDuration/endTime, "
-            + "startTime/endTime, startTime/endDuration";
+        + "following ISO 8601 time interval formats: duration, startDuration/endTime, "
+        + "startTime/endTime, startTime/endDuration";
 
     private final Duration duration;
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
 
     /**
-     * Creates an instance of {@link TimeInterval} using the provided duration. The duration is the interval that
-     * starts from the provided duration and ends at the current time.
+     * Creates an instance of {@link TimeInterval} using the provided duration. The duration is the interval that starts
+     * from the provided duration and ends at the current time.
+     *
      * @param duration the duration for this query time span.
      */
     public TimeInterval(Duration duration) {
@@ -51,6 +52,7 @@ public final class TimeInterval {
 
     /**
      * Creates an instance of {@link TimeInterval} using the start and end {@link OffsetDateTime OffsetDateTimes}.
+     *
      * @param startTime The start time of the interval.
      * @param endTime The end time of the interval.
      */
@@ -62,6 +64,7 @@ public final class TimeInterval {
 
     /**
      * Creates an instance of {@link TimeInterval} using the start and end duration of the interval.
+     *
      * @param startTime The start time of the interval.
      * @param duration The end duration of the interval.
      */
@@ -73,6 +76,7 @@ public final class TimeInterval {
 
     /**
      * Creates an instance of {@link TimeInterval} using the start and end duration of the interval.
+     *
      * @param duration The duration of the interval.
      * @param endTime The end time of the interval.
      */
@@ -84,6 +88,7 @@ public final class TimeInterval {
 
     /**
      * Returns the duration of this {@link TimeInterval} instance.
+     *
      * @return the duration of this {@link TimeInterval} instance.
      */
     public Duration getDuration() {
@@ -92,6 +97,7 @@ public final class TimeInterval {
 
     /**
      * Returns the start time of this {@link TimeInterval} instance.
+     *
      * @return the start time of this {@link TimeInterval} instance.
      */
     public OffsetDateTime getStartTime() {
@@ -108,6 +114,7 @@ public final class TimeInterval {
 
     /**
      * Returns the end time of this {@link TimeInterval} instance.
+     *
      * @return the end time of this {@link TimeInterval} instance.
      */
     public OffsetDateTime getEndTime() {
@@ -122,6 +129,7 @@ public final class TimeInterval {
 
     /**
      * Returns this {@link TimeInterval} in ISO 8601 string format.
+     *
      * @return ISO 8601 formatted string representation of this {@link TimeInterval} instance.
      */
     public String toIso8601Format() {
@@ -142,6 +150,7 @@ public final class TimeInterval {
 
     /**
      * This method takes an ISO 8601 formatted time interval string and returns an instance of {@link TimeInterval}.
+     *
      * @param value The ISO 8601 formatted time interval string.
      * @return An instance of {@link TimeInterval}.
      * @throws IllegalArgumentException if {@code value} is not in the correct format.
@@ -156,7 +165,7 @@ public final class TimeInterval {
             if (duration == null || parts[0].length() + 1 == value.length()) {
                 // input strings like "PT24H/" are invalid
                 throw LOGGER.logExceptionAsError(
-                        new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
+                    new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
             }
 
             return new TimeInterval(duration);
@@ -180,7 +189,7 @@ public final class TimeInterval {
             }
         }
         throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
+            new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
     }
 
     @Override
@@ -224,8 +233,8 @@ public final class TimeInterval {
         TimeInterval that = (TimeInterval) o;
 
         return Objects.equals(this.duration, that.duration)
-                && Objects.equals(this.startTime, that.startTime)
-                && Objects.equals(this.endTime, that.endTime);
+            && Objects.equals(this.startTime, that.startTime)
+            && Objects.equals(this.endTime, that.endTime);
     }
 
     @Override

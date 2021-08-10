@@ -947,7 +947,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     @LiveOnly
     @Unroll
-    @IgnoreIf({ getEnv().httpClientType == TestHttpClientType.OK_HTTP}) // https://github.com/Azure/azure-sdk-for-java/issues/23243
     def "Download file"() {
         setup:
         def file = getRandomFile(fileSize)

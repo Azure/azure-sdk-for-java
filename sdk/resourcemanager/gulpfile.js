@@ -126,7 +126,8 @@ function codegen(project, cb) {
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true --pipeline.modelerfour.flatten-payloads=true ' +
+                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true --pipeline.modelerfour.flatten-models=false ' +
+                        ' --client-flattened-annotation-target=NONE ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +
