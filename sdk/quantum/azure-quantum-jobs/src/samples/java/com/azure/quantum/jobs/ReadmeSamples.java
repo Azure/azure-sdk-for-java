@@ -88,7 +88,7 @@ public class ReadmeSamples {
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint(inputDataUri)
             .buildClient();
-        String problemFilePath = FileSystems.getDefault().getPath("{uploadFilePath}").toString();
+        String problemFilePath = FileSystems.getDefault().getPath("src/samples/resources/problem.json").toString();
         blobClient.uploadFromFile(problemFilePath);
     }
 
