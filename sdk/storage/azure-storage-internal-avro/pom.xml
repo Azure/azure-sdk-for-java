@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-internal-avro</artifactId>
-  <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+  <version>12.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
 
   <name>Microsoft Azure internal Avro module for Storage</name>
   <description>This module contains internal use only avro parser code based for Microsoft Azure Storage client libraries.</description>
@@ -41,17 +41,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -68,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>

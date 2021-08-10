@@ -13,6 +13,24 @@ public class KeyProperties {
      */
     private boolean exportable;
 
+    private String kty;
+
+    /**
+     * get key type
+     * @return key type
+     */
+    public String getKty() {
+        return kty;
+    }
+
+    /**
+     * set key type
+     * @param kty key type
+     */
+    public void setKty(String kty) {
+        this.kty = kty;
+    }
+
     /**
      * Is the key exportable.
      *

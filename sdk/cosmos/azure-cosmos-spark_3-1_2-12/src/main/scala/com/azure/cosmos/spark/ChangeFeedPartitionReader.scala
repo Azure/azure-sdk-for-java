@@ -48,6 +48,7 @@ private case class ChangeFeedPartitionReader
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
 
   private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
+  cosmosAsyncContainer.openConnectionsAndInitCaches().block()
 
   private val changeFeedRequestOptions = {
 

@@ -5,6 +5,7 @@ package com.azure.security.keyvault.jca.implementation;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
+import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
 import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
@@ -14,6 +15,8 @@ import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
+import com.azure.security.keyvault.jca.implementation.model.SignResult;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -165,6 +168,15 @@ public class KeyVaultClient {
         this.managedIdentity = managedIdentity;
     }
 
+    public static KeyVaultClient createKeyVaultClientBySystemProperty() {
+        String keyVaultUri = System.getProperty("azure.keyvault.uri");
+        String tenantId = System.getProperty("azure.keyvault.tenant-id");
+        String clientId = System.getProperty("azure.keyvault.client-id");
+        String clientSecret = System.getProperty("azure.keyvault.client-secret");
+        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
+        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+    }
+
     /**
      * Get the access token.
      *
@@ -281,45 +293,63 @@ public class KeyVaultClient {
     public Key getKey(String alias, char[] password) {
         LOGGER.entering("KeyVaultClient", "getKey", new Object[] { alias, password });
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
-        Key key = null;
         CertificateBundle certificateBundle = getCertificateBundle(alias);
         boolean isExportable = Optional.ofNullable(certificateBundle)
                                        .map(CertificateBundle::getPolicy)
                                        .map(CertificatePolicy::getKeyProperties)
                                        .map(KeyProperties::isExportable)
                                        .orElse(false);
-        if (isExportable) {
-            //
-            // Because the certificate is exportable the private key is
-            // available. So we'll use the Azure Key Vault Secrets API to get
-            // the private key.
-            //
-            String certificateSecretUri = certificateBundle.getSid();
-            HashMap<String, String> headers = new HashMap<>();
-            headers.put("Authorization", "Bearer " + getAccessToken());
-            String body = HttpUtil.get(certificateSecretUri + API_VERSION_POSTFIX, headers);
-            if (body != null) {
-                SecretBundle secretBundle = (SecretBundle) JsonConverterUtil.fromJson(body, SecretBundle.class);
-                if (secretBundle.getContentType().equals("application/x-pkcs12")) {
-                    try {
-                        KeyStore keyStore = KeyStore.getInstance("PKCS12");
-                        keyStore.load(
-                            new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
-                            "".toCharArray()
-                        );
-                        alias = keyStore.aliases().nextElement();
-                        key = keyStore.getKey(alias, "".toCharArray());
-                    } catch (IOException | KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException ex) {
-                        LOGGER.log(WARNING, "Unable to decode key", ex);
-                    }
-                }
-                if (secretBundle.getContentType().equals("application/x-pem-file")) {
-                    try {
-                        key = createPrivateKeyFromPem(secretBundle.getValue());
-                    } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException ex) {
-                        LOGGER.log(WARNING, "Unable to decode key", ex);
-                    }
-                }
+        String keyType = Optional.ofNullable(certificateBundle)
+                                 .map(CertificateBundle::getPolicy)
+                                 .map(CertificatePolicy::getKeyProperties)
+                                 .map(KeyProperties::getKty)
+                                 .orElse(null);
+        if (!isExportable) {
+            // return KeyVaultPrivateKey if certificate is not exportable because
+            // if the service needs to obtain the private key for authentication,
+            // and we can't access private key(which is not exportable), we will use
+            // the Azure Key Vault Secrets API to obtain the private key (keyless).
+            LOGGER.exiting("KeyVaultClient", "getKey", null);
+            return Optional.ofNullable(certificateBundle)
+                           .map(CertificateBundle::getKid)
+                           .map(kid -> new KeyVaultPrivateKey(keyType, kid))
+                           .orElse(null);
+        }
+        String certificateSecretUri = certificateBundle.getSid();
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getAccessToken());
+        String body = HttpUtil.get(certificateSecretUri + API_VERSION_POSTFIX, headers);
+        if (body == null) {
+            // If the private key is not available the certificate cannot be used for server side certificates or mTLS.
+            // Then we do not know the intent of the usage at this stage we skip this key.
+            LOGGER.exiting("KeyVaultClient", "getKey", null);
+            // We return null because it is really not needed.
+            // The private key is only used for identity authentication.
+            // If we are unable to obtain the private key, it proves that the client
+            // does not own the private key (maybe due to lack of authority or other reasons).
+            return null;
+        }
+        // The certificate is exportable the private key is available.
+        // So We'll store the private key for authentication instead of
+        // obtaining a digital signature through the API(without keyless).
+        Key key = null;
+        SecretBundle secretBundle = (SecretBundle) JsonConverterUtil.fromJson(body, SecretBundle.class);
+        String contentType = secretBundle.getContentType();
+        if ("application/x-pkcs12".equals(contentType)) {
+            try {
+                KeyStore keyStore = KeyStore.getInstance("PKCS12");
+                keyStore.load(
+                    new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())), "".toCharArray());
+                alias = keyStore.aliases().nextElement();
+                key = keyStore.getKey(alias, "".toCharArray());
+            } catch (IOException | KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException ex) {
+                LOGGER.log(WARNING, "Unable to decode key", ex);
+            }
+        } else if ("application/x-pem-file".equals(contentType)) {
+            try {
+                key = createPrivateKeyFromPem(secretBundle.getValue(), keyType);
+            } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException ex) {
+                LOGGER.log(WARNING, "Unable to decode key", ex);
             }
         }
 
@@ -333,15 +363,39 @@ public class KeyVaultClient {
     }
 
     /**
+     * get signature by key vault
+     * @param digestName digestName
+     * @param digestValue digestValue
+     * @param keyId The key id
+     * @return signature
+     */
+    public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String keyId) {
+        SignResult result = null;
+        String bodyString = String.format("{\"alg\": \"" + digestName + "\", \"value\": \"%s\"}", digestValue);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getAccessToken());
+        String url = String.format("%s/sign%s", keyId, API_VERSION_POSTFIX);
+        String response = HttpUtil.post(url, headers, bodyString, "application/json");
+        if (response != null) {
+            result = (SignResult) JsonConverterUtil.fromJson(response, SignResult.class);
+        }
+        if (result != null) {
+            return Base64.getUrlDecoder().decode(result.getValue());
+        }
+        return new byte[0];
+    }
+
+    /**
      * Get the private key from the PEM string.
      *
      * @param pemString the PEM file in string format.
+     * @param keyType the private key type in string format.
      * @return the private key
      * @throws IOException when an I/O error occurs.
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
      * @throws InvalidKeySpecException when the private key cannot be generated.
      */
-    private PrivateKey createPrivateKeyFromPem(String pemString)
+    private PrivateKey createPrivateKeyFromPem(String pemString, String keyType)
         throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new StringReader(pemString))) {
@@ -360,7 +414,7 @@ public class KeyVaultClient {
         }
         byte[] bytes = Base64.getDecoder().decode(builder.toString());
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
-        KeyFactory factory = KeyFactory.getInstance("RSA");
+        KeyFactory factory = KeyFactory.getInstance(keyType);
         return factory.generatePrivate(spec);
     }
 

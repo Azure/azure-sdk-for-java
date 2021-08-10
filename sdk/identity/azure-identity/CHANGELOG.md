@@ -16,6 +16,7 @@
 ### Dependency Updates
 - Upgraded `azure-core` dependency to 1.18.0
 
+
 ## 1.3.1 (2021-06-08)
 
 ### Dependency Updates

@@ -56,6 +56,20 @@ public interface Factory {
     FactoryIdentity identity();
 
     /**
+     * Gets the etag property: Etag identifies change in the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the additionalProperties property: Factory resource type.
+     *
+     * @return the additionalProperties value.
+     */
+    Map<String, Object> additionalProperties();
+
+    /**
      * Gets the provisioningState property: Factory provisioning state, example Succeeded.
      *
      * @return the provisioningState value.
@@ -103,20 +117,6 @@ public interface Factory {
      * @return the publicNetworkAccess value.
      */
     PublicNetworkAccess publicNetworkAccess();
-
-    /**
-     * Gets the etag property: Etag identifies change in the resource.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
-     * Gets the additionalProperties property: Factory resource type.
-     *
-     * @return the additionalProperties value.
-     */
-    Map<String, Object> additionalProperties();
 
     /**
      * Gets the region of the resource.
@@ -186,11 +186,11 @@ public interface Factory {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
+                DefinitionStages.WithAdditionalProperties,
                 DefinitionStages.WithRepoConfiguration,
                 DefinitionStages.WithGlobalParameters,
                 DefinitionStages.WithEncryption,
                 DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithAdditionalProperties,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -226,6 +226,16 @@ public interface Factory {
              * @return the next definition stage.
              */
             WithCreate withIdentity(FactoryIdentity identity);
+        }
+        /** The stage of the Factory definition allowing to specify additionalProperties. */
+        interface WithAdditionalProperties {
+            /**
+             * Specifies the additionalProperties property: Factory resource type..
+             *
+             * @param additionalProperties Factory resource type.
+             * @return the next definition stage.
+             */
+            WithCreate withAdditionalProperties(Map<String, Object> additionalProperties);
         }
         /** The stage of the Factory definition allowing to specify repoConfiguration. */
         interface WithRepoConfiguration {
@@ -267,16 +277,6 @@ public interface Factory {
              * @return the next definition stage.
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
-        }
-        /** The stage of the Factory definition allowing to specify additionalProperties. */
-        interface WithAdditionalProperties {
-            /**
-             * Specifies the additionalProperties property: Factory resource type..
-             *
-             * @param additionalProperties Factory resource type.
-             * @return the next definition stage.
-             */
-            WithCreate withAdditionalProperties(Map<String, Object> additionalProperties);
         }
         /** The stage of the Factory definition allowing to specify ifMatch. */
         interface WithIfMatch {

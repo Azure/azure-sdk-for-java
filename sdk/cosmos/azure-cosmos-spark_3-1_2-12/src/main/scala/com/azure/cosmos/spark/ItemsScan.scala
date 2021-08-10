@@ -74,6 +74,7 @@ private case class ItemsScan(session: SparkSession,
     val client =
       CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
     val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
+    container.openConnectionsAndInitCaches().block()
 
     CosmosPartitionPlanner.createInputPartitions(
       partitioningConfig,

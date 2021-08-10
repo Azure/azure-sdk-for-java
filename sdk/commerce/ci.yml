@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/commerce/
+      - sdk/commerce/ci.yml
+      - sdk/commerce/azure-resourcemanager-commerce/
+    exclude:
+      - sdk/commerce/pom.xml
+      - sdk/commerce/azure-resourcemanager-commerce/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/commerce/
+      - sdk/commerce/ci.yml
+      - sdk/commerce/azure-resourcemanager-commerce/
+    exclude:
+      - sdk/commerce/pom.xml
+      - sdk/commerce/azure-resourcemanager-commerce/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

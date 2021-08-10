@@ -15,16 +15,18 @@ import com.azure.core.test.TestMode
 import com.azure.core.util.ServiceVersion
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
+import okhttp3.ConnectionPool
 import spock.lang.Specification
 
 import java.time.Duration
+import java.util.concurrent.TimeUnit
 import java.util.function.Predicate
 import java.util.function.Supplier
 
 class StorageSpec extends Specification {
     private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
-    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder().build()
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder().connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES)).build()
     private static final ClientLogger LOGGER = new ClientLogger(StorageSpec.class)
 
     private InterceptorManager interceptorManager
