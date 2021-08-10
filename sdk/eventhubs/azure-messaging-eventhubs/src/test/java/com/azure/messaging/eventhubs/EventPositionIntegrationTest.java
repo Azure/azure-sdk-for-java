@@ -177,14 +177,13 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         final List<EventData> events = TestUtils.getEvents(15, messageId);
 
         try {
-            producer.send(events, options);
-            List<PartitionEvent> latestEvents = consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
+            StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
                 .filter(event -> isMatchingEvent(event, messageId))
-                .take(numberOfEvents)
-                .collectList()
-                .block();
-            Assertions.assertNotNull(latestEvents);
-            Assertions.assertEquals(numberOfEvents, latestEvents.size());
+                .take(numberOfEvents))
+                .then(() -> producer.send(events, options))
+                .expectNextCount(numberOfEvents)
+                .verifyComplete();
+
             // Act
         } finally {
             dispose(producer);

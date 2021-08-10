@@ -129,7 +129,6 @@ public class EventHubClientBuilderTest {
             clientCreated = true;
         } catch (Exception ex) {
         }
-
         Assertions.assertEquals(expectedClientCreation, clientCreated);
     }
 
