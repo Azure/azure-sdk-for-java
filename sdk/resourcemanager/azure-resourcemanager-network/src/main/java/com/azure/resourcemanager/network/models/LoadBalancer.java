@@ -85,6 +85,7 @@ public interface LoadBalancer
             DefinitionStages.WithLBRuleOrNatOrCreate,
             DefinitionStages.WithCreateAndInboundNatPool,
             DefinitionStages.WithCreateAndInboundNatRule,
+            DefinitionStages.WithCreateAndOutboundRule,
             DefinitionStages.WithCreateAndNatChoice {
     }
 
@@ -130,7 +131,7 @@ public interface LoadBalancer
              * @param name the name for the frontend
              * @return the first stage of a new frontend definition
              */
-            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithCreate> definePublicFrontend(String name);
+            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithCreateAndOutboundRule> definePublicFrontend(String name);
         }
 
         /** The stage of a load balancer definition allowing to add a backend. */
@@ -234,6 +235,12 @@ public interface LoadBalancer
         interface WithCreateAndInboundNatRule extends WithCreate, WithInboundNatRule {
         }
 
+        /**
+         * The stage of a load balancer definition allowing to create the load balancer or add an outbound rule
+         */
+        interface WithCreateAndOutboundRule extends  WithCreate, WithOutboundRule {
+        }
+
         /** The stage of a load balancer definition allowing to create a new inbound NAT rule. */
         interface WithInboundNatRule {
             /**
@@ -244,6 +251,19 @@ public interface LoadBalancer
              */
             LoadBalancerInboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule> defineInboundNatRule(
                 String name);
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to create a new outbound rule
+         */
+        interface WithOutboundRule {
+            /**
+             * Begins the definition of a new outbound rule to add to the load balancer
+             *
+             * @param name the name of the outbound rule
+             * @return the first stage of the new outbound rule definition
+             */
+            LoadBalancerOutboundRule.DefinitionStages.Blank<? extends WithCreateAndOutboundRule> defineOutboundRule(String name);
         }
 
         /**
@@ -497,6 +517,36 @@ public interface LoadBalancer
              */
             LoadBalancerInboundNatPool.Update updateInboundNatPool(String name);
         }
+
+        /** The stage of a load balancer update allowing to define, remove or edit outbound rules. */
+        interface WithOutboundRule {
+            /**
+             * Removes the specified outbound rule from the load balancer.
+             *
+             * @param name the name of an existing outbound rule on this load balancer
+             * @return the next stage of the update
+             */
+            Update withoutOutboundRule(String name);
+
+            /**
+             * Begins the definition of a new inbound NAT rule.
+             *
+             * <p>The definition must be completed with a call to {@link
+             * LoadBalancerOutboundRule.DefinitionStages.WithAttach#attach()}
+             *
+             * @param name the name for the outbound rule
+             * @return the first stage of the new outbound rule definition
+             */
+            LoadBalancerOutboundRule.DefinitionStages.Blank<? extends Update> defineOutboundRule(String name);
+
+            /**
+             * Begins the description of an update to an existing outbound rule.
+             *
+             * @param name the name of the outbound rule to update
+             * @return the first stage of the outbound rule update
+             */
+            LoadBalancerOutboundRule.Update updateOutboundRule(String name);
+        }
     }
 
     /** The template for a load balancer update operation, containing all the settings that can be modified. */
@@ -508,6 +558,7 @@ public interface LoadBalancer
             UpdateStages.WithLoadBalancingRule,
             UpdateStages.WithPublicFrontend,
             UpdateStages.WithPrivateFrontend,
+            UpdateStages.WithOutboundRule,
             UpdateStages.WithInboundNatRule,
             UpdateStages.WithInboundNatPool {
     }
