@@ -38,12 +38,12 @@ public final class TextAnalyticsClientImplBuilder {
     }
 
     /*
-     * Client Api Version.
+     * Text Analytics API version (for example, v3.0).
      */
     private String apiVersion;
 
     /**
-     * Sets Client Api Version.
+     * Sets Text Analytics API version (for example, v3.0).
      *
      * @param apiVersion the apiVersion value.
      * @return the TextAnalyticsClientImplBuilder.
@@ -191,6 +191,9 @@ public final class TextAnalyticsClientImplBuilder {
      * @return an instance of TextAnalyticsClientImpl.
      */
     public TextAnalyticsClientImpl buildClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "v3.2-preview.1";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }

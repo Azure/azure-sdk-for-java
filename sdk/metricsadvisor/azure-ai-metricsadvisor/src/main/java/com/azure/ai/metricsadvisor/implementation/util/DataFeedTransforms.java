@@ -127,14 +127,14 @@ public final class DataFeedTransforms {
                     .setFillType(DataFeedMissingDataPointFillType.fromString(
                         dataFeedDetail.getFillMissingPointType().toString())))
                 .setAccessMode(DataFeedAccessMode.fromString(dataFeedDetail.getViewMode().toString()))
-                .setAdminEmails(dataFeedDetail.getAdmins())
+                .setAdmins(dataFeedDetail.getAdmins())
                 .setRollupSettings(new DataFeedRollupSettings()
                     .setAlreadyRollup(dataFeedDetail.getAllUpIdentification())
                     .setAutoRollup(DataFeedAutoRollUpMethod.fromString(dataFeedDetail.getRollUpMethod().toString()),
                         dataFeedDetail.getRollUpColumns())
                     .setRollupType(DataFeedRollupType.fromString(dataFeedDetail.getNeedRollup().toString())))
                 .setActionLinkTemplate(dataFeedDetail.getActionLinkTemplate())
-                .setViewerEmails(dataFeedDetail.getViewers()));
+                .setViewers(dataFeedDetail.getViewers()));
 
         DataFeedHelper.setId(dataFeed, dataFeedDetail.getDataFeedId().toString());
         DataFeedHelper.setCreatedTime(dataFeed, dataFeedDetail.getCreatedTime());

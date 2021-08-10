@@ -16,6 +16,7 @@ public final class MetricBoundaryCondition {
     private Double upperBoundary;
     private String companionMetricId;
     private Boolean alertIfMissing;
+    private BoundaryMeasureType measureType;
 
     static {
         MetricBoundaryConditionHelper.setAccessor(new MetricBoundaryConditionHelper.MetricBoundaryConditionAccessor() {
@@ -85,6 +86,25 @@ public final class MetricBoundaryCondition {
     }
 
     /**
+     * True if alert will be triggered when the companion-metric data-points are out
+     * of boundary but the corresponding data-point is missing for the original metric.
+     *
+     * @return True if alert is triggered for missing data-points, false otherwise.
+     */
+    public Boolean shouldAlertIfDataPointMissing() {
+        return this.alertIfMissing;
+    }
+
+    /**
+     * Gets the measure type that detector should use for measuring data-points.
+     *
+     * @return the measure type.
+     */
+    public BoundaryMeasureType getMeasureType() {
+        return this.measureType;
+    }
+
+    /**
      * Sets the boundary.
      *
      * @param direction Both {@code lowerBoundary} and {@code upperBoundary} must be specified
@@ -120,16 +140,6 @@ public final class MetricBoundaryCondition {
     }
 
     /**
-     * True if alert will be triggered when the companion-metric data-points are out
-     * of boundary but the corresponding data-point is missing for the original metric.
-     *
-     * @return True if alert is triggered for missing data-points, false otherwise.
-     */
-    public Boolean shouldAlertIfDataPointMissing() {
-        return this.alertIfMissing;
-    }
-
-    /**
      * Sets the companion metric id.
      *
      * When the companion-metric is set for a metric, an anomaly detected in the original
@@ -147,6 +157,18 @@ public final class MetricBoundaryCondition {
                                                         boolean alertIfMissing) {
         this.companionMetricId = companionMetricId;
         this.alertIfMissing = alertIfMissing;
+        return this;
+    }
+
+    /**
+     * Sets the measure type that detector should use for measuring data-points.
+     *
+     * @param measureType the type of measure to use.
+     *
+     * @return The MetricBoundaryCondition object itself.
+     */
+    public MetricBoundaryCondition setMeasureType(BoundaryMeasureType measureType) {
+        this.measureType = measureType;
         return this;
     }
 

@@ -211,7 +211,7 @@ public final class MonitorManagementClientImplBuilder {
             this.host = "https://management.azure.com";
         }
         if (apiVersion == null) {
-            this.apiVersion = "2017-05-01-preview";
+            this.apiVersion = "2018-01-01";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
@@ -236,10 +236,10 @@ public final class MonitorManagementClientImplBuilder {
         policies.add(
                 new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, " https://management.azure.com" +
-            "/.default");
-        policies.add(tokenPolicy);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, " https://management.azure.com" +
+                "/.default");
+        policies.add(tokenPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);

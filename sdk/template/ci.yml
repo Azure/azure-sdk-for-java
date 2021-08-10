@@ -8,8 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - common/perf-test-core/
       - sdk/template/
+    exclude:
+      - sdk/template/pom.xml
+      - sdk/template/azure-sdk-template/pom.xml
+      - sdk/template/azure-template-perf/pom.xml
 
 pr:
   branches:
@@ -20,8 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - common/perf-test-core/
       - sdk/template/
+    exclude:
+      - sdk/template/pom.xml
+      - sdk/template/azure-sdk-template/pom.xml
+      - sdk/template/azure-template-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

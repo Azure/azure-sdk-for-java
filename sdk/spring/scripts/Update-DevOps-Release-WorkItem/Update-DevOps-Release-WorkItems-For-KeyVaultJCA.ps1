@@ -1,7 +1,8 @@
 #Requires -Version 6.0
 
-$releaseDate = "06/23/2021"
-$serviceDirectory = "keyvault"
-$jcaReleaseVersion = "1.0.0"
+$releaseDate = "07/01/2021"
+$jcaReleaseVersion = "1.0.1"
+$certificatesReleaseVersion = "3.0.1"
 
-. ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $jcaReleaseVersion azure-security-keyvault-jca
+. ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate "keyvault" $jcaReleaseVersion azure-security-keyvault-jca
+. ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate "spring" $certificatesReleaseVersion azure-spring-boot-starter-keyvault-certificates

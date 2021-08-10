@@ -6,11 +6,13 @@ package com.azure.ai.textanalytics.util;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link AnalyzeHealthcareEntitiesResultCollection} model.
  */
+@Immutable
 public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStream<AnalyzeHealthcareEntitiesResult> {
     private TextDocumentBatchStatistics statistics;
     private String modelVersion;
@@ -36,7 +38,7 @@ public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStr
     }
 
     /**
-     * Create a {@link AnalyzeHealthcareEntitiesResultCollection} model that maintains a list of
+     * Creates a {@link AnalyzeHealthcareEntitiesResultCollection} model that maintains a list of
      * {@link AnalyzeHealthcareEntitiesResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link AnalyzeHealthcareEntitiesResult}.
@@ -57,7 +59,7 @@ public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStr
     /**
      * Gets the healthcare document result statistics properties.
      *
-     * @return the healthcare document result statistics properties.
+     * @return The healthcare document result statistics properties.
      */
     public TextDocumentBatchStatistics getStatistics() {
         return statistics;

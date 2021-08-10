@@ -15,8 +15,6 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +23,13 @@ import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
+import java.util.Map;
+
 
 public class KubernetesClustersTests extends ContainerServiceManagementTest {
     private static final String SSH_KEY = sshPublicKey();
@@ -102,6 +105,16 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         Assertions.assertNotNull(kubernetesCluster.tags().get("tag1"));
 
+        // stop
+        kubernetesCluster.stop();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(Code.STOPPED, kubernetesCluster.powerState().code());
+
+        // start
+        kubernetesCluster.start();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(Code.RUNNING, kubernetesCluster.powerState().code());
+
         // update
         kubernetesCluster =
             kubernetesCluster
@@ -160,6 +173,13 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             servicePrincipalSecret = credentialsMap.get("clientSecret");
         }
 
+        Map<String, String> nodeLables = new HashMap<>(2);
+        nodeLables.put("environment", "dev");
+        nodeLables.put("app.1", "spring");
+
+        List<String> nodeTaints = new ArrayList<>(1);
+        nodeTaints.add("key=value:NoSchedule");
+
         // create cluster
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
             .withRegion(Region.US_CENTRAL)
@@ -183,8 +203,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
                 .withAgentPoolVirtualMachineCount(1)
                 .withAutoScaling(1, 3)
-                .withNodeLabels(ImmutableMap.of("environment", "dev", "app.1", "spring"))
-                .withNodeTaints(ImmutableList.of("key=value:NoSchedule"))
+                .withNodeLabels(Collections.unmodifiableMap(nodeLables))
+                .withNodeTaints(Collections.unmodifiableList(nodeTaints))
                 .attach()
             // number of nodes = 0
             .defineAgentPool(agentPoolName2)
@@ -212,7 +232,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertTrue(agentPoolProfile1.isAutoScalingEnabled());
         Assertions.assertEquals(1, agentPoolProfile1.minimumNodeSize());
         Assertions.assertEquals(3, agentPoolProfile1.maximumNodeSize());
-        Assertions.assertEquals(ImmutableMap.of("environment", "dev", "app.1", "spring"), agentPoolProfile1.nodeLabels());
+        Assertions.assertEquals(Collections.unmodifiableMap(nodeLables), agentPoolProfile1.nodeLabels());
         Assertions.assertEquals("key=value:NoSchedule", agentPoolProfile1.nodeTaints().iterator().next());
 
         KubernetesClusterAgentPool agentPoolProfile2 = kubernetesCluster.agentPools().get(agentPoolName2);

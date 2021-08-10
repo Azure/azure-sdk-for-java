@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.administration.models.BoundaryMeasureType;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertSnoozeCondition;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationLogicType;
@@ -15,6 +16,7 @@ import com.azure.ai.metricsadvisor.implementation.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.implementation.models.ValueCondition;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.BoundaryDirection;
+import com.azure.ai.metricsadvisor.implementation.models.ValueType;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
@@ -183,6 +185,10 @@ public final class AlertConfigurationTransforms {
                             .setMetricId(UUID.fromString(boundaryConditions.getCompanionMetricId()));
                         innerValueCondition.setTriggerForMissing(boundaryConditions.shouldAlertIfDataPointMissing());
                     }
+                    if (boundaryConditions.getMeasureType() != null) {
+                        innerValueCondition.setType(
+                            ValueType.fromString(boundaryConditions.getMeasureType().toString()));
+                    }
                     innerMetricAlertConfiguration.setValueFilter(innerValueCondition);
                 }
             }
@@ -316,6 +322,10 @@ public final class AlertConfigurationTransforms {
                                 && innerValueCondition.isTriggerForMissing();
                             boundaryCondition.setCompanionMetricId(innerValueCondition.getMetricId().toString(),
                                 triggerIfMissing);
+                        }
+                        if (innerValueCondition.getType() != null) {
+                            boundaryCondition.setMeasureType(
+                                BoundaryMeasureType.fromString(innerValueCondition.getType().toString()));
                         }
                         alertConditions.setMetricBoundaryCondition(boundaryCondition);
                     }

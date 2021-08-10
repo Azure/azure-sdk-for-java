@@ -10,6 +10,9 @@ trigger:
   paths:
     include:
       - sdk/deviceupdate/
+    exclude:
+      - sdk/deviceupdate/pom.xml
+      - sdk/deviceupdate/azure-iot-deviceupdate/pom.xml
 
 pr:
   branches:
@@ -21,6 +24,9 @@ pr:
   paths:
     include:
       - sdk/deviceupdate/
+    exclude:
+      - sdk/deviceupdate/pom.xml
+      - sdk/deviceupdate/azure-iot-deviceupdate/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

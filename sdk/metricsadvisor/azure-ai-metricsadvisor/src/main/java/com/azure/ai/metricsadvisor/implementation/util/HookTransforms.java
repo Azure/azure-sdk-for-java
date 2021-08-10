@@ -56,7 +56,7 @@ public final class HookTransforms {
                 innerEmailHook.setHookParameter(new EmailHookParameter()
                     .setToList(emailsToAlert));
             }
-            innerEmailHook.setAdmins(HookHelper.getAdminEmailsRaw(emailHook));
+            innerEmailHook.setAdmins(HookHelper.getAdminsRaw(emailHook));
             return innerEmailHook;
         } else if (notificationHook instanceof WebNotificationHook) {
             WebNotificationHook webHook = (WebNotificationHook) notificationHook;
@@ -82,7 +82,7 @@ public final class HookTransforms {
             if (headers != null) {
                 hookParameter.setHeaders(headers.toMap());
             }
-            innerWebHook.setAdmins(HookHelper.getAdminEmailsRaw(webHook));
+            innerWebHook.setAdmins(HookHelper.getAdminsRaw(webHook));
             innerWebHook.setHookParameter(hookParameter);
             return innerWebHook;
         } else {
@@ -104,7 +104,7 @@ public final class HookTransforms {
                 innerEmailHook.setHookParameter(new EmailHookParameterPatch()
                     .setToList(emailsToAlert));
             }
-            innerEmailHook.setAdmins(HookHelper.getAdminEmailsRaw(emailHook));
+            innerEmailHook.setAdmins(HookHelper.getAdminsRaw(emailHook));
             return innerEmailHook;
         } else if (notificationHook instanceof WebNotificationHook) {
             WebNotificationHook webHook = (WebNotificationHook) notificationHook;
@@ -123,7 +123,7 @@ public final class HookTransforms {
                 hookParameter.setHeaders(headers.toMap());
             }
             innerWebHook.setHookParameter(hookParameter);
-            innerWebHook.setAdmins(HookHelper.getAdminEmailsRaw(webHook));
+            innerWebHook.setAdmins(HookHelper.getAdminsRaw(webHook));
             return innerWebHook;
         } else {
             throw logger
@@ -143,7 +143,7 @@ public final class HookTransforms {
 
             HookHelper.setId(emailHook, innerEmailHook.getHookId().toString());
 
-            emailHook.setAdminEmails(innerEmailHook.getAdmins());
+            emailHook.setAdmins(innerEmailHook.getAdmins());
 
             return emailHook;
         } else if (innerHook instanceof WebhookHookInfo) {
@@ -167,7 +167,7 @@ public final class HookTransforms {
 
             HookHelper.setId(webHook, innerWebHook.getHookId().toString());
 
-            webHook.setAdminEmails(innerWebHook.getAdmins());
+            webHook.setAdmins(innerWebHook.getAdmins());
 
             return webHook;
         } else {

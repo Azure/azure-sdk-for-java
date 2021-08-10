@@ -17,8 +17,8 @@ public final class DataFeedOptions {
     private DataFeedRollupSettings dataFeedRollupSettings;
     private DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings;
     private DataFeedAccessMode dataFeedAccessMode;
-    private List<String> adminEmails;
-    private List<String> viewerEmails;
+    private List<String> admins;
+    private List<String> viewers;
     private String actionLinkTemplate;
 
     /**
@@ -86,46 +86,62 @@ public final class DataFeedOptions {
     }
 
     /**
-     * Get the list of data feed administrator emails.
+     * Get the list of data feed administrator emails and clientIds.
+     * <p>
+     * The administrators have total control over the DataFeed, being allowed to update, delete, or pause the DataFeed.
+     * Each element in this list represents a user with administrator access, but the value of each string element
+     * is either user email address or clientId uniquely identifying the user service principal.
      *
-     * @return the adminEmails value.
+     * @return a list containing email or clientId of admins
      */
-    public List<String> getAdminEmails() {
-        return this.adminEmails == null
-            ? null : Collections.unmodifiableList(this.adminEmails);
+    public List<String> getAdmins() {
+        return this.admins == null
+            ? null : Collections.unmodifiableList(this.admins);
     }
 
     /**
-     * Set the list of data feed administrator emails.
+     * Set the list of data feed administrator emails and clientIds.
+     * <p>
+     * The administrators have total control over the DataFeed, being allowed to update, delete, or pause the DataFeed.
+     * Each element in this list represents a user with administrator access, but the value of each string element
+     * is either user email address or clientId uniquely identifying the user service principal.
      *
-     * @param adminEmails the adminEmails value to set.
+     * @param admins a list containing email or clientId of admins
      *
      * @return the DataFeedOptions object itself.
      */
-    public DataFeedOptions setAdminEmails(List<String> adminEmails) {
-        this.adminEmails = adminEmails;
+    public DataFeedOptions setAdmins(List<String> admins) {
+        this.admins = admins;
         return this;
     }
 
     /**
-     * Get the list of data feed viewer emails.
+     * Get the list of data feed viewer emails and clientIds.
+     * <p>
+     * The Viewers have read-only access to a DataFeed. Each element in this list represents a user with viewer access,
+     * but the value of each string element is either user email address or clientId uniquely identifying
+     * the user service principal.
      *
-     * @return the viewerEmails value.
+     * @return a list containing email or clientId of viewers
      */
-    public List<String> getViewerEmails() {
-        return this.viewerEmails == null
-            ? null : Collections.unmodifiableList(this.viewerEmails);
+    public List<String> getViewers() {
+        return this.viewers == null
+            ? null : Collections.unmodifiableList(this.viewers);
     }
 
     /**
-     * Set the list of data feed viewer emails.
+     * Set the list of data feed viewer emails and clientIds.
+     * <p>
+     * The Viewers have read-only access to a DataFeed. Each element in this list represents a user with viewer access,
+     * but the value of each string element is either user email address or clientId uniquely identifying
+     * the user service principal.
      *
-     * @param viewerEmails the viewerEmails value to set.
+     * @param viewers a list containing email or clientId of viewers.
      *
      * @return the DataFeedOptions object itself.
      */
-    public DataFeedOptions setViewerEmails(List<String> viewerEmails) {
-        this.viewerEmails = viewerEmails;
+    public DataFeedOptions setViewers(List<String> viewers) {
+        this.viewers = viewers;
         return this;
     }
 

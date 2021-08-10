@@ -23,7 +23,7 @@ public final class HookHelper {
      */
     public interface HookAccessor {
         void setId(NotificationHook hook, String id);
-        List<String> getAdminEmailsRaw(NotificationHook hook);
+        List<String> getAdminsRaw(NotificationHook hook);
         List<String> getEmailsToAlertRaw(EmailNotificationHook emailHook);
         HttpHeaders getHttpHeadersRaw(WebNotificationHook webHook);
     }
@@ -41,8 +41,8 @@ public final class HookHelper {
         accessor.setId(hook, id);
     }
 
-    public static List<String> getAdminEmailsRaw(NotificationHook hook) {
-        return accessor.getAdminEmailsRaw(hook);
+    public static List<String> getAdminsRaw(NotificationHook hook) {
+        return accessor.getAdminsRaw(hook);
     }
 
     public static List<String> getEmailsToAlertRaw(EmailNotificationHook emailHook) {

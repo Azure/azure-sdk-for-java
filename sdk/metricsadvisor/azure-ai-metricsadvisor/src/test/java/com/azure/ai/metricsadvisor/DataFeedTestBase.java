@@ -310,8 +310,8 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
         if (expectedOptions != null) {
             assertEquals(expectedOptions.getDescription(), actualOptions.getDescription());
             assertEquals(expectedOptions.getActionLinkTemplate(), actualOptions.getActionLinkTemplate());
-            assertIterableEquals(expectedOptions.getAdminEmails(), actualOptions.getAdminEmails());
-            assertIterableEquals(expectedOptions.getViewerEmails(), actualOptions.getViewerEmails());
+            assertIterableEquals(expectedOptions.getAdmins(), actualOptions.getAdmins());
+            assertIterableEquals(expectedOptions.getViewers(), actualOptions.getViewers());
             assertNotNull(actualOptions.getAccessMode());
             if (expectedOptions.getAccessMode() != null) {
                 assertEquals(expectedOptions.getAccessMode(), actualOptions.getAccessMode());

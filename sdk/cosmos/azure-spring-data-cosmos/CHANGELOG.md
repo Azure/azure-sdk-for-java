@@ -1,6 +1,13 @@
 ## Release History
 
-### 3.9.0-beta.1 (Unreleased)
+## 3.10.0-beta.1 (Unreleased)
+
+
+### 3.9.0 (2021-07-08)
+#### New Features
+* Added `PartitionKey` support to spring data single partition queries.
+* Updated `Spring Boot` to version 2.5.2.
+* Updated `azure-cosmos` to version 4.17.0.
 
 ### 3.8.0 (2021-06-11)
 #### New Features

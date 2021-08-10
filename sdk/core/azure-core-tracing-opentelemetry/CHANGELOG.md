@@ -1,8 +1,27 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.14 (Unreleased)
+
+
+## 1.0.0-beta.13 (2021-08-06)
+
+### Features Added
+
+- Added support to create tracing spans with customizations. ([#23159](https://github.com/Azure/azure-sdk-for-java/pull/23159))
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.18.0` to `1.19.0`.
+
+## 1.0.0-beta.12 (2021-07-01)
+
 ### Key Bugs Fixed
+
 - Fixed `addEvent` API to use the span provided in the context rather than `Span.current()`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
 
 ## 1.0.0-beta.11 (2021-06-07)
 

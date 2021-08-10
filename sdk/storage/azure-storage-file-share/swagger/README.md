@@ -74,116 +74,18 @@ directive:
     }
 ```
 
-### /{shareName}?restype=share
+### Remove directoryPath from path params
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share"]
+  where: $["x-ms-paths"]
   transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-        $.delete.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=filepermission
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=filepermission"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-    param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=properties
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=properties"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=snapshot
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=snapshot"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=metadata"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=acl
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=acl"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-
-### /{shareName}?restype=share&comp=stats
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=stats"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=undelete
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=undelete"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
+    for (const property in $)
+    {
+        if (property.includes("/{shareName}/{directory}/{fileName}"))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) {return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/DirectoryPath"))});
+        }
     }
 ```
 
@@ -193,23 +95,13 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory"] = $["/{shareName}/{directory}?restype=directory"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.delete.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?restype=directory"];
+        const op = $["/{shareName}/{directory}?restype=directory"];
         op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-    }
 ```
 
 ### /{shareName}/{directoryPath}?restype=directory&comp=properties
@@ -218,76 +110,10 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory&comp=properties"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory&comp=properties"] = $["/{shareName}/{directory}?restype=directory&comp=properties"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?restype=directory&comp=properties"];
+        const op = $["/{shareName}/{directory}?restype=directory&comp=properties"];
         op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-    }
-```
-
-### /{shareName}/{directoryPath}?restype=directory&comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory&comp=metadata"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory&comp=metadata"] = $["/{shareName}/{directory}?restype=directory&comp=metadata"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?restype=directory&comp=metadata"];
-    }
-```
-
-### /{shareName}/{directoryPath}?restype=directory&comp=list
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{directoryPath}?restype=directory&comp=list"]) {
-        const op = $["/{shareName}/{directoryPath}?restype=directory&comp=list"] = $["/{shareName}/{directory}?restype=directory&comp=list"];
-        const path = op.get.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?restype=directory&comp=list"];
-    }
-```
-
-### /{shareName}/{directoryPath}?comp=listhandles
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{directoryPath}?comp=listhandles"]) {
-        const op = $["/{shareName}/{directoryPath}?comp=listhandles"] = $["/{shareName}/{directory}?comp=listhandles"];
-        const path = op.get.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?comp=listhandles"];
-    }
-```
-
-### /{shareName}/{directoryPath}?comp=forceclosehandles
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{directoryPath}?comp=forceclosehandles"]) {
-        const op = $["/{shareName}/{directoryPath}?comp=forceclosehandles"] = $["/{shareName}/{directory}?comp=forceclosehandles"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "DirectoryPath" });
-        delete $["/{shareName}/{directory}?comp=forceclosehandles"];
-    }
 ```
 
 ### /{shareName}/{filePath}
@@ -296,23 +122,15 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}"]) {
-        const op = $["/{shareName}/{filePath}"] = $["/{shareName}/{directory}/{fileName}"];
+    if (!$["/{shareName}/{fileName}"]) {
+        const op = $["/{shareName}/{fileName}"] = $["/{shareName}/{directory}/{fileName}"];
         const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         op.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         op.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
         delete op.get.responses["200"].headers["x-ms-content-md5"]["x-ms-client-name"];
         delete op.get.responses["206"].headers["x-ms-content-md5"]["x-ms-client-name"];
         op.get.responses["200"].headers["x-ms-content-md5"]["x-ms-client-name"] = "FileContentMd5";
         op.get.responses["206"].headers["x-ms-content-md5"]["x-ms-client-name"] = "FileContentMd5";
-        op.head.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.head.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        op.delete.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.delete.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}"];
         op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
@@ -335,30 +153,12 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}?comp=properties"]) {
-        const op = $["/{shareName}/{filePath}?comp=properties"] = $["/{shareName}/{directory}/{fileName}?comp=properties"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+    if (!$["/{shareName}/{fileName}?comp=properties"]) {
+        const op = $["/{shareName}/{fileName}?comp=properties"] = $["/{shareName}/{directory}/{fileName}?comp=properties"];
         delete $["/{shareName}/{directory}/{fileName}?comp=properties"];
         op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-    }
-```
-
-### /{shareName}/{filePath}?comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=metadata"]) {
-        const op = $["/{shareName}/{filePath}?comp=metadata"] = $["/{shareName}/{directory}/{fileName}?comp=metadata"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=metadata"];
     }
 ```
 
@@ -368,228 +168,27 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}?comp=range"]) {
-        const op = $["/{shareName}/{filePath}?comp=range"] = $["/{shareName}/{directory}/{fileName}?comp=range"];
+    if (!$["/{shareName}/{fileName}?comp=range"]) {
+        const op = $["/{shareName}/{fileName}?comp=range"] = $["/{shareName}/{directory}/{fileName}?comp=range"];
         op.put.parameters[3]["x-ms-enum"].name = "ShareFileRangeWriteType";
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
         delete $["/{shareName}/{directory}/{fileName}?comp=range"];
     }
 ```
-### /{shareName}/{filePath}?comp=range&fromURL
+
 ``` yaml
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    if (!$["/{shareName}/{filePath}?comp=range&fromURL"]) {
-        const op = $["/{shareName}/{filePath}?comp=range&fromURL"] = $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=range&fromURL"];
-    }
-```
-
-
-### /{shareName}/{filePath}?comp=rangelist
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=rangelist"]) {
-        const op = $["/{shareName}/{filePath}?comp=rangelist"] = $["/{shareName}/{directory}/{fileName}?comp=rangelist"];
-        const path = op.get.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=rangelist"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=copy
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=copy"]) {
-        const op = $["/{shareName}/{filePath}?comp=copy"] = $["/{shareName}/{directory}/{fileName}?comp=copy"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=copy"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=copy&copyid={CopyId}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=copy&copyid={CopyId}"]) {
-        const op = $["/{shareName}/{filePath}?comp=copy&copyid={CopyId}"] = $["/{shareName}/{directory}/{fileName}?comp=copy&copyid={CopyId}"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=copy&copyid={CopyId}"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=listhandles
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=listhandles"]) {
-        const op = $["/{shareName}/{filePath}?comp=listhandles"] = $["/{shareName}/{directory}/{fileName}?comp=listhandles"];
-        const path = op.get.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.get.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.get.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=listhandles"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=forceclosehandles
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=forceclosehandles"]) {
-        const op = $["/{shareName}/{filePath}?comp=forceclosehandles"] = $["/{shareName}/{directory}/{fileName}?comp=forceclosehandles"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=forceclosehandles"];
-    }
-```
-
-### /{shareName}/{filePath}?comp=lease&acquire
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=lease&acquire"]) {
-        const op = $["/{shareName}/{filePath}?comp=lease&acquire"] = $["/{shareName}/{directory}/{fileName}?comp=lease&acquire"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=lease&acquire"];
-    }
-```
-
-### /{shareName}?restype=share&comp=lease&acquire
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&acquire"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}/{filePath}?comp=lease&release
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=lease&release"]) {
-        const op = $["/{shareName}/{filePath}?comp=lease&release"] = $["/{shareName}/{directory}/{fileName}?comp=lease&release"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=lease&release"];
-    }
-```
-
-### /{shareName}?restype=share&comp=lease&release
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&release"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}/{filePath}?comp=lease&change
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=lease&change"]) {
-        const op = $["/{shareName}/{filePath}?comp=lease&change"] = $["/{shareName}/{directory}/{fileName}?comp=lease&change"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=lease&change"];
-    }
-```
-
-### /{shareName}?restype=share&comp=lease&change
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&change"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}/{filePath}?comp=lease&break
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    if (!$["/{shareName}/{filePath}?comp=lease&break"]) {
-        const op = $["/{shareName}/{filePath}?comp=lease&break"] = $["/{shareName}/{directory}/{fileName}?comp=lease&break"];
-        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
-        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
-        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
-        delete $["/{shareName}/{directory}/{fileName}?comp=lease&break"];
-    }
-```
-
-### /{shareName}?restype=share&comp=lease&break
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&break"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{shareName}?restype=share&comp=lease&renew
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=lease&renew"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("ShareName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
+    for (const property in $)
+    {
+        if (property.includes("/{shareName}/{directory}/{fileName}"))
+        {
+            var oldName = property;
+            var newName = property.replace('/{shareName}/{directory}/{fileName}', '/{shareName}/{fileName}');
+            $[newName] = $[oldName];
+            delete $[oldName];
+        }
     }
 ```
 
@@ -809,7 +408,7 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["x-ms-paths"]["/{shareName}/{directoryPath}?restype=directory&comp=list"].get
+  where: $["x-ms-paths"]["/{shareName}/{directory}?restype=directory&comp=list"].get
   transform: >
     delete $["x-ms-pageable"];
 ```

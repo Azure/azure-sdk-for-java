@@ -80,10 +80,10 @@ public class DatafeedSample {
         // Update the data feed.
         System.out.printf("Updating data feed: %s%n", dataFeed.getId());
         dataFeed = advisorAdministrationClient.updateDataFeed(dataFeed.setOptions(new DataFeedOptions()
-            .setAdminEmails(Collections.singletonList("admin1@admin.com"))
+            .setAdmins(Collections.singletonList("admin1@admin.com"))
         ));
         System.out.printf("Updated data feed admin list: %s%n",
-            String.join(",", dataFeed.getOptions().getAdminEmails()));
+            String.join(",", dataFeed.getOptions().getAdmins()));
 
         // Delete the data feed.
         System.out.printf("Deleting data feed: %s%n", dataFeed.getId());

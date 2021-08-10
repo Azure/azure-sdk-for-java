@@ -150,4 +150,16 @@ public final class AttestOpenEnclaveRequest {
             getInitTimeData().validate();
         }
     }
+
+    /**
+     * Returns an internal type from a public type.
+     * @return implementation type.
+     */
+    public com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest toGenerated() {
+        return new com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest()
+            .setDraftPolicyForAttestation(draftPolicyForAttestation)
+            .setRuntimeData(runtimeData != null ? runtimeData.toGenerated() : null)
+            .setInitTimeData(initTimeData != null ? initTimeData.toGenerated() : null)
+            .setReport(report.decodedBytes());
+    }
 }

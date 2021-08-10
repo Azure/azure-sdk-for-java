@@ -8,6 +8,7 @@ import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.models.jsonflatten.ClassWithFlattenedProperties;
 import com.azure.core.implementation.models.jsonflatten.FlattenedProduct;
 import com.azure.core.implementation.models.jsonflatten.FlattenedPropertiesAndJsonAnyGetter;
+import com.azure.core.implementation.models.jsonflatten.JsonFlattenNestedInner;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnArrayType;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnCollectionType;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnJsonIgnoredProperty;
@@ -16,6 +17,7 @@ import com.azure.core.implementation.models.jsonflatten.JsonFlattenWithJsonInfoD
 import com.azure.core.implementation.models.jsonflatten.School;
 import com.azure.core.implementation.models.jsonflatten.Student;
 import com.azure.core.implementation.models.jsonflatten.Teacher;
+import com.azure.core.implementation.models.jsonflatten.VirtualMachineIdentity;
 import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSet;
 import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetNetworkConfiguration;
 import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetNetworkProfile;
@@ -553,9 +555,10 @@ public class FlatteningSerializerTests {
     }
 
     @Test
-    public void jsonFlattenOnCollectionType() {
+    public void jsonFlattenOnCollectionTypeList() {
+        final List<String> listCollection = Arrays.asList("hello", "goodbye", null);
         JsonFlattenOnCollectionType expected = new JsonFlattenOnCollectionType()
-            .setJsonFlattenCollection(Arrays.asList("hello", "goodbye", null));
+            .setJsonFlattenCollection(Collections.unmodifiableList(listCollection));
 
         String expectedSerialization = "{\"jsonflatten\":{\"collection\":[\"hello\",\"goodbye\",null]}}";
         String actualSerialization = serialize(expected);
@@ -640,6 +643,38 @@ public class FlatteningSerializerTests {
         for (String key : expected.additionalProperties().keySet()) {
             assertEquals(expected.additionalProperties().get(key), deserialized.additionalProperties().get(key));
         }
+    }
+
+    @Test
+    public void jsonFlattenFinalMap() {
+        final HashMap<String, String> mapProperties = new HashMap<String, String>() {{
+                put("/subscriptions/0-0-0-0-0/resourcegroups/0/providers/Microsoft.ManagedIdentity/0", "value");
+                }};
+        School school = new School().setTags(mapProperties);
+
+        String actualSerialization = serialize(school);
+        String expectedSerialization = "{\"tags\":{\"/subscriptions/0-0-0-0-0/resourcegroups"
+            + "/0/providers/Microsoft.ManagedIdentity/0\":\"value\"}}";
+        Assertions.assertEquals(expectedSerialization, actualSerialization);
+    }
+
+    @Test
+    public void jsonFlattenNestedInner() {
+        JsonFlattenNestedInner expected = new JsonFlattenNestedInner();
+        VirtualMachineIdentity identity = new VirtualMachineIdentity();
+        final Map<String, Object> map = new HashMap<>();
+        map.put("/subscriptions/0-0-0-0-0/resourcegroups/0/providers/Microsoft.ManagedIdentity/userAssignedIdentities/0",
+            new Object());
+        identity.setType(Arrays.asList("SystemAssigned, UserAssigned"));
+        identity.setUserAssignedIdentities(map);
+        expected.setIdentity(identity);
+
+        String expectedSerialization = "{\"identity\":{\"type\":[\"SystemAssigned, UserAssigned\"],"
+            + "\"userAssignedIdentities\":{\"/subscriptions/0-0-0-0-0/resourcegroups/0/providers/"
+            + "Microsoft.ManagedIdentity/userAssignedIdentities/0\":{}}}}";
+        String actualSerialization = serialize(expected);
+
+        Assertions.assertEquals(expectedSerialization, actualSerialization);
     }
 
     private static String serialize(Object object) {

@@ -4,144 +4,145 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link AnalyzeActionsResult} model.
  */
+@Immutable
 public final class AnalyzeActionsResult {
-    private TextDocumentBatchStatistics statistics;
-    private IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults;
-    private IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults;
-    private IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults;
-    private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults;
-    private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults;
+    private IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults;
+    private IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesResults;
+    private IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults;
+    private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults;
+    private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults;
+    private IterableStream<ExtractSummaryActionResult> extractSummaryResults;
 
     static {
         AnalyzeActionsResultPropertiesHelper.setAccessor(
             new AnalyzeActionsResultPropertiesHelper.AnalyzeActionsResultAccessor() {
                 @Override
-                public void setStatistics(AnalyzeActionsResult analyzeActionsResult,
-                    TextDocumentBatchStatistics operationStatistics) {
-                    analyzeActionsResult.setStatistics(operationStatistics);
+                public void setRecognizeEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults) {
+                    analyzeActionsResult.setRecognizeEntitiesResults(recognizeEntitiesResults);
                 }
 
                 @Override
-                public void setRecognizeEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults) {
-                    analyzeActionsResult.setRecognizeEntitiesActionResults(recognizeEntitiesActionResults);
+                public void setRecognizeLinkedEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesResults) {
+                    analyzeActionsResult.setRecognizeLinkedEntitiesResults(
+                        recognizeLinkedEntitiesResults);
                 }
 
                 @Override
-                public void setRecognizeLinkedEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
-                    analyzeActionsResult.setRecognizeLinkedEntitiesActionResults(
-                        recognizeLinkedEntitiesActionResults);
+                public void setRecognizePiiEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults) {
+                    analyzeActionsResult.setRecognizePiiEntitiesResults(recognizePiiEntitiesResults);
                 }
 
                 @Override
-                public void setRecognizePiiEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults) {
-                    analyzeActionsResult.setRecognizePiiEntitiesActionResults(recognizePiiEntitiesActionResults);
+                public void setExtractKeyPhrasesResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults) {
+                    analyzeActionsResult.setExtractKeyPhrasesResults(extractKeyPhrasesResults);
                 }
 
                 @Override
-                public void setExtractKeyPhrasesActionResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults) {
-                    analyzeActionsResult.setExtractKeyPhrasesActionResults(extractKeyPhrasesActionResults);
+                public void setAnalyzeSentimentResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults) {
+                    analyzeActionsResult.setAnalyzeSentimentResults(analyzeSentimentResults);
                 }
 
                 @Override
-                public void setAnalyzeSentimentActionResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
-                    analyzeActionsResult.setAnalyzeSentimentActionResults(analyzeSentimentActionResults);
+                public void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<ExtractSummaryActionResult> extractSummaryResult) {
+                    analyzeActionsResult.setExtractSummaryResults(extractSummaryResult);
                 }
+
             });
     }
 
     /**
-     * Get the execute actions operation statistics for analyzing multiple actions.
-     *
-     * @return {@link TextDocumentBatchStatistics}.
-     */
-    public TextDocumentBatchStatistics getStatistics() {
-        return this.statistics;
-    }
-
-    /**
-     * Get the {@code recognizeEntitiesActionResults} property: The categorized entities recognition action results
+     * Gets the {@code recognizeEntitiesResults} property: The categorized entities recognition action results
      * property.
      *
-     * @return the recognizeEntitiesActionResults value.
+     * @return The recognizeEntitiesResults value.
      */
-    public IterableStream<RecognizeEntitiesActionResult> getRecognizeEntitiesActionResults() {
-        return this.recognizeEntitiesActionResults;
+    public IterableStream<RecognizeEntitiesActionResult> getRecognizeEntitiesResults() {
+        return this.recognizeEntitiesResults;
     }
 
     /**
-     * Get the {@code recognizeLinkedEntitiesActionResults} property: The linked entities recognition action results
+     * Gets the {@code recognizeLinkedEntitiesResults} property: The linked entities recognition action results
      * property.
      *
-     * @return the recognizeLinkedEntitiesActionResults value.
+     * @return The recognizeLinkedEntitiesResults value.
      */
-    public IterableStream<RecognizeLinkedEntitiesActionResult> getRecognizeLinkedEntitiesActionResults() {
-        return this.recognizeLinkedEntitiesActionResults;
+    public IterableStream<RecognizeLinkedEntitiesActionResult> getRecognizeLinkedEntitiesResults() {
+        return this.recognizeLinkedEntitiesResults;
     }
 
     /**
-     * Get the {@code recognizePiiEntitiesActionResults} property: The PII entities recognition actions results
+     * Gets the {@code recognizePiiEntitiesResults} property: The PII entities recognition actions results
      * property.
      *
-     * @return the recognizePiiEntitiesActionResults value.
+     * @return The recognizePiiEntitiesResults value.
      */
-    public IterableStream<RecognizePiiEntitiesActionResult> getRecognizePiiEntitiesActionResults() {
-        return this.recognizePiiEntitiesActionResults;
+    public IterableStream<RecognizePiiEntitiesActionResult> getRecognizePiiEntitiesResults() {
+        return this.recognizePiiEntitiesResults;
     }
 
     /**
-     * Get the {@code extractKeyPhrasesActionResults} property: The key phrases extraction actions results property.
+     * Gets the {@code extractKeyPhrasesResults} property: The key phrases extraction actions results property.
      *
-     * @return the extractKeyPhrasesActionResults value.
+     * @return The extractKeyPhrasesResults value.
      */
-    public IterableStream<ExtractKeyPhrasesActionResult> getExtractKeyPhrasesActionResults() {
-        return this.extractKeyPhrasesActionResults;
+    public IterableStream<ExtractKeyPhrasesActionResult> getExtractKeyPhrasesResults() {
+        return this.extractKeyPhrasesResults;
     }
 
     /**
-     * Get the {@code analyzeSentimentActionResults} property: The sentiment analysis actions results property.
+     * Gets the {@code analyzeSentimentResults} property: The sentiment analysis actions results property.
      *
-     * @return the analyzeSentimentActionResults value.
+     * @return The analyzeSentimentResults value.
      */
-    public IterableStream<AnalyzeSentimentActionResult> getAnalyzeSentimentActionResults() {
-        return this.analyzeSentimentActionResults;
+    public IterableStream<AnalyzeSentimentActionResult> getAnalyzeSentimentResults() {
+        return this.analyzeSentimentResults;
     }
 
-    private void setStatistics(TextDocumentBatchStatistics statistics) {
-        this.statistics = statistics;
+    /**
+     * Gets the {@code extractSummaryResults} property: the extractive summarization actions results property.
+     *
+     * @return the extractSummaryResults value.
+     */
+    public IterableStream<ExtractSummaryActionResult> getExtractSummaryResults() {
+        return extractSummaryResults;
     }
 
-    private void setRecognizeEntitiesActionResults(
-        IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults) {
-        this.recognizeEntitiesActionResults = recognizeEntitiesActionResults;
+    private void setRecognizeEntitiesResults(
+        IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults) {
+        this.recognizeEntitiesResults = recognizeEntitiesResults;
     }
 
-    private void setRecognizeLinkedEntitiesActionResults(
-        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
-        this.recognizeLinkedEntitiesActionResults = recognizeLinkedEntitiesActionResults;
+    private void setRecognizeLinkedEntitiesResults(
+        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesResults) {
+        this.recognizeLinkedEntitiesResults = recognizeLinkedEntitiesResults;
     }
 
-    private void setRecognizePiiEntitiesActionResults(
-        IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults) {
-        this.recognizePiiEntitiesActionResults = recognizePiiEntitiesActionResults;
+    private void setRecognizePiiEntitiesResults(
+        IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults) {
+        this.recognizePiiEntitiesResults = recognizePiiEntitiesResults;
     }
 
-    private void setExtractKeyPhrasesActionResults(
-        IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults) {
-        this.extractKeyPhrasesActionResults = extractKeyPhrasesActionResults;
+    private void setExtractKeyPhrasesResults(IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults) {
+        this.extractKeyPhrasesResults = extractKeyPhrasesResults;
     }
 
-    private void setAnalyzeSentimentActionResults(
-        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
-        this.analyzeSentimentActionResults = analyzeSentimentActionResults;
+    private void setAnalyzeSentimentResults(IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults) {
+        this.analyzeSentimentResults = analyzeSentimentResults;
+    }
+
+    private void setExtractSummaryResults(IterableStream<ExtractSummaryActionResult> extractSummaryResults) {
+        this.extractSummaryResults = extractSummaryResults;
     }
 }

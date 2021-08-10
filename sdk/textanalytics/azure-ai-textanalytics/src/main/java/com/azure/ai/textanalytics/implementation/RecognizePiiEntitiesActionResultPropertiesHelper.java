@@ -19,8 +19,8 @@ public final class RecognizePiiEntitiesActionResultPropertiesHelper {
      * instance.
      */
     public interface RecognizePiiEntitiesActionResultAccessor {
-        void setDocumentResults(RecognizePiiEntitiesActionResult actionResult,
-            RecognizePiiEntitiesResultCollection documentResults);
+        void setDocumentsResults(RecognizePiiEntitiesActionResult actionResult,
+            RecognizePiiEntitiesResultCollection documentsResults);
     }
 
     /**
@@ -33,8 +33,8 @@ public final class RecognizePiiEntitiesActionResultPropertiesHelper {
         accessor = recognizePiiEntitiesActionResultAccessor;
     }
 
-    public static void setDocumentResults(RecognizePiiEntitiesActionResult actionResult,
-        RecognizePiiEntitiesResultCollection documentResults) {
-        accessor.setDocumentResults(actionResult, documentResults);
+    public static void setDocumentsResults(RecognizePiiEntitiesActionResult actionResult,
+        RecognizePiiEntitiesResultCollection documentsResults) {
+        accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

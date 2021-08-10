@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/powerbidedicated/
+      - sdk/powerbidedicated/ci.yml
+      - sdk/powerbidedicated/azure-resourcemanager-powerbidedicated/
+    exclude:
+      - sdk/powerbidedicated/pom.xml
+      - sdk/powerbidedicated/azure-resourcemanager-powerbidedicated/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/powerbidedicated/
+      - sdk/powerbidedicated/ci.yml
+      - sdk/powerbidedicated/azure-resourcemanager-powerbidedicated/
+    exclude:
+      - sdk/powerbidedicated/pom.xml
+      - sdk/powerbidedicated/azure-resourcemanager-powerbidedicated/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

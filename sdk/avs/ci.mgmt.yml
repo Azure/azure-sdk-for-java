@@ -8,7 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/avs/
+      - sdk/avs/ci.mgmt.yml
+      - sdk/avs/mgmt-v2019_08_09_preview/
+      - sdk/avs/mgmt-v2020_03_20/
+    exclude:
+      - sdk/avs/pom.xml
+      - sdk/avs/mgmt-v2019_08_09_preview/pom.xml
+      - sdk/avs/mgmt-v2020_03_20/pom.xml
 
 pr:
   branches:
@@ -19,7 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/avs/
+      - sdk/avs/ci.mgmt.yml
+      - sdk/avs/mgmt-v2019_08_09_preview/
+      - sdk/avs/mgmt-v2020_03_20/
+    exclude:
+      - sdk/avs/pom.xml
+      - sdk/avs/mgmt-v2019_08_09_preview/pom.xml
+      - sdk/avs/mgmt-v2020_03_20/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

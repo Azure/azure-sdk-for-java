@@ -9,6 +9,8 @@
     - Added `regionalAuthority()` setter to `ClientSecretCredentialBuilder` and `ClientCertificateCredentialBuilder`.
     - If instead of a region, `RegionalAuthority.AutoDiscoverRegion` is specified as the value for `regionalAuthority`, MSAL will be used to attempt to discover the region.
     - A region can also be specified through the `AZURE_REGIONAL_AUTHORITY_NAME` environment variable.
+- Added `loginHint()` setter to `InteractiveBrowserCredentialBuilder` which allows a username to be pre-selected for interactive logins.
+
 
 ## 1.3.1 (2021-06-08)
 
