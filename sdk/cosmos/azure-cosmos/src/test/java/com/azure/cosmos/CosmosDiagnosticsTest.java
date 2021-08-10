@@ -229,7 +229,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             InternalObjectNode internalObjectNode = getInternalObjectNode();
             CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
             String diagnostics = createResponse.getDiagnostics().toString();
-            System.out.println(diagnostics);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
             assertThat(diagnostics).contains("supplementalResponseStatisticsList");
             assertThat(diagnostics).contains("\"gatewayStatistics\":null");
