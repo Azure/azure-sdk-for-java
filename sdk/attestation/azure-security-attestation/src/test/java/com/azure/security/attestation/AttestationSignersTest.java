@@ -73,11 +73,12 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
     /**
      * Verifies the response to the GetSigningCertificates (/certs) API.
-     *
+     * <p>
      * Each certificate returned needs to be a valid X.509 certificate.
      * We also verify that self signed certificates are signed with the known trusted roots.
+     *
      * @param clientUri Base URI for client, used to verify the contents of the certificates.
-     * @param signers AttestationSigners to verify.
+     * @param signers   AttestationSigners to verify.
      */
     private void verifySigningCertificatesResponse(String clientUri, AttestationSigner[] signers) {
         Assertions.assertTrue(signers.length > 1);

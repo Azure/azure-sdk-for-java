@@ -35,14 +35,14 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Object getOpenIdMetadata() {
-        return asyncClient.getOpenIdMetadataWithResponse(Context.NONE)
+        return asyncClient.getOpenIdMetadataWithResponse()
             .map(Response::getValue).block();
     }
 
     /**
      * Retrieves the OpenId Metadata for this AttestationClient instance.
      *
-     * @param context - Context for this operation.
+     * @param context Context for operation.
      * @return Object containing the OpenId metadata configuration for this instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -59,7 +59,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationSigner[] getAttestationSigners() {
-        return asyncClient.getAttestationSignersWithResponse(Context.NONE)
+        return asyncClient.getAttestationSignersWithResponse()
             .map(Response::getValue).block();
     }
 
@@ -68,8 +68,7 @@ public final class AttestationClient {
      * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
      * to validate an attestation token returned by the service.
      *
-     * @param context Context for the operation.
-     *
+     * @param context Context for operation.
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -114,7 +113,7 @@ public final class AttestationClient {
      * attestation policy.
      *
      * @param report OpenEnclave generated report.
-     * @param context The context to associate with this operation.
+     * @param context Context for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -131,7 +130,7 @@ public final class AttestationClient {
      * attestation policy.
      *
      * @param options Attestation request for Intel SGX enclaves.
-     * @param context The context to associate with this operation.
+     * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -179,7 +178,7 @@ public final class AttestationClient {
      * attestation policy.
      *
      * @param quote Intel SGX Quote to validate.
-     * @param context The context to associate with this operation.
+     * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -196,7 +195,7 @@ public final class AttestationClient {
      * attestation policy.
      *
      * @param request Attestation request for Intel SGX enclaves.
-     * @param context The context to associate with this operation.
+     * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -228,7 +227,7 @@ public final class AttestationClient {
      * produced is dependent upon the attestation policy.
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
-     * @param context The context to associate with this operation.
+     * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

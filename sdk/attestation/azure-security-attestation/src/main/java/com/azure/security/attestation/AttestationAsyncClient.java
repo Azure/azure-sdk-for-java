@@ -64,20 +64,13 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getOpenIdMetadataWithResponse() {
-        return withContext(context -> this.getOpenIdMetadataWithResponse(context));
+        return withContext(context -> getOpenIdMetadataWithResponse(context));
     }
 
-    /**
-     * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     *
-     * @param context - Context for the operation
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    public Mono<Response<Object>> getOpenIdMetadataWithResponse(Context context) {
+    Mono<Response<Object>> getOpenIdMetadataWithResponse(Context context) {
         return this.metadataImpl.getWithResponseAsync(context);
     }
+
 
     /**
      * Retrieves metadata about the attestation signing keys in use by the attestation service.
@@ -89,7 +82,7 @@ public final class AttestationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> getOpenIdMetadata() {
         // Forward the getOpenIdMetadata to the getOpenIdMetadataWithResponse API implementation.
-        return withContext(context -> this.getOpenIdMetadataWithResponse(context))
+        return this.getOpenIdMetadataWithResponse()
             .flatMap(FluxUtil::toMono);
     }
 
@@ -102,7 +95,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationSigner[]> getAttestationSigners() {
-        return withContext(context -> this.getAttestationSignersWithResponse(context))
+        return this.getAttestationSignersWithResponse()
             .flatMap(FluxUtil::toMono);
     }
 
@@ -116,20 +109,11 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationSigner[]>> getAttestationSignersWithResponse() {
-        return withContext(context -> this.getAttestationSignersWithResponse(context));
+        return withContext(context -> getAttestationSignersWithResponse(context));
     }
 
-    /**
-     * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
-     *
-     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
-     * to validate an attestation token returned by the service.
-     *
-     * @param context Context for the operation.
-     * @return Returns an array of {@link AttestationSigner} objects.
-     */
-    public Mono<Response<AttestationSigner[]>> getAttestationSignersWithResponse(Context context) {
-        return this.signerImpl.getWithResponseAsync(context)
+    Mono<Response<AttestationSigner[]>> getAttestationSignersWithResponse(Context context) {
+        return  this.signerImpl.getWithResponseAsync(context)
             .map(response -> Utilities.generateResponseFromModelType(response, AttestationSignerImpl.attestationSignersFromJwks(response.getValue())));
     }
 
@@ -146,9 +130,12 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(byte[] report) {
-        return this.attestOpenEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(report));
+        return withContext(context -> this.attestOpenEnclaveWithResponse(report, context));
     }
 
+    Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(byte[] report, Context context) {
+        return this.attestOpenEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(report), context);
+    }
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
@@ -161,44 +148,16 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options) {
-        return withContext(context -> this.attestOpenEnclaveWithResponse(options, context));
+        return withContext(context -> attestOpenEnclaveWithResponse(options, context));
     }
 
-    /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param report OpenEnclave generated SGX report.
-     * @param context Context for request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(byte[] report, Context context) {
-        return this.attestOpenEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(report), context);
-    }
-
-
-    /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param options Attestation options for Intel SGX enclaves.
-     * @param context - Context for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options, Context context) {
+    Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options, Context context) {
         // Ensure that the incoming request makes sense.
-        AttestationOptionsImpl optionsImpl = null;
         options.validate();
         if (!(options instanceof AttestationOptionsImpl)) {
             logger.logExceptionAsError(new InvalidParameterException("AttestationOptions must be an instance of AttestationOptionsImpl"));
         }
-        optionsImpl = (AttestationOptionsImpl) options;
+        final AttestationOptionsImpl optionsImpl = (AttestationOptionsImpl) options;
 
         return this.attestImpl.attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestOpenEnclaveRequest(), context)
             // Create an AttestationToken from the raw response from the service.
@@ -209,6 +168,7 @@ public final class AttestationAsyncClient {
                 return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generated));
             });
     }
+
 
     /**
      * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
@@ -222,7 +182,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResult> attestOpenEnclave(byte[] report) {
-        return withContext(context -> attestOpenEnclaveWithResponse(report, context))
+        return attestOpenEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(report))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -238,7 +198,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResult> attestOpenEnclave(AttestationOptions options) {
-        return withContext(context -> attestOpenEnclaveWithResponse(options, context))
+        return attestOpenEnclaveWithResponse(options)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -254,7 +214,22 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote) {
-        return attestSgxEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(quote));
+        return withContext(context -> this.attestSgxEnclaveWithResponse(quote, context));
+    }
+
+    /**
+     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
+     * attestation policy.
+     *
+     * @param quote Attestation options for Intel SGX enclaves.
+     * @param context Context for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of an attestation operation.
+     */
+    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote, Context context) {
+        return attestSgxEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(quote), context);
     }
 
     /**
@@ -272,42 +247,15 @@ public final class AttestationAsyncClient {
         return withContext(context -> attestSgxEnclaveWithResponse(options, context));
     }
 
-    /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param quote Attestation options for Intel SGX enclaves.
-     * @param context Context for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote, Context context) {
-        return attestSgxEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(quote), context);
-    }
-
-    /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param options Attestation request for Intel SGX enclaves.
-     * @param context - Context for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options, Context context) {
+    Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options, Context context) {
         // Ensure that the incoming request makes sense.
-        AttestationOptionsImpl optionsImpl = null;
         options.validate();
         if (!(options instanceof AttestationOptionsImpl)) {
             logger.logExceptionAsError(new InvalidParameterException("AttestSgxEnclaveRequest must be an instance of AttestSgxEnclaveRequestImpl"));
         }
-        optionsImpl = (AttestationOptionsImpl) options;
+        AttestationOptionsImpl optionsImpl = (AttestationOptionsImpl) options;
 
-        return this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestSgxRequest(), context)
+        return  this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestSgxRequest(), context)
             .map(response -> {
                 AttestationToken token = new AttestationTokenImpl(response.getValue().getToken());
                 com.azure.security.attestation.implementation.models.AttestationResult generatedResult = token.getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
@@ -327,7 +275,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResult> attestSgxEnclave(AttestationOptions options) {
-        return withContext(context -> attestSgxEnclaveWithResponse(options, context))
+        return attestSgxEnclaveWithResponse(options)
             .flatMap(FluxUtil::toMono);
     }
     /**
@@ -342,7 +290,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResult> attestSgxEnclave(byte[] quote) {
-        return withContext(context -> attestSgxEnclaveWithResponse(quote, context))
+        return attestSgxEnclaveWithResponse(quote)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -357,23 +305,11 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> attestTpmWithResponse(String request) {
-        return withContext(context -> attestTpmWithResponse(request, context));
+        return withContext(context -> this.attestTpmWithResponse(request, context));
     }
 
-    /**
-     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
-     * produced is dependent upon the attestation policy.
-     *
-     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
-     * @param context - Context for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation response for Trusted Platform Module (TPM) attestation.
-     */
-    public Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
+    Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
         Objects.requireNonNull(request);
         return this.attestImpl.attestTpmWithResponseAsync(new com.azure.security.attestation.implementation.models.TpmAttestationRequest().setData(request.getBytes(StandardCharsets.UTF_8)), context)
             .map(response -> Utilities.generateResponseFromModelType(response, new String(Objects.requireNonNull(response.getValue().getData()), StandardCharsets.UTF_8)));
@@ -391,7 +327,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> attestTpm(String request) {
-        return withContext(context -> attestTpmWithResponse(request, context))
+        return attestTpmWithResponse(request)
             .flatMap(FluxUtil::toMono);
     }
 }

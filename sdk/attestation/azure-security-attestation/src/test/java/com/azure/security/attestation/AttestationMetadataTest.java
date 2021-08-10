@@ -5,6 +5,7 @@ package com.azure.security.attestation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -36,7 +37,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     void getOpenIdMetadataWithResponse(HttpClient client, String clientUri) {
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        Response<Object> metadataConfig = attestationBuilder.buildAttestationClient().getOpenIdMetadataWithResponse(null);
+        Response<Object> metadataConfig = attestationBuilder.buildAttestationClient().getOpenIdMetadataWithResponse(Context.NONE);
         verifyMetadataConfigurationResponse(clientUri, metadataConfig.getValue());
     }
 
@@ -59,7 +60,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     void getOpenIdMetadataWithResponseAsync(HttpClient client, String clientUri) {
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadataWithResponse(null))
+        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadataWithResponse())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse.getValue()))
             .expectComplete()
             .verify();
