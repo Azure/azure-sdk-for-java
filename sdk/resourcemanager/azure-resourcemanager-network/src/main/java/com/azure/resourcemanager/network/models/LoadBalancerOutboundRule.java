@@ -184,11 +184,6 @@ public interface LoadBalancerOutboundRule
             Update toFrontends(List<String> names);
         }
 
-        /** The stage of an outbound rule update allowing to specify frontends for the rule to apply to. */
-        interface WithFrontends {
-            Update toFrontends(List<String> names);
-        }
-
         /**
          * The stage of an outbound rule update allowing to specify the transport protocol for the rule to apply to.
          */
