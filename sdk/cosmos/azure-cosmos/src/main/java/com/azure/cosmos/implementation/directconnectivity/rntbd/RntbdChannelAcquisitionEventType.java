@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 public enum RntbdChannelAcquisitionEventType {
     ATTEMPT_TO_POLL_CHANNEL("poll"),
     ADD_TO_PENDING_QUEUE("pending"),
+    PENDING_TIME_OUT("pendingTimeout"),
     ATTEMPT_TO_CREATE_NEW_CHANNEL("startNew"),
     ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE("completeNew");
 

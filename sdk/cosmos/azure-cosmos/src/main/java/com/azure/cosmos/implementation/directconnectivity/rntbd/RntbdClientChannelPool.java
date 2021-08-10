@@ -237,6 +237,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
             @Override
             public void onTimeout(AcquireListener task) {
                 task.originalPromise.setFailure(ACQUISITION_TIMEOUT);
+                RntbdChannelAcquisitionTimeline.startNewEvent(
+                    task.originalPromise.getChannelAcquisitionTimeline(),
+                    RntbdChannelAcquisitionEventType.PENDING_TIME_OUT);
             }
         };
 
@@ -1214,10 +1217,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private Channel pollChannel(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
         ensureInEventLoop();
 
-        RntbdChannelAcquisitionEvent event =
-            RntbdChannelAcquisitionTimeline.startNewEvent(
+        RntbdPollChannelEvent event =
+            RntbdChannelAcquisitionTimeline.startNewPollEvent(
                 channelAcquisitionTimeline,
-                RntbdChannelAcquisitionEventType.ATTEMPT_TO_POLL_CHANNEL);
+                this.availableChannels.size(),
+                this.acquiredChannels.size());
 
         final Channel first = this.availableChannels.pollFirst();
 
@@ -1232,7 +1236,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         // Only return channels as servicable here if less than maxPendingRequests
         // are queued on them
         RntbdChannelState channelState = this.getChannelState(first);
-        RntbdChannelAcquisitionEvent.addDetails(event, channelState);
+        RntbdChannelAcquisitionEvent.addDetail(event, channelState);
 
         if (channelState.isOk()) {
             return first;
@@ -1248,7 +1252,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 // Only return channels as serviceable here if less than maxPendingRequests
                 // are queued on them
                 RntbdChannelState state = this.getChannelState(next);
-                RntbdChannelAcquisitionEvent.addDetails(event, channelState);
+                RntbdChannelAcquisitionEvent.addDetail(event, channelState);
 
                 if (channelState.isOk()) {
                     return next;

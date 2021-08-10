@@ -225,6 +225,9 @@ public interface RntbdEndpoint extends AutoCloseable {
             return this.wireLogLevel;
         }
 
+        @JsonProperty
+        public boolean isChannelAcquisitionContextEnabled() { return this.options.isChannelAcquisitionContextEnabled(); }
+
         @Override
         public String toString() {
             return RntbdObjectMapper.toString(this);

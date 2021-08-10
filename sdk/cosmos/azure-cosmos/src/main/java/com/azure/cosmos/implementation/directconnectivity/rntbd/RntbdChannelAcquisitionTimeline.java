@@ -28,26 +28,39 @@ public class RntbdChannelAcquisitionTimeline {
         RntbdChannelAcquisitionEventType eventType) {
 
         if (timeline != null) {
-            Instant now = Instant.now();
+            RntbdChannelAcquisitionEvent newEvent = new RntbdChannelAcquisitionEvent(eventType, Instant.now());
+            timeline.addNewEvent(newEvent);
 
-            if (timeline.currentEvent != null) {
-                timeline.currentEvent.complete(now);
-            }
+            return newEvent;
+        }
+        return null;
+    }
 
-            RntbdChannelAcquisitionEvent newEvent = new RntbdChannelAcquisitionEvent(eventType, now);
-            timeline.getEvents().add(newEvent);
-            timeline.currentEvent = newEvent;
+    public static RntbdPollChannelEvent startNewPollEvent(
+        RntbdChannelAcquisitionTimeline timeline,
+        int availableChannels,
+        int acquiredChannels) {
 
+        if (timeline != null) {
+            RntbdPollChannelEvent newEvent = new RntbdPollChannelEvent(availableChannels, acquiredChannels, Instant.now());
+            timeline.addNewEvent(newEvent);
             return newEvent;
         }
 
         return null;
     }
 
+    private void addNewEvent(RntbdChannelAcquisitionEvent event) {
+        if (this.currentEvent != null) {
+            this.currentEvent.complete(event.getCompleteTime());
+        }
+        this.events.add(event);
+        this.currentEvent = event;
+    }
+
     public static void addDetailsToLastEvent(RntbdChannelAcquisitionTimeline timeline, Object detail) {
-        if (timeline != null && timeline.events.size() > 0){
-            RntbdChannelAcquisitionEvent lastEvent = timeline.events.get(timeline.events.size()-1);
-            RntbdChannelAcquisitionEvent.addDetails(lastEvent, detail);
+        if (timeline != null && timeline.currentEvent != null){
+            RntbdChannelAcquisitionEvent.addDetail(timeline.currentEvent, detail);
         }
     }
 }
