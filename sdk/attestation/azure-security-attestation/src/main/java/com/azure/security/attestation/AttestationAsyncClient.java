@@ -228,7 +228,7 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an attestation operation.
      */
-    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote, Context context) {
+    Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(byte[] quote, Context context) {
         return attestSgxEnclaveWithResponse(new AttestationOptionsImpl().setEvidence(quote), context);
     }
 
@@ -305,6 +305,7 @@ public final class AttestationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> attestTpmWithResponse(String request) {
         return withContext(context -> this.attestTpmWithResponse(request, context));
     }
