@@ -2,6 +2,9 @@
 
 ## 4.4.0-beta.2 (Unreleased)
 
+### Features Added
+- Added `Exportable` and `ReleasePolicy` to `CreateKeyOptions`, `ImportKeyOptions`, and `KeyProperties` to support Secure Key Release for Key Vault and Managed HSM.
+- Added a `release()` operation to `KeyClient` and `KeyAsyncClient` to release a key for Key Vault and Managed HSM.
 
 ## 4.4.0-beta.1 (2021-07-09)
 

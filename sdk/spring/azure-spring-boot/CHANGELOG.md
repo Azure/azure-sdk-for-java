@@ -7,6 +7,9 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3.
 ### New Features
 - Add property `azure.activedirectory.resource-server.principal-claim-name` to configure principal claim name.
 - Add property `azure.activedirectory.resource-server.claim-to-authority-prefix-map` to configure claim to authority prefix map.
+### Deprecations
+ - Deprecate `AADB2CJwtBearerTokenAuthenticationConverter`, use `AADJwtBearerTokenAuthenticationConverter` instead.
+
 
 ## 3.7.0 (2021-07-20)
 ### New Features

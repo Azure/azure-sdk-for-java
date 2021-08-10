@@ -178,7 +178,7 @@ class NettyAsyncHttpClient implements HttpClient {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             /*
              * If we are eagerly reading the response into memory we can ignore the disable buffer copy flag as we
-             * MUST deep copy the buffer to ensure it can safely be used downstream.
+             * MUST deeply copy the buffer to ensure it can safely be used downstream.
              */
             if (eagerlyReadResponse) {
                 // Setup the body flux and dispose the connection once it has been received.
