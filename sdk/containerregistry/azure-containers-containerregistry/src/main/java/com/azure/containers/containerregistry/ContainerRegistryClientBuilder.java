@@ -113,7 +113,7 @@ public final class ContainerRegistryClientBuilder {
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
     public ContainerRegistryClientBuilder audience(ContainerRegistryAudience audience) {
-        Objects.requireNonNull(audience, "audience can't be null");
+        Objects.requireNonNull(audience, "'audience' can't be null");
         this.audience = audience;
         return this;
     }
@@ -266,12 +266,12 @@ public final class ContainerRegistryClientBuilder {
      * are used to create the {@link ContainerRegistryAsyncClient client}. All other builder settings are ignored.
      *
      * @return A {@link ContainerRegistryAsyncClient} with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} has not been set. You can set it by calling {@link #endpoint(String)}.
-     * @throws NullPointerException If {@code audience} has not been set. You can set it by calling {@link #audience(ContainerRegistryAudience)}.
+     * @throws NullPointerException If {@code endpoint} or {@code audience} is null.
+     * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
      */
     public ContainerRegistryAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint, "endpoint can't be null");
-        Objects.requireNonNull(audience, "audience can't be null");
+        Objects.requireNonNull(endpoint, "'endpoint' can't be null");
+        Objects.requireNonNull(audience, "'audience' can't be null");
 
         // Service version
         ContainerRegistryServiceVersion serviceVersion = (version != null)

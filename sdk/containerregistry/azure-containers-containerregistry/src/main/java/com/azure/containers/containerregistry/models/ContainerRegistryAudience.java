@@ -20,20 +20,20 @@ public class ContainerRegistryAudience extends ExpandableStringEnum<ContainerReg
     public static final ContainerRegistryAudience AZURERESOURCEMANAGERGOVERNMENT = fromString("https://management.usgovcloudapi.net");
 
     /** Static value AzureResourceManagerPublicCloud for ContainerRegistryAudience. */
-    public static final ContainerRegistryAudience  AZURERESOURCEMANAGERPUBLICCLOUD  = fromString("https://management.azure.com");
+    public static final ContainerRegistryAudience AZURERESOURCEMANAGERPUBLICCLOUD = fromString("https://management.azure.com");
 
     /**
      * Creates or finds a ContainerRegistryAudience from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding ArtifactArchitecture.
+     * @return the corresponding ContainerRegistryAudience.
      */
     @JsonCreator
     public static ContainerRegistryAudience fromString(String name) {
         return fromString(name, ContainerRegistryAudience.class);
     }
 
-    /** @return known ArtifactArchitecture values. */
+    /** @return known ContainerRegistryAudience values. */
     public static Collection<ContainerRegistryAudience> values() {
         return values(ContainerRegistryAudience.class);
     }
