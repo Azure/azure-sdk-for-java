@@ -328,7 +328,9 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
 
   private def captureIfFirstFailure(throwable: Throwable): Unit = {
     log.logError(s"capture failure, Context: {${taskDiagnosticsContext.toString}}", throwable)
+    //scalastyle:off null
     capturedFailure.compareAndSet(null, throwable)
+    //scalastyle:on null
   }
 }
 

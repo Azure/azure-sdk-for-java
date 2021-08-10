@@ -488,7 +488,10 @@ private object BulkWriter {
 
   // we used to use 15 minutes here - extending it because of several incidents where
   // backend returned 420/3088 (ThrottleDueToSplit) for >= 30 minutes
-  val maxAllowedMinutesWithoutAnyProgress = 30
+  // UPDATE - reverting back to 15 minutes - causing an unreasonably large delay/hang
+  // due to a backend issue doesn't sound right for most customers (helpful during my own
+  // long stress runs - but for customers 15 minutes is more reasonable)
+  val maxAllowedMinutesWithoutAnyProgress = 15
   //scalastyle:on magic.number
 
   // let's say the spark executor VM has 16 CPU cores.
