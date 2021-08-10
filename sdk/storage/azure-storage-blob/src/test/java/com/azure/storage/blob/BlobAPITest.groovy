@@ -854,7 +854,7 @@ class BlobAPITest extends APISpec {
     def "Download file"() {
         setup:
         def file = getRandomFile(fileSize)
-        bc.uploadFromFile(file.toPath().toString(), new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, null, null, null)
+        bc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getRandomName(60) + ".txt")
         if (outFile.exists()) {
             assert outFile.delete()

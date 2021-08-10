@@ -415,9 +415,10 @@ class ServiceAPITest extends APISpec {
         }
 
         expect:
-        for (ContinuablePage page : primaryBlobServiceClient.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
-            .iterableByPage()) {
+        for (ContinuablePage page :
+            primaryBlobServiceClient.findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
+                .iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
 

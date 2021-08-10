@@ -319,7 +319,7 @@ class BlobBaseAPITest extends APISpec {
         bc.uploadFromFile(f.getAbsolutePath(), true)
         byte[] expectedData = "0,mdifjt55.ea3,mdifjt55.ea3\n".getBytes()
 
-        def expression = "select * from blobstorage where id &lt; 1;"
+        def expression = "select * from blobstorage where id < 1;"
 
         BlobQueryOptions optionsIs = new BlobQueryOptions(expression).setInputSerialization(ser)
         OutputStream os = new ByteArrayOutputStream()
