@@ -169,7 +169,7 @@ public final class BinaryData {
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}. The source flux
-     * is subscribed to as many times as the content is read. The flux, therefore, should be replayable.
+     * is subscribed to as many times as the content is read. The flux, therefore, must be replayable.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
