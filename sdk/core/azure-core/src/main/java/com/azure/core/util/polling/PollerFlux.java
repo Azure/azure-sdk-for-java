@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -168,15 +169,20 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      *     If there is no specific activation work to be done then invocation should return Mono.empty(),
      *     this operation will be called with a new {@link PollingContext}.
      * @param strategy a known strategy for polling a long running operation in Azure
-     * @param resultType the {@link Type} of the final result object to deserialize into, or BinaryData if raw response
-     *                   body should be kept. This should match the generic parameter {@link U}.
-     * @param <U> The type of the final result of long running operation
+     * @param pollResponseType the {@link TypeReference} of the response type from a polling call, or BinaryData if raw
+     *                         response body should be kept. This should match the generic parameter {@link U}.
+     * @param resultType the {@link TypeReference} of the final result object to deserialize into, or BinaryData if raw
+     *                   response body should be kept. This should match the generic parameter {@link U}.
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long running operation.
      * @return PollerFlux
      */
-    public static <U> PollerFlux<BinaryData, U>
+    @SuppressWarnings("unchecked")
+    public static <T, U> PollerFlux<T, U>
         create(Duration pollInterval,
                Supplier<Mono<? extends Response<?>>> initialOperation,
-               PollingStrategy strategy,
+               PollingStrategy<T, U> strategy,
+               TypeReference<T> pollResponseType,
                TypeReference<U> resultType) {
         return create(
             pollInterval,
@@ -185,16 +191,26 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                     if (!canPoll) {
                         return Mono.error(new IllegalStateException("Cannot poll with strategy " + strategy));
                     }
-                    return strategy.onInitialResponse(r, ctx)
-                        .map(status -> {
+                    return strategy.onInitialResponse(r, ctx, pollResponseType).flatMap(status -> {
+                        if (TypeUtil.isTypeOrSubTypeOf(r.getValue().getClass(), pollResponseType.getJavaType())) {
+                            return Mono.just(new PollResponse<>(status, (T) r.getValue()));
+                        } else {
+                            Mono<BinaryData> binaryDataMono;
                             if (r.getValue() instanceof BinaryData) {
-                                return new PollResponse<>(status, (BinaryData) r.getValue());
+                                binaryDataMono = Mono.just((BinaryData) r.getValue());
                             } else {
-                                return new PollResponse<>(status, BinaryData.fromObject(r.getValue()));
+                                binaryDataMono = BinaryData.fromObjectAsync(r.getValue());
                             }
-                        });
+                            if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, pollResponseType.getJavaType())) {
+                                return binaryDataMono.map(binaryData -> new PollResponse<>(status, (T) binaryData));
+                            } else {
+                                return binaryDataMono.flatMap(binaryData -> binaryData.toObjectAsync(pollResponseType))
+                                    .map(value -> new PollResponse<>(status, value));
+                            }
+                        }
+                    });
                 })),
-            strategy::poll,
+            ctx -> strategy.poll(ctx, pollResponseType),
             strategy::cancel,
             ctx -> strategy.getResult(ctx, resultType));
     }

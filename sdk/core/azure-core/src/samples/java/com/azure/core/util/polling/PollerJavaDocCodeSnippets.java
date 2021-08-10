@@ -192,9 +192,10 @@ public final class PollerJavaDocCodeSnippets {
                 202,
                 new HttpHeaders().set("Operation-Location", "http://httpbin.org"),
                 null)),
-            new OperationResourcePollingStrategy(
+            new OperationResourcePollingStrategy<>(
                 new HttpPipelineBuilder().build(),
                 Context.NONE),
+            TypeReference.createInstance(BinaryData.class),
             TypeReference.createInstance(String.class));
 
         // Listen to poll responses
@@ -215,12 +216,13 @@ public final class PollerJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
 
         // Create custom polling strategy based on OperationResourcePollingStrategy
-        PollingStrategy strategy = new OperationResourcePollingStrategy(
+        PollingStrategy<BinaryData, String> strategy = new OperationResourcePollingStrategy<>(
                 new HttpPipelineBuilder().build(),
                 Context.NONE) {
             // override any interface method to customize the polling behavior
             @Override
-            public Mono<PollResponse<BinaryData>> poll(PollingContext<BinaryData> context) {
+            public Mono<PollResponse<BinaryData>> poll(PollingContext<BinaryData> context,
+                                                       TypeReference<BinaryData> pollResponseType) {
                 return Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     BinaryData.fromString("")));
@@ -238,6 +240,7 @@ public final class PollerJavaDocCodeSnippets {
                 new HttpHeaders().set("Operation-Location", "http://httpbin.org"),
                 null)),
             strategy,
+            TypeReference.createInstance(BinaryData.class),
             TypeReference.createInstance(String.class));
 
         // Listen to poll responses

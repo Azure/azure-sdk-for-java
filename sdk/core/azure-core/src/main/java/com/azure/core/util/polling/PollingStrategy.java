@@ -23,12 +23,11 @@ import java.time.Duration;
  * order of the invocations is:
  *
  * <ol>
- *     <li></li>
  *     <li>{@link #canPoll(Response)} - exits if returns false</li>
- *     <li>{@link #onInitialResponse(Response, PollingContext)} - immediately after {@link #canPoll(Response)} returns
- *          true</li>
- *     <li>{@link #poll(PollingContext)} - invoked after each polling interval, if the last polling response indicates
- *          an "In Progress" status. Returns a {@link PollResponse<BinaryData>} with the latest status</li>
+ *     <li>{@link #onInitialResponse(Response, PollingContext, TypeReference)} - immediately after
+ *          {@link #canPoll(Response)} returns true</li>
+ *     <li>{@link #poll(PollingContext, TypeReference)} - invoked after each polling interval, if the last polling
+ *          response indicates an "In Progress" status. Returns a {@link PollResponse} with the latest status</li>
  *     <li>{@link #getResult(PollingContext, TypeReference)} - invoked when the last polling response indicates a
  *          "Successfully Completed" status. Returns the final result of the given type</li>
  * </ol>
@@ -43,8 +42,13 @@ import java.time.Duration;
  * library and other client libraries are often sufficient for handling polling in most long running operations in
  * Azure. When there are special scenarios, built-in polling strategies can be inherited and select methods can be
  * overridden to accomplish the polling requirements, without writing an entire polling strategy from scratch.
+ *
+ * @param <T> the {@link TypeReference} of the response type from a polling call, or BinaryData if raw response body
+ *            should be kept
+ * @param <U> the {@link TypeReference} of the final result object to deserialize into, or BinaryData if raw response
+ *            body should be kept
  */
-public interface PollingStrategy {
+public interface PollingStrategy<T, U> {
     /**
      * Checks if this strategy is able to handle polling for this long running operation based on the information in
      * the initial response.
@@ -61,31 +65,34 @@ public interface PollingStrategy {
      *
      * @param response the response from the initial method call to activate the long running operation
      * @param pollingContext the {@link PollingContext} for the current polling operation
+     * @param pollResponseType the {@link TypeReference} of the response type from a polling call, or BinaryData if raw
+     *                         response body should be kept. This should match the generic parameter {@link U}.
      * @return a publisher emitting the long running operation status
      */
-    Mono<LongRunningOperationStatus> onInitialResponse(
-        Response<?> response, PollingContext<BinaryData> pollingContext);
+    Mono<LongRunningOperationStatus> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
+                                            TypeReference<T> pollResponseType);
 
     /**
-     * Parses the response from the polling URL into a {@link PollResponse<BinaryData>}, and stores information
+     * Parses the response from the polling URL into a {@link PollResponse}, and stores information
      * useful for further polling and final response in the {@link PollingContext}. The result must have the
      * {@link LongRunningOperationStatus} specified, and the entire polling response content as a {@link BinaryData}.
      *
      * @param pollingContext the {@link PollingContext} for the current polling operation
+     * @param pollResponseType the {@link TypeReference} of the response type from a polling call, or BinaryData if raw
+     *                         response body should be kept. This should match the generic parameter {@link U}.
      * @return a publisher emitting the a poll response containing the status and the response content
      */
-    Mono<PollResponse<BinaryData>> poll(PollingContext<BinaryData> pollingContext);
+    Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType);
 
     /**
      * Parses the response from the final GET call into the result type of the long running operation.
      *
      * @param pollingContext the {@link PollingContext} for the current polling operation
-     * @param resultType the {@link TypeReference<U>} of the final result object to deserialize into, or BinaryData if
+     * @param resultType the {@link TypeReference} of the final result object to deserialize into, or BinaryData if
      *                   raw response body should be kept.
-     * @param <U> The type of the final result of long running operation
      * @return a publisher emitting the final result
      */
-    <U> Mono<U> getResult(PollingContext<BinaryData> pollingContext, TypeReference<U> resultType);
+    Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType);
 
     /**
      * Cancels the long running operation if service supports cancellation. If service does not support cancellation
@@ -96,5 +103,5 @@ public interface PollingStrategy {
      * @param initialResponse the response from the initial operation
      * @return a publisher emitting the cancellation response content
      */
-    Mono<BinaryData> cancel(PollingContext<BinaryData> pollingContext, PollResponse<BinaryData> initialResponse);
+    Mono<T> cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse);
 }
