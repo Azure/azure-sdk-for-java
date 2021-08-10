@@ -6,9 +6,9 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.lang.invoke.MethodHandle;
@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static java.lang.invoke.MethodType.methodType;
 
 /**
  * A concurrent cache of {@link Response} {@link MethodHandle} constructors.
@@ -31,52 +30,9 @@ final class ResponseConstructorsCache {
     private static final String FIVE_PARAM_ERROR = "Failed to deserialize 5-parameter response.";
     private static final String INVALID_PARAM_COUNT = "Response constructor with expected parameters not found.";
 
-    // This lookup is specific to the com.azure.core module, specifically this class.
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-
-    // Convenience pointer to the com.azure.core module.
-    // Since this is only Java 9+ functionality it needs to use reflection.
-    private static final String MODULE_CLASS = "java.lang.Module";
-    private static final Object CORE_MODULE;
-    private static final MethodHandle GET_MODULE;
-    private static final MethodHandle IS_MODULE_EXPORTED;
-    private static final MethodHandle CAN_READ_MODULE;
-    private static final MethodHandle ADD_MODULE_READ;
-
-    static {
-        MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-
-        Object coreModule = null;
-        MethodHandle getModule = null;
-        MethodHandle isModuleExported = null;
-        MethodHandle canReadModule = null;
-        MethodHandle addReadModule = null;
-
-        try {
-            Class<?> moduleClass = Class.forName(MODULE_CLASS);
-            Class<?> classClass = Class.class;
-            getModule = publicLookup.findVirtual(classClass, "getModule", methodType(moduleClass));
-            coreModule = getModule.invoke(ResponseConstructorsCache.class);
-            isModuleExported = publicLookup.findVirtual(moduleClass, "isExported",
-                methodType(boolean.class, String.class));
-            canReadModule = publicLookup.findVirtual(moduleClass, "canRead", methodType(boolean.class, moduleClass));
-            addReadModule = MethodHandles.lookup()
-                .findVirtual(moduleClass, "addReads", methodType(moduleClass, moduleClass));
-        } catch (Throwable ex) {
-            new ClientLogger(ResponseConstructorsCache.class)
-                .verbose("Failed to retrieve MethodHandles used to check module information. "
-                    + "If the application is not using Java 9+ runtime behavior will work as expected.", ex);
-        }
-
-        CORE_MODULE = coreModule;
-        GET_MODULE = getModule;
-        IS_MODULE_EXPORTED = isModuleExported;
-        CAN_READ_MODULE = canReadModule;
-        ADD_MODULE_READ = addReadModule;
-    }
+    private static final Map<Class<?>, MethodHandle> CACHE = new ConcurrentHashMap<>();
 
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
-    private final Map<Class<?>, MethodHandle> cache = new ConcurrentHashMap<>();
 
     /**
      * Identify the suitable {@link MethodHandle} to construct the given response class.
@@ -86,7 +42,7 @@ final class ResponseConstructorsCache {
      * found.
      */
     MethodHandle get(Class<? extends Response<?>> responseClass) {
-        return this.cache.computeIfAbsent(responseClass, this::locateResponseConstructor);
+        return CACHE.computeIfAbsent(responseClass, this::locateResponseConstructor);
     }
 
     /**
@@ -108,39 +64,12 @@ final class ResponseConstructorsCache {
      * found.
      */
     private MethodHandle locateResponseConstructor(Class<?> responseClass) {
-        /*
-         * If we were able to write this using Java 9+ code.
-         *
-         * First check if the response class's module is exported to all unnamed modules. If it is we will use
-         * MethodHandles.publicLookup() which is meant for creating MethodHandle instances for publicly accessible
-         * classes.
-         */
-        MethodHandles.Lookup lookupToUse;
-        if (GET_MODULE == null) {
-            // Java 8 is being used, public lookup should be able to access the Response class.
-            lookupToUse = MethodHandles.publicLookup();
-        } else {
-            Object responseModule = getModule(responseClass, logger);
-            if (isModuleExported(responseModule, logger)) {
-                lookupToUse = MethodHandles.publicLookup();
-            } else {
-                /*
-                 * Otherwise we use the MethodHandles.Lookup which is associated to this (com.azure.core) module, and more
-                 * specifically, is tied to this class (ResponseConstructorsCache). But, in order to use this lookup we
-                 * need to ensure that the com.azure.core module reads the response class's module as the lookup won't
-                 * have permissions necessary to create the MethodHandle instance without it.
-                 */
-                lookupToUse = LOOKUP;
-
-                if (!canReadModule(responseModule, logger)) {
-                    addModuleRead(responseModule, logger);
-                }
-            }
-        }
+        MethodHandles.Lookup lookupToUse = ReflectionUtils.getLookupToUse(responseClass);
 
         /*
-         * Now that we have the MethodHandles.Lookup to create our method handle instance we will begin searching for
-         * the most specific handle we can use the create the response class (as mentioned in the method Javadocs).
+         * Now that the MethodHandles.Lookup has been found to create the MethodHandle instance begin searching for
+         * the most specific MethodHandle that can be used to create the response class (as mentioned in the method
+         * Javadocs).
          */
         Constructor<?>[] constructors = responseClass.getDeclaredConstructors();
         // Sort constructors in the "descending order" of parameter count.
@@ -165,38 +94,6 @@ final class ResponseConstructorsCache {
             }
         }
         return null;
-    }
-
-    private static Object getModule(Class<?> clazz, ClientLogger logger) {
-        try {
-            return GET_MODULE.invoke(clazz);
-        } catch (Throwable throwable) {
-            throw logger.logExceptionAsError(Exceptions.propagate(throwable));
-        }
-    }
-
-    private static boolean isModuleExported(Object module, ClientLogger logger) {
-        try {
-            return (boolean) IS_MODULE_EXPORTED.invoke(module, "");
-        } catch (Throwable throwable) {
-            throw logger.logExceptionAsError(Exceptions.propagate(throwable));
-        }
-    }
-
-    private static boolean canReadModule(Object module, ClientLogger logger) {
-        try {
-            return (boolean) CAN_READ_MODULE.invoke(CORE_MODULE, module);
-        } catch (Throwable throwable) {
-            throw logger.logExceptionAsError(Exceptions.propagate(throwable));
-        }
-    }
-
-    private static void addModuleRead(Object module, ClientLogger logger) {
-        try {
-            ADD_MODULE_READ.invoke(CORE_MODULE, module);
-        } catch (Throwable throwable) {
-            throw logger.logExceptionAsError(Exceptions.propagate(throwable));
-        }
     }
 
     /**
