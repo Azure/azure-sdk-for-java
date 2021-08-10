@@ -52,7 +52,7 @@ public class RntbdChannelAcquisitionTimeline {
 
     private void addNewEvent(RntbdChannelAcquisitionEvent event) {
         if (this.currentEvent != null) {
-            this.currentEvent.complete(event.getCompleteTime());
+            this.currentEvent.complete(event.getCreatedTime());
         }
         this.events.add(event);
         this.currentEvent = event;
