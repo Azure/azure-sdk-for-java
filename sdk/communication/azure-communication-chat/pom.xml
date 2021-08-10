@@ -50,12 +50,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-communication-common} -->
+      <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
-      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-communication-identity} -->
+      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
