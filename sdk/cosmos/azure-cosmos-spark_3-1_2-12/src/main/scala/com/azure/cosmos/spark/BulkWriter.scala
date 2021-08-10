@@ -209,7 +209,12 @@ class BulkWriter(container: CosmosAsyncContainer,
     var acquisitionAttempt = 0
     val operationContext = OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1)
     var numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
-    var activeOperationsSnapshot = activeOperations.clone()
+    // Don't clone the activeOperations for the first iteration
+    // to reduce perf impact before the Semaphore has been acquired
+    // this means if the semaphore can't be acquired within 1 minute
+    // the first attempt will always assume it wasn't stale - so effectively we
+    // allow staleness for one additional minute - which is perfectly fine
+    var activeOperationsSnapshot = mutable.Set.empty[CosmosItemOperation]
     while (!semaphore.tryAcquire(1, TimeUnit.MINUTES)) {
       if (subscriptionDisposable.isDisposed) {
         captureIfFirstFailure(
