@@ -45,7 +45,7 @@ public final class AttestationClientBuilder {
     public AttestationClientBuilder() {
 
         clientImplBuilder = new AttestationClientImplBuilder();
-        serviceVersion = AttestationServiceVersion.V1_0;
+        serviceVersion = AttestationServiceVersion.V2020_10_01;
     }
 
     /*
