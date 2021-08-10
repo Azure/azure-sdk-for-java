@@ -78,7 +78,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
-      <version>1.7.13</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
+      <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
