@@ -25,7 +25,7 @@ public class ContainerRepositoryAsyncJavaDocSnippets {
         ContainerRepositoryAsync repositoryAsyncClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient()
             .getRepository(repository);
         // END: com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation
@@ -44,7 +44,7 @@ public class ContainerRepositoryAsyncJavaDocSnippets {
         ContainerRepositoryAsync repositoryAsyncClient = new ContainerRegistryClientBuilder()
             .pipeline(pipeline)
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildAsyncClient()
             .getRepository(repository);

@@ -17,7 +17,7 @@ public class AnonymousAsyncClientThrows {
     public static void main(String[] args) {
         ContainerRegistryAsyncClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(ENDPOINT)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient();
 
         anonymousClient.deleteRepository(REPOSITORY_NAME).subscribe(deleteRepositoryResult -> {

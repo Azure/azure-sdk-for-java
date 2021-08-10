@@ -26,7 +26,7 @@ public class ContainerRepositoryJavaDocSnippets {
         ContainerRepository repositoryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient().getRepository(repository);
         // END: com.azure.containers.containerregistry.ContainerRepository.instantiation
         return repositoryClient;
@@ -45,7 +45,7 @@ public class ContainerRepositoryJavaDocSnippets {
             .pipeline(pipeline)
             .endpoint(endpoint)
             .credential(credential)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient().getRepository(repository);
         // END: com.azure.containers.containerregistry.ContainerRepository.pipeline.instantiation
         return repositoryClient;

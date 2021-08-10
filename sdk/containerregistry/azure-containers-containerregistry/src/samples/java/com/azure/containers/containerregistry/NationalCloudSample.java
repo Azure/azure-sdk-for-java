@@ -22,7 +22,7 @@ public class NationalCloudSample {
         ContainerRegistryAsyncClient asyncClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credentials)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERCHINA)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_CHINA)
             .buildAsyncClient();
 
         asyncClient.listRepositoryNames().subscribe(name -> System.out.println(name));

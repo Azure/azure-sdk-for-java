@@ -30,7 +30,7 @@ public class ReadmeSamples {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildClient();
     }
@@ -39,7 +39,7 @@ public class ReadmeSamples {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildAsyncClient();
     }
@@ -48,7 +48,7 @@ public class ReadmeSamples {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildClient();
 
@@ -61,7 +61,7 @@ public class ReadmeSamples {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildClient()
             .getRepository(repositoryName);
@@ -75,14 +75,14 @@ public class ReadmeSamples {
     public void createAnonymousAccessClient() {
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient();
     }
 
     public void createAnonymousAccessAsyncClient() {
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient();
     }
 
@@ -91,7 +91,7 @@ public class ReadmeSamples {
 
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(defaultCredential)
             .buildClient();
 
@@ -126,7 +126,7 @@ public class ReadmeSamples {
 
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(defaultCredential)
             .buildClient();
 
@@ -146,7 +146,7 @@ public class ReadmeSamples {
     public void listTagProperties() {
         ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient();
 
         RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
@@ -165,7 +165,7 @@ public class ReadmeSamples {
 
         ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient();
 
         try {
@@ -193,7 +193,7 @@ public class ReadmeSamples {
         ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint())
             .credential(credentials)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERCHINA)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_CHINA)
             .buildClient();
 
         containerRegistryClient

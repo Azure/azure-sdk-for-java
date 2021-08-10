@@ -42,7 +42,7 @@ More information at [Azure Container Registry portal][container_registry_create_
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildClient();
 ```
@@ -52,7 +52,7 @@ ContainerRegistryClient client = new ContainerRegistryClientBuilder()
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildAsyncClient();
 ```
@@ -87,7 +87,7 @@ For more information please read [Anonymous Pull Access](https://docs.microsoft.
 ```Java
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildClient();
 ```
 
@@ -95,7 +95,7 @@ ContainerRegistryClient client = new ContainerRegistryClientBuilder()
 ```Java
 ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildAsyncClient();
 ```
 
@@ -132,7 +132,7 @@ Iterate through the collection of repositories in the registry.
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildClient();
 
@@ -145,7 +145,7 @@ client.listRepositoryNames().forEach(repository -> System.out.println(repository
 ```Java
 ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildClient();
 
 RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
@@ -166,7 +166,7 @@ TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(defaultCredential)
     .buildClient();
 
@@ -187,7 +187,7 @@ TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
 ContainerRegistryClient client = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(defaultCredential)
     .buildClient();
 
@@ -223,7 +223,7 @@ final String repositoryName = getRepositoryName();
 
 ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .buildClient();
 
 try {
@@ -244,7 +244,7 @@ All container registry service operations will throw a
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildClient()
     .getRepository(repositoryName);

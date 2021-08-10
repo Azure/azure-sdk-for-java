@@ -21,7 +21,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
         RegistryArtifactAsync registryArtifactAsync = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient().getArtifact(repository, digest);
         // END: com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation
         return registryArtifactAsync;
@@ -41,7 +41,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
             .pipeline(pipeline)
             .endpoint(endpoint)
             .credential(credential)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient().getArtifact(repository, digest);
         // END: com.azure.containers.containerregistry.RegistryArtifactAsync.pipeline.instantiation
         return registryArtifactAsync;

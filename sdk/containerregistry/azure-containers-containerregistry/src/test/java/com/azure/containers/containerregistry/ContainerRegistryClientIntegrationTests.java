@@ -182,14 +182,14 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         Assumptions.assumeFalse(REGISTRY_ENDPOINT == null);
         Assumptions.assumeTrue(getAuthority(REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
         ContainerRegistryClient registryClient = getContainerRegistryBuilder(httpClient)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient();
 
         List<String> repositories = registryClient.listRepositoryNames().stream().collect(Collectors.toList());
         validateRepositories(repositories);
 
         ContainerRegistryClient throwableRegistryClient = getContainerRegistryBuilder(httpClient)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERGOVERNMENT)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GOVERNMENT)
             .buildClient();
         assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream().collect(Collectors.toList()));
     }

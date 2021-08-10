@@ -73,7 +73,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         tokenCredential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(registryEndpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(tokenCredential);
 
         this.containerRegistryClient = builder.buildClient();

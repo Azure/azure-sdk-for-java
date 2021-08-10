@@ -20,7 +20,7 @@ public class DeleteImagesAsync {
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(ENDPOINT)
             .credential(defaultCredential)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient();
 
         final int imagesCountToKeep = 3;

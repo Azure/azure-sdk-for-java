@@ -10,17 +10,17 @@ import java.util.Collection;
 
 /** Defines values for ContainerRegistryAudience. */
 public class ContainerRegistryAudience extends ExpandableStringEnum<ContainerRegistryAudience> {
-    /** Static value AzureResourceManagerChina for ContainerRegistryAudience. */
-    public static final ContainerRegistryAudience AZURERESOURCEMANAGERCHINA = fromString("https://management.chinacloudapi.cn");
+    /** Static value AZURE_RESOURCE_MANAGER_CHINA for ContainerRegistryAudience. */
+    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_CHINA = fromString("https://management.chinacloudapi.cn");
 
-    /** Static value AzureResourceManagerGermany for ContainerRegistryAudience. */
-    public static final ContainerRegistryAudience AZURERESOURCEMANAGERGERMANY = fromString("https://management.microsoftazure.de");
+    /** Static value AZURE_RESOURCE_MANAGER_GERMANY for ContainerRegistryAudience. */
+    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_GERMANY = fromString("https://management.microsoftazure.de");
 
-    /** Static value AzureResourceManagerGovernment for ContainerRegistryAudience. */
-    public static final ContainerRegistryAudience AZURERESOURCEMANAGERGOVERNMENT = fromString("https://management.usgovcloudapi.net");
+    /** Static value AZURE_RESOURCE_MANAGER_GOVERNMENT for ContainerRegistryAudience. */
+    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_GOVERNMENT = fromString("https://management.usgovcloudapi.net");
 
-    /** Static value AzureResourceManagerPublicCloud for ContainerRegistryAudience. */
-    public static final ContainerRegistryAudience AZURERESOURCEMANAGERPUBLICCLOUD = fromString("https://management.azure.com");
+    /** Static value AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD for ContainerRegistryAudience. */
+    public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD = fromString("https://management.azure.com");
 
     /**
      * Creates or finds a ContainerRegistryAudience from its string representation.

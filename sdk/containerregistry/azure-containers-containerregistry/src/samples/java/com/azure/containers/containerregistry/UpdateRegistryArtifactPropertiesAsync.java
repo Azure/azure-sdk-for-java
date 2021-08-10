@@ -23,7 +23,7 @@ public class UpdateRegistryArtifactPropertiesAsync {
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(ENDPOINT)
             .credential(defaultCredential)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient();
 
         RegistryArtifactAsync image = client.getArtifact(REPOSITORY_NAME, DIGEST);

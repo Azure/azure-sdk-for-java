@@ -18,7 +18,7 @@ public class ListRepositoryNamesAsync {
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(ENDPOINT)
             .credential(credential)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient();
 
         client.listRepositoryNames().subscribe(repository -> System.out.println(repository));

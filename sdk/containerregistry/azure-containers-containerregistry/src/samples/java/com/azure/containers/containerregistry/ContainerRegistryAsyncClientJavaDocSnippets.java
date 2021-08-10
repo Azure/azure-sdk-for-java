@@ -23,7 +23,7 @@ public class ContainerRegistryAsyncClientJavaDocSnippets {
         ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient();
         // END: com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation
         return registryAsyncClient;
@@ -41,7 +41,7 @@ public class ContainerRegistryAsyncClientJavaDocSnippets {
         ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder()
             .pipeline(pipeline)
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURERESOURCEMANAGERPUBLICCLOUD)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildAsyncClient();
         // END: com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation
