@@ -523,7 +523,7 @@ public class OpenTelemetryTracerTest {
 
         TraceFlags traceFlags = TraceFlags.fromHex(traceparent, TRACE_OPTION_OFFSET);
 
-        SpanContext validSpanContext = SpanContext.create(
+        SpanContext validSpanContext = SpanContext.createFromRemoteParent(
             traceId,
             spanId,
             traceFlags,
@@ -543,12 +543,7 @@ public class OpenTelemetryTracerTest {
     public void extractContextInvalidDiagnosticId() {
         // Arrange
         String diagnosticId = "00000000000000000000000000000000";
-        SpanContext invalidSpanContext = SpanContext.create(
-            TraceId.getInvalid(),
-            SpanId.getInvalid(),
-            TraceFlags.getDefault(),
-            TraceState.getDefault()
-        );
+        SpanContext invalidSpanContext = SpanContext.getInvalid();
 
         // Act
         Context updatedContext = openTelemetryTracer.extractContext(diagnosticId, Context.NONE);
