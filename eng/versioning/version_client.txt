@@ -86,7 +86,7 @@ com.azure:azure-data-tables;12.1.0;12.2.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-digitaltwins-core;1.1.1;1.2.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-identity;1.3.4;1.3.5
+com.azure:azure-identity;1.3.5;1.4.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
