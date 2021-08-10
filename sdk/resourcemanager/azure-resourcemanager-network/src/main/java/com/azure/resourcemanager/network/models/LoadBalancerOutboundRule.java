@@ -157,37 +157,37 @@ public interface LoadBalancerOutboundRule
     /** Grouping of outbound rule update stages. */
     interface UpdateStages {
         /** The stage of an outbound rule update allowing to specify the backend pool. */
-        interface WithBackend {
+        interface WithBackend<ParentT> {
             /**
              * Specifies the backend pool.
              *
              * @param name backend pool name
              * @return the next stage of the update
              */
-            Update fromBackend(String name);
+            Update<ParentT> fromBackend(String name);
         }
 
         /** The stage of an outbound rule update allowing to specify a frontend for the rule to apply to. */
-        interface WithFrontend {
+        interface WithFrontend<ParentT> {
             /**
              * Specifies the frontend IP Address
              * @param name frontend name
              * @return the next stage of the Update
              */
-            Update toFrontend(String name);
+            Update<ParentT> toFrontend(String name);
 
             /**
              * Specifies the frontend IP Addresses
              * @param names a list of frontend names
              * @return the next stage of the Update
              */
-            Update toFrontends(List<String> names);
+            Update<ParentT> toFrontends(List<String> names);
         }
 
         /**
          * The stage of an outbound rule update allowing to specify the transport protocol for the rule to apply to.
          */
-        interface WithProtocol extends HasProtocol.UpdateStages.WithProtocol<Update, LoadBalancerOutboundRuleProtocol> {
+        interface WithProtocol<ParentT> extends HasProtocol.UpdateStages.WithProtocol<Update<ParentT>, LoadBalancerOutboundRuleProtocol> {
         }
 
         /**
@@ -195,39 +195,39 @@ public interface LoadBalancerOutboundRule
          * rule.
          *
          */
-        interface WithEnableTcpReset {
+        interface WithEnableTcpReset<ParentT> {
             /**
              * Specifies the idle connection timeout in minutes.
              *
              * @param enableTcpReset the TCP reset enablement boolean
              * @return the next stage of the definition
              */
-            Update withEnableTcpReset(boolean enableTcpReset);
+            Update<ParentT> withEnableTcpReset(boolean enableTcpReset);
         }
 
         /**
          * The stage of an inbound NAT rule update allowing to specify the idle connection timeout for this inbound NAT
          * rule.
          */
-        interface WithIdleTimeout {
+        interface WithIdleTimeout<ParentT> {
             /**
              * Specifies the idle connection timeout in minutes.
              *
              * @param minutes a number of minutes
              * @return the next stage of the update
              */
-            Update withIdleTimeoutInMinutes(int minutes);
+            Update<ParentT> withIdleTimeoutInMinutes(int minutes);
         }
     }
 
     /** The entirety of an inbound NAT rule update as part of a load balancer update. */
-    interface Update
-        extends Settable<LoadBalancer.Update>,
-        LoadBalancerOutboundRule.UpdateStages.WithProtocol,
-        LoadBalancerOutboundRule.UpdateStages.WithBackend,
-        LoadBalancerOutboundRule.UpdateStages.WithFrontend,
-        LoadBalancerOutboundRule.UpdateStages.WithEnableTcpReset,
-        LoadBalancerOutboundRule.UpdateStages.WithIdleTimeout {
+    interface Update<ParentT>
+        extends Settable<ParentT>,
+        LoadBalancerOutboundRule.UpdateStages.WithProtocol<ParentT>,
+        LoadBalancerOutboundRule.UpdateStages.WithBackend<ParentT>,
+        LoadBalancerOutboundRule.UpdateStages.WithFrontend<ParentT>,
+        LoadBalancerOutboundRule.UpdateStages.WithEnableTcpReset<ParentT>,
+        LoadBalancerOutboundRule.UpdateStages.WithIdleTimeout<ParentT> {
     }
 
 }
