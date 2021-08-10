@@ -75,8 +75,7 @@ public class AADWeiResourceServerIT {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
-            AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
-            converter.setPrincipalClaimName("upn");
+            AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("upn");
             http.oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(converter);
