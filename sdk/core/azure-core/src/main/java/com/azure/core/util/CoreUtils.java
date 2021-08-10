@@ -313,15 +313,15 @@ public final class CoreUtils {
     /**
      * Attempts to load an environment configured default timeout, in milliseconds.
      * <p>
-     * If the environment default timeout isn't configured {@code defaultTimeoutMillis} will be returned. If the
-     * environment default timeout is a string that isn't parseable by {@link Long#parseLong(String)} {@code
-     * defaultTimeoutMillis} will be returned. If the environment default timeout is less than 0 0 will be returned
+     * If the environment default timeout isn't configured, {@code defaultTimeoutMillis} will be returned. If the
+     * environment default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code
+     * defaultTimeoutMillis} will be returned. If the environment default timeout is less than 0, 0 will be returned
      * indicated that there is no timeout period.
      *
      * @param configuration The environment configurations.
      * @param timeoutPropertyName The default timeout property name.
      * @param defaultTimoutMillis The fallback timeout to be used.
-     * @param logger A {@link ClientLogger} to log an exceptions.
+     * @param logger A {@link ClientLogger} to log exceptions.
      * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
      */
     public static long getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
