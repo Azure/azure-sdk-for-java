@@ -411,7 +411,10 @@ public interface KubernetesClusterAgentPool
         extends Settable<ParentT>,
             UpdateStages.WithAgentPoolVirtualMachineCount<ParentT>,
             UpdateStages.WithAutoScaling<ParentT>,
-            UpdateStages.WithAgentPoolMode<ParentT> { }
+            UpdateStages.WithAgentPoolMode<ParentT>,
+            UpdateStages.WithDiskType<ParentT>
+    {
+    }
 
     /** Grouping of agent pool update stages. */
     interface UpdateStages {
@@ -450,7 +453,7 @@ public interface KubernetesClusterAgentPool
         }
 
         /**
-         * The stage of a container service agent pool definition allowing to specify auto-scaling.
+         * The stage of a container service agent pool update allowing to specify auto-scaling.
          *
          * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
@@ -470,6 +473,23 @@ public interface KubernetesClusterAgentPool
              * @return the next stage of the update
              */
             Update<ParentT> withoutAutoScaling();
+        }
+
+        /**
+         * The stage of a container service agent pool update allowing to specify the agent pool disk type.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithDiskType<ParentT> {
+            /**
+             * The disk type for the placement of emptyDir volumes, container runtime data root,
+             * and Kubelet ephemeral storage.
+             *
+             * @param kubeletDiskType the disk type for the placement of emptyDir volumes, container runtime data root,
+             *                        and Kubelet ephemeral storage.
+             * @return the next stage of the update
+             */
+            Update<ParentT> withKubeletDiskType(KubeletDiskType kubeletDiskType);
         }
     }
 }

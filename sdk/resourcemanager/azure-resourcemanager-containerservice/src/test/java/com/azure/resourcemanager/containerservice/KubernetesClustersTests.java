@@ -134,7 +134,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .update()
                 .updateAgentPool(agentPoolName1)
                     .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .withAgentPoolVirtualMachineCount(5)
+                    .withAgentPoolVirtualMachineCount(2)
+                    .withKubeletDiskType(KubeletDiskType.OS)
                     .parent()
                 .defineAgentPool(agentPoolName2)
                     .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
@@ -148,8 +149,9 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(3, kubernetesCluster.agentPools().size());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName1);
-        Assertions.assertEquals(5, agentPool.count());
+        Assertions.assertEquals(2, agentPool.count());
         Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
+        Assertions.assertEquals(KubeletDiskType.OS, agentPool.kubeletDiskType());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName2);
         Assertions.assertNotNull(agentPool);
