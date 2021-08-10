@@ -79,6 +79,17 @@ public interface KubernetesClusterAgentPool
     /** @return the maximum price of each spot virtual machines in the agent pool, -1 means pay-as-you-go prices */
     Double virtualMachineMaximumPrice();
 
+    /**
+     * @return the OS disk type to be used for machines in the agent pool
+     */
+    OSDiskType osDiskType();
+
+    /**
+     * @return the disk type for the placement of emptyDir volumes, container runtime data root,
+     * and Kubelet ephemeral storage
+     */
+    KubeletDiskType kubeletDiskType();
+
     // Fluent interfaces
 
     /**
@@ -343,6 +354,34 @@ public interface KubernetesClusterAgentPool
         }
 
         /**
+         * The stage of a container service agent pool definition allowing to specify the agent pool disk type.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithDiskType<ParentT> {
+            /**
+             * The OS disk type to be used for machines in the agent pool.
+             *
+             * The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested
+             * OSDiskSizeGB. Otherwise, defaults to 'Managed'.
+             *
+             * @param osDiskType the OS disk type to be used for machines in the agent pool
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withOSDiskType(OSDiskType osDiskType);
+
+            /**
+             * The disk type for the placement of emptyDir volumes, container runtime data root,
+             * and Kubelet ephemeral storage.
+             *
+             * @param kubeletDiskType the disk type for the placement of emptyDir volumes, container runtime data root,
+             *                        and Kubelet ephemeral storage.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withKubeletDiskType(KubeletDiskType kubeletDiskType);
+        }
+
+        /**
          * The final stage of a container service agent pool definition. At this stage, any remaining optional settings
          * can be specified, or the container service agent pool can be attached to the parent container service
          * definition.
@@ -362,6 +401,7 @@ public interface KubernetesClusterAgentPool
                 WithNodeLabelsTaints<ParentT>,
                 WithVMPriority<ParentT>,
                 WithBillingProfile<ParentT>,
+                WithDiskType<ParentT>,
                 Attachable.InDefinition<ParentT> {
         }
     }

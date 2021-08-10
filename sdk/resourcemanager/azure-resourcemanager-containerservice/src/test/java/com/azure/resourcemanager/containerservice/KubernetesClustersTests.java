@@ -9,10 +9,12 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.Code;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
+import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import org.junit.jupiter.api.Assertions;
@@ -59,6 +61,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             servicePrincipalSecret = credentialsMap.get("clientSecret");
         }
 
+        /*
+        KubeletDiskType requires registering following preview feature:
+            azure.features().register("Microsoft.ContainerService", "KubeletDisk");
+         */
+
         // create
         KubernetesCluster kubernetesCluster =
             containerServiceManager
@@ -72,8 +79,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withServicePrincipalClientId(servicePrincipalClientId)
                 .withServicePrincipalSecret(servicePrincipalSecret)
                 .defineAgentPool(agentPoolName)
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
                     .withAgentPoolVirtualMachineCount(1)
+                    .withOSDiskSizeInGB(30)
+                    .withOSDiskType(OSDiskType.EPHEMERAL)
+                    .withKubeletDiskType(KubeletDiskType.TEMPORARY)
                     .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
                     .withAgentPoolMode(AgentPoolMode.SYSTEM)
                     .attach()
@@ -93,9 +103,12 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         KubernetesClusterAgentPool agentPool = kubernetesCluster.agentPools().get(agentPoolName);
         Assertions.assertNotNull(agentPool);
         Assertions.assertEquals(1, agentPool.count());
-        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_D2_V2, agentPool.vmSize());
+        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_F4S_V2, agentPool.vmSize());
         Assertions.assertEquals(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, agentPool.type());
         Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
+        Assertions.assertEquals(OSDiskType.EPHEMERAL, agentPool.osDiskType());
+        Assertions.assertEquals(30, agentPool.osDiskSizeInGB());
+        Assertions.assertEquals(KubeletDiskType.TEMPORARY, agentPool.kubeletDiskType());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName1);
         Assertions.assertNotNull(agentPool);
