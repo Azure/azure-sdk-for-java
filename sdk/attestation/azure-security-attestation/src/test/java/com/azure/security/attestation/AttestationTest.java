@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -519,12 +520,17 @@ public class AttestationTest extends AttestationClientTestBase {
 
 
     private void verifyAttestationResult(String clientUri, AttestationResult result, byte[] runtimeData, boolean expectJson) {
-        assertNotNull(result.getIss());
+        assertNotNull(result.getIssuer());
 
         // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
         if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
-            Assertions.assertEquals(clientUri, result.getIss());
+            Assertions.assertEquals(clientUri, result.getIssuer());
         }
+
+        assertNotNull(result.getMrEnclave());
+        assertNotNull(result.getMrSigner());
+        assertNotNull(result.getSvn());
+        assertNull(result.getNonce());
 
         if (expectJson) {
             ObjectMapper mapper = new ObjectMapper();

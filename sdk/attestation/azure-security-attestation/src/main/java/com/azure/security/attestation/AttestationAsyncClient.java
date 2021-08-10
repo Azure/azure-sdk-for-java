@@ -17,6 +17,7 @@ import com.azure.security.attestation.implementation.AttestationsImpl;
 import com.azure.security.attestation.implementation.MetadataConfigurationsImpl;
 import com.azure.security.attestation.implementation.SigningCertificatesImpl;
 import com.azure.security.attestation.implementation.models.AttestationOptionsImpl;
+import com.azure.security.attestation.implementation.models.AttestationResultImpl;
 import com.azure.security.attestation.implementation.models.AttestationSignerImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.azure.security.attestation.models.AttestationOptions;
@@ -202,8 +203,11 @@ public final class AttestationAsyncClient {
         return this.attestImpl.attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestOpenEnclaveRequest(), context)
             // Create an AttestationToken from the raw response from the service.
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
-            // Extract the AttestationResult from the AttestationToken.
-            .map(response -> Utilities.generateAttestationResponseFromModelType(response, response.getValue(), response.getValue().getBody(AttestationResult.class)));
+            .map(response -> {
+                // Extract the AttestationResult from the AttestationToken.
+                com.azure.security.attestation.implementation.models.AttestationResult generated = response.getValue().getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
+                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generated));
+            });
     }
 
     /**
@@ -306,7 +310,8 @@ public final class AttestationAsyncClient {
         return this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestSgxRequest(), context)
             .map(response -> {
                 AttestationToken token = new AttestationTokenImpl(response.getValue().getToken());
-                return Utilities.generateAttestationResponseFromModelType(response, token, token.getBody(AttestationResult.class));
+                com.azure.security.attestation.implementation.models.AttestationResult generatedResult = token.getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
+                return Utilities.generateAttestationResponseFromModelType(response, token, AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
             });
     }
 

@@ -4,6 +4,7 @@
 package com.azure.security.attestation.models;
 
 import java.net.URI;
+import java.util.Date;
 
 /**
  * An AttestationToken represents an <a href='https://datatracker.ietf.org/doc/html/rfc7515'>RFC 7515 JSON Web Signature</a> or
@@ -131,5 +132,47 @@ public interface AttestationToken {
      * @return URI at which an X.509 certificate can be retrieved.
      */
     String getContentType();
+
+    /**
+     * Retrieve the issuer of the attestation token. The issuer corresponds to the "iss" claim
+     * in a Json Web Token. See <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.1">RFC 7519 section 4.1.1</a>
+     * for more information.
+     *
+     * The issuer will always be the same as the attestation service instance endpoint URL.
+     *
+     * @return the iss value.
+     */
+    String getIssuer();
+
+    /**
+     * Get the Issued At property: The time at which the token was issued. The IssuedAt property
+     * corresponds to the "iat" claim in a Json Web Token. See <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.6">RFC 7519 section 4.1.6</a>
+     * for more information.
+     *
+     * @return the IssuedAt value.
+     */
+    Date getIssuedAt();
+
+    /**
+     * Get the ExpiresOn property: The expiration time after which the token is no longer valid. The ExpiresOn property
+     * corresponds to the "exp" claim in a Json Web Token.  See <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.4">RFC 7519 section 4.1.4</a>
+     *
+     * @return the expiration time for the token.
+     */
+    Date getExpiresOn();
+
+    /**
+     * Get the NotBefore property: The time before which a token cannot be considered valid. The ExpiresOn property
+     * corresponds to the "exp" claim in a Json Web Token.  See <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.4">RFC 7519 section 4.1.4</a>
+     *
+     * @return the expiration time for the token.
+     */
+    /**
+     * Get the nbf property: The not before time before which the token cannot be considered valid, in the number of
+     * seconds since 1970-01-0T00:00:00Z UTC.
+     *
+     * @return the nbf value.
+     */
+    Date getNotBefore();
 
 }

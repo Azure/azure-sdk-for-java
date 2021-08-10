@@ -28,6 +28,7 @@ import com.nimbusds.jose.crypto.opts.AllowWeakRSAKey;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.util.Base64;
 import com.nimbusds.jose.util.Base64URL;
+import com.nimbusds.jwt.JWTClaimsSet;
 
 import java.io.IOException;
 import java.net.URI;
@@ -37,6 +38,7 @@ import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -204,6 +206,50 @@ public class AttestationTokenImpl implements AttestationToken {
     @Override
     public String getContentType() {
         return jwsHeader.getContentType();
+    }
+
+    @Override
+    public String getIssuer() {
+        JWTClaimsSet claimsSet;
+        try {
+            claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
+        } catch (ParseException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+        return claimsSet.getIssuer();
+    }
+
+    @Override
+    public Date getIssuedAt() {
+        JWTClaimsSet claimsSet;
+        try {
+            claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
+        } catch (ParseException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+        return claimsSet.getIssueTime();
+    }
+
+    @Override
+    public Date getExpiresOn() {
+        JWTClaimsSet claimsSet;
+        try {
+            claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
+        } catch (ParseException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+        return claimsSet.getExpirationTime();
+    }
+
+    @Override
+    public Date getNotBefore() {
+        JWTClaimsSet claimsSet;
+        try {
+            claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
+        } catch (ParseException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+        return claimsSet.getNotBeforeTime();
     }
 
     /**
