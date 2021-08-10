@@ -37,8 +37,9 @@ import java.security.cert.CertificateEncodingException;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -220,36 +221,36 @@ public class AttestationTokenImpl implements AttestationToken {
     }
 
     @Override
-    public Date getIssuedAt() {
+    public LocalDateTime getIssuedAt() {
         JWTClaimsSet claimsSet;
         try {
             claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
         } catch (ParseException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
-        return claimsSet.getIssueTime();
+        return LocalDateTime.ofEpochSecond(claimsSet.getIssueTime().getTime() / 1000, 0, ZoneOffset.UTC);
     }
 
     @Override
-    public Date getExpiresOn() {
+    public LocalDateTime getExpiresOn() {
         JWTClaimsSet claimsSet;
         try {
             claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
         } catch (ParseException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
-        return claimsSet.getExpirationTime();
+        return LocalDateTime.ofEpochSecond(claimsSet.getExpirationTime().getTime() / 1000, 0, ZoneOffset.UTC);
     }
 
     @Override
-    public Date getNotBefore() {
+    public LocalDateTime getNotBefore() {
         JWTClaimsSet claimsSet;
         try {
             claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
         } catch (ParseException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
-        return claimsSet.getNotBeforeTime();
+        return LocalDateTime.ofEpochSecond(claimsSet.getNotBeforeTime().getTime() / 1000, 0, ZoneOffset.UTC);
     }
 
     /**
