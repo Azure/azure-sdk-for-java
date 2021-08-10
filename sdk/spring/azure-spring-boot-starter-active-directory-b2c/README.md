@@ -356,7 +356,7 @@ This scenario not support login. Just protect the server by validating the acces
             http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
                 .oauth2ResourceServer()
                 .jwt()
-                .jwtAuthenticationConverter(new AADB2CJwtBearerTokenAuthenticationConverter());
+                .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
         }
     }
     ```
