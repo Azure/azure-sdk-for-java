@@ -573,12 +573,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         final int limit = this.hasRntbdContext() ? this.pendingRequestLimit : Math.min(this.pendingRequestLimit, demand);
         if (this.pendingRequests.size() < limit) {
-            return RntbdChannelState.OK;
+            return RntbdChannelState.ok(this.pendingRequests.size());
         }
         if (this.hasRntbdContext()) {
-            return RntbdChannelState.PENDING_LIMIT;
+            return RntbdChannelState.pendingLimit(this.pendingRequests.size());
         } else {
-            return RntbdChannelState.CONTEXT_NEGOTIATION_PENDING;
+            return RntbdChannelState.contextNegotiationPending((this.pendingRequests.size()));
         }
     }
 

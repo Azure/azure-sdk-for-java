@@ -604,9 +604,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         reportIssueUnless(logger, promise != null, this, "Channel promise should not be null");
         RntbdChannelAcquisitionTimeline channelAcquisitionTimeline = promise.getChannelAcquisitionTimeline();
-        RntbdChannelAcquisitionTimeline.startNewEvent(
-            channelAcquisitionTimeline,
-            RntbdChannelAcquisitionEventType.ATTEMPT_TO_ACQUIRE_CHANNEL);
 
         if (this.isClosed()) {
             promise.setFailure(POOL_CLOSED_ON_ACQUIRE);
@@ -675,7 +672,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                             RntbdChannelState channelState = this.getChannelState(channel);
                             RntbdChannelAcquisitionTimeline.addDetailsToLastEvent(channelAcquisitionTimeline, channelState);
 
-                            if (channelState == RntbdChannelState.OK) {
+                            if (channelState.isOk()) {
                                 pendingRequestCountMin = pendingRequestCount;
                                 candidate = channel;
                             }
@@ -695,7 +692,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     RntbdChannelState channelState = this.getChannelState(channel);
                     RntbdChannelAcquisitionTimeline.addDetailsToLastEvent(channelAcquisitionTimeline, channelState);
 
-                    if (channelState == RntbdChannelState.OK) {
+                    if (channelState.isOk()) {
                         if (this.availableChannels.remove(channel)) {
                             this.doAcquireChannel(promise, channel);
                             return;
@@ -1237,7 +1234,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         RntbdChannelState channelState = this.getChannelState(first);
         RntbdChannelAcquisitionEvent.addDetails(event, channelState);
 
-        if (channelState == RntbdChannelState.OK) {
+        if (channelState.isOk()) {
             return first;
         }
 
@@ -1253,7 +1250,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 RntbdChannelState state = this.getChannelState(next);
                 RntbdChannelAcquisitionEvent.addDetails(event, channelState);
 
-                if (state == RntbdChannelState.OK) {
+                if (channelState.isOk()) {
                     return next;
                 }
                 this.availableChannels.offer(next);

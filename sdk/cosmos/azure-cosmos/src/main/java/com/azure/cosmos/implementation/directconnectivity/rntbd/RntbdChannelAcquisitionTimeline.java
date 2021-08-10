@@ -6,12 +6,14 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RntbdChannelAcquisitionTimeline {
     private static final Logger logger = LoggerFactory.getLogger(RntbdChannelAcquisitionTimeline.class);
     private final List<RntbdChannelAcquisitionEvent> events;
+    private volatile RntbdChannelAcquisitionEvent currentEvent;
 
     public RntbdChannelAcquisitionTimeline() {
         this.events = new ArrayList<>();
@@ -26,8 +28,16 @@ public class RntbdChannelAcquisitionTimeline {
         RntbdChannelAcquisitionEventType eventType) {
 
         if (timeline != null) {
-            RntbdChannelAcquisitionEvent newEvent = new RntbdChannelAcquisitionEvent(eventType);
+            Instant now = Instant.now();
+
+            if (timeline.currentEvent != null) {
+                timeline.currentEvent.complete(now);
+            }
+
+            RntbdChannelAcquisitionEvent newEvent = new RntbdChannelAcquisitionEvent(eventType, now);
             timeline.getEvents().add(newEvent);
+            timeline.currentEvent = newEvent;
+
             return newEvent;
         }
 
@@ -35,12 +45,8 @@ public class RntbdChannelAcquisitionTimeline {
     }
 
     public static void addDetailsToLastEvent(RntbdChannelAcquisitionTimeline timeline, Object detail) {
-        if (timeline != null){
+        if (timeline != null && timeline.events.size() > 0){
             RntbdChannelAcquisitionEvent lastEvent = timeline.events.get(timeline.events.size()-1);
-            if (lastEvent == null) {
-                logger.warn("Can not find last event");
-            }
-
             RntbdChannelAcquisitionEvent.addDetails(lastEvent, detail);
         }
     }
