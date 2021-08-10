@@ -13,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.List;
 
 /** An immutable client-side representation of an outbound rule. */
-@Fluent()
 public interface LoadBalancerOutboundRule
     extends HasInnerModel<OutboundRuleInner>,
     HasProtocol<LoadBalancerOutboundRuleProtocol>,
@@ -33,7 +32,7 @@ public interface LoadBalancerOutboundRule
     LoadBalancerBackend backend();
 
     /** @return the number of outbound ports to be used for NAT */
-    int allocatedOutboundPortsNumber(); // TODO: need this or not?
+    int allocatedOutboundPorts(); // TODO: need this or not?
 
     /** @return the provisioning state of the outbound rule resource */
     ProvisioningState provisioningState();
@@ -95,15 +94,18 @@ public interface LoadBalancerOutboundRule
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithFrontend<ParentT> {
+            /**
+             * Specifies a frontend for outbound rule to apply to
+             * @param name the frontend name
+             * @return the next stage of the parent definition to return to after attaching this definition
+             */
             LoadBalancerOutboundRule.DefinitionStages.WithAttach<ParentT> toFrontend(String name);
-        }
 
-        /**
-         * The stage of an outbound rule definition allowing to specify the frontend IP address.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
-         */
-        interface WithFrontends<ParentT> {
+            /**
+             * Specifies a list of frontends for outbound rule to apply to
+             * @param names a list of frontend names
+             * @return the next stage of the parent definition to return to after attaching this definition
+             */
             LoadBalancerOutboundRule.DefinitionStages.WithAttach<ParentT> toFrontends(List<String> names);
         }
 
@@ -149,7 +151,6 @@ public interface LoadBalancerOutboundRule
         LoadBalancerOutboundRule.DefinitionStages.WithProtocol<ParentT>,
         LoadBalancerOutboundRule.DefinitionStages.WithBackend<ParentT>,
         LoadBalancerOutboundRule.DefinitionStages.WithFrontend<ParentT>,
-        LoadBalancerOutboundRule.DefinitionStages.WithFrontends<ParentT>,
         LoadBalancerOutboundRule.DefinitionStages.WithAttach<ParentT> {
     }
 
@@ -168,7 +169,19 @@ public interface LoadBalancerOutboundRule
 
         /** The stage of an outbound rule update allowing to specify a frontend for the rule to apply to. */
         interface WithFrontend {
+            /**
+             * Specifies the frontend IP Address
+             * @param name frontend name
+             * @return the next stage of the Update
+             */
             Update toFrontend(String name);
+
+            /**
+             * Specifies the frontend IP Addresses
+             * @param names a list of frontend names
+             * @return the next stage of the Update
+             */
+            Update toFrontends(List<String> names);
         }
 
         /** The stage of an outbound rule update allowing to specify frontends for the rule to apply to. */
