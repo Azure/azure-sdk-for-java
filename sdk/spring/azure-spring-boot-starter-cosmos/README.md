@@ -39,16 +39,45 @@
 - Supports [spring-boot-starter-data-rest](https://projects.spring.io/spring-data-rest/).
 - Supports List and nested type in domain class.
 
+### Configuration Options
+Azure Spring Boot Cosmos Starter deprecates all legacy properties of which the prefix is `azure.cosmos` and uses `spring.cloud.azure.cosmos` instead.
+When a deprecated property is detected while its active property is not found, the active property will be configured into application environment with value from the deprecated property.
+
+If you load configuration properties from Azure Key Vault, the preceding detection and replacement are also applicable for Key Vault property sources. Replaced properties from Key Vault have higher priorities than local ones.
+Note that replaced properties will not be refreshed as common properties from Key Vault property source.
+#### Active Properties
+
+|Name|Description|Default Value|Comment|
+|:---|:---|:---|:---
+spring.cloud.azure.cosmos.connection-mode|Represents the connection mode to be used by the client in the Azure Cosmos DB database service.|||
+spring.cloud.azure.cosmos.consistency-level|Document DB consistency level.|||
+spring.cloud.azure.cosmos.database|Document DB database name.|||
+spring.cloud.azure.cosmos.key|Document DB key.|||
+spring.cloud.azure.cosmos.populate-query-metrics|Populate Diagnostics Strings and Query metrics.|||
+spring.cloud.azure.cosmos.uri|Document DB URI.|||
+
+#### Deprecated Properties
+|Name|Description|Default Value|Comment|
+|:---|:---|:---|:---
+spring.cloud.azure.cosmos.allow-telemetry|Whether allow Microsoft to collect telemetry data.|true||
+azure.cosmos.allow-telemetry|Whether allow Microsoft to collect telemetry data.|true||
+azure.cosmos.connection-mode|Represents the connection mode to be used by the client in the Azure Cosmos DB database service.| |Please use **spring.cloud.azure.cosmos.connection-mode** instead.|
+azure.cosmos.consistency-level|Document DB consistency level.| |Please use **spring.cloud.azure.cosmos.consistency-level** instead.|
+azure.cosmos.database|Document DB database name.| |Please use **spring.cloud.azure.cosmos.database** instead.|
+azure.cosmos.key|Document DB key.| |Please use **spring.cloud.azure.cosmos.key** instead.|
+azure.cosmos.populate-query-metrics|Populate Diagnostics Strings and Query metrics.| |Please use **spring.cloud.azure.cosmos.populate-query-metrics** instead.|
+azure.cosmos.uri|Document DB URI.| |Please use **spring.cloud.azure.cosmos.uri** instead.|
+
 ## Examples
 ### Add the property setting
 
 Open `application.properties` file and add below properties with your Cosmos DB credentials.
 
 ```properties
-azure.cosmos.uri=your-cosmos-uri
-azure.cosmos.key=your-cosmos-key
-azure.cosmos.database=your-cosmos-databasename
-azure.cosmos.populateQueryMetrics=true
+spring.cloud.azure.cosmos.uri=your-cosmos-uri
+spring.cloud.azure.cosmos.key=your-cosmos-key
+spring.cloud.azure.cosmos.database=your-cosmos-databasename
+spring.cloud.azure.cosmos.populateQueryMetrics=true
 secondary-key=put-your-cosmos-secondary-key-here
 ```
 
