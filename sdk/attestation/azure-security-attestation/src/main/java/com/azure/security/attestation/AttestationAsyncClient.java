@@ -58,6 +58,9 @@ public final class AttestationAsyncClient {
     /**
      * Retrieves metadata about the attestation signing keys in use by the attestation service.
      *
+     * <p><strong>Retrieve the OpenID metadata for this async client.</strong></p>
+     * {@codesnippet com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadataWithResponse}
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
@@ -74,6 +77,9 @@ public final class AttestationAsyncClient {
 
     /**
      * Retrieves metadata about the attestation signing keys in use by the attestation service.
+
+     * <p><strong>Retrieve the OpenID metadata for this async client.</strong></p>
+     * {@codesnippet com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata}
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -88,8 +94,12 @@ public final class AttestationAsyncClient {
 
     /**
      * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
-     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
-     * to validate an attestation token returned by the service.
+     * <p>
+     *  An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     *  to validate an attestation token returned by the service.
+     * </p>
+     * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
+     * {@codesnippet com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners}
      *
      * @return Returns an array of {@link AttestationSigner} objects.
      */
@@ -101,9 +111,12 @@ public final class AttestationAsyncClient {
 
     /**
      * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
-     *
+     *<p>
      * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
      * to validate an attestation token returned by the service.
+     * </p>
+     * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
+     * {@codesnippet com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse}
      *
      * @return Returns an array of {@link AttestationSigner} objects.
      */

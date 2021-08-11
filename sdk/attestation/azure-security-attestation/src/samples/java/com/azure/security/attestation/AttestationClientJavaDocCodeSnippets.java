@@ -4,7 +4,12 @@
 
 package com.azure.security.attestation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationSigner;
+import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 
 public class AttestationClientJavaDocCodeSnippets {
     public static AttestationClient createSyncClient() {
@@ -114,6 +119,43 @@ public class AttestationClientJavaDocCodeSnippets {
         String draftPolicy = getOptions.getDraftPolicyForAttestation();
         // END: com.azure.security.attestation.models..getDraftPolicyForAttestation
 
+    }
+
+    public static void attestAsync1() {
+        byte[] runtimeData = null;
+        byte[] inittimeData = null;
+        byte[] openEnclaveReport = null;
+        byte[] sgxQuote = null;
+
+        AttestationAsyncClient client = null;
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadataWithResponse
+        Mono<Response<Object>> response = client.getOpenIdMetadataWithResponse();
+        // END: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadataWithResponse
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata
+        Mono<Object> openIdMetadata = client.getOpenIdMetadata();
+        // END: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
+        Mono<AttestationSigner[]> signers = client.getAttestationSigners();
+        Arrays.stream(signers.block()).forEach(cert -> {
+            System.out.println("Found certificate.");
+            if (cert.getKeyId() != null) {
+                System.out.println("    Certificate Key ID: " + cert.getKeyId());
+            } else {
+                System.out.println("    Signer does not have a Key ID");
+            }
+            Arrays.stream(cert.getCertificates()).forEach(chainElement -> {
+                System.out.println("        Cert Subject: " + chainElement.getSubjectDN().getName());
+                System.out.println("        Cert Issuer: " + chainElement.getIssuerDN().getName());
+            });
+        });
+        // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
+
+        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
+        Mono<Response<AttestationSigner[]>> responseOfSigners = client.getAttestationSignersWithResponse();
+        // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
     }
 
 }
