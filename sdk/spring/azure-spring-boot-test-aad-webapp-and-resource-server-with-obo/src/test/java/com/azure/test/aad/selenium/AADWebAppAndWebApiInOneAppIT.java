@@ -100,6 +100,18 @@ public class AADWebAppAndWebApiInOneAppIT {
             aadWebApiITHelper.httpGetStringByAccessToken("/api/call-graph"));
     }
 
+    @Test
+    public void testCallGraphApiOfResourceServerWithSession() {
+        AADWebApiITHelper aadWebApiITHelper = new AADWebApiITHelper(
+            DumbApp.class,
+            properties,
+            AAD_MULTI_TENANT_CLIENT_ID,
+            AAD_MULTI_TENANT_CLIENT_SECRET,
+            Collections.singletonList(MULTI_TENANT_SCOPE_GRAPH_READ));
+        assertEquals("Graph response success.",
+            aadWebApiITHelper.httpGetCookieByVisitEndpointsByCookie("/api/call-graph", "/api/call-graph"));
+    }
+
     @SpringBootApplication
     @ImportAutoConfiguration(AADWebApplicationAndResourceServerITConfig.class)
     public static class DumbApp {
