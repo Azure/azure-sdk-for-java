@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.Constants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.config.Constants.FEATURE_MANAGEMENT_KEY;
 import static com.azure.spring.cloud.config.Constants.KEY_VAULT_CONTENT_TYPE;
@@ -30,11 +29,11 @@ import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.feature.management.entity.Feature;
-import com.azure.spring.cloud.config.feature.management.entity.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.config.feature.management.entity.FeatureManagementItem;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
@@ -115,7 +114,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         this.keyVaultClientProvider = keyVaultClientProvider;
     }
 
-    private static List<Object> convertToListOrEmptyList(LinkedHashMap<String, Object> parameters, String key) {
+    private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
         List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
             parameters.get(key),
             new TypeReference<List<Object>>() {
@@ -158,7 +157,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         settingSelector.setKeyFilter(context + "*");
         List<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
 
-        List<ConfigurationSetting> features = new ArrayList<ConfigurationSetting>();
+        List<ConfigurationSetting> features = new ArrayList<>();
         // Reading In Features
         if (configStore.getFeatureFlags().getEnabled()) {
             settingSelector.setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
@@ -253,9 +252,11 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         throws IOException {
         // Reading In Features
         for (ConfigurationSetting setting : settings) {
-            Object feature = createFeature(setting);
-            if (feature != null) {
-                featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
+            if (setting instanceof FeatureFlagConfigurationSetting) {
+                Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
+                if (feature != null) {
+                    featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
+                }
             }
         }
         return featureSet;
@@ -266,63 +267,51 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      *
      * @param item Used to create Features before being converted to be set into properties.
      * @return Feature created from KeyValueItem
-     * @throws IOException - If a ConfigurationSetting isn't of the feature flag content type. 
+     * @throws IOException - If a ConfigurationSetting isn't of the feature flag content type.
      */
     @SuppressWarnings("unchecked")
-    private Object createFeature(ConfigurationSetting item) throws IOException {
-        if (item.getContentType() == null || !item.getContentType().equals(FEATURE_FLAG_CONTENT_TYPE)) {
-            String message = String.format("Found Feature Flag %s with invalid Content Type of %s. Ignoring and continuing to process Feature Flags.", item.getKey(),
-                item.getContentType());
-            LOGGER.warn(message);
-            return null;
-        }
+    private Object createFeature(FeatureFlagConfigurationSetting item) throws IOException {
         String key = getFeatureSimpleName(item);
-        try {
-            FeatureManagementItem featureItem = MAPPER.readValue(item.getValue(), FeatureManagementItem.class);
-            Feature feature = new Feature(key, featureItem);
-            HashMap<Integer, FeatureFilterEvaluationContext> featureEnabledFor = feature.getEnabledFor();
+        Feature feature = new Feature(key, item);
+        HashMap<Integer, FeatureFlagFilter> featureEnabledFor = feature.getEnabledFor();
 
-            // Setting Enabled For to null, but enabled = true will result in the feature
-            // being on. This is the case of a feature is on/off and set to on. This is to
-            // tell the difference between conditional/off which looks exactly the same...
-            // It should never be the case of Conditional On, and no filters coming from
-            // Azure, but it is a valid way from the config file, which should result in
-            // false being returned.
-            if (featureEnabledFor.size() == 0 && featureItem.getEnabled()) {
-                return true;
-            } else if (!featureItem.getEnabled()) {
-                return false;
-            }
-            for (int filter = 0; filter < feature.getEnabledFor().size(); filter++) {
-                FeatureFilterEvaluationContext featureFilterEvaluationContext = featureEnabledFor.get(filter);
-                LinkedHashMap<String, Object> parameters = featureFilterEvaluationContext.getParameters();
-
-                if (parameters == null || !featureEnabledFor.get(filter).getName().equals(TARGETING_FILTER)) {
-                    continue;
-                }
-
-                Object audienceObject = parameters.get(AUDIENCE);
-                if (audienceObject != null) {
-                    parameters = (LinkedHashMap<String, Object>) audienceObject;
-                }
-
-                List<Object> users = convertToListOrEmptyList(parameters, USERS_CAPS);
-                List<Object> groupRollouts = convertToListOrEmptyList(parameters, GROUPS_CAPS);
-
-                switchKeyValues(parameters, USERS_CAPS, USERS, mapValuesByIndex(users));
-                switchKeyValues(parameters, GROUPS_CAPS, GROUPS, mapValuesByIndex(groupRollouts));
-                switchKeyValues(parameters, DEFAULT_ROLLOUT_PERCENTAGE_CAPS, DEFAULT_ROLLOUT_PERCENTAGE,
-                    parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
-
-                featureFilterEvaluationContext.setParameters(parameters);
-                featureEnabledFor.put(filter, featureFilterEvaluationContext);
-                feature.setEnabledFor(featureEnabledFor);
-            }
-            return feature;
-
-        } catch (IOException e) {
-            throw new IOException("Unabled to parse Feature Management values from Azure.", e);
+        // Setting Enabled For to null, but enabled = true will result in the feature
+        // being on. This is the case of a feature is on/off and set to on. This is to
+        // tell the difference between conditional/off which looks exactly the same...
+        // It should never be the case of Conditional On, and no filters coming from
+        // Azure, but it is a valid way from the config file, which should result in
+        // false being returned.
+        if (featureEnabledFor.size() == 0 && item.isEnabled()) {
+            return true;
+        } else if (!item.isEnabled()) {
+            return false;
         }
+        for (int filter = 0; filter < feature.getEnabledFor().size(); filter++) {
+            FeatureFlagFilter featureFilterEvaluationContext = featureEnabledFor.get(filter);
+            Map<String, Object> parameters = featureFilterEvaluationContext.getParameters();
+
+            if (parameters == null || !featureEnabledFor.get(filter).getName().equals(TARGETING_FILTER)) {
+                continue;
+            }
+
+            Object audienceObject = parameters.get(AUDIENCE);
+            if (audienceObject != null) {
+                parameters = (Map<String, Object>) audienceObject;
+            }
+
+            List<Object> users = convertToListOrEmptyList(parameters, USERS_CAPS);
+            List<Object> groupRollouts = convertToListOrEmptyList(parameters, GROUPS_CAPS);
+
+            switchKeyValues(parameters, USERS_CAPS, USERS, mapValuesByIndex(users));
+            switchKeyValues(parameters, GROUPS_CAPS, GROUPS, mapValuesByIndex(groupRollouts));
+            switchKeyValues(parameters, DEFAULT_ROLLOUT_PERCENTAGE_CAPS, DEFAULT_ROLLOUT_PERCENTAGE,
+                parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
+
+            featureFilterEvaluationContext.setParameters(parameters);
+            featureEnabledFor.put(filter, featureFilterEvaluationContext);
+            feature.setEnabledFor(featureEnabledFor);
+        }
+        return feature;
 
     }
 
