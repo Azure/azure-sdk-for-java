@@ -29,4 +29,14 @@ public interface Feature extends
      * @return the state of the previewed feature
      */
     String state();
+
+    /**
+     * @return the resource provider namespace of the feature
+     */
+    String resourceProviderName();
+
+    /**
+     * @return the name of the feature
+     */
+    String featureName();
 }

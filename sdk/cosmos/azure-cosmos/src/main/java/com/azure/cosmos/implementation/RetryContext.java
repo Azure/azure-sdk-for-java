@@ -56,4 +56,8 @@ public class RetryContext {
             this.retryStartTime = Instant.now();
         }
     }
+
+    public Instant getRetryStartTime() {
+        return retryStartTime;
+    }
 }

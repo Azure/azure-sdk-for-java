@@ -73,6 +73,13 @@ public interface AvsClient {
     ClustersClient getClusters();
 
     /**
+     * Gets the DatastoresClient object to access its operations.
+     *
+     * @return the DatastoresClient object.
+     */
+    DatastoresClient getDatastores();
+
+    /**
      * Gets the HcxEnterpriseSitesClient object to access its operations.
      *
      * @return the HcxEnterpriseSitesClient object.
@@ -85,4 +92,53 @@ public interface AvsClient {
      * @return the AuthorizationsClient object.
      */
     AuthorizationsClient getAuthorizations();
+
+    /**
+     * Gets the GlobalReachConnectionsClient object to access its operations.
+     *
+     * @return the GlobalReachConnectionsClient object.
+     */
+    GlobalReachConnectionsClient getGlobalReachConnections();
+
+    /**
+     * Gets the WorkloadNetworksClient object to access its operations.
+     *
+     * @return the WorkloadNetworksClient object.
+     */
+    WorkloadNetworksClient getWorkloadNetworks();
+
+    /**
+     * Gets the CloudLinksClient object to access its operations.
+     *
+     * @return the CloudLinksClient object.
+     */
+    CloudLinksClient getCloudLinks();
+
+    /**
+     * Gets the AddonsClient object to access its operations.
+     *
+     * @return the AddonsClient object.
+     */
+    AddonsClient getAddons();
+
+    /**
+     * Gets the ScriptPackagesClient object to access its operations.
+     *
+     * @return the ScriptPackagesClient object.
+     */
+    ScriptPackagesClient getScriptPackages();
+
+    /**
+     * Gets the ScriptCmdletsClient object to access its operations.
+     *
+     * @return the ScriptCmdletsClient object.
+     */
+    ScriptCmdletsClient getScriptCmdlets();
+
+    /**
+     * Gets the ScriptExecutionsClient object to access its operations.
+     *
+     * @return the ScriptExecutionsClient object.
+     */
+    ScriptExecutionsClient getScriptExecutions();
 }

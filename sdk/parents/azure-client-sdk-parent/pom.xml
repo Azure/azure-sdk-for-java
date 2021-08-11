@@ -861,7 +861,7 @@
           <name>generate-overview</name>
         </property>
         <file>
-          <exists>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</exists>
         </file>
       </activation>
       <build>
@@ -916,7 +916,7 @@
           <name>inject-codesnippets</name>
         </property>
         <file>
-          <exists>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</exists>
+          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/inject_codesnippets.py</exists>
         </file>
       </activation>
       <build>

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import reactor.core.publisher.Mono;
 
 /** Implementation for ApplicationGatewayFrontend. */
 class ApplicationGatewayFrontendImpl
@@ -148,11 +149,12 @@ class ApplicationGatewayFrontendImpl
 
     @Override
     public PublicIpAddress getPublicIpAddress() {
-        final String pipId = this.publicIpAddressId();
-        if (pipId == null) {
-            return null;
-        } else {
-            return this.parent().manager().publicIpAddresses().getById(pipId);
-        }
+        return this.getPublicIpAddressAsync().block();
+    }
+
+    @Override
+    public Mono<PublicIpAddress> getPublicIpAddressAsync() {
+        String pipId = this.publicIpAddressId();
+        return pipId == null ? Mono.empty() : this.parent().manager().publicIpAddresses().getByIdAsync(pipId);
     }
 }

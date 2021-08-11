@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -64,7 +65,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
     @ServiceInterface(name = "MonitorClientLogProf")
     private interface LogProfilesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}")
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -74,8 +75,8 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}")
+        @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogProfileResourceInner>> get(
@@ -83,10 +84,11 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
             @PathParam("logProfileName") String logProfileName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}")
+        @Headers({"Content-Type: application/json"})
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogProfileResourceInner>> createOrUpdate(
@@ -95,10 +97,11 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") LogProfileResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}")
+        @Headers({"Content-Type: application/json"})
+        @Patch("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles/{logProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogProfileResourceInner>> update(
@@ -107,16 +110,18 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
             @PathParam("logProfileName") String logProfileName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") LogProfileResourcePatch logProfilesResource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles")
+        @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/logprofiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogProfileCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -157,7 +162,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -262,6 +267,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -271,8 +277,9 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                             logProfileName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -303,9 +310,16 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .get(this.client.getEndpoint(), logProfileName, apiVersion, this.client.getSubscriptionId(), context);
+            .get(
+                this.client.getEndpoint(),
+                logProfileName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
@@ -363,7 +377,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
-     * @param parameters The log profile resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -393,6 +407,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
             parameters.validate();
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -403,15 +418,16 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
-     * @param parameters The log profile resource.
+     * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -442,6 +458,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
             parameters.validate();
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -450,6 +467,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -457,7 +475,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
-     * @param parameters The log profile resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -481,7 +499,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
-     * @param parameters The log profile resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -496,7 +514,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
-     * @param parameters The log profile resource.
+     * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -513,7 +531,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
-     * @param logProfilesResource The log profile resource for patch operations.
+     * @param logProfilesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -544,6 +562,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
             logProfilesResource.validate();
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -554,15 +573,16 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                             logProfileName,
                             apiVersion,
                             logProfilesResource,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
-     * @param logProfilesResource The log profile resource for patch operations.
+     * @param logProfilesResource Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -594,6 +614,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
             logProfilesResource.validate();
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -602,6 +623,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                 logProfileName,
                 apiVersion,
                 logProfilesResource,
+                accept,
                 context);
     }
 
@@ -609,7 +631,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
-     * @param logProfilesResource The log profile resource for patch operations.
+     * @param logProfilesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -633,7 +655,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
-     * @param logProfilesResource The log profile resource for patch operations.
+     * @param logProfilesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -648,7 +670,7 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
-     * @param logProfilesResource The log profile resource for patch operations.
+     * @param logProfilesResource Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -683,15 +705,17 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
+                    service
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<LogProfileResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -718,9 +742,10 @@ public final class LogProfilesClientImpl implements LogProfilesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

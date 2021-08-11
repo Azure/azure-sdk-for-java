@@ -245,8 +245,8 @@ public final class TableServiceAsyncClient {
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
-            return implementation.getTables().createWithResponseAsync(properties, null,
-                ResponseFormat.RETURN_NO_CONTENT, null, context)
+            return implementation.getTables()
+                .createWithResponseAsync(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, getTableClient(tableName)));
         } catch (RuntimeException ex) {
@@ -497,11 +497,15 @@ public final class TableServiceAsyncClient {
      * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the properties of the account's Table service.</p>
      * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getProperties}
      *
      * @return A {@link Mono} containing the {@link TableServiceProperties properties} of the account's Table service.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableServiceProperties> getProperties() {
@@ -512,6 +516,8 @@ public final class TableServiceAsyncClient {
      * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the properties of the account's Table service. Prints out the details of the
      * {@link Response HTTP response}.</p>
@@ -519,6 +525,8 @@ public final class TableServiceAsyncClient {
      *
      * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains the
      * {@link TableServiceProperties properties} of the account's Table service.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableServiceProperties>> getPropertiesWithResponse() {
@@ -530,6 +538,7 @@ public final class TableServiceAsyncClient {
 
         try {
             return this.implementation.getServices().getPropertiesWithResponseAsync(null, null, context)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, toTableServiceProperties(response.getValue())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -605,6 +614,8 @@ public final class TableServiceAsyncClient {
      * Sets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service.</p>
      * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties}
@@ -612,6 +623,8 @@ public final class TableServiceAsyncClient {
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      *
      * @return An empty {@link Mono}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(TableServiceProperties tableServiceProperties) {
@@ -622,14 +635,18 @@ public final class TableServiceAsyncClient {
      * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service. Prints out the details of the
-     * {@link Response HTTP response}.</p></p>
+     * {@link Response HTTP response}.</p>
      * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.setPropertiesWithResponse#TableServiceProperties}
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      *
      * @return A {@link Mono} containing the {@link Response HTTP response}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesWithResponse(TableServiceProperties tableServiceProperties) {
@@ -641,8 +658,10 @@ public final class TableServiceAsyncClient {
 
         try {
             return
-                this.implementation.getServices().setPropertiesWithResponseAsync(
-                    toImplTableServiceProperties(tableServiceProperties), null, null, context)
+                this.implementation.getServices()
+                    .setPropertiesWithResponseAsync(toImplTableServiceProperties(tableServiceProperties), null, null,
+                        context)
+                    .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -714,11 +733,15 @@ public final class TableServiceAsyncClient {
      * Retrieves statistics related to replication for the account's Table service. It is only available on the
      * secondary location endpoint when read-access geo-redundant replication is enabled for the account.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the replication statistics of the account's Table service.</p>
      * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getStatistics}
      *
      * @return A {@link Mono} containing {@link TableServiceStatistics statistics} for the account's Table service.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableServiceStatistics> getStatistics() {
@@ -729,6 +752,8 @@ public final class TableServiceAsyncClient {
      * Retrieves statistics related to replication for the account's Table service. It is only available on the
      * secondary location endpoint when read-access geo-redundant replication is enabled for the account.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the replication statistics of the account's Table service. Prints out the details of the
      * {@link Response HTTP response}.</p>
@@ -736,6 +761,8 @@ public final class TableServiceAsyncClient {
      *
      * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains
      * {@link TableServiceStatistics statistics} for the account's Table service.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableServiceStatistics>> getStatisticsWithResponse() {
@@ -747,6 +774,7 @@ public final class TableServiceAsyncClient {
 
         try {
             return this.implementation.getServices().getStatisticsWithResponseAsync(null, null, context)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, toTableServiceStatistics(response.getValue())));
         } catch (RuntimeException e) {
             return monoError(logger, e);

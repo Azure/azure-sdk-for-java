@@ -40,6 +40,7 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
@@ -78,7 +79,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -493,7 +493,8 @@ public class IdentityClient {
         PowershellManager legacyPowerShellManager = Platform.isWindows()
             ? new PowershellManager(LEGACY_WINDOWS_PS_EXECUTABLE) : null;
 
-        List<PowershellManager> powershellManagers = Arrays.asList(defaultPowerShellManager);
+        List<PowershellManager> powershellManagers = new ArrayList<>(2);
+        powershellManagers.add(defaultPowerShellManager);
         if (legacyPowerShellManager != null) {
             powershellManagers.add(legacyPowerShellManager);
         }
@@ -735,8 +736,16 @@ public class IdentityClient {
         }
 
         return publicClientApplicationAccessor.getValue()
-                .flatMap(pc ->  Mono.fromFuture(pc.acquireToken(parametersBuilder.build())).map(MsalToken::new));
-    }
+            .flatMap(pc ->  Mono.fromFuture(pc.acquireToken(parametersBuilder.build()))
+                .onErrorResume(t -> {
+                    if (t instanceof MsalInteractionRequiredException) {
+                        return Mono.error(new CredentialUnavailableException("Failed to acquire token with"
+                            + " VS code credential", t));
+                    }
+                    return Mono.error(new ClientAuthenticationException("Failed to acquire token with"
+                        + " VS code credential", null, t));
+                })
+                .map(MsalToken::new));    }
 
     /**
      * Asynchronously acquire a token from Active Directory with an authorization code from an oauth flow.

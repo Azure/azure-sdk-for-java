@@ -64,6 +64,7 @@ public class PartitionBasedLoadBalancerTest {
     private final String eventHubName = "test-event-hub";
     private final String consumerGroupName = "test-consumer-group";
     private final ClientLogger logger = new ClientLogger(PartitionBasedLoadBalancerTest.class);
+    private final boolean batchReceiveMode = false;
 
     private List<EventData> eventDataList;
     private CheckpointStore checkpointStore;
@@ -80,12 +81,12 @@ public class PartitionBasedLoadBalancerTest {
     @Mock
     private PartitionProcessor partitionProcessor;
 
-    private boolean batchReceiveMode = false;
     private TracerProvider tracerProvider;
+    private AutoCloseable mockCloseable;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mockCloseable = MockitoAnnotations.openMocks(this);
 
         final Date enqueuedTime = Date.from(Instant.now());
         final byte[] contents = "Hello, world".getBytes(StandardCharsets.UTF_8);
@@ -95,13 +96,19 @@ public class PartitionBasedLoadBalancerTest {
                 final EventData eventData = TestUtils.getEventData(contents, (long) index, (long) index, enqueuedTime);
                 eventDataList.add(eventData);
             });
+
+        when(eventHubClientBuilder.getPrefetchCount()).thenReturn(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         this.checkpointStore = new SampleCheckpointStore();
         this.tracerProvider = new TracerProvider(Collections.emptyList());
     }
 
     @AfterEach
-    public void teardown() {
+    public void teardown() throws Exception {
+        if (mockCloseable != null) {
+            mockCloseable.close();
+        }
+
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         this.checkpointStore = null;

@@ -89,6 +89,7 @@ private object CosmosTableSchemaInferrer
     if (cosmosInferenceConfig.inferSchemaEnabled) {
       val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
       val sourceContainer = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
+      sourceContainer.openConnectionsAndInitCaches().block()
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {

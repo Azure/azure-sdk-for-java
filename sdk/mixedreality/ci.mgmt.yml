@@ -8,7 +8,15 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mixedreality/
+      - sdk/mixedreality/ci.mgmt.yml
+      - sdk/mixedreality/mgmt-v2019_02_28_preview/
+      - sdk/mixedreality/mgmt-v2020_05_01/
+      - sdk/mixedreality/mgmt-v2021_01_01/
+    exclude:
+      - sdk/mixedreality/pom.xml
+      - sdk/mixedreality/mgmt-v2019_02_28_preview/pom.xml
+      - sdk/mixedreality/mgmt-v2020_05_01/pom.xml
+      - sdk/mixedreality/mgmt-v2021_01_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +27,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mixedreality/
+      - sdk/mixedreality/ci.mgmt.yml
+      - sdk/mixedreality/mgmt-v2019_02_28_preview/
+      - sdk/mixedreality/mgmt-v2020_05_01/
+      - sdk/mixedreality/mgmt-v2021_01_01/
+    exclude:
+      - sdk/mixedreality/pom.xml
+      - sdk/mixedreality/mgmt-v2019_02_28_preview/pom.xml
+      - sdk/mixedreality/mgmt-v2020_05_01/pom.xml
+      - sdk/mixedreality/mgmt-v2021_01_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

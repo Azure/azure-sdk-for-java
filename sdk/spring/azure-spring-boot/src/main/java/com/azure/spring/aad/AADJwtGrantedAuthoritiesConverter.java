@@ -13,10 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static com.azure.spring.aad.webapi.AADResourceServerProperties.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
 
 /**
  * Extracts the {@link GrantedAuthority}s from scope attributes typically found in a {@link Jwt}.
@@ -24,16 +25,6 @@ import java.util.stream.Stream;
 public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADJwtGrantedAuthoritiesConverter.class);
-    public static final Map<String, String> DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
-    public static final String DEFAULT_AUTHORITY_CLAIM_NAME = "scp";
-    public static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
-
-    static {
-        Map<String, String> claimAuthorityMap = new HashMap<>();
-        claimAuthorityMap.put(DEFAULT_AUTHORITY_CLAIM_NAME, DEFAULT_AUTHORITY_PREFIX);
-        claimAuthorityMap.put("roles", "APPROLE_");
-        DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP = Collections.unmodifiableMap(claimAuthorityMap);
-    }
 
     private final Map<String, String> claimToAuthorityPrefixMap;
 
@@ -48,7 +39,7 @@ public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collect
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        claimToAuthorityPrefixMap.forEach((authoritiesClaimName, authorityPrefix) -> {
+        claimToAuthorityPrefixMap.forEach((authoritiesClaimName, authorityPrefix) ->
             Optional.of(authoritiesClaimName)
                     .map(jwt::getClaim)
                     .map(this::getClaimValueAsCollection)
@@ -56,9 +47,7 @@ public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collect
                     .orElseGet(Stream::empty)
                     .map(authority -> authorityPrefix + authority)
                     .map(SimpleGrantedAuthority::new)
-                    .forEach(grantedAuthorities::add);
-
-        });
+                    .forEach(grantedAuthorities::add));
         LOGGER.debug("User {}'s authorities created from jwt token: {}.", jwt.getSubject(), grantedAuthorities);
         return grantedAuthorities;
     }

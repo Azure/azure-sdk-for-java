@@ -19,26 +19,31 @@ Run `generate.ps1` in this directory to generate the code.
 ### Code generation settings
 
 ``` yaml
-#When generating from the official specifications repository
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/attestation/data-plane/Microsoft.Attestation/stable/2020-10-01/attestation.json
-
-output-folder: "../"
+tag: package-2020-10-01
+require:
+  - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/attestation/data-plane/readme.md
+java: true
+output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
-use: '@autorest/java@4.0.4'
-java:
-    add-context-parameter: true
-    namespace: com.azure.security.attestation
-    add-credentials: true
-    sync-methods: all
-    client-side-validations: true
-#    generate-client-as-impl: true
-#    implementation-subpackage: implementation
-#    models-subpackage: implementation.models
-    context-client-method-parameter: true
-    custom-types-subpackage: models
-    generate-sync-async-clients: true
-    required-fields-as-ctor-args: true
-    v3: true
+namespace: com.azure.security.attestation
+generate-client-as-impl: true
+generate-client-interfaces: false
+custom-types: AttestationType
+custom-types-subpackage: models
+#implementation-subpackage: implementation
+models-subpackage: implementation.models
+add-context-parameter: true
+sync-methods: all
+client-side-validations: true
+context-client-method-parameter: true
+#generate-sync-async-clients: true
+required-fields-as-ctor-args: true
+v3: true
+add-credentials: true
+credential-types: tokencredential
+credential-scopes: 'https://attest.azure.net/.default'
+#required-parameter-client-methods: true
+
 ```
 
 ## This directive removes the specified enum values from the swagger so the code generator will expose IfNonMatch header as an option instead of always attaching it to requests with its only default value.

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -52,12 +53,15 @@ public final class OperationsClientImpl implements OperationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientOperati")
     private interface OperationsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/providers/microsoft.insights/operations")
+        @Headers({"Content-Type: application/json"})
+        @Get("/providers/Microsoft.Insights/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResultInner>> list(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -76,9 +80,10 @@ public final class OperationsClientImpl implements OperationsClient {
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -99,8 +104,9 @@ public final class OperationsClientImpl implements OperationsClient {
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, context);
+        return service.list(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**

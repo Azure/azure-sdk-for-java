@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -54,8 +55,8 @@ public final class MetricsClientImpl implements MetricsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientMetrics")
     private interface MetricsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/{resourceUri}/providers/microsoft.insights/metrics")
+        @Headers({"Content-Type: application/json"})
+        @Get("/{resourceUri}/providers/Microsoft.Insights/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResponseInner>> list(
@@ -71,6 +72,7 @@ public final class MetricsClientImpl implements MetricsClient {
             @QueryParam("resultType") ResultType resultType,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("metricnamespace") String metricnamespace,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -81,19 +83,22 @@ public final class MetricsClientImpl implements MetricsClient {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
+     *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     *     returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series
-     *     of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq
-     *     ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B =
-     *     ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata
-     *     names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B
-     *     eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq
-     *     ‘*’ and C eq ‘*’**.
+     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
+     *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
+     *     'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B =
+     *     'b2'** This is invalid because the logical or operator cannot separate two different metadata names. - Return
+     *     all time series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return
+     *     all time series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension
+     *     name or dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using
+     *     $filter= "dim (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim
+     *     (test) 3** and dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test)
+     *     val' " use **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      *     operation's description for details.
      * @param metricnamespace Metric namespace to query metric definitions for.
@@ -124,6 +129,7 @@ public final class MetricsClientImpl implements MetricsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -141,8 +147,9 @@ public final class MetricsClientImpl implements MetricsClient {
                             resultType,
                             apiVersion,
                             metricnamespace,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -152,19 +159,22 @@ public final class MetricsClientImpl implements MetricsClient {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
+     *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     *     returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series
-     *     of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq
-     *     ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B =
-     *     ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata
-     *     names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B
-     *     eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq
-     *     ‘*’ and C eq ‘*’**.
+     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
+     *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
+     *     'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B =
+     *     'b2'** This is invalid because the logical or operator cannot separate two different metadata names. - Return
+     *     all time series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return
+     *     all time series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension
+     *     name or dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using
+     *     $filter= "dim (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim
+     *     (test) 3** and dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test)
+     *     val' " use **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      *     operation's description for details.
      * @param metricnamespace Metric namespace to query metric definitions for.
@@ -197,6 +207,7 @@ public final class MetricsClientImpl implements MetricsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -212,6 +223,7 @@ public final class MetricsClientImpl implements MetricsClient {
                 resultType,
                 apiVersion,
                 metricnamespace,
+                accept,
                 context);
     }
 
@@ -222,19 +234,22 @@ public final class MetricsClientImpl implements MetricsClient {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
+     *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     *     returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series
-     *     of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq
-     *     ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B =
-     *     ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata
-     *     names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B
-     *     eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq
-     *     ‘*’ and C eq ‘*’**.
+     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
+     *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
+     *     'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B =
+     *     'b2'** This is invalid because the logical or operator cannot separate two different metadata names. - Return
+     *     all time series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return
+     *     all time series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension
+     *     name or dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using
+     *     $filter= "dim (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim
+     *     (test) 3** and dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test)
+     *     val' " use **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      *     operation's description for details.
      * @param metricnamespace Metric namespace to query metric definitions for.
@@ -358,19 +373,22 @@ public final class MetricsClientImpl implements MetricsClient {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
+     *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data
-     *     returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series
-     *     of C where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq
-     *     ‘*’**&lt;br&gt;- Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B =
-     *     ‘b2’**&lt;br&gt;This is invalid because the logical or operator cannot separate two different metadata
-     *     names.&lt;br&gt;- Return all time series where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B
-     *     eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq
-     *     ‘*’ and C eq ‘*’**.
+     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
+     *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
+     *     'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B =
+     *     'b2'** This is invalid because the logical or operator cannot separate two different metadata names. - Return
+     *     all time series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return
+     *     all time series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension
+     *     name or dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using
+     *     $filter= "dim (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim
+     *     (test) 3** and dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test)
+     *     val' " use **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      *     operation's description for details.
      * @param metricnamespace Metric namespace to query metric definitions for.

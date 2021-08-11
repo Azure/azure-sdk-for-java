@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks?api-version=2019-06-01-preview",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks?api-version=2021-06-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.1 (1.8.0_251; Windows Server 2019 10.0)",
       "x-ms-client-request-id" : "b9af5d40-b44f-434c-9758-7480632380ac"
@@ -20,7 +20,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/Notebook%201?api-version=2019-06-01-preview",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/Notebook%201?api-version=2021-06-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.1 (1.8.0_251; Windows Server 2019 10.0)",
       "x-ms-client-request-id" : "31025ff0-a8a8-4176-990f-e6ce775439f6"
@@ -45,7 +45,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/dongwwaTestNotebook?api-version=2019-06-01-preview",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/dongwwaTestNotebook?api-version=2021-06-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.1 (1.8.0_251; Windows Server 2019 10.0)",
       "x-ms-client-request-id" : "cc6a583c-02e8-4c00-9e22-f0e5480f373d"
@@ -70,7 +70,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/dongwwaNb2?api-version=2019-06-01-preview",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/dongwwaNb2?api-version=2021-06-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.1 (1.8.0_251; Windows Server 2019 10.0)",
       "x-ms-client-request-id" : "96f631f3-6c2f-4a06-9540-087e5a2b39fe"
