@@ -33,6 +33,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -302,6 +303,8 @@ class AmqpChannelProcessorTest {
         StepVerifier.create(processor)
             .expectError(IllegalStateException.class)
             .verify();
+
+        assertTrue(channelProcessor.isChannelClosed());
     }
 
     @Test
