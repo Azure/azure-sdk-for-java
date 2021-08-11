@@ -96,10 +96,10 @@
 /sdk/remoterendering/                               @MalcolmTyrrell
 
 # PRLabel: %Schema Registry
-/sdk/schemaregistry/                                @sjkwak @srnagar
+/sdk/schemaregistry/                                @conniey @sjkwak @srnagar
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity @conniey
+/sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                    @yvgopal @nemakam @anuchandy @ki1729 @conniey
