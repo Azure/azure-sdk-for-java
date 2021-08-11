@@ -6,7 +6,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class GetAccount {
     public static void main(String[] args) {
         AccountsClient client = new PurviewAccountClientBuilder()
-            .host(System.getenv("ACCOUNT_ENDPOINT"))
+            .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAccountsClient();
         BinaryData response = client.get(null);
