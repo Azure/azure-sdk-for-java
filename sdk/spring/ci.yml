@@ -221,3 +221,4 @@ extends:
       - name: azure-spring-cloud-stream-binder-eventhubs
         groupId: com.azure.spring
         safeName: azurespringcloudeventhubsstreambinder
+

@@ -42,3 +42,4 @@ stages:
           AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id-cn)
           AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret-cn)
           AZURE_CLOUD_TYPE: "China"
+
