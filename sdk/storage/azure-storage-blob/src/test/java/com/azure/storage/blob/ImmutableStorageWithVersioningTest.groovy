@@ -148,11 +148,11 @@ class ImmutableStorageWithVersioningTest extends APISpec {
                 def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true))
                 for (def blob: containerClient.listBlobs(options, null)) {
                     def blobClient = containerClient.getBlobClient(blob.getName())
-                    if (blob.getProperties().hasLegalHold()) {
+                    def blobProperties = blob.getProperties()
+                    if (blobProperties.hasLegalHold()) {
                         blobClient.setLegalHold(false)
                     }
-                    if (blob.getProperties().getImmutabilityPolicy().getPolicyMode() != null) {
-                        sleepIfRecord(5 * 1000)
+                    if (blobProperties.getImmutabilityPolicy().getPolicyMode() != null) {
                         blobClient.deleteImmutabilityPolicy()
                     }
                     blobClient.delete()
