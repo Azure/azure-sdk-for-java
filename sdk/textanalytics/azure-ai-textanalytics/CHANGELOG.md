@@ -1,8 +1,18 @@
 # Release History
-## 5.2.0-beta.1 (Unreleased)
+## 5.2.0-beta.1 (2021-08-11)
 ### Feature Added
 - We are now targeting the service's v3.2-preview.1 API as the default instead of v3.1.
 - Added support for Extractive Summarization actions through the `ExtractSummaryAction` type.
+
+## 5.1.1 (2021-08-11)
+### Dependency Updates
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+
+### Bugs Fixed
+- Fixed the bug to support the default value `disableServiceLogs = true`, in the option bags, `AnalyzeHealthcareEntitiesOptions`,
+  `RecognizePiiEntitiesOptions` and `RecognizePiiEntitiesAction`,
+- Using UTF-16 code unit as the default encoding in the `Sentiment Analysis` and `Linked Entities Recognition` actions.
 
 ## 5.1.0 (2021-07-08)
 ### Feature Added
