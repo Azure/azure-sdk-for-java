@@ -22,13 +22,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
@@ -37,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_SIZE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -437,22 +437,23 @@ public class BinaryDataTest {
 
     @Test
     public void testFromFile() throws Exception {
-
-        File file = File.createTempFile("binaryDataFromFile", ".txt");
-        try (FileWriter fileWriter = new FileWriter(file)) {
+        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        try (FileWriter fileWriter = new FileWriter(file.toFile())) {
             fileWriter.write("The quick brown fox jumps over the lazy dog");
         }
-        BinaryData data = BinaryData.fromFile(file.toPath());
+        BinaryData data = BinaryData.fromFile(file);
         assertEquals("The quick brown fox jumps over the lazy dog", data.toString());
     }
 
     @Test
     public void testFromFileToFlux() throws Exception {
-        File file = File.createTempFile("binaryDataFromFile", ".txt");
-        try (FileWriter fileWriter = new FileWriter(file)) {
+        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        try (FileWriter fileWriter = new FileWriter(file.toFile())) {
             fileWriter.write("The quick brown fox jumps over the lazy dog");
         }
-        BinaryData data = BinaryData.fromFile(file.toPath());
+        BinaryData data = BinaryData.fromFile(file);
         StepVerifier.create(data.toFluxByteBuffer())
                 .assertNext(bb -> assertEquals("The quick brown fox jumps over the lazy dog",
                         StandardCharsets.UTF_8.decode(bb).toString()))
