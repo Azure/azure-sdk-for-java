@@ -53,21 +53,21 @@ public class CompositeIndexUtilizationEntity {
     }
 
     /**
-     * @param indexDocumentExpressionsList
+     * @param indexDocumentExpressions -> The index representation of the filter expression.
      */
-    public void setIndexDocumentExpressions(List<String> indexDocumentExpressionsList) {
-        this.indexDocumentExpressions = indexDocumentExpressionsList;
+    public void setIndexDocumentExpressions(List<String> indexDocumentExpressions) {
+        this.indexDocumentExpressions = indexDocumentExpressions;
     }
 
     /**
-     * @param indexPlanFullFidelity
+     * @param indexPlanFullFidelity -> The index plan full fidelity.
      */
     public void setIndexPlanFullFidelity(boolean indexPlanFullFidelity) {
         this.indexPlanFullFidelity = indexPlanFullFidelity;
     }
 
     /**
-     * @param indexImpactScore
+     * @param indexImpactScore -> The index impact score.
      */
     public void setIndexImpactScore(String indexImpactScore) {
         this.indexImpactScore = indexImpactScore;

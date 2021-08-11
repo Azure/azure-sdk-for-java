@@ -73,35 +73,35 @@ public class SingleIndexUtilizationEntity {
     }
 
     /**
-     * @param filterExpression
+     * @param filterExpression -> The filter expression.
      */
     public void setFilterExpression(String filterExpression) {
         this.filterExpression = filterExpression;
     }
 
     /**
-     * @param indexDocumentExpression
+     * @param indexDocumentExpression -> The index representation of the filter expression.
      */
     public void setIndexDocumentExpression(String indexDocumentExpression) {
         this.indexDocumentExpression = indexDocumentExpression;
     }
 
     /**
-     * @param filterExpressionPrecision
+     * @param filterExpressionPrecision -> The precision flag of the filter expression.
      */
     public void setFilterExpressionPrecision(boolean filterExpressionPrecision) {
         this.filterExpressionPrecision = filterExpressionPrecision;
     }
 
     /**
-     * @param indexPlanFullFidelity
+     * @param indexPlanFullFidelity -> The index plan full fidelity.
      */
     public void setIndexPlanFullFidelity(boolean indexPlanFullFidelity) {
         this.indexPlanFullFidelity = indexPlanFullFidelity;
     }
 
     /**
-     * @param indexImpactScore
+     * @param indexImpactScore -> The index impact score.
      */
     public void setIndexImpactScore(String indexImpactScore) {
         this.indexImpactScore = indexImpactScore;

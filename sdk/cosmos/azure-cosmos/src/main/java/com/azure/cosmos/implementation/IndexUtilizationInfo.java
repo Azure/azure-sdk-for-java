@@ -75,31 +75,31 @@ public final class IndexUtilizationInfo {
     }
 
     /**
-     * @param utilizedSingleIndexesList
+     * @param utilizedSingleIndexes     -> The utilized single indexes list.
      */
-    public void setUtilizedSingleIndexes(List<SingleIndexUtilizationEntity> utilizedSingleIndexesList) {
-        this.utilizedSingleIndexes = utilizedSingleIndexesList;
+    public void setUtilizedSingleIndexes(List<SingleIndexUtilizationEntity> utilizedSingleIndexes) {
+        this.utilizedSingleIndexes = utilizedSingleIndexes;
     }
 
     /**
-     * @param potentialSingleIndexesList
+     * @param potentialSingleIndexes    -> The potential single indexes list.
      */
-    public void setPotentialSingleIndexes(List<SingleIndexUtilizationEntity> potentialSingleIndexesList) {
-        this.potentialSingleIndexes = potentialSingleIndexesList;
+    public void setPotentialSingleIndexes(List<SingleIndexUtilizationEntity> potentialSingleIndexes) {
+        this.potentialSingleIndexes = potentialSingleIndexes;
     }
 
     /**
-     * @param utilizedCompositeIndexesList
+     * @param utilizedCompositeIndexes  -> The potential composite indexes list.
      */
-    public void setUtilizedCompositeIndexes(List<CompositeIndexUtilizationEntity> utilizedCompositeIndexesList) {
-        this.utilizedCompositeIndexes = utilizedCompositeIndexesList;
+    public void setUtilizedCompositeIndexes(List<CompositeIndexUtilizationEntity> utilizedCompositeIndexes) {
+        this.utilizedCompositeIndexes = utilizedCompositeIndexes;
     }
 
     /**
-     * @param potentialCompositeIndexesList
+     * @param potentialCompositeIndexes -> The utilized composite indexes list.
      */
-    public void setPotentialCompositeIndexes(List<CompositeIndexUtilizationEntity> potentialCompositeIndexesList) {
-        this.potentialCompositeIndexes = potentialCompositeIndexesList;
+    public void setPotentialCompositeIndexes(List<CompositeIndexUtilizationEntity> potentialCompositeIndexes) {
+        this.potentialCompositeIndexes = potentialCompositeIndexes;
     }
 
 
