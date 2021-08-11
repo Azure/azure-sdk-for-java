@@ -5,6 +5,7 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationSigner;
 import reactor.core.publisher.Mono;
@@ -130,11 +131,11 @@ public class AttestationClientJavaDocCodeSnippets {
         AttestationAsyncClient client = null;
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadataWithResponse
-        Mono<Response<Object>> response = client.getOpenIdMetadataWithResponse();
+        Mono<Response<AttestationOpenIdMetadata>> response = client.getOpenIdMetadataWithResponse();
         // END: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadataWithResponse
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata
-        Mono<Object> openIdMetadata = client.getOpenIdMetadata();
+        Mono<AttestationOpenIdMetadata> openIdMetadata = client.getOpenIdMetadata();
         // END: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
