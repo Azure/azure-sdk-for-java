@@ -1,4 +1,7 @@
 # Release History
+## 5.2.0-beta.2 (Unreleased)
+
+
 ## 5.2.0-beta.1 (2021-08-11)
 ### Feature Added
 - We are now targeting the service's v3.2-preview.1 API as the default instead of v3.1.
