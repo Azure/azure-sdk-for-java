@@ -72,11 +72,16 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - script: |
-          pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
-          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
+      - task: Powershell@2
+        inputs:
+          filePath: $(Build.SourcesDirectory)/eng/pipelines/scripts/Install-DocWarden.ps1
+          arguments: >
+            -DocWardenVersion $(DocWardenVersion)
+            -SourcesDirectory $(Build.SourcesDirectory)
+          pwsh: true
+          workingDirectory: $(Pipeline.Workspace)
         displayName: 'Verify Readmes'
+        continueOnError: false
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
