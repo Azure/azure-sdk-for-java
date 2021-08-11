@@ -22,9 +22,9 @@ com.google.code.gson:gson;2.8.7
 com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:azure-annotations;1.7.0
-com.microsoft.azure:azure-arm-client-runtime;1.7.3
-com.microsoft.azure:azure-client-authentication;1.7.3
-com.microsoft.azure:azure-client-runtime;1.7.3
+com.microsoft.azure:azure-arm-client-runtime;1.7.14
+com.microsoft.azure:azure-client-authentication;1.7.14
+com.microsoft.azure:azure-client-runtime;1.7.14
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-cosmos;3.7.3
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
