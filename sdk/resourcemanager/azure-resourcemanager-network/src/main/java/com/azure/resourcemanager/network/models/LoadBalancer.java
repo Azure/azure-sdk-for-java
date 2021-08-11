@@ -545,7 +545,7 @@ public interface LoadBalancer
              * @param name the name of the outbound rule to update
              * @return the first stage of the outbound rule update
              */
-            LoadBalancerOutboundRule.Update updateOutboundRule(String name);
+            LoadBalancerOutboundRule.Update<? extends Update> updateOutboundRule(String name);
         }
     }
 
