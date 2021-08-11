@@ -55,7 +55,11 @@ public final class LogsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> List<T> query(String workspaceId, String query, TimeInterval timeInterval, Class<T> type) {
-        return asyncClient.query(workspaceId, query, timeInterval).block().toObject(type);
+        LogsQueryResult logsQueryResult = asyncClient.query(workspaceId, query, timeInterval).block();
+        if (logsQueryResult != null) {
+            return logsQueryResult.toObject(type);
+        }
+        return null;
     }
 
     /**
@@ -71,8 +75,12 @@ public final class LogsQueryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> List<T> query(String workspaceId, String query, TimeInterval timeInterval,
                              LogsQueryOptions options, Class<T> type) {
-        return queryWithResponse(workspaceId, query, timeInterval, options, Context.NONE)
-                .getValue().toObject(type);
+        LogsQueryResult logsQueryResult = queryWithResponse(workspaceId, query, timeInterval, options, Context.NONE)
+                .getValue();
+        if (logsQueryResult != null) {
+            return logsQueryResult.toObject(type);
+        }
+        return null;
     }
 
     /**

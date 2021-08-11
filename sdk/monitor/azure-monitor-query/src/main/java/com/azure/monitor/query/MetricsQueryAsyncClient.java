@@ -129,7 +129,7 @@ public final class MetricsQueryAsyncClient {
                     .map(type -> String.valueOf(type.ordinal()))
                     .collect(Collectors.joining(","));
         }
-        String timespan = options.getTimeSpan() == null ? null : options.getTimeSpan().toString();
+        String timespan = options.getTimeSpan() == null ? null : options.getTimeSpan().toIso8601Format();
         return metricsClient
                 .getMetrics()
                 .listWithResponseAsync(resourceUri, timespan, options.getInterval(),
