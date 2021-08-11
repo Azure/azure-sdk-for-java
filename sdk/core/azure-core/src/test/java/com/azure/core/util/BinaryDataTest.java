@@ -17,6 +17,7 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -435,18 +436,23 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void testFromFile() throws URISyntaxException {
-        URL res = getClass().getClassLoader().getResource("upload.txt");
-        Path path = Paths.get(res.toURI());
-        BinaryData data = BinaryData.fromFile(path);
+    public void testFromFile() throws Exception {
+
+        File file = File.createTempFile("binaryDataFromFile", ".txt");
+        try (FileWriter fileWriter = new FileWriter(file)) {
+            fileWriter.write("The quick brown fox jumps over the lazy dog");
+        }
+        BinaryData data = BinaryData.fromFile(file.toPath());
         assertEquals("The quick brown fox jumps over the lazy dog", data.toString());
     }
 
     @Test
-    public void testFromFileToFlux() throws URISyntaxException {
-        URL res = getClass().getClassLoader().getResource("upload.txt");
-        Path path = Paths.get(res.toURI());
-        BinaryData data = BinaryData.fromFile(path);
+    public void testFromFileToFlux() throws Exception {
+        File file = File.createTempFile("binaryDataFromFile", ".txt");
+        try (FileWriter fileWriter = new FileWriter(file)) {
+            fileWriter.write("The quick brown fox jumps over the lazy dog");
+        }
+        BinaryData data = BinaryData.fromFile(file.toPath());
         StepVerifier.create(data.toFluxByteBuffer())
                 .assertNext(bb -> assertEquals("The quick brown fox jumps over the lazy dog",
                         StandardCharsets.UTF_8.decode(bb).toString()))
