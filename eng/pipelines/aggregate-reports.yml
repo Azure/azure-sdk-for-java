@@ -53,6 +53,7 @@ jobs:
         goals: 'verify site:site site:stage'
 
     - task: Maven@3
+      condition: succeededOrFailed()
       displayName: 'Generate BOM Reports'
       inputs:
         mavenPomFile: eng/bomgenerator/pom.xml
