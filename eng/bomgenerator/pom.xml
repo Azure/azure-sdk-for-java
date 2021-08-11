@@ -32,12 +32,12 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>3.5.4</version> <!-- {x-version-update;org.apache.maven:maven-core;external} -->
+      <version>3.5.4</version> <!-- {x-version-update;org.apache.maven:maven-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.5</version>  <!-- {x-version-update;org.slf4j:slf4j-log4j12;external} -->
+      <version>1.7.5</version>  <!-- {x-version-update;org.slf4j:slf4j-log4j12;external_dependency} -->
     </dependency>
   </dependencies>
   <build>
