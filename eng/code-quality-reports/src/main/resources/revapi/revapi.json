@@ -639,6 +639,30 @@
         "code": "java.method.added",
         "new":"method void com.azure.core.http.HttpHeaders::<init>(int)",
         "justification": "New HttpHeaders constructor exported from azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.policy.HttpRequestLogger com.azure.core.http.policy.HttpLogOptions::getRequestLogger()",
+        "package": "com.azure.core.http.policy",
+        "justification": "New getter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.policy.HttpResponseLogger com.azure.core.http.policy.HttpLogOptions::getResponseLogger()",
+        "package": "com.azure.core.http.policy",
+        "justification": "New getter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.policy.HttpLogOptions com.azure.core.http.policy.HttpLogOptions::setRequestLogger(com.azure.core.http.policy.HttpRequestLogger)",
+        "package": "com.azure.core.http.policy",
+        "justification": "New setter method"
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.policy.HttpLogOptions com.azure.core.http.policy.HttpLogOptions::setResponseLogger(com.azure.core.http.policy.HttpResponseLogger)",
+        "package": "com.azure.core.http.policy",
+        "justification": "New setter method"
       }
     ]
   }

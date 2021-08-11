@@ -201,6 +201,7 @@ class AnalyzeActionsAsyncClient {
                         entitiesTask.setParameters(
                             new EntitiesTaskParameters()
                                 .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
                                 .setStringIndexType(StringIndexType.UTF16CODE_UNIT));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
@@ -214,6 +215,7 @@ class AnalyzeActionsAsyncClient {
                         piiTask.setParameters(
                             new PiiTaskParameters()
                                 .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString()))
@@ -232,6 +234,7 @@ class AnalyzeActionsAsyncClient {
                         keyPhrasesTask.setParameters(
                             new KeyPhrasesTaskParameters()
                                 .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
                         );
                         return keyPhrasesTask;
                     }).collect(Collectors.toList()))
@@ -245,6 +248,8 @@ class AnalyzeActionsAsyncClient {
                         entityLinkingTask.setParameters(
                             new EntityLinkingTaskParameters()
                                 .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                         );
                         return entityLinkingTask;
                     }).collect(Collectors.toList()))
@@ -258,6 +263,8 @@ class AnalyzeActionsAsyncClient {
                         sentimentAnalysisTask.setParameters(
                             new SentimentAnalysisTaskParameters()
                                 .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                         );
                         return sentimentAnalysisTask;
                     }).collect(Collectors.toList()));
