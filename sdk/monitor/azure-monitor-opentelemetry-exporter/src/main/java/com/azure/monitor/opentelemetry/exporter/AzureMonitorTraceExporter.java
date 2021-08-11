@@ -456,10 +456,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
         requestData.setSource(getSource(attributes));
 
-        String azureNamespace = attributes.get(AZURE_NAMESPACE);
-        if (azureNamespace != null
-            && (azureNamespace.equals("Microsoft.EventHub")
-            || azureNamespace.equals("Microsoft.ServiceBus"))) {
+        if (isAzureQueue(attributes)) {
             // TODO(trask): for batch consumer, enqueuedTime should be the average of this attribute
             //  across all links
             Long enqueuedTime = attributes.get(AZURE_SDK_ENQUEUED_TIME);
@@ -533,10 +530,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     }
 
     private static String getSource(Attributes attributes) {
-        String azureNamespace = attributes.get(AZURE_NAMESPACE);
-        if (azureNamespace != null
-            && (azureNamespace.equals("Microsoft.EventHub")
-            || azureNamespace.equals("Microsoft.ServiceBus"))) {
+        if (isAzureQueue(attributes)) {
             return getAzureSdkTargetSource(attributes);
         }
         String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
@@ -554,6 +548,14 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             return messagingSystem;
         }
         return null;
+    }
+
+    private static boolean isAzureQueue(Attributes attributes) {
+        String azureNamespace = attributes.get(AZURE_NAMESPACE);
+        if (azureNamespace == null) {
+            return false;
+        }
+        return azureNamespace.equals("Microsoft.EventHub") || azureNamespace.equals("Microsoft.ServiceBus");
     }
 
     private static String nullAwareConcat(String str1, String str2, String separator) {
