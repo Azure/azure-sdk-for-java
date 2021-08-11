@@ -208,9 +208,13 @@ public class StoreResult {
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRequestTimeline() :
                 storeResult.exception != null ? BridgeInternal.getRequestTimeline(storeResult.exception) : null);
-            jsonGenerator.writeObjectField("transportRequestChannelAcquisitionContext", storeResult.storeResponse != null ?
-                storeResult.storeResponse.getChannelAcquisitionTimeline() :
-                storeResult.exception != null? BridgeInternal.getChannelAcqusitionTimeline(storeResult.exception) : null);
+
+            this.writeNonNullObjectField(
+                jsonGenerator,
+                "transportRequestChannelAcquisitionContext",
+                storeResult.storeResponse != null ? storeResult.storeResponse.getChannelAcquisitionTimeline() :
+                    storeResult.exception != null? BridgeInternal.getChannelAcqusitionTimeline(storeResult.exception) : null);
+
             jsonGenerator.writeObjectField("rntbdRequestLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRntbdRequestLength() : BridgeInternal.getRntbdRequestLength(storeResult.exception));
             jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResult.storeResponse != null ?
@@ -227,6 +231,14 @@ public class StoreResult {
                 storeResult.exception != null ? BridgeInternal.getServiceEndpointStatistics(storeResult.exception) : null);
 
             jsonGenerator.writeEndObject();
+        }
+
+        private void writeNonNullObjectField(JsonGenerator jsonGenerator, String fieldName, Object object) throws IOException {
+             if (object == null) {
+                 return;
+             }
+
+             jsonGenerator.writeObjectField(fieldName, object);
         }
     }
 }
