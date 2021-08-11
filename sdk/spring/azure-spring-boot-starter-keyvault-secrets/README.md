@@ -39,49 +39,49 @@ Note that replaced properties will not be refreshed as common properties from Ke
 We also provide unified configuration properties that are applicable for Azure Spring Starters. When Key Vault properties are not configured, associated unified Azure Spring properties will take effects.
 #### Key Vault properties
 ##### Active Properties
-|Name|Description|Default Value|Comment|
-|:---|:---|:---|:---
-spring.cloud.azure.keyvault.case-sensitive-keys|Defines the constant for the property that enables/disables case sensitive keys.|false||
-spring.cloud.azure.keyvault.credential.client-certificate-password|Password of the certificate file to use when performing service principal authentication with Azure.||||
-spring.cloud.azure.keyvault.credential.client-certificate-path|Path of a PEM certificate file to use when performing service principal authentication with Azure.||||
-spring.cloud.azure.keyvault.credential.client-id|Client id to use when performing service principal authentication with Azure.||||
-spring.cloud.azure.keyvault.credential.client-secret|Client secret to use when performing service principal authentication with Azure.||||
-spring.cloud.azure.keyvault.credential.tenant-id|Tenant id for the Azure resources.|||
-spring.cloud.azure.keyvault.enabled|To turn on/off Azure Key Vault Secret property source.|true||
-spring.cloud.azure.keyvault.environment.authority-host|Authority Host URI|https://login.microsoftonline.com/||
-spring.cloud.azure.keyvault.order|Define the order of the key vaults you are delivering (comma delimited, e.g 'my-vault, my-vault-2').|||
-spring.cloud.azure.keyvault.refresh-interval|Interval for PropertySource to refresh secret keys|1800000(ms)||
-spring.cloud.azure.keyvault.secret-keys|If application using specific secret keys. If this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.|||
-spring.cloud.azure.keyvault.secret-service-version|Valid secret-service-version value can be found [here][version_link].|The latest value||
-spring.cloud.azure.keyvault.uri|Azure Key Vault Uri.|||
+|Name|Description|Default Value|
+|:---|:---|:---
+spring.cloud.azure.keyvault.case-sensitive-keys|Defines the constant for the property that enables/disables case sensitive keys.|false|
+spring.cloud.azure.keyvault.credential.client-certificate-password|Password of the certificate file to use when performing service principal authentication with Azure.|||
+spring.cloud.azure.keyvault.credential.client-certificate-path|Path of a PEM certificate file to use when performing service principal authentication with Azure.|||
+spring.cloud.azure.keyvault.credential.client-id|Client id to use when performing service principal authentication with Azure.|||
+spring.cloud.azure.keyvault.credential.client-secret|Client secret to use when performing service principal authentication with Azure.|||
+spring.cloud.azure.keyvault.credential.tenant-id|Tenant id for the Azure resources.||
+spring.cloud.azure.keyvault.enabled|To turn on/off Azure Key Vault Secret property source.|true|
+spring.cloud.azure.keyvault.environment.authority-host|Authority Host URI|https://login.microsoftonline.com/|
+spring.cloud.azure.keyvault.order|Define the order of the key vaults you are delivering (comma delimited, e.g 'my-vault, my-vault-2').||
+spring.cloud.azure.keyvault.refresh-interval|Interval for PropertySource to refresh secret keys|1800000(ms)|
+spring.cloud.azure.keyvault.secret-keys|If application using specific secret keys. If this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.||
+spring.cloud.azure.keyvault.secret-service-version|Valid secret-service-version value can be found [here][version_link].|The latest value|
+spring.cloud.azure.keyvault.uri|Azure Key Vault Uri.||
 
 Note: for multiple Key Vault usage, specify your Key Vault name after the prefix of `spring.cloud.azure.keyvault`.
 #### Deprecated Properties
-|Name|Description|Default Value|Comment|
+|Obsolete Type|Description|Default Value|Obsolete Type|
 |:---|:---|:---|:---
-azure.keyvault.authority-host|Authority Host URI|https://login.microsoftonline.com/ |Please use **spring.cloud.azure.keyvault.environment.authority-host** instead.|
-azure.keyvault.case-sensitive-keys|Defines the constant for the property that enables/disables case sensitive keys.|false|Please use **spring.cloud.azure.keyvault.case-sensitive-keys** instead.|
-azure.keyvault.certificate-password|Password of the certificate file to use when performing service principal authentication with Azure.| |Please use **spring.cloud.azure.keyvault.credential.client-certificate-password** instead.|
-azure.keyvault.certificate-path|Path of a PEM certificate file to use when performing service principal authentication with Azure.| |Please use **spring.cloud.azure.keyvault.credential.client-certificate-path** instead.|
-azure.keyvault.client-id|Client id to use when performing service principal authentication with Azure.| |Please use **spring.cloud.azure.keyvault.credential.client-id** instead.|
-azure.keyvault.client-key|Client secret to use when performing service principal authentication with Azure.| |Please use **spring.cloud.azure.keyvault.credential.client-secret** instead.|
-azure.keyvault.enabled|To turn on/off Azure Key Vault Secret property source.|true|Please use **spring.cloud.azure.keyvault.enabled** instead.|
-azure.keyvault.order|Define the order of the key vaults you are delivering (comma delimited, e.g 'my-vault, my-vault-2').| |Please use **spring.cloud.azure.keyvault.order** instead.|
-azure.keyvault.refresh-interval|Interval for PropertySource to refresh secret keys|1800000(ms) |Please use **spring.cloud.azure.keyvault.refresh-interval** instead.|
-azure.keyvault.secret-keys|If application using specific secret keys. If this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.| |Please use **spring.cloud.azure.keyvault.secret-keys** instead.|
-azure.keyvault.secret-service-version|Valid secret-service-version value can be found [here][version_link].|The latest value |Please use **spring.cloud.azure.keyvault.secret-service-version** instead.|
-azure.keyvault.tenant-id|Tenant id for the Azure resources.| |Please use **spring.cloud.azure.keyvault.credential.tenant-id** instead.|
-azure.keyvault.uri|Azure Key Vault Uri.| |Please use **spring.cloud.azure.keyvault.uri** instead.|
+azure.keyvault.authority-host|Authority Host URI|https://login.microsoftonline.com/ |**spring.cloud.azure.keyvault.environment.authority-host** |
+azure.keyvault.case-sensitive-keys|Defines the constant for the property that enables/disables case sensitive keys.|false|**spring.cloud.azure.keyvault.case-sensitive-keys** |
+azure.keyvault.certificate-password|Password of the certificate file to use when performing service principal authentication with Azure.| |**spring.cloud.azure.keyvault.credential.client-certificate-password** |
+azure.keyvault.certificate-path|Path of a PEM certificate file to use when performing service principal authentication with Azure.| |**spring.cloud.azure.keyvault.credential.client-certificate-path** |
+azure.keyvault.client-id|Client id to use when performing service principal authentication with Azure.| |**spring.cloud.azure.keyvault.credential.client-id** |
+azure.keyvault.client-key|Client secret to use when performing service principal authentication with Azure.| |**spring.cloud.azure.keyvault.credential.client-secret** |
+azure.keyvault.enabled|To turn on/off Azure Key Vault Secret property source.|true|**spring.cloud.azure.keyvault.enabled** |
+azure.keyvault.order|Define the order of the key vaults you are delivering (comma delimited, e.g 'my-vault, my-vault-2').| |**spring.cloud.azure.keyvault.order** |
+azure.keyvault.refresh-interval|Interval for PropertySource to refresh secret keys|1800000(ms) |**spring.cloud.azure.keyvault.refresh-interval** |
+azure.keyvault.secret-keys|If application using specific secret keys. If this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.| |**spring.cloud.azure.keyvault.secret-keys** |
+azure.keyvault.secret-service-version|Valid secret-service-version value can be found [here][version_link].|The latest value |**spring.cloud.azure.keyvault.secret-service-version** |
+azure.keyvault.tenant-id|Tenant id for the Azure resources.| |**spring.cloud.azure.keyvault.credential.tenant-id** |
+azure.keyvault.uri|Azure Key Vault Uri.| |**spring.cloud.azure.keyvault.uri** |
 
 #### Unified Azure Spring Properties
 1. Credential Properties
-|Name|Description|Default Value|Comment|
-|:---|:---|:---|:---
-spring.cloud.azure.credential.client-id|Client id to use when performing service principal authentication with Azure.|||
-spring.cloud.azure.credential.client-secret|Client secret to use when performing service principal authentication with Azure.|||
-spring.cloud.azure.credential.client-certificate-path|Path of a PEM certificate file to use when performing service principal authentication with Azure.|||
-spring.cloud.azure.credential.client-certificate-password|Password of the certificate file to use when performing service principal authentication with Azure.|||
-spring.cloud.azure.credential.tenant-id|Tenant id for the Azure resources.||||
+|Name|Description|Comment|
+|:---|:---|:---
+spring.cloud.azure.credential.client-id|Client id to use when performing service principal authentication with Azure.||
+spring.cloud.azure.credential.client-secret|Client secret to use when performing service principal authentication with Azure.||
+spring.cloud.azure.credential.client-certificate-path|Path of a PEM certificate file to use when performing service principal authentication with Azure.||
+spring.cloud.azure.credential.client-certificate-password|Password of the certificate file to use when performing service principal authentication with Azure.||
+spring.cloud.azure.credential.tenant-id|Tenant id for the Azure resources.||
 
 2. EnvironmentProperties
 |Name|Description|Default Value|Comment|
@@ -146,7 +146,7 @@ You can use the following Azure CLI command to save secrets, if Key Vault is alr
 az keyvault secret set --name <your-property-name> --value <your-secret-property-value> --vault-name <your-keyvault-name>
 ```
 > NOTE
-> To get detail steps on how setup Azure Key Vault, please refer to sample code readme section ["Setup Azure Key Vault"](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-sample-keyvault-secrets/README.md)
+> To get detail steps on how setup Azure Key Vault, please refer to sample code readme section ["Setup Azure Key Vault"](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-starter-keyvault-secrets/keyvault-secrets/README.md)
 
 > **IMPORTANT** 
 > Allowed secret name pattern in Azure Key Vault is ^[0-9a-zA-Z-]+$, for some Spring system properties contains `.` like spring.datasource.url, do below workaround when you save it into Azure Key Vault: simply replace `.` to `-`. `spring.datasource.url` will be saved with name `spring-datasource-url` in Azure Key Vault. While in client application, use original `spring.datasource.url` to retrieve property value, this starter will take care of transformation for you. Purpose of using this way is to integrate with Spring existing property setting.
@@ -228,7 +228,7 @@ For more information about setting logging in spring, please refer to the [offic
 ## Next steps
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
-- [Key Vault Secrets](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-sample-keyvault-secrets)
+- [Key Vault Secrets](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-starter-keyvault-secrets/keyvault-secrets)
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -239,7 +239,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter
-[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-sample-keyvault-secrets
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-starter-keyvault-secrets/keyvault-secrets
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [version_link]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
