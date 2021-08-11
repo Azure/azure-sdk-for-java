@@ -66,7 +66,7 @@ public class TextAnalyticsRequestOptions {
      * Text Analytics service logs your input text for 48 hours, solely to allow for troubleshooting issues. Setting
      * this property to true, disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return true if logging input text service are disabled.
+     * @return true if service logging of input text is disabled.
      */
     public boolean isServiceLogsDisabled() {
         return disableServiceLogs;

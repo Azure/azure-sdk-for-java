@@ -51,7 +51,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
      * Text Analytics service won't log your input text. Setting this property to 'false', enables logging your input
      * text for 48 hours, solely to allow for troubleshooting issues.
      *
-     * @return true if logging input text service are disabled.
+     * @return true if service logging of input text is disabled.
      */
     @Override
     public boolean isServiceLogsDisabled() {
