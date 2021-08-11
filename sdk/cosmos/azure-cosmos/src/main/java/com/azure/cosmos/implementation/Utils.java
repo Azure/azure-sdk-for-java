@@ -112,6 +112,11 @@ public class Utils {
         return encodedString;
     }
 
+    public static String decodeBase64String(String encodedString) {
+        byte[] decodeString = Base64Decoder.decode(encodedString);
+        return new String(decodeString);
+    }
+
     public static String decodeAsUTF8String(String inputString) {
         if (inputString == null || inputString.isEmpty()) {
             return inputString;

@@ -37,6 +37,7 @@ public class CosmosQueryRequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
+    private boolean indexMetricsPopulated;
 
     /**
      * Instantiates a new query request options.
@@ -68,6 +69,7 @@ public class CosmosQueryRequestOptions {
         this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
         this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         this.customOptions = options.customOptions;
+        this.indexMetricsPopulated = options.indexMetricsPopulated;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -480,6 +482,32 @@ public class CosmosQueryRequestOptions {
      */
     public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
         this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        return this;
+    }
+
+    /**
+     * Gets indexMetricsPopulated, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debuging slow queries.
+     *
+     * @return indexMetricsPopulated
+     */
+    public boolean isIndexMetricsPopulated() {
+        return indexMetricsPopulated;
+    }
+
+    /**
+     * Sets indexMetricsPopulated, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debuging slow queries.
+     *
+     * @param indexMetricsPopulated
+     * @return indexMetricsPopulated
+     */
+    public CosmosQueryRequestOptions setIndexMetricsPopulated(boolean indexMetricsPopulated) {
+        this.indexMetricsPopulated = indexMetricsPopulated;
         return this;
     }
 
