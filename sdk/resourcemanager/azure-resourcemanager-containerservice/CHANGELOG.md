@@ -10,6 +10,12 @@
 
 - Supported `start` and `stop` for `KubernetesCluster`.
 - Supported `listOrchestrators` for `KubernetesCluster`.
+- Supported `osDiskType` and `kubeletDiskType` for agent pool of `KubernetesCluster`.
+
+### Breaking Changes
+
+- Removed class `ManagedClusterIdentityUserAssignedIdentities`.
+- Removed unused classes.
 
 ### Breaking Changes
 
