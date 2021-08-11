@@ -6,6 +6,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -22,6 +23,7 @@ public class RegistryArtifactJavaDocSnippets {
         RegistryArtifact registryArtifact = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient().getArtifact(repository, digest);
         // END: com.azure.containers.containerregistry.RegistryArtifact.instantiation
         return registryArtifact;
@@ -41,6 +43,7 @@ public class RegistryArtifactJavaDocSnippets {
             .pipeline(pipeline)
             .endpoint(endpoint)
             .credential(credential)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient().getArtifact(repository, digest);
         // END: com.azure.containers.containerregistry.RegistryArtifact.pipeline.instantiation
         return registryArtifact;
