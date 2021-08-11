@@ -3,6 +3,8 @@
 
 package com.azure.security.attestation.models;
 
+import com.azure.core.util.BinaryData;
+
 import java.net.URI;
 import java.time.LocalDateTime;
 
@@ -85,7 +87,7 @@ public interface AttestationToken {
      *
      * @return the SHA-256 thumbprint of the leaf certificate returned by getCertificateChain.
      */
-    byte[] getSha256Thumbprint();
+    BinaryData getSha256Thumbprint();
 
     /**
      * Returns the SHA-1 thumbprint of the leaf certificate in the getCertificateChain.
@@ -94,7 +96,7 @@ public interface AttestationToken {
      *
      * @return the SHA-1 thumbprint of the leaf certificate returned by getCertificateChain.
      */
-    byte[] getThumbprint();
+    BinaryData getThumbprint();
 
     /**
      * Returns a URI which can be used to retrieve an X.509 certificate which can verify the signature

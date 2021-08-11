@@ -5,6 +5,7 @@ package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -173,16 +174,16 @@ public class AttestationTokenImpl implements AttestationToken {
      * Returns the SHA-256 thumbprint of the leaf certificate in the getCertificateChain.
      * @return the SHA-256 thumbprint of the leaf certificate returned by getCertificateChain.
      */
-    @Override public byte[] getSha256Thumbprint() {
-        return jwsHeader != null ? jwsHeader.getX509CertSHA256Thumbprint().decode() : null;
+    @Override public BinaryData getSha256Thumbprint() {
+        return jwsHeader != null ? BinaryData.fromBytes(jwsHeader.getX509CertSHA256Thumbprint().decode()) : null;
     }
 
     /**
      * Returns the SHA-1 thumbprint of the leaf certificate in the getCertificateChain.
      * @return the SHA-1 thumbprint of the leaf certificate returned by getCertificateChain.
      */
-    @Override public byte[] getThumbprint() {
-        return jwsHeader != null ? jwsHeader.getX509CertThumbprint().decode() : null;
+    @Override public BinaryData getThumbprint() {
+        return jwsHeader != null ? BinaryData.fromBytes(jwsHeader.getX509CertThumbprint().decode()) : null;
     }
 
     /**
