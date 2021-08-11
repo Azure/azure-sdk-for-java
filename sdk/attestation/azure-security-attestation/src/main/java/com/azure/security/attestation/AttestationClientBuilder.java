@@ -5,26 +5,20 @@
 package com.azure.security.attestation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 
 /** A builder for creating a new instance of the AttestationClient type. */
@@ -33,26 +27,22 @@ import java.util.Objects;
             PolicyClient.class,
             PolicyCertificatesClient.class,
             AttestationClient.class,
-            SigningCertificatesClient.class,
-            MetadataConfigurationClient.class,
             PolicyAsyncClient.class,
             PolicyCertificatesAsyncClient.class,
-            AttestationAsyncClient.class,
-            SigningCertificatesAsyncClient.class,
-            MetadataConfigurationAsyncClient.class
         })
 public final class AttestationClientBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
 
-    private final Map<String, String> properties = new HashMap<>();
+    private final AttestationClientImplBuilder clientImplBuilder;
+    private final ClientLogger logger = new ClientLogger(AttestationClientBuilder.class);
 
     /**
      * Creates a new instance of the AttestationClientBuilder class.
      */
     public AttestationClientBuilder() {
-        this.pipelinePolicies = new ArrayList<>();
+        clientImplBuilder = new AttestationClientImplBuilder();
     }
 
     /*
@@ -68,14 +58,37 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder endpoint(String endpoint) {
-        this.endpoint = endpoint;
+        Objects.requireNonNull(endpoint);
+        try {
+            new URL(endpoint);
+        } catch (MalformedURLException ex) {
+            logger.logExceptionAsError(new IllegalArgumentException(ex));
+        }
+        clientImplBuilder.instanceUrl(endpoint);
         return this;
     }
 
-    /*
-     * The HTTP pipeline to send requests through
+    /**
+     * Sets the desired API version for this attestation client.
+     * @param apiVersion Specifies the API version to use in the outgoing API calls.
+     * @return the AttestationClientBuilder.
      */
-    private HttpPipeline httpPipeline;
+    public AttestationClientBuilder apiVersion(String apiVersion) {
+        Objects.requireNonNull(apiVersion);
+        clientImplBuilder.apiVersion(apiVersion);
+        return this;
+    }
+    /**
+     * Sets the credential to be used for communicating with the service.
+     * @param credential Specifies the credential to be used for authentication.
+     * @return the AttestationClientBuilder.
+     */
+    public AttestationClientBuilder credential(TokenCredential credential) {
+        Objects.requireNonNull(credential);
+        clientImplBuilder.credential(credential);
+        return this;
+    }
+
 
     /**
      * Sets The HTTP pipeline to send requests through.
@@ -84,14 +97,9 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder pipeline(HttpPipeline pipeline) {
-        this.httpPipeline = pipeline;
+        clientImplBuilder.pipeline(pipeline);
         return this;
     }
-
-    /*
-     * The serializer to serialize an object into a string
-     */
-    private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
@@ -100,14 +108,9 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
+        clientImplBuilder.serializerAdapter(serializerAdapter);
         return this;
     }
-
-    /*
-     * The HTTP client used to send the request.
-     */
-    private HttpClient httpClient;
 
     /**
      * Sets The HTTP client used to send the request.
@@ -116,15 +119,9 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        clientImplBuilder.httpClient(httpClient);
         return this;
     }
-
-    /*
-     * The configuration store that is used during construction of the service
-     * client.
-     */
-    private Configuration configuration;
 
     /**
      * Sets The configuration store that is used during construction of the service client.
@@ -133,14 +130,9 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
+        clientImplBuilder.configuration(configuration);
         return this;
     }
-
-    /*
-     * The logging configuration for HTTP requests and responses.
-     */
-    private HttpLogOptions httpLogOptions;
 
     /**
      * Sets The logging configuration for HTTP requests and responses.
@@ -149,15 +141,9 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        this.httpLogOptions = httpLogOptions;
+        clientImplBuilder.httpLogOptions(httpLogOptions);
         return this;
     }
-
-    /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
-     */
-    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -166,14 +152,9 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
+        clientImplBuilder.retryPolicy(retryPolicy);
         return this;
     }
-
-    /*
-     * The list of Http pipeline policies to add.
-     */
-    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
@@ -182,9 +163,32 @@ public final class AttestationClientBuilder {
      * @return the AttestationClientBuilder.
      */
     public AttestationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        pipelinePolicies.add(customPolicy);
+        clientImplBuilder.addPolicy(customPolicy);
         return this;
     }
+
+    /**
+     * Builds an instance of AttestationClient sync client.
+     *
+     * @return an instance of AttestationClient.
+     */
+    public AttestationClient buildAttestationClient() {
+        return new AttestationClient(buildAttestationAsyncClient());
+    }
+
+    /**
+     * Builds an instance of AttestationAsyncClient async client.
+     *
+     * @return an instance of AttestationAsyncClient.
+     */
+    public AttestationAsyncClient buildAttestationAsyncClient() {
+        return new AttestationAsyncClient(buildInnerClient());
+    }
+
+    /**
+     * Legacy API surface which will be removed shortly.
+     */
+
 
     /**
      * Builds an instance of AttestationClientImpl with the provided parameters.
@@ -192,45 +196,7 @@ public final class AttestationClientBuilder {
      * @return an instance of AttestationClientImpl.
      */
     private AttestationClientImpl buildInnerClient() {
-        Objects.requireNonNull(endpoint);
-
-        HttpPipeline pipeline;
-        if (httpPipeline != null) {
-            pipeline = httpPipeline;
-        } else {
-            pipeline = createHttpPipeline();
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-        AttestationClientImplBuilder client = new AttestationClientImplBuilder()
-            .pipeline(pipeline)
-            .instanceUrl(endpoint)
-            .serializerAdapter(serializerAdapter);
-        return client.buildClient();
-    }
-
-    private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-        policies.add(new CookiePolicy());
-        policies.addAll(this.pipelinePolicies);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .build();
+        return clientImplBuilder.buildClient();
     }
 
     /**
@@ -252,33 +218,6 @@ public final class AttestationClientBuilder {
     }
 
     /**
-     * Builds an instance of AttestationAsyncClient async client.
-     *
-     * @return an instance of AttestationAsyncClient.
-     */
-    public AttestationAsyncClient buildAttestationAsyncClient() {
-        return new AttestationAsyncClient(buildInnerClient().getAttestations());
-    }
-
-    /**
-     * Builds an instance of SigningCertificatesAsyncClient async client.
-     *
-     * @return an instance of SigningCertificatesAsyncClient.
-     */
-    public SigningCertificatesAsyncClient buildSigningCertificatesAsyncClient() {
-        return new SigningCertificatesAsyncClient(buildInnerClient().getSigningCertificates());
-    }
-
-    /**
-     * Builds an instance of MetadataConfigurationAsyncClient async client.
-     *
-     * @return an instance of MetadataConfigurationAsyncClient.
-     */
-    public MetadataConfigurationAsyncClient buildMetadataConfigurationAsyncClient() {
-        return new MetadataConfigurationAsyncClient(buildInnerClient().getMetadataConfigurations());
-    }
-
-    /**
      * Builds an instance of PolicyClient sync client.
      *
      * @return an instance of PolicyClient.
@@ -296,30 +235,4 @@ public final class AttestationClientBuilder {
         return new PolicyCertificatesClient(buildInnerClient().getPolicyCertificates());
     }
 
-    /**
-     * Builds an instance of AttestationClient sync client.
-     *
-     * @return an instance of AttestationClient.
-     */
-    public AttestationClient buildAttestationClient() {
-        return new AttestationClient(buildInnerClient().getAttestations());
-    }
-
-    /**
-     * Builds an instance of SigningCertificatesClient sync client.
-     *
-     * @return an instance of SigningCertificatesClient.
-     */
-    public SigningCertificatesClient buildSigningCertificatesClient() {
-        return new SigningCertificatesClient(buildInnerClient().getSigningCertificates());
-    }
-
-    /**
-     * Builds an instance of MetadataConfigurationClient sync client.
-     *
-     * @return an instance of MetadataConfigurationClient.
-     */
-    public MetadataConfigurationClient buildMetadataConfigurationClient() {
-        return new MetadataConfigurationClient(buildInnerClient().getMetadataConfigurations());
-    }
 }

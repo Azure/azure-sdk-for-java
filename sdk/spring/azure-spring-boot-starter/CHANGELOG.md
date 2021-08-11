@@ -1,6 +1,14 @@
 # Release History
 
 ## 3.8.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+### New Features
+- Add property `azure.activedirectory.resource-server.principal-claim-name` to configure principal claim name.
+- Add property `azure.activedirectory.resource-server.claim-to-authority-prefix-map` to configure claim to authority prefix map.
+### Deprecations
+- Deprecate `AADB2CJwtBearerTokenAuthenticationConverter`, use `AADJwtBearerTokenAuthenticationConverter` instead.
 
 
 ## 3.7.0 (2021-07-20)
@@ -97,7 +105,7 @@
     azure.activedirectory.user-group.object-id-key
     ```
 - Removed support for older `AAD v1` style endpoints.
-    - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoft.online.com/common/oauth2/authorize has been removed.
+    - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoftonline.com/common/oauth2/authorize has been removed.
     - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
     - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
 - The required scopes in AAD auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`.

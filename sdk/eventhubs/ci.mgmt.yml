@@ -8,13 +8,15 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/eventhubs/
+      - sdk/eventhubs/ci.mgmt.yml
+      - sdk/eventhubs/mgmt-v2015_08_01/
+      - sdk/eventhubs/mgmt-v2017_04_01/
+      - sdk/eventhubs/mgmt-v2018_01_01_preview/
     exclude:
-      - sdk/eventhubs/azure-messaging-eventhubs
-      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob
-      - sdk/eventhubs/microsoft-azure-eventhubs
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph
-      - sdk/eventhubs/microsoft-azure-eventhubs-extensions
+      - sdk/eventhubs/pom.xml
+      - sdk/eventhubs/mgmt-v2015_08_01/pom.xml
+      - sdk/eventhubs/mgmt-v2017_04_01/pom.xml
+      - sdk/eventhubs/mgmt-v2018_01_01_preview/pom.xml
 
 pr:
   branches:
@@ -25,13 +27,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/eventhubs/
+      - sdk/eventhubs/ci.mgmt.yml
+      - sdk/eventhubs/mgmt-v2015_08_01/
+      - sdk/eventhubs/mgmt-v2017_04_01/
+      - sdk/eventhubs/mgmt-v2018_01_01_preview/
     exclude:
-      - sdk/eventhubs/azure-messaging-eventhubs
-      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob
-      - sdk/eventhubs/microsoft-azure-eventhubs
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph
-      - sdk/eventhubs/microsoft-azure-eventhubs-extensions
+      - sdk/eventhubs/pom.xml
+      - sdk/eventhubs/mgmt-v2015_08_01/pom.xml
+      - sdk/eventhubs/mgmt-v2017_04_01/pom.xml
+      - sdk/eventhubs/mgmt-v2018_01_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -18,7 +18,7 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -38,18 +38,12 @@ az keyvault create --resource-group <your-resource-group-name> --name <your-key-
 ### Server side SSL
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L36 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L30 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-    System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.tenant-id"),
-    System.getProperty("azure.keyvault.client-id"),
-    System.getProperty("azure.keyvault.client-secret"));
-keyStore.load(parameter);
+KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
 KeyManagerFactory managerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 managerFactory.init(keyStore, "".toCharArray());
@@ -66,18 +60,12 @@ Note if you want to use Azure Managed Identity, you should set the value of `azu
 ### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L67 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L61 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-    System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.tenant-id"),
-    System.getProperty("azure.keyvault.client-id"),
-    System.getProperty("azure.keyvault.client-secret"));
-keyStore.load(parameter);
+KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
 SSLContext sslContext = SSLContexts
     .custom()
@@ -121,6 +109,41 @@ azure:
     well-known:     # The file location where you store the well-known certificate
     custom:         # The file location where you store the custom certificate
 ```
+
+### Key-Less certificates
+You can set the private key as [non-exportable] to ensure the security of the key.
+
+Note if you want to use key less certificate, you must add `sign` permission.
+
+You can add permission in portal: ![Sign To Principal](resources/SignToPrincipal.png)
+
+Or add permission by cli command:
+```shell
+  az keyvault set-policy --name ${KEY_VAULT} \
+        --object-id ${MANAGED_IDENTITY} \
+        --key-permissions get list sign\
+        --secret-permissions get list \
+        --certificate-permissions get list
+```
+Please replace `${KEY_VAULT}` with your key vault name and replace `${MANAGED_IDENTITY}` with your principal's object-id.
+
+### Supported key type
+Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |
+-------------|----------|---------------------------------|---------------- |-------- |
+PKCS #12     | RSA      | 2048                            | RSASSA-PSS      | ✔       |     
+PKCS #12     | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PKCS #12     | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PKCS #12     | EC       | P-256                           | SHA256withECDSA | ✔       |
+PKCS #12     | EC       | P-384                           | SHA384withECDSA | ✔       |
+PKCS #12     | EC       | P-521                           | SHA512withECDSA | ✔       |
+PKCS #12     | EC       | P-256K                          |                 | ✘       |
+PEM          | RSA      | 2048                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PEM          | EC       | P-256                           | SHA256withECDSA | ✔       |
+PEM          | EC       | P-384                           | SHA384withECDSA | ✔       |
+PEM          | EC       | P-521                           | SHA512withECDSA | ✔       | 
+PEM          | EC       | P-256K                          |                 | ✘       |
 
 ## Troubleshooting
 ### General
@@ -167,5 +190,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [spring_boot_starter]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-jca%2FREADME.png)

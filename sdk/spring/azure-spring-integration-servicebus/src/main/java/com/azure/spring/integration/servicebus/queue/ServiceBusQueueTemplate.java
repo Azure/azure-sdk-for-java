@@ -12,7 +12,7 @@ import com.azure.spring.integration.servicebus.ServiceBusTemplate;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
-import com.google.common.collect.Sets;
+import com.azure.spring.integration.servicebus.health.Instrumentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -20,6 +20,7 @@ import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
@@ -34,7 +35,7 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in queue '%s' in %s mode";
 
-    private final Set<String> subscribedQueues = Sets.newConcurrentHashSet();
+    private final Set<String> subscribedQueues = ConcurrentHashMap.newKeySet();
 
     public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory) {
         super(clientFactory);
@@ -68,10 +69,18 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
                 return String.format(MSG_SUCCESS_CHECKPOINT, message, name, getCheckpointConfig().getCheckpointMode());
             }
         };
-
-        ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, clientConfig,
-                                                                                            messageProcessor);
-        processorClient.start();
+        Instrumentation instrumentation = new Instrumentation(name, Instrumentation.Type.CONSUME);
+        try {
+            instrumentationManager.addHealthInstrumentation(instrumentation);
+            ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, clientConfig,
+                messageProcessor);
+            processorClient.start();
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
+        } catch (Exception e) {
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);
+            LOGGER.error("ServiceBus processorClient startup failed, Caused by " + e.getMessage());
+            throw new ServiceBusRuntimeException("ServiceBus processor client startup failed, Caused by " + e.getMessage(), e);
+        }
     }
 
     @Override

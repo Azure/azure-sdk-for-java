@@ -41,7 +41,7 @@ import static com.azure.cosmos.implementation.http.HttpClientConfig.REACTOR_NETW
 /**
  * HttpClient that is implemented using reactor-netty.
  */
-class ReactorNettyClient implements HttpClient {
+public class ReactorNettyClient implements HttpClient {
 
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
 
@@ -378,5 +378,26 @@ class ReactorNettyClient implements HttpClient {
         SUBSCRIBED,
         CANCELLED,
         ERROR;
+    }
+
+    /**
+     * DO NOT USE
+     *
+     * This API is only for testing purposes, don't use it anywhere else in the code.
+     * This changes the logging level of Reactor Netty Http Client.
+     */
+    public void enableNetworkLogging() {
+        Logger logger = LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY);
+        if (logger.isTraceEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.TRACE);
+        } else if (logger.isInfoEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
+        } else if (logger.isDebugEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.DEBUG);
+        } else if (logger.isWarnEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.WARN);
+        } else if (logger.isErrorEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.ERROR);
+        }
     }
 }

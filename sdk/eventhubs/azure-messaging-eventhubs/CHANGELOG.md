@@ -2,6 +2,9 @@
 
 ## 5.10.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Add `EventProcessorClientBuilder.prefetchCount(int)` overload.
 
 ## 5.9.0 (2021-07-09)
 

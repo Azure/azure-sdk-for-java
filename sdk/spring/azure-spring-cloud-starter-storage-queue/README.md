@@ -1,4 +1,4 @@
-# Azure Spring cloud Starter Storage Queue client library for Java
+# Spring Cloud for Azure Starter Storage Queue client library for Java
 
 The Spring Cloud Storage Queue starter helps developers to finish the auto-configuration of Storage Queue and provides Spring Integration with Storage Queue.
 
@@ -56,7 +56,7 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-starter-azure-storage-queue
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-starter-storage-queue
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/storage/azure-spring-integration-sample-storage-queue
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application

@@ -68,6 +68,8 @@ public final class SkillsetsImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
+                @QueryParam("disableCacheReprocessingChangeDetection") Boolean disableCacheReprocessingChangeDetection,
+                @QueryParam("ignoreResetRequirements") Boolean ignoreResetRequirements,
                 @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexerSkillset skillset,
                 Context context);
@@ -128,6 +130,8 @@ public final class SkillsetsImpl {
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
+     * @param ignoreResetRequirements Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,6 +145,8 @@ public final class SkillsetsImpl {
             SearchIndexerSkillset skillset,
             String ifMatch,
             String ifNoneMatch,
+            Boolean disableCacheReprocessingChangeDetection,
+            Boolean ignoreResetRequirements,
             RequestOptions requestOptions,
             Context context) {
         final String prefer = "return=representation";
@@ -158,6 +164,8 @@ public final class SkillsetsImpl {
                 ifNoneMatch,
                 prefer,
                 this.client.getApiVersion(),
+                disableCacheReprocessingChangeDetection,
+                ignoreResetRequirements,
                 accept,
                 skillset,
                 context);

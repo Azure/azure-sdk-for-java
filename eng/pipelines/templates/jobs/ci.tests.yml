@@ -115,7 +115,7 @@ jobs:
         condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
         inputs:
           mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
-          options: -Pcoverage
+          options: '$(DefaultOptions) -Pcoverage'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)

@@ -257,7 +257,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads

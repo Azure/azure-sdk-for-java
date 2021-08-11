@@ -8,9 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/loganalytics/
+      - sdk/loganalytics/ci.data.yml
+      - sdk/loganalytics/microsoft-azure-loganalytics/
     exclude:
-      - sdk/loganalytics/mgmt-v2015_03_20
+      - sdk/loganalytics/pom.xml
+      - sdk/loganalytics/microsoft-azure-loganalytics/pom.xml
 
 pr:
   branches:
@@ -21,9 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/loganalytics/
+      - sdk/loganalytics/ci.data.yml
+      - sdk/loganalytics/microsoft-azure-loganalytics/
     exclude:
-      - sdk/loganalytics/mgmt-v2015_03_20
+      - sdk/loganalytics/pom.xml
+      - sdk/loganalytics/microsoft-azure-loganalytics/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

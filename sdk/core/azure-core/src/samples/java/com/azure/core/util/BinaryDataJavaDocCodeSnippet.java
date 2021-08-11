@@ -17,12 +17,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -108,6 +110,26 @@ public class BinaryDataJavaDocCodeSnippet {
         BinaryData binaryData = BinaryData.fromBytes(data);
         System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
         // END: com.azure.core.util.BinaryData.fromBytes#byte
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFile(Path)}.
+     */
+    public void fromFile() {
+        // BEGIN: com.azure.core.util.BinaryData.fromFile
+        BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath());
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromFile
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFile(Path, int)}.
+     */
+    public void fromFileWithChunkSize() {
+        // BEGIN: com.azure.core.util.BinaryData.fromFile#Path-int
+        BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath(), 8092);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromFile#Path-int
     }
 
     /**

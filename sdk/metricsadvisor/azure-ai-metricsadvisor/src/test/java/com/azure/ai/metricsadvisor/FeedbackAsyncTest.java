@@ -81,8 +81,11 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                         .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
                         .setStartTime(firstFeedbackCreatedTime.minusDays(1))
                         .setEndTime(firstFeedbackCreatedTime.plusDays(1))),
-                Context.NONE))
-                .thenConsumeWhile(actualMetricFeedbackList::add)
+                Context.NONE).byPage().take(4))
+                .thenConsumeWhile(metricFeedbackPagedResponse -> {
+                    metricFeedbackPagedResponse.getValue().forEach(actualMetricFeedbackList::add);
+                    return true;
+                })
                 .verifyComplete();
 
             final List<String> expectedMetricFeedbackIdList = expectedMetricFeedbackList.stream()
@@ -96,7 +99,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
 
             // Assert
             assertEquals(inputMetricFeedbackList.size(), actualList.size());
-            expectedMetricFeedbackList.sort(Comparator.comparing(metricFeedback -> metricFeedback.getFeedbackType().toString()));
+            expectedMetricFeedbackList.sort(Comparator.comparing(metricFeedback
+                -> metricFeedback.getFeedbackType().toString()));
             actualList.sort(Comparator.comparing(metricFeedback -> metricFeedback.getFeedbackType().toString()));
             final AtomicInteger i = new AtomicInteger(-1);
             final List<FeedbackType> metricFeedbackTypes = Arrays.asList(COMMENT, COMMENT);

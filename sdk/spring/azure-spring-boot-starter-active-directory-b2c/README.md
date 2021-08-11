@@ -239,6 +239,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
    azure:
      activedirectory:
        b2c:
+         base-uri: ${your-base-uri}             # Such as: https://xxxxb2c.b2clogin.com
          tenant-id: ${your-tenant-id}
          authorization-clients:
            ${your-resource-server-a-name}:
@@ -320,9 +321,10 @@ This scenario not support login. Just protect the server by validating the acces
    azure:
      activedirectory:
        b2c:
+         base-uri: ${your-base-uri}             # Such as: https://xxxxb2c.b2clogin.com
          tenant-id: ${your-tenant-id}
-         app-id-uri: ${your-web-api-a-app-id-url}
-         client-id: ${your-web-api-a-client-id}
+         app-id-uri: ${your-app-id-uri}         # If you are using v1.0 token, please configure app-id-uri for `aud` verification
+         client-id: ${your-client-id}           # If you are using v2.0 token, please configure client-id for `aud` verification
    ```
 
 1. Write your Java code.
@@ -354,7 +356,7 @@ This scenario not support login. Just protect the server by validating the acces
             http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
                 .oauth2ResourceServer()
                 .jwt()
-                .jwtAuthenticationConverter(new AADB2CJwtBearerTokenAuthenticationConverter());
+                .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
         }
     }
     ```
@@ -515,7 +517,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

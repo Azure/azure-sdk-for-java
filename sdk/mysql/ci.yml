@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mysql/
+      - sdk/mysql/ci.yml
+      - sdk/mysql/azure-resourcemanager-mysql/
+    exclude:
+      - sdk/mysql/pom.xml
+      - sdk/mysql/azure-resourcemanager-mysql/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mysql/
+      - sdk/mysql/ci.yml
+      - sdk/mysql/azure-resourcemanager-mysql/
+    exclude:
+      - sdk/mysql/pom.xml
+      - sdk/mysql/azure-resourcemanager-mysql/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

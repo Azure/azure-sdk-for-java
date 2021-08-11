@@ -74,9 +74,9 @@ azure.keyvault.secret-service-version=specify secretServiceVersion value(fill wi
 ```
 
 ### Use MSI / Managed identities 
-#### Azure Spring Cloud
+#### Spring Cloud for Azure
 
-Azure Spring Cloud supports system-assigned managed identity only at present. To use it for Azure Spring Cloud apps, add the below properties:
+Spring Cloud for Azure supports system-assigned managed identity only at present. To use it for Spring Cloud for Azure apps, add the below properties:
 ```
 azure.keyvault.enabled=true
 azure.keyvault.uri=put-your-azure-keyvault-uri-here
@@ -203,7 +203,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-secrets
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/keyvault/azure-spring-boot-sample-keyvault-secrets
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [version_link]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12

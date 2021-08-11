@@ -4,12 +4,15 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
-import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.implementation.TestIterationContext;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,6 +24,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +41,7 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
+    private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
     private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
         .get(AZURE_TEST_HTTP_CLIENTS);
     private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
@@ -242,5 +247,49 @@ public abstract class TestBase implements BeforeEachCallback {
         } catch (InterruptedException ex) {
             throw logger.logExceptionAsWarning(new IllegalStateException(ex));
         }
+    }
+
+    /**
+     * Sets the polling interval for the passed {@link SyncPoller}.
+     * <p>
+     * This configures the {@link SyncPoller} to use a poll interval of one millisecond if the test mode is playback. In
+     * live or record test mode the polling interval is left as-is.
+     *
+     * @param syncPoller The {@link SyncPoller}.
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long-running operation.
+     * @return The updated {@link SyncPoller}.
+     */
+    protected <T, U> SyncPoller<T, U> setPlaybackSyncPollerPollInterval(SyncPoller<T, U> syncPoller) {
+        return (testMode == TestMode.PLAYBACK) ? syncPoller.setPollInterval(PLAYBACK_POLL_INTERVAL) : syncPoller;
+    }
+
+    /**
+     * Sets the polling interval for the passed {@link PollerFlux}.
+     * <p>
+     * This configures the {@link PollerFlux} to use a poll interval of one millisecond if the test mode is playback. In
+     * live or record test mode the polling interval is left as-is.
+     *
+     * @param pollerFlux The {@link PollerFlux}.
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long-running operation.
+     * @return The updated {@link PollerFlux}.
+     */
+    protected <T, U> PollerFlux<T, U> setPlaybackPollerFluxPollInterval(PollerFlux<T, U> pollerFlux) {
+        return (testMode == TestMode.PLAYBACK) ? pollerFlux.setPollInterval(PLAYBACK_POLL_INTERVAL) : pollerFlux;
+    }
+
+    /**
+     * Convenience method which either returned the passed {@link HttpClient} or returns a {@link PlaybackClient}
+     * depending on whether the test mode is playback.
+     * <p>
+     * When the test mode is playback the {@link PlaybackClient} corresponding to the test will be returned, otherwise
+     * the passed {@link HttpClient} will be returned.
+     *
+     * @param httpClient The initial {@link HttpClient} that will be used.
+     * @return Either the passed {@link HttpClient} or {@link PlaybackClient} based on the test mode.
+     */
+    protected HttpClient getHttpClientOrUsePlayback(HttpClient httpClient) {
+        return (testMode == TestMode.PLAYBACK) ? interceptorManager.getPlaybackClient() : httpClient;
     }
 }

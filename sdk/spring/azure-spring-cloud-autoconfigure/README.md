@@ -1,4 +1,4 @@
-# Azure Spring cloud AutoConfigure client library for Java
+# Spring Cloud for Azure AutoConfigure client library for Java
 This package is for Spring Cloud Starters of Azure services. It helps Spring Cloud developers to adopt Azure services.
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs]
@@ -28,9 +28,90 @@ This project provides auto-configuration for the following Azure services:
 - [Service Bus][service_bus]
 - [Storage Queue][storage_queue]
 
+## Health indicator
+
+You can use health information to check the status of your running application. It is often used by
+monitoring software to alert someone when a production system goes down. The information exposed by
+the health endpoint depends on the management.endpoint.health.show-details and
+management.endpoint.health.show-components properties which can be configured with one of the
+following values:
+
+|  key   | Name  |
+|  ----  | ----  |
+| never | Details are never shown. |
+| when-authorized | Details are only shown to authorized users. Authorized roles can be configured using management.endpoint.health.roles. |
+| always |Details are shown to all users. |
+
+The default value is never. A user is considered to be authorized when they are in one or more of
+the endpoint’s roles. If the endpoint has no configured roles (the default) all authenticated users
+are considered to be authorized. The roles can be configured using the
+management.endpoint.health.roles property.
+
+**NOTE:** If you have secured your application and wish to use `always`, your security configuration
+must permit access to the health endpoint for both authenticated and unauthenticated users.
+
+### Auto-configured HealthIndicators
+
+The following HealthIndicators are auto-configured by Azure Spring Boot when appropriate. You can
+also enable/disable selected indicators by configuring management.health.key.enabled, with the key
+listed in the table below.
+
+| key | Name | Description |
+| ---- | ---- | ---- |
+| binders | EventHubHealthIndicator | Checks that an event hub is up. |
+| binders | ServiceBusQueueHealthIndicator | Checks that a service bus queue is up. |
+| binders | ServiceBusTopicHealthIndicator | Checks that a service bus topic is up. |
+
+### Add the dependent
+
+```yaml
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+    </dependencies>
+```
+
+### Enabling the Actuator
+
+When you do the following configuration in `application.yml` , you can access the endpoint to get
+the health of the component.
+
+```yaml
+management:
+  health:
+    binders:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+```
+
+Access the Health Endpoint：
+
+```json
+{
+  "status": "UP",
+  "components": {
+    "binders": {
+      "status": "UP",
+      "components": {
+        "eventhub-1": {
+          "status": "UP"
+        },
+        "servicebus-1": {
+          "status": "UP"
+        }
+      }
+    }
+  }
+}
+```
+
 ## Examples
 
-The following section provides sample projects illustrating how to use the Azure Spring Cloud starters.
+The following section provides sample projects illustrating how to use the Spring Cloud for Azure starters.
 ### More sample code
 - [Azure App Configuration][app_configuration_sample]
 - [Azure App Configuration Conversation][app_configuration_conversation_sample]
@@ -60,7 +141,7 @@ For more information about setting logging in spring, please refer to the [offic
 
 ## Next steps
 
-The following section provides sample projects illustrating how to use the Azure Spring Cloud starters.
+The following section provides sample projects illustrating how to use the Spring Cloud for Azure starters.
 ### More sample code
 - [Azure App Configuration][app_configuration_sample]
 - [Azure App Configuration Conversation][app_configuration_conversation_sample]
@@ -78,7 +159,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 
 <!-- Link -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-autoconfigure/src/
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-autoconfigure
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-autoconfigure
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [spring_io]: https://start.spring.io

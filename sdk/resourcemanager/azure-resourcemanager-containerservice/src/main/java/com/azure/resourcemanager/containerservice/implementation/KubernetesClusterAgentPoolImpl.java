@@ -6,9 +6,11 @@ import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
+import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
@@ -42,6 +44,11 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public String name() {
         return this.innerModel().name();
+    }
+
+    @Override
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
     }
 
     @Override
@@ -147,6 +154,16 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public Double virtualMachineMaximumPrice() {
         return innerModel().spotMaxPrice().doubleValue();
+    }
+
+    @Override
+    public OSDiskType osDiskType() {
+        return innerModel().osDiskType();
+    }
+
+    @Override
+    public KubeletDiskType kubeletDiskType() {
+        return innerModel().kubeletDiskType();
     }
 
     @Override
@@ -301,6 +318,18 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public KubernetesClusterAgentPoolImpl withVirtualMachineMaximumPrice(Double maxPriceInUsDollars) {
         innerModel().withSpotMaxPrice(maxPriceInUsDollars.floatValue());
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withOSDiskType(OSDiskType osDiskType) {
+        innerModel().withOsDiskType(osDiskType);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withKubeletDiskType(KubeletDiskType kubeletDiskType) {
+        innerModel().withKubeletDiskType(kubeletDiskType);
         return this;
     }
 }

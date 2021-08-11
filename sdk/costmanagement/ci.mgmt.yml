@@ -8,7 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/costmanagement/
+      - sdk/costmanagement/ci.mgmt.yml
+      - sdk/costmanagement/mgmt-v2018_05_31/
+      - sdk/costmanagement/mgmt-v2019_11_01/
+    exclude:
+      - sdk/costmanagement/pom.xml
+      - sdk/costmanagement/mgmt-v2018_05_31/pom.xml
+      - sdk/costmanagement/mgmt-v2019_11_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/costmanagement/
+      - sdk/costmanagement/ci.mgmt.yml
+      - sdk/costmanagement/mgmt-v2018_05_31/
+      - sdk/costmanagement/mgmt-v2019_11_01/
+    exclude:
+      - sdk/costmanagement/pom.xml
+      - sdk/costmanagement/mgmt-v2018_05_31/pom.xml
+      - sdk/costmanagement/mgmt-v2019_11_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
