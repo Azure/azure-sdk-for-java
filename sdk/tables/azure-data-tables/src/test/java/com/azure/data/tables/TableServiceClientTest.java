@@ -28,6 +28,7 @@ import com.azure.data.tables.sas.TableAccountSasService;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -41,6 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
 
+import static com.azure.data.tables.TestUtils.assertPropertiesEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -53,6 +55,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TableServiceClientTest extends TestBase {
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+    private static final boolean IS_COSMOS_TEST = System.getenv("AZURE_TABLES_CONNECTION_STRING") != null
+        && System.getenv("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
 
     private TableServiceClient serviceClient;
     private HttpPipelinePolicy recordPolicy;
@@ -372,6 +376,9 @@ public class TableServiceClientTest extends TestBase {
 
     @Test
     public void setGetProperties() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Setting and getting properties is not supported on Cosmos endpoints.");
+
         TableServiceRetentionPolicy retentionPolicy = new TableServiceRetentionPolicy()
             .setDaysToRetain(5)
             .setEnabled(true);
@@ -401,27 +408,28 @@ public class TableServiceClientTest extends TestBase {
             .setRetentionPolicy(retentionPolicy)
             .setIncludeApis(true);
 
-        TableServiceProperties properties = new TableServiceProperties()
+        TableServiceProperties sentProperties = new TableServiceProperties()
             .setLogging(logging)
             .setCorsRules(corsRules)
             .setMinuteMetrics(minuteMetrics)
             .setHourMetrics(hourMetrics);
 
-        assertDoesNotThrow(() -> serviceClient.setProperties(properties));
+        Response<Void> response = serviceClient.setPropertiesWithResponse(sentProperties, null, null);
+
+        assertNotNull(response.getHeaders().getValue("x-ms-request-id"));
+        assertNotNull(response.getHeaders().getValue("x-ms-version"));
+
+        sleepIfRunningAgainstService(20000);
 
         TableServiceProperties retrievedProperties = serviceClient.getProperties();
 
-        assertNotNull(retrievedProperties);
-        assertNotNull(retrievedProperties.getCorsRules());
-        assertEquals(1, retrievedProperties.getCorsRules().size());
-        assertNotNull(retrievedProperties.getCorsRules().get(0));
-        assertNotNull(retrievedProperties.getHourMetrics());
-        assertNotNull(retrievedProperties.getMinuteMetrics());
-        assertNotNull(retrievedProperties.getLogging());
+        assertPropertiesEquals(sentProperties, retrievedProperties);
     }
 
     @Test
     public void getStatistics() throws URISyntaxException {
+        Assumptions.assumeFalse(IS_COSMOS_TEST, "Getting statistics is not supported on Cosmos endpoints.");
+
         URI primaryEndpoint = new URI(serviceClient.getServiceEndpoint());
         String[] hostParts = primaryEndpoint.getHost().split("\\.");
         StringJoiner secondaryHostJoiner = new StringJoiner(".");

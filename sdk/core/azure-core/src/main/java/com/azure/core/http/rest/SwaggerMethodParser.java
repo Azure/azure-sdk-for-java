@@ -62,7 +62,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final String relativePath;
     private final List<Substitution> hostSubstitutions = new ArrayList<>();
     private final List<Substitution> pathSubstitutions = new ArrayList<>();
-    private final List<Substitution> querySubstitutions = new ArrayList<>();
+    private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> formSubstitutions = new ArrayList<>();
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
@@ -192,11 +192,12 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                         !pathParamAnnotation.encoded()));
                 } else if (annotationType.equals(QueryParam.class)) {
                     final QueryParam queryParamAnnotation = (QueryParam) annotation;
-                    querySubstitutions.add(new Substitution(queryParamAnnotation.value(), parameterIndex,
-                        !queryParamAnnotation.encoded()));
+                    querySubstitutions.add(new QuerySubstitution(queryParamAnnotation.value(), parameterIndex,
+                        !queryParamAnnotation.encoded(), queryParamAnnotation.multipleQueryParams()));
                 } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
-                    headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex, false));
+                    headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex,
+                            false));
                 } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
@@ -273,21 +274,26 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param swaggerMethodArguments the arguments that will be used to create the query parameters' values
      * @param urlBuilder The {@link UrlBuilder} where the encoded query parameters will be set.
      */
+    @SuppressWarnings("unchecked")
     public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
         if (swaggerMethodArguments == null) {
             return;
         }
 
-        for (Substitution substitution : querySubstitutions) {
+        for (QuerySubstitution substitution : querySubstitutions) {
             final int parameterIndex = substitution.getMethodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
-                String parameterValue = serialize(serializer, methodArgument);
-                if (parameterValue != null) {
-                    if (substitution.shouldEncode()) {
-                        parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
+
+                if (substitution.mergeParameters() && methodArgument instanceof List) {
+                    List<Object> methodArguments = (List<Object>) methodArgument;
+                    for (Object argument : methodArguments) {
+                        addSerializedQueryParameter(serializer, argument, substitution.shouldEncode(),
+                            urlBuilder, substitution.getUrlParameterName());
                     }
-                    urlBuilder.setQueryParameter(substitution.getUrlParameterName(), parameterValue);
+                } else {
+                    addSerializedQueryParameter(serializer, methodArgument, substitution.shouldEncode(),
+                            urlBuilder, substitution.getUrlParameterName());
                 }
             }
         }
@@ -345,6 +351,16 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         Context context = CoreUtils.findFirstOfType(swaggerMethodArguments, Context.class);
 
         return (context != null) ? context : Context.NONE;
+    }
+
+    /**
+     * Get the {@link RequestOptions} passed into the proxy method.
+     *
+     * @param swaggerMethodArguments the arguments passed to the proxy method
+     * @return the request options
+     */
+    public RequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
+        return CoreUtils.findFirstOfType(swaggerMethodArguments, RequestOptions.class);
     }
 
     /**
@@ -449,6 +465,21 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public Type getReturnValueWireType() {
         return returnValueWireType;
+    }
+
+    private static void addSerializedQueryParameter(SerializerAdapter adapter, Object value, boolean shouldEncode,
+            UrlBuilder urlBuilder, String parameterName) {
+
+        String parameterValue = serialize(adapter, value);
+
+        if (parameterValue != null) {
+            if (shouldEncode) {
+                parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
+            }
+
+            // add parameter to the urlBuilder
+            urlBuilder.addQueryParameter(parameterName, parameterValue);
+        }
     }
 
     private static String serialize(SerializerAdapter serializer, Object value) {

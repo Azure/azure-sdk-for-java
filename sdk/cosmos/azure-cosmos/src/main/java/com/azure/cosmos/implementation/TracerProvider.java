@@ -10,13 +10,14 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TransactionalBatchResponse;
-import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 public class TracerProvider {
     private Tracer tracer;
     private static final Logger LOGGER = LoggerFactory.getLogger(TracerProvider.class);
+    private static final ObjectMapper mapper = new ObjectMapper();
     private final static String JSON_STRING = "JSON";
     public final static String DB_TYPE_VALUE = "Cosmos";
     public final static String DB_TYPE = "db.type";
@@ -380,18 +382,18 @@ public class TracerProvider {
         for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
             clientSideRequestStatistics.getResponseStatisticsList()) {
             attributes = new HashMap<>();
-            attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(storeResponseStatistics));
+            attributes.put(JSON_STRING, mapper.writeValueAsString(storeResponseStatistics));
             Iterator<RequestTimeline.Event> eventIterator = null;
             try {
-                if (storeResponseStatistics.storeResult != null) {
+                if (storeResponseStatistics.getStoreResult() != null) {
                     eventIterator =
-                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.storeResult.toResponse()).iterator();
+                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.getStoreResult().toResponse()).iterator();
                 }
             } catch (CosmosException ex) {
                 eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
             }
 
-            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(storeResponseStatistics.requestResponseTimeUTC
+            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(storeResponseStatistics.getRequestResponseTimeUTC()
                 , ZoneOffset.UTC);
             if (eventIterator != null) {
                 while (eventIterator.hasNext()) {
@@ -411,12 +413,12 @@ public class TracerProvider {
         for (ClientSideRequestStatistics.StoreResponseStatistics statistics :
             ClientSideRequestStatistics.getCappedSupplementalResponseStatisticsList(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
             attributes = new HashMap<>();
-            attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(statistics));
-            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.requestResponseTimeUTC,
+            attributes.put(JSON_STRING, mapper.writeValueAsString(statistics));
+            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.getRequestResponseTimeUTC(),
                 ZoneOffset.UTC);
-            if (statistics.storeResult != null) {
+            if (statistics.getStoreResult() != null) {
                 Iterator<RequestTimeline.Event> eventIterator =
-                    DirectBridgeInternal.getRequestTimeline(statistics.storeResult.toResponse()).iterator();
+                    DirectBridgeInternal.getRequestTimeline(statistics.getStoreResult().toResponse()).iterator();
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
                     if (event.getName().equals("created")) {
@@ -432,12 +434,12 @@ public class TracerProvider {
         if (clientSideRequestStatistics.getGatewayStatistics() != null) {
             attributes = new HashMap<>();
             attributes.put(JSON_STRING,
-                Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getGatewayStatistics()));
+                mapper.writeValueAsString(clientSideRequestStatistics.getGatewayStatistics()));
             OffsetDateTime requestStartTime =
                 OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC);
-            if (clientSideRequestStatistics.getGatewayStatistics().requestTimeline != null) {
+            if (clientSideRequestStatistics.getGatewayStatistics().getRequestTimeline() != null) {
                 Iterator<RequestTimeline.Event> eventIterator =
-                    clientSideRequestStatistics.getGatewayStatistics().requestTimeline.iterator();
+                    clientSideRequestStatistics.getGatewayStatistics().getRequestTimeline().iterator();
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
                     if (event.getName().equals("created")) {
@@ -453,7 +455,7 @@ public class TracerProvider {
         if (clientSideRequestStatistics.getRetryContext().getRetryStartTime() != null) {
             attributes = new HashMap<>();
             attributes.put(JSON_STRING,
-                Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRetryContext()));
+                mapper.writeValueAsString(clientSideRequestStatistics.getRetryContext()));
             this.addEvent("Retry Context", attributes,
                 OffsetDateTime.ofInstant(clientSideRequestStatistics.getRetryContext().getRetryStartTime(),
                     ZoneOffset.UTC), context);
@@ -464,9 +466,9 @@ public class TracerProvider {
         for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics :
             clientSideRequestStatistics.getAddressResolutionStatistics().values()) {
             attributes = new HashMap<>();
-            attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(addressResolutionStatistics));
+            attributes.put(JSON_STRING, mapper.writeValueAsString(addressResolutionStatistics));
             this.addEvent("AddressResolutionStatistics" + diagnosticsCounter++, attributes,
-                OffsetDateTime.ofInstant(addressResolutionStatistics.startTimeUTC, ZoneOffset.UTC), context);
+                OffsetDateTime.ofInstant(addressResolutionStatistics.getStartTimeUTC(), ZoneOffset.UTC), context);
         }
 
         //adding serializationDiagnosticsContext
@@ -474,7 +476,7 @@ public class TracerProvider {
             for (SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics :
                 clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList) {
                 attributes = new HashMap<>();
-                attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(serializationDiagnostics));
+                attributes.put(JSON_STRING, mapper.writeValueAsString(serializationDiagnostics));
                 this.addEvent("SerializationDiagnostics " + serializationDiagnostics.serializationType, attributes,
                     OffsetDateTime.ofInstant(serializationDiagnostics.startTimeUTC, ZoneOffset.UTC), context);
             }
@@ -483,7 +485,7 @@ public class TracerProvider {
         //adding systemInformation
         attributes = new HashMap<>();
         attributes.put(JSON_STRING,
-            Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+            mapper.writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
         this.addEvent("RegionContacted", attributes,
             OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
 
@@ -491,14 +493,14 @@ public class TracerProvider {
         //adding systemInformation
         attributes = new HashMap<>();
         attributes.put(JSON_STRING,
-            Utils.getSimpleObjectMapper().writeValueAsString(ClientSideRequestStatistics.fetchSystemInformation()));
+            mapper.writeValueAsString(ClientSideRequestStatistics.fetchSystemInformation()));
         this.addEvent("SystemInformation", attributes,
             OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
 
         //adding clientCfgs
         attributes = new HashMap<>();
         attributes.put(JSON_STRING,
-            Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+            mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
         this.addEvent("ClientCfgs", attributes,
             OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
     }

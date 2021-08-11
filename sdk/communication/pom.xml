@@ -25,7 +25,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-callingserver</artifactId>
-          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
+          <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

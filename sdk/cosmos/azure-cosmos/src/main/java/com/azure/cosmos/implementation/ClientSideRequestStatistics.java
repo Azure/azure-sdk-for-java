@@ -157,13 +157,18 @@ public class ClientSideRequestStatistics {
         return this.gatewayRequestTimeline;
     }
 
-    public String recordAddressResolutionStart(URI targetEndpoint) {
+    public String recordAddressResolutionStart(
+        URI targetEndpoint,
+        boolean forceRefresh,
+        boolean forceCollectionRoutingMapRefresh) {
         String identifier = Utils.randomUUID().toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
         resolutionStatistics.startTimeUTC = Instant.now();
         resolutionStatistics.endTimeUTC = null;
         resolutionStatistics.targetEndpoint = targetEndpoint == null ? "<NULL>" : targetEndpoint.toString();
+        resolutionStatistics.forceRefresh = forceRefresh;
+        resolutionStatistics.forceCollectionRoutingMapRefresh = forceCollectionRoutingMapRefresh;
 
         synchronized (this) {
             this.addressResolutionStatistics.put(identifier, resolutionStatistics);
@@ -253,13 +258,13 @@ public class ClientSideRequestStatistics {
 
     public static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
-        StoreResult storeResult;
+        private StoreResult storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant requestResponseTimeUTC;
+        private Instant requestResponseTimeUTC;
         @JsonSerialize
-        ResourceType requestResourceType;
+        private ResourceType requestResourceType;
         @JsonSerialize
-        OperationType requestOperationType;
+        private OperationType requestOperationType;
 
         public StoreResult getStoreResult() {
             return storeResult;
@@ -268,13 +273,21 @@ public class ClientSideRequestStatistics {
         public Instant getRequestResponseTimeUTC() {
             return requestResponseTimeUTC;
         }
+
+        public ResourceType getRequestResourceType() {
+            return requestResourceType;
+        }
+
+        public OperationType getRequestOperationType() {
+            return requestOperationType;
+        }
     }
 
-    private static class SystemInformation {
-        String usedMemory;
-        String availableMemory;
-        String systemCpuLoad;
-        int availableProcessors;
+    public static class SystemInformation {
+        private String usedMemory;
+        private String availableMemory;
+        private String systemCpuLoad;
+        private int availableProcessors;
 
         public String getUsedMemory() {
             return usedMemory;
@@ -347,34 +360,60 @@ public class ClientSideRequestStatistics {
 
     public static class AddressResolutionStatistics {
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant startTimeUTC;
+        private Instant startTimeUTC;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant endTimeUTC;
+        private Instant endTimeUTC;
         @JsonSerialize
-        String targetEndpoint;
+        private String targetEndpoint;
         @JsonSerialize
-        String errorMessage;
+        private String errorMessage;
+        @JsonSerialize
+        private boolean forceRefresh;
+        @JsonSerialize
+        private boolean forceCollectionRoutingMapRefresh;
 
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
         // indicating background addressResolution is still inflight
         @JsonSerialize
-        boolean inflightRequest = true;
+        private boolean inflightRequest = true;
 
         public Instant getStartTimeUTC() {
             return startTimeUTC;
         }
+
+        public Instant getEndTimeUTC() {
+            return endTimeUTC;
+        }
+
+        public String getTargetEndpoint() {
+            return targetEndpoint;
+        }
+
+        public String getErrorMessage() {
+            return errorMessage;
+        }
+
+        public boolean isInflightRequest() {
+            return inflightRequest;
+        }
+
+        public boolean isForceRefresh() {
+            return forceRefresh;
+        }
+
+        public boolean isForceCollectionRoutingMapRefresh() { return forceCollectionRoutingMapRefresh; }
     }
 
     public static class GatewayStatistics {
-        String sessionToken;
-        OperationType operationType;
-        ResourceType resourceType;
-        int statusCode;
-        int subStatusCode;
-        String requestCharge;
-        RequestTimeline requestTimeline;
-        String partitionKeyRangeId;
+        private String sessionToken;
+        private OperationType operationType;
+        private ResourceType resourceType;
+        private int statusCode;
+        private int subStatusCode;
+        private String requestCharge;
+        private RequestTimeline requestTimeline;
+        private String partitionKeyRangeId;
 
         public String getSessionToken() {
             return sessionToken;

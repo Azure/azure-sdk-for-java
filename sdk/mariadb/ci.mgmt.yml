@@ -8,7 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mariadb/
+      - sdk/mariadb/ci.mgmt.yml
+      - sdk/mariadb/mgmt-v2018_06_01/
+      - sdk/mariadb/mgmt-v2020_01_01/
+    exclude:
+      - sdk/mariadb/pom.xml
+      - sdk/mariadb/mgmt-v2018_06_01/pom.xml
+      - sdk/mariadb/mgmt-v2020_01_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mariadb/
+      - sdk/mariadb/ci.mgmt.yml
+      - sdk/mariadb/mgmt-v2018_06_01/
+      - sdk/mariadb/mgmt-v2020_01_01/
+    exclude:
+      - sdk/mariadb/pom.xml
+      - sdk/mariadb/mgmt-v2018_06_01/pom.xml
+      - sdk/mariadb/mgmt-v2020_01_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

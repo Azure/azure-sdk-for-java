@@ -5,13 +5,15 @@ package com.azure.core.implementation.logging;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.file.InvalidPathException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This class is an internal implementation of slf4j logger.
@@ -52,14 +54,16 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     /**
      * Construct DefaultLogger for the given class name.
      *
-     * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the
-     * class name passes in.
+     * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the class
+     * name passes in.
      */
     public DefaultLogger(String className) {
         String classPath;
         try {
             classPath = Class.forName(className).getCanonicalName();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | InvalidPathException e) {
+            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
+            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
             classPath = className;
         }
         this.classPath = classPath;
@@ -382,7 +386,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             StringWriter sw = new StringWriter();
             try (PrintWriter pw = new PrintWriter(sw)) {
                 t.printStackTrace(pw);
-                stringBuilder.append(sw.toString());
+                stringBuilder.append(sw);
             }
         }
         System.out.print(stringBuilder.toString());
