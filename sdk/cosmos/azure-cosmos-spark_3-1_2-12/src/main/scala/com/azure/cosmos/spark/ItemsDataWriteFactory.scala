@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
-import org.apache.spark.{SparkContext, TaskContext}
+import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.streaming.StreamingDataWriterFactory
@@ -116,7 +116,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
 
     override def abort(): Unit = {
       log.logInfo("abort invoked!!!")
-      writer.flushAndClose()
+      writer.abort()
     }
 
     override def close(): Unit = {

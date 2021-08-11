@@ -209,7 +209,12 @@ class BulkWriter(container: CosmosAsyncContainer,
     var acquisitionAttempt = 0
     val operationContext = OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1)
     var numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
-    var activeOperationsSnapshot = activeOperations.clone()
+    // Don't clone the activeOperations for the first iteration
+    // to reduce perf impact before the Semaphore has been acquired
+    // this means if the semaphore can't be acquired within 1 minute
+    // the first attempt will always assume it wasn't stale - so effectively we
+    // allow staleness for one additional minute - which is perfectly fine
+    var activeOperationsSnapshot = mutable.Set.empty[CosmosItemOperation]
     while (!semaphore.tryAcquire(1, TimeUnit.MINUTES)) {
       if (subscriptionDisposable.isDisposed) {
         captureIfFirstFailure(
@@ -467,6 +472,18 @@ class BulkWriter(container: CosmosAsyncContainer,
       None
     }
   }
+
+  /**
+   * Don't wait for any remaining work but signal to the writer the ungraceful close
+   * Should not throw any exceptions
+   */
+  override def abort(): Unit = {
+    // signal an exception that will be thrown for any pending work/flushAndClose if no other exception has
+    // been registered
+    captureIfFirstFailure(
+      new IllegalStateException(s"The Spark task was aborted, Context: ${operationContext.toString}"))
+    cancelWork()
+  }
 }
 
 private object BulkWriter {
@@ -476,7 +493,10 @@ private object BulkWriter {
 
   // we used to use 15 minutes here - extending it because of several incidents where
   // backend returned 420/3088 (ThrottleDueToSplit) for >= 30 minutes
-  val maxAllowedMinutesWithoutAnyProgress = 30
+  // UPDATE - reverting back to 15 minutes - causing an unreasonably large delay/hang
+  // due to a backend issue doesn't sound right for most customers (helpful during my own
+  // long stress runs - but for customers 15 minutes is more reasonable)
+  val maxAllowedMinutesWithoutAnyProgress = 15
   //scalastyle:on magic.number
 
   // let's say the spark executor VM has 16 CPU cores.

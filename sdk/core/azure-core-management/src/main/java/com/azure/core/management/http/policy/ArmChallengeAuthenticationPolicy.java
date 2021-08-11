@@ -66,9 +66,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
-            if (!(response.getStatusCode() == 401 && authHeader != null)) {
-                return Mono.just(false);
-            } else {
+            if (response.getStatusCode() == 401 && authHeader != null) {
                 List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
                 for (AuthenticationChallenge authenticationChallenge : challenges) {
                     Map<String, String> extractedChallengeParams =
@@ -89,13 +87,14 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                         // If scopes wasn't configured in On Before logic or at constructor level,
                         // then this method will retrieve it again.
                         scopes = getScopes(context, scopes);
-                        return setAuthorizationHeader(context, new TokenRequestContext()
-                            .addScopes(scopes).setClaims(claims))
-                            .flatMap(b -> Mono.just(true));
+                        return setAuthorizationHeader(context,
+                            new TokenRequestContext()
+                                .addScopes(scopes).setClaims(claims))
+                                   .flatMap(b -> Mono.just(true));
                     }
                 }
-                return Mono.just(false);
             }
+            return Mono.just(false);
         });
     }
 
