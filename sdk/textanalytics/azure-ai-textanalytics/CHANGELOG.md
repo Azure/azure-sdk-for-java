@@ -1,4 +1,7 @@
 # Release History
+## 5.2.0-beta.1 (Unreleased)
+
+
 ## 5.1.1 (2021-08-11)
 ### Dependency Updates
 - Updated `azure-core` from `1.18.0` to `1.19.0`.
