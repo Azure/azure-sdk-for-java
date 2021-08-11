@@ -4,7 +4,12 @@
 package com.azure.cosmos.implementation.query.metrics;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.QueryPreparationTimes;
+import com.azure.cosmos.implementation.RuntimeExecutionTimes;
+import com.azure.cosmos.implementation.IndexUtilizationInfo;
+import com.azure.cosmos.implementation.SingleIndexUtilizationEntity;
+import com.azure.cosmos.implementation.CompositeIndexUtilizationEntity;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.time.Duration;
