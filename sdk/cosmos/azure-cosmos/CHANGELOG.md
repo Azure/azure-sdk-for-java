@@ -7,7 +7,7 @@
 
 #### Key Bug Fixes
 * Added reactor netty timeline to query plan calls.
-* Fixed serialization warning on clientSideRequestDiagnostics.
+* Fixed serialization warning on `clientSideRequestDiagnostics`.
 * Fixed an issue when `IdleEndpointTimeout` is 0.
 * Added retry for `PrematureCloseException`.
 * Fixed a hang issue in bulk executor.
