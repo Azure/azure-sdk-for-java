@@ -42,7 +42,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.fasterxml.jackson.databind.ObjectMapper
 import reactor.core.publisher.Flux
-import spock.lang.ResourceLock
+import spock.lang.Shared
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -50,27 +50,34 @@ import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
-@ResourceLock("ManagementPlaneThrottling")
 @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
 class ImmutableStorageWithVersioningTest extends APISpec {
 
-    private BlobContainerClient vlwContainer;
-    private BlobClient vlwBlob
+    @Shared
+    private String vlwContainerName
+    @Shared
     private String accountName = env.versionedAccount.name
-    private String containerName
+    @Shared
     private String resourceGroupName = env.resourceGroupName
+    @Shared
     private String subscriptionId = env.subscriptionId
+    @Shared
     private String apiVersion = "2021-04-01"
+    @Shared
     private TokenCredential credential = new EnvironmentCredentialBuilder().build()
+    @Shared
     private BearerTokenAuthenticationPolicy credentialPolicy = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default")
 
-    def setup() {
-        containerName = generateContainerName()
+    private BlobContainerClient vlwContainer;
+    private BlobClient vlwBlob
 
+    def setupSpec() {
         if (env.testMode != TestMode.PLAYBACK) {
+            vlwContainerName = UUID.randomUUID().toString()
+
             String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                 + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s", subscriptionId,
-                resourceGroupName, accountName, containerName, apiVersion)
+                resourceGroupName, accountName, vlwContainerName, apiVersion)
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(credentialPolicy)
                 .httpClient(getHttpClient())
@@ -82,8 +89,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
             properties.immutableStorageWithVersioning = immutableStorageWithVersioning
             def body = new Body()
             body.id = String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
-                + "%s/blobServices/default/containers/%s", subscriptionId, resourceGroupName, accountName, containerName)
-            body.name = containerName
+                + "%s/blobServices/default/containers/%s", subscriptionId, resourceGroupName, accountName, vlwContainerName)
+            body.name = vlwContainerName
             body.type = "Microsoft.Storage/storageAccounts/blobServices/containers"
             body.properties = properties
 
@@ -97,8 +104,10 @@ class ImmutableStorageWithVersioningTest extends APISpec {
             }
             assert response.statusCode == 201
         }
+    }
 
-        vlwContainer = versionedBlobServiceClient.getBlobContainerClient(containerName)
+    def setup() {
+        vlwContainer = versionedBlobServiceClient.getBlobContainerClient(namer.recordValueFromConfig(vlwContainerName))
         vlwBlob = vlwContainer.getBlobClient(generateBlobName())
         vlwBlob.upload(new ByteArrayInputStream(new byte[0]), 0)
     }
@@ -117,8 +126,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         public boolean enabled
     }
 
-    def cleanup() {
-
+    def cleanupSpec() {
         if (env.testMode != TestMode.PLAYBACK) {
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(credentialPolicy)
@@ -130,36 +138,37 @@ class ImmutableStorageWithVersioningTest extends APISpec {
                 .endpoint(env.versionedAccount.blobEndpoint)
                 .buildClient()
 
-            def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
-            for (def container : cleanupClient.listBlobContainers(options, null)) {
-                def containerClient = cleanupClient.getBlobContainerClient(container.getName())
+            def containerClient = cleanupClient.getBlobContainerClient(vlwContainerName)
+            def containerProperties = containerClient.getProperties()
 
-                if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                    createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
-                }
-                if (container.getProperties().isImmutableStorageWithVersioningEnabled()) {
-                    options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true))
-                    for (def blob: containerClient.listBlobs(options, null)) {
-                        def blobClient = containerClient.getBlobClient(blob.getName())
-                        if (blob.getProperties().hasLegalHold()) {
-                            blobClient.setLegalHold(false)
-                        }
-                        if (blob.getProperties().getImmutabilityPolicy().getPolicyMode() != null) {
-                            sleepIfRecord(5 * 1000)
-                            blobClient.deleteImmutabilityPolicy()
-                        }
-                        blobClient.delete()
-                    }
-                }
-
-                String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
-                    + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s", subscriptionId,
-                    resourceGroupName, accountName, container.getName(), apiVersion)
-                httpPipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(url), new HttpHeaders(), Flux.empty()))
-                    .block()
+            if (containerProperties.getLeaseState() == LeaseStateType.LEASED) {
+                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
             }
-        }
+            if (containerProperties.isImmutableStorageWithVersioningEnabled()) {
+                def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true))
+                for (def blob: containerClient.listBlobs(options, null)) {
+                    def blobClient = containerClient.getBlobClient(blob.getName())
+                    if (blob.getProperties().hasLegalHold()) {
+                        blobClient.setLegalHold(false)
+                    }
+                    if (blob.getProperties().getImmutabilityPolicy().getPolicyMode() != null) {
+                        sleepIfRecord(5 * 1000)
+                        blobClient.deleteImmutabilityPolicy()
+                    }
+                    blobClient.delete()
+                }
+            }
 
+            String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
+                + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s", subscriptionId,
+                resourceGroupName, accountName, vlwContainerName, apiVersion)
+            def response = httpPipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(url), new HttpHeaders(), Flux.empty()))
+                .block()
+            if (response.statusCode != 200) {
+                println response.getBodyAsString().block()
+            }
+            assert response.statusCode == 200
+        }
     }
 
     def "set immutability policy min"() {
@@ -206,7 +215,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         policyMode.toString() == response.getImmutabilityPolicy().getPolicyMode().toString()
 
         when: "list blob"
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true))
+        def options = new ListBlobsOptions().setPrefix(vlwBlob.getBlobName()).setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true))
         response = vlwContainer.listBlobs(options, null).iterator()
 
         then:
@@ -398,7 +407,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         legalHold == response.hasLegalHold()
 
         when: "list blob"
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true))
+        def options = new ListBlobsOptions().setPrefix(vlwBlob.blobName).setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true))
         response = vlwContainer.listBlobs(options, null).iterator()
 
         then:
