@@ -44,6 +44,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * This class is an implementation of OpenTelemetry {@link SpanExporter} that allows different tracing services to
@@ -57,20 +58,14 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
     private static final Set<String> STANDARD_ATTRIBUTE_PREFIXES;
 
-    // this is only used for distributed trace correlation across different ikeys
-    // and will be obsolete soon (as this will be handled by backend indexing going forward)
-    private static final AttributeKey<String> AI_SPAN_SOURCE_APP_ID_KEY = AttributeKey.stringKey("applicationinsights.internal.source_app_id");
-    private static final AttributeKey<String> AI_SPAN_TARGET_APP_ID_KEY = AttributeKey.stringKey("applicationinsights.internal.target_app_id");
-
-    // this is only used by the 2.x web interop bridge
-    // for ThreadContext.getRequestTelemetryContext().getRequestTelemetry().setSource()
-    private static final AttributeKey<String> AI_SPAN_SOURCE_KEY = AttributeKey.stringKey("applicationinsights.internal.source");
-
-    // note: this gets filtered out of user dimensions automatically since it shares official "peer." prefix
-    // (even though it's not an official semantic convention attribute)
-    private static final AttributeKey<String> AZURE_SDK_PEER_ADDRESS = AttributeKey.stringKey("peer.address");
-
-    private static final AttributeKey<String> AZURE_SDK_MESSAGE_BUS_DESTINATION = AttributeKey.stringKey("message_bus.destination");
+    private static final AttributeKey<String> AZURE_NAMESPACE =
+        AttributeKey.stringKey("az.namespace");
+    private static final AttributeKey<String> AZURE_SDK_PEER_ADDRESS =
+        AttributeKey.stringKey("peer.address");
+    private static final AttributeKey<String> AZURE_SDK_MESSAGE_BUS_DESTINATION =
+        AttributeKey.stringKey("message_bus.destination");
+    private static final AttributeKey<Long> AZURE_SDK_ENQUEUED_TIME =
+        AttributeKey.longKey("x-opt-enqueued-time");
 
     static {
         Set<String> dbSystems = new HashSet<>();
@@ -267,24 +262,18 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             applyDatabaseClientSpan(attributes, remoteDependencyData, dbSystem);
             return;
         }
-        String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
-        if (messagingSystem != null) {
-            applyMessagingClientSpan(attributes, remoteDependencyData, messagingSystem, span.getKind());
-            return;
-        }
-        // TODO (trask) ideally EventHubs SDK should conform and fit the above path used for other messaging systems
-        //  but no rush as messaging semantic conventions may still change
-        //  https://github.com/Azure/azure-sdk-for-java/issues/21684
-        String name = span.getName();
-        if (name.equals("EventHubs.send") || name.equals("EventHubs.message")) {
+        String azureNamespace = attributes.get(AZURE_NAMESPACE);
+        if (azureNamespace != null && azureNamespace.equals("Microsoft.EventHub")) {
             applyEventHubsSpan(attributes, remoteDependencyData);
             return;
         }
-        // TODO (trask) ideally ServiceBus SDK should conform and fit the above path used for other messaging systems
-        //  but no rush as messaging semantic conventions may still change
-        //  https://github.com/Azure/azure-sdk-for-java/issues/21686
-        if (name.equals("ServiceBus.send") || name.equals("ServiceBus.message")) {
+        if (azureNamespace != null && azureNamespace.equals("Microsoft.ServiceBus")) {
             applyServiceBusSpan(attributes, remoteDependencyData);
+            return;
+        }
+        String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
+        if (messagingSystem != null) {
+            applyMessagingClientSpan(attributes, remoteDependencyData, messagingSystem, span.getKind());
             return;
         }
     }
@@ -328,18 +317,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             target = "Http";
         }
 
-        String targetAppId = attributes.get(AI_SPAN_TARGET_APP_ID_KEY);
-
-        if (targetAppId == null) {
-            telemetry.setType("Http");
-            telemetry.setTarget(target);
-        } else {
-            // using "Http (tracked component)" is important for dependencies that go cross-component (have an appId in their target field)
-            // if you use just HTTP, Breeze will remove appid from the target
-            // TODO (trask) remove this once confirmed by zakima that it is no longer needed
-            telemetry.setType("Http (tracked component)");
-            telemetry.setTarget(target + " | " + targetAppId);
-        }
+        telemetry.setType("Http");
+        telemetry.setTarget(target);
 
         Long httpStatusCode = attributes.get(AttributeKey.longKey("http.status_code"));
         if (httpStatusCode != null) {
@@ -424,24 +403,22 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         }
     }
 
-    // TODO (trask) ideally EventHubs SDK should conform and fit the above path used for other messaging systems
-    //  but no rush as messaging semantic conventions may still change
-    //  https://github.com/Azure/azure-sdk-for-java/issues/21684
-    private void applyEventHubsSpan(Attributes attributes, RemoteDependencyData telemetry) {
+    // special case needed until Azure SDK moves to OTel semantic conventions
+    private static void applyEventHubsSpan(Attributes attributes, RemoteDependencyData telemetry) {
         telemetry.setType("Microsoft.EventHub");
-        String peerAddress = attributes.get(AZURE_SDK_PEER_ADDRESS);
-        String destination = attributes.get(AZURE_SDK_MESSAGE_BUS_DESTINATION);
-        telemetry.setTarget(peerAddress + "/" + destination);
+        telemetry.setTarget(getAzureSdkTargetSource(attributes));
     }
 
-    // TODO (trask) ideally ServiceBus SDK should conform and fit the above path used for other messaging systems
-    //  but no rush as messaging semantic conventions may still change
-    //  https://github.com/Azure/azure-sdk-for-java/issues/21686
-    private void applyServiceBusSpan(Attributes attributes, RemoteDependencyData telemetry) {
+    // special case needed until Azure SDK moves to OTel semantic conventions
+    private static void applyServiceBusSpan(Attributes attributes, RemoteDependencyData telemetry) {
         telemetry.setType("AZURE SERVICE BUS");
+        telemetry.setTarget(getAzureSdkTargetSource(attributes));
+    }
+
+    private static String getAzureSdkTargetSource(Attributes attributes) {
         String peerAddress = attributes.get(AZURE_SDK_PEER_ADDRESS);
         String destination = attributes.get(AZURE_SDK_MESSAGE_BUS_DESTINATION);
-        telemetry.setTarget(peerAddress + "/" + destination);
+        return peerAddress + "/" + destination;
     }
 
     private static int getDefaultPortForDbSystem(String dbSystem) {
@@ -475,32 +452,29 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         monitorBase.setBaseType("RequestData");
         monitorBase.setBaseData(requestData);
 
-        String source = null;
         Attributes attributes = span.getAttributes();
 
-        String sourceAppId = attributes.get(AI_SPAN_SOURCE_APP_ID_KEY);
+        requestData.setSource(getSource(attributes));
 
-        if (sourceAppId != null) {
-            source = sourceAppId;
-        }
-        if (source == null) {
-            String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
-            if (messagingSystem != null) {
-                // TODO (trask) should this pass default port for messaging.system?
-                source = nullAwareConcat(getTargetFromPeerAttributes(attributes, 0),
-                    attributes.get(AttributeKey.stringKey("messaging.destination")), "/");
-                if (source == null) {
-                    source = messagingSystem;
+        String azureNamespace = attributes.get(AZURE_NAMESPACE);
+        if (azureNamespace != null
+            && (azureNamespace.equals("Microsoft.EventHub")
+            || azureNamespace.equals("Microsoft.ServiceBus"))) {
+            // TODO(trask): for batch consumer, enqueuedTime should be the average of this attribute
+            //  across all links
+            Long enqueuedTime = attributes.get(AZURE_SDK_ENQUEUED_TIME);
+            if (enqueuedTime != null) {
+                long timeSinceEnqueued =
+                    NANOSECONDS.toMillis(span.getStartEpochNanos()) - SECONDS.toMillis(enqueuedTime);
+                if (timeSinceEnqueued < 0) {
+                    timeSinceEnqueued = 0;
                 }
+                if (requestData.getMeasurements() == null) {
+                    requestData.setMeasurements(new HashMap<>());
+                }
+                requestData.getMeasurements().put("timeSinceEnqueued", (double) timeSinceEnqueued);
             }
         }
-        if (source == null) {
-            // this is only used by the 2.x web interop bridge
-            // for ThreadContext.getRequestTelemetryContext().getRequestTelemetry().setSource()
-
-            source = attributes.get(AI_SPAN_SOURCE_KEY);
-        }
-        requestData.setSource(source);
 
         addLinks(requestData.getProperties(), span.getLinks());
         Long httpStatusCode = attributes.get(AttributeKey.longKey("http.status_code"));
@@ -556,6 +530,30 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         telemetryItem.setSampleRate(samplingPercentage.floatValue());
         telemetryItems.add(telemetryItem);
         exportEvents(span, samplingPercentage, telemetryItems);
+    }
+
+    private static String getSource(Attributes attributes) {
+        String azureNamespace = attributes.get(AZURE_NAMESPACE);
+        if (azureNamespace != null
+            && (azureNamespace.equals("Microsoft.EventHub")
+            || azureNamespace.equals("Microsoft.ServiceBus"))) {
+            return getAzureSdkTargetSource(attributes);
+        }
+        String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
+        if (messagingSystem != null) {
+            // TODO (trask) AI mapping: should this pass default port for messaging.system?
+            String source =
+                nullAwareConcat(
+                    getTargetFromPeerAttributes(attributes, 0),
+                    attributes.get(AttributeKey.stringKey("messaging.destination")),
+                    "/");
+            if (source != null) {
+                return source;
+            }
+            // fallback
+            return messagingSystem;
+        }
+        return null;
     }
 
     private static String nullAwareConcat(String str1, String str2, String separator) {
