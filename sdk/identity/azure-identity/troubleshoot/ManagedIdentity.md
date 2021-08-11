@@ -1,4 +1,4 @@
-## Troubleshooting Mananged Identity Authenticaiton Issues
+## Troubleshooting Mananged Identity Authentication Issues
 
 ### Credential Unavailable
 
