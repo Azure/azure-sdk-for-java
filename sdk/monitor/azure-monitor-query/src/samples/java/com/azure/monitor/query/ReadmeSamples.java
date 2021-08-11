@@ -214,4 +214,20 @@ public class ReadmeSamples {
                     + "; operation name = " + model.getOperationName());
         });
     }
+
+    /**
+     * Sample to demonstrate querying multiple workspaces.
+     */
+    public void getLogsQueryFromMultipleWorkspaces() {
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
+
+        Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
+                new TimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+                        .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
+                Context.NONE);
+        LogsQueryResult result = response.getValue();
+
+    }
 }
