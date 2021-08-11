@@ -22,20 +22,16 @@ import com.azure.security.attestation.implementation.models.AttestationOptionsIm
  * To support the "Secure Key Release" protocol which enables that communication, there are three
  * key pieces of information required:
  * </p>
- *
- *
  * <ul>
  *     <li>Attestation Evidence (typically an SGX quote or OpenEnclave report</li>
  *     <li>InitTime Data - this is data specified when the TEE is created. (OPTIONAL)</li>
  *     <li>RunTime Data - this can be a public key or other information. (OPTIONAL)</li>
  * </ul>
- *
  * <p>
  *
  * To perform an attestation operation, you need at minimum a set of attestation evidence.
  * </p>
  * <p>
- *
  * For the Secure Key Release scenario, the InitTime Data and RunTime Data are expressed in the token
  * returned by the Attestation Service, a relying party can use the  InitTime Data to make decisions
  * about whether the TEE can be trusted, and can use the RunTime Data as data which is known to have
@@ -182,7 +178,7 @@ public interface AttestationOptions {
      * <p>The {@link AttestationOptions#setDraftPolicyForAttestation(String)} API can be used to
      * determine how a proposed attestation policy would affect an attestation token.</p>
      * <b><i>Note that the resulting token cannot be validated.</i></b>
-     * <p><string>Set a draft policy for attestation.</string></p>
+     * <p>Set a draft policy for attestation.</p>
      * {@codesnippet com.azure.security.attestation.models..setDraftPolicyForAttestation#String}
      * @param draftPolicyForAttestation the draftPolicyForAttestation value to set.
      * @return this {@link AttestationOptions} object itself.
@@ -192,7 +188,7 @@ public interface AttestationOptions {
     /**
      * Gets the draftPolicyForAttestation property which is used to attest against the draft policy.
      *
-     * <p><string>Gets the previously set draft policy for attestation.</string></p>
+     * <p>Gets the previously set draft policy for attestation.</p>
      * {@codesnippet com.azure.security.attestation.models..getDraftPolicyForAttestation}
      * @return The draft policy if set.
      */
