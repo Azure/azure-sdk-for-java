@@ -244,7 +244,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.5.0-beta.2</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.5.0-beta.3</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
