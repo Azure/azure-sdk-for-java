@@ -13,9 +13,10 @@ Documentation for this SDK can be found at [Azure Key Vault Java Documentation](
 ## Getting started
 
 To get started with a specific library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk/keyvault/azure-security-keyvault-<subcomponent>` directory.
-- [Azure Keyvault Keys README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
-- [Azure Keyvault Certificates README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
-- [Azure Keyvault Secrets README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md)
-- [Azure Keyvault Administration README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
+- [Azure Key Vault Keys](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md) is a cloud service that enables you to safeguard and manage cryptographic keys.
+- [Azure Key Vault Certificates](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md) is a cloud service that allows you to securely manage and tightly control your certificates.
+- [Azure Key Vault Secrets](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md) is a cloud service that provides management and secure storage for secrets, such as passwords and database connection strings.
+- The [Azure Key Vault Administration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md) library clients support administrative tasks such as full backup/restore and key-level role-based access control (RBAC) for Azure Key Vault Managed HSM.
+- [Azure Key Vault JCA](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-jca/README.md)  is a Java Cryptography Architecture provider for certificates in Azure Key Vault.
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2FREADME.png)
