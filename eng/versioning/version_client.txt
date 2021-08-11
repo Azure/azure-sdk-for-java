@@ -51,11 +51,11 @@ com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-analytics-synapse-spark;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-communication-chat;1.0.0;1.1.0-beta.1
+com.azure:azure-communication-chat;1.0.0;1.1.0-beta.2
 com.azure:azure-communication-callingserver;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-communication-common;1.0.3;1.1.0-beta.1
+com.azure:azure-communication-common;1.0.3;1.0.3
 com.azure:azure-communication-sms;1.0.3;1.1.0-beta.1
-com.azure:azure-communication-identity;1.1.1;1.2.0-beta.1
+com.azure:azure-communication-identity;1.1.1;1.1.1
 com.azure:azure-communication-phonenumbers;1.0.3;1.1.0-beta.1
 com.azure:azure-containers-containerregistry;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -90,7 +90,7 @@ com.azure:azure-identity;1.3.5;1.4.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventgrid;4.5.0;4.6.0-beta.1
+com.azure:azure-messaging-eventgrid;4.5.0;4.6.0
 com.azure:azure-messaging-eventhubs;5.9.0;5.10.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.8.1;1.9.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1

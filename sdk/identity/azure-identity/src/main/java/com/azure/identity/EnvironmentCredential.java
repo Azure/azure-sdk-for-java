@@ -47,7 +47,8 @@ public class EnvironmentCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     EnvironmentCredential(IdentityClientOptions identityClientOptions) {
-        this.configuration = Configuration.getGlobalConfiguration().clone();
+        this.configuration = identityClientOptions.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
         TokenCredential targetCredential = null;
 
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);

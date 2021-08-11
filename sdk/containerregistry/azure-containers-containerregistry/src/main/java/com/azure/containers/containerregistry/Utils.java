@@ -5,6 +5,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -185,7 +186,7 @@ final class Utils {
         Configuration configuration,
         RetryPolicy retryPolicy,
         TokenCredential credential,
-        String authenticationScope,
+        ContainerRegistryAudience audience,
         List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
@@ -222,7 +223,7 @@ final class Utils {
 
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
             credential,
-            authenticationScope,
+            audience,
             endpoint,
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))

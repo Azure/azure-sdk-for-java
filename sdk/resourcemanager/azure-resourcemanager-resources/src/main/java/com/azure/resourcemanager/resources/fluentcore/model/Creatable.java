@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.model;
 
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import reactor.core.publisher.Mono;
 
@@ -26,7 +27,24 @@ public interface Creatable<T> extends
      * Puts the request into the queue and allow the HTTP client to execute
      * it when system resources are available.
      *
-     * @return an observable of the request
+     * @return the publisher of the resource create request
      */
     Mono<T> createAsync();
+
+    /**
+     * Execute the create request.
+     *
+     * @param context the {@link Context} of the request
+     * @return the created resource
+     */
+    T create(Context context);
+
+    /**
+     * Puts the request into the queue and allow the HTTP client to execute
+     * it when system resources are available.
+     *
+     * @param context the {@link Context} of the request
+     * @return the publisher of the resource create request
+     */
+    Mono<T> createAsync(Context context);
 }
