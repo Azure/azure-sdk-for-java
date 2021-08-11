@@ -5,6 +5,9 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.security.attestation.models.AttestationData;
+import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationSigner;
@@ -32,101 +35,78 @@ public class AttestationClientJavaDocCodeSnippets {
 
     public static void attestationOptionsSnippets() {
 
-        byte[] sgxQuote = null;
+        BinaryData sgxQuote = null;
         // BEGIN: com.azure.security.attestation.models..fromEvidence#byte
-        AttestationOptions options = AttestationOptions
-            .fromEvidence(sgxQuote);
+        AttestationOptions options = new AttestationOptions(sgxQuote);
         // END: com.azure.security.attestation.models..fromEvidence#byte
 
-        byte[] runtimeData = null;
+        BinaryData runtimeData = null;
         // BEGIN: com.azure.security.attestation.AttestationOptionsSetRunTimeData
-        AttestationOptions optionsWithRunTimeData = AttestationOptions
-            .fromEvidence(sgxQuote)
-            .setRunTimeData(runtimeData)
-            .interpretRunTimeDataAsBinary();
+        AttestationOptions optionsWithRunTimeData = new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY));
         // END: com.azure.security.attestation.AttestationOptionsSetRunTimeData
 
-        byte[] inittimeData = null;
-        byte[] openEnclaveReport = null;
+        BinaryData inittimeData = null;
+        BinaryData openEnclaveReport = null;
         // BEGIN: com.azure.security.attestation.models..setInitTimeData#byte
-        AttestationOptions optionsWithInitTimeData = AttestationOptions
-            .fromEvidence(openEnclaveReport)
-            .setInitTimeData(inittimeData)
-            .interpretInitTimeDataAsBinary();
+        AttestationOptions optionsWithInitTimeData = new AttestationOptions(openEnclaveReport)
+            .setInitTimeData(new AttestationData(inittimeData, AttestationDataInterpretation.BINARY));
         // END: com.azure.security.attestation.models..setInitTimeData#byte
 
         // BEGIN: com.azure.security.attestation.models..interpretRunTimeDataAsBinary
-        AttestationOptions optionsWithRunTimeDataInitialized = AttestationOptions
-            .fromEvidence(openEnclaveReport)
-            .setRunTimeData(runtimeData)
-            .interpretRunTimeDataAsBinary();
+        AttestationOptions optionsWithRunTimeDataInitialized = new AttestationOptions(openEnclaveReport)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY));
         // END: com.azure.security.attestation.models..interpretRunTimeDataAsBinary
 
         // BEGIN: com.azure.security.attestation.models..interpretRunTimeDataAsJson
-        AttestationOptions optionsWithRunTimeDataInitializedJson = AttestationOptions
-            .fromEvidence(openEnclaveReport)
-            .setRunTimeData(runtimeData)
-            .interpretRunTimeDataAsJson();
+        AttestationOptions optionsWithRunTimeDataInitializedJson = new AttestationOptions(openEnclaveReport)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON));
         // END: com.azure.security.attestation.models..interpretRunTimeDataAsJson
     }
 
     public static void attestationOptionsSnippets2() {
-        byte[] runtimeData = null;
-        byte[] inittimeData = null;
-        byte[] openEnclaveReport = null;
+        BinaryData runtimeData = null;
+        BinaryData inittimeData = null;
+        BinaryData openEnclaveReport = null;
 
-        // BEGIN: com.azure.security.attestation.models..getRunTimeData
-        AttestationOptions attestationOptions = AttestationOptions
-            .fromEvidence(openEnclaveReport)
-            .setRunTimeData(runtimeData)
-            .interpretRunTimeDataAsJson();
+        // BEGIN: com.azure.security.attestation.models.AttestationOptions.getRunTimeData
+        AttestationOptions attestationOptions = new AttestationOptions(openEnclaveReport)
+            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON));
 
-        byte[] existingRuntimeData = attestationOptions.getRunTimeData();
-        // END: com.azure.security.attestation.models..getRunTimeData
-
-        // BEGIN: com.azure.security.attestation.models..interpretInitTimeDataAsBinary
-        AttestationOptions options = AttestationOptions
-            .fromEvidence(openEnclaveReport)
-            .setInitTimeData(inittimeData)
-            .interpretInitTimeDataAsBinary();
-        // END: com.azure.security.attestation.models..interpretInitTimeDataAsBinary
-
+        AttestationData existingRuntimeData = attestationOptions.getRunTimeData();
+        // END: com.azure.security.attestation.models.AttestationOptions.getRunTimeData
 
     }
     public static void attestationOptionsSnippets3() {
-        byte[] inittimeData = null;
-        byte[] openEnclaveReport = null;
+        BinaryData inittimeData = null;
+        BinaryData openEnclaveReport = null;
 
-        // BEGIN: com.azure.security.attestation.models..getInitTimeData
-        AttestationOptions attestationOptions = AttestationOptions
-            .fromEvidence(openEnclaveReport)
-            .setInitTimeData(inittimeData)
-            .interpretInitTimeDataAsJson();
+        // BEGIN: com.azure.security.attestation.models.AttestationOptions.getInitTimeData
+        AttestationOptions attestationOptions = new AttestationOptions(openEnclaveReport)
+            .setInitTimeData(new AttestationData(inittimeData, AttestationDataInterpretation.JSON));
 
-        byte[] existingRuntimeData = attestationOptions.getInitTimeData();
-        // END: com.azure.security.attestation.models..getInitTimeData
+        AttestationData existingRuntimeData = attestationOptions.getInitTimeData();
+        // END: com.azure.security.attestation.models.AttestationOptions.getInitTimeData
 
-        // BEGIN: com.azure.security.attestation.models..setDraftPolicyForAttestation#String
-        AttestationOptions request = AttestationOptions
-            .fromEvidence(openEnclaveReport)
+        // BEGIN: com.azure.security.attestation.models.AttestationOptions.setDraftPolicyForAttestation#String
+        AttestationOptions request = new AttestationOptions(openEnclaveReport)
             .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};");
-        // END: com.azure.security.attestation.models..setDraftPolicyForAttestation#String
+        // END: com.azure.security.attestation.models.AttestationOptions.setDraftPolicyForAttestation#String
 
-        // BEGIN: com.azure.security.attestation.models..getDraftPolicyForAttestation
-        AttestationOptions getOptions = AttestationOptions
-            .fromEvidence(openEnclaveReport)
+        // BEGIN: com.azure.security.attestation.models.AttestationOptions.getDraftPolicyForAttestation
+        AttestationOptions getOptions = new AttestationOptions(openEnclaveReport)
             .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};");
 
         String draftPolicy = getOptions.getDraftPolicyForAttestation();
-        // END: com.azure.security.attestation.models..getDraftPolicyForAttestation
+        // END: com.azure.security.attestation.models.AttestationOptions.getDraftPolicyForAttestation
 
     }
 
     public static void attestAsync1() {
-        byte[] runtimeData = null;
-        byte[] inittimeData = null;
-        byte[] openEnclaveReport = null;
-        byte[] sgxQuote = null;
+        BinaryData runtimeData = null;
+        BinaryData inittimeData = null;
+        BinaryData openEnclaveReport = null;
+        BinaryData sgxQuote = null;
 
         AttestationAsyncClient client = null;
 

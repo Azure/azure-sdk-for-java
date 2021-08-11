@@ -3,6 +3,9 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.BinaryData;
+import com.azure.security.attestation.models.AttestationData;
+import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
@@ -24,13 +27,11 @@ class ReadmeSamples {
             .endpoint(endpoint)
             .buildClient();
 
-        byte[] decodedRuntimeData = SampleCollateral.getRunTimeData();
-        byte[] decodedOpenEnclaveReport = SampleCollateral.getOpenEnclaveReport();
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(SampleCollateral.getOpenEnclaveReport());
 
-        AttestationOptions options = AttestationOptions
-            .fromEvidence(decodedOpenEnclaveReport)
-            .setRunTimeData(decodedRuntimeData)
-            .interpretRunTimeDataAsBinary();
+        AttestationOptions options = new AttestationOptions(decodedOpenEnclaveReport)
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY));
         AttestationResult result = client.attestOpenEnclave(options);
 
         assertNotNull(result.getIssuer());

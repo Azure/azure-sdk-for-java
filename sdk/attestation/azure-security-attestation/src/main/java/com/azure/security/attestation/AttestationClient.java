@@ -9,8 +9,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.security.attestation.implementation.models.AttestationOptionsImpl;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationResult;
@@ -77,7 +77,7 @@ import com.azure.security.attestation.models.AttestationToken;
  *</p>
  * <p>
  * The enclave then hands the byte buffer and the quote to its host. The host sends the quote and byte
- * buffer as the "RunTime Data" to the via the {@link AttestationClient#attestSgxEnclave(byte[])}  or
+ * buffer as the "RunTime Data" to the via the {@link AttestationClient#attestSgxEnclave(BinaryData)}  or
  * {@link AttestationClient#attestOpenEnclave} API. Assuming the byte buffer and quote are valid,
  * and the quote contains the hash of the byte buffer, the attestation service responds with an {@link AttestationToken}
  * signed by the attestation service, whose body is an {@link AttestationResult}.
@@ -199,8 +199,8 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResult attestOpenEnclave(byte[] report) {
-        return asyncClient.attestOpenEnclave(new AttestationOptionsImpl().setEvidence(report)).block();
+    public AttestationResult attestOpenEnclave(BinaryData report) {
+        return asyncClient.attestOpenEnclave(new AttestationOptions(report)).block();
     }
 
     /**
@@ -231,7 +231,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResult> attestOpenEnclaveWithResponse(
-        byte[] report, Context context) {
+        BinaryData report, Context context) {
         return asyncClient.attestOpenEnclaveWithResponse(report, context).block();
     }
 
@@ -263,7 +263,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResult attestSgxEnclave(byte[] quote) {
+    public AttestationResult attestSgxEnclave(BinaryData quote) {
         return asyncClient.attestSgxEnclave(quote).block();
     }
 
@@ -296,7 +296,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationResult> attestSgxEnclaveWithResponse(
-        byte[] quote, Context context) {
+        BinaryData quote, Context context) {
         return asyncClient.attestSgxEnclaveWithResponse(quote, context).block();
     }
 

@@ -3,7 +3,7 @@
 
 package com.azure.security.attestation.implementation.models;
 
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.BinaryData;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 
@@ -234,8 +234,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the policyHash value.
      */
-    @Override public byte[] getPolicyHash() {
-        return CoreUtils.clone(this.policyHash);
+    @Override public BinaryData getPolicyHash() {
+        return BinaryData.fromBytes(this.policyHash);
     }
 
     /**
@@ -288,8 +288,8 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the enclaveHeldData value.
      */
-    @Override public byte[] getEnclaveHeldData() {
-        return CoreUtils.clone(this.enclaveHeldData);
+    @Override public BinaryData getEnclaveHeldData() {
+        return BinaryData.fromBytes(this.enclaveHeldData);
     }
 
     /**

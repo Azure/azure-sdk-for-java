@@ -4,6 +4,7 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 
 import java.time.LocalDateTime;
 
@@ -84,7 +85,7 @@ public interface AttestationResult {
     /**
      * Get the runtimeClaims property: Runtime Claims.
      *
-     * If {@link AttestationOptions#interpretRunTimeDataAsJson()} was called for this request,
+     * If {@link AttestationDataInterpretation#JSON} was specified in the {@link AttestationData} for the RunTime data
      * this will contain the input RunTimeData as JSON elements.
      *
      * @return the RunTimeClaims value.
@@ -93,9 +94,9 @@ public interface AttestationResult {
 
     /**
      * Get the inittimeClaims property: Inittime Claims.
-
-     * If {@link AttestationOptions#interpretInitTimeDataAsJson()} was called for this request,
-     * this will contain the input RunTimeData as JSON elements.
+     * <br>
+     * If {@link AttestationDataInterpretation#JSON} was specified in the {@link AttestationData} for the InitTime data
+     * this will contain the input InitTimeData as JSON elements.
      *
      * @return the inittimeClaims value.
      */
@@ -130,7 +131,7 @@ public interface AttestationResult {
      *
      * @return the policyHash value.
      */
-    byte[] getPolicyHash();
+    BinaryData getPolicyHash();
 
     /**
      * Get the isDebuggable property: True if the enclave can be debugged, false otherwise.
@@ -184,11 +185,12 @@ public interface AttestationResult {
 
     /**
      * Get the enclaveHeldData property: A copy of the RuntimeData specified as an input to the attest call if
-     * the {@link AttestationOptions#interpretRunTimeDataAsBinary()} method was called.
+     * the {@link AttestationDataInterpretation#BINARY} data interpreation was set on the {@link AttestationData} passed to
+     * the {@link AttestationOptions#setRunTimeData(AttestationData)} API.
      *
      * @return the enclaveHeldData value.
      */
-    byte[] getEnclaveHeldData();
+    BinaryData getEnclaveHeldData();
 
     /**
      * Get the sgxCollateral property: The SGX SVN value for the enclave.
