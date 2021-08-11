@@ -15,16 +15,16 @@ import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the PurviewAccountClient type. */
 public final class PurviewAccountClientImpl {
-    /** server parameter. */
-    private final String host;
+    /** The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com. */
+    private final String endpoint;
 
     /**
-     * Gets server parameter.
+     * Gets The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Service version. */
@@ -102,16 +102,16 @@ public final class PurviewAccountClientImpl {
     /**
      * Initializes an instance of PurviewAccountClient client.
      *
-     * @param host server parameter.
+     * @param endpoint The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com.
      * @param serviceVersion Service version.
      */
-    public PurviewAccountClientImpl(String host, PurviewAccountServiceVersion serviceVersion) {
+    public PurviewAccountClientImpl(String endpoint, PurviewAccountServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                host,
+                endpoint,
                 serviceVersion);
     }
 
@@ -119,12 +119,12 @@ public final class PurviewAccountClientImpl {
      * Initializes an instance of PurviewAccountClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param host server parameter.
+     * @param endpoint The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com.
      * @param serviceVersion Service version.
      */
     public PurviewAccountClientImpl(
-            HttpPipeline httpPipeline, String host, PurviewAccountServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, serviceVersion);
+            HttpPipeline httpPipeline, String endpoint, PurviewAccountServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -132,17 +132,17 @@ public final class PurviewAccountClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param host server parameter.
+     * @param endpoint The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com.
      * @param serviceVersion Service version.
      */
     public PurviewAccountClientImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
-            String host,
+            String endpoint,
             PurviewAccountServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.host = host;
+        this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.accounts = new AccountsImpl(this);
         this.collections = new CollectionsImpl(this);

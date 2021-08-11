@@ -44,19 +44,19 @@ public final class AccountsImpl {
      * The interface defining all the services for PurviewAccountClientAccounts to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "PurviewAccountClient")
     private interface AccountsService {
         @Get("/")
         Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
                 Context context);
 
         @Patch("/")
         Mono<Response<BinaryData>> update(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData accountUpdateParameters,
                 RequestOptions requestOptions,
@@ -64,14 +64,14 @@ public final class AccountsImpl {
 
         @Post("/listkeys")
         Mono<Response<BinaryData>> listKeys(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
                 Context context);
 
         @Post("/regeneratekeys")
         Mono<Response<BinaryData>> regenerateKeys(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData keyOptions,
                 RequestOptions requestOptions,
@@ -168,7 +168,7 @@ public final class AccountsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
@@ -263,7 +263,7 @@ public final class AccountsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(RequestOptions requestOptions, Context context) {
         return service.get(
-                this.client.getHost(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
@@ -744,7 +744,7 @@ public final class AccountsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.update(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 accountUpdateParameters,
                                 requestOptions,
@@ -850,7 +850,7 @@ public final class AccountsImpl {
     public Mono<Response<BinaryData>> updateWithResponseAsync(
             BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
         return service.update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 accountUpdateParameters,
                 requestOptions,
@@ -1301,7 +1301,7 @@ public final class AccountsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.listKeys(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 requestOptions,
                                 context));
@@ -1334,7 +1334,7 @@ public final class AccountsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listKeysWithResponseAsync(RequestOptions requestOptions, Context context) {
         return service.listKeys(
-                this.client.getHost(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
@@ -1505,7 +1505,7 @@ public final class AccountsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.regenerateKeys(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 keyOptions,
                                 requestOptions,
@@ -1549,7 +1549,7 @@ public final class AccountsImpl {
     public Mono<Response<BinaryData>> regenerateKeysWithResponseAsync(
             BinaryData keyOptions, RequestOptions requestOptions, Context context) {
         return service.regenerateKeys(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 keyOptions,
                 requestOptions,

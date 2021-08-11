@@ -53,12 +53,12 @@ public final class CollectionsImpl {
      * The interface defining all the services for PurviewAccountClientCollections to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "PurviewAccountClient")
     private interface CollectionsService {
         @Get("/collections/{collectionName}")
         Mono<Response<BinaryData>> get(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
@@ -66,7 +66,7 @@ public final class CollectionsImpl {
 
         @Put("/collections/{collectionName}")
         Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData collection,
@@ -75,7 +75,7 @@ public final class CollectionsImpl {
 
         @Delete("/collections/{collectionName}")
         Mono<Response<Void>> delete(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
@@ -83,14 +83,14 @@ public final class CollectionsImpl {
 
         @Get("/collections")
         Mono<Response<BinaryData>> listByAccount(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/collections/{collectionName}/getChildCollectionNames")
         Mono<Response<BinaryData>> getChildCollectionNames(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
@@ -98,7 +98,7 @@ public final class CollectionsImpl {
 
         @Get("/collections/{collectionName}/getCollectionPath")
         Mono<Response<BinaryData>> getCollectionPath(
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
@@ -107,14 +107,14 @@ public final class CollectionsImpl {
         @Get("{nextLink}")
         Mono<Response<BinaryData>> listByAccountNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         Mono<Response<BinaryData>> getChildCollectionNamesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("endpoint") String endpoint,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -162,7 +162,7 @@ public final class CollectionsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.get(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 collectionName,
                                 this.client.getServiceVersion().getVersion(),
                                 requestOptions,
@@ -212,7 +212,7 @@ public final class CollectionsImpl {
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
         return service.get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 collectionName,
                 this.client.getServiceVersion().getVersion(),
                 requestOptions,
@@ -460,7 +460,7 @@ public final class CollectionsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 collectionName,
                                 this.client.getServiceVersion().getVersion(),
                                 collection,
@@ -518,7 +518,7 @@ public final class CollectionsImpl {
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 collectionName,
                 this.client.getServiceVersion().getVersion(),
                 collection,
@@ -767,7 +767,7 @@ public final class CollectionsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.delete(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 collectionName,
                                 this.client.getServiceVersion().getVersion(),
                                 requestOptions,
@@ -794,7 +794,7 @@ public final class CollectionsImpl {
     public Mono<Response<Void>> deleteWithResponseAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
         return service.delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 collectionName,
                 this.client.getServiceVersion().getVersion(),
                 requestOptions,
@@ -932,7 +932,7 @@ public final class CollectionsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listByAccount(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         requestOptions,
                                         context))
@@ -996,7 +996,10 @@ public final class CollectionsImpl {
     public Mono<PagedResponse<BinaryData>> listByAccountSinglePageAsync(
             RequestOptions requestOptions, Context context) {
         return service.listByAccount(
-                        this.client.getHost(), this.client.getServiceVersion().getVersion(), requestOptions, context)
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1247,7 +1250,7 @@ public final class CollectionsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.getChildCollectionNames(
-                                        this.client.getHost(),
+                                        this.client.getEndpoint(),
                                         collectionName,
                                         this.client.getServiceVersion().getVersion(),
                                         requestOptions,
@@ -1299,7 +1302,7 @@ public final class CollectionsImpl {
     public Mono<PagedResponse<BinaryData>> getChildCollectionNamesSinglePageAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
         return service.getChildCollectionNames(
-                        this.client.getHost(),
+                        this.client.getEndpoint(),
                         collectionName,
                         this.client.getServiceVersion().getVersion(),
                         requestOptions,
@@ -1502,7 +1505,7 @@ public final class CollectionsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getCollectionPath(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 collectionName,
                                 this.client.getServiceVersion().getVersion(),
                                 requestOptions,
@@ -1543,7 +1546,7 @@ public final class CollectionsImpl {
     public Mono<Response<BinaryData>> getCollectionPathWithResponseAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
         return service.getCollectionPath(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 collectionName,
                 this.client.getServiceVersion().getVersion(),
                 requestOptions,
@@ -1746,7 +1749,8 @@ public final class CollectionsImpl {
     public Mono<PagedResponse<BinaryData>> listByAccountNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         return FluxUtil.withContext(
-                        context -> service.listByAccountNext(nextLink, this.client.getHost(), requestOptions, context))
+                        context ->
+                                service.listByAccountNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1798,7 +1802,7 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listByAccountNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listByAccountNext(nextLink, this.client.getHost(), requestOptions, context)
+        return service.listByAccountNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1838,7 +1842,7 @@ public final class CollectionsImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.getChildCollectionNamesNext(
-                                        nextLink, this.client.getHost(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1876,7 +1880,7 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> getChildCollectionNamesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.getChildCollectionNamesNext(nextLink, this.client.getHost(), requestOptions, context)
+        return service.getChildCollectionNamesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

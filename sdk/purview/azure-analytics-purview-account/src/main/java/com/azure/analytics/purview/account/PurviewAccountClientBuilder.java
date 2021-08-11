@@ -51,18 +51,19 @@ public final class PurviewAccountClientBuilder {
     }
 
     /*
-     * server parameter
+     * The account endpoint of your Purview account. Example:
+     * https://{accountName}.purview.azure.com
      */
-    private String host;
+    private String endpoint;
 
     /**
-     * Sets server parameter.
+     * Sets The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the PurviewAccountClientBuilder.
      */
-    public PurviewAccountClientBuilder host(String host) {
-        this.host = host;
+    public PurviewAccountClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -218,9 +219,6 @@ public final class PurviewAccountClientBuilder {
      * @return an instance of PurviewAccountClientImpl.
      */
     private PurviewAccountClientImpl buildInnerClient() {
-        if (host == null) {
-            this.host = "";
-        }
         if (serviceVersion == null) {
             this.serviceVersion = PurviewAccountServiceVersion.getLatest();
         }
@@ -231,7 +229,7 @@ public final class PurviewAccountClientBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         PurviewAccountClientImpl client =
-                new PurviewAccountClientImpl(pipeline, serializerAdapter, host, serviceVersion);
+                new PurviewAccountClientImpl(pipeline, serializerAdapter, endpoint, serviceVersion);
         return client;
     }
 

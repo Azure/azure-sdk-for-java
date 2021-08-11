@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
 /** Service version of PurviewAccount. */
 public enum PurviewAccountServiceVersion implements ServiceVersion {
     /** Enum value 2019-11-01-preview. */
-    V2019_11_01_preview("2019-11-01-preview");
+    V2019_11_01_PREVIEW("2019-11-01-preview");
 
     private final String version;
 
@@ -28,6 +28,6 @@ public enum PurviewAccountServiceVersion implements ServiceVersion {
      * @return The latest {@link PurviewAccountServiceVersion}.
      */
     public static PurviewAccountServiceVersion getLatest() {
-        return V2019_11_01_preview;
+        return V2019_11_01_PREVIEW;
     }
 }
