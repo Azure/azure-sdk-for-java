@@ -3,6 +3,9 @@
 
 package com.azure.resourcemanager.containerservice;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
@@ -36,6 +39,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
     @Test
     public void canCRUDKubernetesCluster() throws Exception {
+        // enable preview feature of ACR Teleport for AKS
+        Context context = new Context(
+            AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
+            new HttpHeaders().set("EnableACRTeleport", "true"));
+
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);
@@ -83,7 +91,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                     .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
                 .withTag("tag1", "value1")
-                .create();
+                .create(context);
 
         Assertions.assertNotNull(kubernetesCluster.id());
         Assertions.assertEquals(Region.US_CENTRAL, kubernetesCluster.region());
@@ -130,7 +138,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
-                .apply();
+                .apply(context);
 
         Assertions.assertEquals(3, kubernetesCluster.agentPools().size());
 

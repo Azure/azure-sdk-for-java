@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
@@ -217,7 +218,8 @@ final class GenericResourceImpl
             inner -> new GenericResourceImpl(inner.id(), inner, this.manager()),
             GenericResourceInner.class,
             null,
-            this::setInner);
+            this::setInner,
+            Context.NONE);
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation
