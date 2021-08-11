@@ -283,7 +283,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         // TODO (trask) ideally ServiceBus SDK should conform and fit the above path used for other messaging systems
         //  but no rush as messaging semantic conventions may still change
         //  https://github.com/Azure/azure-sdk-for-java/issues/21686
-        if (name.equals("ServiceBus.message") || name.equals("ServiceBus.process")) {
+        if (name.equals("ServiceBus.send") || name.equals("ServiceBus.message")) {
             applyServiceBusSpan(attributes, remoteDependencyData);
             return;
         }
