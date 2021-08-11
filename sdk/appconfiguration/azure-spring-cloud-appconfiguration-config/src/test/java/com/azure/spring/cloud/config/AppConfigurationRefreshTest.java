@@ -71,7 +71,7 @@ public class AppConfigurationRefreshTest {
         trigger = new AppConfigurationStoreTrigger();
         trigger.setKey(WATCHED_KEYS);
         trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
+        List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
         triggers.add(trigger);
         monitoring.setTriggers(triggers);
         monitoring.setRefreshInterval(Duration.ofMinutes(-60));
@@ -100,7 +100,7 @@ public class AppConfigurationRefreshTest {
         StateHolder.setLoadState(TEST_STORE_NAME, true);
         StateHolder.setLoadStateFeatureFlag(TEST_STORE_NAME, true);
         
-        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        List<ConfigurationSetting> watchKeys = new ArrayList<>();
         watchKeys.add(initialResponse());
         StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
         StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getFeatureFlagRefreshInterval());
@@ -108,8 +108,8 @@ public class AppConfigurationRefreshTest {
 
     @After
     public void cleanupMethod() {
-        StateHolder.setState(TEST_STORE_NAME, new ArrayList<ConfigurationSetting>(), monitoring.getRefreshInterval());
-        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, new ArrayList<ConfigurationSetting>(), monitoring.getFeatureFlagRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME, new ArrayList<>(), monitoring.getRefreshInterval());
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, new ArrayList<>(), monitoring.getFeatureFlagRefreshInterval());
     }
 
     @Test
@@ -138,17 +138,17 @@ public class AppConfigurationRefreshTest {
         assertTrue(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(1)).publishEvent(any(RefreshEvent.class));
 
-        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        List<ConfigurationSetting> watchKeys = new ArrayList<>();
         watchKeys.add(updatedResponse());
         StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
 
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
         map.put("store1_configuration", "fake-etag-updated");
         map.put("store1_feature", "fake-etag-updated");
 
         ConfigurationSetting updated = new ConfigurationSetting();
         updated.setETag("fake-etag-updated");
-        watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys = new ArrayList<>();
         watchKeys.add(updated);
         StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
 
@@ -175,17 +175,17 @@ public class AppConfigurationRefreshTest {
         assertTrue(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(1)).publishEvent(any(RefreshEvent.class));
 
-        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        List<ConfigurationSetting> watchKeys = new ArrayList<>();
         watchKeys.add(updatedResponse());
         StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
 
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
         map.put("store1_configuration", "fake-etag-updated");
         map.put("store1_feature", "fake-etag-updated");
 
         ConfigurationSetting updated = new ConfigurationSetting();
         updated.setETag("fake-etag-updated");
-        watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys = new ArrayList<>();
         watchKeys.add(updated);
         StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
 
@@ -245,7 +245,7 @@ public class AppConfigurationRefreshTest {
         trigger = new AppConfigurationStoreTrigger();
         trigger.setKey(WATCHED_KEYS);
         trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
+        List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
         triggers.add(trigger);
         monitoring.setTriggers(triggers);
         monitoring.setRefreshInterval(Duration.ofMinutes(-60));
@@ -276,7 +276,7 @@ public class AppConfigurationRefreshTest {
         trigger = new AppConfigurationStoreTrigger();
         trigger.setKey(WATCHED_KEYS);
         trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
+        List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
         triggers.add(trigger);
         monitoring.setTriggers(triggers);
         monitoring.setRefreshInterval(Duration.ofMinutes(60));
@@ -306,7 +306,7 @@ public class AppConfigurationRefreshTest {
         trigger = new AppConfigurationStoreTrigger();
         trigger.setKey(WATCHED_KEYS);
         trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
+        List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
         triggers.add(trigger);
         monitoring.setTriggers(triggers);
         monitoring.setRefreshInterval(Duration.ofMinutes(60));
