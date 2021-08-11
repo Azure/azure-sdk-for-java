@@ -43,6 +43,7 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: false
+          CheckoutReadmes: true
           SDKType: ${{ parameters.SDKType }}
           FromSource: ${{ parameters.FromSource }}
           OSVmImage: 'MMSUbuntu20.04'
@@ -58,13 +59,6 @@ jobs:
           workingDirectory: $(Agent.BuildDirectory)
           filePath: eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
-
-      - task: PythonScript@0
-        displayName: 'Generate directories variable for sparse checkout'
-        inputs:
-          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:

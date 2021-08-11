@@ -10,6 +10,9 @@ parameters:
   - name: CheckoutRecordings
     type: boolean
     default: false
+  - name: CheckoutReadmes
+    type: boolean
+    default: false
   - name: SDKType
     type: string
     default: client
@@ -29,6 +32,8 @@ steps:
         - ${{ if not(parameters.CheckoutRecordings) }}:
           - '!sdk/**/test-recordings'
           - '!sdk/**/session-records'
+        - ${{ if parameters.CheckoutReadmes }}:
+          - '**/*.md'
 
   - task: UsePythonVersion@0
     displayName: 'Use Python 3.6'
@@ -59,7 +64,7 @@ steps:
       AdditionalModules: ${{ parameters.AdditionalModules }}
       SDKType: ${{ parameters.SDKType }}
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
- 
+
   - task: PythonScript@0
     displayName: 'Generate directories variable for sparse checkout'
     inputs:
