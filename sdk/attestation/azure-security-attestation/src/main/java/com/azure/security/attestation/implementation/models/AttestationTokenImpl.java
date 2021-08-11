@@ -32,7 +32,6 @@ import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.JWTClaimsSet;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateEncodingException;
 import java.security.interfaces.ECPrivateKey;
@@ -151,8 +150,8 @@ public class AttestationTokenImpl implements AttestationToken {
      * this token.
      * @return URI at which a JWK can be retrieved.
      */
-    @Override public URI getJsonWebKeyUrl() {
-        return jwsHeader != null ? jwsHeader.getJWKURL() : null;
+    @Override public String getJsonWebKeyUrl() {
+        return jwsHeader != null ? jwsHeader.getJWKURL().toString() : null;
     }
 
     /**
@@ -191,8 +190,8 @@ public class AttestationTokenImpl implements AttestationToken {
      * on this token.
      * @return URI at which an X.509 certificate can be retrieved.
      */
-    @Override public URI getX509Url() {
-        return jwsHeader != null ? jwsHeader.getX509CertURL() : null;
+    @Override public String getX509Url() {
+        return jwsHeader != null ? jwsHeader.getX509CertURL().toString() : null;
     }
 
     @Override
@@ -254,12 +253,13 @@ public class AttestationTokenImpl implements AttestationToken {
         return LocalDateTime.ofEpochSecond(claimsSet.getNotBeforeTime().getTime() / 1000, 0, ZoneOffset.UTC);
     }
 
+    static final String EMPTY_TOKEN = "eyJhbGciOiJub25lIn0..";
+
     /**
      * Create an unsecured attestation token with an empty body. Used for resetting attestation
      * policies.
      * @return Newly created unsecured attestation token with an empty body.
      */
-    static final String EMPTY_TOKEN = "eyJhbGciOiJub25lIn0..";
     public static AttestationToken createUnsecuredToken() {
         // Create a AttestationToken using the well known unsecured JWT header.
         // See <a href='https://datatracker.ietf.org/doc/html/rfc7519#section-6.1' RFC 7519 section 6.1/>.
@@ -308,7 +308,7 @@ public class AttestationTokenImpl implements AttestationToken {
             .build();
 
         // Create a signer from the provided signing key.
-        JWSSigner signer = null;
+        JWSSigner signer;
         try {
             if (signingKey.getPrivateKey() instanceof  RSAPrivateKey) {
                 // If the caller wants to allow weak keys, allow them.
@@ -327,7 +327,7 @@ public class AttestationTokenImpl implements AttestationToken {
         }
 
         String signedBody = header.toBase64URL() + ".";
-        Base64URL signature = null;
+        Base64URL signature;
         try {
             signature = signer.sign(header, signedBody.getBytes(StandardCharsets.UTF_8));
         } catch (JOSEException e) {

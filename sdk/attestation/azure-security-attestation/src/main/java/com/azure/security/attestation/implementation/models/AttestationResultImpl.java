@@ -198,7 +198,7 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the inittimeClaims value.
      */
-    @Override public Object getInittimeClaims() {
+    @Override public Object getInitTimeClaims() {
         return this.inittimeClaims;
     }
 

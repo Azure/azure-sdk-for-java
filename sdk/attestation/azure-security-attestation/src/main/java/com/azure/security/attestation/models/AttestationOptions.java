@@ -67,7 +67,7 @@ import com.azure.core.util.BinaryData;
  *
  */
 @Fluent
-public class AttestationOptions {
+public final class AttestationOptions {
 
     private final BinaryData evidence;
     private AttestationData runTimeData;
@@ -135,7 +135,7 @@ public class AttestationOptions {
      * known to the execution environment. Note that InitTimeData is invalid for CoffeeLake processors.
      *</p>
      * <p>When the attestation service generates the attestation token, the InitTimeData will
-     * be added as {@link AttestationResult#getInittimeClaims()} if the {@link AttestationDataInterpretation}
+     * be added as {@link AttestationResult#getInitTimeClaims()} if the {@link AttestationDataInterpretation}
      * for the {@link AttestationData} is set to "JSON".
      *
      * <p><strong>Setting InitTime Data Property</strong></p>
@@ -160,10 +160,10 @@ public class AttestationOptions {
 
     /**
      * Set the draftPolicyForAttestation property: Attest against the provided draft policy.
-     * <p>The {@link AttestationOptions#setDraftPolicyForAttestation(String)} API can be used to
+     * <p>The setDraftPolicyForAttestation API can be used to
      * determine how a proposed attestation policy would affect an attestation token.</p>
      * <b><i>Note that the resulting token cannot be validated.</i></b>
-     * <p>Set a draft policy for attestation.</p>
+     * <p><b><i>Example of setting AttestationOptions with a draft policy.</i></b></p>
      * {@codesnippet com.azure.security.attestation.models.AttestationOptions.setDraftPolicyForAttestation#String}
      * @param draftPolicyForAttestation the draftPolicyForAttestation value to set.
      * @return this {@link AttestationOptions} object itself.

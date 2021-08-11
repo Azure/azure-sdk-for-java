@@ -57,13 +57,7 @@ public interface AttestationResult {
      * Get the NotBefore property: The time before which a token cannot be considered valid. The ExpiresOn property
      * corresponds to the "exp" claim in a Json Web Token.  See <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.4">RFC 7519 section 4.1.4</a>
      *
-     * @return the expiration time for the token.
-     */
-    /**
-     * Get the nbf property: The not before time before which the token cannot be considered valid, in the number of
-     * seconds since 1970-01-0T00:00:00Z UTC.
-     *
-     * @return the nbf value.
+     * @return the time before which the token is invalid.
      */
     LocalDateTime getNotBefore();
 
@@ -93,14 +87,14 @@ public interface AttestationResult {
     Object getRuntimeClaims();
 
     /**
-     * Get the inittimeClaims property: Inittime Claims.
+     * Get the initTimeClaims property: InitTime Claims.
      * <br>
      * If {@link AttestationDataInterpretation#JSON} was specified in the {@link AttestationData} for the InitTime data
      * this will contain the input InitTimeData as JSON elements.
      *
-     * @return the inittimeClaims value.
+     * @return the initTimeClaims value.
      */
-    Object getInittimeClaims();
+    Object getInitTimeClaims();
 
     /**
      * Get the policyClaims property: Policy Generated Claims. This element contains all claims
@@ -184,8 +178,8 @@ public interface AttestationResult {
     Float getSvn();
 
     /**
-     * Get the enclaveHeldData property: A copy of the RuntimeData specified as an input to the attest call if
-     * the {@link AttestationDataInterpretation#BINARY} data interpreation was set on the {@link AttestationData} passed to
+     * Get the enclaveHeldData property: A copy of the RuntimeData specified as an input to the call to attest if
+     * the {@link AttestationDataInterpretation#BINARY} data interpretation was set on the {@link AttestationData} passed to
      * the {@link AttestationOptions#setRunTimeData(AttestationData)} API.
      *
      * @return the enclaveHeldData value.

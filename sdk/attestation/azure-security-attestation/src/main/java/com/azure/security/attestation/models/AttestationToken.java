@@ -5,7 +5,6 @@ package com.azure.security.attestation.models;
 
 import com.azure.core.util.BinaryData;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 
 /**
@@ -69,7 +68,7 @@ public interface AttestationToken {
      *
      * @return URI at which a JWK can be retrieved.
      */
-    URI getJsonWebKeyUrl();
+    String getJsonWebKeyUrl();
 
     /**
      * Returns the signer for this token if the caller provided a JSON Web Key.
@@ -106,7 +105,7 @@ public interface AttestationToken {
      *
      * @return URI at which an X.509 certificate can be retrieved.
      */
-    URI getX509Url();
+    String getX509Url();
 
     /**
      * Returns the "crit" header property from the JSON Web Signature object.
