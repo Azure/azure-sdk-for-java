@@ -25,6 +25,7 @@ import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -80,7 +81,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     @Override
     public PageBlobClient getEncryptionScopeClient(String encryptionScope) {
-        return new PageBlobClient(pageBlobAsyncClient.getEncryptionScopeClient(encryptionScope));
+        return new PageBlobClient(pageBlobAsyncClient.getEncryptionScopeAsyncClient(encryptionScope));
     }
 
     /**
@@ -92,7 +93,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     @Override
     public PageBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new PageBlobClient(pageBlobAsyncClient.getCustomerProvidedKeyClient(customerProvidedKey));
+        return new PageBlobClient(pageBlobAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**
@@ -344,8 +345,33 @@ public final class PageBlobClient extends BlobClientBase {
         byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(range, sourceUrl,
-            sourceOffset, sourceContentMd5, destRequestConditions, sourceRequestConditions, context);
+        return uploadPagesFromUrlWithResponse(
+            new PageBlobUploadPagesFromUrlOptions(range, sourceUrl).setSourceOffset(sourceOffset)
+                .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
+                .setSourceRequestConditions(sourceRequestConditions),
+            timeout, context);
+    }
+
+    /**
+     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions-Duration-Context}
+     *
+     * @param options Parameters for the operation.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The information of the uploaded pages.
+     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageBlobUploadPagesFromUrlOptions options, Duration timeout,
+        Context context) {
+
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

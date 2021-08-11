@@ -20,13 +20,13 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ```yaml
-branch: master
+branch: 3d6211cf28f83236cdf78e7cfc50efd3fb7cba72
 repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 ```
 
 ```yaml
 input-file:
-    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2019-11-01-preview/sparkJob.json
+    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/stable/2020-12-01/sparkJob.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -41,4 +41,13 @@ context-client-method-parameter: true
 required-parameter-client-methods: true
 credential-types: tokencredential
 credential-scopes: https://dev.azuresynapse.net/.default
+```
+
+### Add x-ms-client-default to livyApiVersion
+```yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LivyApiVersion
+  transform: >
+    $["x-ms-client-default"] = $.default;
 ```

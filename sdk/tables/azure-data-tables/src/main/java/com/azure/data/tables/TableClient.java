@@ -26,7 +26,6 @@ import com.azure.data.tables.sas.TableSasSignatureValues;
 import java.time.Duration;
 import java.util.List;
 
-import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
@@ -466,7 +465,7 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.listEntities(options, context), timeout));
+        return new PagedIterable<>(client.listEntities(options, context, timeout));
     }
 
     /**
@@ -525,12 +524,16 @@ public final class TableClient {
      * Retrieves details about any stored {@link TableAccessPolicies access policies} specified on the table that may
      * be used with Shared Access Signatures.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the retrieved
      * {@link TableAccessPolicies access policies}.</p>
      * {@codesnippet com.azure.data.tables.tableClient.getAccessPolicies}
      *
      * @return The table's {@link TableAccessPolicies access policies}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableAccessPolicies getAccessPolicies() {
@@ -540,6 +543,8 @@ public final class TableClient {
     /**
      * Retrieves details about any stored {@link TableAccessPolicies access policies} specified on the table that may be
      * used with Shared Access Signatures.
+     *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the
@@ -551,6 +556,8 @@ public final class TableClient {
      * the service call.
      *
      * @return An {@link Response HTTP response} containing the table's {@link TableAccessPolicies access policies}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
@@ -561,11 +568,15 @@ public final class TableClient {
      * Sets stored {@link TableAccessPolicies access policies} for the table that may be used with Shared Access
      * Signatures.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets stored {@link TableAccessPolicies access policies} on a table.</p>
      * {@codesnippet com.azure.data.tables.tableClient.setAccessPolicies#List}
      *
      * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setAccessPolicies(List<TableSignedIdentifier> tableSignedIdentifiers) {
@@ -575,6 +586,8 @@ public final class TableClient {
     /**
      * Sets stored {@link TableAccessPolicies access policies} for the table that may be used with Shared Access
      * Signatures.
+     *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets stored {@link TableAccessPolicies access policies} on a table. Prints out details of the
@@ -587,6 +600,8 @@ public final class TableClient {
      * the service call.
      *
      * @return The {@link Response HTTP response}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
@@ -619,6 +634,7 @@ public final class TableClient {
      * {@link TableTransactionResult action} in the transaction.
      *
      * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
+     * @throws TableServiceException If the request is rejected by the service.
      * @throws TableTransactionFailedException If any {@link TableTransactionResult action} within the transaction
      * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
      * may cause a given {@link TableTransactionAction action} to fail.
@@ -658,6 +674,7 @@ public final class TableClient {
      * {@link TableTransactionAction action} in the transaction.
      *
      * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
+     * @throws TableServiceException If the request is rejected by the service.
      * @throws TableTransactionFailedException If any {@link TableTransactionAction action} within the transaction
      * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
      * may cause a given {@link TableTransactionAction action} to fail.

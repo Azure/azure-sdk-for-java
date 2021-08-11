@@ -8,6 +8,9 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
@@ -15,9 +18,12 @@ import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -28,6 +34,7 @@ import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_N
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -45,6 +52,7 @@ public class KeyClientTest extends KeyClientTestBase {
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
             .serviceVersion(serviceVersion)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
@@ -389,7 +397,6 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
-
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
@@ -450,6 +457,39 @@ public class KeyClientTest extends KeyClientTestBase {
             List<KeyProperties> keyVersionsList = new ArrayList<>();
             keyVersionsOutput.forEach(keyVersionsList::add);
             assertEquals(keyVersions.size(), keyVersionsList.size());
+        });
+    }
+
+    /**
+     * Tests that an existing key can be released.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // TODO: Remove assumption once Key Vault allows for creating exportable keys.
+        Assumptions.assumeTrue(isManagedHsmTest);
+
+        createKeyClient(httpClient, serviceVersion);
+        releaseKeyRunner((keyToRelease, attestationUrl) -> {
+            assertKeyEquals(keyToRelease,  client.createRsaKey(keyToRelease));
+
+            String target = "testAttestationToken";
+
+            if (getTestMode() != TestMode.PLAYBACK) {
+                if (!attestationUrl.endsWith("/")) {
+                    attestationUrl = attestationUrl + "/";
+                }
+
+                try {
+                    target = getAttestationToken(attestationUrl + "generate-test-token");
+                } catch (IOException e) {
+                    fail("Found error when deserializing attestation token.", e);
+                }
+            }
+
+            ReleaseKeyResult releaseKeyResult = client.releaseKey(keyToRelease.getName(), target);
+
+            assertNotNull(releaseKeyResult.getValue());
         });
     }
 

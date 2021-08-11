@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -39,6 +40,7 @@ public final class AzureSqlSource extends TabularSource {
      * "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "storedProcedureParameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
     /*

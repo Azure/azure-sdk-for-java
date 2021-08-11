@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/policyinsights/
+      - sdk/policyinsights/ci.yml
+      - sdk/policyinsights/azure-resourcemanager-policyinsights/
+    exclude:
+      - sdk/policyinsights/pom.xml
+      - sdk/policyinsights/azure-resourcemanager-policyinsights/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/policyinsights/
+      - sdk/policyinsights/ci.yml
+      - sdk/policyinsights/azure-resourcemanager-policyinsights/
+    exclude:
+      - sdk/policyinsights/pom.xml
+      - sdk/policyinsights/azure-resourcemanager-policyinsights/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

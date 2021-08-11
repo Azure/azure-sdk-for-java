@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.5/entities/recognition/general?showStats=false&loggingOptOut=false&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/recognition/general?showStats=false&loggingOptOut=false&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.8 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a44083f9-a930-4079-9c3a-67c744219579",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0507ea46-81ef-4ed1-b793-89f14f1aedaa",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "30",
+      "x-envoy-upstream-service-time" : "25",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "aeca11fb-8851-4b22-9d36-fcfa053da9ab",
+      "apim-request-id" : "d880aaff-d7ed-4080-8364-7e55d0e8aa60",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"trip\",\"category\":\"Event\",\"offset\":18,\"length\":4,\"confidenceScore\":0.73},{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":1.0},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}",
-      "Date" : "Fri, 11 Jun 2021 01:17:34 GMT",
+      "Date" : "Fri, 30 Jul 2021 18:01:14 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -6,8 +6,11 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -23,14 +26,13 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.security.keyvault.keys.models.CreateKeyOptions;
-import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
-import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.security.keyvault.keys.models.KeyType;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
+import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +43,13 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
+import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -391,6 +400,45 @@ public abstract class KeyClientTestBase extends TestBase {
         testRunner.accept(keyOptions);
     }
 
+    void getRandomBytesRunner(Consumer<Integer> testRunner) {
+        int count = 12;
+
+        testRunner.accept(count);
+    }
+
+    @Test
+    public abstract void releaseKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+
+    void releaseKeyRunner(BiConsumer<CreateRsaKeyOptions, String> testRunner) {
+        final String attestationUrl = Configuration.getGlobalConfiguration()
+            .get("AZURE_KEYVAULT_ATTESTATION_URL", "http://localhost:8080");
+        final String releasePolicyContents =
+            "{"
+                + "\"anyOf\": ["
+                    + "{"
+                        + "\"anyOf\": ["
+                            + "{"
+                                + "\"claim\": \"sdk-test\","
+                                + "\"condition\": \"equals\","
+                                + "\"value\": \"true\""
+                            + "}"
+                        + "],"
+                        + "\"authority\": \"" + attestationUrl + "\""
+                    + "}"
+                + "],"
+                + "\"version\": \"1.0\""
+            + "}";
+
+        final CreateRsaKeyOptions keyToRelease =
+            new CreateRsaKeyOptions(testResourceNamer.randomName("keyToRelease", 20))
+                .setKeySize(2048)
+                .setHardwareProtected(isManagedHsmTest)
+                .setReleasePolicy(new KeyReleasePolicy(releasePolicyContents.getBytes(StandardCharsets.UTF_8)))
+                .setExportable(true);
+
+        testRunner.accept(keyToRelease, attestationUrl);
+    }
+
     String generateResourceId(String suffix) {
         if (interceptorManager.isPlaybackMode()) {
             return suffix;
@@ -572,5 +620,34 @@ public abstract class KeyClientTestBase extends TestBase {
         }
 
         return new BigInteger(b);
+    }
+
+    public static class AttestationToken {
+        @JsonProperty
+        String token;
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+    }
+
+    public static String getAttestationToken(String attestationUrl) throws IOException {
+        HttpClient attestationClient = HttpClient.createDefault();
+
+        try (HttpResponse httpResponse = attestationClient
+            .send(new HttpRequest(HttpMethod.GET, attestationUrl)).block()) {
+
+            assertNotNull(httpResponse);
+
+            JacksonAdapter jacksonAdapter = new JacksonAdapter();
+            AttestationToken attestationToken =
+                jacksonAdapter.deserialize(httpResponse.getBodyAsByteArray().block(),
+                    AttestationToken.class, SerializerEncoding.JSON);
+            return attestationToken.getToken();
+        }
     }
 }

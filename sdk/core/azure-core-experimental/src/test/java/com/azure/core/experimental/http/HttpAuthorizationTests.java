@@ -7,12 +7,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for {@link DynamicRequest}.
+ * Unit tests for {@link HttpAuthorization}.
  */
 public class HttpAuthorizationTests {
     @Test
-    public void nullOrWhiteSpaceParameters()
-    {
+    public void nullOrWhiteSpaceParameters() {
         Assertions.assertThrows(NullPointerException.class, () -> new HttpAuthorization(null, "parameter"));
         Assertions.assertThrows(NullPointerException.class, () -> new HttpAuthorization("scheme", null));
         Assertions.assertThrows(IllegalArgumentException.class, () -> new HttpAuthorization("", "parameter"));
@@ -20,8 +19,7 @@ public class HttpAuthorizationTests {
     }
 
     @Test
-    public void toStringTest()
-    {
+    public void toStringTest() {
         String scheme = "scheme";
         String parameter = "parameter";
         HttpAuthorization httpAuthorization = new HttpAuthorization(scheme, parameter);

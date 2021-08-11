@@ -272,7 +272,7 @@ public final class MetricsAdvisorClient {
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalies#String-OffsetDateTime-OffsetDateTime}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the anomalies were detected.
@@ -285,16 +285,16 @@ public final class MetricsAdvisorClient {
      * {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataPointAnomaly> listAnomalies(
+    public PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
-        return listAnomalies(detectionConfigurationId, startTime, endTime, null, Context.NONE);
+        return listAnomaliesForDetectionConfig(detectionConfigurationId, startTime, endTime, null, Context.NONE);
     }
 
     /**
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalies#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions-Context}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the anomalies were detected.
@@ -309,10 +309,10 @@ public final class MetricsAdvisorClient {
      * {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataPointAnomaly> listAnomalies(
+    public PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfig(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options, Context context) {
-        return new PagedIterable<>(client.listAnomalies(detectionConfigurationId,
+        return new PagedIterable<>(client.listAnomaliesForDetectionConfig(detectionConfigurationId,
             startTime,
             endTime,
             options,
@@ -323,7 +323,7 @@ public final class MetricsAdvisorClient {
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-OffsetDateTime-OffsetDateTime}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the incidents were detected.
@@ -335,16 +335,16 @@ public final class MetricsAdvisorClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyIncident> listIncidents(
+    public PagedIterable<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
-        return listIncidents(detectionConfigurationId, startTime, endTime, null, Context.NONE);
+        return listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, null, Context.NONE);
     }
 
     /**
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the incidents were detected.
@@ -358,10 +358,10 @@ public final class MetricsAdvisorClient {
      * {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyIncident> listIncidents(
+    public PagedIterable<AnomalyIncident> listIncidentsForDetectionConfig(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options, Context context) {
-        return new PagedIterable<>(client.listIncidents(detectionConfigurationId,
+        return new PagedIterable<>(client.listIncidentsForDetectionConfig(detectionConfigurationId,
             startTime, endTime, options,
             context == null ? Context.NONE : context));
     }
@@ -531,7 +531,7 @@ public final class MetricsAdvisorClient {
      * Fetch the anomalies in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalies#String-String}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -541,17 +541,17 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataPointAnomaly> listAnomalies(
+    public PagedIterable<DataPointAnomaly> listAnomaliesForAlert(
         String alertConfigurationId,
         String alertId) {
-        return listAnomalies(alertConfigurationId, alertId, null, Context.NONE);
+        return listAnomaliesForAlert(alertConfigurationId, alertId, null, Context.NONE);
     }
 
     /**
      * Fetch the anomalies in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalies#String-String-ListAnomaliesAlertedOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String-ListAnomaliesAlertedOptions-Context}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -564,11 +564,11 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataPointAnomaly> listAnomalies(
+    public PagedIterable<DataPointAnomaly> listAnomaliesForAlert(
         String alertConfigurationId,
         String alertId,
         ListAnomaliesAlertedOptions options, Context context) {
-        return new PagedIterable<>(client.listAnomalies(alertConfigurationId,
+        return new PagedIterable<>(client.listAnomaliesForAlert(alertConfigurationId,
             alertId,
             options,
             context == null ? Context.NONE : context));
@@ -578,7 +578,7 @@ public final class MetricsAdvisorClient {
      * Fetch the incidents in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -589,10 +589,10 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyIncident> listIncidents(
+    public PagedIterable<AnomalyIncident> listIncidentsForAlert(
         String alertConfigurationId,
         String alertId) {
-        return this.listIncidents(alertConfigurationId,
+        return this.listIncidentsForAlert(alertConfigurationId,
             alertId,
             null,
             Context.NONE);
@@ -602,7 +602,7 @@ public final class MetricsAdvisorClient {
      * Fetch the incidents in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions-Context}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -615,11 +615,11 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyIncident> listIncidents(
+    public PagedIterable<AnomalyIncident> listIncidentsForAlert(
         String alertConfigurationId,
         String alertId,
         ListIncidentsAlertedOptions options, Context context) {
-        return new PagedIterable<>(client.listIncidents(alertConfigurationId,
+        return new PagedIterable<>(client.listIncidentsForAlert(alertConfigurationId,
             alertId,
             options,
             context == null ? Context.NONE : context));

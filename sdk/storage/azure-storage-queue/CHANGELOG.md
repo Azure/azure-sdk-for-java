@@ -1,7 +1,10 @@
 # Release History
 
-## 12.11.0-beta.1 (Unreleased)
+## 12.11.0-beta.2 (Unreleased)
 
+
+## 12.11.0-beta.1 (2021-07-28)
+- Added support for the 2020-10-02 service version.
 
 ## 12.10.0 (2021-06-09)
 - GA release

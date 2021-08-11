@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/1b2ddf53-7b55-4b37-aa46-984d60cb3999-testRsaKey/create?api-version=7.2",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testRsaKey/create?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -20,7 +20,7 @@
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "1025029e-ce6e-11eb-93ed-002248449b1c",
-      "Body" : "{\"attributes\":{\"created\":1623825767,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":90,\"recoveryLevel\":\"Recoverable+Purgeable\",\"updated\":1623825767},\"key\":{\"e\":\"Aw\",\"key_ops\":[\"wrapKey\",\"decrypt\",\"encrypt\",\"unwrapKey\",\"sign\",\"verify\"],\"kid\":\"https://vicolinakvtr2hsm.managedhsm.azure.net/keys/1b2ddf53-7b55-4b37-aa46-984d60cb3999-testRsaKey/8ae4d6dca20307492de10a8013578876\",\"kty\":\"RSA-HSM\",\"n\":\"usDbzesF_ITkDlbT-zncI_T1P2CpuOTPddMTZ4o9EPzrXUcOd8MIkzhTRWX8bw0RBAzKEaiGjMR3AUIzjJOYCpOK6gjcK3Rpon3dEupHAo2yP1WRkYoeTcZzdjMAcqAYy9lJm3DHgtkBsWWmK-mymsThpt0hwqD3diugOPsAtgA8dp9HExVSO9hraRKpLYA2RKIFwRmKEYT8gxx1iTrkzK28Ewm0JkX40LgS_6aRR3-usgWbWISo_v-ETPUhD6Myl-VF12cwdMp9pxTr3SNspotc7-DXLb2r119ZK6xYE2K4jfhZ1qEB5VAE9UOWmncNzqX5p7_SlDqQx8RNrWgrtQ\"},\"tags\":{\"foo\":\"baz\"}}"
+      "Body" : "{\"attributes\":{\"created\":1623825767,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":90,\"recoveryLevel\":\"Recoverable+Purgeable\",\"updated\":1623825767},\"key\":{\"e\":\"Aw\",\"key_ops\":[\"wrapKey\",\"decrypt\",\"encrypt\",\"unwrapKey\",\"sign\",\"verify\"],\"kid\":\"https://vicolinakvtr2hsm.managedhsm.azure.net/keys/testRsaKey/8ae4d6dca20307492de10a8013578876\",\"kty\":\"RSA-HSM\",\"n\":\"usDbzesF_ITkDlbT-zncI_T1P2CpuOTPddMTZ4o9EPzrXUcOd8MIkzhTRWX8bw0RBAzKEaiGjMR3AUIzjJOYCpOK6gjcK3Rpon3dEupHAo2yP1WRkYoeTcZzdjMAcqAYy9lJm3DHgtkBsWWmK-mymsThpt0hwqD3diugOPsAtgA8dp9HExVSO9hraRKpLYA2RKIFwRmKEYT8gxx1iTrkzK28Ewm0JkX40LgS_6aRR3-usgWbWISo_v-ETPUhD6Myl-VF12cwdMp9pxTr3SNspotc7-DXLb2r119ZK6xYE2K4jfhZ1qEB5VAE9UOWmncNzqX5p7_SlDqQx8RNrWgrtQ\"},\"tags\":{\"foo\":\"baz\"}}"
     },
     "Exception" : null
   } ],

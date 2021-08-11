@@ -13,6 +13,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -53,6 +54,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     private final Type pollResultType;
     private final Type finalResultType;
     private final Function<InnerT, T> wrapOperation;
+    private final Context context;
 
     private PollerFlux<PollResult<InnerT>, InnerT> pollerFlux;
     private SyncPoller<Void, T> syncPoller;
@@ -63,7 +65,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                         Duration defaultPollInterval,
                         Type pollResultType,
                         Type finalResultType,
-                        Function<InnerT, T> wrapOperation) {
+                        Function<InnerT, T> wrapOperation,
+                        Context context) {
         this.activationResponse = Objects.requireNonNull(activationResponse);
         this.serializerAdapter = Objects.requireNonNull(serializerAdapter);
         this.httpPipeline = Objects.requireNonNull(httpPipeline);
@@ -71,6 +74,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         this.pollResultType = Objects.requireNonNull(pollResultType);
         this.finalResultType = Objects.requireNonNull(finalResultType);
         this.wrapOperation = Objects.requireNonNull(wrapOperation);
+        this.context = context;
     }
 
     @Override
@@ -147,7 +151,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 pollResultType,
                 finalResultType,
                 defaultPollInterval,
-                Mono.just(clonedResponse)
+                Mono.just(clonedResponse),
+                context
             );
         }
         return pollerFlux;
@@ -371,7 +376,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
         Type innerType,
-        Runnable preActivation) {
+        Runnable preActivation,
+        Context context) {
 
         if (preActivation != null) {
             preActivation.run();
@@ -387,7 +393,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 httpPipeline,
                 ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollInterval),
                 innerType, innerType,
-                convertOperation);
+                convertOperation,
+                context);
 
             return accepted;
         }
@@ -400,7 +407,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
         Type innerType,
-        Runnable preActivation, Consumer<InnerT> postActivation) {
+        Runnable preActivation, Consumer<InnerT> postActivation,
+        Context context) {
 
         if (preActivation != null) {
             preActivation.run();
@@ -416,7 +424,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 httpPipeline,
                 ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollInterval),
                 innerType, innerType,
-                convertOperation);
+                convertOperation,
+                context);
 
             if (postActivation != null) {
                 postActivation.accept(accepted.getActivationResponse().getValue().innerModel());

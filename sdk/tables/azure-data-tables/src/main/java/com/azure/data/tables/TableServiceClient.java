@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
@@ -301,18 +300,22 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.listTables(options, context), timeout));
+        return new PagedIterable<>(client.listTables(options, context, timeout));
     }
 
     /**
      * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the properties of the account's Table service.</p>
      * {@codesnippet com.azure.data.tables.tableServiceClient.getProperties}
      *
      * @return The {@link TableServiceProperties properties} of the account's Table service.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableServiceProperties getProperties() {
@@ -322,6 +325,8 @@ public final class TableServiceClient {
     /**
      * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
+     *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the properties of the account's Table service. Prints out the details of the
@@ -334,6 +339,8 @@ public final class TableServiceClient {
      *
      * @return The {@link Response HTTP response} and the {@link TableServiceProperties properties} of the account's
      * Table service.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
@@ -344,11 +351,15 @@ public final class TableServiceClient {
      * Sets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service.</p>
      * {@codesnippet com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties}
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(TableServiceProperties tableServiceProperties) {
@@ -359,9 +370,11 @@ public final class TableServiceClient {
      * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service. Prints out the details of the
-     * {@link Response HTTP response}.</p></p>
+     * {@link Response HTTP response}.</p>
      * {@codesnippet com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context}
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
@@ -370,6 +383,8 @@ public final class TableServiceClient {
      * the service call.
      *
      * @return The {@link Response HTTP response}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
@@ -381,11 +396,15 @@ public final class TableServiceClient {
      * Retrieves statistics related to replication for the account's Table service. It is only available on the
      * secondary location endpoint when read-access geo-redundant replication is enabled for the account.
      *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the replication statistics of the account's Table service.</p>
      * {@codesnippet com.azure.data.tables.tableServiceClient.getStatistics}
      *
      * @return {@link TableServiceStatistics Statistics} for the account's Table service.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableServiceStatistics getStatistics() {
@@ -395,6 +414,8 @@ public final class TableServiceClient {
     /**
      * Retrieves statistics related to replication for the account's Table service. It is only available on the
      * secondary location endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the replication statistics of the account's Table service. Prints out the details of the
@@ -407,6 +428,8 @@ public final class TableServiceClient {
      *
      * @return An {@link Response HTTP response} containing {@link TableServiceStatistics statistics} for the
      * account's Table service.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {

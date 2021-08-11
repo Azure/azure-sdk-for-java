@@ -22,7 +22,7 @@ import java.util.Objects;
 
 
 /**
- * A Sync Client that supports calling server operations.
+ * Synchronous client that supports calling server operations.
  *
  * <p><strong>Instantiating a synchronous Calling Server Client</strong></p>
  *
@@ -48,7 +48,7 @@ public final class CallingServerClient {
      * @param createCallOptions The call Options.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful CreateCallConnection request.
+     * @return Response for a successful CreateCallConnection request.
      *
      * {@codesnippet com.azure.communication.callingserver.CallingServerClient.create.call.connection}
      */
@@ -69,7 +69,7 @@ public final class CallingServerClient {
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful CreateCallConnection request.
+     * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnection> createCallConnectionWithResponse(
@@ -89,7 +89,7 @@ public final class CallingServerClient {
      * @param joinCallOptions to Join Call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return CallConnection for a successful Join request.
+     * @return CallConnection for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnection joinCall(
@@ -108,7 +108,7 @@ public final class CallingServerClient {
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful Join request.
+     * @return Response for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnection> joinCallWithResponse(
@@ -132,7 +132,7 @@ public final class CallingServerClient {
     /**
      * Get ServerCall object
      *
-     * @param serverCallId The server call id.
+     * @param serverCallId Server call id.
      * @return ServerCall
      */
     public ServerCall initializeServerCall(String serverCallId) {

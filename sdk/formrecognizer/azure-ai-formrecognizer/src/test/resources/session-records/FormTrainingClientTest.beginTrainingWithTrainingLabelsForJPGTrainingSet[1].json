@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d645ceef-e02e-4386-82e6-115b20d912cb",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3881335f-0ef2-4d91-adbb-d0dab25075c0",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "106",
+      "x-envoy-upstream-service-time" : "401",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f4be2a5e-5d04-4001-9165-f5ef0e5aaf07",
+      "apim-request-id" : "a40cd5fe-5255-4a09-a8d7-95f3fa56b2bf",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 11 May 2021 21:38:56 GMT",
-      "Location" : "https://mariari-canada-central.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/2626b2c9-36c6-4b1b-a393-986939f40432"
+      "Date" : "Wed, 07 Jul 2021 06:28:22 GMT",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1056fdd7-6d68-4691-bf47-cb48cec1b428"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/2626b2c9-36c6-4b1b-a393-986939f40432?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1056fdd7-6d68-4691-bf47-cb48cec1b428?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "04a25196-5d89-4409-90ad-434460c3ab8a"
-    },
-    "Response" : {
-      "content-length" : "1242",
-      "x-envoy-upstream-service-time" : "28",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "cf384a63-4e8f-4313-b6fe-c5cc016fce47",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"2626b2c9-36c6-4b1b-a393-986939f40432\",\"attributes\":{\"isComposed\":false},\"status\":\"ready\",\"createdDateTime\":\"2021-05-11T21:38:56Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:39:00Z\"},\"trainResult\":{\"averageModelAccuracy\":0.96,\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"CompanyAddress\",\"accuracy\":0.8},{\"fieldName\":\"CompanyName\",\"accuracy\":0.995},{\"fieldName\":\"CompanyPhoneNumber\",\"accuracy\":0.995},{\"fieldName\":\"DatedAs\",\"accuracy\":0.995},{\"fieldName\":\"Email\",\"accuracy\":0.8},{\"fieldName\":\"Merchant\",\"accuracy\":0.995},{\"fieldName\":\"PhoneNumber\",\"accuracy\":0.995},{\"fieldName\":\"PurchaseOrderNumber\",\"accuracy\":0.995},{\"fieldName\":\"Quantity\",\"accuracy\":0.995},{\"fieldName\":\"Signature\",\"accuracy\":0.8},{\"fieldName\":\"Subtotal\",\"accuracy\":0.995},{\"fieldName\":\"Tax\",\"accuracy\":0.995},{\"fieldName\":\"Total\",\"accuracy\":0.995},{\"fieldName\":\"VendorName\",\"accuracy\":0.995},{\"fieldName\":\"Website\",\"accuracy\":0.995}],\"errors\":[]}}",
-      "Date" : "Tue, 11 May 2021 21:39:01 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/2626b2c9-36c6-4b1b-a393-986939f40432?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fd1931cd-d676-442f-8659-4a01a1252dff"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "db802370-dce1-49d6-857c-62acbba6b5fa"
     },
     "Response" : {
       "content-length" : "1242",
       "x-envoy-upstream-service-time" : "23",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "38c4b8f5-c30b-465f-b3bd-d1663f387986",
+      "apim-request-id" : "92401b85-73d7-4d53-86bd-8aab01b0b2d9",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"2626b2c9-36c6-4b1b-a393-986939f40432\",\"attributes\":{\"isComposed\":false},\"status\":\"ready\",\"createdDateTime\":\"2021-05-11T21:38:56Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:39:00Z\"},\"trainResult\":{\"averageModelAccuracy\":0.96,\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"CompanyAddress\",\"accuracy\":0.8},{\"fieldName\":\"CompanyName\",\"accuracy\":0.995},{\"fieldName\":\"CompanyPhoneNumber\",\"accuracy\":0.995},{\"fieldName\":\"DatedAs\",\"accuracy\":0.995},{\"fieldName\":\"Email\",\"accuracy\":0.8},{\"fieldName\":\"Merchant\",\"accuracy\":0.995},{\"fieldName\":\"PhoneNumber\",\"accuracy\":0.995},{\"fieldName\":\"PurchaseOrderNumber\",\"accuracy\":0.995},{\"fieldName\":\"Quantity\",\"accuracy\":0.995},{\"fieldName\":\"Signature\",\"accuracy\":0.8},{\"fieldName\":\"Subtotal\",\"accuracy\":0.995},{\"fieldName\":\"Tax\",\"accuracy\":0.995},{\"fieldName\":\"Total\",\"accuracy\":0.995},{\"fieldName\":\"VendorName\",\"accuracy\":0.995},{\"fieldName\":\"Website\",\"accuracy\":0.995}],\"errors\":[]}}",
-      "Date" : "Tue, 11 May 2021 21:39:01 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"1056fdd7-6d68-4691-bf47-cb48cec1b428\",\"attributes\":{\"isComposed\":false},\"status\":\"ready\",\"createdDateTime\":\"2021-07-07T06:28:23Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:28:26Z\"},\"trainResult\":{\"averageModelAccuracy\":0.96,\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"CompanyAddress\",\"accuracy\":0.8},{\"fieldName\":\"CompanyName\",\"accuracy\":0.995},{\"fieldName\":\"CompanyPhoneNumber\",\"accuracy\":0.995},{\"fieldName\":\"DatedAs\",\"accuracy\":0.995},{\"fieldName\":\"Email\",\"accuracy\":0.8},{\"fieldName\":\"Merchant\",\"accuracy\":0.995},{\"fieldName\":\"PhoneNumber\",\"accuracy\":0.995},{\"fieldName\":\"PurchaseOrderNumber\",\"accuracy\":0.995},{\"fieldName\":\"Quantity\",\"accuracy\":0.995},{\"fieldName\":\"Signature\",\"accuracy\":0.8},{\"fieldName\":\"Subtotal\",\"accuracy\":0.995},{\"fieldName\":\"Tax\",\"accuracy\":0.995},{\"fieldName\":\"Total\",\"accuracy\":0.995},{\"fieldName\":\"VendorName\",\"accuracy\":0.995},{\"fieldName\":\"Website\",\"accuracy\":0.995}],\"errors\":[]}}",
+      "Date" : "Wed, 07 Jul 2021 06:28:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1056fdd7-6d68-4691-bf47-cb48cec1b428?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ee7fbd41-fa73-4a7e-be72-40891b08aadc"
+    },
+    "Response" : {
+      "content-length" : "1242",
+      "x-envoy-upstream-service-time" : "27",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "ffad6843-dbb5-4b29-b9d9-3f9f3724d568",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"1056fdd7-6d68-4691-bf47-cb48cec1b428\",\"attributes\":{\"isComposed\":false},\"status\":\"ready\",\"createdDateTime\":\"2021-07-07T06:28:23Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:28:26Z\"},\"trainResult\":{\"averageModelAccuracy\":0.96,\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"CompanyAddress\",\"accuracy\":0.8},{\"fieldName\":\"CompanyName\",\"accuracy\":0.995},{\"fieldName\":\"CompanyPhoneNumber\",\"accuracy\":0.995},{\"fieldName\":\"DatedAs\",\"accuracy\":0.995},{\"fieldName\":\"Email\",\"accuracy\":0.8},{\"fieldName\":\"Merchant\",\"accuracy\":0.995},{\"fieldName\":\"PhoneNumber\",\"accuracy\":0.995},{\"fieldName\":\"PurchaseOrderNumber\",\"accuracy\":0.995},{\"fieldName\":\"Quantity\",\"accuracy\":0.995},{\"fieldName\":\"Signature\",\"accuracy\":0.8},{\"fieldName\":\"Subtotal\",\"accuracy\":0.995},{\"fieldName\":\"Tax\",\"accuracy\":0.995},{\"fieldName\":\"Total\",\"accuracy\":0.995},{\"fieldName\":\"VendorName\",\"accuracy\":0.995},{\"fieldName\":\"Website\",\"accuracy\":0.995}],\"errors\":[]}}",
+      "Date" : "Wed, 07 Jul 2021 06:28:28 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

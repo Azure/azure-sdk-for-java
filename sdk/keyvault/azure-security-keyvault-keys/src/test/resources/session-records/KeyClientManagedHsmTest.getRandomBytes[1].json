@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/rng?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "28",
+      "x-frame-options" : "SAMEORIGIN",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "1",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.107.174;act_addr_fam=Ipv4;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5b1c4ccc-f71c-11eb-aed8-000d3aa6a10f",
+      "Body" : "{\"value\":\"elRYsOT3gyU3DqMq\"}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

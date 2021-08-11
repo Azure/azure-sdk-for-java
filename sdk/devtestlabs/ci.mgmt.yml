@@ -2,26 +2,32 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/devtestlabs/
+      - sdk/devtestlabs/ci.mgmt.yml
+      - sdk/devtestlabs/mgmt-v2018_09_15/
+    exclude:
+      - sdk/devtestlabs/pom.xml
+      - sdk/devtestlabs/mgmt-v2018_09_15/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/devtestlabs/
+      - sdk/devtestlabs/ci.mgmt.yml
+      - sdk/devtestlabs/mgmt-v2018_09_15/
+    exclude:
+      - sdk/devtestlabs/pom.xml
+      - sdk/devtestlabs/mgmt-v2018_09_15/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

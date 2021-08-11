@@ -40,6 +40,25 @@ public class RuleDataSource {
     @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
+    /*
+     * the legacy resource identifier of the resource the rule monitors.
+     * **NOTE**: this property cannot be updated for an existing rule.
+     */
+    @JsonProperty(value = "legacyResourceId")
+    private String legacyResourceId;
+
+    /*
+     * the location of the resource.
+     */
+    @JsonProperty(value = "resourceLocation")
+    private String resourceLocation;
+
+    /*
+     * the namespace of the metric.
+     */
+    @JsonProperty(value = "metricNamespace")
+    private String metricNamespace;
+
     /**
      * Get the resourceUri property: the resource identifier of the resource the rule monitors. **NOTE**: this property
      * cannot be updated for an existing rule.
@@ -59,6 +78,68 @@ public class RuleDataSource {
      */
     public RuleDataSource withResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
+        return this;
+    }
+
+    /**
+     * Get the legacyResourceId property: the legacy resource identifier of the resource the rule monitors. **NOTE**:
+     * this property cannot be updated for an existing rule.
+     *
+     * @return the legacyResourceId value.
+     */
+    public String legacyResourceId() {
+        return this.legacyResourceId;
+    }
+
+    /**
+     * Set the legacyResourceId property: the legacy resource identifier of the resource the rule monitors. **NOTE**:
+     * this property cannot be updated for an existing rule.
+     *
+     * @param legacyResourceId the legacyResourceId value to set.
+     * @return the RuleDataSource object itself.
+     */
+    public RuleDataSource withLegacyResourceId(String legacyResourceId) {
+        this.legacyResourceId = legacyResourceId;
+        return this;
+    }
+
+    /**
+     * Get the resourceLocation property: the location of the resource.
+     *
+     * @return the resourceLocation value.
+     */
+    public String resourceLocation() {
+        return this.resourceLocation;
+    }
+
+    /**
+     * Set the resourceLocation property: the location of the resource.
+     *
+     * @param resourceLocation the resourceLocation value to set.
+     * @return the RuleDataSource object itself.
+     */
+    public RuleDataSource withResourceLocation(String resourceLocation) {
+        this.resourceLocation = resourceLocation;
+        return this;
+    }
+
+    /**
+     * Get the metricNamespace property: the namespace of the metric.
+     *
+     * @return the metricNamespace value.
+     */
+    public String metricNamespace() {
+        return this.metricNamespace;
+    }
+
+    /**
+     * Set the metricNamespace property: the namespace of the metric.
+     *
+     * @param metricNamespace the metricNamespace value to set.
+     * @return the RuleDataSource object itself.
+     */
+    public RuleDataSource withMetricNamespace(String metricNamespace) {
+        this.metricNamespace = metricNamespace;
         return this;
     }
 

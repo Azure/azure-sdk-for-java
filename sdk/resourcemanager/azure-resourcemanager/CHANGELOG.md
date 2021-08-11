@@ -2,6 +2,10 @@
 
 ## 2.7.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Added overload of `create(Context)` for `Creatable`.
+- Added overload of `apply(Context)` for `Appliable`.
 
 ## 2.6.0 (2021-06-18)
 

@@ -35,6 +35,8 @@ public final class BlobContainerSasPermission {
 
     private boolean executePermission;
 
+    private boolean immutabilityPolicyPermission;
+
     /**
      * Initializes an {@code BlobContainerSasPermission} object with all fields set to false.
      */
@@ -47,7 +49,8 @@ public final class BlobContainerSasPermission {
      *
      * @param permissionString A {@code String} which represents the {@code BlobContainerSasPermission}.
      * @return A {@code BlobContainerSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permissionString} contains a character other than r, a, c, w, d, x, l or t.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x, l, t or
+     * i.
      */
     public static BlobContainerSasPermission parse(String permissionString) {
         BlobContainerSasPermission permissions = new BlobContainerSasPermission();
@@ -84,6 +87,9 @@ public final class BlobContainerSasPermission {
                     break;
                 case 'e':
                     permissions.executePermission = true;
+                    break;
+                case 'i':
+                    permissions.immutabilityPolicyPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -275,6 +281,24 @@ public final class BlobContainerSasPermission {
     }
 
     /**
+     * @return the set immutability policy permission status.
+     */
+    public boolean hasImmutabilityPolicyPermission() {
+        return immutabilityPolicyPermission;
+    }
+
+    /**
+     * Sets the set immutability policy permission status.
+     *
+     * @param immutabilityPolicyPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobContainerSasPermission setImmutabilityPolicyPermission(boolean immutabilityPolicyPermission) {
+        this.immutabilityPolicyPermission = immutabilityPolicyPermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -324,6 +348,10 @@ public final class BlobContainerSasPermission {
 
         if (this.executePermission) {
             builder.append('e');
+        }
+
+        if (this.immutabilityPolicyPermission) {
+            builder.append('i');
         }
 
         return builder.toString();

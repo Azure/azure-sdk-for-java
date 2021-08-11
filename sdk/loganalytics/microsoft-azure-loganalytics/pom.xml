@@ -49,12 +49,12 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-runtime</artifactId>
-            <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
+            <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-arm-client-runtime</artifactId>
-            <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-arm-client-runtime;external_dependency} -->
+            <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-arm-client-runtime;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -65,13 +65,13 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-authentication</artifactId>
-            <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
+            <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+          <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
           <scope>test</scope>
         </dependency>
     </dependencies>

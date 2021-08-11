@@ -1,7 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob
 
-
-import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.sas.BlobSasPermission
@@ -307,5 +308,13 @@ class CPKTest extends APISpec {
         then:
         newCpkBlobClient instanceof BlobClient
         newCpkBlobClient.getCustomerProvidedKey() != cpkBlobClient.getCustomerProvidedKey()
+    }
+
+    def "Exists without CPK"() {
+        setup:
+        def clientWithoutCpk = cpkExistingBlob.getCustomerProvidedKeyClient(null)
+
+        expect:
+        clientWithoutCpk.exists()
     }
 }

@@ -267,7 +267,7 @@ def increment_or_set_library_version(build_type, artifact_id, group_id, new_vers
                 # Tick up the version here. If the version is already a pre-release
                 # version then just increment the revision. Otherwise increment the
                 # minor version, zero the patch and add "-beta.1" to the end
-                # https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#java
+                # https://github.com/Azure/azure-sdk/blob/main/docs/policies/releases.md#java
                 if module.name == library_to_update and hasattr(module, 'current'):
                     artifact_found = True
                     if new_version is None:

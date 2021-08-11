@@ -1,8 +1,8 @@
 #Requires -Version 6.0
 
-$releaseDate = "05/20/2021"
+$releaseDate = "06/23/2021"
 $serviceDirectory = "spring"
-$springtCloudReleaseVersion = "2.5.0"
+$springtCloudReleaseVersion = "2.6.0"
 
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-cloud-autoconfigure
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-cloud-context

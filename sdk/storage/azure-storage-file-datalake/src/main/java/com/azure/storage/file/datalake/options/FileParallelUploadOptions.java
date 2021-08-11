@@ -21,7 +21,7 @@ import java.util.Map;
 public class FileParallelUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
-    private final long length;
+    private final Long length;
     private ParallelTransferOptions parallelTransferOptions;
     private PathHttpHeaders headers;
     private Map<String, String> metadata;
@@ -40,7 +40,25 @@ public class FileParallelUploadOptions {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
         this.dataFlux = dataFlux;
         this.dataStream = null;
-        this.length = -1;
+        this.length = null;
+    }
+
+    /**
+     * Constructs a new {@code FileParallelUploadOptions}.
+     *
+     * Use {@link #FileParallelUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
+     * length beforehand.
+     *
+     * @param dataStream The data to write to the blob. The data must be markable. This is in order to support retries.
+     * If the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add
+     * mark support.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     * @deprecated length is no longer necessary; use {@link #FileParallelUploadOptions(InputStream)} instead.
+     */
+    @Deprecated
+    public FileParallelUploadOptions(InputStream dataStream, long length) {
+        this(dataStream, Long.valueOf(length));
     }
 
     /**
@@ -49,12 +67,16 @@ public class FileParallelUploadOptions {
      * @param dataStream The data to write to the blob. The data must be markable. This is in order to support retries.
      * If the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add
      * mark support.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream}.
      */
-    public FileParallelUploadOptions(InputStream dataStream, long length) {
-        StorageImplUtils.assertNotNull("dataStream", length);
-        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
+    public FileParallelUploadOptions(InputStream dataStream) {
+        this(dataStream, null);
+    }
+
+    private FileParallelUploadOptions(InputStream dataStream, Long length) {
+        StorageImplUtils.assertNotNull("dataStream", dataStream);
+        if (length != null) {
+            StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
+        }
         this.dataStream = dataStream;
         this.length = length;
         this.dataFlux = null;
@@ -83,8 +105,20 @@ public class FileParallelUploadOptions {
      *
      * @return The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
+     * @deprecated use {@link #getOptionalLength()} to have safe access to a length that will not always exist.
      */
+    @Deprecated
     public long getLength() {
+        return length;
+    }
+
+    /**
+     * Gets the length of the data.
+     *
+     * @return The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     */
+    public Long getOptionalLength() {
         return length;
     }
 

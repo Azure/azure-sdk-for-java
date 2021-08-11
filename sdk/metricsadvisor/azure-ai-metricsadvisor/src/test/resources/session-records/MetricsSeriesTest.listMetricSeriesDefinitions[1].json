@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "ecd01d9b-05d7-4cc1-8aee-600f79223917",
+      "x-ms-client-request-id" : "842d229f-f171-43e0-8016-321e2ac716fe",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "b0a628b6-27bb-4347-8478-f783fe85eb5f",
+      "x-request-id" : "db4ce4ad-8ce9-4119-a6d7-8686b1c7e63b",
       "content-length" : "2495",
-      "x-envoy-upstream-service-time" : "50",
+      "x-envoy-upstream-service-time" : "97",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "b0a628b6-27bb-4347-8478-f783fe85eb5f",
+      "apim-request-id" : "db4ce4ad-8ce9-4119-a6d7-8686b1c7e63b",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Rio de Janeiro\",\"category\":\"Historical & Advertising Collectibles\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Belo Horizonte\",\"category\":\"Electronics (Consumer)\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Kinshasa\",\"category\":\"Beauty\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Lahore\",\"category\":\"Shoes Handbags & Sunglasses\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Hong Kong\",\"category\":\"Electronics (Accessories)\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Sao Paulo\",\"category\":\"Beauty\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Delhi\",\"category\":\"Books\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Istanbul\",\"category\":\"Camera & Photo\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Kinshasa\",\"category\":\"Musical Instruments\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Guangzhou\",\"category\":\"Jewelry\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Bengaluru\",\"category\":\"Jewelry\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Kinshasa\",\"category\":\"Health & Personal Care\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Dallas\",\"category\":\"Office Products\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Beijing\",\"category\":\"Electronics (Consumer)\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Hyderabad\",\"category\":\"Handmade\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Kolkata\",\"category\":\"Electronics (Consumer)\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Chicago\",\"category\":\"Electronics (Accessories)\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Madrid\",\"category\":\"Industrial & Scientific\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Buenos Aires\",\"category\":\"Outdoors\"}}],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query?$maxpagesize=20&$skip=20\"}",
-      "Date" : "Mon, 21 Jun 2021 23:23:00 GMT",
+      "Date" : "Tue, 06 Jul 2021 19:51:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,20 +26,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query?$maxpagesize=20&$skip=20",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "e5522413-7e4c-4d1d-bfe9-ad8540ee5777",
+      "x-ms-client-request-id" : "ed79387a-3e7f-45e2-bbec-538a5b2c2e74",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "87166504-473e-4901-93c6-84810c2fc9b8",
+      "x-request-id" : "38690c13-28e3-423b-9ed9-20a3e30549c7",
       "content-length" : "2440",
-      "x-envoy-upstream-service-time" : "66",
+      "x-envoy-upstream-service-time" : "102",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "87166504-473e-4901-93c6-84810c2fc9b8",
+      "apim-request-id" : "38690c13-28e3-423b-9ed9-20a3e30549c7",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Software & Computer Games\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Shenzhen\",\"category\":\"Industrial & Scientific\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Karachi\",\"category\":\"Books\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Chennai\",\"category\":\"Outdoors\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Shanghai\",\"category\":\"Beauty\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Karachi\",\"category\":\"Office Products\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Karachi\",\"category\":\"Outdoors\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Musical Instruments\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Khartoum\",\"category\":\"Shoes Handbags & Sunglasses\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Karachi\",\"category\":\"Health & Personal Care\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Mumbai\",\"category\":\"Beauty\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"London\",\"category\":\"Electronics (Accessories)\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Moscow\",\"category\":\"Jewelry\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Lagos\",\"category\":\"Books\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Lagos\",\"category\":\"Grocery & Gourmet Food\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Karachi\",\"category\":\"Historical & Advertising Collectibles\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Bogota\",\"category\":\"Jewelry\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Hyderabad\",\"category\":\"Jewelry\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Guangzhou\",\"category\":\"Historical & Advertising Collectibles\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Santiago\",\"category\":\"Beauty\"}}],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query?$maxpagesize=20&$skip=40\"}",
-      "Date" : "Mon, 21 Jun 2021 23:23:00 GMT",
+      "Date" : "Tue, 06 Jul 2021 19:51:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -48,20 +48,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query?$maxpagesize=20&$skip=40",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "dd95850a-9d9b-41b9-b399-d2a7619fcb9e",
+      "x-ms-client-request-id" : "17e65ecc-8118-4375-b8d5-6e6d06968d64",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "d3cc1baf-497a-4bc0-949c-7101ab7d8e1f",
+      "x-request-id" : "0b312fce-4e17-41f7-b278-901a6e4bfd81",
       "content-length" : "2487",
-      "x-envoy-upstream-service-time" : "59",
+      "x-envoy-upstream-service-time" : "107",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "d3cc1baf-497a-4bc0-949c-7101ab7d8e1f",
+      "apim-request-id" : "0b312fce-4e17-41f7-b278-901a6e4bfd81",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Shenzhen\",\"category\":\"Jewelry\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Chennai\",\"category\":\"Handmade\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Sao Paulo\",\"category\":\"Industrial & Scientific\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Bangkok\",\"category\":\"Outdoors\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Rio de Janeiro\",\"category\":\"Shoes Handbags & Sunglasses\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Kolkata\",\"category\":\"Music\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Santiago\",\"category\":\"Software & Computer Games\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Manila\",\"category\":\"Grocery & Gourmet Food\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Tokyo\",\"category\":\"Handmade\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Tianjin\",\"category\":\"Outdoors\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Lagos\",\"category\":\"Shoes Handbags & Sunglasses\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Taipei\",\"category\":\"Device Accessories\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Houston\",\"category\":\"Software & Computer Games\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Houston\",\"category\":\"Home & Garden\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Guangzhou\",\"category\":\"Handmade\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Buenos Aires\",\"category\":\"Shoes Handbags & Sunglasses\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Kinshasa\",\"category\":\"Office Products\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Taipei\",\"category\":\"Home & Garden\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Hyderabad\",\"category\":\"Historical & Advertising Collectibles\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"London\",\"category\":\"Industrial & Scientific\"}}],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query?$maxpagesize=20&$skip=60\"}",
-      "Date" : "Mon, 21 Jun 2021 23:23:00 GMT",
+      "Date" : "Tue, 06 Jul 2021 19:51:10 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

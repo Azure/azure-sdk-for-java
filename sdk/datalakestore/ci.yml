@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/datalakestore/
+      - sdk/datalakestore/ci.yml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/
+    exclude:
+      - sdk/datalakestore/pom.xml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/datalakestore/
+      - sdk/datalakestore/ci.yml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/
+    exclude:
+      - sdk/datalakestore/pom.xml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

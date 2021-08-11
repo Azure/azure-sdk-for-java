@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -70,9 +71,9 @@ public final class AutoscaleSettingsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientAutosca")
     private interface AutoscaleSettingsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/autoscalesettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -81,11 +82,12 @@ public final class AutoscaleSettingsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/autoscalesettings/{autoscaleSettingName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -96,11 +98,12 @@ public final class AutoscaleSettingsClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") AutoscaleSettingResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/autoscalesettings/{autoscaleSettingName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -110,11 +113,12 @@ public final class AutoscaleSettingsClientImpl
             @PathParam("autoscaleSettingName") String autoscaleSettingName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/autoscalesettings/{autoscaleSettingName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -124,11 +128,12 @@ public final class AutoscaleSettingsClientImpl
             @PathParam("autoscaleSettingName") String autoscaleSettingName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/autoscalesettings/{autoscaleSettingName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -139,31 +144,39 @@ public final class AutoscaleSettingsClientImpl
             @PathParam("autoscaleSettingName") String autoscaleSettingName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AutoscaleSettingResourcePatch autoscaleSettingResource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/autoscalesettings")
+        @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/autoscalesettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AutoscaleSettingResourceCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AutoscaleSettingResourceCollection>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AutoscaleSettingResourceCollection>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -195,6 +208,7 @@ public final class AutoscaleSettingsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -204,6 +218,7 @@ public final class AutoscaleSettingsClientImpl
                             resourceGroupName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<AutoscaleSettingResourceInner>>map(
                 res ->
@@ -214,7 +229,7 @@ public final class AutoscaleSettingsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -247,10 +262,16 @@ public final class AutoscaleSettingsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
-                this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(),
+                resourceGroupName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -330,7 +351,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param parameters The autoscale setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -365,6 +386,7 @@ public final class AutoscaleSettingsClientImpl
             parameters.validate();
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -376,8 +398,9 @@ public final class AutoscaleSettingsClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -385,7 +408,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param parameters The autoscale setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -424,6 +447,7 @@ public final class AutoscaleSettingsClientImpl
             parameters.validate();
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -433,6 +457,7 @@ public final class AutoscaleSettingsClientImpl
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -441,7 +466,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param parameters The autoscale setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -466,7 +491,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param parameters The autoscale setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -483,7 +508,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param parameters The autoscale setting resource.
+     * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -532,6 +557,7 @@ public final class AutoscaleSettingsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -542,8 +568,9 @@ public final class AutoscaleSettingsClientImpl
                             autoscaleSettingName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -581,6 +608,7 @@ public final class AutoscaleSettingsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -589,6 +617,7 @@ public final class AutoscaleSettingsClientImpl
                 autoscaleSettingName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -672,6 +701,7 @@ public final class AutoscaleSettingsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -682,8 +712,9 @@ public final class AutoscaleSettingsClientImpl
                             autoscaleSettingName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -721,6 +752,7 @@ public final class AutoscaleSettingsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -729,6 +761,7 @@ public final class AutoscaleSettingsClientImpl
                 autoscaleSettingName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -793,7 +826,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param autoscaleSettingResource The autoscale setting object for patch operations.
+     * @param autoscaleSettingResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -830,6 +863,7 @@ public final class AutoscaleSettingsClientImpl
             autoscaleSettingResource.validate();
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -841,8 +875,9 @@ public final class AutoscaleSettingsClientImpl
                             autoscaleSettingName,
                             apiVersion,
                             autoscaleSettingResource,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -850,7 +885,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param autoscaleSettingResource The autoscale setting object for patch operations.
+     * @param autoscaleSettingResource Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -891,6 +926,7 @@ public final class AutoscaleSettingsClientImpl
             autoscaleSettingResource.validate();
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -900,6 +936,7 @@ public final class AutoscaleSettingsClientImpl
                 autoscaleSettingName,
                 apiVersion,
                 autoscaleSettingResource,
+                accept,
                 context);
     }
 
@@ -908,7 +945,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param autoscaleSettingResource The autoscale setting object for patch operations.
+     * @param autoscaleSettingResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -933,7 +970,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param autoscaleSettingResource The autoscale setting object for patch operations.
+     * @param autoscaleSettingResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -950,7 +987,7 @@ public final class AutoscaleSettingsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param autoscaleSettingName The autoscale setting name.
-     * @param autoscaleSettingResource The autoscale setting object for patch operations.
+     * @param autoscaleSettingResource Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -989,10 +1026,12 @@ public final class AutoscaleSettingsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
+                    service
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<AutoscaleSettingResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1002,7 +1041,7 @@ public final class AutoscaleSettingsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1029,9 +1068,10 @@ public final class AutoscaleSettingsClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1111,8 +1151,16 @@ public final class AutoscaleSettingsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<AutoscaleSettingResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1122,7 +1170,7 @@ public final class AutoscaleSettingsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1141,9 +1189,16 @@ public final class AutoscaleSettingsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1169,8 +1224,16 @@ public final class AutoscaleSettingsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBySubscriptionNext(nextLink, context))
+            .withContext(
+                context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<AutoscaleSettingResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1180,7 +1243,7 @@ public final class AutoscaleSettingsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1199,9 +1262,16 @@ public final class AutoscaleSettingsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscriptionNext(nextLink, context)
+            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

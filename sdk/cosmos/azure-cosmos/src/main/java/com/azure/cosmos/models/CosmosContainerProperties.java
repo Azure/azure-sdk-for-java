@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.util.Beta;
@@ -327,6 +328,10 @@ public final class CosmosContainerProperties {
         return this.documentCollection;
     }
 
+    String getSelfLink(){
+        return this.documentCollection.getSelfLink();
+    }
+
     DocumentCollection getV2Collection() {
         DocumentCollection collection = new DocumentCollection(this.documentCollection.toJson());
         collection.setPartitionKey(this.getPartitionKeyDefinition());
@@ -351,5 +356,19 @@ public final class CosmosContainerProperties {
             partitionKeyPathTokensList.add(splitPathsList);
         }
         return partitionKeyPathTokensList;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
+            new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {
+                @Override
+                public String getSelfLink(CosmosContainerProperties cosmosContainerProperties) {
+                    return cosmosContainerProperties.getSelfLink();
+                }
+            });
     }
 }

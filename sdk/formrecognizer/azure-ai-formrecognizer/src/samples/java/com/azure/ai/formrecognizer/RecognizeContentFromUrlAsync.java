@@ -33,7 +33,7 @@ public class RecognizeContentFromUrlAsync {
 
         PollerFlux<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
             client.beginRecognizeContentFromUrl(
-                "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/"
+                "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer/"
                     + "azure-ai-formrecognizer/src/samples/resources/sample-forms/forms/selectionMarkForm.pdf");
 
         Mono<List<FormPage>> contentPageResults = recognizeContentPoller

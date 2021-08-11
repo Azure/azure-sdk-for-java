@@ -19,8 +19,8 @@ public final class RecognizeEntitiesActionResultPropertiesHelper {
      * instance.
      */
     public interface RecognizeEntitiesActionResultAccessor {
-        void setDocumentResults(RecognizeEntitiesActionResult actionsResult,
-            RecognizeEntitiesResultCollection documentResults);
+        void setDocumentsResults(RecognizeEntitiesActionResult actionResult,
+            RecognizeEntitiesResultCollection documentsResults);
     }
 
     /**
@@ -32,8 +32,8 @@ public final class RecognizeEntitiesActionResultPropertiesHelper {
         accessor = recognizeEntitiesActionResultAccessor;
     }
 
-    public static void setDocumentResults(RecognizeEntitiesActionResult actionResult,
-        RecognizeEntitiesResultCollection documentResults) {
-        accessor.setDocumentResults(actionResult, documentResults);
+    public static void setDocumentsResults(RecognizeEntitiesActionResult actionResult,
+        RecognizeEntitiesResultCollection documentsResults) {
+        accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

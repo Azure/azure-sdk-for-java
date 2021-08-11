@@ -44,10 +44,6 @@ class ShardTest extends Specification {
     ChangefeedCursor segmentCursor
 
     def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockChunkFactory = mock(ChunkFactory.class)
         mockChunk0 = mock(Chunk.class)

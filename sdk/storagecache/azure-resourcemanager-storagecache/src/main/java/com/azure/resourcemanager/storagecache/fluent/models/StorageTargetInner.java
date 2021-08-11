@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
@@ -20,53 +19,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Type of the Storage Target. */
-@JsonFlatten
 @Fluent
-public class StorageTargetInner extends StorageTargetResource {
+public final class StorageTargetInner extends StorageTargetResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageTargetInner.class);
 
     /*
-     * List of Cache namespace junctions to target for namespace associations.
+     * StorageTarget properties
      */
-    @JsonProperty(value = "properties.junctions")
-    private List<NamespaceJunction> junctions;
+    @JsonProperty(value = "properties")
+    private StorageTargetProperties innerProperties;
 
-    /*
-     * Type of the Storage Target.
+    /**
+     * Get the innerProperties property: StorageTarget properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.targetType")
-    private StorageTargetType targetType;
-
-    /*
-     * ARM provisioning state, see
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private ProvisioningStateType provisioningState;
-
-    /*
-     * Properties when targetType is nfs3.
-     */
-    @JsonProperty(value = "properties.nfs3")
-    private Nfs3Target nfs3;
-
-    /*
-     * Properties when targetType is clfs.
-     */
-    @JsonProperty(value = "properties.clfs")
-    private ClfsTarget clfs;
-
-    /*
-     * Properties when targetType is unknown.
-     */
-    @JsonProperty(value = "properties.unknown")
-    private UnknownTarget unknown;
-
-    /*
-     * Properties when targetType is blobNfs.
-     */
-    @JsonProperty(value = "properties.blobNfs")
-    private BlobNfsTarget blobNfs;
+    private StorageTargetProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the junctions property: List of Cache namespace junctions to target for namespace associations.
@@ -74,7 +44,7 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the junctions value.
      */
     public List<NamespaceJunction> junctions() {
-        return this.junctions;
+        return this.innerProperties() == null ? null : this.innerProperties().junctions();
     }
 
     /**
@@ -84,7 +54,10 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the StorageTargetInner object itself.
      */
     public StorageTargetInner withJunctions(List<NamespaceJunction> junctions) {
-        this.junctions = junctions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageTargetProperties();
+        }
+        this.innerProperties().withJunctions(junctions);
         return this;
     }
 
@@ -94,7 +67,7 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the targetType value.
      */
     public StorageTargetType targetType() {
-        return this.targetType;
+        return this.innerProperties() == null ? null : this.innerProperties().targetType();
     }
 
     /**
@@ -104,7 +77,10 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the StorageTargetInner object itself.
      */
     public StorageTargetInner withTargetType(StorageTargetType targetType) {
-        this.targetType = targetType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageTargetProperties();
+        }
+        this.innerProperties().withTargetType(targetType);
         return this;
     }
 
@@ -115,19 +91,7 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the provisioningState value.
      */
     public ProvisioningStateType provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: ARM provisioning state, see
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the StorageTargetInner object itself.
-     */
-    public StorageTargetInner withProvisioningState(ProvisioningStateType provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -136,7 +100,7 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the nfs3 value.
      */
     public Nfs3Target nfs3() {
-        return this.nfs3;
+        return this.innerProperties() == null ? null : this.innerProperties().nfs3();
     }
 
     /**
@@ -146,7 +110,10 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the StorageTargetInner object itself.
      */
     public StorageTargetInner withNfs3(Nfs3Target nfs3) {
-        this.nfs3 = nfs3;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageTargetProperties();
+        }
+        this.innerProperties().withNfs3(nfs3);
         return this;
     }
 
@@ -156,7 +123,7 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the clfs value.
      */
     public ClfsTarget clfs() {
-        return this.clfs;
+        return this.innerProperties() == null ? null : this.innerProperties().clfs();
     }
 
     /**
@@ -166,7 +133,10 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the StorageTargetInner object itself.
      */
     public StorageTargetInner withClfs(ClfsTarget clfs) {
-        this.clfs = clfs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageTargetProperties();
+        }
+        this.innerProperties().withClfs(clfs);
         return this;
     }
 
@@ -176,7 +146,7 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the unknown value.
      */
     public UnknownTarget unknown() {
-        return this.unknown;
+        return this.innerProperties() == null ? null : this.innerProperties().unknown();
     }
 
     /**
@@ -186,7 +156,10 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the StorageTargetInner object itself.
      */
     public StorageTargetInner withUnknown(UnknownTarget unknown) {
-        this.unknown = unknown;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageTargetProperties();
+        }
+        this.innerProperties().withUnknown(unknown);
         return this;
     }
 
@@ -196,7 +169,7 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the blobNfs value.
      */
     public BlobNfsTarget blobNfs() {
-        return this.blobNfs;
+        return this.innerProperties() == null ? null : this.innerProperties().blobNfs();
     }
 
     /**
@@ -206,7 +179,10 @@ public class StorageTargetInner extends StorageTargetResource {
      * @return the StorageTargetInner object itself.
      */
     public StorageTargetInner withBlobNfs(BlobNfsTarget blobNfs) {
-        this.blobNfs = blobNfs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageTargetProperties();
+        }
+        this.innerProperties().withBlobNfs(blobNfs);
         return this;
     }
 
@@ -218,20 +194,8 @@ public class StorageTargetInner extends StorageTargetResource {
     @Override
     public void validate() {
         super.validate();
-        if (junctions() != null) {
-            junctions().forEach(e -> e.validate());
-        }
-        if (nfs3() != null) {
-            nfs3().validate();
-        }
-        if (clfs() != null) {
-            clfs().validate();
-        }
-        if (unknown() != null) {
-            unknown().validate();
-        }
-        if (blobNfs() != null) {
-            blobNfs().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

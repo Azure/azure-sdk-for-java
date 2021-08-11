@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.5//entities/recognition/general?showStats=false&loggingOptOut=false&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/recognition/general?showStats=false&loggingOptOut=false&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "224947cb-0d95-4ba5-a784-c8502e8cd5df",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8ffc5910-6aee-4b1b-bfd1-c8fed63ec567",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "11",
+      "x-envoy-upstream-service-time" : "8",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "1ee59d8f-2091-4aa9-bb64-6946c4069576",
+      "apim-request-id" : "eb58e31b-3ae5-44c3-aa8c-69cd5e7ee3b8",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocumentBatch\",\"message\":\"Batch request contains too many records. Max 5 records are permitted.\"}}}",
-      "Date" : "Mon, 10 May 2021 15:44:23 GMT",
+      "Date" : "Fri, 30 Jul 2021 18:01:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

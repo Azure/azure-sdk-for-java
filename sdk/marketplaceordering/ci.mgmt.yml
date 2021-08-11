@@ -2,26 +2,32 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/marketplaceordering/
+      - sdk/marketplaceordering/ci.mgmt.yml
+      - sdk/marketplaceordering/mgmt-v2015_06_01/
+    exclude:
+      - sdk/marketplaceordering/pom.xml
+      - sdk/marketplaceordering/mgmt-v2015_06_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/marketplaceordering/
+      - sdk/marketplaceordering/ci.mgmt.yml
+      - sdk/marketplaceordering/mgmt-v2015_06_01/
+    exclude:
+      - sdk/marketplaceordering/pom.xml
+      - sdk/marketplaceordering/mgmt-v2015_06_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

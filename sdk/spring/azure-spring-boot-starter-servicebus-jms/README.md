@@ -10,15 +10,14 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current})
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-    <version>3.5.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 This starter uses Azure Service Bus messaging features (queues and publish/subscribe topics) from Java applications using the popular Java Message Service (JMS) API standard with AMQP 1.0.
@@ -246,8 +245,8 @@ For more information about setting logging in spring, please refer to the [offic
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
 ### More sample code
-- [JMS Service Bus Queue](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue)
-- [JMS Service Bus Topic](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic)
+- [JMS Service Bus Queue](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-boot-sample-servicebus-jms-queue)
+- [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
 
 
 ## Contributing
@@ -258,9 +257,10 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
 [spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom

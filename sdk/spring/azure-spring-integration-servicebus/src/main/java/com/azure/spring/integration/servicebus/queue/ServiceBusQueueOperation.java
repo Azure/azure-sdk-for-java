@@ -6,6 +6,7 @@ package com.azure.spring.integration.servicebus.queue;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.core.api.SubscribeOperation;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import org.springframework.messaging.Message;
 
 /**
@@ -16,6 +17,8 @@ import org.springframework.messaging.Message;
  * @author Warren Zhu
  */
 public interface ServiceBusQueueOperation extends SendOperation, SubscribeOperation {
+
+    InstrumentationManager getInstrumentationManager();
 
     void setClientConfig(ServiceBusClientConfig clientConfig);
 

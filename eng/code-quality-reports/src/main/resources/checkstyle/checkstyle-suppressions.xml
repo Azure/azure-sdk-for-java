@@ -46,7 +46,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue"/>
 
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultClient"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
 
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
@@ -177,7 +177,16 @@ the main ServiceBusClientBuilder. -->
 
   <!-- suppress the runtime exception in the KeyVaultClient class-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.security.keyvault.jca.KeyVaultClient.java"/>
+            files="com.azure.security.keyvault.jca.implementation.KeyVaultClient.java"/>
+  <!-- suppress the runtime exception in the KeyVaultKeyLessECSignature class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessECSignature.java"/>
+  <!-- suppress the runtime exception in the KeyVaultKeyLessRsaSignature class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsaSignature.java"/>
+  <!-- suppress the runtime exception in the AbstractKeyVaultKeyLessSignature class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature.java"/>
 
   <!-- This class overrides a method that throws, so it cannot be avoided. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
@@ -297,7 +306,7 @@ the main ServiceBusClientBuilder. -->
 
 
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultClient"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
 
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
@@ -439,6 +448,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.azure.perf.test.core.HttpPipelineOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.messaging.servicebus.perf.ServiceBusStressOptions.java"/>
 
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
@@ -526,7 +537,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
   <!-- Suppress DigitalTwins for now -->
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]implementation[/\\]"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]DigitalTwinsClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\]DigitalTwinsAsyncClient.java"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-ai-anomalydetector[/\\]src[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-iot-deviceupdate[/\\]src[/\\]"/>
 
@@ -542,17 +555,17 @@ the main ServiceBusClientBuilder. -->
   <!-- The clients don't end with 'Client' but instead with 'Sender' -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
             files="com.azure.search.documents.SearchClientBuilder"
-            lines="366,398,410"/>
+            lines="376,408,420"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.SearchIndexingBufferedAsyncSender"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.SearchIndexingBufferedSender"/>
 
   <!-- Suppress checks on AutoRest generated Attestation service code -->
-  <suppress checks="(MissingJavadocMethod|EnforceFinalFields)"
-            files=".*[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClientBuilder.java"/>
+  <suppress checks="ThrowFromClientLogger"
+            files="com.azure.security.attestation.models.JsonWebKey.java"/>
   <suppress checks="WhitespaceAround|ThrowFromClientLogger"
-            files="com.azure.security.attestation.models.*\.java"/>
+            files="com.azure.security.attestation.implementation.models.*\.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.core.test.AzureTestWatcher.java"/>
@@ -570,6 +583,10 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.ai.formrecognizer.training.models.(TrainingDocumentInfo|CustomFormSubmodel|CustomFormModelProperties|CustomFormModelInfo|CustomFormModel).java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
             files="com.azure.ai.formrecognizer.models.(TextAppearance|RecognizedForm|FormTable|FormSelectionMark|FormPage|FormLine).java"/>
+
+  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Text Analytics -->
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.textanalytics.(models|util).*\.java"/>
 
   <!-- Suppress checks on AutoRest generated Video Analyzer code -->
   <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.CertificateSource"/>
@@ -599,4 +616,14 @@ the main ServiceBusClientBuilder. -->
   <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
   <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
+
+  <!-- Third party source code files, retained as is. -->
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.Aes"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.HashedBlockInputStream"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.LittleEndianDataInputStream"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.Salsa20"/>
+
+  <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 </suppressions>

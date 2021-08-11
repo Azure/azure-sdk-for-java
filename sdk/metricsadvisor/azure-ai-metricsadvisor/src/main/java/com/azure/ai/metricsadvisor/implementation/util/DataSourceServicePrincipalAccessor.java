@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipal;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipal;
 
 public final class DataSourceServicePrincipalAccessor {
     private static Accessor accessor;
@@ -13,15 +13,15 @@ public final class DataSourceServicePrincipalAccessor {
 
     /**
      * Type defining the methods to set the non-public properties of
-     * an {@link DatasourceServicePrincipal} instance.
+     * an {@link DataSourceServicePrincipal} instance.
      */
     public interface Accessor {
-        void setId(DatasourceServicePrincipal entity, String id);
-        String getClientSecret(DatasourceServicePrincipal entity);
+        void setId(DataSourceServicePrincipal entity, String id);
+        String getClientSecret(DataSourceServicePrincipal entity);
     }
 
     /**
-     * The method called from {@link DatasourceServicePrincipal} to set it's accessor.
+     * The method called from {@link DataSourceServicePrincipal} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -29,11 +29,11 @@ public final class DataSourceServicePrincipalAccessor {
         DataSourceServicePrincipalAccessor.accessor = accessor;
     }
 
-    public static void setId(DatasourceServicePrincipal entity, String id) {
+    public static void setId(DataSourceServicePrincipal entity, String id) {
         accessor.setId(entity, id);
     }
 
-    public static String getClientSecret(DatasourceServicePrincipal entity) {
+    public static String getClientSecret(DataSourceServicePrincipal entity) {
         return accessor.getClientSecret(entity);
     }
 }

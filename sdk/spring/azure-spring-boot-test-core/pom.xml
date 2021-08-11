@@ -8,7 +8,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.5.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.7</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter</artifactId>
-      <version>3.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter;current} -->
     </dependency>
 
     <!-- test dependencies. -->

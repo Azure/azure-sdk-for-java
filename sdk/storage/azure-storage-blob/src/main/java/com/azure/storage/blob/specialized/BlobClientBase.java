@@ -20,6 +20,8 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobLegalHoldResult;
 import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
@@ -121,7 +123,7 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} with the specified {@code encryptionScope}.
      */
     public BlobClientBase getEncryptionScopeClient(String encryptionScope) {
-        return new BlobClientBase(client.getEncryptionScopeClient(encryptionScope));
+        return new BlobClientBase(client.getEncryptionScopeAsyncClient(encryptionScope));
     }
 
     /**
@@ -132,7 +134,7 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} with the specified {@code customerProvidedKey}.
      */
     public BlobClientBase getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new BlobClientBase(client.getCustomerProvidedKeyClient(customerProvidedKey));
+        return new BlobClientBase(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**
@@ -1548,5 +1550,119 @@ public class BlobClientBase {
             }).thenReturn(new BlobQueryResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
+    }
+
+    /**
+     * Sets the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy}
+     *
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy The immutability policy}.
+     * @return The immutability policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobImmutabilityPolicy setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        return setImmutabilityPolicyWithResponse(immutabilityPolicy, null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Sets the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions-Duration-Context}
+     *
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy The immutability policy}.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the immutability policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BlobImmutabilityPolicy> setImmutabilityPolicyWithResponse(BlobImmutabilityPolicy immutabilityPolicy,
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        Mono<Response<BlobImmutabilityPolicy>> response = client.setImmutabilityPolicyWithResponse(immutabilityPolicy,
+            requestConditions, context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Delete the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicy}
+     *
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteImmutabilityPolicy() {
+        deleteImmutabilityPolicyWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicyWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the immutability policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteImmutabilityPolicyWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteImmutabilityPolicyWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Sets a legal hold on the blob.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setLegalHold#boolean}
+     *
+     * @param legalHold Whether or not you want a legal hold on the blob.
+     * @return The legal hold result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobLegalHoldResult setLegalHold(boolean legalHold) {
+        return setLegalHoldWithResponse(legalHold, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Sets a legal hold on the blob.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context}
+     *
+     * @param legalHold Whether or not you want a legal hold on the blob.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the legal hold result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BlobLegalHoldResult> setLegalHoldWithResponse(boolean legalHold, Duration timeout, Context context) {
+        Mono<Response<BlobLegalHoldResult>> response = client.setLegalHoldWithResponse(legalHold, context);
+
+        return blockWithOptionalTimeout(response, timeout);
     }
 }

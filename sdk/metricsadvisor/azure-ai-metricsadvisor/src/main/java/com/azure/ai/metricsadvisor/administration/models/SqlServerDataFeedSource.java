@@ -29,7 +29,7 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
     /*
      * The authentication type to access the data source.
      */
-    private final DatasourceAuthenticationType authType;
+    private final DataSourceAuthenticationType authType;
 
     static {
         SqlServerDataFeedSourceAccessor.setAccessor(
@@ -44,7 +44,7 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
     private SqlServerDataFeedSource(final String connectionString,
                                     final String query,
                                     final String credentialId,
-                                    final DatasourceAuthenticationType authType) {
+                                    final DataSourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.query = query;
         this.credentialId = credentialId;
@@ -61,7 +61,7 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      */
     public static SqlServerDataFeedSource fromBasicCredential(final String connectionString,
                                                               final String query) {
-        return new SqlServerDataFeedSource(connectionString, query, null, DatasourceAuthenticationType.BASIC);
+        return new SqlServerDataFeedSource(connectionString, query, null, DataSourceAuthenticationType.BASIC);
     }
 
     /**
@@ -77,17 +77,17 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
         return new SqlServerDataFeedSource(connectionString,
             query,
             null,
-            DatasourceAuthenticationType.MANAGED_IDENTITY);
+            DataSourceAuthenticationType.MANAGED_IDENTITY);
     }
 
     /**
      * Create a SQLServerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link DatasourceSqlServerConnectionString} that contains the SQL
+     * entity of type {@link DataSourceSqlServerConnectionString} that contains the SQL
      * connection string.
      *
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DatasourceSqlServerConnectionString}.
+     * {@link DataSourceSqlServerConnectionString}.
      * @return The SQLServerDataFeedSource.
      */
     public static SqlServerDataFeedSource fromConnectionStringCredential(final String query,
@@ -95,18 +95,18 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
         return new SqlServerDataFeedSource(null,
             query,
             credentialId,
-            DatasourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
+            DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
     }
 
     /**
      * Create a SQLServerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link DatasourceServicePrincipal}, the entity contains
+     * entity of type {@link DataSourceServicePrincipal}, the entity contains
      * Service Principal to access the SQL Server.
      *
      * @param connectionString The SQL server connection string.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DatasourceServicePrincipal}.
+     * {@link DataSourceServicePrincipal}.
      *
      * @return The SQLServerDataFeedSource.
      */
@@ -116,18 +116,18 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
         return new SqlServerDataFeedSource(connectionString,
             query,
             credentialId,
-            DatasourceAuthenticationType.SERVICE_PRINCIPAL);
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL);
     }
 
     /**
      * Create a SQLServerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link DatasourceServicePrincipalInKeyVault}, the entity contains
+     * entity of type {@link DataSourceServicePrincipalInKeyVault}, the entity contains
      * details of the KeyVault holding the Service Principal to access the SQL Server.
      *
      * @param connectionString The SQL server connection string.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DatasourceServicePrincipalInKeyVault}.
+     * {@link DataSourceServicePrincipalInKeyVault}.
      *
      * @return The SQLServerDataFeedSource.
      */
@@ -137,7 +137,7 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
         return new SqlServerDataFeedSource(connectionString,
             query,
             credentialId,
-            DatasourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
     }
 
     /**
@@ -150,7 +150,7 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
     }
 
     /**
-     * Gets the id of the {@link DatasourceCredentialEntity credential resource} to authenticate the data source.
+     * Gets the id of the {@link DataSourceCredentialEntity credential resource} to authenticate the data source.
      *
      * @return The credential resource id.
      */
@@ -163,7 +163,7 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      *
      * @return The authentication type.
      */
-    public DatasourceAuthenticationType getAuthenticationType() {
+    public DataSourceAuthenticationType getAuthenticationType() {
         return this.authType;
     }
 

@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-eventgrid</artifactId>
-    <version>1.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventgrid;current} -->
+    <version>1.5.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventgrid;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for eventgrid</name>
     <description>This package contains Microsoft Azure EventGrid SDK.${line.separator}
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-runtime</artifactId>
-            <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
+            <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-authentication</artifactId>
-            <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
+            <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>

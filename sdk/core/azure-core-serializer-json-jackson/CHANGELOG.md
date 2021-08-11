@@ -3,6 +3,19 @@
 ## 1.3.0-beta.1 (Unreleased)
 
 
+## 1.2.6 (2021-08-06)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated Jackson from `2.12.3` to `2.12.4`.
+
+## 1.2.5 (2021-07-01)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
 ## 1.2.4 (2021-06-07)
 
 ### Dependency Updates

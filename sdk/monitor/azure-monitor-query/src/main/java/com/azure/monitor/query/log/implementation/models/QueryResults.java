@@ -15,7 +15,7 @@ public final class QueryResults {
     /*
      * The list of tables, columns and rows.
      */
-    @JsonProperty(value = "tables")
+    @JsonProperty(value = "tables", required = true)
     private List<Table> tables;
 
     /*
@@ -23,6 +23,12 @@ public final class QueryResults {
      */
     @JsonProperty(value = "statistics")
     private Object statistics;
+
+    /*
+     * Visualization data in JSON format.
+     */
+    @JsonProperty(value = "render")
+    private Object render;
 
     /*
      * The code and message for an error.
@@ -36,7 +42,7 @@ public final class QueryResults {
      * @param tables the tables value to set.
      */
     @JsonCreator
-    public QueryResults(@JsonProperty(value = "tables") List<Table> tables) {
+    public QueryResults(@JsonProperty(value = "tables", required = true) List<Table> tables) {
         this.tables = tables;
     }
 
@@ -66,6 +72,26 @@ public final class QueryResults {
      */
     public QueryResults setStatistics(Object statistics) {
         this.statistics = statistics;
+        return this;
+    }
+
+    /**
+     * Get the render property: Visualization data in JSON format.
+     *
+     * @return the render value.
+     */
+    public Object getRender() {
+        return this.render;
+    }
+
+    /**
+     * Set the render property: Visualization data in JSON format.
+     *
+     * @param render the render value to set.
+     * @return the QueryResults object itself.
+     */
+    public QueryResults setRender(Object render) {
+        this.render = render;
         return this;
     }
 

@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.5//sentiment?showStats=false&loggingOptOut=false&opinionMining=true&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/sentiment?showStats=false&loggingOptOut=false&opinionMining=true&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fe70a245-36ba-452f-9812-129a4028f3a0",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1580a039-5a5f-46a0-99dc-911369c0d9e9",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,11 +13,11 @@
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "ae016aac-bfa2-445a-97b5-3024b0952167",
+      "apim-request-id" : "2d1c241d-b282-4db4-8eef-a1c0ed771dec",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":42,\"text\":\"👩🏻‍👩🏽‍👧🏾‍👦🏿 The hotel was unclean.\",\"targets\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":24,\"length\":5,\"text\":\"hotel\",\"relations\":[{\"relationType\":\"assessment\",\"ref\":\"#/documents/0/sentences/0/assessments/0\"}]}],\"assessments\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":34,\"length\":7,\"text\":\"unclean\",\"isNegated\":false}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}",
-      "Date" : "Mon, 10 May 2021 15:44:08 GMT",
+      "Date" : "Fri, 30 Jul 2021 18:01:14 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

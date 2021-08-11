@@ -76,5 +76,4 @@ public class AzureServiceBusAutoConfiguration {
 
         return null;
     }
-
 }

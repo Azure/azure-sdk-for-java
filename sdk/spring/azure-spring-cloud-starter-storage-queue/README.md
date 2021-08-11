@@ -1,4 +1,4 @@
-# Azure Spring cloud Starter Storage Queue client library for Java
+# Spring Cloud for Azure Starter Storage Queue client library for Java
 
 The Spring Cloud Storage Queue starter helps developers to finish the auto-configuration of Storage Queue and provides Spring Integration with Storage Queue.
 
@@ -11,16 +11,14 @@ The Spring Cloud Storage Queue starter helps developers to finish the auto-confi
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-storage-queue;current})
+1. [Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
-    <version>2.5.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
-
 
 ## Key concepts
 
@@ -58,11 +56,12 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-starter-azure-storage-queue
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-starter-storage-queue
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/storage/azure-spring-integration-sample-storage-queue
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
 

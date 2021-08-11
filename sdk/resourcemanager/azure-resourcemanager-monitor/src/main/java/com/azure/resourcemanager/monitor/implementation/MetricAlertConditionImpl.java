@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.models.AggregationType;
+import com.azure.resourcemanager.monitor.models.AggregationTypeEnum;
 import com.azure.resourcemanager.monitor.models.MetricAlert;
 import com.azure.resourcemanager.monitor.models.MetricAlertCondition;
 import com.azure.resourcemanager.monitor.models.MetricAlertRuleCondition;
@@ -33,7 +33,7 @@ class MetricAlertConditionImpl extends MetricAlertConditionBaseImpl<MetricCriter
     public MetricAlertConditionImpl withCondition(
         MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold) {
         this.innerModel().withOperator(Operator.fromString(condition.toString()));
-        this.innerModel().withTimeAggregation(AggregationType.fromString(timeAggregation.toString()));
+        this.innerModel().withTimeAggregation(AggregationTypeEnum.fromString(timeAggregation.toString()));
         this.innerModel().withThreshold(threshold);
         return this;
     }

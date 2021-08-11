@@ -37,7 +37,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpHeaders.ACCEPT;
@@ -131,7 +130,7 @@ public class UserPrincipalMicrosoftGraphTest {
             final UserPrincipal serializedPrincipal = (UserPrincipal) objectInputStream.readObject();
 
             assertNotNull(serializedPrincipal, "Serialized UserPrincipal not null");
-            assertFalse(StringUtils.isEmpty(serializedPrincipal.getKid()), "Serialized UserPrincipal kid not empty");
+            assertTrue(StringUtils.hasText(serializedPrincipal.getKid()), "Serialized UserPrincipal kid not empty");
             assertNotNull(serializedPrincipal.getClaims(), "Serialized UserPrincipal claims not null.");
             assertTrue(serializedPrincipal.getClaims().size() > 0, "Serialized UserPrincipal claims not empty.");
         } finally {

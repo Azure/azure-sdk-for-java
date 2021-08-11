@@ -3,7 +3,7 @@ trigger: none
 pr:
   branches:
     include:
-      - master
+      - main
   paths:
     include:
       - eng/pipelines/aggregate-reports.yml
@@ -15,7 +15,7 @@ jobs:
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
     pool:
-      vmImage: 'ubuntu-18.04'
+      vmImage: 'ubuntu-20.04'
     steps:
     - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
       parameters:
@@ -52,6 +52,18 @@ jobs:
         publishJUnitResults: false
         goals: 'verify site:site site:stage'
 
+    - task: Maven@3
+      displayName: 'Generate BOM Reports'
+      inputs:
+        mavenPomFile: eng/bomgenerator/pom.xml
+        options: '$(DefaultOptions)'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'clean package'
+
     - task: PublishTestResults@2
       condition: succeededOrFailed()
       inputs:
@@ -86,6 +98,7 @@ jobs:
 
         Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item eng/bomgenerator/target/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
 
     - publish: $(Build.ArtifactStagingDirectory)
@@ -142,7 +155,7 @@ jobs:
             message = $_.message
             properties = $_.properties
             rank = $_.rank
-            fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/master/`$1"
+            fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/main/`$1"
             startLine = $_.locations.physicalLocation.region.startLine
             startColumn = $_.locations.physicalLocation.region.startColumn
             endLine = $_.locations.physicalLocation.region.endLine
