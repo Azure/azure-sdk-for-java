@@ -62,10 +62,8 @@ public class MappingCosmosConverter
 
     @Override
     public <R> R read(Class<R> type, JsonNode jsonNode) {
-
         final CosmosPersistentEntity<?> entity = mappingContext.getPersistentEntity(type);
-
-        maybeEmitEvent(new AfterLoadEvent<>(jsonNode, type, entity.getContainer()));
+        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
         return readInternal(entity, type, jsonNode);
     }
 
@@ -235,13 +233,4 @@ public class MappingCosmosConverter
         return fromPropertyValue;
     }
 
-    private void maybeEmitEvent(CosmosMappingEvent<?> event) {
-        if (canPublishEvent()) {
-            this.applicationContext.publishEvent(event);
-        }
-    }
-
-    private boolean canPublishEvent() {
-        return this.applicationContext != null;
-    }
 }

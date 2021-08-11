@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.mapping.EnableCosmosAuditing;
+import com.azure.spring.data.cosmos.core.mapping.event.SimpleMappingEventListener;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,5 +81,10 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
         final Package mappingBasePackage = getClass().getPackage();
         final String entityPackage = "com.azure.spring.data.cosmos.domain";
         return Arrays.asList(mappingBasePackage.getName(), entityPackage);
+    }
+
+    @Bean
+    SimpleMappingEventListener simpleMappingEventListener() {
+        return new SimpleMappingEventListener();
     }
 }
