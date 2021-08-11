@@ -108,16 +108,11 @@ public class FormTrainingClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void trainingClientBuilderInvalidEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            Exception exception =  assertThrows(RuntimeException.class, () ->
-                clientBuilder.endpoint(INVALID_ENDPOINT)
-                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                    .buildClient()
-                    .getFormRecognizerClient()
-                    .beginRecognizeContentFromUrl(input).getFinalResult());
-            // RECORD mode has "Max retries 3 times exceeded. Error Details: Connection refused: no further information:
-            // notreal.azure.com/23.217.138.110:443"
-            // PLAYBACK mode has Error Details: null
-            assertTrue(exception.getMessage().contains("Max retries 3 times exceeded. Error Details:"));
+            assertThrows(RuntimeException.class, () -> clientBuilder.endpoint(INVALID_ENDPOINT)
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                .buildClient()
+                .getFormRecognizerClient()
+                .beginRecognizeContentFromUrl(input).getFinalResult());
         });
     }
 
@@ -165,7 +160,7 @@ public class FormTrainingClientBuilderTest extends TestBase {
                 .endpoint(getEndpoint())
                 .credential(new AzureKeyCredential(getApiKey()))
                 .clientOptions(new ClientOptions()
-                                   .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+                    .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
                 .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
                 .httpClient(httpRequest -> {
                     assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
@@ -234,7 +229,6 @@ public class FormTrainingClientBuilderTest extends TestBase {
      *
      * @param endpoint the given endpoint
      * @param credential the given {@link AzureKeyCredential} credential
-     *
      * @return {@link FormTrainingClientBuilder}
      */
     FormTrainingClientBuilder createClientBuilder(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
