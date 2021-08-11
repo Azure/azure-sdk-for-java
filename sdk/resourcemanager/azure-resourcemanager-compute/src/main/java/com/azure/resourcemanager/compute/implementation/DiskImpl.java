@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AccessLevel;
@@ -392,7 +393,8 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
                         taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
                     dependencyTasksAsync.blockLast();
                 },
-                this::setInner);
+                this::setInner,
+                Context.NONE);
     }
 
     private DiskSkuTypes fromSnapshotSkuType(SnapshotSkuType skuType) {

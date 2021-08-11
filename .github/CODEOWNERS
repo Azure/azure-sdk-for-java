@@ -143,6 +143,7 @@
 /eng/mgmt/                                          @benbp @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @yungezz
 /eng/versioning/                                    @benbp @danieljurek @alzimmermsft @samvaity @g2vinay
 /eng/versioning/external_dependencies.txt           @benbp @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
+/eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar
 /parent/                                            @alzimmermsft
 
 /**/tests.yml                                       @benbp
