@@ -58,7 +58,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>../core/azure-core-experimental</module>
         <module>azure-monitor-opentelemetry-exporter</module>
         <module>azure-monitor-query</module>
         <module>azure-monitor-query-perf</module>
