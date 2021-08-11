@@ -7,34 +7,41 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ManagedClusterPodIdentityException model. */
+/**
+ * A pod identity exception, which allows pods with certain labels to access the Azure Instance Metadata Service (IMDS)
+ * endpoint without being intercepted by the node-managed identity (NMI) server. See [disable AAD Pod Identity for a
+ * specific Pod/Application](https://azure.github.io/aad-pod-identity/docs/configure/application_exception/) for more
+ * details.
+ */
 @Fluent
 public final class ManagedClusterPodIdentityException {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityException.class);
 
     /*
-     * Name of the pod identity exception.
+     * The name of the pod identity exception.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * Namespace of the pod identity exception.
+     * The namespace of the pod identity exception.
      */
     @JsonProperty(value = "namespace", required = true)
     private String namespace;
 
     /*
-     * Pod labels to match.
+     * The pod labels to match.
      */
     @JsonProperty(value = "podLabels", required = true)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> podLabels;
 
     /**
-     * Get the name property: Name of the pod identity exception.
+     * Get the name property: The name of the pod identity exception.
      *
      * @return the name value.
      */
@@ -43,7 +50,7 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Set the name property: Name of the pod identity exception.
+     * Set the name property: The name of the pod identity exception.
      *
      * @param name the name value to set.
      * @return the ManagedClusterPodIdentityException object itself.
@@ -54,7 +61,7 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Get the namespace property: Namespace of the pod identity exception.
+     * Get the namespace property: The namespace of the pod identity exception.
      *
      * @return the namespace value.
      */
@@ -63,7 +70,7 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Set the namespace property: Namespace of the pod identity exception.
+     * Set the namespace property: The namespace of the pod identity exception.
      *
      * @param namespace the namespace value to set.
      * @return the ManagedClusterPodIdentityException object itself.
@@ -74,7 +81,7 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Get the podLabels property: Pod labels to match.
+     * Get the podLabels property: The pod labels to match.
      *
      * @return the podLabels value.
      */
@@ -83,7 +90,7 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Set the podLabels property: Pod labels to match.
+     * Set the podLabels property: The pod labels to match.
      *
      * @param podLabels the podLabels value to set.
      * @return the ManagedClusterPodIdentityException object itself.

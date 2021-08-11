@@ -6,6 +6,7 @@
 
 - Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering
   threads when a send link was remotely closed.
+- Fixed a bug where ReactorConnection waited indefinitely for CBS node to complete closing. The underlying problem is that the RequestResponseChannel's sender and receiver links were not active, so they would wait forever for a remote close signal.
 
 ## 2.3.0 (2021-07-01)
 

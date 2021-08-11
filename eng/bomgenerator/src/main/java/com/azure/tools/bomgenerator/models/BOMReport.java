@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,14 +69,16 @@ public class BOMReport {
         out("Reasons");
         out("</th>");
         out("</tr>");
-        dependencyConflicts.keySet().stream().forEach(dependency -> {
+        dependencyConflicts.keySet().stream().sorted(Comparator.comparing(BomDependency::toString)).forEach(dependency -> {
                 out("<tr>");
                 out("<td>");
                 out(dependency.toString());
                 out("</td>");
                 out("<td>");
                 dependencyConflicts.get(dependency).forEach(conflict -> {
-                    out(String.format("Includes dependency %s, Expected dependency %s", conflict.getActualDependency(), conflict.getExpectedDependency()));
+                    out(String.format("Dependency %s. Expected version %s",
+                        conflict.getActualDependency().toString(),
+                        conflict.getExpectedDependency().getVersion()));
                     out("<br/>");
                 });
                 out("</td>");

@@ -94,5 +94,4 @@ public class AzureServiceBusTopicAutoConfiguration {
                                                    ServiceBusMessageConverter messageConverter) {
         return new ServiceBusTopicTemplate(factory, messageConverter);
     }
-
 }

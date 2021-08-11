@@ -2404,6 +2404,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    @Disabled("Service returned response has unstable value. https://github.com/Azure/azure-sdk-for-java/issues/23428")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,

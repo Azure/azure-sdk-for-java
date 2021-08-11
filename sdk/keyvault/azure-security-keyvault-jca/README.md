@@ -38,18 +38,12 @@ az keyvault create --resource-group <your-resource-group-name> --name <your-key-
 ### Server side SSL
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L36 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L30 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-    System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.tenant-id"),
-    System.getProperty("azure.keyvault.client-id"),
-    System.getProperty("azure.keyvault.client-secret"));
-keyStore.load(parameter);
+KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
 KeyManagerFactory managerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 managerFactory.init(keyStore, "".toCharArray());
@@ -66,18 +60,12 @@ Note if you want to use Azure Managed Identity, you should set the value of `azu
 ### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L67 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L61 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-    System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.tenant-id"),
-    System.getProperty("azure.keyvault.client-id"),
-    System.getProperty("azure.keyvault.client-secret"));
-keyStore.load(parameter);
+KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
 SSLContext sslContext = SSLContexts
     .custom()

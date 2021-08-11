@@ -22,7 +22,6 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
  * A pipeline policy that retries when a recoverable HTTP error occurs.
  */
 public class RetryPolicy implements HttpPipelinePolicy {
-
     private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
 
     private final RetryStrategy retryStrategy;

@@ -16,16 +16,16 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfileManagedOutboundIPs.class);
 
     /*
-     * Desired number of outbound IP created/managed by Azure for the cluster
-     * load balancer. Allowed values must be in the range of 1 to 100
+     * The desired number of outbound IPs created/managed by Azure for the
+     * cluster load balancer. Allowed values must be in the range of 1 to 100
      * (inclusive). The default value is 1.
      */
     @JsonProperty(value = "count")
     private Integer count;
 
     /**
-     * Get the count property: Desired number of outbound IP created/managed by Azure for the cluster load balancer.
-     * Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+     * Get the count property: The desired number of outbound IPs created/managed by Azure for the cluster load
+     * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
      *
      * @return the count value.
      */
@@ -34,8 +34,8 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     }
 
     /**
-     * Set the count property: Desired number of outbound IP created/managed by Azure for the cluster load balancer.
-     * Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+     * Set the count property: The desired number of outbound IPs created/managed by Azure for the cluster load
+     * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
      *
      * @param count the count value to set.
      * @return the ManagedClusterLoadBalancerProfileManagedOutboundIPs object itself.
