@@ -162,7 +162,7 @@ public final class AttestationClientBuilder {
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the AttestationClientBuilder.
+     * @return this {@link AttestationClientBuilder}.
      */
     public AttestationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         clientImplBuilder.addPolicy(customPolicy);
@@ -172,20 +172,26 @@ public final class AttestationClientBuilder {
     /**
      * Builds an instance of AttestationClient sync client.
      *
-     * @return an instance of AttestationClient.
+     * Instantiating a synchronous Attestation client:
+     * <p/>
+     * {@codesnippet com.azure.security.attestation.AttestationClientBuilder.buildClient}
+     * @return an instance of {@link AttestationClient}.
      */
-    public AttestationClient buildAttestationClient() {
+    public AttestationClient buildClient() {
         AttestationServiceVersion version = serviceVersion != null ? serviceVersion : AttestationServiceVersion.getLatest();
         clientImplBuilder.apiVersion(version.getVersion());
-        return new AttestationClient(buildAttestationAsyncClient());
+        return new AttestationClient(buildAsyncClient());
     }
 
     /**
      * Builds an instance of AttestationAsyncClient async client.
      *
-     * @return an instance of AttestationAsyncClient.
+     * Instantiating a synchronous Attestation client:
+     * <p/>
+     * {@codesnippet com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient}
+     * @return an instance of {@link AttestationClient}.
      */
-    public AttestationAsyncClient buildAttestationAsyncClient() {
+    public AttestationAsyncClient buildAsyncClient() {
         AttestationServiceVersion version = serviceVersion != null ? serviceVersion : AttestationServiceVersion.getLatest();
         clientImplBuilder.apiVersion(version.getVersion());
         return new AttestationAsyncClient(buildInnerClient());

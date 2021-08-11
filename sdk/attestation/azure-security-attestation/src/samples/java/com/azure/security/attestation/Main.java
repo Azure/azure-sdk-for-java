@@ -13,6 +13,7 @@ public class Main {
 
         // Attestation samples.
         ReadmeSamples.signingCertificatesGet();
+        ReadmeSamples.testAttestSgxEnclave();
 
         Scanner userInput = new Scanner(System.in);
         System.out.println("Press any key to exit.");

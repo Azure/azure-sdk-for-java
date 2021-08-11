@@ -187,7 +187,7 @@ public class AttestationClientTestBase extends TestBase {
      */
     Mono<AttestationSigner> getSigningCertificateByKeyId(String keyId, HttpClient client, String clientUri) {
         AttestationClientBuilder builder = getBuilder(client, clientUri);
-        return builder.buildAttestationAsyncClient().getAttestationSigners()
+        return builder.buildAsyncClient().getAttestationSigners()
             .handle((signers, sink) -> {
                 boolean foundKey = false;
 

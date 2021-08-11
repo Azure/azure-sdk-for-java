@@ -143,7 +143,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
+        AttestationClient client = attestationBuilder.buildClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -163,7 +163,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
+        AttestationClient client = attestationBuilder.buildClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -179,7 +179,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
+        AttestationClient client = attestationBuilder.buildClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -200,7 +200,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
+        AttestationClient client = attestationBuilder.buildClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -228,7 +228,7 @@ public class AttestationTest extends AttestationClientTestBase {
     void testAttestSgxEnclaveAsync(HttpClient httpClient, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
-        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -253,7 +253,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -274,7 +274,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -297,7 +297,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -352,7 +352,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
+        AttestationClient client = attestationBuilder.buildClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -372,7 +372,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
+        AttestationClient client = attestationBuilder.buildClient();
 
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
 
@@ -389,7 +389,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
+        AttestationClient client = attestationBuilder.buildClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -409,7 +409,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
+        AttestationClient client = attestationBuilder.buildClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -436,7 +436,7 @@ public class AttestationTest extends AttestationClientTestBase {
     void testAttestOpenEnclaveAsync(HttpClient httpClient, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
-        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -458,7 +458,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
 
@@ -474,7 +474,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);
@@ -496,7 +496,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
         byte[] decodedOpenEnclaveReport = Base64.getUrlDecoder().decode(openEnclaveReport);

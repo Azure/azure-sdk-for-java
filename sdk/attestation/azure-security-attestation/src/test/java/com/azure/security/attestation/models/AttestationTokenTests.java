@@ -347,12 +347,25 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertEquals("https://jalarryoattestationaad.wus.attest.azure.net/certs", token.getJsonWebKeyUrl().toString());
         assertEquals("rPtBGRWTlPmzs5u35L0QRD9WdymeKPRxteTeTlwN0Ec=", token.getKeyId());
         assertEquals("JWT", token.getType());
+        String nbf = token.getNotBefore().toString();
+        String iat = token.getIssuedAt().toString();
+        String exp = token.getExpiresOn().toString();
+        // Because this is a pre-canned token, we know exactly when the token was issued and expires.
+        assertEquals("2021-07-21T21:08:16", token.getNotBefore().toString());
+        assertEquals("2021-07-21T21:08:16", token.getIssuedAt().toString());
+        assertEquals("2021-07-22T05:08:16", token.getExpiresOn().toString());
 
-        com.azure.security.attestation.implementation.models.AttestationResult attestResult;
+        com.azure.security.attestation.implementation.models.AttestationResult generatedAttestResult;
 
-        attestResult = token.getBody(AttestationResult.class);
-        assertEquals("1.0", attestResult.getVersion());
-        assertEquals("sgx", attestResult.getVerifierType());
+        generatedAttestResult = token.getBody(AttestationResult.class);
+        assertEquals("1.0", generatedAttestResult.getVersion());
+        assertEquals("sgx", generatedAttestResult.getVerifierType());
+
+        com.azure.security.attestation.models.AttestationResult result = com.azure.security.attestation.implementation.models.AttestationResultImpl.fromGeneratedAttestationResult(generatedAttestResult);
+
+        assertEquals("sgx", result.getVerifierType());
+        assertEquals("1.0", result.getVersion());
+        assertEquals("05487b3353172da9013314f1e9eb1cc7dc2b3bccc054291df4c344ef39f9bcd4", result.getUniqueIdentifier());
 
     }
 

@@ -27,7 +27,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        Object metadataConfig1 = attestationBuilder.buildAttestationClient().getOpenIdMetadata();
+        Object metadataConfig1 = attestationBuilder.buildClient().getOpenIdMetadata();
         verifyMetadataConfigurationResponse(clientUri, metadataConfig1);
 
     }
@@ -37,7 +37,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     void getOpenIdMetadataWithResponse(HttpClient client, String clientUri) {
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        Response<Object> metadataConfig = attestationBuilder.buildAttestationClient().getOpenIdMetadataWithResponse(Context.NONE);
+        Response<Object> metadataConfig = attestationBuilder.buildClient().getOpenIdMetadataWithResponse(Context.NONE);
         verifyMetadataConfigurationResponse(clientUri, metadataConfig.getValue());
     }
 
@@ -48,7 +48,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadata())
+        StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadata())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
             .expectComplete()
             .verify();
@@ -60,7 +60,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     void getOpenIdMetadataWithResponseAsync(HttpClient client, String clientUri) {
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadataWithResponse())
+        StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadataWithResponse())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse.getValue()))
             .expectComplete()
             .verify();

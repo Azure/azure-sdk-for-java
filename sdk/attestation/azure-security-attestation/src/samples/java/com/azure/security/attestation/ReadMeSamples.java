@@ -9,31 +9,36 @@ import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResponse;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ReadmeSamples {
 
-    static void testAttestSgxEnclave(HttpClient httpClient, String clientUri) {
+    static void testAttestSgxEnclave() {
 
-        AttestationClientBuilder attestationBuilder = new AttestationClientBuilder()
-            .httpClient(httpClient)
-            .endpoint(clientUri);
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
+        AttestationClient client = attestationBuilder
+            .endpoint(endpoint)
+            .buildClient();
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
-
-        byte[] decodedRuntimeData = new byte[1];
-        byte[] decodedSgxQuote = new byte[1];
+        byte[] decodedRuntimeData = SampleCollateral.getRunTimeData();
+        byte[] decodedOpenEnclaveReport = SampleCollateral.getOpenEnclaveReport();
 
         AttestationOptions options = AttestationOptions
-            .fromEvidence(decodedSgxQuote)
+            .fromEvidence(decodedOpenEnclaveReport)
             .setRunTimeData(decodedRuntimeData)
             .interpretRunTimeDataAsBinary();
-        AttestationResult result = client.attestSgxEnclave(options);
+        AttestationResult result = client.attestOpenEnclave(options);
 
         assertNotNull(result.getIssuer());
 
-        assertEquals(clientUri, result.getIssuer());
+        assertEquals(endpoint, result.getIssuer());
+        String issuer = result.getIssuer();
+
+        System.out.println("Attest OpenEnclave completed. Issuer: " + issuer);
     }
 
     static void attestationPolicyGet(HttpClient httpClient, String clientUri) {
@@ -52,9 +57,22 @@ class ReadmeSamples {
         AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
         AttestationClient client = attestationBuilder
             .endpoint(endpoint)
-            .buildAttestationClient();
+            .buildClient();
 
         AttestationSigner[] certs = client.getAttestationSigners();
+
+        Arrays.stream(certs).forEach(cert -> {
+            System.out.println("Found certificate.");
+            if (cert.getKeyId() != null) {
+                System.out.println("    Certificate Key ID: " + cert.getKeyId());
+            } else {
+                System.out.println("    Signer does not have a Key ID");
+            }
+            Arrays.stream(cert.getCertificates()).forEach(chainElement -> {
+                System.out.println("        Cert Subject: " + chainElement.getSubjectDN().getName());
+                System.out.println("        Cert Issuer: " + chainElement.getIssuerDN().getName());
+            });
+        });
     }
 
 }
