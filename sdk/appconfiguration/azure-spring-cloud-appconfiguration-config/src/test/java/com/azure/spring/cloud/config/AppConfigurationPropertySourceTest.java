@@ -59,7 +59,7 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -160,7 +160,7 @@ public class AppConfigurationPropertySourceTest {
         FEATURE_ITEMS.add(FEATURE_ITEM);
         FEATURE_ITEMS.add(FEATURE_ITEM_2);
         FEATURE_ITEMS.add(FEATURE_ITEM_3);
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
         FEATURE_ITEMS_TARGETING.add(FEATURE_ITEM_TARGETING);
     }

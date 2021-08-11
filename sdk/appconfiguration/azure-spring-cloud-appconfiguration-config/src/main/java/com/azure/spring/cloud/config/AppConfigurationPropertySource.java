@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config;
 
 import static com.azure.spring.cloud.config.Constants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.config.Constants.FEATURE_MANAGEMENT_KEY;
-import static com.azure.spring.cloud.config.Constants.KEY_VAULT_CONTENT_TYPE;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toMap;
 
@@ -31,6 +30,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.feature.management.entity.Feature;
@@ -41,10 +41,9 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 import com.azure.spring.cloud.config.stores.KeyVaultClient;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo. 
@@ -70,8 +69,6 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     private static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = new ObjectMapper()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
@@ -174,8 +171,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         }
         for (ConfigurationSetting setting : settings) {
             String key = setting.getKey().trim().substring(context.length()).replace('/', '.');
-            if (setting.getContentType() != null && setting.getContentType().equals(KEY_VAULT_CONTENT_TYPE)) {
-                String entry = getKeyVaultEntry(setting.getValue());
+            if (setting instanceof SecretReferenceConfigurationSetting) {
+                String entry = getKeyVaultEntry((SecretReferenceConfigurationSetting) setting);
 
                 // Null in the case of failFast is false, will just skip entry.
                 if (entry != null) {
@@ -202,15 +199,14 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      * @param value {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value
      */
-    private String getKeyVaultEntry(String value) {
+    private String getKeyVaultEntry(SecretReferenceConfigurationSetting secretReference) {
         String secretValue = null;
         try {
             URI uri = null;
 
             // Parsing Key Vault Reference for URI
             try {
-                JsonNode kvReference = MAPPER.readTree(value);
-                uri = new URI(kvReference.at("/uri").asText());
+                uri = new URI(secretReference.getSecretId());
             } catch (URISyntaxException e) {
                 LOGGER.error("Error Processing Key Vault Entry URI.");
                 ReflectionUtils.rethrowRuntimeException(e);
@@ -243,7 +239,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      */
     void initFeatures(FeatureSet featureSet) {
         ObjectMapper featureMapper = new ObjectMapper();
-        featureMapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
+        featureMapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
         properties.put(FEATURE_MANAGEMENT_KEY,
             featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }

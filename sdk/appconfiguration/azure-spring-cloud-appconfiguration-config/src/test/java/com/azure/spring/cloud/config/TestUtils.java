@@ -10,6 +10,7 @@ import java.util.Set;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -74,6 +75,15 @@ public final class TestUtils {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        return item;
+    }
+    
+    static SecretReferenceConfigurationSetting createSecretReference(String context, String key, String value, String label, String contentType) {
+        SecretReferenceConfigurationSetting item = new SecretReferenceConfigurationSetting(key, value);
+        item.setKey(context + key);
+        item.setLabel(label);
+        item.setContentType(contentType);
+
         return item;
     }
 
