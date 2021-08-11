@@ -1,5 +1,8 @@
 ## Release History
 
+## 4.4.0-beta.1 (Unreleased)
+
+
 ### 4.3.0 (2021-08-11)
 #### Configuration Changes
 * Introduced a new config option `spark.cosmos.read.maxItemCount` to allow modifying the page size for query and change feed requests against the Cosmos DB backend. The previous default was 100 items per request - the new default is 1000 and can be modified via the new config option if necessary, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/23466).
