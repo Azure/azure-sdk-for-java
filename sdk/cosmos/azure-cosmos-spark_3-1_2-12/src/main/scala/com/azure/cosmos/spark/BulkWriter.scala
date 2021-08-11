@@ -496,7 +496,11 @@ private object BulkWriter {
   // UPDATE - reverting back to 15 minutes - causing an unreasonably large delay/hang
   // due to a backend issue doesn't sound right for most customers (helpful during my own
   // long stress runs - but for customers 15 minutes is more reasonable)
-  val maxAllowedMinutesWithoutAnyProgress = 15
+  // UPDATE - TODO @fabianm - with 15 minutes the end-to-end sample fails too often - because the extensive 429/3088
+  // intervals are around 2 hours. So I need to increase this threshold for now again - will move it
+  // to 45 minutes - and when I am back from vacation will drive an investigation to improve the
+  // end-to-end behavior on 429/3088 with the backend and monitoring teams.
+  val maxAllowedMinutesWithoutAnyProgress = 45
   //scalastyle:on magic.number
 
   // let's say the spark executor VM has 16 CPU cores.
