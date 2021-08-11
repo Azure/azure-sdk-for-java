@@ -1252,9 +1252,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 // Only return channels as serviceable here if less than maxPendingRequests
                 // are queued on them
                 RntbdChannelState state = this.getChannelState(next);
-                RntbdChannelAcquisitionEvent.addDetail(event, channelState);
+                RntbdChannelAcquisitionEvent.addDetail(event, state);
 
-                if (channelState.isOk()) {
+                if (state.isOk()) {
                     return next;
                 }
                 this.availableChannels.offer(next);

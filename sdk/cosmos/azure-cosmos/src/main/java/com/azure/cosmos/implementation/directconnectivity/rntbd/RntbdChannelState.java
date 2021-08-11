@@ -11,8 +11,8 @@ import java.io.IOException;
 
 @JsonSerialize(using = RntbdChannelState.RntbdChannelStateJsonSerializer.class)
 public class RntbdChannelState {
-    public static RntbdChannelState NULL_REQUEST_MANAGER = new RntbdChannelState(State.NULL_REQUEST_MANAGER, 0);
-    public static RntbdChannelState CLOSED = new RntbdChannelState(State.CLOSED, 0);
+    public static final RntbdChannelState NULL_REQUEST_MANAGER = new RntbdChannelState(State.NULL_REQUEST_MANAGER, 0);
+    public static final RntbdChannelState CLOSED = new RntbdChannelState(State.CLOSED, 0);
 
     private final int pendingRequests;
     private final State state;
