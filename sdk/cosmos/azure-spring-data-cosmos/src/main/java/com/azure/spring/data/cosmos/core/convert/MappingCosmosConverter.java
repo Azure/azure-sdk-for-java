@@ -5,6 +5,8 @@ package com.azure.spring.data.cosmos.core.convert;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentEntity;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
+import com.azure.spring.data.cosmos.core.mapping.event.AfterLoadEvent;
+import com.azure.spring.data.cosmos.core.mapping.event.CosmosMappingEvent;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -63,6 +65,7 @@ public class MappingCosmosConverter
 
         final CosmosPersistentEntity<?> entity = mappingContext.getPersistentEntity(type);
 
+        maybeEmitEvent(new AfterLoadEvent<>(jsonNode, type, entity.getContainer()));
         return readInternal(entity, type, jsonNode);
     }
 
@@ -230,5 +233,15 @@ public class MappingCosmosConverter
         }
 
         return fromPropertyValue;
+    }
+
+    private void maybeEmitEvent(CosmosMappingEvent<?> event) {
+        if (canPublishEvent()) {
+            this.applicationContext.publishEvent(event);
+        }
+    }
+
+    private boolean canPublishEvent() {
+        return this.applicationContext != null;
     }
 }

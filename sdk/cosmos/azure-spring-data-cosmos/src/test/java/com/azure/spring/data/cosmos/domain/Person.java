@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Container()
 @CosmosIndexingPolicy()
-public class Person {
+public class Person implements Contact {
     private String id;
     private String firstName;
 
