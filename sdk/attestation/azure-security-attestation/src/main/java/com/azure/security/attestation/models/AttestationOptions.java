@@ -131,6 +131,7 @@ public interface AttestationOptions {
     AttestationOptions interpretRunTimeDataAsJson();
 
     /**
+     * <p>
      * Set the initTimeData property: The initTimeData is data presented at the time that the
      * execution environment was instantiated. The MAA will verify that the init data was
      * known to the execution environment. Note that InitTimeData is invalid for CoffeeLake processors.
