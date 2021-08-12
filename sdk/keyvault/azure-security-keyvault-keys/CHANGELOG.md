@@ -3,8 +3,11 @@
 ## 4.4.0-beta.2 (2021-08-10)
 
 ### Features Added
-- Added `Exportable` and `ReleasePolicy` to `CreateKeyOptions`, `ImportKeyOptions`, and `KeyProperties` to support Secure Key Release for Key Vault and Managed HSM.
-- Added a `release()` operation to `KeyClient` and `KeyAsyncClient` to release a key for Key Vault and Managed HSM.
+- To support Secure Key Release for Key Vault and Managed HSM, added `Exportable` and `ReleasePolicy` to the following classes:
+  - `CreateKeyOptions` and its children classes: `CreateEcKeyOptions`, `CreateOctKeyOptions` and `CreateRsaKeyOptions`.
+  - `ImportKeyOptions`
+  - `KeyProperties`
+- Added `releaseKey()` and `releaseKeyWithResponse()` operations to `KeyClient` and `KeyAsyncClient` to securely release a key for Key Vault and Managed HSM.
 
 ## 4.4.0-beta.1 (2021-07-09)
 
