@@ -67,7 +67,6 @@ steps:
     parameters:
       Artifacts: ${{ parameters.Artifacts }}
       AdditionalModules: ${{ parameters.AdditionalModules }}
-      JobType: 'test'
       SDKType: ${{ parameters.SDKType }}
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
