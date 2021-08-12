@@ -101,7 +101,7 @@ public class AADWebAppAndWebApiInOneAppIT {
     }
 
     @Test
-    public void testCallGraphApiOfResourceServerWithSession() {
+    public void testSelfDefinedAuthorizationGrantTypeCanBeSavedAndLoaded() {
         AADWebApiITHelper aadWebApiITHelper = new AADWebApiITHelper(
             DumbApp.class,
             properties,
@@ -109,7 +109,7 @@ public class AADWebAppAndWebApiInOneAppIT {
             AAD_MULTI_TENANT_CLIENT_SECRET,
             Collections.singletonList(MULTI_TENANT_SCOPE_GRAPH_READ));
         assertEquals("Graph response success.",
-            aadWebApiITHelper.httpGetCookieByVisitEndpointsByCookie("/api/call-graph", "/api/call-graph"));
+            aadWebApiITHelper.getCookieAndAccessByCookie("/api/call-graph", "/api/call-graph"));
     }
 
     @SpringBootApplication

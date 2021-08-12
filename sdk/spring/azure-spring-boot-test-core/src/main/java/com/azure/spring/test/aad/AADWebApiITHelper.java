@@ -48,9 +48,9 @@ public class AADWebApiITHelper {
             String.join(" ", accessTokenScopes));
     }
 
-    public String httpGetCookieByVisitEndpointsByCookie(String accessTokenEndpoint, String cookieEndpoint) {
+    public String getCookieAndAccessByCookie(String cookieEndpoint, String targetEndpoint) {
         ResponseEntity<String> responseEntity =
-            httpGetResponseByToken(accessTokenEndpoint, oAuth2ROPCResponse.getAccessToken());
+            httpGetResponseByToken(cookieEndpoint, oAuth2ROPCResponse.getAccessToken());
         String jSessionIdCookie = responseEntity
             .getHeaders()
             .getOrDefault(SET_COOKIE, new ArrayList<>())
@@ -62,7 +62,7 @@ public class AADWebApiITHelper {
         HttpHeaders headers = new HttpHeaders();
         headers.add(COOKIE, jSessionIdCookie);
         HttpEntity<Object> entity = new HttpEntity<>(headers);
-        return httpGetResponseByEntity(cookieEndpoint, entity).getBody();
+        return httpGetResponseByEntity(targetEndpoint, entity).getBody();
     }
 
     public String httpGetStringByAccessToken(String endpoint) {
