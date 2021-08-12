@@ -52,7 +52,7 @@ public final class LogsQueryResult {
      * @return A list of objects corresponding to the list of rows in the response table.
      * @throws IllegalStateException if the query response contains more than one table.
      */
-    public <T> List<T> getResultAsObject(Class<T> type) {
+    public <T> List<T> toObject(Class<T> type) {
         if (this.logsTables.size() != 1) {
             throw logger.logExceptionAsError(
                     new IllegalStateException("Cannot map result to object if the response contains multiple tables."));
@@ -61,7 +61,7 @@ public final class LogsQueryResult {
         return logsTables.get(0)
                 .getRows()
                 .stream()
-                .map(row -> row.getRowAsObject(type))
+                .map(row -> row.toObject(type))
                 .collect(Collectors.toList());
     }
 

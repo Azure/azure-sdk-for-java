@@ -3,6 +3,7 @@
 
 package com.azure.monitor.query;
 
+import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -18,7 +19,7 @@ import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.Metric;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
-import com.azure.monitor.query.models.QueryTimeSpan;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -67,11 +68,11 @@ public class ReadmeSamples {
             .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-            .addQuery("{workspace-id}", "{query-1}", new QueryTimeSpan(Duration.ofDays(2)))
-            .addQuery("{workspace-id}", "{query-2}", new QueryTimeSpan(Duration.ofDays(30)));
+            .addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)))
+            .addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
 
         LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
-            .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+            .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
@@ -103,8 +104,8 @@ public class ReadmeSamples {
             .setServerTimeout(Duration.ofMinutes(10));
 
         // make service call with these request options set as filter header
-        Response<LogsQueryResult> response = logsQueryClient.queryLogsWithResponse("{workspace-id}",
-                "{query}", new QueryTimeSpan(Duration.ofDays(2)), options, Context.NONE);
+        Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
+                "{query}", new TimeInterval(Duration.ofDays(2)), options, Context.NONE);
         LogsQueryResult logsQueryResult = response.getValue();
 
         // Sample to iterate by row
@@ -126,15 +127,15 @@ public class ReadmeSamples {
             .buildClient();
 
         Response<MetricsQueryResult> metricsResponse = metricsQueryClient
-            .queryMetricsWithResponse(
+            .queryWithResponse(
                 "{resource-id}",
                 Arrays.asList("SuccessfulCalls"),
                 new MetricsQueryOptions()
-                    .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
-                    .setTimeSpan(new QueryTimeSpan(Duration.ofDays(30)))
+                    .setMetricNamespace("Microsoft.CognitiveServices/accounts")
+                    .setTimeSpan(new TimeInterval(Duration.ofDays(30)))
                     .setInterval(Duration.ofHours(1))
                     .setTop(100)
-                    .setAggregation(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
+                    .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
                 Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
@@ -163,8 +164,8 @@ public class ReadmeSamples {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",
-            new QueryTimeSpan(Duration.ofDays(2)));
+        LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+            new TimeInterval(Duration.ofDays(2)));
         System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 
         // Sample to iterate over all cells in the table
@@ -204,13 +205,29 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",
-                new QueryTimeSpan(Duration.ofDays(2)));
+        LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+                new TimeInterval(Duration.ofDays(2)));
 
-        List<CustomModel> results = queryResults.getResultAsObject(CustomModel.class);
+        List<CustomModel> results = queryResults.toObject(CustomModel.class);
         results.forEach(model -> {
             System.out.println("Time generated " + model.getTimeGenerated() + "; success = " + model.getSuccess()
                     + "; operation name = " + model.getOperationName());
         });
+    }
+
+    /**
+     * Sample to demonstrate querying multiple workspaces.
+     */
+    public void getLogsQueryFromMultipleWorkspaces() {
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
+
+        Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
+                new TimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+                        .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
+                Context.NONE);
+        LogsQueryResult result = response.getValue();
+
     }
 }

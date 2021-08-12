@@ -179,13 +179,56 @@ class ReactorReceiverTest {
      */
     @Test
     void updateEndpointState() {
+        final Event closeEvent = mock(Event.class);
+        final Receiver closeReceiver = mock(Receiver.class);
+        when(closeEvent.getLink()).thenReturn(closeReceiver);
+        when(closeEvent.getReceiver()).thenReturn(closeReceiver);
+
+        when(closeReceiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+        when(closeReceiver.getRemoteCondition()).thenReturn(null);
+
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> receiverHandler.close())
             .expectNext(AmqpEndpointState.CLOSED)
+            .then(() -> receiverHandler.onLinkRemoteClose(closeEvent))
             .verifyComplete();
+    }
+
+
+    /**
+     * Verifies EndpointStates are propagated.
+     */
+    @Test
+    void updateEndpointStateWithError() {
+        final Event closeEvent = mock(Event.class);
+        final Receiver closeReceiver = mock(Receiver.class);
+        final AmqpErrorCondition condition = AmqpErrorCondition.CONNECTION_FORCED;
+        final ErrorCondition errorCondition = new ErrorCondition(
+            Symbol.valueOf(condition.getErrorCondition()), "Forced error condition");
+        when(closeEvent.getLink()).thenReturn(closeReceiver);
+        when(closeEvent.getReceiver()).thenReturn(closeReceiver);
+
+        when(closeReceiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+        when(closeReceiver.getRemoteCondition()).thenReturn(errorCondition);
+
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> receiverHandler.onLinkRemoteOpen(event))
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .then(() -> receiverHandler.close())
+            .expectNext(AmqpEndpointState.CLOSED)
+            .then(() -> receiverHandler.onLinkRemoteClose(closeEvent))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+                assertEquals(condition, ((AmqpException) error).getErrorCondition());
+            })
+            .verify();
+
+        verify(closeReceiver).close();
+        verify(closeReceiver).setCondition(errorCondition);
     }
 
     /**
@@ -423,20 +466,15 @@ class ReactorReceiverTest {
         final Link link = mock(Link.class);
 
         when(link.getLocalState()).thenReturn(EndpointState.ACTIVE);
-
         when(event.getLink()).thenReturn(link);
-
-        doAnswer(invocationOnMock -> {
-            receiverHandler.onLinkRemoteClose(event);
-            return null;
-        }).when(receiver).close();
 
         // Act and Assert
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkFinal(event))
             .expectNext(AmqpEndpointState.CLOSED)
-            .verifyComplete();
+            .expectComplete()
+            .verify();
 
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.CLOSED)

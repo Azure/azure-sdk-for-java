@@ -16,19 +16,23 @@ public final class TimeInWeek {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeInWeek.class);
 
     /*
-     * A day in a week.
+     * The day of the week.
      */
     @JsonProperty(value = "day")
     private WeekDay day;
 
     /*
-     * hour slots in a day.
+     * A list of hours in the day used to identify a time range. Each integer
+     * hour represents a time range beginning at 0m after the hour ending at
+     * the next hour (non-inclusive). 0 corresponds to 00:00 UTC, 23
+     * corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 - 02:00 UTC
+     * time range.
      */
     @JsonProperty(value = "hourSlots")
     private List<Integer> hourSlots;
 
     /**
-     * Get the day property: A day in a week.
+     * Get the day property: The day of the week.
      *
      * @return the day value.
      */
@@ -37,7 +41,7 @@ public final class TimeInWeek {
     }
 
     /**
-     * Set the day property: A day in a week.
+     * Set the day property: The day of the week.
      *
      * @param day the day value to set.
      * @return the TimeInWeek object itself.
@@ -48,7 +52,9 @@ public final class TimeInWeek {
     }
 
     /**
-     * Get the hourSlots property: hour slots in a day.
+     * Get the hourSlots property: A list of hours in the day used to identify a time range. Each integer hour
+     * represents a time range beginning at 0m after the hour ending at the next hour (non-inclusive). 0 corresponds to
+     * 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 - 02:00 UTC time range.
      *
      * @return the hourSlots value.
      */
@@ -57,7 +63,9 @@ public final class TimeInWeek {
     }
 
     /**
-     * Set the hourSlots property: hour slots in a day.
+     * Set the hourSlots property: A list of hours in the day used to identify a time range. Each integer hour
+     * represents a time range beginning at 0m after the hour ending at the next hour (non-inclusive). 0 corresponds to
+     * 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 - 02:00 UTC time range.
      *
      * @param hourSlots the hourSlots value to set.
      * @return the TimeInWeek object itself.

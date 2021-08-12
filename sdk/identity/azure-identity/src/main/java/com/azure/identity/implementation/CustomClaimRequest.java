@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class CustomClaimRequest extends ClaimsRequest {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     public CustomClaimRequest() {
         super();
@@ -38,9 +39,8 @@ public class CustomClaimRequest extends ClaimsRequest {
         try {
             CustomClaimRequest cr = new CustomClaimRequest();
 
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectReader reader = mapper.readerFor(new TypeReference<List<String>>() { });
-            JsonNode jsonClaims = mapper.readTree(claims);
+            ObjectReader reader = MAPPER.readerFor(new TypeReference<List<String>>() { });
+            JsonNode jsonClaims = MAPPER.readTree(claims);
             addClaimsFromJsonNode(jsonClaims.get("id_token"), "id_token", cr, reader);
             addClaimsFromJsonNode(jsonClaims.get("userinfo"), "userinfo", cr, reader);
             addClaimsFromJsonNode(jsonClaims.get("access_token"), "access_token", cr, reader);

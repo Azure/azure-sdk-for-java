@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of credential result response. */
+/** The list credential result response. */
 @Immutable
 public final class CredentialResultsInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialResultsInner.class);

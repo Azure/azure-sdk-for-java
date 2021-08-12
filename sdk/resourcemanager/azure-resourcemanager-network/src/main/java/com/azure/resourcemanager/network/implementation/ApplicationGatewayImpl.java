@@ -959,7 +959,7 @@ class ApplicationGatewayImpl
         if (child == null) {
             ChildInnerT inner;
             try {
-                inner = innerClass.newInstance();
+                inner = innerClass.getDeclaredConstructor().newInstance();
                 innerClass.getDeclaredMethod("withName", String.class).invoke(inner, name);
                 return implClass
                     .getDeclaredConstructor(innerClass, ApplicationGatewayImpl.class)

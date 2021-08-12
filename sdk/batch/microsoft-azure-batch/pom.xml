@@ -37,7 +37,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
+      <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -85,7 +85,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
 

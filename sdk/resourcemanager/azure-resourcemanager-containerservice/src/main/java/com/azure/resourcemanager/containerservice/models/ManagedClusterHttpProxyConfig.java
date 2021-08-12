@@ -10,25 +10,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Configurations for provisioning the cluster with HTTP proxy servers. */
+/** Cluster HTTP proxy configuration. */
 @Fluent
 public final class ManagedClusterHttpProxyConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterHttpProxyConfig.class);
 
     /*
-     * HTTP proxy server endpoint to use.
+     * The HTTP proxy server endpoint to use.
      */
     @JsonProperty(value = "httpProxy")
     private String httpProxy;
 
     /*
-     * HTTPS proxy server endpoint to use.
+     * The HTTPS proxy server endpoint to use.
      */
     @JsonProperty(value = "httpsProxy")
     private String httpsProxy;
 
     /*
-     * Endpoints that should not go through proxy.
+     * The endpoints that should not go through proxy.
      */
     @JsonProperty(value = "noProxy")
     private List<String> noProxy;
@@ -40,7 +40,7 @@ public final class ManagedClusterHttpProxyConfig {
     private String trustedCa;
 
     /**
-     * Get the httpProxy property: HTTP proxy server endpoint to use.
+     * Get the httpProxy property: The HTTP proxy server endpoint to use.
      *
      * @return the httpProxy value.
      */
@@ -49,7 +49,7 @@ public final class ManagedClusterHttpProxyConfig {
     }
 
     /**
-     * Set the httpProxy property: HTTP proxy server endpoint to use.
+     * Set the httpProxy property: The HTTP proxy server endpoint to use.
      *
      * @param httpProxy the httpProxy value to set.
      * @return the ManagedClusterHttpProxyConfig object itself.
@@ -60,7 +60,7 @@ public final class ManagedClusterHttpProxyConfig {
     }
 
     /**
-     * Get the httpsProxy property: HTTPS proxy server endpoint to use.
+     * Get the httpsProxy property: The HTTPS proxy server endpoint to use.
      *
      * @return the httpsProxy value.
      */
@@ -69,7 +69,7 @@ public final class ManagedClusterHttpProxyConfig {
     }
 
     /**
-     * Set the httpsProxy property: HTTPS proxy server endpoint to use.
+     * Set the httpsProxy property: The HTTPS proxy server endpoint to use.
      *
      * @param httpsProxy the httpsProxy value to set.
      * @return the ManagedClusterHttpProxyConfig object itself.
@@ -80,7 +80,7 @@ public final class ManagedClusterHttpProxyConfig {
     }
 
     /**
-     * Get the noProxy property: Endpoints that should not go through proxy.
+     * Get the noProxy property: The endpoints that should not go through proxy.
      *
      * @return the noProxy value.
      */
@@ -89,7 +89,7 @@ public final class ManagedClusterHttpProxyConfig {
     }
 
     /**
-     * Set the noProxy property: Endpoints that should not go through proxy.
+     * Set the noProxy property: The endpoints that should not go through proxy.
      *
      * @param noProxy the noProxy value to set.
      * @return the ManagedClusterHttpProxyConfig object itself.
