@@ -6,14 +6,7 @@ package com.azure.monitor.opentelemetry.exporter;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryEventData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanId;
@@ -195,49 +188,38 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
     private void exportRemoteDependency(SpanData span, boolean inProc,
                                         List<TelemetryItem> telemetryItems) {
-        TelemetryItem telemetryItem = new TelemetryItem();
-        RemoteDependencyData remoteDependencyData = new RemoteDependencyData();
-        MonitorBase monitorBase = new MonitorBase();
+        TelemetryItem telemetry = new TelemetryItem();
+        RemoteDependencyData data = new RemoteDependencyData();
+        initTelemetry(telemetry, data, "RemoteDependency", "RemoteDependencyData");
 
-        telemetryItem.setTags(new HashMap<>());
-        telemetryItem.setName("RemoteDependency");
-        telemetryItem.setVersion(1);
-        telemetryItem.setInstrumentationKey(instrumentationKey);
-        telemetryItem.setData(monitorBase);
-
-        remoteDependencyData.setProperties(new HashMap<>());
-        remoteDependencyData.setVersion(2);
-        monitorBase.setBaseType("RemoteDependencyData");
-        monitorBase.setBaseData(remoteDependencyData);
-
-        addLinks(remoteDependencyData.getProperties(), span.getLinks());
-        remoteDependencyData.setName(span.getName());
+        addLinks(data.getProperties(), span.getLinks());
+        data.setName(span.getName());
 
         if (inProc) {
-            remoteDependencyData.setType("InProc");
+            data.setType("InProc");
         } else {
-            applySemanticConventions(span, remoteDependencyData);
+            applySemanticConventions(span, data);
         }
 
-        remoteDependencyData.setId(span.getSpanId());
-        telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), span.getTraceId());
+        data.setId(span.getSpanId());
+        telemetry.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), span.getTraceId());
         String parentSpanId = span.getParentSpanId();
         if (SpanId.isValid(parentSpanId)) {
-            telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), parentSpanId);
+            telemetry.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), parentSpanId);
         }
 
-        telemetryItem.setTime(getFormattedTime(span.getStartEpochNanos()));
-        remoteDependencyData
+        telemetry.setTime(getFormattedTime(span.getStartEpochNanos()));
+        data
             .setDuration(getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - span.getStartEpochNanos())));
 
-        remoteDependencyData.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
+        data.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
 
-        setExtraAttributes(telemetryItem, remoteDependencyData.getProperties(), span.getAttributes());
+        setExtraAttributes(telemetry, data.getProperties(), span.getAttributes());
 
         // sampling will not be supported in this exporter
         Double samplingPercentage = 100.0;
-        telemetryItem.setSampleRate(samplingPercentage.floatValue());
-        telemetryItems.add(telemetryItem);
+        telemetry.setSampleRate(samplingPercentage.floatValue());
+        telemetryItems.add(telemetry);
         exportEvents(span, samplingPercentage, telemetryItems);
     }
 
@@ -433,24 +415,13 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     }
 
     private void exportRequest(SpanData span, List<TelemetryItem> telemetryItems) {
-        TelemetryItem telemetryItem = new TelemetryItem();
-        RequestData requestData = new RequestData();
-        MonitorBase monitorBase = new MonitorBase();
-
-        telemetryItem.setTags(new HashMap<>());
-        telemetryItem.setName("Request");
-        telemetryItem.setVersion(1);
-        telemetryItem.setInstrumentationKey(instrumentationKey);
-        telemetryItem.setData(monitorBase);
-
-        requestData.setProperties(new HashMap<>());
-        requestData.setVersion(2);
-        monitorBase.setBaseType("RequestData");
-        monitorBase.setBaseData(requestData);
+        TelemetryItem telemetry = new TelemetryItem();
+        RequestData data = new RequestData();
+        initTelemetry(telemetry, data, "Request", "RequestData");
 
         Attributes attributes = span.getAttributes();
 
-        requestData.setSource(getSource(attributes));
+        data.setSource(getSource(attributes));
 
         if (isAzureQueue(attributes)) {
             // TODO(trask): for batch consumer, enqueuedTime should be the average of this attribute
@@ -462,66 +433,66 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                 if (timeSinceEnqueued < 0) {
                     timeSinceEnqueued = 0;
                 }
-                if (requestData.getMeasurements() == null) {
-                    requestData.setMeasurements(new HashMap<>());
+                if (data.getMeasurements() == null) {
+                    data.setMeasurements(new HashMap<>());
                 }
-                requestData.getMeasurements().put("timeSinceEnqueued", (double) timeSinceEnqueued);
+                data.getMeasurements().put("timeSinceEnqueued", (double) timeSinceEnqueued);
             }
         }
 
-        addLinks(requestData.getProperties(), span.getLinks());
+        addLinks(data.getProperties(), span.getLinks());
         Long httpStatusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
 
-        requestData.setResponseCode("200");
+        data.setResponseCode("200");
         if (httpStatusCode != null) {
-            requestData.setResponseCode(Long.toString(httpStatusCode));
+            data.setResponseCode(Long.toString(httpStatusCode));
         }
 
         String httpUrl = attributes.get(SemanticAttributes.HTTP_URL);
         if (httpUrl != null) {
-            requestData.setUrl(httpUrl);
+            data.setUrl(httpUrl);
         }
 
         String name = span.getName();
-        requestData.setName(name);
-        telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_NAME.toString(), name);
-        requestData.setId(span.getSpanId());
-        telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), span.getTraceId());
+        data.setName(name);
+        telemetry.getTags().put(ContextTagKeys.AI_OPERATION_NAME.toString(), name);
+        data.setId(span.getSpanId());
+        telemetry.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), span.getTraceId());
 
         String aiLegacyParentId = span.getSpanContext().getTraceState().get("ai-legacy-parent-id");
         if (aiLegacyParentId != null) {
             // see behavior specified at https://github.com/microsoft/ApplicationInsights-Java/issues/1174
-            telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), aiLegacyParentId);
+            telemetry.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), aiLegacyParentId);
             String aiLegacyOperationId = span.getSpanContext().getTraceState().get("ai-legacy-operation-id");
             if (aiLegacyOperationId != null) {
-                telemetryItem.getTags().putIfAbsent("ai_legacyRootID", aiLegacyOperationId);
+                telemetry.getTags().putIfAbsent("ai_legacyRootID", aiLegacyOperationId);
             }
         } else {
             String parentSpanId = span.getParentSpanId();
             if (SpanId.isValid(parentSpanId)) {
-                telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), parentSpanId);
+                telemetry.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), parentSpanId);
             }
         }
 
         long startEpochNanos = span.getStartEpochNanos();
-        telemetryItem.setTime(getFormattedTime(startEpochNanos));
+        telemetry.setTime(getFormattedTime(startEpochNanos));
 
         Duration duration = Duration.ofNanos(span.getEndEpochNanos() - startEpochNanos);
-        requestData.setDuration(getFormattedDuration(duration));
+        data.setDuration(getFormattedDuration(duration));
 
-        requestData.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
+        data.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
 
         String description = span.getStatus().getDescription();
         if (description != null) {
-            requestData.getProperties().put("statusDescription", description);
+            data.getProperties().put("statusDescription", description);
         }
 
         Double samplingPercentage = 100.0;
 
-        setExtraAttributes(telemetryItem, requestData.getProperties(), attributes);
+        setExtraAttributes(telemetry, data.getProperties(), attributes);
 
-        telemetryItem.setSampleRate(samplingPercentage.floatValue());
-        telemetryItems.add(telemetryItem);
+        telemetry.setSampleRate(samplingPercentage.floatValue());
+        telemetryItems.add(telemetry);
         exportEvents(span, samplingPercentage, telemetryItems);
     }
 
@@ -565,31 +536,20 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     }
 
     private void exportEvents(SpanData span, Double samplingPercentage, List<TelemetryItem> telemetryItems) {
-        boolean foundException = false;
         for (EventData event : span.getEvents()) {
 
-            TelemetryItem telemetryItem = new TelemetryItem();
-            TelemetryEventData eventData = new TelemetryEventData();
-            MonitorBase monitorBase = new MonitorBase();
+            TelemetryItem telemetry = new TelemetryItem();
+            TelemetryEventData data = new TelemetryEventData();
+            initTelemetry(telemetry, data, "Event", "EventData");
 
-            telemetryItem.setTags(new HashMap<>());
-            telemetryItem.setName("Event");
-            telemetryItem.setVersion(1);
-            telemetryItem.setInstrumentationKey(instrumentationKey);
-            telemetryItem.setData(monitorBase);
-
-            eventData.setProperties(new HashMap<>());
-            eventData.setVersion(2);
-            monitorBase.setBaseType("EventData");
-            monitorBase.setBaseData(eventData);
-            eventData.setName(event.getName());
+            data.setName(event.getName());
 
             String operationId = span.getTraceId();
-            telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), operationId);
-            telemetryItem.getTags()
+            telemetry.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), operationId);
+            telemetry.getTags()
                 .put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), span.getSpanId());
-            telemetryItem.setTime(getFormattedTime(event.getEpochNanos()));
-            setExtraAttributes(telemetryItem, eventData.getProperties(), event.getAttributes());
+            telemetry.setTime(getFormattedTime(event.getEpochNanos()));
+            setExtraAttributes(telemetry, data.getProperties(), event.getAttributes());
 
             if (event.getAttributes().get(SemanticAttributes.EXCEPTION_TYPE) != null
                 || event.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE) != null) {
@@ -598,8 +558,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                     trackException(stacktrace, span, operationId, span.getSpanId(), samplingPercentage, telemetryItems);
                 }
             } else {
-                telemetryItem.setSampleRate(samplingPercentage.floatValue());
-                telemetryItems.add(telemetryItem);
+                telemetry.setSampleRate(samplingPercentage.floatValue());
+                telemetryItems.add(telemetry);
             }
         }
     }
@@ -627,6 +587,20 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         telemetryItem.setSampleRate(samplingPercentage.floatValue());
         exceptionData.setExceptions(minimalParse(errorStack));
         telemetryItems.add(telemetryItem);
+    }
+
+    private void initTelemetry(
+        TelemetryItem telemetry, MonitorDomain data, String telemetryName, String baseType) {
+        telemetry.setVersion(1);
+        telemetry.setName(telemetryName);
+        telemetry.setInstrumentationKey(instrumentationKey);
+
+        data.setVersion(2);
+
+        MonitorBase monitorBase = new MonitorBase();
+        telemetry.setData(monitorBase);
+        monitorBase.setBaseType(baseType);
+        monitorBase.setBaseData(data);
     }
 
     private static String getFormattedDuration(Duration duration) {
