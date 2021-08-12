@@ -200,7 +200,7 @@ com.azure.resourcemanager:azure-resourcemanager-cdn;2.6.0;2.7.0
 com.azure.resourcemanager:azure-resourcemanager-compute;2.6.0;2.7.0
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.7.0;2.8.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.7.0;2.8.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-containerservice;2.6.0;2.7.0
+com.azure.resourcemanager:azure-resourcemanager-containerservice;2.7.0;2.8.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.6.0;2.7.0
 com.azure.resourcemanager:azure-resourcemanager-dns;2.6.0;2.7.0
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.6.0;2.7.0
