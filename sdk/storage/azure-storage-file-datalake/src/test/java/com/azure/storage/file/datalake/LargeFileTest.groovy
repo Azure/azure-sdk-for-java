@@ -11,6 +11,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.TestEnvironment
 import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DataLakeStorageException
 import org.apache.commons.lang3.SystemUtils
 import reactor.core.publisher.Flux
@@ -24,6 +25,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 @LiveOnly
 @ResourceLock("LargeFileTest")
+@RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
 @IgnoreIf({ TestEnvironment.getInstance().httpClientType == TestHttpClientType.OK_HTTP || SystemUtils.IS_OS_MAC }) // https://github.com/Azure/azure-sdk-for-java/issues/23221
 class LargeFileTest extends APISpec{
     static long defaultSingleUploadThreshold = 100L * Constants.MB

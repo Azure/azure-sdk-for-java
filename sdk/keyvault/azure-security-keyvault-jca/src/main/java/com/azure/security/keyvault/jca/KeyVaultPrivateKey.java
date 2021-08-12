@@ -3,12 +3,13 @@
 
 package com.azure.security.keyvault.jca;
 
+import javax.crypto.SecretKey;
 import java.security.PrivateKey;
 
 /**
  * KeyVault fake private which work when key less
  */
-public class KeyVaultPrivateKey implements PrivateKey {
+public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
 
     /**
      * Stores the serial version UID.
@@ -60,11 +61,11 @@ public class KeyVaultPrivateKey implements PrivateKey {
 
     @Override
     public String getFormat() {
-        return null;
+        return "RAW";
     }
 
     @Override
     public byte[] getEncoded() {
-        return new byte[0];
+        return new byte[2048];
     }
 }

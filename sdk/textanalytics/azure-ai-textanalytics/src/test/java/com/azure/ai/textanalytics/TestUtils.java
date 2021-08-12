@@ -10,6 +10,8 @@ import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPro
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractSummaryResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePropertiesHelper;
@@ -21,6 +23,7 @@ import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionRe
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SummarySentencePropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -37,6 +40,8 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -58,6 +63,8 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
@@ -69,6 +76,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -104,7 +112,28 @@ final class TestUtils {
     static final String FAKE_API_KEY = "1234567890";
     static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
 
-    static final List<String> SENTIMENT_INPUTS = asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
+    static final List<String> SUMMARY_INPUTS = asList(
+        "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
+            + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI "
+            + "Cognitive Services, I have been working with a team of amazing scientists and engineers to turn this"
+            + " quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship among "
+            + "three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and"
+            + " multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code as"
+            + " illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear, see,"
+            + " and understand humans better. We believe XYZ-code will enable us to fulfill our long-term vision:"
+            + " cross-domain transfer learning, spanning modalities and languages. The goal is to have pretrained"
+            + " models that can jointly learn representations to support a broad range of downstream AI tasks, much"
+            + " in the way humans do today. Over the past five years, we have achieved human performance on benchmarks"
+            + " in conversational speech recognition, machine translation, conversational question answering, machine"
+            + " reading comprehension, and image captioning. These five breakthroughs provided us with strong signals"
+            + " toward our more ambitious aspiration to produce a leap in AI capabilities, achieving multisensory and"
+            + " multilingual learning that is closer in line with how humans learn and understand. I believe the joint"
+            + " XYZ-code is a foundational component of this aspiration, if grounded with external knowledge sources"
+            + " in the downstream AI tasks."
+    );
+
+    static final List<String> SENTIMENT_INPUTS = asList(
+        "The hotel was dark and unclean. The restaurant had amazing gnocchi.",
         "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
 
     static final List<String> CATEGORIZED_ENTITY_INPUTS = asList(
@@ -494,6 +523,47 @@ final class TestUtils {
         List<ExtractKeyPhraseResult> extractKeyPhraseResultList = asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
 
         return new ExtractKeyPhrasesResultCollection(extractKeyPhraseResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+    }
+
+    static ExtractSummaryResultCollection getExpectedExtractSummaryResultCollection(
+        ExtractSummaryResult extractSummaryResult) {
+        final ExtractSummaryResultCollection expectResultCollection = new ExtractSummaryResultCollection(
+            asList(extractSummaryResult), null, null);
+        return expectResultCollection;
+    }
+
+    static ExtractSummaryResult getExpectedExtractSummaryResultSortByOffset() {
+        final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
+        final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult("0", textDocumentStatistics, null);
+
+        final IterableStream<SummarySentence> summarySentences = IterableStream.of(asList(
+            getExpectedSummarySentence(
+                "At Microsoft, we have been on a quest to advance AI beyond existing"
+                    + " techniques, by taking a more holistic, human-centric approach to learning and understanding.",
+                1.0, 0, 160),
+            getExpectedSummarySentence(
+                "In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human"
+                    + " cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).",
+                0.958, 324, 192),
+            getExpectedSummarySentence(
+                "At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure"
+                    + " 1—a joint representation to create more powerful AI that can speak, hear, see, and understand"
+                    + " humans better.",
+                0.929, 517, 203)
+        ));
+
+        SummarySentenceCollection sentences = new SummarySentenceCollection(summarySentences, null);
+        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, sentences);
+        return extractSummaryResult;
+    }
+
+    static SummarySentence getExpectedSummarySentence(String text, double rankScore, int offset, int length) {
+        final SummarySentence summarySentence = new SummarySentence();
+        SummarySentencePropertiesHelper.setText(summarySentence, text);
+        SummarySentencePropertiesHelper.setRankScore(summarySentence, rankScore);
+        SummarySentencePropertiesHelper.setOffset(summarySentence, offset);
+        SummarySentencePropertiesHelper.setLength(summarySentence, length);
+        return summarySentence;
     }
 
     /**
@@ -1100,6 +1170,16 @@ final class TestUtils {
         return actionResult;
     }
 
+    static ExtractSummaryActionResult getExtractSummaryActionResult(boolean isError,
+        OffsetDateTime completeAt, ExtractSummaryResultCollection resultCollection, TextAnalyticsError actionError) {
+        ExtractSummaryActionResult actionResult = new ExtractSummaryActionResult();
+        ExtractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        return actionResult;
+    }
+
     /**
      * Helper method that get the expected AnalyzeBatchActionsResult result.
      */
@@ -1108,7 +1188,8 @@ final class TestUtils {
         IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
-        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
+        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults,
+        IterableStream<ExtractSummaryActionResult> extractSummaryActionResults) {
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
         AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesResults(analyzeActionsResult,
@@ -1121,6 +1202,8 @@ final class TestUtils {
             recognizeLinkedEntitiesActionResults);
         AnalyzeActionsResultPropertiesHelper.setAnalyzeSentimentResults(analyzeActionsResult,
             analyzeSentimentActionResults);
+        AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
+            extractSummaryActionResults);
         return analyzeActionsResult;
     }
 
@@ -1227,7 +1310,8 @@ final class TestUtils {
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
-                false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null)))
+                false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null))),
+            IterableStream.of(Collections.emptyList())
         ));
         // Second Page
         startIndex += firstPage;
@@ -1241,7 +1325,8 @@ final class TestUtils {
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
-                false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null)))
+                false, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null))),
+            IterableStream.of(Collections.emptyList())
         ));
         return analyzeActionsResults;
     }

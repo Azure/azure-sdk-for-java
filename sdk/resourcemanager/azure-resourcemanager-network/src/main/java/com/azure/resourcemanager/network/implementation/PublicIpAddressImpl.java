@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
@@ -208,7 +209,8 @@ class PublicIpAddressImpl
 
                     this.cleanupDnsSettings();
                 },
-                this::setInner);
+                this::setInner,
+                Context.NONE);
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation

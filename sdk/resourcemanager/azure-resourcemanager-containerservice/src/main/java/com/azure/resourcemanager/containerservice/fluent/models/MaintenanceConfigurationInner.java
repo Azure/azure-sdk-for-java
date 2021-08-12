@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,29 +14,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** maintenance configuration. */
-@JsonFlatten
+/**
+ * Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster. See [planned
+ * maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about planned
+ * maintenance.
+ */
 @Fluent
-public class MaintenanceConfigurationInner extends SubResource {
+public final class MaintenanceConfigurationInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationInner.class);
 
     /*
-     * The system meta data relating to this resource.
+     * The system metadata relating to this resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
-     * Weekday time slots allowed to upgrade.
+     * Properties of a default maintenance configuration.
      */
-    @JsonProperty(value = "properties.timeInWeek")
-    private List<TimeInWeek> timeInWeek;
-
-    /*
-     * Time slots on which upgrade is not allowed.
-     */
-    @JsonProperty(value = "properties.notAllowedTime")
-    private List<TimeSpan> notAllowedTime;
+    @JsonProperty(value = "properties")
+    private MaintenanceConfigurationProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -53,7 +49,7 @@ public class MaintenanceConfigurationInner extends SubResource {
     private String type;
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: The system metadata relating to this resource.
      *
      * @return the systemData value.
      */
@@ -62,43 +58,12 @@ public class MaintenanceConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the timeInWeek property: Weekday time slots allowed to upgrade.
+     * Get the innerProperties property: Properties of a default maintenance configuration.
      *
-     * @return the timeInWeek value.
+     * @return the innerProperties value.
      */
-    public List<TimeInWeek> timeInWeek() {
-        return this.timeInWeek;
-    }
-
-    /**
-     * Set the timeInWeek property: Weekday time slots allowed to upgrade.
-     *
-     * @param timeInWeek the timeInWeek value to set.
-     * @return the MaintenanceConfigurationInner object itself.
-     */
-    public MaintenanceConfigurationInner withTimeInWeek(List<TimeInWeek> timeInWeek) {
-        this.timeInWeek = timeInWeek;
-        return this;
-    }
-
-    /**
-     * Get the notAllowedTime property: Time slots on which upgrade is not allowed.
-     *
-     * @return the notAllowedTime value.
-     */
-    public List<TimeSpan> notAllowedTime() {
-        return this.notAllowedTime;
-    }
-
-    /**
-     * Set the notAllowedTime property: Time slots on which upgrade is not allowed.
-     *
-     * @param notAllowedTime the notAllowedTime value to set.
-     * @return the MaintenanceConfigurationInner object itself.
-     */
-    public MaintenanceConfigurationInner withNotAllowedTime(List<TimeSpan> notAllowedTime) {
-        this.notAllowedTime = notAllowedTime;
-        return this;
+    private MaintenanceConfigurationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -128,16 +93,61 @@ public class MaintenanceConfigurationInner extends SubResource {
     }
 
     /**
+     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
+     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     *
+     * @return the timeInWeek value.
+     */
+    public List<TimeInWeek> timeInWeek() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeInWeek();
+    }
+
+    /**
+     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
+     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     *
+     * @param timeInWeek the timeInWeek value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withTimeInWeek(List<TimeInWeek> timeInWeek) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceConfigurationProperties();
+        }
+        this.innerProperties().withTimeInWeek(timeInWeek);
+        return this;
+    }
+
+    /**
+     * Get the notAllowedTime property: Time slots on which upgrade is not allowed.
+     *
+     * @return the notAllowedTime value.
+     */
+    public List<TimeSpan> notAllowedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().notAllowedTime();
+    }
+
+    /**
+     * Set the notAllowedTime property: Time slots on which upgrade is not allowed.
+     *
+     * @param notAllowedTime the notAllowedTime value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withNotAllowedTime(List<TimeSpan> notAllowedTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceConfigurationProperties();
+        }
+        this.innerProperties().withNotAllowedTime(notAllowedTime);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (timeInWeek() != null) {
-            timeInWeek().forEach(e -> e.validate());
-        }
-        if (notAllowedTime() != null) {
-            notAllowedTime().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

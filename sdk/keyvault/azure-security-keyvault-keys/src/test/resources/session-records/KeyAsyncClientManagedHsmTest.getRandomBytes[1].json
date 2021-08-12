@@ -17,10 +17,10 @@
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.107.174;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "2d540921-868c-4f5d-9477-e47c9caf3ce1",
-      "Body" : "{\"value\":\"c59bAd5QN1-N4D7d\"}"
+      "x-ms-request-id" : "6836fe84-f71c-11eb-be5b-000d3a9ff1e5",
+      "Body" : "{\"value\":\"10PxgaqINQCTFBBk\"}"
     },
     "Exception" : null
   } ],

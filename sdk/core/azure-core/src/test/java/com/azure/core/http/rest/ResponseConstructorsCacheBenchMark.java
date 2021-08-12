@@ -20,6 +20,7 @@ import org.openjdk.jmh.runner.RunnerException;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Constructor;
 import java.util.concurrent.TimeUnit;
 
@@ -51,15 +52,15 @@ public class ResponseConstructorsCacheBenchMark {
 
         for (int i = 0; i < inputs.length; i++) {
             Class<? extends Response<?>> responseClass =
-                    (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
+                (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
             // Step1: Locate Constructor using Reflection.
-            Constructor<? extends Response<?>> constructor = defaultCache.get(responseClass);
-            if (constructor == null) {
+            MethodHandle handle = defaultCache.get(responseClass);
+            if (handle == null) {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using Reflection.
-            Mono<Response<?>> response = defaultCache.invoke(constructor, inputs[i].decodedResponse(),
-                    inputs[i].bodyAsObject());
+            Mono<Response<?>> response = defaultCache.invoke(handle, inputs[i].decodedResponse(),
+                inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response.block());
         }
@@ -94,7 +95,7 @@ public class ResponseConstructorsCacheBenchMark {
 
         for (int i = 0; i < inputs.length; i++) {
             Class<? extends Response<?>> responseClass =
-                    (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
+                (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
             // Step1: Locate Constructor using Reflection.
             Constructor<? extends Response<?>> constructor = reflectionNoCache.get(responseClass);
             if (constructor == null) {
@@ -102,7 +103,7 @@ public class ResponseConstructorsCacheBenchMark {
             }
             // Step2: Invoke Constructor using Reflection.
             Mono<Response<?>> response = reflectionNoCache.invoke(constructor, inputs[i].decodedResponse(),
-                    inputs[i].bodyAsObject());
+                inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response.block());
         }

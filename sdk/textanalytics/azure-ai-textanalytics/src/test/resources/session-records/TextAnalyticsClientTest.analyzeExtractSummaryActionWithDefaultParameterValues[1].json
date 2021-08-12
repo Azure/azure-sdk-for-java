@@ -1,0 +1,164 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b221f11c-4fc9-47f2-8454-23d94c774ebd",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "203",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://tacanaryjava.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/6e1bb162-19d7-497d-bd4e-b5d897a83161",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "7db2043b-a28e-4894-99a3-fcc8208e164d",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Wed, 04 Aug 2021 06:16:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/6e1bb162-19d7-497d-bd4e-b5d897a83161?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2d1b908f-20c5-4ffb-80ec-22326451db04"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "10",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8f15f479-ef30-43fa-bd6c-9736b74450d8",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"6e1bb162-19d7-497d-bd4e-b5d897a83161\",\"lastUpdateDateTime\":\"2021-08-04T06:16:10Z\",\"createdDateTime\":\"2021-08-04T06:16:10Z\",\"expirationDateTime\":\"2021-08-05T06:16:10Z\",\"status\":\"running\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Wed, 04 Aug 2021 06:16:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/6e1bb162-19d7-497d-bd4e-b5d897a83161?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2e8d912d-061c-42c5-b48c-b64e5c236fe0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "193520b9-4131-48bc-a1d2-896cc8f27133",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"6e1bb162-19d7-497d-bd4e-b5d897a83161\",\"lastUpdateDateTime\":\"2021-08-04T06:16:10Z\",\"createdDateTime\":\"2021-08-04T06:16:10Z\",\"expirationDateTime\":\"2021-08-05T06:16:10Z\",\"status\":\"running\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Wed, 04 Aug 2021 06:16:20 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/6e1bb162-19d7-497d-bd4e-b5d897a83161?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f3642b26-77ea-4fa1-b644-b7b69599113e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c6710dc9-45be-421e-8cdf-af4ed249771f",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"6e1bb162-19d7-497d-bd4e-b5d897a83161\",\"lastUpdateDateTime\":\"2021-08-04T06:16:10Z\",\"createdDateTime\":\"2021-08-04T06:16:10Z\",\"expirationDateTime\":\"2021-08-05T06:16:10Z\",\"status\":\"running\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1}}",
+      "Date" : "Wed, 04 Aug 2021 06:16:26 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/6e1bb162-19d7-497d-bd4e-b5d897a83161?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b1dc2267-e6d7-4dc8-8da2-690629521bdd"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "78",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a09b3efa-9421-41c3-a611-226f3abd3afe",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"6e1bb162-19d7-497d-bd4e-b5d897a83161\",\"lastUpdateDateTime\":\"2021-08-04T06:16:27Z\",\"createdDateTime\":\"2021-08-04T06:16:10Z\",\"expirationDateTime\":\"2021-08-05T06:16:10Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"extractiveSummarizationTasks\":[{\"lastUpdateDateTime\":\"2021-08-04T06:16:27.4610461Z\",\"taskName\":\"ExtractiveSummarization_latest\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding.\",\"rankScore\":1.0,\"offset\":0,\"length\":160},{\"text\":\"In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).\",\"rankScore\":0.9582327572675664,\"offset\":324,\"length\":192},{\"text\":\"At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear, see, and understand humans better.\",\"rankScore\":0.9294747193132348,\"offset\":517,\"length\":203}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-08-01\"}}]}}",
+      "Date" : "Wed, 04 Aug 2021 06:16:31 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/6e1bb162-19d7-497d-bd4e-b5d897a83161?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "032eff15-9bb5-4f7b-86f7-2fe046eda7b7"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "37",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "9e251ecc-4588-4952-966a-3d89c3cc7b16",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"6e1bb162-19d7-497d-bd4e-b5d897a83161\",\"lastUpdateDateTime\":\"2021-08-04T06:16:27Z\",\"createdDateTime\":\"2021-08-04T06:16:10Z\",\"expirationDateTime\":\"2021-08-05T06:16:10Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"extractiveSummarizationTasks\":[{\"lastUpdateDateTime\":\"2021-08-04T06:16:27.4610461Z\",\"taskName\":\"ExtractiveSummarization_latest\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding.\",\"rankScore\":1.0,\"offset\":0,\"length\":160},{\"text\":\"In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).\",\"rankScore\":0.9582327572675664,\"offset\":324,\"length\":192},{\"text\":\"At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear, see, and understand humans better.\",\"rankScore\":0.9294747193132348,\"offset\":517,\"length\":203}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-08-01\"}}]}}",
+      "Date" : "Wed, 04 Aug 2021 06:16:46 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/6e1bb162-19d7-497d-bd4e-b5d897a83161?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cf775832-a4e8-412c-b851-382be1e98e4c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "112",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "973e2582-e8e2-4929-9f3a-74e85e44bd88",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"6e1bb162-19d7-497d-bd4e-b5d897a83161\",\"lastUpdateDateTime\":\"2021-08-04T06:16:27Z\",\"createdDateTime\":\"2021-08-04T06:16:10Z\",\"expirationDateTime\":\"2021-08-05T06:16:10Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"extractiveSummarizationTasks\":[{\"lastUpdateDateTime\":\"2021-08-04T06:16:27.4610461Z\",\"taskName\":\"ExtractiveSummarization_latest\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding.\",\"rankScore\":1.0,\"offset\":0,\"length\":160},{\"text\":\"In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).\",\"rankScore\":0.9582327572675664,\"offset\":324,\"length\":192},{\"text\":\"At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear, see, and understand humans better.\",\"rankScore\":0.9294747193132348,\"offset\":517,\"length\":203}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-08-01\"}}]}}",
+      "Date" : "Wed, 04 Aug 2021 06:17:29 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/analyze/jobs/6e1bb162-19d7-497d-bd4e-b5d897a83161?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c4e0e31f-70cb-405c-b227-17fd4af8c2cb"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "177",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "42885a33-8a6d-4646-814e-5d94bb675bfb",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"6e1bb162-19d7-497d-bd4e-b5d897a83161\",\"lastUpdateDateTime\":\"2021-08-04T06:16:27Z\",\"createdDateTime\":\"2021-08-04T06:16:10Z\",\"expirationDateTime\":\"2021-08-05T06:16:10Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"extractiveSummarizationTasks\":[{\"lastUpdateDateTime\":\"2021-08-04T06:16:27.4610461Z\",\"taskName\":\"ExtractiveSummarization_latest\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentences\":[{\"text\":\"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding.\",\"rankScore\":1.0,\"offset\":0,\"length\":160},{\"text\":\"In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z).\",\"rankScore\":0.9582327572675664,\"offset\":324,\"length\":192},{\"text\":\"At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear, see, and understand humans better.\",\"rankScore\":0.9294747193132348,\"offset\":517,\"length\":203}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-08-01\"}}]}}",
+      "Date" : "Wed, 04 Aug 2021 06:18:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
