@@ -37,6 +37,4 @@ models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
-enable-xml: false
-required-parameter-client-methods: true
 ```

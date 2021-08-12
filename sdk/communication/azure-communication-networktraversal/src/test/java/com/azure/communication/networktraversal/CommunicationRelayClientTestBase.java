@@ -37,10 +37,19 @@ public class CommunicationRelayClientTestBase extends TestBase {
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("token");
+        .add("token")
+        .add("id")
+        .add("credential");
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT_ARRAY
+        = new StringJoiner("\":\\[\"|\"", "\"", "\":\\[\"")
+        .add("urls");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
+        Pattern.CASE_INSENSITIVE);
+
+    private static final Pattern JSON_PROPERTY_ARRAY_REDACTION_PATTERN
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\"\\],|\"\\]})", JSON_PROPERTIES_TO_REDACT_ARRAY.toString()),
         Pattern.CASE_INSENSITIVE);
 
     protected CommunicationRelayClientBuilder createClientBuilder(HttpClient httpClient) {
@@ -57,6 +66,7 @@ public class CommunicationRelayClientTestBase extends TestBase {
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            redactors.add(data -> redact(data, JSON_PROPERTY_ARRAY_REDACTION_PATTERN.matcher(data), "redacted.skype.com:3400"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
@@ -102,6 +112,7 @@ public class CommunicationRelayClientTestBase extends TestBase {
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            redactors.add(data -> redact(data, JSON_PROPERTY_ARRAY_REDACTION_PATTERN.matcher(data), "redacted.skype.com:3400"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
@@ -142,6 +153,7 @@ public class CommunicationRelayClientTestBase extends TestBase {
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            redactors.add(data -> redact(data, JSON_PROPERTY_ARRAY_REDACTION_PATTERN.matcher(data), "redacted.skype.com:3400"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 

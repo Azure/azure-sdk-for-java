@@ -22,7 +22,7 @@ It will provide TURN credentials to a user.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-networktraversal</artifactId>
-  <version>1.1.1</version>
+  <version>1.0.0-beta.1</version>
 </dependency>
 ```
 
@@ -130,5 +130,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [api_documentation]: https://aka.ms/java-docs
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-identity%2FREADME.png)

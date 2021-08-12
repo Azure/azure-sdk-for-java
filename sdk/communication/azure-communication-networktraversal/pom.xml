@@ -16,14 +16,14 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-networktraversal</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
 
   <name>Microsoft Azure Network Traversal client library for communication</name>
   <description>
     This package contains APIs for application Network Traversal in Microsoft Azure Communication Services.
     For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-networktraversal/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-identity/CHANGELOG.md.
     Microsoft Azure Communication Network Traversal quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java
-  </description><!-- TODO: Microsoft docs and link here needs to be updated-->
+  </description>
   <licenses>
     <license>
         <name>The MIT License (MIT)</name>
@@ -58,7 +58,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -162,28 +162,12 @@
           </rules>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <analysisConfiguration>
-            <revapi.ignore>
-              <item>
-                <code>java.method.added</code>
-                <class>com.azure.core.util.HttpClientOptions</class>
-                <justification>Transitive from Core. Not our problem</justification>
-              </item>
-            </revapi.ignore>
-          </analysisConfiguration>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
   <profiles>
     <profile>
-      <id>is.jdk.11</id>
+      <id>java-lts</id>
       <activation>
         <jdk>[9,)</jdk>
       </activation>

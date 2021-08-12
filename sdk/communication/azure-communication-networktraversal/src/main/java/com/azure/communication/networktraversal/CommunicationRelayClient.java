@@ -13,7 +13,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 
 /**
@@ -50,7 +49,7 @@ public final class CommunicationRelayClient {
      * @param context A {@link Context} representing the request context.
      * @return The obtained Communication Relay Configuration
      */
-    // @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         context = context == null ? Context.NONE : context;
         CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
@@ -63,9 +62,6 @@ public final class CommunicationRelayClient {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
         }
         
-        return new SimpleResponse<CommunicationRelayConfiguration>(
-            response,
-            response.getValue());
-
+        return response;
     }
 }

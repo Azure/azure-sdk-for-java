@@ -4,8 +4,9 @@ package com.azure.communication.networktraversal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import com.azure.communication.common.*;
-import com.azure.communication.identity.*;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.identity.CommunicationIdentityClientBuilder;
+import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
 

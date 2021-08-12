@@ -7,7 +7,6 @@ package com.azure.communication.networktraversal.implementation;
 import com.azure.communication.networktraversal.models.CommunicationErrorResponseException;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequest;
-import com.azure.communication.networktraversal.models.CommunicationIceServer;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;
@@ -23,8 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
-import java.util.List;
-import com.azure.core.util.logging.ClientLogger;
 
 /** An instance of this class provides access to all the operations defined in CommunicationNetworkTraversals. */
 public final class CommunicationNetworkTraversalsImpl {
@@ -33,7 +30,7 @@ public final class CommunicationNetworkTraversalsImpl {
 
     /** The service client containing this operation class. */
     private final CommunicationNetworkingClientImpl client;
-    private final ClientLogger logger = new ClientLogger(CommunicationNetworkTraversalsImpl.class);
+
     /**
      * Initializes an instance of CommunicationNetworkTraversalsImpl.
      *
@@ -77,7 +74,6 @@ public final class CommunicationNetworkTraversalsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationRelayConfiguration>> issueRelayConfigurationWithResponseAsync(
             CommunicationRelayConfigurationRequest body) {
-        // System.out.println("\n\n\n issueRelayConfigurationWithResponseAsync\n\n\n");
         return FluxUtil.withContext(
                 context ->
                         service.issueRelayConfiguration(
@@ -116,21 +112,8 @@ public final class CommunicationNetworkTraversalsImpl {
                 .flatMap(
                         (Response<CommunicationRelayConfiguration> res) -> {
                             if (res.getValue() != null) {
-                                // System.out.println("\n\n\n Got Value\n\n\n");
-                                CommunicationRelayConfiguration vonfig =  res.getValue();
-                                // System.out.println(res.getValue());
-                                List<CommunicationIceServer> iceServers = res.getValue().getIceServers();
-                                // System.out.println("Expires on:" + vonfig.getExpiresOn());
-                                // for(CommunicationIceServer iceS : iceServers)
-                                // {
-                                //     System.out.println(iceS.getUrls());
-                                //     System.out.println(iceS.getUsername());
-                                //     System.out.println(iceS.getCredential());
-                                // }
-                                // System.out.println("\n\n\nabout to return \n\n\n");
                                 return Mono.just(res.getValue());
                             } else {
-                                // System.out.println("\n\n\nEmpty\n\n\n");
                                 return Mono.empty();
                             }
                         });
@@ -171,11 +154,7 @@ public final class CommunicationNetworkTraversalsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationRelayConfiguration issueRelayConfiguration(CommunicationRelayConfigurationRequest body) {
-        logger.info("\n\n\n\nGetting config relay in impl\n\n\n");
-        // System.out.println("Getting config relay in impl2");
-        CommunicationRelayConfiguration config = issueRelayConfigurationAsync(body).block();
-        // System.out.println("\n\n Returning!\n\n" );
-        return config;
+        return issueRelayConfigurationAsync(body).block();
     }
 
     /**

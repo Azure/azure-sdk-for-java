@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Communication Relay Service supported by this client library.
  */
 public enum CommunicationRelayServiceVersion implements ServiceVersion {
-    V2021_03_07("1.0.0b1");
+    V2021_08_13("2021_08_13");
 
     private final String version;
 
@@ -34,6 +34,6 @@ public enum CommunicationRelayServiceVersion implements ServiceVersion {
      */
     public static CommunicationRelayServiceVersion getLatest() {
 
-        return V2021_03_07;
+        return V2021_08_13;
     }
 }
