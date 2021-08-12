@@ -146,6 +146,33 @@ PEM          | EC       | P-521                           | SHA512withECDSA | âœ
 PEM          | EC       | P-256K                          |                 | âœ˜       |
 
 ## Troubleshooting
+
+## Configure logging
+This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
+
+Here is an example of a `logging.properties` file:
+```properties
+# To enable this configuration file, please add this property:
+# -Djava.util.logging.config.file="src/test/resources/logging.properties"
+#
+# The Java logging APIs (java.util.logging) default loads logging.properties from:
+# 1. $JAVA_HOME/jre/lib/ (Java 8 and before)
+# 2. $JAVA_HOME/conf/ (Java 9 and above)
+#
+# For more information about this file, please refer to:
+# 1. https://docs.oracle.com/javase/8/docs/technotes/guides/logging/overview.html#a1.8
+# 2. https://docs.oracle.com/cd/E23549_01/doc.1111/e14568/handler.htm
+
+handlers = java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.level = ALL
+java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
+java.util.logging.SimpleFormatter.format= [%1$tF %1$tT] %3 [%4$-7s] %5$s %n
+
+.level = INFO
+com.azure.security.keyvault.jca.level = ALL
+```
+
+
 ### General
 Azure Key Vault JCA clients raise exceptions. For example, if you try to check a client's identity with a certificate chain that does not include a trusted certificate, a `CertificateException` will be thrown. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
 
