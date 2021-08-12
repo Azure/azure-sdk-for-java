@@ -125,7 +125,7 @@ public class SchemaRegistryClientBuilder {
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws IllegalArgumentException on invalid maxCacheSize value
      */
-    public SchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
+    SchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
         if (maxCacheSize < SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 String.format("Schema map size must be greater than %s entries",
