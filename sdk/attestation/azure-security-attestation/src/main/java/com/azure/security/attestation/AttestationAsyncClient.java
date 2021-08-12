@@ -141,7 +141,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     of the certificates listed in the attestation signing keys.
  * </p>
  */
-
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class AttestationAsyncClient {
     private final AttestationsImpl attestImpl;
