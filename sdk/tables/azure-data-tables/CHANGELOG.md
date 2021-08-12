@@ -7,6 +7,8 @@
 - Updated clients to properly map an internal HTTP exception to the public type `TableServiceException` in operations such as `getAccessPolicies()`, `getProperties()`, `setProperties()` and `getStatistics()`, including their `withResponse` variants.
 - Fixed batch operations to properly log exceptions other than `TableTransactionFailedException`.
 
+### Other Changes
+
 #### Dependency Updates
 - Upgraded `azure-core` dependency to `1.19.0`
 - Upgraded `azure-core-http-netty` dependency to `1.10.2`
