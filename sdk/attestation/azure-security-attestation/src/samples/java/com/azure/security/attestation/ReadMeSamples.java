@@ -12,7 +12,6 @@ import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResponse;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
