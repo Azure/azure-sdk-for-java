@@ -126,7 +126,7 @@ public class AttestationClientTestBase extends TestBase {
         SignedJWT finalToken = token;
         return getSigningCertificateByKeyId(token.getHeader().getKeyID(), httpClient, clientUri)
             .handle((signer, sink) -> {
-                final PublicKey key = signer.getCertificates()[0].getPublicKey();
+                final PublicKey key = signer.getCertificates().get(0).getPublicKey();
                 final RSAPublicKey rsaKey = (RSAPublicKey) key;
 
                 final RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
@@ -187,7 +187,7 @@ public class AttestationClientTestBase extends TestBase {
      */
     Mono<AttestationSigner> getSigningCertificateByKeyId(String keyId, HttpClient client, String clientUri) {
         AttestationClientBuilder builder = getBuilder(client, clientUri);
-        return builder.buildAsyncClient().getAttestationSigners()
+        return builder.buildAsyncClient().listAttestationSigners()
             .handle((signers, sink) -> {
                 boolean foundKey = false;
 

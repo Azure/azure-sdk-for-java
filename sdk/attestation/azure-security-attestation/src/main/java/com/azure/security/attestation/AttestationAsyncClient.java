@@ -29,6 +29,7 @@ import com.azure.security.attestation.models.AttestationToken;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -209,8 +210,8 @@ public final class AttestationAsyncClient {
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationSigner[]> getAttestationSigners() {
-        return this.getAttestationSignersWithResponse()
+    public Mono<List<AttestationSigner>> listAttestationSigners() {
+        return this.listAttestationSignersWithResponse()
             .flatMap(FluxUtil::toMono);
     }
 
@@ -226,11 +227,11 @@ public final class AttestationAsyncClient {
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationSigner[]>> getAttestationSignersWithResponse() {
-        return withContext(context -> getAttestationSignersWithResponse(context));
+    public Mono<Response<List<AttestationSigner>>> listAttestationSignersWithResponse() {
+        return withContext(context -> listAttestationSignersWithResponse(context));
     }
 
-    Mono<Response<AttestationSigner[]>> getAttestationSignersWithResponse(Context context) {
+    Mono<Response<List<AttestationSigner>>> listAttestationSignersWithResponse(Context context) {
         return  this.signerImpl.getWithResponseAsync(context)
             .map(response -> Utilities.generateResponseFromModelType(response, AttestationSignerImpl.attestationSignersFromJwks(response.getValue())));
     }

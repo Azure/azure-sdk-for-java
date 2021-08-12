@@ -12,7 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,7 +29,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        AttestationSigner[] signers = attestationBuilder.buildClient().getAttestationSigners();
+        List<AttestationSigner> signers = attestationBuilder.buildClient().listAttestationSigners();
 
         verifySigningCertificatesResponse(clientUri, signers);
     }
@@ -40,8 +40,8 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationClient attestationClient = getBuilder(client, clientUri).buildClient();
 
-        Response<AttestationSigner[]> signers = attestationClient
-            .getAttestationSignersWithResponse(Context.NONE);
+        Response<List<AttestationSigner>> signers = attestationClient
+            .listAttestationSignersWithResponse(Context.NONE);
 
         verifySigningCertificatesResponse(clientUri, signers.getValue());
     }
@@ -52,7 +52,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationAsyncClient attestationClient = getBuilder(client, clientUri).buildAsyncClient();
 
-        StepVerifier.create(attestationClient.getAttestationSigners())
+        StepVerifier.create(attestationClient.listAttestationSigners())
             .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers)))
             .expectComplete()
             .verify();
@@ -64,7 +64,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationAsyncClient attestationClient = getBuilder(client, clientUri).buildAsyncClient();
 
-        StepVerifier.create(attestationClient.getAttestationSignersWithResponse())
+        StepVerifier.create(attestationClient.listAttestationSignersWithResponse())
             .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers.getValue())))
             .expectComplete()
             .verify();
@@ -80,14 +80,14 @@ public class AttestationSignersTest extends AttestationClientTestBase {
      * @param clientUri Base URI for client, used to verify the contents of the certificates.
      * @param signers   AttestationSigners to verify.
      */
-    private void verifySigningCertificatesResponse(String clientUri, AttestationSigner[] signers) {
-        Assertions.assertTrue(signers.length > 1);
+    private void verifySigningCertificatesResponse(String clientUri, List<AttestationSigner> signers) {
+        Assertions.assertTrue(signers.size() > 1);
 
-        Arrays.stream(signers).forEach(signer -> {
+        signers.forEach(signer -> {
             assertNotNull(signer.getKeyId());
             assertNotNull(signer.getCertificates());
-            Assertions.assertNotEquals(0, signer.getCertificates().length);
-            Arrays.stream(signer.getCertificates()).forEach(x5c -> {
+            Assertions.assertNotEquals(0, signer.getCertificates().size());
+            signer.getCertificates().forEach(x5c -> {
                 // If the certificate is self signed, it should be associated
                 // with either the Microsoft root CA, the VBS self signed root, or the instance.
                 if (x5c.getIssuerDN().equals(x5c.getSubjectDN())) {

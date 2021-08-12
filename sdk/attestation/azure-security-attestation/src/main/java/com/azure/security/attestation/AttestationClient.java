@@ -17,6 +17,8 @@ import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationToken;
 
+import java.util.List;
+
 /**
  * The AttestationClient implements the functionality required by the "Attest" family of APIs.
  * <p>
@@ -168,8 +170,8 @@ public final class AttestationClient {
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationSigner[] getAttestationSigners() {
-        return asyncClient.getAttestationSignersWithResponse()
+    public List<AttestationSigner> listAttestationSigners() {
+        return asyncClient.listAttestationSignersWithResponse()
             .map(Response::getValue).block();
     }
 
@@ -182,8 +184,8 @@ public final class AttestationClient {
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationSigner[]> getAttestationSignersWithResponse(Context context) {
-        return asyncClient.getAttestationSignersWithResponse(context).block();
+    public Response<List<AttestationSigner>> listAttestationSignersWithResponse(Context context) {
+        return asyncClient.listAttestationSignersWithResponse(context).block();
     }
 
 

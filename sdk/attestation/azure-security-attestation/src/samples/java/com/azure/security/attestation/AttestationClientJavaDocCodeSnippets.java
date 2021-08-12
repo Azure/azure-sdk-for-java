@@ -13,7 +13,7 @@ import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationSigner;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class AttestationClientJavaDocCodeSnippets {
     public static AttestationClient createSyncClient() {
@@ -119,15 +119,15 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
-        Mono<AttestationSigner[]> signers = client.getAttestationSigners();
-        Arrays.stream(signers.block()).forEach(cert -> {
+        Mono<List<AttestationSigner>> signers = client.listAttestationSigners();
+        signers.block().forEach(cert -> {
             System.out.println("Found certificate.");
             if (cert.getKeyId() != null) {
                 System.out.println("    Certificate Key ID: " + cert.getKeyId());
             } else {
                 System.out.println("    Signer does not have a Key ID");
             }
-            Arrays.stream(cert.getCertificates()).forEach(chainElement -> {
+            cert.getCertificates().forEach(chainElement -> {
                 System.out.println("        Cert Subject: " + chainElement.getSubjectDN().getName());
                 System.out.println("        Cert Issuer: " + chainElement.getIssuerDN().getName());
             });
@@ -135,7 +135,7 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
-        Mono<Response<AttestationSigner[]>> responseOfSigners = client.getAttestationSignersWithResponse();
+        Mono<Response<List<AttestationSigner>>> responseOfSigners = client.listAttestationSignersWithResponse();
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
     }
 

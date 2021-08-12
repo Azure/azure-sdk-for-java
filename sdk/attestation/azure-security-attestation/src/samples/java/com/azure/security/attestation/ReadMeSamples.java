@@ -13,6 +13,7 @@ import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResponse;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -60,16 +61,16 @@ class ReadmeSamples {
             .endpoint(endpoint)
             .buildClient();
 
-        AttestationSigner[] certs = client.getAttestationSigners();
+        List<AttestationSigner> certs = client.listAttestationSigners();
 
-        Arrays.stream(certs).forEach(cert -> {
+        certs.forEach(cert -> {
             System.out.println("Found certificate.");
             if (cert.getKeyId() != null) {
                 System.out.println("    Certificate Key ID: " + cert.getKeyId());
             } else {
                 System.out.println("    Signer does not have a Key ID");
             }
-            Arrays.stream(cert.getCertificates()).forEach(chainElement -> {
+            cert.getCertificates().forEach(chainElement -> {
                 System.out.println("        Cert Subject: " + chainElement.getSubjectDN().getName());
                 System.out.println("        Cert Issuer: " + chainElement.getIssuerDN().getName());
             });

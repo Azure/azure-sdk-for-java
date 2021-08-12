@@ -213,7 +213,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertNotEquals("none", newToken.getAlgorithm());
         assertNull(newToken.getKeyId());
         assertNotNull(newToken.getCertificateChain());
-        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates()[0].getEncoded()));
+        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
 
         Object jsonValue = newToken.getBody(Object.class);
         assertTrue(jsonValue instanceof  LinkedHashMap);
@@ -269,7 +269,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertNotEquals("none", newToken.getAlgorithm());
         assertNull(newToken.getKeyId());
         assertNotNull(newToken.getCertificateChain());
-        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates()[0].getEncoded()));
+        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
 
         Object jsonValue = newToken.getBody(Object.class);
         assertNull(jsonValue);

@@ -19,6 +19,7 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Represents an attestation signing certificate returned by the attestation service.
@@ -42,7 +43,7 @@ public class AttestationSignerImpl implements AttestationSigner {
      * @param certificates X.509 certificate chain to clone.
      * @return Deep cloned X.509 certificate chain.
      */
-    private X509Certificate[] cloneX509CertificateChain(X509Certificate[] certificates) {
+    private List<X509Certificate> cloneX509CertificateChain(X509Certificate[] certificates) {
         ClientLogger logger = new ClientLogger(AttestationSignerImpl.class);
         return Arrays.stream(certificates).map(certificate -> {
             X509Certificate newCert;
@@ -53,7 +54,7 @@ public class AttestationSignerImpl implements AttestationSigner {
                 throw logger.logExceptionAsError(new RuntimeException(e));
             }
             return newCert;
-        }).toArray(X509Certificate[]::new);
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -80,8 +81,8 @@ public class AttestationSignerImpl implements AttestationSigner {
      *
      * @return Certificate chain used to sign an attestation token.
      */
-    @Override public final X509Certificate[] getCertificates() {
-        return cloneX509CertificateChain(this.certificates);
+    @Override public final List<X509Certificate> getCertificates() {
+        return cloneX509CertificateChain(this.certificates.toArray(new X509Certificate[0]));
     }
 
     /**
@@ -162,12 +163,12 @@ public class AttestationSignerImpl implements AttestationSigner {
      * @param jwks JWKS to create.
      * @return Array of {@link AttestationSigner}s created from the JWK.
      */
-    public static AttestationSigner[] attestationSignersFromJwks(JsonWebKeySet jwks) {
+    public static List<AttestationSigner> attestationSignersFromJwks(JsonWebKeySet jwks) {
         return jwks
             .getKeys()
             .stream()
             .map(AttestationSignerImpl::fromJsonWebKey)
-            .toArray(AttestationSignerImpl[]::new);
+            .collect(Collectors.toList());
     }
 
 
@@ -202,6 +203,6 @@ public class AttestationSignerImpl implements AttestationSigner {
 
     }
 
-    private X509Certificate[] certificates;
+    private List<X509Certificate> certificates;
     private String keyId;
 }

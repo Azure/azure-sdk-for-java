@@ -4,6 +4,7 @@
 package com.azure.security.attestation.models;
 
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 /**
  * An AttestationSigner object represents an entity which might sign a certificate from the attestation
@@ -20,7 +21,7 @@ public interface AttestationSigner {
      *
      * @return Certificate chain used to sign an attestation token.
      */
-    X509Certificate[] getCertificates();
+    List<X509Certificate> getCertificates();
 
     /**
      * Gets the KeyId.
