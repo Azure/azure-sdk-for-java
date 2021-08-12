@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.RuntimeExecutionTimes;
 import com.azure.cosmos.implementation.IndexUtilizationInfo;
 import com.azure.cosmos.implementation.SingleIndexUtilizationEntity;
 import com.azure.cosmos.implementation.CompositeIndexUtilizationEntity;
+import com.azure.cosmos.implementation.apachecommons.lang.ObjectUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.time.Duration;
@@ -45,8 +46,10 @@ abstract class QueryMetricsWriter {
         this.writeClientSideMetrics(BridgeInternal.getClientSideMetrics(queryMetrics));
 
         // IndexUtilizationInfo
-        this.writeIndexUtilizationInfoMetrics(queryMetrics.getIndexUtilizationInfo());
-
+        if (queryMetrics.getIndexUtilizationInfo() != null) {
+            this.writeIndexUtilizationInfoMetrics(queryMetrics.getIndexUtilizationInfo());
+        }
+//        this.writeIndexUtilizationInfoMetrics(queryMetrics.getIndexUtilizationInfo());
         this.writeAfterQueryMetrics();
     }
 
