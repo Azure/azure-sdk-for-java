@@ -4,7 +4,6 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -15,8 +14,6 @@ import static java.lang.invoke.MethodType.methodType;
  * Utility methods that aid in performing reflective operations.
  */
 public final class ReflectionUtils {
-    private static final ClientLogger LOGGER = new ClientLogger(ReflectionUtils.class);
-
     // This lookup is specific to the com.azure.core module, specifically this class.
     private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
 
@@ -75,8 +72,9 @@ public final class ReflectionUtils {
      * @param targetClass The {@link Class} that will need to be reflectively accessed.
      * @return The {@link MethodHandles.Lookup} that will allow {@code com.azure.core} to access the {@code targetClass}
      * reflectively.
+     * @throws Throwable If the underlying reflective calls throw an exception.
      */
-    public static MethodHandles.Lookup getLookupToUse(Class<?> targetClass) {
+    public static MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
         /*
          * If we were able to write this using Java 9+ code.
          *
@@ -88,8 +86,8 @@ public final class ReflectionUtils {
             // Java 8 is being used, public lookup should be able to access the Response class.
             return MethodHandles.publicLookup();
         } else {
-            Object responseModule = getModule(targetClass);
-            if (isModuleExported(responseModule)) {
+            Object responseModule = GET_MODULE.invoke(targetClass);
+            if ((boolean) IS_MODULE_EXPORTED.invoke(responseModule, "")) {
                 return MethodHandles.publicLookup();
             } else {
                 /*
@@ -98,44 +96,12 @@ public final class ReflectionUtils {
                  * lookup we need to ensure that the com.azure.core module reads the response class's module as the
                  * lookup won't have permissions necessary to create the MethodHandle instance without it.
                  */
-                if (!canReadModule(responseModule)) {
-                    addModuleRead(responseModule);
+                if (!(boolean) CAN_READ_MODULE.invoke(CORE_MODULE, responseModule)) {
+                    ADD_MODULE_READ.invoke(CORE_MODULE, responseModule);
                 }
 
                 return LOOKUP;
             }
-        }
-    }
-
-    private static Object getModule(Class<?> clazz) {
-        try {
-            return GET_MODULE.invoke(clazz);
-        } catch (Throwable throwable) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(throwable));
-        }
-    }
-
-    private static boolean isModuleExported(Object module) {
-        try {
-            return (boolean) IS_MODULE_EXPORTED.invoke(module, "");
-        } catch (Throwable throwable) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(throwable));
-        }
-    }
-
-    private static boolean canReadModule(Object module) {
-        try {
-            return (boolean) CAN_READ_MODULE.invoke(CORE_MODULE, module);
-        } catch (Throwable throwable) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(throwable));
-        }
-    }
-
-    private static void addModuleRead(Object module) {
-        try {
-            ADD_MODULE_READ.invoke(CORE_MODULE, module);
-        } catch (Throwable throwable) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(throwable));
         }
     }
 

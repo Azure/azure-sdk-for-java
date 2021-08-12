@@ -45,6 +45,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
@@ -119,6 +120,8 @@ public class JacksonAdapter implements SerializerAdapter {
      * The lazily-created serializer for this ServiceClient.
      */
     private static SerializerAdapter serializerAdapter;
+
+    private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
     private static final Map<Field, MethodHandle> FIELD_TO_SETTER_CACHE = new ConcurrentHashMap<>();
@@ -425,11 +428,22 @@ public class JacksonAdapter implements SerializerAdapter {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
 
-            return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(type, t -> mapper.getTypeFactory()
+            return getFromCache(type, TYPE_TO_JAVA_TYPE_CACHE, t -> mapper.getTypeFactory()
                 .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
-            return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(type, t -> mapper.getTypeFactory().constructType(t));
+            return getFromCache(type, TYPE_TO_JAVA_TYPE_CACHE, t -> mapper.getTypeFactory().constructType(t));
         }
+    }
+
+    /*
+     * Helper method that gets the value for the given key from the cache.
+     */
+    private static <K, V> V getFromCache(K key, Map<K, V> cache, Function<K, V> compute) {
+        if (cache.size() >= CACHE_SIZE_LIMIT) {
+            cache.clear();
+        }
+
+        return cache.computeIfAbsent(key, compute);
     }
 
     /*
@@ -494,8 +508,15 @@ public class JacksonAdapter implements SerializerAdapter {
             final Class<?> clazz = deserializedHeaders.getClass();
             final String clazzSimpleName = clazz.getSimpleName();
 
-            MethodHandle setterHandler = FIELD_TO_SETTER_CACHE.computeIfAbsent(declaringField, field -> {
-                MethodHandles.Lookup lookupToUse = ReflectionUtils.getLookupToUse(clazz);
+            MethodHandle setterHandler = getFromCache(declaringField, FIELD_TO_SETTER_CACHE, field -> {
+                MethodHandles.Lookup lookupToUse;
+                try {
+                    lookupToUse = ReflectionUtils.getLookupToUse(clazz);
+                } catch (Throwable t) {
+                    logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, t);
+                    return null;
+                }
+
                 String setterName = getPotentialSetterName(field.getName());
 
                 try {

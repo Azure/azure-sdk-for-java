@@ -64,7 +64,12 @@ final class ResponseConstructorsCache {
      * found.
      */
     private MethodHandle locateResponseConstructor(Class<?> responseClass) {
-        MethodHandles.Lookup lookupToUse = ReflectionUtils.getLookupToUse(responseClass);
+        MethodHandles.Lookup lookupToUse;
+        try {
+            lookupToUse = ReflectionUtils.getLookupToUse(responseClass);
+        } catch (Throwable t) {
+            throw logger.logExceptionAsError(new RuntimeException(t));
+        }
 
         /*
          * Now that the MethodHandles.Lookup has been found to create the MethodHandle instance begin searching for
