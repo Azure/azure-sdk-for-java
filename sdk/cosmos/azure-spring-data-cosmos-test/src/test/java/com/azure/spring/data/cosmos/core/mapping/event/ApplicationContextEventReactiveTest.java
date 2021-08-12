@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
+import com.azure.spring.data.cosmos.repository.repository.ReactiveAddressRepository;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -27,18 +28,17 @@ import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITIO
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION2;
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS2_PARTITION1;
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITION3;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
-public class ApplicationContextEventTest {
+public class ApplicationContextEventReactiveTest {
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
-    AddressRepository repository;
-
+    private ReactiveAddressRepository repository;
     @Autowired
     private CosmosTemplate template;
     @Autowired
@@ -51,24 +51,20 @@ public class ApplicationContextEventTest {
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
-            TEST_ADDRESS2_PARTITION1));
+            TEST_ADDRESS2_PARTITION1)).collectList().block();
         simpleMappingEventListener.onAfterLoadEvents = new ArrayList<>();
     }
 
     @Test
     public void shouldPublishAfterLoadEventOnFindById() {
-        repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(), new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity()));
+        repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(), new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())).block();
         assertThat(simpleMappingEventListener.onAfterLoadEvents).hasSize(1);
         assertThat(simpleMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
     }
 
     @Test
     public void shouldPublishAfterLoadEventOnFindAll() {
-        Iterable<Address> addresses = repository.findAll();
-
-        //actual Iterable is a BlockingIterable so we need to use it for processing to occur
-        assertThat(addresses.iterator().hasNext()).isTrue();
-
+        repository.findAll().collectList().block();
         assertThat(simpleMappingEventListener.onAfterLoadEvents).hasSize(3);
         assertThat(simpleMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
         assertThat(simpleMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
@@ -79,11 +75,7 @@ public class ApplicationContextEventTest {
     public void shouldPublishAfterLoadEventForCustomQueries() {
         List<String> cities = new ArrayList<>();
         cities.add(TEST_ADDRESS1_PARTITION1.getCity());
-        Iterable<Address> addresses = repository.findByCityIn(cities);
-
-        //actual Iterable is a BlockingIterable so we need to use it for processing to occur
-        assertThat(addresses.iterator().hasNext()).isTrue();
-
+        repository.findByCityIn(cities).collectList().block();
         assertThat(simpleMappingEventListener.onAfterLoadEvents).hasSize(2);
         assertThat(simpleMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
         assertThat(simpleMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
@@ -91,7 +83,7 @@ public class ApplicationContextEventTest {
 
     @Test
     public void shouldPublishAfterLoadEventForAnnotatedCustomQueries() {
-        repository.annotatedFindListByCity(TEST_ADDRESS1_PARTITION1.getCity());
+        repository.annotatedFindListByCity(TEST_ADDRESS1_PARTITION1.getCity()).collectList().block();
         assertThat(simpleMappingEventListener.onAfterLoadEvents).hasSize(2);
         assertThat(simpleMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
         assertThat(simpleMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
@@ -99,25 +91,25 @@ public class ApplicationContextEventTest {
 
     @Test
     public void shouldNotPublishAfterLoadEventForInserts() {
-        repository.save(TEST_ADDRESS4_PARTITION3);
+        repository.save(TEST_ADDRESS4_PARTITION3).block();
         assertThat(simpleMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
 
     @Test
     public void shouldNotPublishAfterLoadEventForUpdates() {
-        repository.save(new Address(TEST_ADDRESS1_PARTITION1.getPostalCode(), TestConstants.STREET_0, TEST_ADDRESS1_PARTITION1.getCity()));
+        repository.save(new Address(TEST_ADDRESS1_PARTITION1.getPostalCode(), TestConstants.STREET_0, TEST_ADDRESS1_PARTITION1.getCity())).block();
         assertThat(simpleMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
 
     @Test
     public void shouldNotPublishAfterLoadEventForDeletes() {
-        repository.delete(TEST_ADDRESS1_PARTITION1);
+        repository.delete(TEST_ADDRESS1_PARTITION1).block();
         assertThat(simpleMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
 
     @Test
     public void shouldNotPublishAfterLoadEventForCustomDeleteQuery() {
-        repository.deleteByCity(TEST_ADDRESS1_PARTITION1.getCity());
+        repository.deleteByCity(TEST_ADDRESS1_PARTITION1.getCity()).block();
         assertThat(simpleMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
 }

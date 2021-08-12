@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.mapping.event;
 
 import org.slf4j.Logger;
@@ -5,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.GenericTypeResolver;
 
+/*
+ * Ported to cosmos from spring-data-mongo
+ * https://github.com/spring-projects/spring-data-mongodb/blob/main/spring-data-mongodb/src/main/java/org/springframework/data/mongodb/core/mapping/event/AbstractMongoEventListener.java
+ */
 public abstract class AbstractCosmosEventListener<E> implements ApplicationListener<CosmosMappingEvent<?>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractCosmosEventListener.class);
@@ -38,7 +44,6 @@ public abstract class AbstractCosmosEventListener<E> implements ApplicationListe
      * Captures {@link AfterLoadEvent}.
      *
      * @param event will never be {@literal null}.
-     * @since 1.8
      */
     public void onAfterLoad(AfterLoadEvent<E> event) {
         if (LOG.isDebugEnabled()) {

@@ -1,9 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.mapping.event;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.lang.Nullable;
 
+/*
+ * Ported to cosmos from spring-data-mongo
+ * https://github.com/spring-projects/spring-data-mongodb/blob/main/spring-data-mongodb/src/main/java/org/springframework/data/mongodb/core/mapping/event/MongoMappingEvent.java
+ */
 public class CosmosMappingEvent<T> extends ApplicationEvent {
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +41,6 @@ public class CosmosMappingEvent<T> extends ApplicationEvent {
      * Get the container the event refers to.
      *
      * @return {@literal null} if not set.
-     * @since 1.8
      */
     public @Nullable String getContainerName() {
         return containerName;
