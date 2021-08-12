@@ -10,9 +10,21 @@ parameters:
   - name: CheckoutRecordings
     type: boolean
     default: false
+  - name: CheckoutReadmes
+    type: boolean
+    default: false
+  - name: CheckoutCSpell
+    type: boolean
+    default: false
   - name: SDKType
     type: string
     default: client
+  - name: FromSource
+    type: string
+    default: 'false'
+  - name: OSVmImage
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
 
 steps:
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -23,6 +35,10 @@ steps:
         - ${{ if not(parameters.CheckoutRecordings) }}:
           - '!sdk/**/test-recordings'
           - '!sdk/**/session-records'
+        - ${{ if parameters.CheckoutReadmes }}:
+          - '**/*.md'
+        - ${{ if parameters.CheckoutReadmes }}:
+          - '.vscode/cspell.json'
 
   - task: UsePythonVersion@0
     displayName: 'Use Python 3.6'
@@ -31,21 +47,21 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
-      AgentImage: $(OSVmImage)
+      AgentImage: ${{ parameters.OSVmImage }}
 
   - task: PythonScript@0
     displayName: 'Set versions for source build'
     inputs:
       scriptPath: 'eng/versioning/set_versions.py'
       arguments: '--build-type client --pst'
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+    condition: and(succeeded(), eq('${{ parameters.FromSource }}', 'true'))
 
   - task: PythonScript@0
     displayName: 'Update versions for source build'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
       arguments: '--update-type library --build-type client --sr'
-    condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+    condition: and(succeeded(), eq('${{ parameters.FromSource }}','true'))
 
   - template: generate-project-list.yml
     parameters:
@@ -54,7 +70,7 @@ steps:
       JobType: 'test'
       SDKType: ${{ parameters.SDKType }}
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
- 
+
   - task: PythonScript@0
     displayName: 'Generate directories variable for sparse checkout'
     inputs:

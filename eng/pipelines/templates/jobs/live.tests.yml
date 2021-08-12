@@ -43,12 +43,14 @@ jobs:
       container: $[ variables['Container'] ]
 
     steps:
-      - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
+      - template: /eng/pipelines/templates/steps/initialize-environment.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
+          FromSource: ${{ variables.TestFromSource }}
+          OsVmImage: $(OSVmImage)
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/build-test-resource-config.yml

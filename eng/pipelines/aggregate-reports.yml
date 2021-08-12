@@ -19,7 +19,6 @@ jobs:
     steps:
     - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
       parameters:
-        JobType: 'Reporting'
         SDKType: 'client'
         ServiceDirectory: 'aggregate-report'
 

@@ -49,7 +49,6 @@ jobs:
 
       - template: ../steps/cache-maven-repository.yml
         parameters:
-          JobType: 'Build and Validate'
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
