@@ -108,7 +108,7 @@ public final class IndexUtilizationInfo {
     static IndexUtilizationInfo createFromCollection(
         Collection<IndexUtilizationInfo> indexUtilizationInfoCollection) {
         if (indexUtilizationInfoCollection == null) {
-            throw new NullPointerException("indexUtilizationInfoCollection");
+            return null;
         }
 
         List<SingleIndexUtilizationEntity> utilizedSingleIndexes = new ArrayList<>();
@@ -118,14 +118,12 @@ public final class IndexUtilizationInfo {
 
 
         for (IndexUtilizationInfo indexUtilizationInfo : indexUtilizationInfoCollection) {
-            if (indexUtilizationInfo == null) {
-                throw new NullPointerException("queryPreparationTimesList can not have a null element");
+            if (indexUtilizationInfo != null) {
+                utilizedSingleIndexes.addAll(indexUtilizationInfo.utilizedSingleIndexes);
+                potentialSingleIndexes.addAll(indexUtilizationInfo.potentialSingleIndexes);
+                utilizedCompositeIndexes.addAll(indexUtilizationInfo.utilizedCompositeIndexes);
+                potentialCompositeIndexes.addAll(indexUtilizationInfo.potentialCompositeIndexes);
             }
-
-            utilizedSingleIndexes.addAll(indexUtilizationInfo.utilizedSingleIndexes);
-            potentialSingleIndexes.addAll(indexUtilizationInfo.potentialSingleIndexes);
-            utilizedCompositeIndexes.addAll(indexUtilizationInfo.utilizedCompositeIndexes);
-            potentialCompositeIndexes.addAll(indexUtilizationInfo.potentialCompositeIndexes);
         }
 
         return new IndexUtilizationInfo(

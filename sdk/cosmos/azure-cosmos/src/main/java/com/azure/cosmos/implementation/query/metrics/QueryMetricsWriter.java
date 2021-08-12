@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.RuntimeExecutionTimes;
 import com.azure.cosmos.implementation.IndexUtilizationInfo;
 import com.azure.cosmos.implementation.SingleIndexUtilizationEntity;
 import com.azure.cosmos.implementation.CompositeIndexUtilizationEntity;
-import com.azure.cosmos.implementation.apachecommons.lang.ObjectUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.time.Duration;
