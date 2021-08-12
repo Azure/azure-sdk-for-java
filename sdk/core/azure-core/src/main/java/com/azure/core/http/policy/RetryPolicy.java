@@ -210,14 +210,16 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private static Duration tryParseLongOrDateTime(String value) {
+        long delaySeconds;
         try {
             OffsetDateTime retryAfter = new DateTimeRfc1123(value).getDateTime();
 
-            return Duration.between(OffsetDateTime.now(), retryAfter);
+            delaySeconds = OffsetDateTime.now().until(retryAfter, ChronoUnit.SECONDS);
         } catch (DateTimeException ex) {
-            long delaySeconds = tryParseLong(value);
-            return (delaySeconds >= 0) ? Duration.ofSeconds(delaySeconds) : null;
+            delaySeconds = tryParseLong(value);
         }
+
+        return (delaySeconds >= 0) ? Duration.ofSeconds(delaySeconds) : null;
     }
 
     private static long tryParseLong(String value) {
