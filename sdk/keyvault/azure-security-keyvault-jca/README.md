@@ -152,7 +152,7 @@ This module uses JUL (`java.util.logging`), so to configure things like the logg
 
 Here is an example of a `logging.properties` file:
 ```properties
-# To enable this configure file, Please add this property:
+# To enable this configuration file, please add this property:
 # -Djava.util.logging.config.file="src/test/resources/logging.properties"
 #
 # The Java logging APIs (java.util.logging) default loads logging.properties from:
