@@ -6,6 +6,9 @@
 
 - Added overload of `create(Context)` for `Creatable`.
 - Added overload of `apply(Context)` for `Appliable`.
+### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.6.0 (2021-06-18)
 
