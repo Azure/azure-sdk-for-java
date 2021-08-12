@@ -354,11 +354,23 @@ public class RetryPolicyTests {
             // x-ms-retry-after-ms should be respected as milliseconds.
             Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "10"), retryStrategy, Duration.ofMillis(10)),
 
+            // x-ms-retry-after-ms wasn't a valid number, fallback to the default.
+            Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "-10"), retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "ten"), retryStrategy, Duration.ofSeconds(1)),
+
             // retry-after-ms should be respected as milliseconds.
             Arguments.of(new HttpHeaders().set("retry-after-ms", "64"), retryStrategy, Duration.ofMillis(64)),
 
+            // retry-after-ms wasn't a valid number, fallback to the default.
+            Arguments.of(new HttpHeaders().set("retry-after-ms", "-10"), retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new HttpHeaders().set("retry-after-ms", "ten"), retryStrategy, Duration.ofSeconds(1)),
+
             // Retry-After should be respected as seconds.
-            Arguments.of(new HttpHeaders().set("Retry-After", "10"), retryStrategy, Duration.ofSeconds(10))
+            Arguments.of(new HttpHeaders().set("Retry-After", "10"), retryStrategy, Duration.ofSeconds(10)),
+
+            // Retry-After wasn't a valid number, fallback to the default.
+            Arguments.of(new HttpHeaders().set("Retry-After", "-10"), retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new HttpHeaders().set("Retry-After", "ten"), retryStrategy, Duration.ofSeconds(1))
         );
     }
 
@@ -371,7 +383,7 @@ public class RetryPolicyTests {
         // Since DateTime based Retry-After uses OffsetDateTime.now internally make sure this result skew isn't larger
         // than an allowable bound.
         Duration skew = Duration.ofSeconds(30).minus(actual);
-        assertTrue(skew.getSeconds() < 1);
+        assertTrue(skew.getSeconds() < 2);
     }
 
     private static RetryStrategy createStatusCodeRetryStrategy(int... retriableErrorCodes) {

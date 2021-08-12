@@ -8,16 +8,19 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
@@ -119,7 +122,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                                 .delaySubscription(delayDuration));
                     }
                 } else {
-                    if (tryCount == retryStrategy.getMaxRetries()) {
+                    if (tryCount >= retryStrategy.getMaxRetries()) {
                         logger.info("Retry attempts have been exhausted after {} attempts.", tryCount);
                     }
                     return Mono.just(httpResponse);
@@ -170,46 +173,58 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
     static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, RetryStrategy retryStrategy) {
-        String retryHeaderValue = responseHeaders.getValue(X_MS_RETRY_AFTER_MS_HEADER);
-
         // Found 'x-ms-retry-after-ms' header, use a Duration of milliseconds based on the value.
-        if (!isNullOrEmpty(retryHeaderValue)) {
-            int delayMs = tryParseHeaderToInt(retryHeaderValue);
-            if (delayMs != Integer.MIN_VALUE) {
-                return Duration.ofMillis(delayMs);
-            }
+        Duration retryDelay = tryGetRetryDelay(responseHeaders, X_MS_RETRY_AFTER_MS_HEADER,
+            RetryPolicy::tryGetDelayMillis);
+        if (retryDelay != null) {
+            return retryDelay;
         }
-
-        retryHeaderValue = responseHeaders.getValue(RETRY_AFTER_MS_HEADER);
 
         // Found 'retry-after-ms' header, use a Duration of milliseconds based on the value.
-        if (!isNullOrEmpty(retryHeaderValue)) {
-            int delayMs = tryParseHeaderToInt(retryHeaderValue);
-            if (delayMs != Integer.MIN_VALUE) {
-                return Duration.ofMillis(delayMs);
-            }
+        retryDelay = tryGetRetryDelay(responseHeaders, RETRY_AFTER_MS_HEADER, RetryPolicy::tryGetDelayMillis);
+        if (retryDelay != null) {
+            return retryDelay;
         }
 
-        retryHeaderValue = responseHeaders.getValue(RETRY_AFTER_HEADER);
         // Found 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
         // attempt to resolve it as an HTTP date (RFC1123).
-        if (!isNullOrEmpty(retryHeaderValue)) {
-            try {
-                return Duration.ofSeconds(Integer.parseInt(retryHeaderValue));
-            } catch (NumberFormatException ex) {
-                return Duration.between(OffsetDateTime.now(), new DateTimeRfc1123(retryHeaderValue).getDateTime());
-            }
+        retryDelay = tryGetRetryDelay(responseHeaders, RETRY_AFTER_HEADER, RetryPolicy::tryParseLongOrDateTime);
+        if (retryDelay != null) {
+            return retryDelay;
         }
 
         // None of the well-known headers have been found, return the default delay duration.
         return retryStrategy.calculateRetryDelay(tryCount);
     }
 
-    private static int tryParseHeaderToInt(String headerValue) {
+    private static Duration tryGetRetryDelay(HttpHeaders headers, String headerName,
+        Function<String, Duration> delayParser) {
+        String headerValue = headers.getValue(headerName);
+
+        return CoreUtils.isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
+    }
+
+    private static Duration tryGetDelayMillis(String value) {
+        long delayMillis = tryParseLong(value);
+        return (delayMillis >= 0) ? Duration.ofMillis(delayMillis) : null;
+    }
+
+    private static Duration tryParseLongOrDateTime(String value) {
         try {
-            return Integer.parseInt(headerValue);
+            OffsetDateTime retryAfter = new DateTimeRfc1123(value).getDateTime();
+
+            return Duration.between(OffsetDateTime.now(), retryAfter);
+        } catch (DateTimeException ex) {
+            long delaySeconds = tryParseLong(value);
+            return (delaySeconds >= 0) ? Duration.ofSeconds(delaySeconds) : null;
+        }
+    }
+
+    private static long tryParseLong(String value) {
+        try {
+            return Long.parseLong(value);
         } catch (NumberFormatException ex) {
-            return Integer.MIN_VALUE;
+            return -1;
         }
     }
 }
