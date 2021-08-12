@@ -30,10 +30,10 @@ Key Vault also supports a contentType field for secrets. Clients may specify the
 Besides, this starter provides features of supporting multiple Key Vaults, case sensitive mode of Key Vault names and using placeholder presenting Key Vault names in property file
 
 ### Configuration Options
-Azure Spring Boot Key Vault Starter deprecates all legacy properties of which the prefix is `azure.keyvault` and uses `spring.cloud.azure.keyvault` instead.
-When a deprecated property is detected while its active property is not found, the active property will be configured into application environment with value from the deprecated property.
+Azure Key Vault Secrets Spring Boot Starter deprecates all legacy properties of which the prefix is `azure.keyvault` and uses `spring.cloud.azure.keyvault` instead.
+When a deprecated property is detected while its active property is not found, the active property will be configured into the application environment with the value from the deprecated property.
 
-If you load configuration properties from Azure Key Vault, the preceding detection and replacement are also applicable for Key Vault property sources. Replaced properties from Key Vault have higher priorities than local ones.
+If you load configuration properties from Azure Key Vault, the preceding detection and replacement are also applicable for Key Vault property sources. Replaced properties from Key Vault have a higher priority than local ones.
 Note that replaced properties will not be refreshed as common properties from Key Vault property source.
 
 We also provide unified configuration properties that are applicable for Azure Spring Starters. When Key Vault properties are not configured, associated unified Azure Spring properties will take effects.
@@ -55,7 +55,7 @@ spring.cloud.azure.keyvault.secret-keys|If application using specific secret key
 spring.cloud.azure.keyvault.secret-service-version|Valid secret-service-version value can be found [here][version_link].|The latest value|
 spring.cloud.azure.keyvault.uri|Azure Key Vault Uri.||
 
-Note: for multiple Key Vault usage, specify your Key Vault name after the prefix of `spring.cloud.azure.keyvault`.
+Note: for multiple Key Vault usage, specify your Key Vault name after the prefix of `spring.cloud.azure.keyvault.`. For usage examples, please refer to section [Multiple Key Vault support](#multiple-key-vault-support-1).
 #### Deprecated Properties
 |Obsolete Type|Description|Default Value|Obsolete Type|
 |:---|:---|:---|:---
@@ -75,6 +75,7 @@ azure.keyvault.uri|Azure Key Vault Uri.| |**spring.cloud.azure.keyvault.uri** |
 
 #### Unified Azure Spring Properties
 1. Credential Properties
+
 |Name|Description|Comment|
 |:---|:---|:---
 spring.cloud.azure.credential.client-id|Client id to use when performing service principal authentication with Azure.||
@@ -83,10 +84,11 @@ spring.cloud.azure.credential.client-certificate-path|Path of a PEM certificate 
 spring.cloud.azure.credential.client-certificate-password|Password of the certificate file to use when performing service principal authentication with Azure.||
 spring.cloud.azure.credential.tenant-id|Tenant id for the Azure resources.||
 
-2. EnvironmentProperties
+2. Environment Properties
+
 |Name|Description|Default Value|Comment|
 |:---|:---|:---|:---
-spring.cloud.azure.environment.authority-host|Authority Host URI|https://login.microsoftonline.com/||
+spring.cloud.azure.environment.authority-host| Authority Host URI |https://login.microsoftonline.com/| |
    
 ### Multiple Key Vault support
 

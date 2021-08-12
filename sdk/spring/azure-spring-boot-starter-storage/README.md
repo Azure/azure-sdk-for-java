@@ -23,10 +23,10 @@ The project provides a Spring Boot Starter `azure-spring-boot-starter-storage` t
 The Azure Storage platform is Microsoft's cloud storage solution for modern data storage scenarios. Core storage services offer a massively scalable object store for data objects, disk storage for Azure virtual machines (VMs), a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.
 
 ### Configuration Options
-Azure Spring Boot Storage Starter deprecates all legacy properties of which the prefix is `azure.storage` and uses `spring.cloud.azure.storage` instead.
-When a deprecated property is detected while its active property is not found, the active property will be configured into application environment with value from the deprecated property.
+Azure Storage Spring Boot Starter deprecates all legacy properties of which the prefix is `azure.storage` and uses `spring.cloud.azure.storage` instead.
+When a deprecated property is detected while its active property is not found, the active property will be configured into the application environment with the value from the deprecated property.
 
-If you load configuration properties from Azure Key Vault, the preceding detection and replacement are also applicable for Key Vault property sources. Replaced properties from Key Vault have higher priorities than local ones.
+If you load configuration properties from Azure Key Vault, the preceding detection and replacement are also applicable for Key Vault property sources. Replaced properties from Key Vault have a higher priority than local ones.
 Note that replaced properties will not be refreshed as common properties from Key Vault property source.
 #### Active Properties
 

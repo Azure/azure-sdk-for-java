@@ -40,10 +40,10 @@
 - Supports List and nested type in domain class.
 
 ### Configuration Options
-Azure Spring Boot Cosmos Starter deprecates all legacy properties of which the prefix is `azure.cosmos` and uses `spring.cloud.azure.cosmos` instead.
-When a deprecated property is detected while its active property is not found, the active property will be configured into application environment with value from the deprecated property.
+Azure Cosmos Spring Boot Starter deprecates all legacy properties of which the prefix is `azure.cosmos` and uses `spring.cloud.azure.cosmos` instead.
+When a deprecated property is detected while its active property is not found, the active property will be configured into the application environment with the value from the deprecated property.
 
-If you load configuration properties from Azure Key Vault, the preceding detection and replacement are also applicable for Key Vault property sources. Replaced properties from Key Vault have higher priorities than local ones.
+If you load configuration properties from Azure Key Vault, the preceding detection and replacement are also applicable for Key Vault property sources. Replaced properties from Key Vault have a higher priority than local ones.
 Note that replaced properties will not be refreshed as common properties from Key Vault property source.
 #### Active Properties
 
