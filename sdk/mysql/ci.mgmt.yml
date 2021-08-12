@@ -8,7 +8,15 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mysql/
+      - sdk/mysql/ci.mgmt.yml
+      - sdk/mysql/mgmt-v2017_12_01/
+      - sdk/mysql/mgmt-v2017_12_01_preview/
+      - sdk/mysql/mgmt-v2020_01_01/
+    exclude:
+      - sdk/mysql/pom.xml
+      - sdk/mysql/mgmt-v2017_12_01/pom.xml
+      - sdk/mysql/mgmt-v2017_12_01_preview/pom.xml
+      - sdk/mysql/mgmt-v2020_01_01/pom.xml
 
 pr:
   branches:
@@ -19,7 +27,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mysql/
+      - sdk/mysql/ci.mgmt.yml
+      - sdk/mysql/mgmt-v2017_12_01/
+      - sdk/mysql/mgmt-v2017_12_01_preview/
+      - sdk/mysql/mgmt-v2020_01_01/
+    exclude:
+      - sdk/mysql/pom.xml
+      - sdk/mysql/mgmt-v2017_12_01/pom.xml
+      - sdk/mysql/mgmt-v2017_12_01_preview/pom.xml
+      - sdk/mysql/mgmt-v2020_01_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

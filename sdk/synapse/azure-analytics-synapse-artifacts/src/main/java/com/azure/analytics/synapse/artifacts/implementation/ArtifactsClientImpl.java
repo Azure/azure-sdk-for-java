@@ -194,28 +194,28 @@ public final class ArtifactsClientImpl {
         return this.notebooks;
     }
 
-    /** The WorkspacesImpl object to access its operations. */
-    private final WorkspacesImpl workspaces;
+    /** The NotebookOperationResultsImpl object to access its operations. */
+    private final NotebookOperationResultsImpl notebookOperationResults;
 
     /**
-     * Gets the WorkspacesImpl object to access its operations.
+     * Gets the NotebookOperationResultsImpl object to access its operations.
      *
-     * @return the WorkspacesImpl object.
+     * @return the NotebookOperationResultsImpl object.
      */
-    public WorkspacesImpl getWorkspaces() {
-        return this.workspaces;
+    public NotebookOperationResultsImpl getNotebookOperationResults() {
+        return this.notebookOperationResults;
     }
 
-    /** The SqlPoolsImpl object to access its operations. */
-    private final SqlPoolsImpl sqlPools;
+    /** The SparkConfigurationsImpl object to access its operations. */
+    private final SparkConfigurationsImpl sparkConfigurations;
 
     /**
-     * Gets the SqlPoolsImpl object to access its operations.
+     * Gets the SparkConfigurationsImpl object to access its operations.
      *
-     * @return the SqlPoolsImpl object.
+     * @return the SparkConfigurationsImpl object.
      */
-    public SqlPoolsImpl getSqlPools() {
-        return this.sqlPools;
+    public SparkConfigurationsImpl getSparkConfigurations() {
+        return this.sparkConfigurations;
     }
 
     /** The BigDataPoolsImpl object to access its operations. */
@@ -228,6 +228,18 @@ public final class ArtifactsClientImpl {
      */
     public BigDataPoolsImpl getBigDataPools() {
         return this.bigDataPools;
+    }
+
+    /** The WorkspaceGitRepoManagementsImpl object to access its operations. */
+    private final WorkspaceGitRepoManagementsImpl workspaceGitRepoManagements;
+
+    /**
+     * Gets the WorkspaceGitRepoManagementsImpl object to access its operations.
+     *
+     * @return the WorkspaceGitRepoManagementsImpl object.
+     */
+    public WorkspaceGitRepoManagementsImpl getWorkspaceGitRepoManagements() {
+        return this.workspaceGitRepoManagements;
     }
 
     /** The IntegrationRuntimesImpl object to access its operations. */
@@ -254,16 +266,52 @@ public final class ArtifactsClientImpl {
         return this.libraries;
     }
 
-    /** The WorkspaceGitRepoManagementsImpl object to access its operations. */
-    private final WorkspaceGitRepoManagementsImpl workspaceGitRepoManagements;
+    /** The OperationResultsImpl object to access its operations. */
+    private final OperationResultsImpl operationResults;
 
     /**
-     * Gets the WorkspaceGitRepoManagementsImpl object to access its operations.
+     * Gets the OperationResultsImpl object to access its operations.
      *
-     * @return the WorkspaceGitRepoManagementsImpl object.
+     * @return the OperationResultsImpl object.
      */
-    public WorkspaceGitRepoManagementsImpl getWorkspaceGitRepoManagements() {
-        return this.workspaceGitRepoManagements;
+    public OperationResultsImpl getOperationResults() {
+        return this.operationResults;
+    }
+
+    /** The OperationStatusImpl object to access its operations. */
+    private final OperationStatusImpl operationStatus;
+
+    /**
+     * Gets the OperationStatusImpl object to access its operations.
+     *
+     * @return the OperationStatusImpl object.
+     */
+    public OperationStatusImpl getOperationStatus() {
+        return this.operationStatus;
+    }
+
+    /** The SqlPoolsImpl object to access its operations. */
+    private final SqlPoolsImpl sqlPools;
+
+    /**
+     * Gets the SqlPoolsImpl object to access its operations.
+     *
+     * @return the SqlPoolsImpl object.
+     */
+    public SqlPoolsImpl getSqlPools() {
+        return this.sqlPools;
+    }
+
+    /** The WorkspacesImpl object to access its operations. */
+    private final WorkspacesImpl workspaces;
+
+    /**
+     * Gets the WorkspacesImpl object to access its operations.
+     *
+     * @return the WorkspacesImpl object.
+     */
+    public WorkspacesImpl getWorkspaces() {
+        return this.workspaces;
     }
 
     /**
@@ -318,11 +366,15 @@ public final class ArtifactsClientImpl {
         this.sqlScripts = new SqlScriptsImpl(this);
         this.sparkJobDefinitions = new SparkJobDefinitionsImpl(this);
         this.notebooks = new NotebooksImpl(this);
-        this.workspaces = new WorkspacesImpl(this);
-        this.sqlPools = new SqlPoolsImpl(this);
+        this.notebookOperationResults = new NotebookOperationResultsImpl(this);
+        this.sparkConfigurations = new SparkConfigurationsImpl(this);
         this.bigDataPools = new BigDataPoolsImpl(this);
+        this.workspaceGitRepoManagements = new WorkspaceGitRepoManagementsImpl(this);
         this.integrationRuntimes = new IntegrationRuntimesImpl(this);
         this.libraries = new LibrariesImpl(this);
-        this.workspaceGitRepoManagements = new WorkspaceGitRepoManagementsImpl(this);
+        this.operationResults = new OperationResultsImpl(this);
+        this.operationStatus = new OperationStatusImpl(this);
+        this.sqlPools = new SqlPoolsImpl(this);
+        this.workspaces = new WorkspacesImpl(this);
     }
 }

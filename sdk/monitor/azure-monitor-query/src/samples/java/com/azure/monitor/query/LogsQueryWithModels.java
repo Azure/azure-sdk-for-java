@@ -31,12 +31,12 @@ public class LogsQueryWithModels {
                 .buildClient();
 
         LogsQueryResult queryResults = logsQueryClient
-                .queryLogs("{workspace-id}", "AppRequests", null);
+                .query("{workspace-id}", "AppRequests", null);
 
         // Sample to use a model type to read the results
         for (LogsTable table : queryResults.getLogsTables()) {
             for (LogsTableRow row : table.getRows()) {
-                CustomModel model = row.getRowAsObject(CustomModel.class);
+                CustomModel model = row.toObject(CustomModel.class);
                 System.out.println("Time generated " + model.getTimeGenerated() + "; success = " + model.getSuccess()
                         + "; operation name = " + model.getOperationName());
             }

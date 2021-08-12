@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.jca.test;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
-import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
+import com.azure.security.keyvault.jca.KeyVaultKeyStore;
 
 import java.io.IOException;
 import java.security.KeyStore;
@@ -35,14 +35,7 @@ public class PropertyConvertorUtils {
         "AZURE_KEYVAULT_URI");
 
     public static KeyStore getKeyVaultKeyStore() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
-        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
-            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-        keyStore.load(parameter);
-        return keyStore;
+        return KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
     }
 
     public static void addKeyVaultJcaProvider() {

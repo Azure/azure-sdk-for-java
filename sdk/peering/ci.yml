@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/peering/
+      - sdk/peering/ci.yml
+      - sdk/peering/azure-resourcemanager-peering/
+    exclude:
+      - sdk/peering/pom.xml
+      - sdk/peering/azure-resourcemanager-peering/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/peering/
+      - sdk/peering/ci.yml
+      - sdk/peering/azure-resourcemanager-peering/
+    exclude:
+      - sdk/peering/pom.xml
+      - sdk/peering/azure-resourcemanager-peering/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

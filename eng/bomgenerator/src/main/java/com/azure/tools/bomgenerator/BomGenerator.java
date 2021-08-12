@@ -20,7 +20,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
@@ -30,14 +32,21 @@ import static com.azure.tools.bomgenerator.Utils.AZURE_PERF_LIBRARY_IDENTIFIER;
 import static com.azure.tools.bomgenerator.Utils.AZURE_TEST_LIBRARY_IDENTIFIER;
 import static com.azure.tools.bomgenerator.Utils.EXCLUSION_LIST;
 import static com.azure.tools.bomgenerator.Utils.GENERATE_MODE;
+import static com.azure.tools.bomgenerator.Utils.INPUT_DEPENDENCY_PATTERN;
 import static com.azure.tools.bomgenerator.Utils.POM_TYPE;
 import static com.azure.tools.bomgenerator.Utils.SDK_DEPENDENCY_PATTERN;
+import static com.azure.tools.bomgenerator.Utils.STRING_SPLIT_BY_COLON;
+import static com.azure.tools.bomgenerator.Utils.isPublishedArtifact;
 import static com.azure.tools.bomgenerator.Utils.parsePomFileContent;
+import static com.azure.tools.bomgenerator.Utils.toBomDependencyNoVersion;
+import static com.azure.tools.bomgenerator.Utils.validateNotNullOrEmpty;
 
 public class BomGenerator {
     private String outputFileName;
     private String inputFileName;
     private String pomFileName;
+    private String overriddenInputDependenciesFileName;
+    private String reportFileName;
     private String mode;
 
     private static Logger logger = LoggerFactory.getLogger(BomGenerator.class);
@@ -54,6 +63,14 @@ public class BomGenerator {
         this.inputFileName = inputFileName;
     }
 
+    public String getOverriddenInputDependenciesFileName() {
+        return this.overriddenInputDependenciesFileName;
+    }
+
+    public void setOverriddenInputDependenciesFileName(String overriddenInputDependenciesFileName) {
+        this.overriddenInputDependenciesFileName = overriddenInputDependenciesFileName;
+    }
+
     public String getOutputFileName() {
         return this.outputFileName;
     }
@@ -68,6 +85,14 @@ public class BomGenerator {
 
     public void setPomFileName(String pomFileName) {
         this.pomFileName = pomFileName;
+    }
+
+    public String getReportFileName() {
+        return this.reportFileName;
+    }
+
+    public void setReportFileName(String reportFileName) {
+        this.reportFileName = reportFileName;
     }
 
     public String getMode() {
@@ -96,7 +121,7 @@ public class BomGenerator {
 
     private void validate() {
         var inputDependencies = parsePomFileContent(this.pomFileName);
-        DependencyAnalyzer analyzer = new DependencyAnalyzer(inputDependencies, null);
+        DependencyAnalyzer analyzer = new DependencyAnalyzer(inputDependencies, null, this.reportFileName);
         analyzer.validate();
     }
 
@@ -106,12 +131,12 @@ public class BomGenerator {
 
         // 1. Create the initial tree and reduce conflicts.
         // 2. And pick only those dependencies. that were in the input set, since they become the new roots of n-ary tree.
-        DependencyAnalyzer analyzer = new DependencyAnalyzer(inputDependencies, externalDependencies);
+        DependencyAnalyzer analyzer = new DependencyAnalyzer(inputDependencies, externalDependencies, this.reportFileName);
         analyzer.reduce();
         Collection<BomDependency> outputDependencies = analyzer.getBomEligibleDependencies();
 
         // 2. Create the new tree for the BOM.
-        analyzer = new DependencyAnalyzer(outputDependencies, externalDependencies);
+        analyzer = new DependencyAnalyzer(outputDependencies, externalDependencies, this.reportFileName);
         boolean validationFailed = analyzer.validate();
         outputDependencies = analyzer.getBomEligibleDependencies();
 
@@ -126,7 +151,7 @@ public class BomGenerator {
         }
     }
 
-    private List<BomDependency> scan() {
+    private List<BomDependency> scanVersioningClientFileDependencies() {
         List<BomDependency> inputDependencies = new ArrayList<>();
 
         try {
@@ -142,6 +167,69 @@ public class BomGenerator {
         }
 
         return inputDependencies;
+    }
+
+    private List<BomDependency> scan() {
+       var versioningClientDependency = scanVersioningClientFileDependencies();
+
+       if (this.overriddenInputDependenciesFileName == null) {
+           return versioningClientDependency;
+       }
+
+       var overriddenInputDependencies = scanOverriddenDependencies();
+       var overriddenInputDependenciesNoVersion = overriddenInputDependencies.stream().map(Utils::toBomDependencyNoVersion).collect(Collectors.toUnmodifiableSet());
+
+       var filteredInputDependencies = versioningClientDependency.stream().filter(dependency -> !overriddenInputDependenciesNoVersion.contains(toBomDependencyNoVersion(dependency))).collect(Collectors.toList());
+       filteredInputDependencies.addAll(overriddenInputDependencies);
+
+       return filteredInputDependencies;
+    }
+
+    private Map<BomDependency, String> parseRawFile() {
+        Map<BomDependency, String> inputDependencies = new HashMap();
+
+        try {
+            for (String line : Files.readAllLines(Paths.get(overriddenInputDependenciesFileName))) {
+                var matcher = INPUT_DEPENDENCY_PATTERN.matcher(line);
+                if (!matcher.matches()) {
+                    continue;
+                }
+
+                var dependencyPattern = matcher.group(1);
+                var pomFilePath = matcher.groupCount() == 3 ? matcher.group(2) : null;
+
+                var dependency = STRING_SPLIT_BY_COLON.split(dependencyPattern); {
+                    if(dependency.length != 3) {
+                        continue;
+                    }
+                    validateNotNullOrEmpty(dependency, "inputDependency");
+                    inputDependencies.put(new BomDependency(dependency[0], dependency[1], dependency[2]), pomFilePath);
+                }
+            }
+        } catch (IOException exception) {
+            logger.error("Input file parsing failed. Exception{}", exception.toString());
+        }
+
+        return inputDependencies;
+    }
+
+    private List<BomDependency> scanOverriddenDependencies() {
+        List<BomDependency> allInputDependencies = new ArrayList<>();
+
+        var overriddenInputDependencies = parseRawFile();
+        // Some of these libraries may not have been published yet.
+        for(BomDependency dependency: overriddenInputDependencies.keySet()) {
+            if(isPublishedArtifact(dependency)) {
+                allInputDependencies.add(dependency);
+                continue;
+            }
+
+            // Since the artifact is not published. We need to read the dependencies from the POM file directly
+            // and add them as input dependencies.
+            allInputDependencies.addAll(parsePomFileContent(overriddenInputDependencies.get(dependency)));
+        }
+
+        return allInputDependencies;
     }
 
     private BomDependency scanDependency(String line) {

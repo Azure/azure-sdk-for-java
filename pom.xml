@@ -355,7 +355,7 @@
                   </group>
                   <group>
                     <title>Azure Web Pub Sub</title>
-                    <package>com.azure.messaging.webpubsub*</package>
+                    <packages>com.azure.messaging.webpubsub*</packages>
                   </group>
                   <group>
                     <title>Azure Mixed Reality Authentication</title>

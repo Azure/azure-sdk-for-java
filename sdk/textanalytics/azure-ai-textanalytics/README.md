@@ -1,6 +1,6 @@
 # Azure Text Analytics client library for Java
 Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, 
-and includes six main functions:
+and includes the main features below:
 
 - Sentiment Analysis
 - Language Detection
@@ -10,6 +10,7 @@ and includes six main functions:
 - Linked Entity Recognition
 - Healthcare Entity Recognition
 - Multiple Actions Analysis Per Document
+- Extractive Text Summarization
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -22,22 +23,56 @@ and includes six main functions:
 
 ### Include the Package
 
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-ai-textanalytics</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
 [//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.1.0</version>
+    <version>5.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-**Note:** This version of the client library defaults to the `v3.1` version of the service.
+**Note:** This version of the client library defaults to the `v3.2-preview.1` version of the service.
 
 This table shows the relationship between SDK services and supported API versions of the service:
 
 |SDK version|Supported API version of service
 |-|-
-|5.1.x | 3.0, 3.1 (default)
+|5.2.x | 3.0, 3.1, 3.2-preview.1 (default)
+|5.1.x | 3.0, 3.1 
 |5.0.x | 3.0
 
 #### Create a Cognitive Services or Text Analytics resource
@@ -127,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.1</version>
+    <version>1.3.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -379,7 +414,8 @@ syncPoller.getFinalResult().forEach(
 ### Analyze multiple actions
 The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same
 set of documents. Currently, the supported features are: `entity recognition`, `linked entity recognition`,
-`Personally Identifiable Information (PII) entity recognition`, `key phrase extraction`, and `sentiment analysis`. 
+`Personally Identifiable Information (PII) entity recognition`, `key phrase extraction`, `sentiment analysis`, and
+`extractive summarization`(see sample [here][extractive_summarization_sample]). 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L243-L291 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(
@@ -533,5 +569,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
 [recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
+[extractive_summarization_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeExtractiveSummarization.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

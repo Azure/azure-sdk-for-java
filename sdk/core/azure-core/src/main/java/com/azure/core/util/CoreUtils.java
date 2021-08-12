@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,9 +17,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.function.BiFunction;
@@ -174,7 +178,7 @@ public final class CoreUtils {
      * @param page The paged response from server holding generic items.
      * @param context Metadata that is passed into the function that fetches the items from the next page.
      * @param content The function which fetches items from the next page.
-     * @param <T> The type of the item being returned in the paged response.
+     * @param <T> The type of the item being returned by the paged response.
      * @return The publisher holding all the generic items combined.
      */
     public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context,
@@ -281,6 +285,67 @@ public final class CoreUtils {
             return logOptions.getApplicationId();
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Creates {@link HttpHeaders} from the provided {@link ClientOptions}.
+     * <p>
+     * If {@code clientOptions} is null or {@link ClientOptions#getHeaders()} doesn't return any {@link Header} values
+     * null will be returned.
+     *
+     * @param clientOptions The {@link ClientOptions} used to create the {@link HttpHeaders}.
+     * @return {@link HttpHeaders} containing the {@link Header} values from {@link ClientOptions#getHeaders()} if
+     * {@code clientOptions} isn't null and contains {@link Header} values, otherwise null.
+     */
+    public static HttpHeaders createHttpHeadersFromClientOptions(ClientOptions clientOptions) {
+        if (clientOptions == null) {
+            return null;
+        }
+
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        clientOptions.getHeaders().forEach(
+            header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+
+        return httpHeaderList.isEmpty() ? null : new HttpHeaders(httpHeaderList);
+    }
+
+    /**
+     * Attempts to load an environment configured default timeout, in milliseconds.
+     * <p>
+     * If the environment default timeout isn't configured, {@code defaultTimeoutMillis} will be returned. If the
+     * environment default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code
+     * defaultTimeoutMillis} will be returned. If the environment default timeout is less than 0, 0 will be returned
+     * indicated that there is no timeout period.
+     *
+     * @param configuration The environment configurations.
+     * @param timeoutPropertyName The default timeout property name.
+     * @param defaultTimoutMillis The fallback timeout to be used.
+     * @param logger A {@link ClientLogger} to log exceptions.
+     * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
+     */
+    public static long getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
+        long defaultTimoutMillis, ClientLogger logger) {
+        String environmentTimeout = configuration.get(timeoutPropertyName);
+
+        // Environment wasn't configured with the timeout property.
+        if (CoreUtils.isNullOrEmpty(environmentTimeout)) {
+            return defaultTimoutMillis;
+        }
+
+        try {
+            long timeoutMillis = Long.parseLong(environmentTimeout);
+            if (timeoutMillis < 0) {
+                logger.verbose("{} was set to {} ms. Using timeout of 0 ms to indicate no timeout.",
+                    timeoutPropertyName, timeoutMillis);
+                return 0;
+            }
+
+            return timeoutMillis;
+        } catch (NumberFormatException ex) {
+            logger.warning("{} wasn't configured with a valid number. Using default of {} ms.", timeoutPropertyName,
+                defaultTimoutMillis, ex);
+            return defaultTimoutMillis;
         }
     }
 }

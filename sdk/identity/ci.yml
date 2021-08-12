@@ -9,6 +9,10 @@ trigger:
   paths:
     include:
       - sdk/identity/
+    exclude:
+      - sdk/identity/pom.xml
+      - sdk/identity/azure-identity/pom.xml
+      - sdk/identity/azure-identity-perf/pom.xml
 
 pr:
   branches:
@@ -20,6 +24,10 @@ pr:
   paths:
     include:
       - sdk/identity/
+    exclude:
+      - sdk/identity/pom.xml
+      - sdk/identity/azure-identity/pom.xml
+      - sdk/identity/azure-identity-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

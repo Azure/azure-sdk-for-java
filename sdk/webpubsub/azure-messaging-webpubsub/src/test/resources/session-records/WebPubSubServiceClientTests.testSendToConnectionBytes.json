@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.webpubsub.azure.com/api/hubs/test/connections/test_connection/:send",
+    "Uri" : "https://REDACTED.webpubsubdev.azure.com/api/hubs/test/connections/test_connection/:send?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-messaging-webpubsub/1.0.0-beta.3 (14.0.2; Windows 10; 10.0)",
-      "Content-Type" : "application/octet-stream"
+      "User-Agent" : "azsdk-java-azure-messaging-webpubsub/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "text/plain"
     },
     "Response" : {
       "content-length" : "0",
@@ -12,7 +12,7 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Wed, 21 Jul 2021 23:31:00 GMT"
+      "Date" : "Wed, 14 Apr 2021 05:49:32 GMT"
     },
     "Exception" : null
   } ],

@@ -6,7 +6,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.3.3</version>
+  <version>1.3.4</version>
   <artifactId>azure-arm-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -41,7 +41,7 @@
     <!-- Dependency Versions -->
     <jackson.version>2.10.5</jackson.version>
     <jackson-databind.version>2.10.5.1</jackson-databind.version>
-    <client-runtime.version>1.7.12</client-runtime.version>
+    <client-runtime.version>1.7.13</client-runtime.version>
     <commons-codec.version>1.13</commons-codec.version>
     <spotbugs.version>4.0.0-beta3</spotbugs.version>
     <spotbugs.maven.version>3.1.12.2</spotbugs.maven.version>
@@ -93,8 +93,8 @@
     <slf4j-test.version>1.2.0</slf4j-test.version>
     <reactor-test.version>3.3.9.RELEASE</reactor-test.version>
     <wiremock-standalone.version>2.24.1</wiremock-standalone.version>
-    <jetty-http.version>9.4.39.v20210325</jetty-http.version>
-    <jetty-server.version>9.4.39.v20210325</jetty-server.version>
+    <jetty-http.version>9.4.43.v20210629</jetty-http.version>
+    <jetty-server.version>9.4.43.v20210629</jetty-server.version>
     <junit.version>4.13.1</junit.version>
     <testng.version>6.14.3</testng.version>
     <assertj.version>3.11.1</assertj.version>

@@ -21,10 +21,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TInternal> The type of item.
  */
-public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
+public final class ItemBulkOperation<TInternal, TContext> implements CosmosItemOperation {
 
-    private TInternal item;
-
+    private final TInternal item;
+    private final TContext context;
     private final String id;
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
@@ -37,7 +37,8 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         String id,
         PartitionKey partitionKey,
         RequestOptions requestOptions,
-        TInternal item) {
+        TInternal item,
+        TContext context) {
 
         checkNotNull(operationType, "expected non-null operationType");
 
@@ -45,6 +46,7 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         this.partitionKey = partitionKey;
         this.id = id;
         this.item = item;
+        this.context = context;
         this.requestOptions = requestOptions;
     }
 
@@ -110,6 +112,11 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
     @SuppressWarnings("unchecked")
     public <T> T getItem() {
         return (T)this.item;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getContext() {
+        return (T)this.context;
     }
 
     public String getId() {

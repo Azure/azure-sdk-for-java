@@ -82,7 +82,7 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
         } else if (configuration.getOperationType() == Configuration.Operation.QuerySingle) {
 
             int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
-            String pk = docsToRead.get(index).getProperty(partitionKey);
+            String pk = (String) docsToRead.get(index).getProperty(partitionKey);
             options.setPartitionKey(new PartitionKey(pk));
             String sqlQuery = "Select * from c where c." + partitionKey + " = \"" + pk + "\"";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
@@ -126,7 +126,7 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
         } else if (configuration.getOperationType() == Configuration.Operation.ReadAllItemsOfLogicalPartition) {
 
             int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
-            String pk = docsToRead.get(index).getProperty(partitionKey);
+            String pk = (String) docsToRead.get(index).getProperty(partitionKey);
             obs = cosmosAsyncContainer.readAllItems(new PartitionKey(pk), options, PojoizedJson.class).byPage();
         } else {
             throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());

@@ -40,6 +40,8 @@ private class ChangeFeedMicroBatchStream
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
   private val client = CosmosClientCache(clientConfiguration, Some(cosmosClientStateHandle))
   private val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
+  container.openConnectionsAndInitCaches().block()
+
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
 
   override def latestOffset(): Offset = {

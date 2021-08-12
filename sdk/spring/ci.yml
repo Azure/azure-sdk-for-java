@@ -10,6 +10,53 @@ trigger:
   paths:
     include:
       - sdk/spring/
+    exclude:
+      - sdk/spring/pom.xml
+      - sdk/spring/azure-identity-spring/pom.xml
+      - sdk/spring/azure-spring-boot/pom.xml
+      - sdk/spring/azure-spring-boot-starter/pom.xml
+      - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
+      - sdk/spring/azure-spring-boot-starter-active-directory-b2c/pom.xml
+      - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
+      - sdk/spring/azure-spring-boot-starter-keyvault-secrets/pom.xml
+      - sdk/spring/azure-spring-boot-starter-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-starter-storage/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-b2c/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-resource-server-by-filter/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
+      - sdk/spring/azure-spring-boot-test-application/pom.xml
+      - sdk/spring/azure-spring-boot-test-core/pom.xml
+      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+      - sdk/spring/azure-spring-boot-test-parent/pom.xml
+      - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
+      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-test-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
+      - sdk/spring/azure-spring-cloud-context/pom.xml
+      - sdk/spring/azure-spring-cloud-messaging/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-eventhubs-kafka/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-servicebus/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-storage-queue/pom.xml
+      - sdk/spring/azure-spring-cloud-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-core/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-test/pom.xml
+      - sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-test-servicebus-binder/pom.xml
+      - sdk/spring/azure-spring-integration-core/pom.xml
+      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
+      - sdk/spring/azure-spring-integration-servicebus/pom.xml
+      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
+      - sdk/spring/azure-spring-integration-test/pom.xml
 
 pr:
   branches:
@@ -21,6 +68,53 @@ pr:
   paths:
     include:
       - sdk/spring/
+    exclude:
+      - sdk/spring/pom.xml
+      - sdk/spring/azure-identity-spring/pom.xml
+      - sdk/spring/azure-spring-boot/pom.xml
+      - sdk/spring/azure-spring-boot-starter/pom.xml
+      - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
+      - sdk/spring/azure-spring-boot-starter-active-directory-b2c/pom.xml
+      - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
+      - sdk/spring/azure-spring-boot-starter-keyvault-secrets/pom.xml
+      - sdk/spring/azure-spring-boot-starter-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-starter-storage/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-b2c/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-resource-server-by-filter/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
+      - sdk/spring/azure-spring-boot-test-application/pom.xml
+      - sdk/spring/azure-spring-boot-test-core/pom.xml
+      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+      - sdk/spring/azure-spring-boot-test-parent/pom.xml
+      - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
+      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-test-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
+      - sdk/spring/azure-spring-cloud-context/pom.xml
+      - sdk/spring/azure-spring-cloud-messaging/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-eventhubs-kafka/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-servicebus/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-storage-queue/pom.xml
+      - sdk/spring/azure-spring-cloud-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-core/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-test/pom.xml
+      - sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-test-servicebus-binder/pom.xml
+      - sdk/spring/azure-spring-integration-core/pom.xml
+      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
+      - sdk/spring/azure-spring-integration-servicebus/pom.xml
+      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
+      - sdk/spring/azure-spring-integration-test/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

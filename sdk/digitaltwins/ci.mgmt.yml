@@ -8,9 +8,15 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/digitaltwins/
+      - sdk/digitaltwins/ci.mgmt.yml
+      - sdk/digitaltwins/mgmt-v2020_03_01_preview/
+      - sdk/digitaltwins/mgmt-v2020_10_31/
+      - sdk/digitaltwins/mgmt-v2020_12_01/
     exclude:
-      - sdk/digitaltwins/azure-digitaltwins-core
+      - sdk/digitaltwins/pom.xml
+      - sdk/digitaltwins/mgmt-v2020_03_01_preview/pom.xml
+      - sdk/digitaltwins/mgmt-v2020_10_31/pom.xml
+      - sdk/digitaltwins/mgmt-v2020_12_01/pom.xml
 
 pr:
   branches:
@@ -21,9 +27,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/digitaltwins/
+      - sdk/digitaltwins/ci.mgmt.yml
+      - sdk/digitaltwins/mgmt-v2020_03_01_preview/
+      - sdk/digitaltwins/mgmt-v2020_10_31/
+      - sdk/digitaltwins/mgmt-v2020_12_01/
     exclude:
-      - sdk/digitaltwins/azure-digitaltwins-core
+      - sdk/digitaltwins/pom.xml
+      - sdk/digitaltwins/mgmt-v2020_03_01_preview/pom.xml
+      - sdk/digitaltwins/mgmt-v2020_10_31/pom.xml
+      - sdk/digitaltwins/mgmt-v2020_12_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
