@@ -6,8 +6,10 @@ package com.azure.spring.autoconfigure.cosmos;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +21,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @Validated
 @ConfigurationProperties("azure.cosmos")
-public class CosmosProperties {
+public class CosmosProperties implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosProperties.class);
     /**
@@ -70,6 +72,11 @@ public class CosmosProperties {
                 LOGGER.info("Response Diagnostics {}", responseDiagnostics);
             }
         };
+
+    @Override
+    public void afterPropertiesSet() {
+        validateUri();
+    }
 
     public String getUri() {
         return uri;
@@ -136,5 +143,11 @@ public class CosmosProperties {
 
     public void setConnectionMode(ConnectionMode connectionMode) {
         this.connectionMode = connectionMode;
+    }
+
+    private void validateUri() {
+        if (StringUtils.startsWithIgnoreCase(uri, "mongodb://")) {
+            throw new IllegalArgumentException("Mongodb is not supported in this configuration, please use spring-data-mongodb instead.");
+        }
     }
 }
