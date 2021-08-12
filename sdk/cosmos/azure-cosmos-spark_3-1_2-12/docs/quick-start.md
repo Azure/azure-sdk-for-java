@@ -2,7 +2,7 @@
 
 This tutorial is a quick start guide to show how to use Cosmos DB Spark Connector to read from or write to Cosmos DB. Cosmos DB Spark Connector is based on Spark 3.1.x.
 
-Throughout this quick tutorial we rely on [Azure Databricks Runtime 8.0 with Spark 3.1.1](https://docs.microsoft.com/azure/databricks/release-notes/runtime/8.0) and a Jupyter Notebook to show how to use the Cosmos DB Spark Connector.
+Throughout this quick tutorial we rely on [Azure Databricks Runtime 8.0 with Spark 3.1.1](/databricks/release-notes/runtime/8.0) and a Jupyter Notebook to show how to use the Cosmos DB Spark Connector.
 
 You can use any other Spark 3.1.1 spark offering as well, also you should be able to use any language supported by Spark (PySpark, Scala, Java, etc), or any Spark interface you are familiar with (Jupyter Notebook, Livy, etc).
 
@@ -11,8 +11,8 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
 - An active Azure account. If you don't have one, you can sign up for a 
   [free account](https://azure.microsoft.com/try/cosmosdb/).
   Alternatively, you can use the
-  [use Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/cosmos-db/local-emulator) for development and testing.
-- [Azure Databricks](https://docs.microsoft.com/azure/databricks/release-notes/runtime/8.0)
+  [use Azure Cosmos DB Emulator](local-emulator.md) for development and testing.
+- [Azure Databricks](/azure/databricks/release-notes/runtime/8.0)
   Runtime 8.0 with Spark 3.1.1.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
   specific logging framework with SLF4J.
@@ -56,7 +56,7 @@ spark.sql("CREATE DATABASE IF NOT EXISTS cosmosCatalog.{};".format(cosmosDatabas
 spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.oltp TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')".format(cosmosDatabaseName, cosmosContainerName))
 ```
 
-When creating containers with the Catalog API you can set the throughput and [partition key path](https://docs.microsoft.com/azure/cosmos-db/partitioning-overview#choose-partitionkey) for the container to be created.
+When creating containers with the Catalog API you can set the throughput and [partition key path](partitioning-overview.md#choose-partitionkey) for the container to be created.
 
 For more details, see the full [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md) documentation.
 
