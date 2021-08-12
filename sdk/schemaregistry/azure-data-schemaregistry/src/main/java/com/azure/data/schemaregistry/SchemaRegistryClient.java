@@ -78,7 +78,7 @@ public final class SchemaRegistryClient {
      * response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaProperties> getSchemaWithResponse(String schemaId, Context context) {
+    Response<SchemaProperties> getSchemaWithResponse(String schemaId, Context context) {
         return this.asyncClient.getSchemaWithResponse(schemaId, context).block();
     }
 
@@ -110,7 +110,7 @@ public final class SchemaRegistryClient {
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
+    Response<String> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
         SerializationType serializationType, Context context) {
         return this.asyncClient
             .getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, context).block();
@@ -119,5 +119,4 @@ public final class SchemaRegistryClient {
     void clearCache() {
         this.asyncClient.clearCache();
     }
-
 }
