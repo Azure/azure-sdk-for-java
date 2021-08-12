@@ -34,16 +34,16 @@ Note that replaced properties will not be refreshed as common properties from Ke
 |:---|:---|:---
 spring.cloud.azure.storage.account-name | The name of the Azure Storage account. | | 
 spring.cloud.azure.storage.account-key | The access key of the Azure Storage account. | | 
-spring.cloud.azure.storage.blob-endpoint | The blob endpoint URL of the Azure Storage account. | Optional when storage blob resource is used. |
-spring.cloud.azure.storage.file-endpoint | The file endpoint URL of the Azure Storage account. | Optional when storage file resource is used |
+spring.cloud.azure.storage.blob-endpoint | The blob endpoint of the Azure Storage account. | Optional when storage blob resource is used. |
+spring.cloud.azure.storage.file-endpoint | The file endpoint of the Azure Storage account. | Optional when storage file resource is used |
 
 #### Deprecated Properties
 |Obsolete Type|Description|Replacement Type|
 |:---|:---|:---
 azure.storage.account-name | The name of the Azure Storage account. |**spring.cloud.azure.storage.account-name**  |
 azure.storage.account-key | The access key of the Azure Storage account. |**spring.cloud.azure.storage.account-key** |
-azure.storage.blob-endpoint | The blob endpoint URL of the Azure Storage account. |**spring.cloud.azure.storage.blob-endpoint** |
-azure.storage.file-endpoint | The file endpoint URL of the Azure Storage account. |**spring.cloud.azure.storage.file-endpoint** |
+azure.storage.blob-endpoint | The blob endpoint of the Azure Storage account. |**spring.cloud.azure.storage.blob-endpoint** |
+azure.storage.file-endpoint | The file endpoint of the Azure Storage account. |**spring.cloud.azure.storage.file-endpoint** |
 
 ## Examples
 

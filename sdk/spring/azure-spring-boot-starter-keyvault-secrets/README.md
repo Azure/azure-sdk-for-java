@@ -53,11 +53,11 @@ spring.cloud.azure.keyvault.order|Define the order of the key vaults you are del
 spring.cloud.azure.keyvault.refresh-interval|Interval for PropertySource to refresh secret keys|1800000(ms)|
 spring.cloud.azure.keyvault.secret-keys|If application using specific secret keys. If this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.||
 spring.cloud.azure.keyvault.secret-service-version|Valid secret-service-version value can be found [here][version_link].|The latest value|
-spring.cloud.azure.keyvault.uri|Azure Key Vault Uri.||
+spring.cloud.azure.keyvault.uri|Azure Key Vault URI.||
 
 Note: for multiple Key Vault usage, specify your Key Vault name after the prefix of `spring.cloud.azure.keyvault.`. For usage examples, please refer to section [Multiple Key Vault support](#multiple-key-vault-support-1).
 #### Deprecated Properties
-|Obsolete Type|Description|Default Value|Obsolete Type|
+|Obsolete Type|Description|Default Value|Replacement Type|
 |:---|:---|:---|:---
 azure.keyvault.authority-host|Authority Host URI|https://login.microsoftonline.com/ |**spring.cloud.azure.keyvault.environment.authority-host** |
 azure.keyvault.case-sensitive-keys|Defines the constant for the property that enables/disables case sensitive keys.|false|**spring.cloud.azure.keyvault.case-sensitive-keys** |
@@ -71,7 +71,7 @@ azure.keyvault.refresh-interval|Interval for PropertySource to refresh secret ke
 azure.keyvault.secret-keys|If application using specific secret keys. If this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.| |**spring.cloud.azure.keyvault.secret-keys** |
 azure.keyvault.secret-service-version|Valid secret-service-version value can be found [here][version_link].|The latest value |**spring.cloud.azure.keyvault.secret-service-version** |
 azure.keyvault.tenant-id|Tenant id for the Azure resources.| |**spring.cloud.azure.keyvault.credential.tenant-id** |
-azure.keyvault.uri|Azure Key Vault Uri.| |**spring.cloud.azure.keyvault.uri** |
+azure.keyvault.uri|Azure Key Vault URI.| |**spring.cloud.azure.keyvault.uri** |
 
 #### Unified Azure Spring Properties
 1. Credential Properties
