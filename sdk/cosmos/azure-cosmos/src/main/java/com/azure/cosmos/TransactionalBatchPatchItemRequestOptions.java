@@ -5,6 +5,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
 
+/**
+ * Encapsulates options that can be specified for a {@link CosmosPatchOperations} within a {@link TransactionalBatch}
+ */
 public final class TransactionalBatchPatchItemRequestOptions
         extends TransactionalBatchItemRequestOptionsBase {
     private String filterPredicate;

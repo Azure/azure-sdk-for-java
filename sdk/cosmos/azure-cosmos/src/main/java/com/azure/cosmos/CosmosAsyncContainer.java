@@ -433,7 +433,7 @@ public class CosmosAsyncContainer {
      * <p><br>The execution of this method is expected to result in some RU charges to your account.
      * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
      * item indexing, number of projections. For more information regarding RU considerations please visit
-     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
+     * <a href="https://docs.microsoft.com/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/azure/cosmos-db/request-units#request-unit-considerations</a>.
      * </p>
      *
      * <p>

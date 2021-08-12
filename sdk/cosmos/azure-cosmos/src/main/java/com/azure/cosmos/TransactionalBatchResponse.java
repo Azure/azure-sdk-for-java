@@ -16,7 +16,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Response of a {@link TransactionalBatch} request.
  */
-public class TransactionalBatchResponse {
+public final class TransactionalBatchResponse {
 
     private final Map<String, String> responseHeaders;
     private final int statusCode;
@@ -66,7 +66,7 @@ public class TransactionalBatchResponse {
      *
      * @return the number of operations results in this response.
      */
-    public int size() {
+    public int getSize() {
         return this.results == null ? 0 : this.results.size();
     }
 
@@ -101,7 +101,7 @@ public class TransactionalBatchResponse {
      * Gets the request charge as request units (RU) consumed by the batch operation.
      * <p>
      * For more information about the RU and factors that can impact the effective charges please visit
-     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
+     * <a href="https://docs.microsoft.com/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
      *
      * @return the request charge.
      */
@@ -168,9 +168,9 @@ public class TransactionalBatchResponse {
      * Get the length of the response of a batch operation
      * change it in the down path.
      *
-     * @return length of the response.
+     * @return length of the response in bytes.
      */
-    public int getResponseLength() {
+    public int getResponseLengthInBytes() {
         return BatchExecUtils.getResponseLength(this.responseHeaders);
     }
 

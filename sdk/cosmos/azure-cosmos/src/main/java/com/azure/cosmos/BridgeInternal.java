@@ -813,7 +813,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static int getPayloadLength(TransactionalBatchResponse transactionalBatchResponse) {
-        return transactionalBatchResponse.getResponseLength();
+        return transactionalBatchResponse.getResponseLengthInBytes();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
