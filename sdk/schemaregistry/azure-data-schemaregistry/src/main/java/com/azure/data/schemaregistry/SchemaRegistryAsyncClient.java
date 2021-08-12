@@ -26,6 +26,7 @@ import java.util.function.Function;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
+ *
  * @see SchemaRegistryClientBuilder Follows builder pattern for object instantiation
  */
 @ServiceClient(builder = SchemaRegistryClientBuilder.class, isAsync = true)
@@ -88,51 +89,50 @@ public final class SchemaRegistryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String schemaGroup, String schemaName,
-                                   String schemaString, SerializationType serializationType) {
+        String schemaString, SerializationType serializationType) {
         return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE);
     }
 
     Mono<Response<SchemaProperties>> registerSchemaWithResponse(String schemaGroup, String schemaName,
-                                    String schemaString, SerializationType serializationType, Context context) {
-        logger.verbose(
-            "Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
+        String schemaString, SerializationType serializationType, Context context) {
+        logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
             schemaGroup, schemaName, serializationType, schemaString);
 
-        return this.restService
-            .getSchemas().registerWithResponseAsync(schemaGroup, schemaName,
-                com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
+        return this.restService.getSchemas().registerWithResponseAsync(schemaGroup, schemaName,
+            com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
             .handle((response, sink) -> {
-                if (response == null) {
-                    sink.error(logger.logExceptionAsError(
-                        new NullPointerException("Client returned null response")));
-                    return;
-                }
-
                 if (response.getStatusCode() == 400) {
                     sink.error(logger.logExceptionAsError(
                         new IllegalStateException("Invalid schema registration attempted")));
                     return;
                 }
 
-                SchemaId schemaId = response.getValue();
+                SchemaProperties registered = schemaStringCache.compute(
+                    getSchemaStringCacheKey(schemaGroup, schemaName, schemaString),
+                    (key, existing) -> {
+                        if (existing != null) {
+                            logger.info("Schema existed in cache. Returning cached value. Group: '{}', name: '{}'",
+                                schemaGroup, schemaName);
+                            return existing;
+                        }
 
-                SchemaProperties registered = new SchemaProperties(schemaId.getId(),
-                    serializationType,
-                    schemaName,
-                    schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
+                        logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
 
-                schemaStringCache
-                    .putIfAbsent(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString), registered);
-                logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
+                        final SchemaId schemaId = response.getValue();
+
+                        return new SchemaProperties(schemaId.getId(), serializationType, schemaName,
+                            schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
+                    });
+
                 SimpleResponse<SchemaProperties> schemaRegistryObjectSimpleResponse = new SimpleResponse<>(
-                    response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), registered);
+                    response.getRequest(), response.getStatusCode(), response.getHeaders(), registered);
                 sink.next(schemaRegistryObjectSimpleResponse);
             });
     }
 
     /**
      * Gets the schema properties of the schema associated with the unique schemaId.
+     *
      * @param schemaId The unique identifier of the schema.
      *
      * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
@@ -140,18 +140,18 @@ public final class SchemaRegistryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaProperties> getSchema(String schemaId) {
         if (idCache.containsKey(schemaId)) {
-            logger.verbose("Cache hit for schema id '{}'", schemaId);
             return Mono.fromCallable(() -> idCache.get(schemaId));
         }
+
         return getSchemaWithResponse(schemaId).map(Response::getValue);
     }
 
     /**
      * Gets the schema properties of the schema associated with the unique schemaId.
+     *
      * @param schemaId The unique identifier of the schema.
      *
-     * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP
-     * response.
+     * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaProperties>> getSchemaWithResponse(String schemaId) {
@@ -162,12 +162,6 @@ public final class SchemaRegistryAsyncClient {
         Objects.requireNonNull(schemaId, "'schemaId' should not be null");
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId)
             .handle((response, sink) -> {
-                if (response == null) {
-                    sink.error(logger.logExceptionAsError(
-                        new NullPointerException("Client returned null response")));
-                    return;
-                }
-
                 if (response.getStatusCode() == 404) {
                     sink.error(logger.logExceptionAsError(
                         new IllegalStateException(String.format("Schema does not exist, id %s", schemaId))));
@@ -203,7 +197,7 @@ public final class SchemaRegistryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getSchemaId(String schemaGroup, String schemaName, String schemaString,
-                                    SerializationType serializationType) {
+        SerializationType serializationType) {
 
         String schemaStringCacheKey = getSchemaStringCacheKey(schemaGroup, schemaName, schemaString);
         if (schemaStringCache.containsKey(schemaStringCacheKey)) {
@@ -227,12 +221,12 @@ public final class SchemaRegistryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
-                                                          SerializationType serializationType) {
+        SerializationType serializationType) {
         return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE);
     }
 
     Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
-                                                   SerializationType serializationType, Context context) {
+        SerializationType serializationType, Context context) {
 
         return this.restService.getSchemas()
             .queryIdByContentWithResponseAsync(schemaGroup, schemaName,
