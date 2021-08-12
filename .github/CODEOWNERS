@@ -40,7 +40,7 @@
 /sdk/containerregistry/                             @pallavit @alzimmermsft @jianghaolu
 
 # PRLabel: %Azure.Core
-/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @anuchandy @lmolkova
+/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang
 
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar
@@ -96,13 +96,13 @@
 /sdk/remoterendering/                               @MalcolmTyrrell
 
 # PRLabel: %Schema Registry
-/sdk/schemaregistry/                                @arerlend @sjkwak
+/sdk/schemaregistry/                                @conniey @sjkwak @srnagar
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @mssfang @samvaity @conniey
+/sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                    @yvgopal @nemakam @anuchandy @ki1729 @conniey 
+/sdk/servicebus/                                    @yvgopal @nemakam @anuchandy @ki1729 @conniey
 
 # PRLabel: %Storage
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft

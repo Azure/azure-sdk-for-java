@@ -1235,6 +1235,12 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.CosmosException"/>
+    <Field name="channelAcquisitionTimeline"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>

@@ -29,8 +29,19 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      *
      * @param cosmosPagedFlux the paged flux use as iterable
      */
-    CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
+    public CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
         super(cosmosPagedFlux);
+        this.cosmosPagedFlux = cosmosPagedFlux;
+    }
+
+    /**
+     * Creates instance given {@link CosmosPagedFlux}.
+     *
+     * @param cosmosPagedFlux the paged flux use as iterable
+     * @param batchSize the preferred batchSize to be used when pulling data from the service
+     */
+    public CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux, int batchSize) {
+        super(cosmosPagedFlux, batchSize);
         this.cosmosPagedFlux = cosmosPagedFlux;
     }
 

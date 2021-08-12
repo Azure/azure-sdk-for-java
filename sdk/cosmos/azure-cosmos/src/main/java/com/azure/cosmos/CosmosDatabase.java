@@ -558,7 +558,7 @@ public class CosmosDatabase {
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
+        return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
 
 }
