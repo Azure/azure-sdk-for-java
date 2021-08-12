@@ -10,7 +10,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-msi</artifactId>
-  <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
+  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Managed Service Identity (MSI) Management</name>
