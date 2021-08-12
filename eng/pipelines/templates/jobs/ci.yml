@@ -157,25 +157,13 @@ jobs:
           filePath: eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
 
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          JobType: 'Analyze'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
-
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
           PackageName: "azure-sdk-template"
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - script: |
-          pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
-          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
-        displayName: 'Verify Readmes'
+      - template: /eng/pipelines/templates/step/verify-readmes.md
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:

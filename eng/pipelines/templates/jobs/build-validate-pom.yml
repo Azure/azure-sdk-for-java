@@ -41,11 +41,7 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
 
-      - script: |
-          pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
-          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
-        displayName: 'Verify Readmes'
+      - template: /eng/pipelines/templates/step/verify-readmes.md
 
       - template: ../steps/cache-maven-repository.yml
         parameters:

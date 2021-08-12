@@ -1,0 +1,12 @@
+variables:
+  - template: ../variables/globals.yml
+
+steps:
+  - task: PythonScript@0
+    displayName: 'Verify Readmes'
+    inputs:
+      scriptSource: 'inline'
+      script: |
+        pip install setuptools wheel --quiet
+        pip install doc-warden==$(DocWardenVersion) --quiet
+        ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml

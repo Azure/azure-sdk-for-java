@@ -1,4 +1,3 @@
-
 parameters:
   Options: '$(DefaultOptions)'
   MavenOptions: '$(MemoryOptions) $(LoggingOptions)'
