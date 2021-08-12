@@ -147,7 +147,7 @@ public class CosmosProperties implements InitializingBean {
 
     private void validateUri() {
         if (StringUtils.startsWithIgnoreCase(uri, "mongodb://")) {
-            throw new IllegalArgumentException("Mongodb is not supported in this configuration, please use spring-data-mongodb instead.");
+            throw new IllegalArgumentException("'azure.cosmos.uri' does not support mongodb, to work with mongodb, please use spring-data-mongodb instead.");
         }
     }
 }
