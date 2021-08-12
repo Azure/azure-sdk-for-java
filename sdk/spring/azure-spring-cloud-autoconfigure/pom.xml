@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+      <version>2.6.0-M1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-redis</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
+      <version>2.6.0-M1</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
-      <version>2.7.4</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+      <version>2.8.0-M1</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -110,7 +110,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-mongodb</artifactId>
-      <version>3.2.3</version> <!-- {x-version-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
+      <version>3.3.0-M1</version> <!-- {x-version-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -143,7 +143,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.6.0-M1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -151,7 +151,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.6.0-M1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -180,11 +180,11 @@
                 <include>mysql:mysql-connector-java:[8.0.26]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.2.0.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.2.23]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.data:spring-data-mongodb:[3.2.3]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
-                <include>org.springframework.data:spring-data-redis:[2.5.3]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
-                <include>org.springframework.kafka:spring-kafka:[2.7.4]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[2.6.0-M1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.0-M1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.data:spring-data-mongodb:[3.3.0-M1]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
+                <include>org.springframework.data:spring-data-redis:[2.6.0-M1]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
+                <include>org.springframework.kafka:spring-kafka:[2.8.0-M1]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
                 <include>org.springframework:spring-context-support:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
                 <include>org.springframework:spring-jdbc:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
                 <include>org.springframework:spring-web:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->

@@ -149,7 +149,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.19.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.20.2</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -190,7 +190,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.7.2</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.8.0-M1</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -210,7 +210,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.11.2</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -274,7 +274,7 @@ Licensed under the MIT License.
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.12.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
-                <include>io.micrometer:micrometer-core:[1.7.2]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.8.0-M1]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.hdrhistogram:HdrHistogram:[2.1.12]</include> <!-- {x-include-update;cosmos_org.hdrhistogram:HdrHistogram;external_dependency} -->
               </includes>
