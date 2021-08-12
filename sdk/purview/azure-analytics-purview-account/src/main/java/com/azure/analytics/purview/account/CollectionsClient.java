@@ -388,8 +388,8 @@ public final class CollectionsClient {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getChildCollectionNames(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.getChildCollectionNames(collectionName, requestOptions);
+    public PagedIterable<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.listChildCollectionNames(collectionName, requestOptions);
     }
 
     /**
@@ -425,9 +425,9 @@ public final class CollectionsClient {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getChildCollectionNames(
+    public PagedIterable<BinaryData> listChildCollectionNames(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getChildCollectionNames(collectionName, requestOptions, context);
+        return this.serviceClient.listChildCollectionNames(collectionName, requestOptions, context);
     }
 
     /**

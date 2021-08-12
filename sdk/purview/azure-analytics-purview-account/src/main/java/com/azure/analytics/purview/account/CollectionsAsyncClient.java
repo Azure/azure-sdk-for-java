@@ -337,8 +337,8 @@ public final class CollectionsAsyncClient {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getChildCollectionNames(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.getChildCollectionNamesAsync(collectionName, requestOptions);
+    public PagedFlux<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.listChildCollectionNamesAsync(collectionName, requestOptions);
     }
 
     /**
