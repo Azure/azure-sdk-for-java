@@ -1,5 +1,22 @@
 ## Release History
 
+## 4.18.0-beta.2 (Unreleased)
+
+
+### 4.18.0-beta.1 (2021-08-11)
+#### New Features
+* Integrated cosmos diagnostics with open telemetry tracer.
+* Added `BulkExecutionOptions` and `BulkExecutionThresholds`.
+
+#### Key Bug Fixes
+* Added reactor netty timeline to query plan calls.
+* Fixed serialization warning on `clientSideRequestDiagnostics`.
+* Fixed an issue when `IdleEndpointTimeout` is 0.
+* Added retry for `PrematureCloseException`.
+* Fixed a hang issue in bulk executor.
+* Fixed an issue which preventing recovery from 410/0 after split.
+* Added TransportRequestChannelAcquisitionContext in cosmos diagnostics.
+
 ### 4.17.0 (2021-07-08)
 #### New Features
 * Adjust `MicroBatchSize` dynamically based on throttling rate in `BulkExecutor`.

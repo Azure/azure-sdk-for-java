@@ -7,6 +7,7 @@ package com.azure.security.attestation.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -19,9 +20,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.security.attestation.models.CloudErrorException;
-import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
-import com.azure.security.attestation.models.PolicyCertificatesResponse;
+import com.azure.security.attestation.implementation.models.CloudErrorException;
+import com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse;
+import com.azure.security.attestation.implementation.models.PolicyCertificatesResponse;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyCertificates. */
@@ -57,6 +58,7 @@ public final class PolicyCertificatesImpl {
         Mono<Response<PolicyCertificatesResponse>> get(
                 @HostParam("instanceUrl") String instanceUrl,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/certificates:add")
@@ -66,6 +68,7 @@ public final class PolicyCertificatesImpl {
                 @HostParam("instanceUrl") String instanceUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") String policyCertificateToAdd,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/certificates:remove")
@@ -75,6 +78,7 @@ public final class PolicyCertificatesImpl {
                 @HostParam("instanceUrl") String instanceUrl,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") String policyCertificateToRemove,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -92,8 +96,9 @@ public final class PolicyCertificatesImpl {
                     new IllegalArgumentException(
                             "Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.get(this.client.getInstanceUrl(), this.client.getApiVersion(), context));
+                context -> service.get(this.client.getInstanceUrl(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -112,7 +117,8 @@ public final class PolicyCertificatesImpl {
                     new IllegalArgumentException(
                             "Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
-        return service.get(this.client.getInstanceUrl(), this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.get(this.client.getInstanceUrl(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -186,7 +192,8 @@ public final class PolicyCertificatesImpl {
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param policyCertificateToAdd An RFC 7519 Json Web Token.
+     * @param policyCertificateToAdd An RFC7519 JSON Web Token whose body is an RFC7517 JSON Web Key object. The RFC7519
+     *     JWT must be signed with one of the existing signing certificates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -203,19 +210,22 @@ public final class PolicyCertificatesImpl {
             return Mono.error(
                     new IllegalArgumentException("Parameter policyCertificateToAdd is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.add(
                                 this.client.getInstanceUrl(),
                                 this.client.getApiVersion(),
                                 policyCertificateToAdd,
+                                accept,
                                 context));
     }
 
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param policyCertificateToAdd An RFC 7519 Json Web Token.
+     * @param policyCertificateToAdd An RFC7519 JSON Web Token whose body is an RFC7517 JSON Web Key object. The RFC7519
+     *     JWT must be signed with one of the existing signing certificates.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -234,13 +244,16 @@ public final class PolicyCertificatesImpl {
             return Mono.error(
                     new IllegalArgumentException("Parameter policyCertificateToAdd is required and cannot be null."));
         }
-        return service.add(this.client.getInstanceUrl(), this.client.getApiVersion(), policyCertificateToAdd, context);
+        final String accept = "application/json";
+        return service.add(
+                this.client.getInstanceUrl(), this.client.getApiVersion(), policyCertificateToAdd, accept, context);
     }
 
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param policyCertificateToAdd An RFC 7519 Json Web Token.
+     * @param policyCertificateToAdd An RFC7519 JSON Web Token whose body is an RFC7517 JSON Web Key object. The RFC7519
+     *     JWT must be signed with one of the existing signing certificates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -262,7 +275,8 @@ public final class PolicyCertificatesImpl {
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param policyCertificateToAdd An RFC 7519 Json Web Token.
+     * @param policyCertificateToAdd An RFC7519 JSON Web Token whose body is an RFC7517 JSON Web Key object. The RFC7519
+     *     JWT must be signed with one of the existing signing certificates.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -285,7 +299,8 @@ public final class PolicyCertificatesImpl {
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param policyCertificateToAdd An RFC 7519 Json Web Token.
+     * @param policyCertificateToAdd An RFC7519 JSON Web Token whose body is an RFC7517 JSON Web Key object. The RFC7519
+     *     JWT must be signed with one of the existing signing certificates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -299,7 +314,8 @@ public final class PolicyCertificatesImpl {
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param policyCertificateToAdd An RFC 7519 Json Web Token.
+     * @param policyCertificateToAdd An RFC7519 JSON Web Token whose body is an RFC7517 JSON Web Key object. The RFC7519
+     *     JWT must be signed with one of the existing signing certificates.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -315,7 +331,8 @@ public final class PolicyCertificatesImpl {
      * Removes the specified policy management certificate. Note that the final policy management certificate cannot be
      * removed.
      *
-     * @param policyCertificateToRemove An RFC 7519 Json Web Token.
+     * @param policyCertificateToRemove An RFC7519 JSON Web Token whose body is an AttestationCertificateManagementBody
+     *     object. The RFC7519 JWT must be signed with one of the existing signing certificates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -333,12 +350,14 @@ public final class PolicyCertificatesImpl {
                     new IllegalArgumentException(
                             "Parameter policyCertificateToRemove is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.remove(
                                 this.client.getInstanceUrl(),
                                 this.client.getApiVersion(),
                                 policyCertificateToRemove,
+                                accept,
                                 context));
     }
 
@@ -346,7 +365,8 @@ public final class PolicyCertificatesImpl {
      * Removes the specified policy management certificate. Note that the final policy management certificate cannot be
      * removed.
      *
-     * @param policyCertificateToRemove An RFC 7519 Json Web Token.
+     * @param policyCertificateToRemove An RFC7519 JSON Web Token whose body is an AttestationCertificateManagementBody
+     *     object. The RFC7519 JWT must be signed with one of the existing signing certificates.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -366,15 +386,17 @@ public final class PolicyCertificatesImpl {
                     new IllegalArgumentException(
                             "Parameter policyCertificateToRemove is required and cannot be null."));
         }
+        final String accept = "application/json";
         return service.remove(
-                this.client.getInstanceUrl(), this.client.getApiVersion(), policyCertificateToRemove, context);
+                this.client.getInstanceUrl(), this.client.getApiVersion(), policyCertificateToRemove, accept, context);
     }
 
     /**
      * Removes the specified policy management certificate. Note that the final policy management certificate cannot be
      * removed.
      *
-     * @param policyCertificateToRemove An RFC 7519 Json Web Token.
+     * @param policyCertificateToRemove An RFC7519 JSON Web Token whose body is an AttestationCertificateManagementBody
+     *     object. The RFC7519 JWT must be signed with one of the existing signing certificates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -397,7 +419,8 @@ public final class PolicyCertificatesImpl {
      * Removes the specified policy management certificate. Note that the final policy management certificate cannot be
      * removed.
      *
-     * @param policyCertificateToRemove An RFC 7519 Json Web Token.
+     * @param policyCertificateToRemove An RFC7519 JSON Web Token whose body is an AttestationCertificateManagementBody
+     *     object. The RFC7519 JWT must be signed with one of the existing signing certificates.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -421,7 +444,8 @@ public final class PolicyCertificatesImpl {
      * Removes the specified policy management certificate. Note that the final policy management certificate cannot be
      * removed.
      *
-     * @param policyCertificateToRemove An RFC 7519 Json Web Token.
+     * @param policyCertificateToRemove An RFC7519 JSON Web Token whose body is an AttestationCertificateManagementBody
+     *     object. The RFC7519 JWT must be signed with one of the existing signing certificates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -436,7 +460,8 @@ public final class PolicyCertificatesImpl {
      * Removes the specified policy management certificate. Note that the final policy management certificate cannot be
      * removed.
      *
-     * @param policyCertificateToRemove An RFC 7519 Json Web Token.
+     * @param policyCertificateToRemove An RFC7519 JSON Web Token whose body is an AttestationCertificateManagementBody
+     *     object. The RFC7519 JWT must be signed with one of the existing signing certificates.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

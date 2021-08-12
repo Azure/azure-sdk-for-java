@@ -32,7 +32,7 @@ import java.util.Objects;
  * HttpClient implementation for OkHttp.
  */
 class OkHttpAsyncHttpClient implements HttpClient {
-    private final OkHttpClient httpClient;
+    final OkHttpClient httpClient;
     //
     private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
 

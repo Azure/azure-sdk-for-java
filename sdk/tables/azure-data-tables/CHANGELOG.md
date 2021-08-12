@@ -1,14 +1,23 @@
 # Release History
 
+## 12.2.0-beta.1 (Unreleased)
+
+
 ## 12.1.0 (2021-07-08)
 
-### New Features
+### Features Added
 - Added support for Azure Active Directory (AAD) authorization to `TableServiceClient` and `TableClient`. This enables the use of `TokenCredential` credentials in client builders. Note: Only Azure Storage API endpoints currently support AAD authorization.
 
-### Bug fixes
+### Bugs fixed
 - Fixed issue where HTTP headers set in a `ClientOptions` object passed to a client builder would not be set on a client instantiated by said builder.
 - Fixed an issue where a `connectionString` with an account name and key would override a `sasToken`'s authentication settings in client builders.
 - Fixed an issue that made `TableClient.listEntities()` and `TableServiceClient.listTables()` throw a `ClassCastException` when passing a non-null value for `timeout`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.18.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.1`
 
 ## 12.0.0 (2021-06-11)
 

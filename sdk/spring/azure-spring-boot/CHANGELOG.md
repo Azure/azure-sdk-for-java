@@ -1,6 +1,38 @@
 # Release History
 
-## 3.7.0-beta.1 (Unreleased)
+## 3.8.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+### New Features
+- Add property `azure.activedirectory.resource-server.principal-claim-name` to configure principal claim name.
+- Add property `azure.activedirectory.resource-server.claim-to-authority-prefix-map` to configure claim to authority prefix map.
+### Deprecations
+ - Deprecate `AADB2CJwtBearerTokenAuthenticationConverter`, use `AADJwtBearerTokenAuthenticationConverter` instead.
+
+
+## 3.7.0 (2021-07-20)
+### New Features
+- Add property `azure.activedirectory.application-type` to configure the application type.
+
+    Here are the 4 valid values:
+    - *web_application*: Web Application.
+    - *resource_server*: Resource Server.
+    - *resource_server_with_obo*: Resource Server with authorization grant type `on_behalf_of`.
+    - *web_application_and_resource_server*: Web Application and Resource Server in one application, it also supports `on_behalf_of`.
+
+    This property is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
+    
+    Here is the table about how the AAD starter infers application type by dependencies:
+    
+    | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                 | Default value               |
+    |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------|-----------------------------|
+    |                      Yes                      |                          No                            |                       `web_application`                           |       `web_application`     |
+    |                      No                       |                          Yes                           |                       `resource_server`                           |       `resource_server`     |
+    |                      Yes                      |                          Yes                           | `resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
+
+- Support new value `on_behalf_of` for OBO authorization grant type, originally we only support `on-behalf-of`.
+
 
 ## 3.6.1 (2021-07-02)
 ### New Features
@@ -8,6 +40,7 @@
 - Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
 ### Key Bug Fixes
 - Fix [cve-2021-22119](https://tanzu.vmware.com/security/cve-2021-22119).
+
 
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes
@@ -104,7 +137,7 @@ Updated to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/
     azure.activedirectory.user-group.object-id-key
     ```
 - Removed support for older `AAD v1` style endpoints.
-    - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoft.online.com/common/oauth2/authorize has been removed.
+    - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoftonline.com/common/oauth2/authorize has been removed.
     - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
     - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
 - The required scopes in AAD auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`.

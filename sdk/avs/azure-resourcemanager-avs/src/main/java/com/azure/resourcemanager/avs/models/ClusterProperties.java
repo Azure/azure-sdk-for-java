@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The properties of a cluster. */
-@Immutable
-public final class ClusterProperties extends ManagementCluster {
+@Fluent
+public final class ClusterProperties extends CommonClusterProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterProperties.class);
 
     /** {@inheritDoc} */

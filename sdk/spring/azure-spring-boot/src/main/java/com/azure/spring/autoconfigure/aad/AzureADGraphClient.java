@@ -4,6 +4,7 @@
 package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
+import com.azure.spring.aad.implementation.constants.AuthorityPrefix;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -37,7 +38,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
-import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
 
 /**
@@ -128,7 +128,7 @@ public class AzureADGraphClient {
         Set<SimpleGrantedAuthority> grantedAuthoritySet =
             groups.stream()
                   .filter(aadAuthenticationProperties::isAllowedGroup)
-                  .map(group -> new SimpleGrantedAuthority(ROLE_PREFIX + group))
+                  .map(group -> new SimpleGrantedAuthority(AuthorityPrefix.ROLE + group))
                   .collect(Collectors.toSet());
         return Optional.of(grantedAuthoritySet)
                        .filter(g -> !g.isEmpty())
@@ -172,7 +172,7 @@ public class AzureADGraphClient {
             LOGGER.error("acquire on behalf of token for graph api error", e);
         }
         if (result == null) {
-            throw new ServiceUnavailableException("unable to acquire on-behalf-of token for client "
+            throw new ServiceUnavailableException("unable to acquire on_behalf_of token for client "
                 + clientId);
         }
         return result;

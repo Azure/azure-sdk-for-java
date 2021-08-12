@@ -291,6 +291,7 @@
         "enabledForDiskEncryption": "[parameters('enabledForDiskEncryption')]",
         "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
         "enableSoftDelete": true,
+        "softDeleteRetentionInDays": 7,
         "networkAcls": "[variables('networkAcls')]"
       }
     },
@@ -311,6 +312,7 @@
         ],
         "enablePurgeProtection": false,
         "enableSoftDelete": true,
+        "softDeleteRetentionInDays": 7,
         "publicNetworkAccess": "Enabled",
         "networkAcls": {
           "bypass": "None",

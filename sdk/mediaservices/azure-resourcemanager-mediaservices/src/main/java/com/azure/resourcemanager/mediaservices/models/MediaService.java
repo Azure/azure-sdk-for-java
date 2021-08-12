@@ -100,6 +100,14 @@ public interface MediaService {
     KeyDelivery keyDelivery();
 
     /**
+     * Gets the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Media Services account.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -170,7 +178,8 @@ public interface MediaService {
                 DefinitionStages.WithStorageAccounts,
                 DefinitionStages.WithStorageAuthentication,
                 DefinitionStages.WithEncryption,
-                DefinitionStages.WithKeyDelivery {
+                DefinitionStages.WithKeyDelivery,
+                DefinitionStages.WithPublicNetworkAccess {
             /**
              * Executes the create request.
              *
@@ -246,6 +255,18 @@ public interface MediaService {
              */
             WithCreate withKeyDelivery(KeyDelivery keyDelivery);
         }
+        /** The stage of the MediaService definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network access is allowed for resources
+             * under the Media Services account..
+             *
+             * @param publicNetworkAccess Whether or not public network access is allowed for resources under the Media
+             *     Services account.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
     /**
      * Begins update for the MediaService resource.
@@ -261,7 +282,8 @@ public interface MediaService {
             UpdateStages.WithStorageAccounts,
             UpdateStages.WithStorageAuthentication,
             UpdateStages.WithEncryption,
-            UpdateStages.WithKeyDelivery {
+            UpdateStages.WithKeyDelivery,
+            UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          *
@@ -338,6 +360,18 @@ public interface MediaService {
              * @return the next definition stage.
              */
             Update withKeyDelivery(KeyDelivery keyDelivery);
+        }
+        /** The stage of the MediaService update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network access is allowed for resources
+             * under the Media Services account..
+             *
+             * @param publicNetworkAccess Whether or not public network access is allowed for resources under the Media
+             *     Services account.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
     /**

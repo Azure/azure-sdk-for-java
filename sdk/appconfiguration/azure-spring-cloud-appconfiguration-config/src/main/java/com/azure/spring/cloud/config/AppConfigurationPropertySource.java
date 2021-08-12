@@ -271,9 +271,10 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     @SuppressWarnings("unchecked")
     private Object createFeature(ConfigurationSetting item) throws IOException {
         if (item.getContentType() == null || !item.getContentType().equals(FEATURE_FLAG_CONTENT_TYPE)) {
-            String message = String.format("Found Feature Flag %s with invalid Content Type of %s", item.getKey(),
+            String message = String.format("Found Feature Flag %s with invalid Content Type of %s. Ignoring and continuing to process Feature Flags.", item.getKey(),
                 item.getContentType());
-            throw new IOException(message);
+            LOGGER.warn(message);
+            return null;
         }
         String key = getFeatureSimpleName(item);
         try {

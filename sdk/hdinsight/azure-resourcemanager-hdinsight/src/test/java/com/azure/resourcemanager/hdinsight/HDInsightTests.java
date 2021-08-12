@@ -12,6 +12,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.hdinsight.models.Cluster;
 import com.azure.resourcemanager.hdinsight.models.ClusterCreateProperties;
 import com.azure.resourcemanager.hdinsight.models.ClusterDefinition;
 import com.azure.resourcemanager.hdinsight.models.ComputeProfile;
@@ -29,13 +30,11 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.PublicAccess;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Random;
+import java.util.*;
 
 public class HDInsightTests extends TestBase {
 
@@ -86,8 +85,15 @@ public class HDInsightTests extends TestBase {
                 .withPublicAccess(PublicAccess.NONE)
                 .create();
 
+            Map<String, Map<String, String>> clusterDefinition = new HashMap<>(1);
+            Map<String, String> clusterProperties = new HashMap<>(3);
+            clusterProperties.put("restAuthCredential.isEnabled", "true");
+            clusterProperties.put("restAuthCredential.username", "admin");
+            clusterProperties.put("restAuthCredential.password", "Pa$s" + randomPadding());
+            clusterDefinition.put("gateway", Collections.unmodifiableMap(clusterProperties));
+
             // cluster
-            manager.clusters().define("cluster" + randomPadding())
+            Cluster cluster = manager.clusters().define("cluster" + randomPadding())
                 .withExistingResourceGroup(resourceGroupName)
                 .withRegion(REGION)
                 .withProperties(new ClusterCreateProperties()
@@ -96,15 +102,10 @@ public class HDInsightTests extends TestBase {
                     .withTier(Tier.STANDARD)
                     .withClusterDefinition(new ClusterDefinition()
                         .withKind("Spark")
-                        .withConfigurations(ImmutableMap.of(
-                            "gateway", ImmutableMap.of(
-                                "restAuthCredential.isEnabled", "true",
-                                "restAuthCredential.username", "admin",
-                                "restAuthCredential.password", "Pa$s" + randomPadding()
-                            )))
+                        .withConfigurations(Collections.unmodifiableMap(clusterDefinition))
                     )
                     .withComputeProfile(new ComputeProfile()
-                        .withRoles(ImmutableList.of(
+                        .withRoles(Collections.unmodifiableList(new LinkedList<>(Arrays.asList(
                             new Role().withName("headnode")
                                 .withTargetInstanceCount(2)
                                 .withHardwareProfile(new HardwareProfile()
@@ -137,19 +138,21 @@ public class HDInsightTests extends TestBase {
                                     .withId(network.id())
                                     .withSubnet(subnet.id())
                                 )
-                        ))
+                        ))))
                     )
                     .withStorageProfile(new StorageProfile()
-                        .withStorageaccounts(ImmutableList.of(
+                        .withStorageaccounts(Collections.unmodifiableList(Arrays.asList(
                             new StorageAccount()
                                 .withName(new URL(storageAccount.endPoints().primary().blob()).getHost())
                                 .withKey(storageAccountKey)
                                 .withContainer(containerName)
                                 .withIsDefault(true)
-                        ))
+                        )))
                     ))
                 .create();
             // @embedmeEnd
+
+            manager.clusters().deleteById(cluster.id());
         } finally {
             storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
         }

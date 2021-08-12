@@ -1,4 +1,4 @@
-# Azure Spring cloud azure feature management web client library for Java
+# Spring Cloud for Azure feature management web client library for Java
 
 ## Key concepts
 ## Getting started

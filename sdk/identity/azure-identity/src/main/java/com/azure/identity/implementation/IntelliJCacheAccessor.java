@@ -5,17 +5,15 @@ package com.azure.identity.implementation;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.CredentialUnavailableException;
+import com.azure.identity.implementation.intellij.IntelliJKdbxDatabase;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Crypt32Util;
-import org.linguafranca.pwdb.Database;
-import org.linguafranca.pwdb.Entry;
-import org.linguafranca.pwdb.kdbx.KdbxCreds;
-import org.linguafranca.pwdb.kdbx.simple.SimpleDatabase;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -25,33 +23,39 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileInputStream;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Base64;
+import java.util.regex.Pattern;
 
 /**
  * This class accesses IntelliJ Azure Tools credentials cache via JNA.
  */
 public class IntelliJCacheAccessor {
     private final ClientLogger logger = new ClientLogger(IntelliJCacheAccessor.class);
-    private String keePassDatabasePath;
+    private final String keePassDatabasePath;
     private static final String INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR = "IntelliJ Authentication not available."
               + " Please log in with Azure Tools for IntelliJ plugin in the IDE.";
     private static final byte[] CRYPTO_KEY = new byte[] {0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
         0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
 
+    private static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper DONT_FAIL_ON_UNKNOWN_PROPERTIES_MAPPER = new ObjectMapper()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    private static final Pattern CACHED_AUTH_RESULT_PATTERN = Pattern.compile("cachedAuthResult@");
 
     /**
      * Creates an instance of {@link IntelliJCacheAccessor}
@@ -71,32 +75,26 @@ public class IntelliJCacheAccessor {
      * Get the Device Code credential details of Azure Tools plugin in the IntelliJ IDE.
      *
      * @return the {@link JsonNode} holding the authentication details.
-     * @throws IOException
+     * @throws IOException If an I/O error occurs.
      */
     public JsonNode getDeviceCodeCredentials() throws IOException {
         if (Platform.isMac()) {
-            KeyChainAccessor accessor = new KeyChainAccessor(null, "ADAuthManager",
-                "cachedAuthResult");
+            KeyChainAccessor accessor = new KeyChainAccessor(null, "ADAuthManager", "cachedAuthResult");
+            String jsonCred  = new String(accessor.read(), StandardCharsets.UTF_8);
 
-            String jsonCred  = new String(accessor.read(), Charset.forName("UTF-8"));
-
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(jsonCred);
-
+            return DEFAULT_MAPPER.readTree(jsonCred);
         } else if (Platform.isLinux()) {
             LinuxKeyRingAccessor accessor = new LinuxKeyRingAccessor(
                 "com.intellij.credentialStore.Credential",
                 "service", "ADAuthManager",
                 "account", "cachedAuthResult");
 
-            String jsonCred  = new String(accessor.read(), Charset.forName("UTF-8"));
+            String jsonCred  = new String(accessor.read(), StandardCharsets.UTF_8);
             if (jsonCred.startsWith("cachedAuthResult@")) {
-                jsonCred = jsonCred.replaceFirst("cachedAuthResult@", "");
+                jsonCred = CACHED_AUTH_RESULT_PATTERN.matcher(jsonCred).replaceFirst("");
             }
 
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(jsonCred);
-
+            return DEFAULT_MAPPER.readTree(jsonCred);
         } else if (Platform.isWindows()) {
             return getCredentialFromKdbx();
         } else {
@@ -144,37 +142,34 @@ public class IntelliJCacheAccessor {
         String extractedpwd = getKdbxPassword();
 
         SecretKeySpec key = new SecretKeySpec(CRYPTO_KEY, "AES");
-        String password = "";
+        String password;
 
         byte[] dataToDecrypt = Crypt32Util.cryptUnprotectData(Base64.getDecoder().decode(extractedpwd));
 
         ByteBuffer decryptBuffer = ByteBuffer.wrap(dataToDecrypt);
-        Cipher cipher = null;
+        Cipher cipher;
         try {
             cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             int ivLen = decryptBuffer.getInt();
             cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(dataToDecrypt, decryptBuffer.position(), ivLen));
             int dataOffset = decryptBuffer.position() + ivLen;
             byte[] decrypted = cipher.doFinal(dataToDecrypt, dataOffset, dataToDecrypt.length - dataOffset);
-            password = new String(decrypted, Charset.forName("UTF-8"));
+            password = new String(decrypted, StandardCharsets.UTF_8);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                 | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
             throw logger.logExceptionAsError(new RuntimeException("Unable to access cache.", e));
         }
 
-        try {
-            KdbxCreds creds = new KdbxCreds(password.getBytes(Charset.forName("UTF-8")));
-            InputStream inputStream = new FileInputStream(new File(keePassDatabasePath));
-            Database database = SimpleDatabase.load(creds, inputStream);
+        try (InputStream inputStream = new FileInputStream(keePassDatabasePath)) {
+            IntelliJKdbxDatabase kdbxDatabase = IntelliJKdbxDatabase.parse(inputStream, password);
 
-            List<Entry> entries = database.findEntries("ADAuthManager");
-            if (entries.size() == 0) {
+            String jsonToken = kdbxDatabase.getDatabaseEntryValue("ADAuthManager");
+            if (CoreUtils.isNullOrEmpty(jsonToken)) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException("No credentials found in the cache."
                         + " Please login with IntelliJ Azure Tools plugin in the IDE."));
             }
 
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readTree(entries.get(0).getPassword());
+            return DEFAULT_MAPPER.readTree(jsonToken);
         } catch (Exception e) {
             throw logger.logExceptionAsError(new RuntimeException("Failed to read KeePass database.", e));
         }
@@ -184,9 +179,7 @@ public class IntelliJCacheAccessor {
         String passwordFilePath = new File(keePassDatabasePath).getParent() + File.separator + "c.pwd";
         String extractedpwd = "";
 
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(passwordFilePath));
+        try (BufferedReader reader = new BufferedReader(new FileReader(passwordFilePath))) {
             String line = reader.readLine();
 
             while (line != null) {
@@ -201,12 +194,8 @@ public class IntelliJCacheAccessor {
                 }
                 line = reader.readLine();
             }
-            reader.close();
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
         }
+
         return extractedpwd;
     }
 
@@ -231,6 +220,17 @@ public class IntelliJCacheAccessor {
         }
     }
 
+
+    /**
+     * Parse the auth details of the specified file.
+     * @param file the file input;
+     * @return the parsed {@link IntelliJAuthMethodDetails} from the file input.
+     * @throws IOException when invalid file path is specified.
+     */
+    public IntelliJAuthMethodDetails parseAuthMethodDetails(File file) throws IOException {
+        return DONT_FAIL_ON_UNKNOWN_PROPERTIES_MAPPER.readValue(file, IntelliJAuthMethodDetails.class);
+    }
+
     /**
      * Get the current authentication method details of Azure Tools plugin in IntelliJ IDE.
      *
@@ -251,9 +251,8 @@ public class IntelliJCacheAccessor {
             throw logger.logExceptionAsError(
                     new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        IntelliJAuthMethodDetails authMethodDetails = objectMapper
-                                                  .readValue(authFile, IntelliJAuthMethodDetails.class);
+
+        IntelliJAuthMethodDetails authMethodDetails = parseAuthMethodDetails(authFile);
 
         String authType = authMethodDetails.getAuthMethod();
         if (CoreUtils.isNullOrEmpty(authType)) {

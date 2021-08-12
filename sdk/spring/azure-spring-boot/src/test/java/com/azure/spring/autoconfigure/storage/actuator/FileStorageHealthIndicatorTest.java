@@ -9,7 +9,6 @@ import com.azure.spring.autoconfigure.storage.StorageHealthConfiguration;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import com.azure.storage.file.share.models.ShareServiceProperties;
-import org.apache.http.HttpException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Health;
@@ -95,7 +94,7 @@ public class FileStorageHealthIndicatorTest {
             ShareServiceAsyncClient mockAsyncClient = mock(ShareServiceAsyncClient.class);
             when(mockAsyncClient.getFileServiceUrl()).thenReturn(MOCK_URL);
             when(mockAsyncClient.getPropertiesWithResponse())
-                .thenReturn(Mono.error(new HttpException("The gremlins have cut the cable.")));
+                .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
             when(mockClientBuilder.buildAsyncClient()).thenReturn(mockAsyncClient);
 
             return mockClientBuilder;

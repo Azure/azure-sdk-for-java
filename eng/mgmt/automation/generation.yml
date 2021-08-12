@@ -43,3 +43,4 @@ steps:
     CommitMsg: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
     PRTitle: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
     PRLabels: 'Mgmt - Track 2'
+    OpenAsDraft: '$(DRAFT_PULL_REQUEST)'

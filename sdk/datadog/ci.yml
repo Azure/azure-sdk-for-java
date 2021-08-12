@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/datadog/
+    exclude:
+      - sdk/datadog/pom.xml
+      - sdk/datadog/azure-resourcemanager-datadog/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/datadog/
+    exclude:
+      - sdk/datadog/pom.xml
+      - sdk/datadog/azure-resourcemanager-datadog/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
