@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 public final class IndexUtilizationInfo {
-    protected static Logger logger = LoggerFactory.getLogger(IndexUtilizationInfo.class.getSimpleName());
+    private final static Logger logger = LoggerFactory.getLogger(IndexUtilizationInfo.class.getSimpleName());
 
     static final IndexUtilizationInfo ZERO = new IndexUtilizationInfo(
         new ArrayList<>(), /* utilizedSingleIndexes */

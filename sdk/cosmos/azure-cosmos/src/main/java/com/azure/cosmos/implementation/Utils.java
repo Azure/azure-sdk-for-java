@@ -114,7 +114,7 @@ public class Utils {
 
     public static String decodeBase64String(String encodedString) {
         byte[] decodeString = Base64Decoder.decode(encodedString);
-        return new String(decodeString);
+        return new String(decodeString, StandardCharsets.UTF_8);
     }
 
     public static String decodeAsUTF8String(String inputString) {
