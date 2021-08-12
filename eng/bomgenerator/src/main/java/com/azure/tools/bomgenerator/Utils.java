@@ -10,6 +10,14 @@ import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystemBase;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
+import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
+import org.jboss.shrinkwrap.resolver.api.maven.PomlessResolveStage;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +32,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -33,11 +42,11 @@ public class Utils {
     public static final String COMMANDLINE_INPUTFILE = "inputfile";
     public static final String COMMANDLINE_OUTPUTFILE = "outputfile";
     public static final String COMMANDLINE_POMFILE = "pomfile";
+    public static final String COMMANDLINE_OVERRIDDEN_INPUTDEPENDENCIES_FILE = "inputdependenciesfile";
+    public static final String COMMANDLINE_REPORTFILE = "reportfile";
     public static final String COMMANDLINE_MODE = "mode";
     public static final String ANALYZE_MODE = "analyze";
     public static final String GENERATE_MODE = "generate";
-    public static final String COMMANDLINE_EXTERNALDEPENDENCIES = "externalDependencies";
-    public static final String COMMANDLINE_GROUPID = "groupid";
     public  static final Pattern COMMANDLINE_REGEX = Pattern.compile("-(.*)=(.*)");
     public static final List<String> EXCLUSION_LIST = Arrays.asList("azure-spring-data-cosmos", "azure-spring-data-cosmos-test", "azure-core-test", "azure-sdk-all", "azure-sdk-parent", "azure-client-sdk-parent");
     public static final Pattern SDK_DEPENDENCY_PATTERN = Pattern.compile("com.azure:(.+);(.+);(.+)");
@@ -46,15 +55,17 @@ public class Utils {
     public static final String AZURE_PERF_LIBRARY_IDENTIFIER = "-perf";
     public static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
     public static final Pattern STRING_SPLIT_BY_DOT = Pattern.compile("[.]");
+    public static final Pattern STRING_SPLIT_BY_COLON = Pattern.compile("[:]");
+    public static final Pattern INPUT_DEPENDENCY_PATTERN = Pattern.compile("(.+);(.*)");
     public static final String PROJECT_VERSION = "project.version";
 
     public static final HashSet<String> RESOLVED_EXCLUSION_LIST = new HashSet<>(Arrays.asList(
        "junit-jupiter-api"
     ));
 
-    public static final HashSet<String> IGNORE_CONFLICT_LIST = new HashSet<>(Arrays.asList(
+    public static final HashSet<String> IGNORE_CONFLICT_LIST = new HashSet<>(/*Arrays.asList(
         "slf4j-api" // slf4j is compatible across versions.
-    ));
+    )*/);
 
     public static final String POM_TYPE = "pom";
     private static Logger logger = LoggerFactory.getLogger(Utils.class);
@@ -63,6 +74,37 @@ public class Utils {
         if(argValue == null || argValue.isEmpty()) {
             throw new NullPointerException(String.format("%s can't be null", argName));
         }
+    }
+
+    static void validateNotNullOrEmpty(String[] argValue, String argName) {
+        if(Arrays.stream(argValue).anyMatch(value -> value == null || value.isEmpty())) {
+            throw new IllegalArgumentException(String.format("%s can't be null", argName));
+        }
+    }
+
+    static MavenResolverSystemBase<PomEquippedResolveStage, PomlessResolveStage, MavenStrategyStage, MavenFormatStage> getMavenResolver() {
+        return Maven.configureResolver().withMavenCentralRepo(true);
+    }
+
+    static boolean isPublishedArtifact(BomDependency dependency) {
+        try {
+            return getResolvedArtifact(dependency) != null;
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+        }
+        return false;
+    }
+
+    static MavenResolvedArtifact getResolvedArtifact(MavenDependency dependency) {
+        MavenResolvedArtifact mavenResolvedArtifact = null;
+
+        mavenResolvedArtifact = getMavenResolver()
+            .addDependency(dependency)
+            .resolve()
+            .withoutTransitivity()
+            .asSingleResolvedArtifact();
+
+        return mavenResolvedArtifact;
     }
 
     static void validateNull(String argValue, String argName) {

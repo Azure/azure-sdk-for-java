@@ -32,7 +32,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.19.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+          <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -47,7 +47,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-experimental</artifactId>
-          <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+          <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -67,12 +67,12 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
-          <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+          <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-serializer-avro-apache</artifactId>
-          <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+          <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -87,7 +87,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-tracing-opentelemetry</artifactId>
-          <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+          <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
         </dependency>
       </dependencies>
 
@@ -132,6 +132,7 @@
         <module>azure-core-serializer-json-jackson</module>
         <module>azure-core-test</module>
         <module>azure-core-tracing-opentelemetry</module>
+        <module>azure-core-jackson-tests</module>
       </modules>
     </profile>
   </profiles>

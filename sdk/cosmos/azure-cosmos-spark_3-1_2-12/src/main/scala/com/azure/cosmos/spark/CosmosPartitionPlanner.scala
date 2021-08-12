@@ -441,6 +441,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
 
     val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
+    container.openConnectionsAndInitCaches().block()
 
     container
       .getFeedRanges

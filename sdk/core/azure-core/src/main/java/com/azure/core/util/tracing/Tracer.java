@@ -18,7 +18,7 @@ public interface Tracer {
      * Key for {@link Context} which indicates that the context contains parent span data. This span will be used
      * as the parent span for all spans the SDK creates.
      * <p>
-     * If no span data is listed when the SDK creates its first span, this span key will be used as the parent span.
+     * If no span data is listed when the span is created it will default to using this span key as the parent span.
      */
     String PARENT_SPAN_KEY = "parent-span";
 
@@ -66,7 +66,7 @@ public interface Tracer {
     String SPAN_BUILDER_KEY = "builder";
 
     /**
-     * Key for {@link Context} which indicates the the time of the last enqueued message in the partition's stream.
+     * Key for {@link Context} which indicates the time of the last enqueued message in the partition's stream.
      */
     String MESSAGE_ENQUEUED_TIME = "x-opt-enqueued-time";
 
@@ -113,7 +113,7 @@ public interface Tracer {
      * @throws NullPointerException if {@code options} or {@code context} is {@code null}.
      */
     default Context start(String methodName, StartSpanOptions options, Context context) {
-        // fall back to old API if not overriden.
+        // fall back to old API if not overridden.
         return start(methodName, context);
     }
 
@@ -165,7 +165,7 @@ public interface Tracer {
      * response status code</p>
      * {@codesnippet com.azure.core.util.tracing.end#int-throwable-context}
      *
-     * @param responseCode Response status code if the span is in a HTTP call context.
+     * @param responseCode Response status code if the span is in an HTTP call context.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      * @throws NullPointerException if {@code context} is {@code null}.
@@ -309,12 +309,6 @@ public interface Tracer {
      * @return Closeable that should be closed in the same thread with try-with-resource statement.
      */
     default AutoCloseable makeSpanCurrent(Context context) {
-        return NOOP_CLOSEABLE;
+        return TracerProxy.NOOP_AUTOCLOSEABLE;
     }
-
-    AutoCloseable NOOP_CLOSEABLE = new AutoCloseable() {
-        @Override
-        public void close() {
-        }
-    };
 }

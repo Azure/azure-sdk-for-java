@@ -165,7 +165,7 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
 
     module_path_mapping[project_identifier] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
 
-    dependencies = tree_root.iter(maven_xml_namespace + 'dependency')
+    dependencies = {child:parent for parent in tree_root.iter() for child in parent if child.tag == maven_xml_namespace + 'dependency'}
 
     # If the project doesn't have a dependencies XML element skip it.
     if dependencies is None:
@@ -175,6 +175,11 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
         project_dependencies_mapping[project_identifier] = []
 
     for dependency in dependencies:
+
+        # not all the <dependency> are maven dependencies, ignore them 
+        if dependencies[dependency].tag == maven_xml_namespace + 'dependenciesToScan':
+            continue
+
         dependency_identifier = create_artifact_identifier(dependency)
         if not dependency_identifier in artifact_identifier_to_source_version:
             continue

@@ -111,6 +111,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.maxItemCount" -> "1",
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
@@ -150,6 +151,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.maxItemCount" -> "5",
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 

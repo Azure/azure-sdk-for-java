@@ -60,6 +60,7 @@
       <modules>
         <module>azure-monitor-opentelemetry-exporter</module>
         <module>azure-monitor-query</module>
+        <module>azure-monitor-query-perf</module>
       </modules>
     </profile>
   </profiles>

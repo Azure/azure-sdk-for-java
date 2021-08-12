@@ -4,12 +4,13 @@
 package com.azure.spring.integration.servicebus.factory;
 
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.DisposableBean;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+
+import static com.azure.spring.cloud.context.core.util.Constants.SPRING_SERVICE_BUS_APPLICATION_ID;
 
 /**
  * Default implementation of {@link ServiceBusTopicClientFactory}. Client will be cached to improve performance
@@ -40,8 +43,11 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
 
     public DefaultServiceBusTopicClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         super(connectionString);
-        this.serviceBusClientBuilder = new ServiceBusClientBuilder().connectionString(connectionString);
-        this.serviceBusClientBuilder.transportType(amqpTransportType);
+        this.serviceBusClientBuilder = new ServiceBusClientBuilder()
+                                                .connectionString(connectionString)
+                                                .transportType(amqpTransportType)
+                                                .clientOptions(new ClientOptions()
+                                                .setApplicationId(SPRING_SERVICE_BUS_APPLICATION_ID));
     }
 
     private <K, V> void close(Map<K, V> map, Consumer<V> close) {
@@ -84,35 +90,50 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                                       ServiceBusClientConfig config,
                                                       ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
                                                                                     ServiceBusErrorContext> messageProcessor) {
+
+        if (config.getConcurrency() != 1) {
+            LOGGER.warn("It is detected that concurrency is set, this attribute has been deprecated,"
+                + " you can use " + (config.isSessionsEnabled() ? "maxConcurrentSessions" : "maxConcurrentCalls") + " instead");
+        }
         if (config.isSessionsEnabled()) {
-            return serviceBusClientBuilder.sessionProcessor()
+            ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder =
+                   serviceBusClientBuilder.sessionProcessor()
                                           .topicName(topic)
                                           .subscriptionName(subscription)
-                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                                          .maxConcurrentCalls(1)
-                                          // TODO, make it a constant or get duration is not exposed it from
-                                          //  clientConfig. And it looks like max auto renew
-                                          .maxConcurrentSessions(config.getConcurrency())
-                                          .prefetchCount(config.getPrefetchCount())
-                                          .disableAutoComplete()
+                                          .receiveMode(config.getServiceBusReceiveMode())
+                                          .maxConcurrentCalls(config.getMaxConcurrentCalls())
+                                          // TODO, It looks like max auto renew duration is not exposed
+                                          .maxConcurrentSessions(config.getMaxConcurrentSessions())
                                           .processMessage(messageProcessor.processMessage())
-                                          .processError(messageProcessor.processError())
-                                          .buildProcessorClient();
+                                          .processError(messageProcessor.processError());
+            if (!config.isEnableAutoComplete()) {
+                return builder.disableAutoComplete().buildProcessorClient();
+            }
+            return builder.buildProcessorClient();
         } else {
-            return serviceBusClientBuilder.processor()
+            ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder =
+                   serviceBusClientBuilder.processor()
                                           .topicName(topic)
                                           .subscriptionName(subscription)
-                                          .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                                          .maxConcurrentCalls(config.getConcurrency())
+                                          .receiveMode(config.getServiceBusReceiveMode())
+                                          .maxConcurrentCalls(config.getMaxConcurrentCalls())
                                           .prefetchCount(config.getPrefetchCount())
-                                          .disableAutoComplete()
                                           .processMessage(messageProcessor.processMessage())
-                                          .processError(messageProcessor.processError())
-                                          .buildProcessorClient();
+                                          .processError(messageProcessor.processError());
+            if (!config.isEnableAutoComplete()) {
+                return builder.disableAutoComplete().buildProcessorClient();
+            }
+            return builder.buildProcessorClient();
         }
     }
 
     private ServiceBusSenderAsyncClient createTopicSender(String name) {
         return serviceBusClientBuilder.sender().topicName(name).buildAsyncClient();
     }
+
+    public void setRetryOptions(AmqpRetryOptions amqpRetryOptions) {
+        serviceBusClientBuilder.retryOptions(amqpRetryOptions);
+    }
+
+    //TODO: Latest serviceBusClientBuilder support crossEntityTransactions
 }

@@ -68,6 +68,7 @@ public final class DataSourcesImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
+                @QueryParam("ignoreResetRequirements") Boolean ignoreResetRequirements,
                 @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexerDataSource dataSource,
                 Context context);
@@ -128,6 +129,7 @@ public final class DataSourcesImpl {
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
+     * @param ignoreResetRequirements Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,6 +143,7 @@ public final class DataSourcesImpl {
             SearchIndexerDataSource dataSource,
             String ifMatch,
             String ifNoneMatch,
+            Boolean ignoreResetRequirements,
             RequestOptions requestOptions,
             Context context) {
         final String prefer = "return=representation";
@@ -158,6 +161,7 @@ public final class DataSourcesImpl {
                 ifNoneMatch,
                 prefer,
                 this.client.getApiVersion(),
+                ignoreResetRequirements,
                 accept,
                 dataSource,
                 context);

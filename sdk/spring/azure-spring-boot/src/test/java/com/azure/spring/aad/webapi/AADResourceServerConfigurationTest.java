@@ -5,6 +5,7 @@ package com.azure.spring.aad.webapi;
 import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -31,7 +32,7 @@ public class AADResourceServerConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADAutoConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> assertThrows(IllegalStateException.class,
+            .run(context -> assertThrows(NoSuchBeanDefinitionException.class,
                 () -> context.getBean(JWTClaimsSetAwareJWSKeySelector.class)));
     }
 

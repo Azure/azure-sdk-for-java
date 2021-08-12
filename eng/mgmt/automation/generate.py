@@ -48,6 +48,7 @@ def generate(
         module,
     )
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors = True)
+    shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
