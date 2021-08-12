@@ -224,7 +224,8 @@ public final class SchemaRegistryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
                                                           SerializationType serializationType) {
-        return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE);
+        return FluxUtil.withContext(context ->
+            getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, context));
     }
 
     Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
