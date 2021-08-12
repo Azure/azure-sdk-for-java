@@ -30,6 +30,11 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
+  <properties>
+    <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.20</jacoco.min.branchcoverage>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
