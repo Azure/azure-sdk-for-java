@@ -8,6 +8,9 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3.
 - Add property `azure.activedirectory.resource-server.principal-claim-name` to configure principal claim name.
 - Add property `azure.activedirectory.resource-server.claim-to-authority-prefix-map` to configure claim to authority prefix map.
 
+### Key Bug Fixes
+- Fix the bug that Spring JMS configuration of JMS listener doesn't work for Azure Service Bus JMS Spring Boot Starter.
+
 ## 3.7.0 (2021-07-20)
 ### New Features
 - Add property `azure.activedirectory.application-type` to configure the application type.

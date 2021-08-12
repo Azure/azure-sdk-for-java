@@ -4,7 +4,8 @@
 This release is compatible with Spring Boot 2.5.0 - 2.5.3.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
-
+### Key Bug Fixes
+- Fix the bug that Spring JMS configuration of JMS listener doesn't work for Azure Service Bus JMS Spring Boot Starter.
 
 ## 3.7.0 (2021-07-20)
 ### Dependency Upgrades

@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
+import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,16 +52,18 @@ public class PremiumServiceBusJMSAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
+        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
+        configurer.configure(jmsListenerContainerFactory, connectionFactory);
         return jmsListenerContainerFactory;
     }
 
     @Bean
-    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
+        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
+        configurer.configure(jmsListenerContainerFactory, connectionFactory);
         jmsListenerContainerFactory.setSubscriptionDurable(Boolean.TRUE);
         return jmsListenerContainerFactory;
     }
