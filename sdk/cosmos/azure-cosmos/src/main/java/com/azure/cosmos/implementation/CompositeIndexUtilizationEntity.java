@@ -16,9 +16,7 @@ public class CompositeIndexUtilizationEntity {
     @JsonProperty(value = "IndexImpactScore", access = JsonProperty.Access.WRITE_ONLY)
     private String indexImpactScore;
 
-    CompositeIndexUtilizationEntity() {
-        super();
-    }
+    CompositeIndexUtilizationEntity() {}
 
     /**
      * @param indexDocumentExpressions -> The index representation of the filter expression.

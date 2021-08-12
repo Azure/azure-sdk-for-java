@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.IndexUtilizationInfo;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -340,18 +341,18 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
 
         queryList.add(queryBuilder.toString());
-        for(String query : queryList) {
+        for (String query : queryList) {
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setQueryMetricsEnabled(true);
-            options.setIndexMetricsPopulated(true);
+            options.setIndexMetricsEnabled(true);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query, options, InternalObjectNode.class).iterableByPage().iterator();
             while (iterator.hasNext()) {
                 FeedResponse<InternalObjectNode> feedResponse = iterator.next();
                 queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
-                logger.info("This is query diagnostics {}",queryDiagnostics);
+                logger.info("This is query diagnostics {}", queryDiagnostics);
                 if (feedResponse.getResponseHeaders().containsKey(HttpConstants.HttpHeaders.INDEX_UTILIZATION)) {
                     assertThat(feedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.INDEX_UTILIZATION)).isNotNull();
-
+                    assertThat(createFromJSONString(Utils.decodeBase64String(feedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.INDEX_UTILIZATION))).getUtilizedSingleIndexes()).isNotNull();
                 }
             }
         }
@@ -1006,6 +1007,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
 
         return HttpClient.createFixed(httpClientConfig);
+    }
+
+    private IndexUtilizationInfo createFromJSONString(String jsonString) {
+        ObjectMapper indexUtilizationInfoObjectMapper = new ObjectMapper();
+        IndexUtilizationInfo indexUtilizationInfo = null;
+        try {
+            indexUtilizationInfo = indexUtilizationInfoObjectMapper.readValue(jsonString, IndexUtilizationInfo.class);
+        } catch (JsonProcessingException e) {
+            logger.error("Json not correctly formed ", e);
+        }
+        return indexUtilizationInfo;
     }
 
     public static class TestItem {

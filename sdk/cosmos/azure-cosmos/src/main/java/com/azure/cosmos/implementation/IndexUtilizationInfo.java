@@ -31,9 +31,7 @@ public final class IndexUtilizationInfo {
     @JsonProperty(value = "PotentialCompositeIndexes", access = JsonProperty.Access.WRITE_ONLY)
     private List<CompositeIndexUtilizationEntity> potentialCompositeIndexes;
 
-    IndexUtilizationInfo() {
-        super();
-    }
+    IndexUtilizationInfo() {}
 
     /**
      * @param utilizedSingleIndexes     -> The utilized single indexes list.

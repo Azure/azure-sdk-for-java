@@ -18,9 +18,7 @@ public class SingleIndexUtilizationEntity {
     @JsonProperty(value = "IndexImpactScore", access = JsonProperty.Access.WRITE_ONLY)
     private String indexImpactScore;
 
-    SingleIndexUtilizationEntity() {
-        super();
-    }
+    SingleIndexUtilizationEntity() {}
 
     /**
      * @param filterExpression          -> The filter expression.

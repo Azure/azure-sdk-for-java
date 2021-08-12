@@ -37,7 +37,7 @@ public class CosmosQueryRequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
-    private boolean indexMetricsPopulated;
+    private boolean indexMetricsEnabled;
 
     /**
      * Instantiates a new query request options.
@@ -69,7 +69,7 @@ public class CosmosQueryRequestOptions {
         this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
         this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         this.customOptions = options.customOptions;
-        this.indexMetricsPopulated = options.indexMetricsPopulated;
+        this.indexMetricsEnabled = options.indexMetricsEnabled;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -486,28 +486,28 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Gets indexMetricsPopulated, which is used to obtain the index metrics to understand how the query engine used existing
+     * Gets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
      * indexes and could use potential new indexes.
      * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
      * enabled when debuging slow queries.
      *
-     * @return indexMetricsPopulated
+     * @return indexMetricsEnabled
      */
-    public boolean isIndexMetricsPopulated() {
-        return indexMetricsPopulated;
+    public boolean isIndexMetricsEnabled() {
+        return indexMetricsEnabled;
     }
 
     /**
-     * Sets indexMetricsPopulated, which is used to obtain the index metrics to understand how the query engine used existing
+     * Sets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
      * indexes and could use potential new indexes.
      * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
      * enabled when debuging slow queries.
      *
-     * @param indexMetricsPopulated
-     * @return indexMetricsPopulated
+     * @param indexMetricsEnabled a boolean used to obtain the index metrics
+     * @return indexMetricsEnabled
      */
-    public CosmosQueryRequestOptions setIndexMetricsPopulated(boolean indexMetricsPopulated) {
-        this.indexMetricsPopulated = indexMetricsPopulated;
+    public CosmosQueryRequestOptions setIndexMetricsEnabled(boolean indexMetricsEnabled) {
+        this.indexMetricsEnabled = indexMetricsEnabled;
         return this;
     }
 
