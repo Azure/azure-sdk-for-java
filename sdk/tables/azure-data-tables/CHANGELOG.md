@@ -1,7 +1,17 @@
 # Release History
 
-## 12.2.0-beta.1 (Unreleased)
+## 12.2.0-beta.1 (2021-08-12)
 
+### Bugs Fixed
+- Fixed an issue that made getting entities from a Cosmos endpoint fail as it does not return a `Timestamp@odata.type` property in a `TableEntity` alongside the `Timestamp` property, like Storage endpoint do. This is apparently intended behavior, so we now always convert `Timestamp` to `OffsetDateTime` as it is a reserved property name and will always be provided by the service.
+- Updated clients to properly map an internal HTTP exception to the public type `TableServiceException` in operations such as `getAccessPolicies()`, `getProperties()`, `setProperties()` and `getStatistics()`, including their `withResponse` variants.
+- Fixed batch operations to properly log exceptions other than `TableTransactionFailedException`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.19.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.2`
 
 ## 12.1.0 (2021-07-08)
 
