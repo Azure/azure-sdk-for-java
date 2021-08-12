@@ -41,7 +41,7 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
 
-      - template: /eng/pipelines/templates/steps/verify-readmes.md
+      - template: /eng/pipelines/templates/steps/verify-readmes.yml
 
       - template: ../steps/cache-maven-repository.yml
         parameters:
