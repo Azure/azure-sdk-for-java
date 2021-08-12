@@ -115,9 +115,4 @@ public final class SchemaRegistryClient {
         return this.asyncClient
             .getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, context).block();
     }
-
-    void clearCache() {
-        this.asyncClient.clearCache();
-    }
-
 }

@@ -10,8 +10,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
+import com.azure.data.schemaregistry.implementation.models.SchemaId;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
+import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -20,10 +23,6 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
-
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
-import com.azure.data.schemaregistry.implementation.models.SchemaId;
-import reactor.core.publisher.Mono;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
@@ -35,21 +34,15 @@ public final class SchemaRegistryAsyncClient {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAsyncClient.class);
 
     static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
-    static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
-    static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
 
     private final AzureSchemaRegistry restService;
-    private final Integer maxSchemaMapSize;
     private final ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap;
     private final Map<String, SchemaProperties> idCache;
     private final Map<String, SchemaProperties> schemaStringCache;
 
-    SchemaRegistryAsyncClient(
-        AzureSchemaRegistry restService,
-        int maxSchemaMapSize,
+    SchemaRegistryAsyncClient(AzureSchemaRegistry restService,
         ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap) {
         this.restService = restService;
-        this.maxSchemaMapSize = maxSchemaMapSize;
         this.typeParserMap = typeParserMap;
         this.idCache = new ConcurrentHashMap<>();
         this.schemaStringCache = new ConcurrentHashMap<>();
@@ -128,7 +121,6 @@ public final class SchemaRegistryAsyncClient {
                     schemaName,
                     schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
 
-                resetIfNeeded();
                 schemaStringCache
                     .putIfAbsent(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString), registered);
                 logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
@@ -190,7 +182,6 @@ public final class SchemaRegistryAsyncClient {
                     null,
                     response.getValue().getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
 
-                resetIfNeeded();
                 idCache.putIfAbsent(schemaId, schemaObject);
                 logger.verbose("Cached schema object. Path: '{}'", schemaId);
                 SimpleResponse<SchemaProperties> schemaRegistryObjectSimpleResponse = new SimpleResponse<>(
@@ -261,7 +252,6 @@ public final class SchemaRegistryAsyncClient {
 
                 SchemaId schemaId = response.getValue();
 
-                resetIfNeeded();
                 schemaStringCache.putIfAbsent(
                     getSchemaStringCacheKey(schemaGroup, schemaName, schemaString),
                     new SchemaProperties(
@@ -276,32 +266,6 @@ public final class SchemaRegistryAsyncClient {
                     response.getHeaders(), schemaId.getId());
                 sink.next(schemaIdResponse);
             });
-    }
-
-    /**
-     * Explicit call to clear all caches.
-     */
-    void clearCache() {
-        idCache.clear();
-        schemaStringCache.clear();
-        typeParserMap.clear();
-    }
-
-    // TODO: max age for schema maps? or will schemas always be immutable?
-
-    /**
-     * Checks if caches should be reinitialized to satisfy initial configuration
-     */
-    private void resetIfNeeded() {
-        // todo add verbose log
-        if (idCache.size() > this.maxSchemaMapSize) {
-            idCache.clear();
-            logger.verbose("Cleared schema ID cache.");
-        }
-        if (schemaStringCache.size() > this.maxSchemaMapSize) {
-            schemaStringCache.clear();
-            logger.verbose("Cleared schema string cache.");
-        }
     }
 
     private String getSchemaStringCacheKey(String schemaGroup, String schemaName, String schemaString) {

@@ -66,7 +66,6 @@ public class SchemaRegistryClientBuilder {
     private String endpoint;
     private String host;
     private HttpClient httpClient;
-    private Integer maxSchemaMapSize;
     private TokenCredential credential;
     private ClientOptions clientOptions;
     private HttpLogOptions httpLogOptions;
@@ -79,7 +78,6 @@ public class SchemaRegistryClientBuilder {
      */
     public SchemaRegistryClientBuilder() {
         this.httpLogOptions = new HttpLogOptions();
-        this.maxSchemaMapSize = null;
         this.typeParserMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
         this.httpClient = null;
         this.credential = null;
@@ -115,24 +113,6 @@ public class SchemaRegistryClientBuilder {
             this.endpoint = endpoint;
         }
 
-        return this;
-    }
-
-    /**
-     * Sets schema cache size limit.  If limit is exceeded on any cache, all caches are recycled.
-     *
-     * @param maxCacheSize max size for internal schema caches in {@link SchemaRegistryAsyncClient}
-     * @return The updated {@link SchemaRegistryClientBuilder} object.
-     * @throws IllegalArgumentException on invalid maxCacheSize value
-     */
-    public SchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
-        if (maxCacheSize < SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format("Schema map size must be greater than %s entries",
-                    SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
-        }
-
-        this.maxSchemaMapSize = maxCacheSize;
         return this;
     }
 
@@ -318,11 +298,7 @@ public class SchemaRegistryClientBuilder {
             .pipeline(buildPipeline)
             .buildClient();
 
-        int buildMaxSchemaMapSize = (maxSchemaMapSize == null)
-            ? SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_DEFAULT
-            : maxSchemaMapSize;
-
-        return new SchemaRegistryAsyncClient(restService, buildMaxSchemaMapSize, typeParserMap);
+        return new SchemaRegistryAsyncClient(restService, typeParserMap);
     }
 
     /**

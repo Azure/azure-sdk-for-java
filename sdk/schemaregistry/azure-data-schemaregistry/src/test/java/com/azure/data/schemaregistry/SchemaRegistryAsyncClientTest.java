@@ -63,7 +63,6 @@ public class SchemaRegistryAsyncClientTest {
         this.restService = mock(AzureSchemaRegistry.class);
         this.client = new SchemaRegistryAsyncClient(
             this.restService,
-            SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_DEFAULT,
             this.typeParserDictionary);
         this.schemas = mock(Schemas.class);
     }
