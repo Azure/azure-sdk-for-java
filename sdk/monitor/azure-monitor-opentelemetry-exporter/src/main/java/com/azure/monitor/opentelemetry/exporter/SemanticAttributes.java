@@ -7,8 +7,11 @@ import io.opentelemetry.api.common.AttributeKey;
 
 import java.util.List;
 
-import static io.opentelemetry.api.common.AttributeKey.*;
 import static io.opentelemetry.api.common.AttributeKey.booleanKey;
+import static io.opentelemetry.api.common.AttributeKey.doubleKey;
+import static io.opentelemetry.api.common.AttributeKey.longKey;
+import static io.opentelemetry.api.common.AttributeKey.stringArrayKey;
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
 // this is a copy of io.opentelemetry.semconv.trace.attributes.SemanticAttributes
 // because the module that contains that class is not stable, so don't want to take a dependency on it
@@ -762,7 +765,8 @@ final class SemanticAttributes {
         /** CockroachDB. */
         static final String COCKROACHDB = "cockroachdb";
 
-        private DbSystemValues() {}
+        private DbSystemValues() {
+        }
     }
 
     static final class DbCassandraConsistencyLevelValues {
@@ -789,7 +793,8 @@ final class SemanticAttributes {
         /** local_serial. */
         static final String LOCAL_SERIAL = "local_serial";
 
-        private DbCassandraConsistencyLevelValues() {}
+        private DbCassandraConsistencyLevelValues() {
+        }
     }
 
     static final class FaasTriggerValues {
@@ -804,7 +809,8 @@ final class SemanticAttributes {
         /** If none of the others apply. */
         static final String OTHER = "other";
 
-        private FaasTriggerValues() {}
+        private FaasTriggerValues() {
+        }
     }
 
     static final class FaasDocumentOperationValues {
@@ -815,7 +821,8 @@ final class SemanticAttributes {
         /** When an object is deleted. */
         static final String DELETE = "delete";
 
-        private FaasDocumentOperationValues() {}
+        private FaasDocumentOperationValues() {
+        }
     }
 
     static final class FaasInvokedProviderValues {
@@ -826,7 +833,8 @@ final class SemanticAttributes {
         /** Google Cloud Platform. */
         static final String GCP = "gcp";
 
-        private FaasInvokedProviderValues() {}
+        private FaasInvokedProviderValues() {
+        }
     }
 
     static final class NetTransportValues {
@@ -845,7 +853,8 @@ final class SemanticAttributes {
         /** Something else (non IP-based). */
         static final String OTHER = "other";
 
-        private NetTransportValues() {}
+        private NetTransportValues() {
+        }
     }
 
     static final class HttpFlavorValues {
@@ -860,7 +869,8 @@ final class SemanticAttributes {
         /** QUIC protocol. */
         static final String QUIC = "QUIC";
 
-        private HttpFlavorValues() {}
+        private HttpFlavorValues() {
+        }
     }
 
     static final class MessagingDestinationKindValues {
@@ -869,7 +879,8 @@ final class SemanticAttributes {
         /** A message sent to a topic. */
         static final String TOPIC = "topic";
 
-        private MessagingDestinationKindValues() {}
+        private MessagingDestinationKindValues() {
+        }
     }
 
     static final class MessagingOperationValues {
@@ -878,7 +889,8 @@ final class SemanticAttributes {
         /** process. */
         static final String PROCESS = "process";
 
-        private MessagingOperationValues() {}
+        private MessagingOperationValues() {
+        }
     }
 
     static final class RpcGrpcStatusCodeValues {
@@ -917,7 +929,8 @@ final class SemanticAttributes {
         /** UNAUTHENTICATED. */
         static final long UNAUTHENTICATED = 16;
 
-        private RpcGrpcStatusCodeValues() {}
+        private RpcGrpcStatusCodeValues() {
+        }
     }
 
     // Manually defined and not YET in the YAML
@@ -929,5 +942,6 @@ final class SemanticAttributes {
      */
     static final String EXCEPTION_EVENT_NAME = "exception";
 
-    private SemanticAttributes() {}
+    private SemanticAttributes() {
+    }
 }
