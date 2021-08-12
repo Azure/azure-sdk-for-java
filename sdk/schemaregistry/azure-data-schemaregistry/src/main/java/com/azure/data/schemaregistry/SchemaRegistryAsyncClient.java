@@ -110,12 +110,6 @@ public final class SchemaRegistryAsyncClient {
             .getSchemas().registerWithResponseAsync(schemaGroup, schemaName,
                 com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
             .handle((response, sink) -> {
-                if (response == null) {
-                    sink.error(logger.logExceptionAsError(
-                        new NullPointerException("Client returned null response")));
-                    return;
-                }
-
                 if (response.getStatusCode() == 400) {
                     sink.error(logger.logExceptionAsError(
                         new IllegalStateException("Invalid schema registration attempted")));
@@ -170,12 +164,6 @@ public final class SchemaRegistryAsyncClient {
         Objects.requireNonNull(schemaId, "'schemaId' should not be null");
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId)
             .handle((response, sink) -> {
-                if (response == null) {
-                    sink.error(logger.logExceptionAsError(
-                        new NullPointerException("Client returned null response")));
-                    return;
-                }
-
                 if (response.getStatusCode() == 404) {
                     sink.error(logger.logExceptionAsError(
                         new IllegalStateException(String.format("Schema does not exist, id %s", schemaId))));
@@ -246,12 +234,6 @@ public final class SchemaRegistryAsyncClient {
             .queryIdByContentWithResponseAsync(schemaGroup, schemaName,
                 com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
             .handle((response, sink) -> {
-                if (response == null) {
-                    sink.error(logger.logExceptionAsError(
-                        new NullPointerException("Client returned null response")));
-                    return;
-                }
-
                 if (response.getStatusCode() == 404) {
                     sink.error(
                         logger.logExceptionAsError(new IllegalStateException("Existing matching schema not found.")));
