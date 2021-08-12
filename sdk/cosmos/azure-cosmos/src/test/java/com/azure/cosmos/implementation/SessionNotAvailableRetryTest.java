@@ -21,6 +21,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -388,6 +389,10 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             // Verifying we are only retrying in masterOrHub region
             assertThat(uniqueHost.size()).isEqualTo(1);
 
+            String masterOrHubRegion =
+                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
+                    TestConfigurations.HOST);
+
             // First regional retries in originating region , then retrying in master as per clientRetryPolicy and 1
             // retry in the
             // last as per RenameCollectionAwareClientRetryPolicy after clearing session token
@@ -398,14 +403,20 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
             // First regional retries should be in master region
-            assertThat(uris.get(totalRetries / 2)).isEqualTo(TestConfigurations.HOST);
+            if(!(uris.get(totalRetries / 2).equals(masterOrHubRegion) || uris.get(totalRetries / 2).equals(TestConfigurations.HOST))){
+                fail(String.format("%s is not equal to master region", uris.get(totalRetries / 2)));
+            }
 
             // Retrying again in master region
-            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(TestConfigurations.HOST);
+            if(!(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2).equals(masterOrHubRegion) || uris.get(totalRetries / 2).equals(TestConfigurations.HOST))){
+                fail(String.format("%s is not equal to master region", uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)));
+            }
             totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
 
             // Last region retries should be master region
-            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(TestConfigurations.HOST);
+            if(!(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2).equals(masterOrHubRegion) || uris.get(totalRetries / 2).equals(TestConfigurations.HOST))){
+                fail(String.format("%s is not equal to master region", uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)));
+            }
         } finally {
             safeClose(preferredListClient);
         }
