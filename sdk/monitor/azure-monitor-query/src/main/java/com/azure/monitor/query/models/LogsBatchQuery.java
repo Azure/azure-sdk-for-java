@@ -4,6 +4,7 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.log.implementation.models.LogsQueryHelper;
 import com.azure.monitor.query.log.implementation.models.BatchQueryRequest;
@@ -45,30 +46,30 @@ public final class LogsBatchQuery {
      * Adds a new logs query to the batch.
      * @param workspaceId The workspaceId on which the query is executed.
      * @param query The Kusto query.
-     * @param timeSpan The time period for which the logs should be queried.
+     * @param timeInterval The time period for which the logs should be queried.
      * @return The updated {@link LogsBatchQuery}.
      */
-    public LogsBatchQuery addQuery(String workspaceId, String query, QueryTimeSpan timeSpan) {
-        return addQuery(workspaceId, query, timeSpan, new LogsQueryOptions());
+    public LogsBatchQuery addQuery(String workspaceId, String query, TimeInterval timeInterval) {
+        return addQuery(workspaceId, query, timeInterval, new LogsQueryOptions());
     }
 
     /**
      * Adds a new logs query to the batch.
      * @param workspaceId The workspaceId on which the query is executed.
      * @param query The Kusto query.
-     * @param timeSpan The time period for which the logs should be queried.
+     * @param timeInterval The time period for which the logs should be queried.
      * @param logsQueryOptions The log query options to configure server timeout, set additional workspaces or enable
      * statistics and rendering information in response.
      * @return The updated {@link LogsBatchQuery}.
      */
-    public LogsBatchQuery addQuery(String workspaceId, String query, QueryTimeSpan timeSpan,
+    public LogsBatchQuery addQuery(String workspaceId, String query, TimeInterval timeInterval,
                                    LogsQueryOptions logsQueryOptions) {
         Objects.requireNonNull(query, "'query' cannot be null.");
         Objects.requireNonNull(workspaceId, "'workspaceId' cannot be null.");
         index++;
         QueryBody queryBody = new QueryBody(query)
                 .setWorkspaces(logsQueryOptions == null ? null : logsQueryOptions.getAdditionalWorkspaces())
-                .setTimespan(timeSpan == null ? null : timeSpan.toString());
+                .setTimespan(timeInterval == null ? null : timeInterval.toIso8601Format());
 
         String preferHeader = buildPreferHeaderString(logsQueryOptions);
         if (logsQueryOptions != null && logsQueryOptions.getServerTimeout() != null) {

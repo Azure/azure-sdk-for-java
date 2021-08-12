@@ -239,7 +239,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
-            assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
+            // TODO: Add this check back when enable the channelAcquisitionContext again
+            // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
             assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
