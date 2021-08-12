@@ -102,7 +102,6 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     private final MonitorExporterAsyncClient client;
     private final ClientLogger logger = new ClientLogger(AzureMonitorTraceExporter.class);
     private final String instrumentationKey;
-    private final String telemetryItemNamePrefix;
 
     /**
      * Creates an instance of exporter that is configured with given exporter client that sends telemetry events to
@@ -113,8 +112,6 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     AzureMonitorTraceExporter(MonitorExporterAsyncClient client, String instrumentationKey) {
         this.client = client;
         this.instrumentationKey = instrumentationKey;
-        String formattedInstrumentationKey = instrumentationKey.replaceAll("-", "");
-        this.telemetryItemNamePrefix = "Microsoft.ApplicationInsights." + formattedInstrumentationKey + ".";
     }
 
     /**
@@ -180,7 +177,6 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         }
     }
 
-
     private static List<TelemetryExceptionDetails> minimalParse(String errorStack) {
         TelemetryExceptionDetails details = new TelemetryExceptionDetails();
         String line = errorStack.split(System.lineSeparator())[0];
@@ -204,7 +200,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         MonitorBase monitorBase = new MonitorBase();
 
         telemetryItem.setTags(new HashMap<>());
-        telemetryItem.setName(telemetryItemNamePrefix + "RemoteDependency");
+        telemetryItem.setName("RemoteDependency");
         telemetryItem.setVersion(1);
         telemetryItem.setInstrumentationKey(instrumentationKey);
         telemetryItem.setData(monitorBase);
@@ -442,7 +438,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         MonitorBase monitorBase = new MonitorBase();
 
         telemetryItem.setTags(new HashMap<>());
-        telemetryItem.setName(telemetryItemNamePrefix + "Request");
+        telemetryItem.setName("Request");
         telemetryItem.setVersion(1);
         telemetryItem.setInstrumentationKey(instrumentationKey);
         telemetryItem.setData(monitorBase);
@@ -577,7 +573,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             MonitorBase monitorBase = new MonitorBase();
 
             telemetryItem.setTags(new HashMap<>());
-            telemetryItem.setName(telemetryItemNamePrefix + "Event");
+            telemetryItem.setName("Event");
             telemetryItem.setVersion(1);
             telemetryItem.setInstrumentationKey(instrumentationKey);
             telemetryItem.setData(monitorBase);
@@ -615,7 +611,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         MonitorBase monitorBase = new MonitorBase();
 
         telemetryItem.setTags(new HashMap<>());
-        telemetryItem.setName(telemetryItemNamePrefix + "Exception");
+        telemetryItem.setName("Exception");
         telemetryItem.setVersion(1);
         telemetryItem.setInstrumentationKey(instrumentationKey);
         telemetryItem.setData(monitorBase);
