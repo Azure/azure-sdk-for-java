@@ -4,7 +4,6 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: storage
-      SupportedClouds: 'Public,UsGov,China'
       Artifacts:
         - name: azure-storage-common
           groupId: com.azure
@@ -43,6 +42,8 @@ stages:
           groupId: com.azure
       TestMode: 'LIVE'
       TimeoutInMinutes: 60
+      Location: canadacentral
+      Clouds: 'Preview'
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
         mavenOptions: '$(DefaultTestMavenOptions)'
