@@ -247,8 +247,10 @@ abstract class QueryMetricsWriter {
     // utilizedSingleIndexes
     private void writeUtilizedSingleIndexesMetrics(IndexUtilizationInfo indexUtilizationInfo) {
         this.writeBeforeUtilizedSingleIndexesMetrics();
-        for (SingleIndexUtilizationEntity singleIndexUtilizationEntity : indexUtilizationInfo.getUtilizedSingleIndexes()) {
-            this.writeUtilizedSingleIndex(singleIndexUtilizationEntity);
+        if (indexUtilizationInfo.getUtilizedSingleIndexes() != null) {
+            for (SingleIndexUtilizationEntity singleIndexUtilizationEntity : indexUtilizationInfo.getUtilizedSingleIndexes()) {
+                this.writeUtilizedSingleIndex(singleIndexUtilizationEntity);
+            }
         }
         this.writeAfterUtilizedSingleIndexesMetrics();
     }
@@ -286,8 +288,10 @@ abstract class QueryMetricsWriter {
     // potentialSingleIndexes
     private void writePotentialSingleIndexesMetrics(IndexUtilizationInfo indexUtilizationInfo) {
         this.writeBeforePotentialSingleIndexesMetrics();
-        for (SingleIndexUtilizationEntity singleIndexUtilizationEntity : indexUtilizationInfo.getPotentialSingleIndexes()) {
-            this.writePotentialSingleIndex(singleIndexUtilizationEntity);
+        if (indexUtilizationInfo.getPotentialSingleIndexes() != null) {
+            for (SingleIndexUtilizationEntity singleIndexUtilizationEntity : indexUtilizationInfo.getPotentialSingleIndexes()) {
+                this.writePotentialSingleIndex(singleIndexUtilizationEntity);
+            }
         }
         this.writeAfterPotentialSingleIndexesMetrics();
     }
@@ -325,8 +329,10 @@ abstract class QueryMetricsWriter {
     // utilizedCompositeIndexes
     private void writeUtilizedCompositeIndexesMetrics(IndexUtilizationInfo indexUtilizationInfo) {
         this.writeBeforeUtilizedCompositeIndexesMetrics();
-        for (CompositeIndexUtilizationEntity compositeIndexUtilizationEntity : indexUtilizationInfo.getUtilizedCompositeIndexes()) {
-            this.writeUtilizedCompositeIndex(compositeIndexUtilizationEntity);
+        if (indexUtilizationInfo.getUtilizedCompositeIndexes() != null) {
+            for (CompositeIndexUtilizationEntity compositeIndexUtilizationEntity : indexUtilizationInfo.getUtilizedCompositeIndexes()) {
+                this.writeUtilizedCompositeIndex(compositeIndexUtilizationEntity);
+            }
         }
         this.writeAfterUtilizedCompositeIndexesMetrics();
     }
@@ -358,8 +364,10 @@ abstract class QueryMetricsWriter {
     // potentialCompositeIndexes
     private void writePotentialCompositeIndexesMetrics(IndexUtilizationInfo indexUtilizationInfo) {
         this.writeBeforePotentialCompositeIndexesMetrics();
-        for (CompositeIndexUtilizationEntity compositeIndexUtilizationEntity : indexUtilizationInfo.getPotentialCompositeIndexes()) {
-            this.writePotentialCompositeIndex(compositeIndexUtilizationEntity);
+        if (indexUtilizationInfo.getPotentialCompositeIndexes() != null) {
+            for (CompositeIndexUtilizationEntity compositeIndexUtilizationEntity : indexUtilizationInfo.getPotentialCompositeIndexes()) {
+                this.writePotentialCompositeIndex(compositeIndexUtilizationEntity);
+            }
         }
         this.writeAfterPotentialCompositeIndexesMetrics();
     }
