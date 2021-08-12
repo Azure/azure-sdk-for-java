@@ -32,11 +32,11 @@ public class LogsBatchQueryTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        logsQueryClient.queryLogsBatch(workspaceId, LOGS_BATCH_QUERIES, null);
+        logsQueryClient.queryBatch(workspaceId, LOGS_BATCH_QUERIES, null);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return logsQueryAsyncClient.queryLogsBatch(workspaceId, LOGS_BATCH_QUERIES, null).then();
+        return logsQueryAsyncClient.queryBatch(workspaceId, LOGS_BATCH_QUERIES, null).then();
     }
 }

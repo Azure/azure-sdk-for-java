@@ -5,6 +5,7 @@ package com.azure.core.util;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,6 +37,8 @@ public class CoreUtilsTests {
     private static final byte[] UTF_16LE_BOM = {(byte) 0xFF, (byte) 0xFE};
     private static final byte[] UTF_32BE_BOM = {(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF};
     private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
+
+    private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
 
     @Test
     public void findFirstOfTypeEmptyArgs() {
@@ -233,6 +236,38 @@ public class CoreUtilsTests {
 
             // ClientOptions contains multiple header values, a multi-header HttpHeaders is returned.
             Arguments.of(new ClientOptions().setHeaders(multipleHeadersList), new HttpHeaders(multipleHeadersMap))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getDefaultTimeoutFromEnvironmentSupplier")
+    public void getDefaultTimeoutFromEnvironmentTests(Configuration configuration, long defaultTimeoutMillis,
+        ClientLogger logger, long expectedTimeout) {
+        assertEquals(expectedTimeout, CoreUtils.getDefaultTimeoutFromEnvironment(configuration, TIMEOUT_PROPERTY_NAME,
+            defaultTimeoutMillis, logger));
+    }
+
+    private static Stream<Arguments> getDefaultTimeoutFromEnvironmentSupplier() {
+        ClientLogger logger = new ClientLogger(CoreUtilsTests.class);
+
+        return Stream.of(
+            // Configuration doesn't have the timeout property configured.
+            Arguments.of(Configuration.NONE, 10000, logger, 10000),
+
+            // Configuration has an empty string timeout property configured.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, ""), 10000, logger, 10000),
+
+            // Configuration has a value that isn't a valid number.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "ten"), 10000, logger, 10000),
+
+            // Configuration has a negative value.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "-10"), 10000, logger, 0),
+
+            // Configuration has a zero value.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "0"), 10000, logger, 0),
+
+            // Configuration has a positive value.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "42"), 10000, logger, 42)
         );
     }
 }
