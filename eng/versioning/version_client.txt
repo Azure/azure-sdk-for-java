@@ -82,7 +82,7 @@ com.azure:azure-data-appconfiguration;1.2.0;1.2.1
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-schemaregistry-avro;1.0.0-beta.4;1.0.0-beta.5
-com.azure:azure-data-tables;12.1.0;12.2.0-beta.1
+com.azure:azure-data-tables;12.1.0;12.1.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-digitaltwins-core;1.1.1;1.2.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
