@@ -51,6 +51,7 @@ public class SchemaRegistryAsyncClientTest {
     private HashMap<String, SchemaProperties> schemaStringCache;
     private ConcurrentSkipListMap<String, Function<String, Object>> typeParserDictionary;
     private Schemas schemas;
+    private int maximumCacheSize;
 
     @BeforeEach
     protected void setUp() {
@@ -60,10 +61,11 @@ public class SchemaRegistryAsyncClientTest {
         this.typeParserDictionary = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
         this.typeParserDictionary.put(MOCK_SERIALIZATION.toString(), (s) -> s);
 
+        this.maximumCacheSize = 15;
         this.restService = mock(AzureSchemaRegistry.class);
         this.client = new SchemaRegistryAsyncClient(
             this.restService,
-            SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_DEFAULT,
+            this.maximumCacheSize,
             this.typeParserDictionary);
         this.schemas = mock(Schemas.class);
     }

@@ -31,12 +31,9 @@ import java.util.function.Function;
 @ServiceClient(builder = SchemaRegistryClientBuilder.class, isAsync = true)
 public final class SchemaRegistryAsyncClient {
 
-    private final ClientLogger logger = new ClientLogger(SchemaRegistryAsyncClient.class);
-
     static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
-    static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
-    static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
 
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryAsyncClient.class);
     private final AzureSchemaRegistry restService;
     private final Integer maxSchemaMapSize;
     private final ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap;
