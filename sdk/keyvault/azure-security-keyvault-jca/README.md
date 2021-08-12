@@ -150,7 +150,7 @@ PEM          | EC       | P-256K                          |                 | âœ
 ## Configure logging
 This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
 
-Here is an example `logging.properties`:
+Here is an example of a `logging.properties` file:
 ```properties
 # To enable this configure file, Please add this property:
 # -Djava.util.logging.config.file="src/test/resources/logging.properties"
