@@ -157,7 +157,7 @@ public final class SchemaRegistryAsyncClient {
      * response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SchemaProperties>> getSchemaWithResponse(String schemaId) {
+    Mono<Response<SchemaProperties>> getSchemaWithResponse(String schemaId) {
         return getSchemaWithResponse(schemaId, Context.NONE);
     }
 
@@ -229,7 +229,7 @@ public final class SchemaRegistryAsyncClient {
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
+    Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
                                                           SerializationType serializationType) {
         return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE);
     }
