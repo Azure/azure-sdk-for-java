@@ -163,7 +163,7 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - template: /eng/pipelines/templates/step/verify-readmes.md
+      - template: /eng/pipelines/templates/steps/verify-readmes.md
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
