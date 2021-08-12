@@ -148,7 +148,7 @@ PEM          | EC       | P-256K                          |                 | âœ
 ## Troubleshooting
 
 ## Configure logging
-This module use JUL(java.util.logging), so you can configure JUL to config the logging.
+This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
 
 Here is an example `logging.properties`:
 ```properties
