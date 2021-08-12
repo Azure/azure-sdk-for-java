@@ -6,6 +6,9 @@ package com.azure.data.schemaregistry;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -14,8 +17,10 @@ import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
 import com.azure.data.schemaregistry.implementation.models.SchemaId;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -297,5 +302,54 @@ public final class SchemaRegistryAsyncClient {
 
     private static String getSchemaStringCacheKey(String schemaGroup, String schemaName, String schemaString) {
         return schemaGroup + schemaName + schemaString;
+    }
+
+    /**
+     * Represents an erroneous response from Schema Registry.
+     */
+    private static final class SchemaRegistryErrorHttpResponse extends HttpResponse {
+        private final int statusCode;
+        private final HttpHeaders headers;
+
+        private SchemaRegistryErrorHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
+            super(request);
+            this.statusCode = statusCode;
+            this.headers = headers;
+        }
+
+        @Override
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        @Override
+        public String getHeaderValue(String name) {
+            return headers.getValue(name);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return headers;
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return Flux.empty();
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return Mono.empty();
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return Mono.empty();
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return Mono.empty();
+        }
     }
 }
