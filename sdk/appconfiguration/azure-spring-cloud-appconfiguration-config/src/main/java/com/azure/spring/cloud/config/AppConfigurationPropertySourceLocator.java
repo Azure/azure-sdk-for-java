@@ -226,7 +226,11 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
                 ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
                     store.getEndpoint());
-                watchKeysSettings.add(watchKey);
+                if (watchKey != null) {
+                    watchKeysSettings.add(watchKey);
+                } else {
+                    watchKeysSettings.add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
+                }
             }
             if (store.getFeatureFlags().getEnabled()) {
                 SettingSelector settingSelector = new SettingSelector()
