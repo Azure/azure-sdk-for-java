@@ -71,7 +71,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private static final String TURNAROUND_TIME_HEADER = "Turnaround Time (ms)";
     private static final String NUMBER_OF_PREEMPTION_HEADER = "NUMBER of Preemptions";
 
-    // IndexUtlizationInfo
+    // IndexUtilizationInfo
     private static final String INDEX_UTILIZATION_INFO_METRICS = "Index Utilization Info Metrics";
     private static final String UTILIZED_SINGLE_INDEXES_METRICS = " Utilized Single Indexes Metrics";
     private static final String POTENTIAL_SINGLE_INDEXES_METRICS = "Potential Single Indexes Metrics";
@@ -499,7 +499,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
         // Do Nothing
     }
 
-    // Index Utiliation Info Metrics
+    // Index Utilisation Info Metrics
     @Override
     protected void writeBeforeIndexUtilizationInfoMetrics() {
         QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder,

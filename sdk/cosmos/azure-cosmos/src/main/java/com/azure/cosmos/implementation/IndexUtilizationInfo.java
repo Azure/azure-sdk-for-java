@@ -7,12 +7,15 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public final class IndexUtilizationInfo {
+    protected static Logger logger = LoggerFactory.getLogger(IndexUtilizationInfo.class.getSimpleName());
 
     static final IndexUtilizationInfo ZERO = new IndexUtilizationInfo(
         new ArrayList<>(), /* utilizedSingleIndexes */
@@ -134,17 +137,13 @@ public final class IndexUtilizationInfo {
     }
 
     static IndexUtilizationInfo createFromJSONString(String jsonString) {
-        if (StringUtils.isEmpty(jsonString)) {
-            throw new NullPointerException("jsonString");
-        }
         ObjectMapper indexUtilizationInfoObjectMapper = new ObjectMapper();
         IndexUtilizationInfo indexUtilizationInfo = null;
         try {
             indexUtilizationInfo = indexUtilizationInfoObjectMapper.readValue(jsonString, IndexUtilizationInfo.class);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("Json not correctly formed ", e);
         }
         return indexUtilizationInfo;
     }
 }
-

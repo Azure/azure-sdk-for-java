@@ -288,7 +288,7 @@ public final class QueryMetrics {
         double retrievedDocumentSize = metrics.get(QueryMetricsConstants.RetrievedDocumentSize);
         Duration totalQueryExecutionTime = QueryMetricsUtils.getDurationFromMetrics(metrics, QueryMetricsConstants.TotalQueryExecutionTimeInMs);
         IndexUtilizationInfo indexUtilizationInfo = null;
-        if (indexUtilizationInfoJSONString!=null) {
+        if (indexUtilizationInfoJSONString != null) {
             indexUtilizationInfo = IndexUtilizationInfo.createFromJSONString(Utils.decodeBase64String(indexUtilizationInfoJSONString));
         }
 
