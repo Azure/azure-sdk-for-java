@@ -9,6 +9,12 @@
   - `KeyProperties`
 - Added `releaseKey()` and `releaseKeyWithResponse()` operations to `KeyClient` and `KeyAsyncClient` to securely release a key for Key Vault and Managed HSM.
 
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.19.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.2`
+
 ## 4.4.0-beta.1 (2021-07-09)
 
 ### Features Added
