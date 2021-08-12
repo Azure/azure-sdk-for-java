@@ -389,9 +389,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             // Verifying we are only retrying in masterOrHub region
             assertThat(uniqueHost.size()).isEqualTo(1);
 
-            String masterOrHubRegion =
-                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
-                    TestConfigurations.HOST);
+            String masterOrHubRegion =databaseAccount.getWritableLocations().iterator().next().getEndpoint();
 
             // First regional retries in originating region , then retrying in master as per clientRetryPolicy and 1
             // retry in the
