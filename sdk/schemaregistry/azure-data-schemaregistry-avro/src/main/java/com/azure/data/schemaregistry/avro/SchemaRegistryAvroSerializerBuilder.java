@@ -6,7 +6,7 @@ package com.azure.data.schemaregistry.avro;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 
 /**
- * Builder implementation for building {@link SchemaRegistryAvroSerializer} and {@link SchemaRegistryAvroSerializer}
+ * Builder implementation for building {@link SchemaRegistryAvroSerializer}.
  */
 public final class SchemaRegistryAvroSerializerBuilder {
     private Boolean autoRegisterSchemas;
@@ -63,7 +63,6 @@ public final class SchemaRegistryAvroSerializerBuilder {
         this.avroSpecificReader = avroSpecificReader;
         return this;
     }
-
 
     /**
      * The {@link SchemaRegistryAsyncClient} to use to interact with the Schema Registry service.
