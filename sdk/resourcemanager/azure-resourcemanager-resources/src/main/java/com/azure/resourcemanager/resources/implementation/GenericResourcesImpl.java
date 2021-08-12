@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -308,7 +309,8 @@ public final class GenericResourcesImpl
             () -> this.inner().deleteByIdWithResponseAsync(id, apiVersion).block(),
             Function.identity(),
             Void.class,
-            null);
+            null,
+            Context.NONE);
     }
 
     private Mono<String> getApiVersionFromIdAsync(final String id) {

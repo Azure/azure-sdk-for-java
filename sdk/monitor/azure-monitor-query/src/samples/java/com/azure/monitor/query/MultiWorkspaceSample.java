@@ -35,7 +35,7 @@ public class MultiWorkspaceSample {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.queryLogsWithResponse("d2d0e126-fa1e-4b0a-b647-250cdd471e68",
+        LogsQueryResult queryResults = logsQueryClient.queryWithResponse("d2d0e126-fa1e-4b0a-b647-250cdd471e68",
                 "union * | where TimeGenerated > ago(10d) | project TenantId", null, new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("srnagar-log-analytics-ws-2", "srnagar-log-analytics-ws")),
                 Context.NONE).getValue();
