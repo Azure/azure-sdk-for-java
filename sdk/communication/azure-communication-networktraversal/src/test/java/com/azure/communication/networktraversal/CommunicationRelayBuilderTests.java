@@ -146,56 +146,6 @@ public class CommunicationRelayBuilderTests {
     }
 
     @Test
-    public void builderWithNullPipelineOptionsThrows() {
-        assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .pipeline(null);
-        });
-    }
-
-    @Test
-    public void builderWithNullCustomPolicyOptionsThrows() {
-        assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .addPolicy(null);
-        });
-    }
-
-    @Test
-    public void builderWithConfigurationOptionsThrows() {
-        assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .configuration(null);
-        });
-    }
-
-    @Test
-    public void builderWithNullClientOptionsThrows() {
-        assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .clientOptions(null);
-        });
-    }
-
-    @Test
-    public void builderWithRetryPolicyOptionsThrows() {
-        assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .retryPolicy(null);
-        });
-    }
-
-    @Test
     public void nullTokenTest() {
         assertThrows(NullPointerException.class, () -> {
             builder.buildAsyncClient();

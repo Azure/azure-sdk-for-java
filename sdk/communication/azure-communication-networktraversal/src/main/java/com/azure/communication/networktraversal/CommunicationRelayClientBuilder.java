@@ -62,7 +62,7 @@ public final class CommunicationRelayClientBuilder {
      * @return CommunicationRelayClientBuilder
      */
     public CommunicationRelayClientBuilder endpoint(String endpoint) {
-        this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -74,7 +74,7 @@ public final class CommunicationRelayClientBuilder {
      * @return CommunicationRelayClientBuilder
      */
     public CommunicationRelayClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -83,10 +83,9 @@ public final class CommunicationRelayClientBuilder {
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is null.
      */
     public CommunicationRelayClientBuilder credential(TokenCredential tokenCredential) {
-        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
+        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -95,10 +94,9 @@ public final class CommunicationRelayClientBuilder {
      *
     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
-     * @throws NullPointerException If {@code keyCredential} is null.
      */
     public CommunicationRelayClientBuilder credential(AzureKeyCredential keyCredential)  {
-        this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        this.azureKeyCredential = keyCredential;
         return this;
     }
 
@@ -127,7 +125,7 @@ public final class CommunicationRelayClientBuilder {
      * @return CommunicationRelayClientBuilder
      */
     public CommunicationRelayClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -139,7 +137,7 @@ public final class CommunicationRelayClientBuilder {
      * @return CommunicationRelayClientBuilder
      */
     public CommunicationRelayClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
+        this.customPolicies.add(customPolicy);
         return this;
     }
 
@@ -148,10 +146,9 @@ public final class CommunicationRelayClientBuilder {
      *
      * @param clientOptions {@link ClientOptions}.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
-     * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
     public CommunicationRelayClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        this.clientOptions = clientOptions;
         return this;
     }
 
@@ -162,7 +159,7 @@ public final class CommunicationRelayClientBuilder {
      * @return the updated CommunicationRelayClientBuilder object
      */
     public CommunicationRelayClientBuilder configuration(Configuration configuration) {
-        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
+        this.configuration = configuration;
         return this;
     }
 
@@ -173,7 +170,7 @@ public final class CommunicationRelayClientBuilder {
      * @return the updated CommunicationRelayClientBuilder object
      */
     public CommunicationRelayClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
+        this.httpLogOptions = logOptions;
         return this;
     }
 
@@ -182,10 +179,9 @@ public final class CommunicationRelayClientBuilder {
      *
      * @param retryPolicy User's retry policy applied to each request.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
-     * @throws NullPointerException If the specified {@code retryPolicy} is null.
      */
     public CommunicationRelayClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -228,7 +224,9 @@ public final class CommunicationRelayClientBuilder {
     }
 
     private CommunicationNetworkingClientImpl createServiceImpl() {
-        Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(endpoint, "'ednpoint' cannot be null.");
+        Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
+        Objects.requireNonNull(customPolicies, "'customPolicies' cannot be null.");
 
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
@@ -291,7 +289,7 @@ public final class CommunicationRelayClientBuilder {
         } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
             applicationId = buildLogOptions.getApplicationId();
         }
-
+        
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);

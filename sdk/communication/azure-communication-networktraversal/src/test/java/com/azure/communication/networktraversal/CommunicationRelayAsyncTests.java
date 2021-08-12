@@ -50,11 +50,8 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
             .assertNext(relayConfig -> {
                 assertNotNull(relayConfig.getIceServers());
                 for (CommunicationIceServer iceS : relayConfig.getIceServers()) {
-                    System.out.println("Urls:" + iceS.getUrls());
                     assertNotNull(iceS.getUsername());
-                    System.out.println("Username: " + iceS.getUsername());
                     assertNotNull(iceS.getCredential());
-                    System.out.println("Credential: " + iceS.getCredential());
                 }
             }).verifyComplete();
         }
@@ -92,11 +89,8 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
                 assertNotNull(relayConfig.getIceServers());
                 for (CommunicationIceServer iceS : relayConfig.getIceServers()) {
                     assertNotNull(iceS.getUrls());
-                    System.out.println("Urls:" + iceS.getUrls());
                     assertNotNull(iceS.getUsername());
-                    System.out.println("Username: " + iceS.getUsername());
                     assertNotNull(iceS.getCredential());
-                    System.out.println("Credential: " + iceS.getCredential());
                 }
             }).verifyComplete();
         }
@@ -132,11 +126,8 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
                 assertNotNull(response.getValue().getIceServers());
                 for (CommunicationIceServer iceS : response.getValue().getIceServers()) {
                     assertNotNull(iceS.getUrls());
-                    System.out.println("Urls: " + iceS.getUrls());
                     assertNotNull(iceS.getUsername());
-                    System.out.println("Username: " + iceS.getUsername());
                     assertNotNull(iceS.getCredential());
-                    System.out.println("Credential: " + iceS.getCredential());
                 }
             }).verifyComplete();
         }

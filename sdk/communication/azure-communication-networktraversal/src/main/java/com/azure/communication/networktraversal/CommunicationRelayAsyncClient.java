@@ -44,7 +44,7 @@ public final class CommunicationRelayAsyncClient {
         CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
         body.setId(communicationUser.getId());
         
-        return Mono.just(client.issueRelayConfiguration(body));
+        return client.issueRelayConfigurationAsync(body);
     }
 
     /**

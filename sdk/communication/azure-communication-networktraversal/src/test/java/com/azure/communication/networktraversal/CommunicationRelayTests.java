@@ -42,21 +42,15 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
 
             assertNotNull(config);
             assertNotNull(config.getExpiresOn());
-            System.out.println("Expires on:" + config.getExpiresOn());
 
             for (CommunicationIceServer iceS : iceServers) {
                 assertNotNull(iceS.getUrls());
-                System.out.println("URLS: " + iceS.getUrls());
                 assertNotNull(iceS.getUsername());
-                System.out.println("Username: " + iceS.getUsername());
                 assertNotNull(iceS.getCredential());
-                System.out.println("credential: " + iceS.getCredential());
             }
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         }
-    
-        // assertFalse(communicationUser.getId().isEmpty());
     }
 
     @ParameterizedTest
@@ -87,11 +81,8 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
 
             for (CommunicationIceServer iceS : iceServers) {
                 assertNotNull(iceS.getUrls());
-                System.out.println("Urls: " + iceS.getUrls());
                 assertNotNull(iceS.getUsername());
-                System.out.println("Username: " + iceS.getUsername());
                 assertNotNull(iceS.getCredential());
-                System.out.println("Credential: " + iceS.getCredential());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,15 +112,11 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             assertNotNull(response.getValue());
             assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
             assertNotNull(response.getValue().getExpiresOn());
-            System.out.println("Expires on:" + response.getValue().getExpiresOn());
 
             for (CommunicationIceServer iceS : iceServers) {
                 assertNotNull(iceS.getUrls());
-                System.out.println("URLS" + iceS.getUrls());
                 assertNotNull(iceS.getUsername());
-                System.out.println("Username" + iceS.getUsername());
                 assertNotNull(iceS.getCredential());
-                System.out.println("credential" + iceS.getCredential());
             }
         } catch (Exception e) {
             e.printStackTrace();
