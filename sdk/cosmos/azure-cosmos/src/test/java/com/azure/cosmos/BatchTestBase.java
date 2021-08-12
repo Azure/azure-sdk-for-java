@@ -192,7 +192,7 @@ public abstract class BatchTestBase extends TestSuiteBase {
                 batchResponse.getStatusCode(), expectedStatusCode.code())
             .isEqualTo(expectedStatusCode.code());
 
-        assertThat(batchResponse.size()).isEqualTo(numberOfOperations);
+        assertThat(batchResponse.getSize()).isEqualTo(numberOfOperations);
         assertThat(batchResponse.getRequestCharge()).isPositive();
         assertThat(batchResponse.getDiagnostics().toString()).isNotEmpty();
 

@@ -72,7 +72,7 @@ public final class BatchResponseParser {
                 documentServiceResponse.getCosmosDiagnostics());
         }
 
-        if (response.size() != request.getOperations().size()) {
+        if (response.getSize() != request.getOperations().size()) {
             if (responseStatusCode >= 200 && responseStatusCode <= 299)  {
                 // Server should be guaranteeing number of results equal to operations when
                 // batch request is successful - so fail as InternalServerError if this is not the case.
@@ -93,7 +93,7 @@ public final class BatchResponseParser {
             BatchResponseParser.createAndPopulateResults(response, request.getOperations(), retryAfterDuration);
         }
 
-        checkState(response.size() == request.getOperations().size(),
+        checkState(response.getSize() == request.getOperations().size(),
             "Number of responses should be equal to number of operations in request.");
 
         return response;
