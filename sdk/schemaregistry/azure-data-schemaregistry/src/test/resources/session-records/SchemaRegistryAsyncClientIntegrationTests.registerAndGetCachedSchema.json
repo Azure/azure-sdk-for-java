@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemagroups/at/schemas/sch561229205?api-version=2020-09-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "11d0df64-0a71-4f4b-8521-5b5ddc2803fb",
+      "Content-Type" : "text/plain; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/getschemabyid/039a07d691a8408f90806aa1faaf4f0e?api-version=2020-09-01-preview",
+      "StatusCode" : "200",
+      "Date" : "Fri, 13 Aug 2021 20:51:26 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "039a07d691a8408f90806aa1faaf4f0e",
+      "Serialization-Type" : "Avro",
+      "Body" : "{\"id\":\"039a07d691a8408f90806aa1faaf4f0e\"}",
+      "Content-Type" : "application/json",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/at/schemas/sch561229205/versions/1?api-version=2020-09-01-preview",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/at/schemas/sch561229205/versions?api-version=2020-09-01-preview"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "sch561229205" ]
+}
