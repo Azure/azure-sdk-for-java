@@ -5,14 +5,15 @@ package com.azure.security.attestation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
+import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests for Attestation Metadata Configuration APIs.
@@ -26,12 +27,20 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        Object metadataConfig1 = attestationBuilder.buildAttestationClient().getOpenIdMetadata();
+        AttestationOpenIdMetadata metadataConfig1 = attestationBuilder.buildClient().getOpenIdMetadata();
         verifyMetadataConfigurationResponse(clientUri, metadataConfig1);
 
-        Response<Object> metadataConfig2 = attestationBuilder.buildAttestationClient().getOpenIdMetadataWithResponse(null);
-        verifyMetadataConfigurationResponse(clientUri, metadataConfig2.getValue());
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void getOpenIdMetadataWithResponse(HttpClient client, String clientUri) {
+        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+
+        Response<AttestationOpenIdMetadata> metadataConfig = attestationBuilder.buildClient().getOpenIdMetadataWithResponse(Context.NONE);
+        verifyMetadataConfigurationResponse(clientUri, metadataConfig.getValue());
+    }
+
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
@@ -39,16 +48,22 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadata())
+        StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadata())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
             .expectComplete()
             .verify();
 
-        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getOpenIdMetadataWithResponse(null))
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void getOpenIdMetadataWithResponseAsync(HttpClient client, String clientUri) {
+        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+
+        StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadataWithResponse())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse.getValue()))
             .expectComplete()
             .verify();
-
     }
 
     /**
@@ -56,19 +71,18 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
      * @param clientUri - URI associated with the operation.
      * @param metadataConfigResponse - Object representing the metadata configuration.
      */
-    void verifyMetadataConfigurationResponse(String clientUri, Object metadataConfigResponse) {
-        assertTrue(metadataConfigResponse instanceof LinkedHashMap);
+    void verifyMetadataConfigurationResponse(String clientUri, AttestationOpenIdMetadata metadataConfigResponse) {
+        assertNotNull(metadataConfigResponse.getIssuer());
+        assertNotNull(metadataConfigResponse.getJsonWebKeySetUrl());
 
-        @SuppressWarnings("unchecked")
-        LinkedHashMap<String, Object> metadataConfig = (LinkedHashMap<String, Object>) metadataConfigResponse;
-
-        assertTrue(metadataConfig.containsKey("issuer"));
-        assertTrue(metadataConfig.containsKey("jwks_uri"));
         // In playback mode, thee clientUri is a dummy value which cannot be associated with the actual response :(.
         if (!testContextManager.getTestMode().equals(TestMode.PLAYBACK)) {
-            assertEquals(clientUri, metadataConfig.get("issuer"));
-            assertEquals(clientUri + "/certs", metadataConfig.get("jwks_uri"));
+            assertEquals(clientUri, metadataConfigResponse.getIssuer());
+            assertEquals(clientUri + "/certs", metadataConfigResponse.getJsonWebKeySetUrl());
         }
+        assertNotNull(metadataConfigResponse.getTokenSigningAlgorithmsSupported());
+        assertNotNull(metadataConfigResponse.getResponseTypesSupported());
+        assertNotNull(metadataConfigResponse.getSupportedClaims());
     }
 
 
