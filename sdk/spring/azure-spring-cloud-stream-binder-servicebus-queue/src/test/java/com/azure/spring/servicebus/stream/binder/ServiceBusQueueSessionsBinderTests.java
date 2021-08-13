@@ -4,9 +4,6 @@
 package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.HeaderMode;
 
@@ -15,7 +12,6 @@ import org.springframework.cloud.stream.binder.HeaderMode;
  *
  * @author Eduardo Sciullo
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusQueueSessionsBinderTests extends
         ServiceBusQueuePartitionBinderTests {
 
