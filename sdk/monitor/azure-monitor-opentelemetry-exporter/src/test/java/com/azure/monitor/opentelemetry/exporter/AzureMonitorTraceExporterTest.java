@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.core.util.Configuration;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanId;
@@ -24,6 +25,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -38,10 +40,14 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
 
     @Test
     public void testExportRequestData() {
+        String connectionStringTemplate = "InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com";
+        String connectionString = Configuration.getGlobalConfiguration()
+            .get("APPLICATIONINSIGHTS_CONNECTION_STRING", connectionStringTemplate);
         AzureMonitorTraceExporter azureMonitorTraceExporter = getClientBuilder()
-            .connectionString("InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com")
+            .connectionString(connectionString)
             .buildTraceExporter();
         CompletableResultCode export = azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
+        export.join(30, TimeUnit.SECONDS);
         Assertions.assertTrue(export.isDone());
         Assertions.assertTrue(export.isSuccess());
     }
