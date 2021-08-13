@@ -73,15 +73,6 @@ public final class SchemaRegistryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaProperties> registerSchema(
         String schemaGroup, String schemaName, String schemaString, SerializationType serializationType) {
-
-        if (schemaStringCache.containsKey(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString))) {
-            logger.verbose(
-                "Cache hit schema string. Group: '{}', name: '{}', schema type: '{}', payload: '{}'",
-                schemaGroup, schemaName, serializationType, schemaString);
-            return Mono.fromCallable(
-                () -> schemaStringCache.get(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString)));
-        }
-
         return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType)
             .map(Response::getValue);
     }
@@ -127,8 +118,10 @@ public final class SchemaRegistryAsyncClient {
                     schemaName,
                     schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
 
-                schemaStringCache
-                    .putIfAbsent(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString), registered);
+                schemaStringCache.putIfAbsent(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString),
+                    registered);
+                idCache.putIfAbsent(schemaId.getId(), registered);
+
                 logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
                 SimpleResponse<SchemaProperties> schemaRegistryObjectSimpleResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -266,14 +259,13 @@ public final class SchemaRegistryAsyncClient {
                 }
 
                 SchemaId schemaId = response.getValue();
+                SchemaProperties properties = new SchemaProperties(schemaId.getId(), serializationType, schemaName,
+                    schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
 
                 schemaStringCache.putIfAbsent(
-                    getSchemaStringCacheKey(schemaGroup, schemaName, schemaString),
-                    new SchemaProperties(
-                        schemaId.getId(),
-                        serializationType,
-                        schemaName,
-                        schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING)));
+                    getSchemaStringCacheKey(schemaGroup, schemaName, schemaString), properties);
+                idCache.putIfAbsent(schemaId.getId(), properties);
+
                 logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
 
                 SimpleResponse<String> schemaIdResponse = new SimpleResponse<>(
