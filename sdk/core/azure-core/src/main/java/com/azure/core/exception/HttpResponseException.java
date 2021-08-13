@@ -138,7 +138,8 @@ public class HttpResponseException extends AzureException {
         if (value instanceof HttpResponseError) {
             return (HttpResponseError) value;
         }
-        throw new IllegalStateException("The error in this exception instance is not an HttpResponseError. Use " +
-                "'getValue()' method instead");
+        return null;
     }
 }
+
+

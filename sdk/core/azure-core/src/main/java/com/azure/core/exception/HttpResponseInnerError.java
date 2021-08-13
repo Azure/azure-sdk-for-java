@@ -1,9 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.exception;
+
+import java.io.Serializable;
 
 /**
  * The inner error of a {@link HttpResponseError}.
  */
-public class HttpResponseInnerError {
+public final class HttpResponseInnerError implements Serializable {
+    private static final long serialVersionUID = 3633446699792897071L;
 
     private String code;
     private HttpResponseInnerError innerError;
@@ -21,9 +27,11 @@ public class HttpResponseInnerError {
      * Sets the error code of the inner error.
      *
      * @param code the error code of this inner error.
+     * @return the updated {@link HttpResponseInnerError} instance.
      */
-    public void setCode(String code) {
+    public HttpResponseInnerError setCode(String code) {
         this.code = code;
+        return this;
     }
 
     /**
@@ -39,8 +47,10 @@ public class HttpResponseInnerError {
      * Sets the nested inner error for this error.
      *
      * @param innerError the nested inner error for this error.
+     * @return the updated {@link HttpResponseInnerError} instance.
      */
-    public void setInnerError(HttpResponseInnerError innerError) {
+    public HttpResponseInnerError setInnerError(HttpResponseInnerError innerError) {
         this.innerError = innerError;
+        return this;
     }
 }
