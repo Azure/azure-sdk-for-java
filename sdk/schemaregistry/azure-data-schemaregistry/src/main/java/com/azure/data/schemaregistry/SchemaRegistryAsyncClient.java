@@ -6,11 +6,6 @@ package com.azure.data.schemaregistry;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -20,10 +15,8 @@ import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
 import com.azure.data.schemaregistry.implementation.models.SchemaId;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -103,16 +96,7 @@ public final class SchemaRegistryAsyncClient {
         return this.restService.getSchemas().registerWithResponseAsync(schemaGroup, schemaName,
             com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
             .handle((response, sink) -> {
-                if (response.getStatusCode() == 400) {
-                    final SchemaRegistryErrorHttpResponse exception = new SchemaRegistryErrorHttpResponse(
-                        response.getRequest(), response.getStatusCode(), response.getHeaders());
-
-                    sink.error(logger.logExceptionAsError(new HttpResponseException(exception)));
-                    return;
-                }
-
                 SchemaId schemaId = response.getValue();
-
                 SchemaProperties registered = new SchemaProperties(schemaId.getId(),
                     serializationType,
                     schemaName,
@@ -160,15 +144,6 @@ public final class SchemaRegistryAsyncClient {
         Objects.requireNonNull(schemaId, "'schemaId' should not be null");
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId)
             .handle((response, sink) -> {
-                if (response.getStatusCode() == 404) {
-                    sink.error(logger.logExceptionAsError(new ResourceNotFoundException(
-                        String.format("Schema does not exist, id: '%s'", schemaId),
-                        new SchemaRegistryErrorHttpResponse(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders()))));
-
-                    return;
-                }
-
                 SerializationType serializationType =
                     SerializationType.fromString(response.getDeserializedHeaders().getSchemaType());
 
@@ -249,14 +224,6 @@ public final class SchemaRegistryAsyncClient {
             .queryIdByContentWithResponseAsync(schemaGroup, schemaName,
                 com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
             .handle((response, sink) -> {
-                if (response.getStatusCode() == 404) {
-                    sink.error(logger.logThrowableAsError(new ResourceNotFoundException(
-                        "Matching schema not found", new SchemaRegistryErrorHttpResponse(response.getRequest(),
-                        response.getStatusCode(), response.getHeaders()))));
-
-                    return;
-                }
-
                 SchemaId schemaId = response.getValue();
                 SchemaProperties properties = new SchemaProperties(schemaId.getId(), serializationType, schemaName,
                     schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
@@ -300,54 +267,5 @@ public final class SchemaRegistryAsyncClient {
 
     private static String getSchemaStringCacheKey(String schemaGroup, String schemaName, String schemaString) {
         return schemaGroup + schemaName + schemaString;
-    }
-
-    /**
-     * Represents an erroneous response from Schema Registry.
-     */
-    private static final class SchemaRegistryErrorHttpResponse extends HttpResponse {
-        private final int statusCode;
-        private final HttpHeaders headers;
-
-        private SchemaRegistryErrorHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
-            super(request);
-            this.statusCode = statusCode;
-            this.headers = headers;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return statusCode;
-        }
-
-        @Override
-        public String getHeaderValue(String name) {
-            return headers.getValue(name);
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return headers;
-        }
-
-        @Override
-        public Flux<ByteBuffer> getBody() {
-            return Flux.empty();
-        }
-
-        @Override
-        public Mono<byte[]> getBodyAsByteArray() {
-            return Mono.empty();
-        }
-
-        @Override
-        public Mono<String> getBodyAsString() {
-            return Mono.empty();
-        }
-
-        @Override
-        public Mono<String> getBodyAsString(Charset charset) {
-            return Mono.empty();
-        }
     }
 }

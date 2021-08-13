@@ -3,6 +3,7 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.data.schemaregistry.models.SerializationType;
@@ -14,11 +15,13 @@ import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -125,6 +128,27 @@ public class SchemaRegistryAsyncClientIntegrationTests extends TestBase {
                 assertEquals(SCHEMA_CONTENT, contents);
             })
             .verifyComplete();
+    }
+
+
+    /**
+     * Verifies that we can register a schema and then get it by its schemaId.
+     */
+    @Test
+    public void getSchemaDoesNotExist() {
+        // Arrange
+        initializeBuilder();
+
+        final String schemaId = UUID.randomUUID().toString();
+        final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
+
+        // Act & Assert
+        StepVerifier.create(client1.getSchema(schemaId))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof ResourceNotFoundException);
+                assertEquals(404, ((ResourceNotFoundException)error).getResponse().getStatusCode());
+            })
+            .verify();
     }
 
     void initializeBuilder() {

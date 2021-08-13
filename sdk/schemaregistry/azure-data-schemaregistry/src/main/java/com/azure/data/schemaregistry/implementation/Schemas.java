@@ -17,6 +17,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -57,6 +58,7 @@ public final class Schemas {
     private interface SchemasService {
         @Get("/$schemagroups/getSchemaById/{schema-id}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(ServiceErrorResponseException.class)
         Mono<SchemasGetByIdResponse> getById(
                 @HostParam("endpoint") String endpoint,
@@ -66,6 +68,7 @@ public final class Schemas {
 
         @Post("/$schemagroups/{group-name}/schemas/{schema-name}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(ServiceErrorResponseException.class)
         Mono<SchemasQueryIdByContentResponse> queryIdByContent(
                 @HostParam("endpoint") String endpoint,
