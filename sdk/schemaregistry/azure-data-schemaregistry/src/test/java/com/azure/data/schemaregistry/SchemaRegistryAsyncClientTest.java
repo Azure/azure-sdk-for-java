@@ -14,6 +14,7 @@ import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdRespons
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterResponse;
 import com.azure.data.schemaregistry.implementation.models.SerializationType;
+import com.azure.data.schemaregistry.implementation.models.ServiceErrorResponseException;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,10 +30,10 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.validateMockitoUsage;
@@ -80,7 +81,7 @@ public class SchemaRegistryAsyncClientTest {
     }
 
     @Test
-    public void testRegisterThenSchemaCacheHit() {
+    public void testRegisterSchemaRegistersTwoVersions() {
         MOCK_SCHEMA_ID.setId(MOCK_ID);
         when(restService.getSchemas()).thenReturn(schemas);
         when(schemas.registerWithResponseAsync(anyString(), anyString(),
@@ -103,7 +104,7 @@ public class SchemaRegistryAsyncClientTest {
             .assertNext(properties -> assertEquals(MOCK_ID, properties.getSchemaId()))
             .verifyComplete();
 
-        verify(schemas, times(1))
+        verify(schemas, times(2))
             .registerWithResponseAsync(MOCK_GROUP, MOCK_SCHEMA_NAME, SerializationType.AVRO, MOCK_AVRO_SCHEMA);
     }
 
@@ -208,72 +209,51 @@ public class SchemaRegistryAsyncClientTest {
 
     @Test
     public void testBadRegisterRequestThenThrows() {
-        int statusCode = 400;
         MOCK_SCHEMA_ID.setId(MOCK_ID);
-        when(restService.getSchemas()).thenReturn(schemas);
-        when(schemas.registerWithResponseAsync(anyString(), anyString(), any(SerializationType.class),
-            anyString()))
-            .thenReturn(
-                Mono.just(
-                    new SchemasRegisterResponse(
-                        null,
-                        statusCode,
-                        null,
-                        null,
-                        null)));
 
         String doesntMatter = "doesn't matter";
+        when(restService.getSchemas()).thenReturn(schemas);
+        when(schemas.registerWithResponseAsync(eq(doesntMatter), eq(doesntMatter), eq(SerializationType.AVRO), anyString()))
+            .thenReturn(Mono.error(new ServiceErrorResponseException("foo", mock(HttpResponse.class))));
 
         // Act & Assert
         StepVerifier.create(client.registerSchema(doesntMatter, doesntMatter, doesntMatter, MOCK_SERIALIZATION))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof HttpResponseException);
-
-                final HttpResponse response = ((HttpResponseException) error).getResponse();
-                assertNotNull(response);
-                assertEquals(statusCode, response.getStatusCode());
             })
             .verify();
 
-        verify(schemas, times(1))
-            .registerWithResponseAsync(anyString(), anyString(), any(SerializationType.class), anyString());
+        verify(schemas)
+            .registerWithResponseAsync(eq(doesntMatter), eq(doesntMatter), any(SerializationType.class), anyString());
     }
 
     @Test
     public void testGetIdBySchemaContentNotFoundThenThrows() {
+        ResourceNotFoundException exception = new ResourceNotFoundException("Not found", mock(HttpResponse.class));
         MOCK_SCHEMA_ID.setId(MOCK_ID);
+
+        String doesntMatter = "doesn't matter";
+
         when(restService.getSchemas()).thenReturn(schemas);
         when(schemas.queryIdByContentWithResponseAsync(anyString(), anyString(),
             any(SerializationType.class), anyString()))
-            .thenReturn(
-                Mono.just(
-                    new SchemasQueryIdByContentResponse(
-                        null,
-                        404,
-                        null,
-                        null,
-                        null)));
+            .thenReturn(Mono.error(exception));
 
-        String doesntMatter = "doesn't matter";
         StepVerifier.create(client.getSchemaId(doesntMatter, doesntMatter, doesntMatter, MOCK_SERIALIZATION))
             .verifyError(ResourceNotFoundException.class);
 
         verify(schemas, times(1))
-            .queryIdByContentWithResponseAsync(anyString(), anyString(), any(SerializationType.class), anyString());
+            .queryIdByContentWithResponseAsync(eq(doesntMatter), eq(doesntMatter), any(SerializationType.class), anyString());
     }
 
     @Test
     public void testGetSchemaByIdNotFoundThenThrows() {
+        ResourceNotFoundException exception = new ResourceNotFoundException("Not found", mock(HttpResponse.class));
+
         String mockId = "mock-id---";
         when(restService.getSchemas()).thenReturn(schemas);
         when(schemas.getByIdWithResponseAsync(mockId))
-            .thenReturn(
-                Mono.just(new SchemasGetByIdResponse(
-                    null,
-                    404,
-                    null,
-                    null,
-                    null)));
+            .thenReturn(Mono.error(exception));
 
         StepVerifier.create(client.getSchema(mockId))
             .verifyError(ResourceNotFoundException.class);
