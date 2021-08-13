@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.AccessToken;
@@ -252,7 +255,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client1.getSchema(schemaId))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ResourceNotFoundException);
-                assertEquals(404, ((ResourceNotFoundException)error).getResponse().getStatusCode());
+                assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());
             })
             .verify();
     }
@@ -271,7 +274,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client1.getSchemaId("at", "bar", SCHEMA_CONTENT, SerializationType.AVRO))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ResourceNotFoundException);
-                assertEquals(404, ((ResourceNotFoundException)error).getResponse().getStatusCode());
+                assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());
             })
             .verify();
     }
