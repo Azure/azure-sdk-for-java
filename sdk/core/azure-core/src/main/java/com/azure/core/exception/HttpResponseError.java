@@ -22,7 +22,7 @@ public final class HttpResponseError {
     @JsonProperty(value = "target")
     private String target;
 
-    @JsonProperty(value = "innerError")
+    @JsonProperty(value = "innererror")
     private HttpResponseInnerError innerError;
 
     @JsonProperty(value = "details")
