@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-administration</artifactId>
-  <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
+  <version>4.0.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
 
   <name>Microsoft Azure client library for KeyVault Administration</name>
   <description>This module contains client library for Microsoft Azure KeyVault Administration.</description>
