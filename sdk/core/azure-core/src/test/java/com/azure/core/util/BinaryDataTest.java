@@ -16,19 +16,39 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.spi.FileSystemProvider;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
+import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_SIZE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * Test class for {@link BinaryData}.
@@ -96,7 +116,7 @@ public class BinaryDataTest {
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
 
         // Act
-        final BinaryData data = new BinaryData(expected);
+        final BinaryData data = BinaryData.fromBytes(expected);
 
         // Assert
         assertArrayEquals(expected, data.toBytes());
@@ -104,41 +124,28 @@ public class BinaryDataTest {
 
     @Test
     public void createFromNullStream() throws IOException {
-        // Arrange
-        final byte[] expected = new byte[0];
-
-        // Act
-        BinaryData data = BinaryData.fromStream(null);
-        final byte[] actual = new byte[0];
-        data.toStream().read(actual, 0, expected.length);
-
-        // Assert
-        assertArrayEquals(expected, data.toBytes());
-        assertArrayEquals(expected, actual);
+        assertThrows(NullPointerException.class, () -> BinaryData.fromStream(null));
     }
 
     @Test
     public void createFromNullByteArray() {
-        // Arrange
-        final byte[] expected = new byte[0];
-
-        // Act
-        BinaryData actual = BinaryData.fromBytes(null);
-
-        // Assert
-        assertArrayEquals(expected, actual.toBytes());
+        assertThrows(NullPointerException.class, () -> BinaryData.fromBytes(null));
     }
 
     @Test
     public void createFromNullObject() {
-        // Arrange
-        final byte[] expected = new byte[0];
+        assertThrows(NullPointerException.class, () -> BinaryData.fromObject(null, null));
+    }
 
-        // Act
-        BinaryData actual = BinaryData.fromObject(null, null);
+    @Test
+    public void createFromNullFile() {
+        assertThrows(NullPointerException.class, () -> BinaryData.fromFile(null));
+    }
 
-        // Assert
-        assertArrayEquals(expected, actual.toBytes());
+    @Test
+    public void createFromNullFlux() {
+        StepVerifier.create(BinaryData.fromFlux(null))
+                .verifyError(NullPointerException.class);
     }
 
     @Test
@@ -148,27 +155,43 @@ public class BinaryDataTest {
 
         // Act
         BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
-        final byte[] actual = new byte[expected.length];
-        (data.toStream()).read(actual, 0, expected.length);
 
         // Assert
         assertArrayEquals(expected, data.toBytes());
-        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void createFromLargeStreamAndReadAsFlux() {
+        // Arrange
+        final byte[] expected = String.join("", Collections.nCopies(STREAM_READ_SIZE * 100, "A"))
+                .concat("A").getBytes(StandardCharsets.UTF_8);
+
+        // Act
+        BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
+
+        // Assert
+        StepVerifier.create(data.toFluxByteBuffer())
+                // the inputstream should be broken down into a series of byte buffers, each of max CHUNK_SIZE
+                // assert first chunk is equal to CHUNK_SIZE and is a string of repeating A's
+                .assertNext(bb -> assertEquals(String.join("", Collections.nCopies(STREAM_READ_SIZE, "A")),
+                        StandardCharsets.UTF_8.decode(bb).toString()))
+                // skip 99 chunks
+                .expectNextCount(99)
+                // assert last chunk is just "A"
+                .assertNext(bb -> assertEquals("A", StandardCharsets.UTF_8.decode(bb).toString()))
+                .verifyComplete();
     }
 
     @Test
     public void createFromEmptyStream() throws IOException {
         // Arrange
         final byte[] expected = "".getBytes();
-        final byte[] actual = new byte[expected.length];
 
         // Act
         BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
-        data.toStream().read(actual, 0, expected.length);
 
         // Assert
         assertArrayEquals(expected, data.toBytes());
-        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -262,24 +285,7 @@ public class BinaryDataTest {
         final String expected = null;
 
         // Arrange & Act
-        final BinaryData data = BinaryData.fromString(expected);
-
-        // Assert
-        assertArrayEquals(new byte[0], data.toBytes());
-        assertEquals("", data.toString());
-    }
-
-    @Test
-    public void createFromNullByte() {
-        // Arrange
-        final byte[] expected = null;
-
-        // Arrange & Act
-        final BinaryData data = BinaryData.fromBytes(expected);
-
-        // Assert
-        assertArrayEquals(new byte[0], data.toBytes());
-        assertEquals("", data.toString());
+        assertThrows(NullPointerException.class, () -> BinaryData.fromString(expected));
     }
 
     @Test
@@ -360,6 +366,98 @@ public class BinaryDataTest {
                 assertEquals(25, persons.get(1).getAge());
             })
             .verifyComplete();
+    }
+
+    @Test
+    public void fileChannelOpenErrorReturnsReactively() {
+        Path notARealPath = Paths.get("fake");
+        assertThrows(UncheckedIOException.class, () -> BinaryData.fromFile(notARealPath));
+    }
+
+    @Test
+    public void fileChannelCloseErrorReturnsReactively() throws IOException {
+        MyFileChannel myFileChannel = spy(MyFileChannel.class);
+        when(myFileChannel.map(any(), anyLong(), anyLong())).thenReturn(mock(MappedByteBuffer.class));
+        doThrow(IOException.class).when(myFileChannel).implCloseChannel();
+
+        FileSystemProvider fileSystemProvider = mock(FileSystemProvider.class);
+        when(fileSystemProvider.newFileChannel(any(), any(), any())).thenReturn(myFileChannel);
+
+        FileSystem fileSystem = mock(FileSystem.class);
+        when(fileSystem.provider()).thenReturn(fileSystemProvider);
+
+        Path path = mock(Path.class);
+        when(path.getFileSystem()).thenReturn(fileSystem);
+        File file = mock(File.class);
+        when(file.length()).thenReturn(1024L);
+        when(file.exists()).thenReturn(true);
+        when(path.toFile()).thenReturn(file);
+
+        BinaryData binaryData = BinaryData.fromFile(path);
+        StepVerifier.create(binaryData.toFluxByteBuffer())
+                .thenConsumeWhile(Objects::nonNull)
+                .verifyError(IOException.class);
+    }
+
+    @Test
+    public void fileChannelIsClosedWhenMapErrors() throws IOException {
+        MyFileChannel myFileChannel = spy(MyFileChannel.class);
+        when(myFileChannel.map(any(), anyLong(), anyLong())).thenThrow(IOException.class);
+
+        FileSystemProvider fileSystemProvider = mock(FileSystemProvider.class);
+        when(fileSystemProvider.newFileChannel(any(), any(), any())).thenReturn(myFileChannel);
+
+        FileSystem fileSystem = mock(FileSystem.class);
+        when(fileSystem.provider()).thenReturn(fileSystemProvider);
+
+        Path path = mock(Path.class);
+        when(path.getFileSystem()).thenReturn(fileSystem);
+        File file = mock(File.class);
+        when(file.length()).thenReturn(1024L);
+        when(file.exists()).thenReturn(true);
+        when(path.toFile()).thenReturn(file);
+
+        BinaryData binaryData = BinaryData.fromFile(path);
+        StepVerifier.create(binaryData.toFluxByteBuffer())
+                .thenConsumeWhile(Objects::nonNull)
+                .verifyError(IOException.class);
+
+        assertFalse(myFileChannel.isOpen());
+    }
+
+    @Test
+    public void fluxContent() {
+        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(Flux
+                .just(ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8))).delayElements(Duration.ofMillis(10)));
+
+        StepVerifier.create(binaryDataMono)
+                .assertNext(binaryData -> assertEquals("Hello", new String(binaryData.toBytes())))
+                .verifyComplete();
+    }
+
+    @Test
+    public void testFromFile() throws Exception {
+        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        try (FileWriter fileWriter = new FileWriter(file.toFile())) {
+            fileWriter.write("The quick brown fox jumps over the lazy dog");
+        }
+        BinaryData data = BinaryData.fromFile(file);
+        assertEquals("The quick brown fox jumps over the lazy dog", data.toString());
+    }
+
+    @Test
+    public void testFromFileToFlux() throws Exception {
+        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        try (FileWriter fileWriter = new FileWriter(file.toFile())) {
+            fileWriter.write("The quick brown fox jumps over the lazy dog");
+        }
+        BinaryData data = BinaryData.fromFile(file);
+        StepVerifier.create(data.toFluxByteBuffer())
+                .assertNext(bb -> assertEquals("The quick brown fox jumps over the lazy dog",
+                        StandardCharsets.UTF_8.decode(bb).toString()))
+                .verifyComplete();
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

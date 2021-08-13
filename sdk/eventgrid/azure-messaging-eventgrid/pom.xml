@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventgrid</artifactId>
-  <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
+  <version>4.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
 
   <packaging>jar</packaging>
   <name>Microsoft Azure SDK for eventgrid</name>
@@ -86,7 +86,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

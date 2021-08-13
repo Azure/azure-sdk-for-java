@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.containerregistry.implementation;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
@@ -416,10 +418,21 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public Mono<RegistryTask> createAsync() {
+        return createAsync(Context.NONE);
+    }
+
+    @Override
+    public RegistryTask create(Context context) {
+        return createAsync(context).block();
+    }
+
+    @Override
+    public Mono<RegistryTask> createAsync(Context context) {
         final RegistryTaskImpl self = this;
         return this
             .tasksInner
             .createAsync(this.resourceGroupName, this.registryName, this.taskName, this.inner)
+            .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
             .flatMap(
                 taskInner -> {
                     self.inner = taskInner;
@@ -525,10 +538,21 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public Mono<RegistryTask> applyAsync() {
+        return applyAsync(Context.NONE);
+    }
+
+    @Override
+    public RegistryTask apply(Context context) {
+        return applyAsync(context).block();
+    }
+
+    @Override
+    public Mono<RegistryTask> applyAsync(Context context) {
         final RegistryTaskImpl self = this;
         return this
             .tasksInner
             .updateAsync(this.resourceGroupName, this.registryName, this.taskName, this.taskUpdateParameters)
+            .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
             .map(
                 taskInner -> {
                     self.inner = taskInner;

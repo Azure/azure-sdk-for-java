@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Fluent
 public final class LogsQueryOptions {
-    private boolean includeRendering;
+    private boolean includeVisualization;
     private boolean includeStatistics;
     private Duration serverTimeout;
     private List<String> additionalWorkspaces;
@@ -37,20 +37,20 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * Returns the flag that indicates if the query should return rendering details.
-     * @return The flag that indicates if the query should return rendering details.
+     * Returns the flag that indicates if the query should return visualization details.
+     * @return The flag that indicates if the query should return visualization details.
      */
-    public boolean isIncludeRendering() {
-        return includeRendering;
+    public boolean isIncludeVisualization() {
+        return includeVisualization;
     }
 
     /**
-     * Sets the flag that indicates if the query should return rendering details.
-     * @param includeRendering The flag that indicates if the query should return rendering details.
+     * Sets the flag that indicates if the query should return visualization details.
+     * @param includeVisualization The flag that indicates if the query should return visualization details.
      * @return The updated options instance.
      */
-    public LogsQueryOptions setIncludeRendering(boolean includeRendering) {
-        this.includeRendering = includeRendering;
+    public LogsQueryOptions setIncludeVisualization(boolean includeVisualization) {
+        this.includeVisualization = includeVisualization;
         return this;
     }
 

@@ -46,7 +46,7 @@ public class LogsQueryBatchSample {
                         new LogsQueryOptions().setIncludeStatistics(true));
 
         LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
-                .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
