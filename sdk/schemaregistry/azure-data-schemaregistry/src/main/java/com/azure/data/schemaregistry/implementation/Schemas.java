@@ -21,8 +21,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.data.schemaregistry.implementation.models.SchemaId;
-import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterResponse;
 import com.azure.data.schemaregistry.implementation.models.SerializationType;
 import com.azure.data.schemaregistry.implementation.models.ServiceErrorResponseException;
@@ -83,7 +83,7 @@ public final class Schemas {
                 @PathParam("schema-name") String schemaName,
                 @HeaderParam("Serialization-Type") SerializationType xSchemaType,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") String schemaContent,
+                @BodyParam("text/plain; charset=utf-8") String schemaContent,
                 Context context);
     }
 
