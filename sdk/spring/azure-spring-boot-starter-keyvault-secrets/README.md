@@ -76,19 +76,19 @@ azure.keyvault.uri|Azure Key Vault URI.| |**spring.cloud.azure.keyvault.uri** |
 #### Unified Azure Spring Properties
 1. Credential Properties
 
-|Name|Description|Comment|
-|:---|:---|:---
-spring.cloud.azure.credential.client-id|Client id to use when performing service principal authentication with Azure.||
-spring.cloud.azure.credential.client-secret|Client secret to use when performing service principal authentication with Azure.||
-spring.cloud.azure.credential.client-certificate-path|Path of a PEM certificate file to use when performing service principal authentication with Azure.||
-spring.cloud.azure.credential.client-certificate-password|Password of the certificate file to use when performing service principal authentication with Azure.||
-spring.cloud.azure.credential.tenant-id|Tenant id for the Azure resources.||
+|Name|Description|
+|:---|:---
+spring.cloud.azure.credential.client-id|Client id to use when performing service principal authentication with Azure.|
+spring.cloud.azure.credential.client-secret|Client secret to use when performing service principal authentication with Azure.|
+spring.cloud.azure.credential.client-certificate-path|Path of a PEM certificate file to use when performing service principal authentication with Azure.|
+spring.cloud.azure.credential.client-certificate-password|Password of the certificate file to use when performing service principal authentication with Azure.|
+spring.cloud.azure.credential.tenant-id|Tenant id for the Azure resources.|
 
 2. Environment Properties
 
-|Name|Description|Default Value|Comment|
-|:---|:---|:---|:---
-spring.cloud.azure.environment.authority-host| Authority Host URI |https://login.microsoftonline.com/| |
+|Name|Description|Default Value|
+|:---|:---|:---
+spring.cloud.azure.environment.authority-host| Authority Host URI |https://login.microsoftonline.com/|
    
 ### Multiple Key Vault support
 
