@@ -221,18 +221,18 @@ public class KeyVaultClient {
             if (response != null) {
                 certificateListResult = (CertificateListResult) JsonConverterUtil.fromJson(response,
                     CertificateListResult.class);
+            }
+            if (certificateListResult != null) {
+                url = certificateListResult.getNextLink();
+                if (certificateListResult.getValue().size() > 0)
+                    for (CertificateItem certificateItem : certificateListResult.getValue()) {
+                        String id = certificateItem.getId();
+                        String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
+                        result.add(alias);
+                    }
             } else {
                 url = null;
             }
-            if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
-                for (CertificateItem certificateItem : certificateListResult.getValue()) {
-                    String id = certificateItem.getId();
-                    String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
-                    result.add(alias);
-                }
-                url = certificateListResult.getNextLink();
-            }
-
         }
         return result;
     }
