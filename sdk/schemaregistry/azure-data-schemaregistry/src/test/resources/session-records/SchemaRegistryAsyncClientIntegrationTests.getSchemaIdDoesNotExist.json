@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemagroups/at/schemas/bar?api-version=2020-09-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "365cbd04-8de8-4000-ab0f-3e6e9ef32513",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "{\"Code\":404,\"Detail\":\"Schema at\\/bar does not exist. TrackingId:62764d48-e56f-4c7c-a621-212806aa3a60_G29, SystemTracker:conniey.servicebus.windows.net:$schemagroups\\/at\\/schemas\\/bar, Timestamp:2021-08-13T23:19:46\"}",
+      "Date" : "Fri, 13 Aug 2021 23:19:45 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
