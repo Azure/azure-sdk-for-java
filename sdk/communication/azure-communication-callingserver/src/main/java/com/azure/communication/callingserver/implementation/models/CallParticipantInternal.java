@@ -13,7 +13,7 @@ public final class CallParticipantInternal {
     /*
      * Communication identifier of the participant
      */
-    @JsonProperty(value = "identifier")
+    @JsonProperty(value = "identifier", required = true)
     private CommunicationIdentifierModel identifier;
 
     /*

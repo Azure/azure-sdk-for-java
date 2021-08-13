@@ -190,7 +190,7 @@ public final class AzureCommunicationCallingServerServiceImplBuilder {
      */
     public AzureCommunicationCallingServerServiceImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2021-06-15-preview";
+            this.apiVersion = "2021-09-15-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

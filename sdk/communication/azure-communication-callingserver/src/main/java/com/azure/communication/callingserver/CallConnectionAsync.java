@@ -4,19 +4,33 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
+import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
+import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CancelAllMediaOperationsResultConverter;
 import com.azure.communication.callingserver.implementation.converters.AddParticipantRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
+import com.azure.communication.callingserver.implementation.converters.RemoveParticipantByIdRequestConverter;
+import com.azure.communication.callingserver.implementation.converters.StartHoldMusicResultConverter;
+import com.azure.communication.callingserver.implementation.converters.StopHoldMusicResultConverter;
+import com.azure.communication.callingserver.implementation.converters.TransferCallRequestConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
+import com.azure.communication.callingserver.implementation.models.RemoveParticipantByIdRequest;
+import com.azure.communication.callingserver.implementation.models.StartHoldMusicRequest;
+import com.azure.communication.callingserver.implementation.models.StopHoldMusicRequest;
+import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartHoldMusicResult;
+import com.azure.communication.callingserver.models.StopHoldMusicResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -26,6 +40,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -412,4 +428,448 @@ public final class CallConnectionAsync {
             return monoError(logger, ex);
         }
     }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param participant The identifier of the participant to be removed from the call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful remove participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeParticipantById(CommunicationIdentifier participant) {
+        try {
+
+            RemoveParticipantByIdRequest request = RemoveParticipantByIdRequestConverter.convert(participant);
+            return callConnectionInternal.removeParticipantByIdAsync(callConnectionId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param participant The identifier of the participant to be removed from the call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful remove participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> removeParticipantByIdWithResponse(CommunicationIdentifier participant) {
+        return removeParticipantByIdWithResponse(participant, null);
+    }
+
+    Mono<Response<Void>> removeParticipantByIdWithResponse(CommunicationIdentifier participant, Context context) {
+        try {
+            RemoveParticipantByIdRequest request = RemoveParticipantByIdRequestConverter.convert(participant);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal
+                    .removeParticipantByIdWithResponseAsync(callConnectionId, request, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Transfer the call to a participant.
+     *
+     * @param targetParticipant The target participant.
+     * @param userToUserInformation The user to user information.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful transfer to participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> transferToParticipant(CommunicationIdentifier targetParticipant, String userToUserInformation) {
+        try {
+
+            TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, userToUserInformation);
+            return callConnectionInternal.transferAsync(callConnectionId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Transfer the call to a participant.
+     *
+     * @param targetParticipant The target participant.
+     * @param userToUserInformation The user to user information.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful transfer to participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> transferToParticipantWithResponse(CommunicationIdentifier participant, String userToUserInformation) {
+        return transferToParticipantWithResponse(participant, userToUserInformation, null);
+    }
+
+    Mono<Response<Void>> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String userToUserInformation, Context context) {
+        try {
+            TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, userToUserInformation);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal
+                    .transferWithResponseAsync(callConnectionId, request, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CallConnectionProperties> get() {
+        try {
+            return callConnectionInternal.getCallAsync(callConnectionId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(CallConnectionPropertiesConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CallConnectionProperties>> getWithResponse() {
+        return getWithResponse(null);
+    }
+
+    Mono<Response<CallConnectionProperties>> getWithResponse(Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal.getCallWithResponseAsync(callConnectionId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, CallConnectionPropertiesConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get participants of the call.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participants request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<List<CallParticipant>> getParticipants() {
+        try {
+            return callConnectionInternal.getParticipantsAsync(callConnectionId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(
+                    result.stream().map(CallParticipantConverter::convert).collect(Collectors.toList())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get participants of the call.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participants request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<Response<List<CallParticipant>>> getParticipantsWithResponse() {
+        return getParticipantsWithResponse(null);
+    }
+
+    Mono<Response<List<CallParticipant>>> getParticipantsWithResponse(Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal.getParticipantsWithResponseAsync(callConnectionId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, 
+                            response.getValue()
+                            .stream()
+                            .map(CallParticipantConverter::convert)
+                            .collect(Collectors.toList()
+                        )
+                    )
+                );
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get participant of the call using participant id.
+     *
+     * @param participantId The participant id.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CallParticipant> getParticipant(String participantId) {
+        try {
+            return callConnectionInternal.getParticipantAsync(callConnectionId, participantId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(CallParticipantConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get participant of the call using participant id.
+     *
+     * @param participantId The participant id.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CallParticipant>> getParticipantWithResponse(String participantId) {
+        return getParticipantWithResponse(participantId, null);
+    }
+
+    Mono<Response<CallParticipant>> getParticipantWithResponse(String participantId, Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal.getParticipantWithResponseAsync(callConnectionId, participantId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Hold the participant and play default music.
+     *
+     * @param participantId The participant id.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartHoldMusicResult> startHoldMusic(String participantId) {
+        try {
+            StartHoldMusicRequest request = new StartHoldMusicRequest();
+
+            return callConnectionInternal.startHoldMusicAsync(callConnectionId, participantId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(StartHoldMusicResultConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }    
+    }
+
+    /**
+     * Hold the participant and play default music.
+     *
+     * @param participantId The participant id.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponse(String participantId) {  
+        return startHoldMusicWithResponse(participantId, null);
+    }
+
+    Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponse(String participantId, Context context) {
+        try {
+            StartHoldMusicRequest request = new StartHoldMusicRequest();
+
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal
+                    .startHoldMusicWithResponseAsync(callConnectionId, participantId, request, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, StartHoldMusicResultConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Hold the participant and play custom audio.
+     *
+     * @param participantId The participant id.
+     * @param audioFileUri The uri of the audio file.
+     * @param audioFileId Tne id for the media in the AudioFileUri, using which we cache the media resource.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartHoldMusicResult> startHoldMusic(String participantId, String audioFileUri, String audioFileId, String callbackUri) {
+        try {
+            StartHoldMusicRequest request = new StartHoldMusicRequest()
+                .setAudioFileUri(audioFileUri)
+                .setAudioFileId(audioFileId)
+                .setCallbackUri(callbackUri);
+
+            return callConnectionInternal.startHoldMusicAsync(callConnectionId, participantId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(StartHoldMusicResultConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }    
+    }
+
+    /**
+     * Hold the participant and play custom audio.
+     *
+     * @param participantId The participant id.
+     * @param audioFileUri The uri of the audio file.
+     * @param audioFileId Tne id for the media in the AudioFileUri, using which we cache the media resource.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponse(String participantId, String audioFileUri, String audioFileId, String callbackUri) {  
+        return startHoldMusicWithResponse(participantId, audioFileUri, audioFileId, callbackUri, null);
+    }
+
+    Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponse(String participantId, String audioFileUri, String audioFileId, String callbackUri, Context context) {
+        try {
+            StartHoldMusicRequest request = new StartHoldMusicRequest()
+            .setAudioFileUri(audioFileUri)
+            .setAudioFileId(audioFileId)
+            .setCallbackUri(callbackUri);
+
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal
+                    .startHoldMusicWithResponseAsync(callConnectionId, participantId, request, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, StartHoldMusicResultConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Remove participant from the hold and stop playing audio.
+     *
+     * @param participantId The participant id.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for stop hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StopHoldMusicResult> stopHoldMusic(String participantId) {
+        try {
+            return callConnectionInternal.stopHoldMusicAsync(callConnectionId, participantId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(StopHoldMusicResultConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }    
+    }
+
+    /**
+     * Remove participant from the hold and stop playing audio.
+     *
+     * @param participantId The participant id.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for stop hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponse(String participantId) {  
+        return stopHoldMusicWithResponse(participantId, null);
+    }
+
+    Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponse(String participantId, Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal
+                    .stopHoldMusicWithResponseAsync(callConnectionId, participantId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, StopHoldMusicResultConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Keep call connection alive.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful keep alive request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> keepAlive() {
+        try {
+            return callConnectionInternal.keepAliveAsync(callConnectionId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Keep call connection alive.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful keep alive request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> keepAliveWithResponse() {
+        return keepAliveWithResponse(null);
+    }
+
+    Mono<Response<Void>> keepAliveWithResponse(Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal.keepAliveWithResponseAsync(callConnectionId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
 }

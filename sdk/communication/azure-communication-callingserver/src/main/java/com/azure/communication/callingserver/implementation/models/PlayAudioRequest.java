@@ -24,8 +24,8 @@ public final class PlayAudioRequest {
      * The flag indicating whether audio file needs to be played in loop or
      * not.
      */
-    @JsonProperty(value = "loop")
-    private Boolean loop;
+    @JsonProperty(value = "loop", required = true)
+    private boolean loop;
 
     /*
      * The value to identify context of the operation.
@@ -75,7 +75,7 @@ public final class PlayAudioRequest {
      *
      * @return the loop value.
      */
-    public Boolean isLoop() {
+    public boolean isLoop() {
         return this.loop;
     }
 
@@ -85,7 +85,7 @@ public final class PlayAudioRequest {
      * @param loop the loop value to set.
      * @return the PlayAudioRequest object itself.
      */
-    public PlayAudioRequest setLoop(Boolean loop) {
+    public PlayAudioRequest setLoop(boolean loop) {
         this.loop = loop;
         return this;
     }

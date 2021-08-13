@@ -24,7 +24,7 @@ public final class CallConnectionStateChangedEventInternal {
     private String callConnectionId;
 
     /*
-     * The call connection state.
+     * The state of the call connection.
      */
     @JsonProperty(value = "callConnectionState", required = true)
     private CallConnectionState callConnectionState;
@@ -70,7 +70,7 @@ public final class CallConnectionStateChangedEventInternal {
     }
 
     /**
-     * Get the callConnectionState property: The call connection state.
+     * Get the callConnectionState property: The state of the call connection.
      *
      * @return the callConnectionState value.
      */
@@ -79,7 +79,7 @@ public final class CallConnectionStateChangedEventInternal {
     }
 
     /**
-     * Set the callConnectionState property: The call connection state.
+     * Set the callConnectionState property: The state of the call connection.
      *
      * @param callConnectionState the callConnectionState value to set.
      * @return the CallConnectionStateChangedEventInternal object itself.
