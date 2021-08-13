@@ -15,7 +15,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import reactor.core.publisher.Mono;
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -59,14 +58,7 @@ public final class CommunicationRelayAsyncClient {
             CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
             body.setId(communicationUser.getId());
             return client.issueRelayConfigurationWithResponseAsync(body)
-                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                .flatMap(
-                    (Response<CommunicationRelayConfiguration> response) -> {
-                        return Mono.just(
-                            new SimpleResponse<CommunicationRelayConfiguration>(
-                                response,
-                                response.getValue()));
-                    });
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

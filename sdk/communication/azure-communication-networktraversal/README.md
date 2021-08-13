@@ -106,7 +106,7 @@ try {
     CommunicationUserIdentifier user = communicationIdentityClient.createUser();
     CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
     CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
-} catch (RuntimeException ex) {
+} catch (CommunicationErrorResponseException ex) {
     System.out.println(ex.getMessage());
 }
 ```
