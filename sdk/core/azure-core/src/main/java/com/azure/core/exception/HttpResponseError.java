@@ -3,6 +3,9 @@
 
 package com.azure.core.exception;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -10,11 +13,19 @@ import java.util.List;
  */
 public final class HttpResponseError {
 
+    @JsonProperty(value = "code", required = true)
     private final String code;
+
+    @JsonProperty(value = "message", required = true)
     private final String message;
 
+    @JsonProperty(value = "target")
     private String target;
+
+    @JsonProperty(value = "innerError")
     private HttpResponseInnerError innerError;
+
+    @JsonProperty(value = "details")
     private List<HttpResponseError> errorDetails;
 
     /**
@@ -23,7 +34,9 @@ public final class HttpResponseError {
      * @param code the error code of this error.
      * @param message the error message of this error.
      */
-    public HttpResponseError(String code, String message) {
+    @JsonCreator
+    public HttpResponseError(@JsonProperty(value = "code", required = true)String code,
+                             @JsonProperty(value = "message", required = true)String message) {
         this.code = code;
         this.message = message;
     }
